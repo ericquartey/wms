@@ -45,21 +45,21 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="580"
-                             LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,210,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="1,5"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
         <controls:CustomLabelTextBlockControl Width="180"
                                               Margin="20,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="125"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"

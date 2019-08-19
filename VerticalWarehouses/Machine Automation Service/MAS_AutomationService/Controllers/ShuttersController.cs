@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -8,6 +7,8 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -17,7 +18,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
+
+        private readonly IShutterTestParametersProvider shutterTestParametersProvider;
 
         #endregion
 
@@ -25,46 +28,34 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ShuttersController(
             IEventAggregator eventAggregator,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
+            IShutterTestParametersProvider shutterTestParametersProvider,
+            IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (shutterTestParametersProvider == null)
             {
-                throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+                throw new ArgumentNullException(nameof(shutterTestParametersProvider));
             }
 
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            if (configurationProvider == null)
+            {
+                throw new ArgumentNullException(nameof(configurationProvider));
+            }
+
+            this.shutterTestParametersProvider = shutterTestParametersProvider;
+            this.configurationProvider = configurationProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("integer-configuration-parameter/{category}/{parameter}")]
-        public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
+        [HttpGet]
+        public ActionResult<ShutterTestParameters> GetTestParameters()
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
-            var categoryEnum = (ConfigurationCategory)categoryId;
+            var parameters = this.shutterTestParametersProvider.Get();
 
-            if (parameterId != null)
-            {
-                try
-                {
-                    return this.dataLayerConfigurationValueManagement
-                        .GetIntegerConfigurationValue(
-                        (long)parameterId,
-                        categoryEnum);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
+            return this.Ok(parameters);
         }
 
         [HttpPost("{bayNumber}/move")]
@@ -73,32 +64,33 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             switch (data.ShutterType)
             {
                 case ShutterType.NoType:
-                    this.dataLayerConfigurationValueManagement
+                    this.configurationProvider
                         .GetIntegerConfigurationValue(
                             (long)GeneralInfo.Shutter1Type,
                             ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter2Type:
-                    this.dataLayerConfigurationValueManagement
+                    this.configurationProvider
                         .GetIntegerConfigurationValue(
                             (long)GeneralInfo.Shutter2Type,
                             ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter3Type:
-                    this.dataLayerConfigurationValueManagement
+                    this.configurationProvider
                         .GetIntegerConfigurationValue(
                             (long)GeneralInfo.Shutter3Type,
                             ConfigurationCategory.GeneralInfo);
                     break;
             }
 
-            var maxSpeed = this.dataLayerConfigurationValueManagement
+            var maxSpeed = this.configurationProvider
                 .GetDecimalConfigurationValue(
-                (long)ShutterHeightControl.FeedRate,
-                ConfigurationCategory.ShutterHeightControl);
+                    (long)ShutterHeightControl.FeedRate,
+                    ConfigurationCategory.ShutterHeightControl);
 
+            // TODO what is this?
             //TEMP Speed rate parameter need to be multiply by 100
             //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
             var speedRate = 100m;
@@ -133,8 +125,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest("NumberCycles must be strictly positive.");
             }
 
-            // TEMP Retrieve the max speed rate from the database
-            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+            // TODO Retrieve the max speed rate from the database
+            var maxSpeed = this.configurationProvider.GetDecimalConfigurationValue(
                 (long)ShutterHeightControl.FeedRate,
                 ConfigurationCategory.ShutterHeightControl);
 
@@ -148,7 +140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 shutterControlMessageData,
                 "Shutter Started",
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterControl);
+                MessageType.ShutterTestStatusChanged);
 
             return this.Accepted();
         }

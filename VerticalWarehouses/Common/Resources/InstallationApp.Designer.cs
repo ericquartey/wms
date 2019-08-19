@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -466,11 +466,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed cicles:.
+        ///   Looks up a localized string similar to Completed cycles:.
         /// </summary>
-        public static string CompletedCicles {
+        public static string CompletedCycles {
             get {
-                return ResourceManager.GetString("CompletedCicles", resourceCulture);
+                return ResourceManager.GetString("CompletedCycles", resourceCulture);
             }
         }
         
@@ -574,11 +574,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delay between cicles [s]:.
+        ///   Looks up a localized string similar to Delay between cycles [s]:.
         /// </summary>
-        public static string DelayBetweenCicles {
+        public static string DelayBetweenCycles {
             get {
-                return ResourceManager.GetString("DelayBetweenCicles", resourceCulture);
+                return ResourceManager.GetString("DelayBetweenCycles", resourceCulture);
             }
         }
         
@@ -1753,11 +1753,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Required cicles:.
+        ///   Looks up a localized string similar to Required cycles:.
         /// </summary>
-        public static string RequiredCicles {
+        public static string RequiredCycles {
             get {
-                return ResourceManager.GetString("RequiredCicles", resourceCulture);
+                return ResourceManager.GetString("RequiredCycles", resourceCulture);
             }
         }
         
@@ -1978,11 +1978,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Closed.
+        /// </summary>
+        public static string ShutterClosed {
+            get {
+                return ResourceManager.GetString("ShutterClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Endurance Test for Bay {0}.
         /// </summary>
         public static string ShutterEnduranceTestTitle {
             get {
                 return ResourceManager.GetString("ShutterEnduranceTestTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mid-way.
+        /// </summary>
+        public static string ShutterMidWay {
+            get {
+                return ResourceManager.GetString("ShutterMidWay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string ShutterOpen {
+            get {
+                return ResourceManager.GetString("ShutterOpen", resourceCulture);
             }
         }
         

@@ -359,7 +359,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 "Simulated Shutter Error",
                  MessageActor.AutomationService,
                  MessageActor.FiniteStateMachines,
-                 MessageType.ShutterControl,
+                 MessageType.ShutterTestStatusChanged,
                  MessageStatus.OperationError));
         }
 
@@ -370,7 +370,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 "Shutter Started",
                 MessageActor.AutomationService,
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterControl,
+                MessageType.ShutterTestStatusChanged,
                 MessageStatus.OperationStart));
 
             await Task.Delay(2000);
@@ -380,7 +380,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 "Shutter Completed",
                 MessageActor.AutomationService,
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterControl,
+                MessageType.ShutterTestStatusChanged,
                 MessageStatus.OperationEnd));
         }
 

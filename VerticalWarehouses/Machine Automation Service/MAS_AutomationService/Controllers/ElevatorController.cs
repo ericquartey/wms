@@ -86,7 +86,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
-            throw new System.NotImplementedException();
+            return 0; // TODO
+            // throw new System.NotImplementedException();
         }
 
         [HttpPost("horizontal/move")]

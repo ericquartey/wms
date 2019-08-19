@@ -14,7 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -22,10 +22,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
+        <TextBlock Grid.ColumnSpan="2"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding BayNumber, StringFormat={x:Static res:InstallationApp.ShutterEnduranceTestTitle}}" />
@@ -34,14 +33,16 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputDelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
 
         <StackPanel Grid.Row="2"
@@ -49,35 +50,35 @@
                     VerticalAlignment="Top">
 
             <controls:PpcSensorControl SensorState="{Binding Sensors.Open}"
-                                       Text="{x:Static res:InstallationApp.Open}" />
+                                       Text="{x:Static res:InstallationApp.ShutterOpen}" />
             <!--  - optional sensor  -->
-            <controls:PpcSensorControl SensorState="{Binding Sensors.Middle}"
-                                       Text="{x:Static res:InstallationApp.Middle}" />
-            
+            <controls:PpcSensorControl SensorState="{Binding Sensors.MidWay}"
+                                       Text="{x:Static res:InstallationApp.ShutterMidWay}" />
+
             <controls:PpcSensorControl SensorState="{Binding Sensors.Closed}"
-                                       Text="{x:Static res:InstallationApp.Closed}" />
+                                       Text="{x:Static res:InstallationApp.ShutterClosed}" />
 
         </StackPanel>
 
         <controls:CustomLabelTextBlockControl Grid.Row="3"
+                                              Margin="0,20,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+                                              ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StartButtonCommand}"
+                            Command="{Binding StartCommand}"
                             Content="{x:Static res:InstallationApp.Start}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StopButtonCommand}"
+                            Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
-
-
 
     </Grid>
 

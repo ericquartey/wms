@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                 "ShutterControl Test Executing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterControl,
+                MessageType.ShutterTestStatusChanged,
                 MessageStatus.OperationExecuting);
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

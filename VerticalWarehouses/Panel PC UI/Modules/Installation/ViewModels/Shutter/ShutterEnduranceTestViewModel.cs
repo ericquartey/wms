@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
@@ -24,7 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int bayNumber;
 
-        private int completedCycles;
+        private int? completedCycles;
 
         private int? inputDelayBetweenCycles;
 
@@ -37,6 +38,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken receivedActionUpdateCompletedToken;
 
         private SubscriptionToken receivedActionUpdateErrorToken;
+
+        private readonly ShutterSensors sensors;
 
         private DelegateCommand startCommand;
 
@@ -71,6 +74,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersService = shuttersService;
 
             this.BayNumber = bayManager.BayNumber;
+
+            this.sensors = new ShutterSensors(this.BayNumber);
         }
 
         #endregion
@@ -89,7 +94,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayNumber, value);
         }
 
-        public int CompletedCycles
+        public int? CompletedCycles
         {
             get => this.completedCycles;
             set => this.SetProperty(ref this.completedCycles, value);
@@ -103,13 +108,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputDelayBetweenCycles
         {
             get => this.inputDelayBetweenCycles;
-            set => this.SetProperty(ref this.inputDelayBetweenCycles, value);
+            set
+            {
+                if (this.SetProperty(ref this.inputDelayBetweenCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public int? InputRequiredCycles
         {
             get => this.inputRequiredCycles;
-            set => this.SetProperty(ref this.inputRequiredCycles, value);
+            set
+            {
+                if (this.SetProperty(ref this.inputRequiredCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsExecutingProcedure
@@ -136,14 +153,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ICommand StartButtonCommand =>
-            this.startCommand
+        public ShutterSensors Sensors => this.sensors;
+
+        public ICommand StartCommand =>
+                    this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.ExecuteStartCommandAsync(),
                 this.CanExecuteStartCommand));
 
-        public ICommand StopButtonCommand =>
+        public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
@@ -161,14 +180,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (columnName)
                 {
                     case nameof(this.InputRequiredCycles):
-                        if (this.InputRequiredCycles <= 0)
+                        if (!this.InputRequiredCycles.HasValue)
+                        {
+                            return $"InputRequiredCycles is required.";
+                        }
+
+                        if (this.InputRequiredCycles.Value <= 0)
                         {
                             return "InputRequiredCycles must be strictly positive.";
                         }
                         break;
 
                     case nameof(this.InputDelayBetweenCycles):
-                        if (this.InputDelayBetweenCycles <= 0)
+                        if (!this.InputDelayBetweenCycles.HasValue)
+                        {
+                            return $"InputDelayBetweenCycles is required.";
+                        }
+
+                        if (this.InputDelayBetweenCycles.Value <= 0)
                         {
                             return "InputDelayBetweenCycles must be strictly positive.";
                         }
@@ -183,15 +212,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async Task GetIntegerParametersAsync()
+        public override async Task OnNavigatedAsync()
         {
-            const string category = "GeneralInfo";
-            this.InputRequiredCycles = await this.shuttersService.GetIntegerConfigurationParameterAsync(category, "RequiredCycles");
-            this.InputDelayBetweenCycles = await this.shuttersService.GetIntegerConfigurationParameterAsync(category, "DelayBetweenCycles");
-        }
+            await base.OnNavigatedAsync();
 
-        public Task OnEnterViewAsync()
-        {
+            this.IsBackNavigationAllowed = true;
+
+            await this.RetrieveTestParametersAsync();
+
             // TODO swap between 2/3 positions bay
 
             this.receivedActionUpdateCompletedToken = this.EventAggregator
@@ -211,18 +239,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message.NotificationType == NotificationType.Error &&
                     message.ActionType == ActionType.ShutterControl &&
                     message.ActionStatus == ActionStatus.Error);
-
-            return Task.CompletedTask;
         }
 
         private bool CanExecuteStartCommand()
         {
-            return !this.IsExecutingProcedure && !this.IsWaitingForResponse;
+            return !this.IsExecutingProcedure
+                && !this.IsWaitingForResponse
+                && string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStopCommand()
         {
-            return this.IsExecutingProcedure && !this.IsWaitingForResponse;
+            return this.IsExecutingProcedure
+                && !this.IsWaitingForResponse;
         }
 
         private async Task ExecuteStartCommandAsync()
@@ -286,6 +315,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task RetrieveTestParametersAsync()
+        {
+            try
+            {
+                var procedureParameters = await this.shuttersService.GetTestParametersAsync();
+
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+                this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private void UpdateError()

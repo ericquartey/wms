@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         {
             this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == MessageType.ShutterControl && message.Status == MessageStatus.OperationExecuting)
+            if (message.Type == MessageType.ShutterTestStatusChanged && message.Status == MessageStatus.OperationExecuting)
             {
                 //TEMP Update the number of executed cycles so far
                 if (message.Data is IShutterTestStatusChangedMessageData s)

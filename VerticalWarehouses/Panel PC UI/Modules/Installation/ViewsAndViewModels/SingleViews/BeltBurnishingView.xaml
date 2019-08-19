@@ -37,13 +37,13 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+                                            LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
         <controls:PpcTextBox Margin="607,159,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding CycleQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.RequiredCicles}"
+                                                 LabelText="{x:Static res:InstallationApp.RequiredCycles}"
                                                   />
 
         <controls:PpcButton  Margin="607,490,0,0"

@@ -22,7 +22,7 @@
 
         CalibrateAxis,
 
-        ShutterControl,
+        ShutterTestStatusChanged,
 
         NewMissionAvailable,
 
