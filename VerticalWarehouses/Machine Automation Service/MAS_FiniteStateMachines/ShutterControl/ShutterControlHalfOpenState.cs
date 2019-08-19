@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         private readonly ShutterMovementDirection movementDirection;
 
-        private readonly IShutterControlMessageData shutterControlMessageData;
+        private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
 
         private bool disposed;
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         public ShutterControlHalfOpenState(
             IStateMachine parentMachine,
-            IShutterControlMessageData shutterControlMessageData,
+            IShutterTestStatusChangedMessageData shutterControlMessageData,
             ShutterMovementDirection movementDirection,
             ILogger logger,
             bool stopRequested = false)

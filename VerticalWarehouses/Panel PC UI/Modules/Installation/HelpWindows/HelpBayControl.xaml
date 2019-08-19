@@ -55,7 +55,7 @@
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="0,5"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:InstallationApp.BayControlStepValue}" />
 
         <controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"

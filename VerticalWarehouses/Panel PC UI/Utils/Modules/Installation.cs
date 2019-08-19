@@ -6,6 +6,8 @@
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
+        public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
+
         public const string VERTICALAXISCALIBRATION = "VerticalAxisCalibrationViewModel";
 
         public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";

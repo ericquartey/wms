@@ -1,9 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.DTOs;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,13 +8,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CarouselController : ControllerBase
+    public class CarouselController : BaseAutomationController
     {
         #region Fields
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
@@ -42,9 +37,39 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ISetupStatusDataLayer setupStatusDataLayer,
-            ILogger<ElevatorController> logger)
+            ILogger<CarouselController> logger)
+            : base(eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            if (verticalAxisDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
+            }
+
+            if (verticalManualMovementsDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
+            }
+
+            if (horizontalAxisDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
+            }
+
+            if (horizontalManualMovementsDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            }
+
+            if (setupStatusDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(setupStatusDataLayer));
+            }
+
+            if (logger == null)
+            {
+                throw new System.ArgumentNullException(nameof(logger));
+            }
+
             this.verticalAxis = verticalAxisDataLayer;
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
@@ -60,29 +85,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
-            return 0;
+            throw new System.NotImplementedException();
         }
 
         [HttpPost("move")]
         public void Move([FromBody]CarouselMovementParameters parameters)
         {
+            throw new System.NotImplementedException();
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("stop")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                   new CommandMessage(
-                       null,
-                       "Stop Command",
-                       MessageActor.FiniteStateMachines,
-                       MessageActor.WebApi,
-                       MessageType.Stop));
+            this.PublishCommand(
+                null,
+                "Stop Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Stop);
 
-            return this.Ok();
+            return this.Accepted();
         }
 
         #endregion

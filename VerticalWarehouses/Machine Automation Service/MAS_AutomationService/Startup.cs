@@ -8,6 +8,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,6 +83,9 @@ namespace Ferretto.VW.MAS.AutomationService
               .AddMvc(options =>
               {
                   options.Filters.Add(typeof(ReadinessFilter));
+                  options.Conventions.Add(
+                      new RouteTokenTransformerConvention(
+                        new SlugifyParameterTransformer()));
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

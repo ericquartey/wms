@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
     {
         #region Fields
 
-        private readonly IShutterControlMessageData shutterControlMessageData;
+        private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
 
         private bool disposed;
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         public ShutterControlStartState(
             IStateMachine parentMachine,
-            IShutterControlMessageData shutterControlMessageData,
+            IShutterTestStatusChangedMessageData shutterControlMessageData,
             ILogger logger)
             : base(parentMachine, logger)
         {
@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                 "ShutterControl Test Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterControl,
+                MessageType.ShutterTestStatusChanged,
                 MessageStatus.OperationStart);
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

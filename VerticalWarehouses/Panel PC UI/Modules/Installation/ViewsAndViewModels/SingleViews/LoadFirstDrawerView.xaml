@@ -42,7 +42,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="1"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <!--  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
         <controls:CustomLabelTextBlockControl Margin="580,240,0,0"

@@ -90,14 +90,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 if (this.IsMachinePoweredOn)
                 {
-                    await this.machineStatusService.ExecutePowerOffAsync();
+                    await this.machineStatusService.PowerOffAsync();
                 }
                 else
                 {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Confirmation operation?", "March", System.Windows.MessageBoxButton.YesNo);
+                    var messageBoxResult = System.Windows.MessageBox.Show("Confirmation operation?", "March", System.Windows.MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
-                        await this.machineStatusService.ExecutePowerOnAsync();
+                        await this.machineStatusService.PowerOnAsync();
                     }
                     else
                     {

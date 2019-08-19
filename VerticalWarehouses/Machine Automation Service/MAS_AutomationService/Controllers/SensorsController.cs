@@ -1,29 +1,37 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class SensorsController : ControllerBase
+    public class SensorsController : BaseAutomationController
     {
+        #region Constructors
+
+        public SensorsController(IEventAggregator eventAggregator)
+            : base(eventAggregator)
+        {
+        }
+
+        #endregion
+
         #region Methods
 
-        [HttpGet("force-notification")]
-        public IActionResult ForceNotification([FromServices] IEventAggregator eventAggregator)
+        [HttpPost("force-notification")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ForceNotification()
         {
-            eventAggregator.GetEvent<CommandEvent>().Publish(
-                new CommandMessage(
+            this.PublishCommand(
                     null,
                     "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
-                    MessageActor.WebApi,
-                    MessageType.SensorsChanged));
+                    MessageType.SensorsChanged);
 
-            return this.Ok();
+            return this.Accepted();
         }
 
         #endregion

@@ -3,15 +3,15 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class ShutterControlMessageData : IShutterControlMessageData
+    public class ShutterTestStatusChangedMessageData : IShutterTestStatusChangedMessageData
     {
         #region Constructors
 
-        public ShutterControlMessageData()
+        public ShutterTestStatusChangedMessageData()
         {
         }
 
-        public ShutterControlMessageData(int bayNumber, int delay, int numberCycles, int speedRate)
+        public ShutterTestStatusChangedMessageData(int bayNumber, int delay, int numberCycles, int speedRate)
         {
             this.Delay = delay;
             this.NumberCycles = numberCycles;

@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : AutomationBaseController
+    public class UsersController : BaseWmsProxyBaseController
     {
         #region Fields
 
@@ -43,9 +44,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("authenticate")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<UserClaims>> AuthenticateWithResourceOwnerPassword(
-            [FromQuery] string userName,
-            [FromQuery] string password)
+            string userName,
+            string password)
         {
             try
             {

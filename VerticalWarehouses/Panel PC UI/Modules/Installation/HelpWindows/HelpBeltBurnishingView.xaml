@@ -35,13 +35,13 @@
 
         <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
             ContentText="4500" Width="180"
-            LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+            LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
-        <controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+        <controls:PpcTextBox
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
             Highlighted="True" IsEnabled="True"
             Width="180"
-            LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
+            LabelText="{x:Static res:InstallationApp.RequiredCycles}"/>
 
         <controls:PpcButton      Content="{x:Static res:InstallationApp.Start}"
 

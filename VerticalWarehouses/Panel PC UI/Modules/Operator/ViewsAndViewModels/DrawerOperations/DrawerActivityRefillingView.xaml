@@ -94,7 +94,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding ActualQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingQtyRefilled}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcButton  Margin="280,0,0,20"
                 HorizontalAlignment="Left"

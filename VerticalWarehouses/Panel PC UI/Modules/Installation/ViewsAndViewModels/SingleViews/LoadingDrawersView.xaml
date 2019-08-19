@@ -39,7 +39,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.LoadingDrawersDrawerToInsert}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcButton  Margin="580,480,0,0"
                 HorizontalAlignment="Left"

@@ -1,6 +1,7 @@
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -18,6 +19,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ErrorsController(IErrorsProvider errorsProvider)
         {
+            if (errorsProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(errorsProvider));
+            }
+
             this.errorsProvider = errorsProvider;
         }
 
@@ -54,6 +60,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 #endif
 
         [HttpPost("{id}/resolve")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<Error> Resolve(int id)
         {
             var resolvedError = this.errorsProvider.Resolve(id);

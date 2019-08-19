@@ -35,7 +35,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.BayControlStepValue}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
 
 
         <controls:CustomLabelTextBlockControl Margin="420,120,0,0"

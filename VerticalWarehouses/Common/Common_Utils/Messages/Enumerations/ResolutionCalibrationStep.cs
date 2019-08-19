@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
-    public enum ResolutionCalibrationSteps
+    public enum ResolutionCalibrationStep
     {
         None = 0,
 

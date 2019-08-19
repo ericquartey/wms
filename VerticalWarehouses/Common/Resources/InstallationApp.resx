@@ -445,16 +445,16 @@
     <value>Closed</value>
     <comment>Label text</comment>
   </data>
-  <data name="CompletedCicles" xml:space="preserve">
-    <value>Completed cicles:</value>
+  <data name="CompletedCycles" xml:space="preserve">
+    <value>Completed cycles:</value>
     <comment>Label text</comment>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
     <value>Current position [mm]:</value>
     <comment>Label text</comment>
   </data>
-  <data name="DelayBetweenCicles" xml:space="preserve">
-    <value>Delay between cicles [s]:</value>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Delay between cycles [s]:</value>
     <comment>Label text</comment>
   </data>
   <data name="Middle" xml:space="preserve">
@@ -465,8 +465,8 @@
     <value>Open</value>
     <comment>Label text</comment>
   </data>
-  <data name="RequiredCicles" xml:space="preserve">
-    <value>Required cicles:</value>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Required cycles:</value>
     <comment>Label text</comment>
   </data>
   <data name="Gate1Control" xml:space="preserve">
@@ -1132,5 +1132,17 @@
   </data>
   <data name="Bay3" xml:space="preserve">
     <value>Bay 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Shutter Endurance Test for Bay {0}</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>Mid-way</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Open</value>
   </data>
 </root>

@@ -21,21 +21,21 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcTextBox Margin="429,170,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcTextBox Margin="660,170,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:CustomLabelTextBlockControl Margin="200,310,0,0"
                                               HorizontalAlignment="Left"

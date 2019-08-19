@@ -15,7 +15,7 @@
                    Text="{x:Static res:InstallationApp.WeightControl}"  />
 
         <controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,120,0,0"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                    InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
@@ -24,7 +24,7 @@
                                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
         <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,210,0,0"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                      InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.TestRun}" />
 

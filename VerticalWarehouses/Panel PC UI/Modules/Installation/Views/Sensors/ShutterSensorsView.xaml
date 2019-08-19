@@ -4,6 +4,7 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -30,12 +31,10 @@
                        Text="{x:Static res:InstallationApp.Gate}" />
 
             <StackPanel Grid.Row="1">
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.GateSensorA}"
-                                           SensorState="{Binding GateSensorA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.GateSensorB}"
-                                           SensorState="{Binding GateSensorB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.GateSensorA}"
+                                           Text="{x:Static res:InstallationApp.GateSensorA}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.GateSensorB}"
+                                           Text="{x:Static res:InstallationApp.GateSensorB}" />
             </StackPanel>
 
         </Grid>

@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error communicating with services..
+        /// </summary>
+        public static string ErrorCommunicatingWithServices {
+            get {
+                return ResourceManager.GetString("ErrorCommunicatingWithServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error Description.
         /// </summary>
         public static string ErrorDescription {

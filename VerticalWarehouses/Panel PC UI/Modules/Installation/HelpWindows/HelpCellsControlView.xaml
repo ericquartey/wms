@@ -48,7 +48,7 @@
                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     InputText="0,5"
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />

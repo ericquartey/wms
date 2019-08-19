@@ -1,20 +1,23 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using Microsoft.AspNetCore.Http;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public partial class ServiceController : ControllerBase
+    public partial class ServiceController : BaseAutomationController
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        // TODO: avoid hardcoding constants in code
+        private const decimal ChainLength = 2850.0M;
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
@@ -28,24 +31,61 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ServiceController(
             IEventAggregator eventAggregator,
-            IServiceProvider services,
+            IHorizontalAxisDataLayer horizontalAxisDataLayer,
+            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ILogger<ServiceController> logger)
+            : base(eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            if (horizontalAxisDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
+            }
+
+            if (horizontalManualMovementsDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            }
+
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.logger = logger;
-            this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
-            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovementsDataLayer)) as IHorizontalManualMovementsDataLayer;
+            this.horizontalAxis = horizontalAxisDataLayer;
+            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200)]
-        [HttpGet("ExecuteSearchHorizontalZero")]
-        public void ExecuteSearchHorizontalZero()
+        [HttpPost("search-horizontal-zero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SearchHorizontalZero()
         {
-            this.ExecuteSearchHorizontalZero_Method();
+            var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.FindZero,
+                ChainLength,
+                actualSpeed,
+                this.horizontalAxis.MaxEmptyAccelerationHA,
+                this.horizontalAxis.MaxEmptyDecelerationHA,
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                    messageData,
+                    $"Execute Find Horizontal Zero Positioning Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning);
+
+            return this.Accepted();
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -36,6 +37,24 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             if (!string.IsNullOrEmpty(message.NotificationMessage))
             {
                 this.NotificationMessage = message.NotificationMessage;
+            }
+            else if (message.Exception != null)
+            {
+                if (message.Exception is SwaggerException<ProblemDetails> swaggerException)
+                {
+                    this.NotificationMessage =
+                        swaggerException.Result.Title +
+                        System.Environment.NewLine +
+                        swaggerException.Result.Detail;
+                }
+                else if (message.Exception is SwaggerException)
+                {
+                    this.NotificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+                }
+                else
+                {
+                    this.NotificationMessage = message.Exception.Message;
+                }
             }
         }
 

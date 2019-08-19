@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        int BayId { get; }
+        int BayNumber { get; }
 
         MissionInfo CurrentMission { get; }
 

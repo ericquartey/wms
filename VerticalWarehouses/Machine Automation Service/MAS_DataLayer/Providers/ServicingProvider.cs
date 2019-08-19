@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ServicingProvider : IServicingProvider
+    internal class ServicingProvider : Interfaces.IServicingProvider
     {
         #region Fields
 
@@ -17,14 +16,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public ServicingProvider(DataLayerContext primaryDataContext)
+        public ServicingProvider(DataLayerContext dataContext)
         {
-            if (primaryDataContext == null)
+            if (dataContext == null)
             {
-                throw new ArgumentNullException(nameof(primaryDataContext));
+                throw new ArgumentNullException(nameof(dataContext));
             }
 
-            this.dataContext = primaryDataContext;
+            this.dataContext = dataContext;
         }
 
         #endregion

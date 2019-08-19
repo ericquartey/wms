@@ -370,14 +370,14 @@
   <data name="Closed" xml:space="preserve">
     <value>Chiuso</value>
   </data>
-  <data name="CompletedCicles" xml:space="preserve">
+  <data name="CompletedCycles" xml:space="preserve">
     <value>Cicli completati:</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
     <value>Posizione attuale [mm]:</value>
   </data>
-  <data name="DelayBetweenCicles" xml:space="preserve">
-    <value>Ritardo tra i cicli [s]:</value>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Ritardo tra cicli [s]:</value>
   </data>
   <data name="Middle" xml:space="preserve">
     <value>Intermedia</value>
@@ -385,7 +385,7 @@
   <data name="Open" xml:space="preserve">
     <value>Aperta</value>
   </data>
-  <data name="RequiredCicles" xml:space="preserve">
+  <data name="RequiredCycles" xml:space="preserve">
     <value>Cicli richiesti:</value>
   </data>
   <data name="Gate1Control" xml:space="preserve">
@@ -883,5 +883,17 @@
   </data>
   <data name="Bay3" xml:space="preserve">
     <value>Baia 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Test Serranda della Baia {0}</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Chiusa</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>A metà via</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Aperta</value>
   </data>
 </root>

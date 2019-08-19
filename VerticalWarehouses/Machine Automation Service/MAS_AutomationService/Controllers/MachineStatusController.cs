@@ -1,46 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using Prism.Events;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public partial class MachineStatusController : ControllerBase
+    public partial class MachineStatusController : BaseAutomationController
     {
-        #region Fields
-
-        private readonly IEventAggregator eventAggregator;
-
-        #endregion
-
         #region Constructors
 
         public MachineStatusController(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("ExecutePowerOff")]
-        public void ExecutePowerOff()
+        [HttpPost("power-off")]
+        public void PowerOff()
         {
-            this.ExecutePowerOff_Method();
+            var powerEnableMessageData = new PowerEnableMessageData(false);
+
+            this.PublishCommand(
+                powerEnableMessageData,
+                "Power Enable Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.PowerEnable);
         }
 
-        [HttpGet("ExecutePowerOn")]
-        public void ExecutePowerOn()
+        [HttpPost("power-on")]
+        public void PowerOn()
         {
-            this.ExecutePowerOn_Method();
+            var powerEnableMessageData = new PowerEnableMessageData(true);
+
+            this.PublishCommand(
+                powerEnableMessageData,
+                "Power Enable Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.PowerEnable);
         }
 
-        [HttpGet("ExecuteResetSecurity")]
-        public void ExecuteResetSecurity()
+        [HttpPost("reset-security")]
+        public void ResetSecurity()
         {
-            this.ExecuteResetSecurity_Method();
+            this.PublishCommand(
+                null,
+                "Reset Security Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.ResetSecurity);
         }
 
         #endregion

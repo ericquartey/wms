@@ -1,7 +1,13 @@
-﻿namespace Ferretto.VW.App.Installation.ViewModels
+﻿using Ferretto.VW.App.Modules.Installation.Models;
+
+namespace Ferretto.VW.App.Installation.ViewModels
 {
     public interface IBaseSensorsViewModel
     {
-        bool[] SensorsStates { get; set; }
+        #region Properties
+
+        Sensors Sensors { get; }
+
+        #endregion
     }
 }

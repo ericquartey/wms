@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         private readonly FieldNotificationMessage errorMessage;
 
-        private readonly IShutterControlMessageData shutterControlMessageData;
+        private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
 
         private bool disposed;
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         public ShutterControlErrorState(
             IStateMachine parentMachine,
-            IShutterControlMessageData shutterControlMessageData,
+            IShutterTestStatusChangedMessageData shutterControlMessageData,
             FieldNotificationMessage errorMessage,
             ILogger logger)
             : base(parentMachine, logger)
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationError:
-                        var notificationMessageData = new ShutterControlMessageData(
+                        var notificationMessageData = new ShutterTestStatusChangedMessageData(
                             this.shutterControlMessageData.BayNumber,
                             this.shutterControlMessageData.Delay,
                             this.shutterControlMessageData.NumberCycles,

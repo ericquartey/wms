@@ -5,7 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkSkin.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

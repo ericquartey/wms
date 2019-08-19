@@ -43,23 +43,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IMachineMissionOperationsService>(
                 new InjectionFactory(c => new MachineMissionOperationsService(urlString)));
 
-            container.RegisterType<IMachineHomingService>(
-                new InjectionFactory(c => new MachineHomingService(urlString)));
+            container.RegisterType<IMachineHomingProcedureService>(
+                new InjectionFactory(c => new MachineHomingProcedureService(urlString)));
 
             container.RegisterType<IMachineElevatorService>(
                 new InjectionFactory(c => new MachineElevatorService(urlString)));
 
-            container.RegisterType<IMachineBeltBurnishingService>(
-                new InjectionFactory(c => new MachineBeltBurnishingService(urlString)));
+            container.RegisterType<IMachineBeltBurnishingProcedureService>(
+                new InjectionFactory(c => new MachineBeltBurnishingProcedureService(urlString)));
 
-            container.RegisterType<IMachineShutterService>(
-                new InjectionFactory(c => new MachineShutterService(urlString)));
+            container.RegisterType<IMachineShuttersService>(
+                new InjectionFactory(c => new MachineShuttersService(urlString)));
 
-            container.RegisterType<IMachineResolutionCalibrationService>(
-                new InjectionFactory(c => new MachineResolutionCalibrationService(urlString)));
+            container.RegisterType<IMachineResolutionCalibrationProcedureService>(
+                new InjectionFactory(c => new MachineResolutionCalibrationProcedureService(urlString)));
 
-            container.RegisterType<IMachineVerticalOffsetService>(
-                new InjectionFactory(c => new MachineVerticalOffsetService(urlString)));
+            container.RegisterType<IMachineVerticalOffsetProcedureService>(
+                new InjectionFactory(c => new MachineVerticalOffsetProcedureService(urlString)));
 
             container.RegisterType<IMachineInstallationStatusService>(
                 new InjectionFactory(c => new MachineInstallationStatusService(urlString)));
@@ -91,9 +91,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IMachineStatisticsService>(
                 new InjectionFactory(c => new MachineStatisticsService(urlString)));
 
-            container.RegisterType<IMachineMoveDrawerService>(
-                new InjectionFactory(c => new MachineMoveDrawerService(urlString)));
-
             return container;
         }
 
@@ -122,27 +119,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlString = serviceUrl.ToString();
 
             container.RegisterInstance<IMachineBaysService>(new MachineBaysService(urlString));
-            container.RegisterInstance<IMachineBeltBurnishingService>(new MachineBeltBurnishingService(urlString));
+            container.RegisterInstance<IMachineBeltBurnishingProcedureService>(new MachineBeltBurnishingProcedureService(urlString));
             container.RegisterInstance<IMachineCarouselService>(new MachineCarouselService(urlString));
             container.RegisterInstance<IMachineCellsService>(new MachineCellsService(urlString));
             container.RegisterInstance<IMachineElevatorService>(new MachineElevatorService(urlString));
             container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
             container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
-            container.RegisterInstance<IMachineHomingService>(new MachineHomingService(urlString));
+            container.RegisterInstance<IMachineHomingProcedureService>(new MachineHomingProcedureService(urlString));
             container.RegisterInstance<IMachineIdentityService>(new MachineIdentityService(urlString));
             container.RegisterInstance<IMachineInstallationStatusService>(new MachineInstallationStatusService(urlString));
             container.RegisterInstance<IMachineLoadingUnitsService>(new MachineLoadingUnitsService(urlString));
             container.RegisterInstance<IMachineMachineStatusService>(new MachineMachineStatusService(urlString));
             container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
             container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
-            container.RegisterInstance<IMachineMoveDrawerService>(new MachineMoveDrawerService(urlString));
-            container.RegisterInstance<IMachineResolutionCalibrationService>(new MachineResolutionCalibrationService(urlString));
+            container.RegisterInstance<IMachineResolutionCalibrationProcedureService>(new MachineResolutionCalibrationProcedureService(urlString));
             container.RegisterInstance<IMachineSensorsService>(new MachineSensorsService(urlString));
-            container.RegisterInstance<IMachineShutterService>(new MachineShutterService(urlString));
+            container.RegisterInstance<IMachineShuttersService>(new MachineShuttersService(urlString));
             container.RegisterInstance<IMachineStatisticsService>(new MachineStatisticsService(urlString));
             container.RegisterInstance<IMachineTestService>(new MachineTestService(urlString));
             container.RegisterInstance<IMachineUsersService>(new MachineUsersService(urlString));
-            container.RegisterInstance<IMachineVerticalOffsetService>(new MachineVerticalOffsetService(urlString));
+            container.RegisterInstance<IMachineVerticalOffsetProcedureService>(new MachineVerticalOffsetProcedureService(urlString));
 
             return container;
         }

@@ -8,20 +8,20 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
     {
         #region Fields
 
-        private readonly DataLayerContext dataLayerContext;
+        private readonly DataLayerContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public MachineStatisticsProvider(DataLayerContext dataLayerContext)
+        public MachineStatisticsProvider(DataLayerContext dataContext)
         {
-            if (dataLayerContext == null)
+            if (dataContext == null)
             {
-                throw new System.ArgumentNullException(nameof(dataLayerContext));
+                throw new System.ArgumentNullException(nameof(dataContext));
             }
 
-            this.dataLayerContext = dataLayerContext;
+            this.dataContext = dataContext;
         }
 
         #endregion
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public MachineStatistics GetMachineStatistics()
         {
-            return this.dataLayerContext.MachineStatistics.FirstOrDefault();
+            return this.dataContext.MachineStatistics.FirstOrDefault();
         }
 
         #endregion

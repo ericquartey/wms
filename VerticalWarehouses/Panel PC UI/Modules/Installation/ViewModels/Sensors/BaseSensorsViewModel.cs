@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -14,9 +16,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsService machineSensorsService;
 
-        private BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
+        private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
-        private bool[] sensorsStates;
+        private readonly Sensors sensors = new Sensors();
 
         private SubscriptionToken subscriptionToken;
 
@@ -34,6 +36,60 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.machineSensorsService = machineSensorsService;
 
+            this.InitializeNavigationMenu();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
+
+        public Sensors Sensors => this.sensors;
+
+        #endregion
+
+        #region Methods
+
+        public override async Task OnNavigatedAsync()
+        {
+            this.IsBackNavigationAllowed = true;
+
+            this.subscriptionToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message => this.sensors.Update(message?.Data?.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
+
+            try
+            {
+                await this.machineSensorsService.ForceNotificationAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex.Message);
+            }
+
+            await base.OnNavigatedAsync();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private void InitializeNavigationMenu()
+        {
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
@@ -68,64 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Others,
                     trackCurrentView: false));
-        }
-
-        #endregion
-
-        #region Properties
-
-        public BindingList<NavigationMenuItem> MenuItems
-        {
-            get => this.menuItems;
-            set => this.SetProperty(ref this.menuItems, value);
-        }
-
-        public bool[] SensorsStates
-        {
-            get => this.sensorsStates;
-            set => this.SetProperty(ref this.sensorsStates, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        public override async Task OnNavigatedAsync()
-        {
-            this.IsBackNavigationAllowed = true;
-
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
-                    message =>
-                        this.SensorsStates = message?.Data?.SensorsStates,
-                    ThreadOption.PublisherThread,
-                    false);
-
-            try
-            {
-                await this.machineSensorsService.ForceNotificationAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex.Message);
-            }
-
-            await base.OnNavigatedAsync();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-
-            base.Dispose(disposing);
         }
 
         #endregion

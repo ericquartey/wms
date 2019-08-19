@@ -21,7 +21,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
 
         <controls:CustomLabelTextBlockControl Margin="420,370,0,0"
@@ -42,7 +42,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcButton  Margin="640,120,0,0"
                 HorizontalAlignment="Left"
@@ -67,14 +67,14 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:PpcTextBox Margin="420,120,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
     </Grid>
 </UserControl>

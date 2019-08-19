@@ -31,15 +31,12 @@
                        Text="{x:Static res:InstallationApp.Cradle}" />
             <StackPanel Grid.Row="1"
                         Orientation="Vertical">
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                           SensorState="{Binding IsZeroPawlSensorActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
-                                           SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                           SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding IsZeroPawlSensorActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+                <controls:PpcSensorControl SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
+                <controls:PpcSensorControl SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
             </StackPanel>
 
         </Grid>

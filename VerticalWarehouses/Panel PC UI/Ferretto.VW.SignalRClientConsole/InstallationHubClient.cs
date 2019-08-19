@@ -34,7 +34,7 @@ namespace Ferretto.VW.SignalRClientConsole
             this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 "ShutterPositioningNotify", this.OnShutterPositioningNotify);
 
-            this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
+            this.hubConnection.On<NotificationMessageUI<ShutterTestStatusChangedMessageData>>(
                 "ShutterControlNotify", this.OnShutterControlNotify);
 
             this.hubConnection.On<NotificationMessageUI<PositioningMessageData>>(
@@ -121,7 +121,7 @@ namespace Ferretto.VW.SignalRClientConsole
         /// Handler for the ShutterControl event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnShutterControlNotify(NotificationMessageUI<ShutterControlMessageData> message)
+        private void OnShutterControlNotify(NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
