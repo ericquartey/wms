@@ -41,32 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
-            //TODO: Check this snippet code about the setting of control word value: there is a mismatch about the actually controlWord set to the Inverter
-            if (this.InverterStatus is IAngInverterStatus angInverter)
-            {
-                var horizontalAxis = (this.InverterStatus.CommonControlWord.Value & 0x8000) > 0;
-                if (horizontalAxis)
-                {
-                    this.InverterStatus.CommonControlWord.Value = 0x8000;
-                }
-                else
-                {
-                    this.InverterStatus.CommonControlWord.Value = 0x0000;
-                }
-            }
-
-            if (this.InverterStatus is IAglInverterStatus aglInverter)
-            {
-                // TODO
-            }
-
-            if (this.InverterStatus is IAcuInverterStatus acuInverter)
-            {
-                // TODO
-            }
-
-            //this.InverterStatus.CommonControlWord.Value = 0x0000;
-
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessageData = new InverterStopFieldMessageData(inverterIndex);
