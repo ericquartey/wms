@@ -499,10 +499,16 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.IsVoltageEnabled = true;
             }
 
-            if ((inverter.ControlWord & 0x0003) > 0)            // Enable Operation
+            inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;
+            if (!inverter.IsQuickStopTrue)                      // Quick stop
             {
-                inverter.IsOperationEnabled = true;
+                inverter.IsOperationEnabled = false;
             }
+            else
+            {
+                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0003) > 0;   // Enable Operation
+            }
+
             inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
         }
 

@@ -431,10 +431,34 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool IsOperationEnabled
         {
             get => (this.statusWord & 0x0004) > 0;
-            set => this.statusWord |= 0x0004;
+            set
+            {
+                if (value)
+                {
+                    this.statusWord |= 0x0004;
+                }
+                else
+                {
+                    this.statusWord &= ~0x0004;
+                }
+            }
         }
 
-        public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
+        public bool IsQuickStopTrue
+        {
+            get => (this.statusWord & 0x0020) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.statusWord |= 0x0020;
+                }
+                else
+                {
+                    this.statusWord &= ~0x0020;
+                }
+            }
+        }
 
         public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
 
