@@ -28,8 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalEngineManualMovementsViewModel(
             IMachineElevatorService machineElevatorService,
-            IMachineHomingProcedureService homingService)
-            : base(homingService)
+            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
+            : base(verticalOriginProcedureService)
         {
             if (machineElevatorService == null)
             {
