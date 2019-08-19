@@ -105,6 +105,11 @@ namespace Ferretto.VW.App.Controls
             this.Dispose(true);
         }
 
+        public override string ToString()
+        {
+            return this.description ?? base.ToString();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposedValue)

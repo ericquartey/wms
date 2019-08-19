@@ -153,4 +153,10 @@
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Errore di comunicazione con i servizi.</value>
   </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Baia {0}</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Numero Seriale: {0}</value>
+  </data>
 </root>

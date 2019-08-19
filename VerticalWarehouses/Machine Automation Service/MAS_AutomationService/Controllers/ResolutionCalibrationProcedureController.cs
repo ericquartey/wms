@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -21,7 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IResolutionCalibrationDataLayer resolutionCalibration;
 
-        private readonly ISetupStatusDataLayer setupStatus;
+        private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
 
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IResolutionCalibrationDataLayer resolutionCalibration,
             IVerticalAxisDataLayer verticalAxisDataLayer,
-            ISetupStatusDataLayer setupStatusDataLayer)
+            ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
             if (dataLayerConfigurationValueManagement == null)
@@ -52,13 +53,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if (setupStatusDataLayer == null)
+            if (setupStatusProvider == null)
             {
-                throw new ArgumentNullException(nameof(setupStatusDataLayer));
+                throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
             this.verticalAxis = verticalAxisDataLayer;
-            this.setupStatus = setupStatusDataLayer;
+            this.setupStatusProvider = setupStatusProvider;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.resolutionCalibration = resolutionCalibration;
         }
@@ -156,7 +157,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("mark-as-completed")]
         public IActionResult MarkAsCompleted()
         {
-            this.setupStatus.VerticalResolutionDone = true;
+            this.setupStatusProvider.CompleteVerticalResolution();
 
             return this.Ok();
         }
@@ -175,14 +176,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(decimal position, ResolutionCalibrationStep resolutionCalibrationStep)
         {
-            if (!this.setupStatus.VerticalHomingDone
-                ||
-                !this.setupStatus.BeltBurnishingDone)
+            var setupStatus = this.setupStatusProvider.Get();
+            if (!setupStatus.VerticalResolution.CanBePerformed)
             {
                 return this.UnprocessableEntity(
                     new ProblemDetails
                     {
-                        Detail = "Resolution calibration procedure cannot be started if the vertical homing and belt burnishing procedures are not completed."
+                        Detail = "Resolution calibration procedure cannot be started if the 'vertical origin calibration' and 'belt burnishing' procedures are not completed."
                     });
             }
 

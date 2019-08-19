@@ -7,7 +7,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

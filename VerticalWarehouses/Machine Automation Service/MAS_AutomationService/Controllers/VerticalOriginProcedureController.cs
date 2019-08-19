@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomingProcedureController : BaseAutomationController
+    public class VerticalOriginProcedureController : BaseAutomationController
     {
         #region Fields
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public HomingProcedureController(
+        public VerticalOriginProcedureController(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
@@ -93,10 +93,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Stop()
         {
             this.PublishCommand(
-                       null,
-                       "Stop Command",
-                       MessageActor.FiniteStateMachines,
-                       MessageType.Stop);
+                null,
+                "Stop Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Stop);
 
             return this.Accepted();
         }

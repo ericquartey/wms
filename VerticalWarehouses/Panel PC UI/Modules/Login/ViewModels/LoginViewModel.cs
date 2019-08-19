@@ -23,7 +23,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #region Constructors
 
         public LoginViewModel(
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IBayManager bayManager)
             : base(PresentationMode.Login)
         {
             if (authenticationService == null)
@@ -31,7 +32,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(authenticationService));
             }
 
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
             this.authenticationService = authenticationService;
+            this.BayNumber = bayManager.BayNumber;
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -73,6 +80,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
             }
         }
+
+        public int BayNumber { get; }
 
         private MachineIdentity machineIdentity;
 

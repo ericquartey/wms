@@ -11,6 +11,8 @@ using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
+using Ferretto.VW.Utils.Extensions;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -18,7 +20,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineInstallationStatusService installationStatusService;
+        private readonly int bayNumber;
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
@@ -26,15 +28,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
 
+        private readonly IMachineSetupStatusService setupStatusService;
+
         #endregion
 
         #region Constructors
 
-        public InstallatorMenuViewModel(IMachineInstallationStatusService installationStatusService)
+        public InstallatorMenuViewModel(
+            IMachineSetupStatusService setupStatusService,
+            IBayManager bayManager)
             : base(PresentationMode.Installator)
         {
+            if (setupStatusService == null)
+            {
+                throw new ArgumentNullException(nameof(setupStatusService));
+            }
+
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            this.setupStatusService = setupStatusService;
+            this.bayNumber = bayManager.BayNumber;
+
             this.InitializeData();
-            this.installationStatusService = installationStatusService;
         }
 
         #endregion
@@ -57,27 +75,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = false;
 
-            try
-            {
-                var installationStatus = await this.installationStatusService.GetAsync();
-                var checkHomingDone = installationStatus.FirstOrDefault();
+            await this.UpdateMenuItemsStatus();
+        }
 
-                this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, checkHomingDone);
-            }
-            catch (Exception ex)
-            {
-                this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, false);
-                this.ShowNotification(ex);
-            }
+        public override async void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            await this.UpdateMenuItemsStatus();
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
         {
             switch (menuType)
             {
-                case InstallatorMenuTypes.None:
-                    break;
-
                 case InstallatorMenuTypes.Installator:
                     this.installatorItems.Add(menuItem);
                     break;
@@ -89,18 +100,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case InstallatorMenuTypes.Others:
                     this.otherItems.Add(menuItem);
                     break;
-
-                default:
-                    break;
             }
         }
 
-        private void EnableMenuItem(IEnumerable<MainNavigationMenuItem> menuItems, InstallatorMenus menuItemType, bool isEnabled)
+        private void EnableMenuItem(IEnumerable<MainNavigationMenuItem> menuItems, InstallationMenus menuItemType, bool isEnabled)
         {
             if (menuItems.FirstOrDefault(i => i.MenuItemType == menuItemType) is MainNavigationMenuItem menuItem)
             {
                 menuItem.IsEnabled = isEnabled;
             }
+        }
+
+        private SetupStepStatus GetItemStatus(MainNavigationMenuItem menuItem, SetupStatusCapabilities setupStatus)
+        {
+            SetupStepStatus setupStepStatus = null;
+
+            var dictionary = setupStatus.ToDictionary();
+
+            var propertyName = menuItem.MenuItemType.ToString();
+
+            if (dictionary.ContainsKey(propertyName))
+            {
+                setupStepStatus = dictionary[propertyName] as SetupStepStatus;
+            }
+            else
+            {
+                var bayName = $"Bay{this.bayNumber}";
+                if (dictionary.ContainsKey(bayName))
+                {
+                    var baySetupStatus = dictionary[bayName] as BaySetupStatus;
+                    var bayDictionary = baySetupStatus.ToDictionary();
+
+                    var bayPropertyName = propertyName.Replace("Bay", "");
+
+                    if (bayDictionary.ContainsKey(bayPropertyName))
+                    {
+                        setupStepStatus = bayDictionary[bayPropertyName] as SetupStepStatus;
+                    }
+                }
+            }
+
+            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = false };
         }
 
         private void InitializeData()
@@ -109,11 +149,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.SensorsItems.Clear();
             this.OtherItems.Clear();
 
-            var values = Enum.GetValues(typeof(InstallatorMenus));
-            foreach (InstallatorMenus enumValue in values)
+            var values = Enum.GetValues(typeof(InstallationMenus));
+            foreach (InstallationMenus enumValue in values)
             {
-                var viewAttribute = enumValue.GetAttributeOfType<InstallatorMenus, ViewAttribute>();
-                var dispAttribute = enumValue.GetAttributeOfType<InstallatorMenus, DisplayAttribute>();
+                var viewAttribute = enumValue.GetAttributeOfType<InstallationMenus, ViewAttribute>();
+                var dispAttribute = enumValue.GetAttributeOfType<InstallationMenus, DisplayAttribute>();
 
                 if (viewAttribute != null
                     &&
@@ -128,6 +168,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.InstallatorItems));
             this.RaisePropertyChanged(nameof(this.SensorsItems));
             this.RaisePropertyChanged(nameof(this.OtherItems));
+        }
+
+        private async Task UpdateMenuItemsStatus()
+        {
+            try
+            {
+                var setupStatus = await this.setupStatusService.GetAsync();
+
+                foreach (var menuItem in this.installatorItems)
+                {
+                    var itemStatus = this.GetItemStatus(menuItem, setupStatus);
+                    menuItem.IsEnabled = itemStatus.CanBePerformed;
+                    menuItem.IsActive = itemStatus.IsCompleted;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

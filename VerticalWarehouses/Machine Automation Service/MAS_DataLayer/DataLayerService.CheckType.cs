@@ -438,11 +438,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         actualParameterType = this.CheckConfigurationValueType((SetupNetwork)parameter);
                         break;
                     }
-                case ConfigurationCategory.SetupStatus:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((SetupStatus)parameter);
-                        break;
-                    }
                 case ConfigurationCategory.VerticalAxis:
                     {
                         actualParameterType = this.CheckConfigurationValueType((VerticalAxis)parameter);

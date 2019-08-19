@@ -3,6 +3,7 @@ using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IOffsetCalibrationDataLayer offsetCalibration;
 
+        private readonly ISetupStatusProvider setupStatusProvider;
+
         private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
@@ -35,7 +38,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationValueManagmentDataLayer,
             ICellManagmentDataLayer dataLayerCellsManagement,
             IVerticalAxisDataLayer verticalAxisDataLayer,
-            IOffsetCalibrationDataLayer offsetCalibrationDataLayer)
+            IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
+            ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
             if (configurationValueManagmentDataLayer == null)
@@ -58,10 +62,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
             }
 
+            if (setupStatusProvider == null)
+            {
+                throw new ArgumentNullException(nameof(setupStatusProvider));
+            }
+
             this.dataLayerConfigurationValueManagement = configurationValueManagmentDataLayer;
             this.dataLayerCellsManagement = dataLayerCellsManagement;
             this.verticalAxis = verticalAxisDataLayer;
             this.offsetCalibration = offsetCalibrationDataLayer;
+            this.setupStatusProvider = setupStatusProvider;
         }
 
         #endregion
@@ -246,11 +256,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("mark-as-completed")]
         public IActionResult MarkAsCompleted()
         {
-            this.dataLayerConfigurationValueManagement
-                .SetBoolConfigurationValue(
-                    (long)SetupStatus.VerticalOffsetDone,
-                    ConfigurationCategory.SetupStatus,
-                    true);
+            this.setupStatusProvider.CompleteVerticalOffset();
 
             return this.Ok();
         }

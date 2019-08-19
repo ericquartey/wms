@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -29,8 +28,6 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
-
-        private readonly SetupStatusVolatile setupStatusVolatile = new SetupStatusVolatile();
 
         #endregion
 
@@ -191,18 +188,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Publish(message);
 
             this.Logger.LogDebug("Data layer service initialized.");
-        }
-
-        private void EnsureMachinestatusInitialization()
-        {
-            try
-            {
-                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus);
-            }
-            catch (Exception)
-            {
-                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus, false);
-            }
         }
 
         private void SendErrorMessage(IMessageData data)

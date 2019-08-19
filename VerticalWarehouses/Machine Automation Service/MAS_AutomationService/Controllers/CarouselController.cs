@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILogger logger;
 
-        private readonly ISetupStatusDataLayer setupStatus;
+        private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
 
@@ -36,7 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            ISetupStatusDataLayer setupStatusDataLayer,
+            ISetupStatusProvider setupStatusProvider,
             ILogger<CarouselController> logger)
             : base(eventAggregator)
         {
@@ -60,9 +61,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (setupStatusDataLayer == null)
+            if (setupStatusProvider == null)
             {
-                throw new System.ArgumentNullException(nameof(setupStatusDataLayer));
+                throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
             if (logger == null)
@@ -74,7 +75,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
-            this.setupStatus = setupStatusDataLayer;
+            this.setupStatusProvider = setupStatusProvider;
             this.logger = logger;
         }
 

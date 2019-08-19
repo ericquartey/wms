@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services

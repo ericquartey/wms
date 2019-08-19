@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
+        private readonly ISetupStatusProvider setupStatusProvider;
+
         private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
@@ -28,6 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public BeltBurnishingProcedureController(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            ISetupStatusProvider setupStatusProvider,
             IVerticalAxisDataLayer verticalAxisDataLayer)
             : base(eventAggregator)
         {
@@ -36,12 +40,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
+            if (setupStatusProvider == null)
+            {
+                throw new ArgumentNullException(nameof(setupStatusProvider));
+            }
+
             if (verticalAxisDataLayer == null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.setupStatusProvider = setupStatusProvider;
             this.verticalAxis = verticalAxisDataLayer;
         }
 
@@ -121,11 +131,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("mark-as-completed")]
         public IActionResult MarkAsCompleted()
         {
-            this.dataLayerConfigurationValueManagement
-                .SetBoolConfigurationValue(
-                (long)SetupStatus.BeltBurnishingDone,
-                ConfigurationCategory.SetupStatus,
-                true);
+            this.setupStatusProvider.CompleteBeltBurnishing();
 
             return this.Ok();
         }

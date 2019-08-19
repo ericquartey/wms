@@ -1,12 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Unity;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation

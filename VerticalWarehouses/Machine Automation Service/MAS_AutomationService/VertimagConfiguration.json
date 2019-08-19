@@ -86,33 +86,6 @@
     "PPC3SlaveIPAddress": "198.168.0.3"
   },
 
-  //TEMP To remove but temporary commented, until the test won't be ok
-  //"SetupStatus": {
-  //  "VerticalHomingDone": false,
-  //  "HorizontalHomingDone": false,
-  //  "BeltBurnishingDone": false,
-  //  "VerticalResolutionDone": false,
-  //  "VerticalOffsetDone": false,
-  //  "CellsControlDone": false,
-  //  "PanelsControlDone": false,
-  //  "Shape1Done": false,
-  //  "Shape2Done": false,
-  //  "Shape3Done": false,
-  //  "WeightMeasurementDone": false,
-  //  "Shutter1Done": false,
-  //  "Shutter2Done": false,
-  //  "Shutter3Done": false,
-  //  "Bay1ControlDone": false,
-  //  "Bay2ControlDone": false,
-  //  "Bay3ControlDone": false,
-  //  "FirstDrawerLoadDone": false,
-  //  "DrawersLoadedDone": false,
-  //  "Laser1Done": false,
-  //  "Laser2Done": false,
-  //  "Laser3Done": false,
-  //  "MachineDone": false
-  //},
-
   "VerticalAxis": {
     "MaxEmptySpeed": 770.0,
     "MaxEmptyAcceleration": 1000.0,

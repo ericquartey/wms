@@ -32,7 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
             services.AddSingleton<IDataLayerService, DataLayerService>();
 
-            services.AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
+            services
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IBayPositionControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IBeltBurnishingDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ICellControlDataLayer)
@@ -46,7 +47,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupNetworkDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupStatusDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
@@ -56,16 +56,20 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVertimagConfigurationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionConversionDataLayer);
 
-            services.AddTransient<IServicingProvider, ServicingProvider>()
+            services
+                .AddTransient<IServicingProvider, ServicingProvider>()
                 .AddTransient<IBaysProvider, BaysProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()
                 .AddTransient<IErrorsProvider, ErrorsProvider>()
                 .AddTransient<IMachineStatisticsProvider, MachineStatisticsProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>()
+                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>();
+
+            services.AddSingleton<IVerticalOriginSetupStatusProvider, VerticalOriginSetupStatusProvider>();
 
             return services;
         }

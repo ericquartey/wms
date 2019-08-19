@@ -27,11 +27,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            if (value == (long)SetupStatus.VerticalHomingDone)
-            {
-                return this.setupStatusVolatile.VerticalHomingDone;
-            }
-
             bool returnBoolValue;
 
             var configurationValue = this.RetrieveConfigurationValue(value, category);
@@ -46,17 +41,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                if (category == ConfigurationCategory.SetupStatus)
-                {
-                    returnBoolValue = false;
-                }
-                else
-                {
-                    this.Logger.LogCritical(
-                        $"No value is available in database for '{category}.{value}'.");
+                this.Logger.LogCritical(
+                    $"No value is available in database for '{category}.{value}'.");
 
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
-                }
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnBoolValue;
@@ -211,16 +199,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.Logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
-            }
-
-            if (configurationValueEnum == (long)SetupStatus.VerticalHomingDone)
-            {
-                if (this.setupStatusVolatile != null)
-                {
-                    this.setupStatusVolatile.VerticalHomingDone = value;
-                }
-
-                return;
             }
 
             var newConfigurationValue = new ConfigurationValue

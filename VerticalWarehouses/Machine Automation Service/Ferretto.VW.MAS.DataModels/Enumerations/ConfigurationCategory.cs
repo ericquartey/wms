@@ -8,8 +8,6 @@
 
         SetupNetwork = 2L,
 
-        SetupStatus = 3L,
-
         VerticalAxis = 4L,
 
         HorizontalAxis = 5L,

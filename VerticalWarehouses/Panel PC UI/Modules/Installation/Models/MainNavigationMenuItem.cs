@@ -7,14 +7,14 @@ namespace Ferretto.VW.App.Installation.Models
     {
         #region Fields
 
-        private InstallatorMenus menuItemType;
+        private InstallationMenus menuItemType;
 
         #endregion
 
         #region Constructors
 
         public MainNavigationMenuItem(
-            InstallatorMenus menuItemType,
+            InstallationMenus menuItemType,
             string viewModelName,
             string moduleName,
             string description,
@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Properties
 
-        public InstallatorMenus MenuItemType
+        public InstallationMenus MenuItemType
         {
             get => this.menuItemType;
             set => this.SetProperty(ref this.menuItemType, value);

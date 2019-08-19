@@ -8,9 +8,9 @@
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
-        public const string VERTICALAXISCALIBRATION = "VerticalAxisCalibrationViewModel";
-
         public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
+
+        public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         #endregion
 
