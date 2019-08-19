@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             switch (message.Type)
             {
                 case FieldMessageType.InverterStop:
-                case FieldMessageType.InverterPowerOff:
+                    //case FieldMessageType.InverterPowerOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationEnd:
