@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using NLog;
@@ -47,7 +48,7 @@ namespace Ferretto.VW.Simulator.Services
         public MachineService()
         {
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0, AxisPosition = 300 });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
             this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
@@ -330,22 +331,22 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.PositionAccelerationParam:
-                            inverter.TargetAcceleration = (int)uintPayload;
+                            inverter.TargetAcceleration[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionDecelerationParam:
-                            inverter.TargetAcceleration = (int)uintPayload;
+                            inverter.TargetDeceleration[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionTargetPositionParam:
-                            inverter.TargetPosition = this.Impulses2millimeters((int)uintPayload);
+                            inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionTargetSpeedParam:
-                            inverter.TargetSpeed = (int)uintPayload;
+                            inverter.TargetSpeed[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -502,6 +503,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsOperationEnabled = true;
             }
+            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
