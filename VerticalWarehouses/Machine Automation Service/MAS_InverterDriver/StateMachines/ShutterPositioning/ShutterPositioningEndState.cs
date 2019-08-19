@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -55,11 +56,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             if (this.stopRequested)
             {
                 this.InverterStatus.CommonControlWord.EnableOperation = false;
+                this.InverterStatus.CommonControlWord.EnableVoltage = false;
             }
             var endNotification = new FieldNotificationMessage(
                 this.shutterPositionData,
                 "Shutter Positioning complete",
-                FieldMessageActor.InverterDriver, // Any
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
                 (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);

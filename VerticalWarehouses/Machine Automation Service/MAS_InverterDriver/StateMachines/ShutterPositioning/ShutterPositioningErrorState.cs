@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -48,6 +49,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.EnableOperation = false;
+            this.InverterStatus.CommonControlWord.EnableVoltage = false;
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
             var errorNotification = new FieldNotificationMessage(
                 this.shutterPositionData,

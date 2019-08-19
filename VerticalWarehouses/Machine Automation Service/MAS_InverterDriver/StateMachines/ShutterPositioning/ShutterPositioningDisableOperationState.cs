@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
 
-            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (this.InverterStatus is AglInverterStatus currentStatus)
             {

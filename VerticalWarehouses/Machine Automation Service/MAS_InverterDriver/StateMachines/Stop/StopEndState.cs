@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Stop End",
-                FieldMessageActor.InverterDriver,
+                FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
                 MessageStatus.OperationEnd);

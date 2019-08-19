@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                 this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
             {
