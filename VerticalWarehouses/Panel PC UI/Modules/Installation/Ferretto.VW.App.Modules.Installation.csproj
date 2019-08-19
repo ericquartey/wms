@@ -61,6 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Elevator\VerticalOriginCalibrationView.xaml.cs">
+      <DependentUpon>VerticalOriginCalibrationView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ManualMovements\CarouselManualMovementsView.xaml.cs">
       <DependentUpon>CarouselManualMovementsView.xaml</DependentUpon>
     </Compile>
@@ -106,7 +109,7 @@
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Views\Elevator\VerticalAxisCalibrationView.xaml">
+    <None Update="Views\Elevator\VerticalOriginCalibrationView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\Elevator\VerticalOffsetCalibrationView.xaml">

@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
-        private readonly ISetupStatusDataLayer setupStatus;
+        private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
 
@@ -37,7 +38,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public MoveDrawerStateMachine(
             IEventAggregator eventAggregator,
-            ISetupStatusDataLayer setupStatus,
+            ISetupStatusProvider setupStatusProvider,
             IMachineSensorsStatus machineSensorsStatus,
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
@@ -47,7 +48,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.setupStatus = setupStatus;
+            this.setupStatusProvider = setupStatusProvider;
             this.logger = logger;
             this.machineSensorsStatus = machineSensorsStatus;
             this.generalInfoDataLayer = generalInfoDataLayer;
@@ -112,12 +113,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         /// <inheritdoc/>
         public override void Start()
         {
-            //TODO get homing status from DL. Wait until DL synchronous refactoring
-
-            // NOTE: If you want to use it in Bender, then comment the line related to che check
-
-            //TEMP Check if homing has been done: if not, send a message of error
-            var homingDone = this.setupStatus.VerticalHomingDone;
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
                 var notificationMessage = new NotificationMessage(

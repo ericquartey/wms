@@ -5,7 +5,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {

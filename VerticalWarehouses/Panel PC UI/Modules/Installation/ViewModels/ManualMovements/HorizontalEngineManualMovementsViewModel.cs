@@ -27,16 +27,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public HorizontalAxisManualMovementsViewModel(
-            IMachineElevatorService machineElevatorService,
-            IMachineHomingProcedureService homingService)
-            : base(homingService)
+            IMachineElevatorService elevatorService,
+            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
+            : base(verticalOriginProcedureService)
         {
-            if (machineElevatorService == null)
+            if (elevatorService == null)
             {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
+                throw new System.ArgumentNullException(nameof(elevatorService));
             }
 
-            this.MachineElevatorService = machineElevatorService;
+            this.MachineElevatorService = elevatorService;
 
             this.RefreshCanExecuteCommands();
         }

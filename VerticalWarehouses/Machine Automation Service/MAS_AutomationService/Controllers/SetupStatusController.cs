@@ -1,0 +1,44 @@
+﻿using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
+using Microsoft.AspNetCore.Mvc;
+
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.AutomationService.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SetupStatusController : ControllerBase
+    {
+        #region Fields
+
+        private readonly ISetupStatusProvider setupStatusProvider;
+
+        #endregion
+
+        #region Constructors
+
+        public SetupStatusController(ISetupStatusProvider setupStatusProvider)
+        {
+            if (setupStatusProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(setupStatusProvider));
+            }
+
+            this.setupStatusProvider = setupStatusProvider;
+        }
+
+        #endregion
+
+        #region Methods
+
+        [HttpGet]
+        public ActionResult<SetupStatusCapabilities> Get()
+        {
+            var status = this.setupStatusProvider.Get();
+
+            return this.Ok(status);
+        }
+
+        #endregion
+    }
+}

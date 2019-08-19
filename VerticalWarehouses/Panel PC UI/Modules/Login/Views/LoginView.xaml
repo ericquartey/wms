@@ -19,10 +19,10 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="50"  />
+            <RowDefinition Height="50"  />
+            <RowDefinition Height="50"  />
+            <RowDefinition  />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -38,21 +38,21 @@
 
         <TextBlock Grid.Row="1"
                    HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding MachineIdentity.ModelName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding MachineIdentity.ModelName}" />
 
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal">
+        <TextBlock Grid.Row="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                   Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
 
-            <TextBlock VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="Serial Number: " />
-
-            <TextBlock VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
+        <TextBlock Grid.Row="3"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                   Text="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
         <StackPanel Name="LoginForm"
                     Grid.Row="4">
@@ -61,15 +61,13 @@
                               Margin="0,10"
                               HorizontalAlignment="Left"
                               InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              LabelText="{x:Static res:VWApp.UserLogin_UserName}"
-                               />
+                              LabelText="{x:Static res:VWApp.UserLogin_UserName}" />
 
             <ctrls:PpcTextBox Width="200"
                               Margin="0,10"
                               HorizontalAlignment="Left"
                               InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                               />
+                              LabelText="{x:Static res:VWApp.UserLogin_Password}" />
 
             <ctrls:PpcButton Margin="0,20"
                              HorizontalAlignment="Left"

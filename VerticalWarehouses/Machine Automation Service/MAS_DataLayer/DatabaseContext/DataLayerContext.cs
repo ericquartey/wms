@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 
+        public DbSet<SetupStatus> SetupStatus { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         #endregion
@@ -104,6 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            modelBuilder.ApplyConfiguration(new SetupStatusConfiguration());
         }
 
         #endregion

@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class VerticalAxisCalibrationView : View
+    public partial class VerticalOriginCalibrationView : View
     {
         #region Constructors
 
-        public VerticalAxisCalibrationView()
+        public VerticalOriginCalibrationView()
         {
             this.InitializeComponent();
         }

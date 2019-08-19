@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Ferretto.VW.App.Services.Interfaces;
+﻿using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -9,7 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Prism.Events;
 using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
-using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.MessageNotifiedEventArgs;
+using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
 
 namespace Ferretto.VW.App.Services
 {
@@ -215,7 +214,6 @@ namespace Ferretto.VW.App.Services
                 case NotificationMessageUI<MachineStateActiveMessageData> msa:
                     this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Publish(msa);
                     break;
-
             }
         }
 

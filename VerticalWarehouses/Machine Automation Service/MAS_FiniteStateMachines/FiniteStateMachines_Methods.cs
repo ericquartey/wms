@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 this.currentStateMachine = new MoveDrawerStateMachine(
                     this.eventAggregator,
-                    this.setupStatus,
+                    this.setupStatusProvider,
                     this.machineSensorsStatus,
                     this.generalInfoDataLayer,
                     this.verticalAxis,

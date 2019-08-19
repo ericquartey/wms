@@ -58,16 +58,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                                 break;
 
-                            case ConfigurationCategory.SetupStatus:
-                                if (!Enum.TryParse(jsonData.Key, false, out SetupStatus setupStatusData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
-
-                                this.SaveConfigurationData(jsonElementCategory, (long)setupStatusData, jsonData.Value);
-
-                                break;
-
                             case ConfigurationCategory.VerticalAxis:
                                 if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
                                 {

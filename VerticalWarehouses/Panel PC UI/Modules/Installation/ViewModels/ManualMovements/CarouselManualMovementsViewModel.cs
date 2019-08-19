@@ -30,8 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel(
             IMachineCarouselService machineCarouselService,
-            IMachineHomingProcedureService homingService)
-            : base(homingService)
+            IMachineVerticalOriginProcedureService verticalOriginService)
+            : base(verticalOriginService)
         {
             this.machineCarouselService = machineCarouselService;
 

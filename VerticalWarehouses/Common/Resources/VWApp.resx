@@ -120,6 +120,9 @@
   <data name="AutomaticMode" xml:space="preserve">
     <value>Automatic</value>
   </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay {0}</value>
+  </data>
   <data name="ErrorCode" xml:space="preserve">
     <value>Error Code</value>
   </data>
@@ -141,6 +144,9 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
     <comment>Button - Label text</comment>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number: {0}</value>
   </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Switch Off</value>

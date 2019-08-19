@@ -1,4 +1,4 @@
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class MissionOperationAvailableEventArgs : System.EventArgs
     {

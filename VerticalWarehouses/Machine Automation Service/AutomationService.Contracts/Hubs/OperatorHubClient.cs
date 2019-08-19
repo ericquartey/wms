@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {

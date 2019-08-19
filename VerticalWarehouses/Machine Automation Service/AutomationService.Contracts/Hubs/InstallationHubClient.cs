@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -75,17 +74,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<MachineStateActiveMessageData>>(
                 "MachineStateActiveNotify", this.OnMachineStateActiveNotify);
-
-        }
-
-        private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         /// <summary>
@@ -117,10 +105,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         /// <summary>
+        /// Handler for the InverterStatusWord event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnInverterStatusWordNotify(NotificationMessageUI<InverterStatusWordMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
         /// Handler for the InverterStop event.
         /// </summary>
         /// <param name="message"></param>
         private void OnInverterStopNotify(NotificationMessageUI<InverterStopMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -135,19 +142,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         /// <summary>
-        /// Handler for the ResetSecurity event.
+        /// Handler for the PowerEnable event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnResetSecurityNotify(NotificationMessageUI<ResetSecurityMessageData> message)
+        private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         /// <summary>
-        /// Handler for the PowerEnable event.
+        /// Handler for the ResetSecurity event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
+        private void OnResetSecurityNotify(NotificationMessageUI<ResetSecurityMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -193,15 +200,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        /// <summary>
-        /// Handler for the InverterStatusWord event.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnInverterStatusWordNotify(NotificationMessageUI<InverterStatusWordMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

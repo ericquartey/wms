@@ -16,11 +16,21 @@
                                 Height="70"
                                 Margin="13,6,13,6"
                                 Command="{Binding NavigateCommand}">
-                <TextBlock FontSize="{DynamicResource PpcButtonFontSize}"
+                <TextBlock Margin="5,0,5,0"
+                           FontSize="{DynamicResource PpcButtonFontSize}"
                            Foreground="{DynamicResource PpcButtonForeground}"
                            Text="{Binding Description}"
-                               TextAlignment="Center"
-                               TextWrapping="Wrap" />
+                           TextAlignment="Center"
+                           TextWrapping="Wrap" />
+                <controls:PpcButton.Style>
+                    <Style TargetType="controls:PpcButton">
+                        <Style.Triggers>
+                            <Trigger Property="IsActive" Value="True">
+                                <Setter Property="BorderThickness" Value="0,0,0,10" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:PpcButton.Style>
             </controls:PpcButton>
         </DataTemplate>
     </ItemsControl.ItemTemplate>

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {

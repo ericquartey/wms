@@ -14,9 +14,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineHomingProcedureService homingService;
-
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
+
+        private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
         private decimal? currentPosition;
 
@@ -28,15 +28,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseManualMovementsViewModel(IMachineHomingProcedureService homingService)
+        protected BaseManualMovementsViewModel(IMachineVerticalOriginProcedureService verticalOriginProcedureService)
             : base(Services.PresentationMode.Installator)
         {
-            if (homingService == null)
+            if (verticalOriginProcedureService == null)
             {
-                throw new System.ArgumentNullException(nameof(homingService));
+                throw new System.ArgumentNullException(nameof(verticalOriginProcedureService));
             }
 
-            this.homingService = homingService;
+            this.verticalOriginProcedureService = verticalOriginProcedureService;
 
             this.InitializeNavigationMenu();
         }
@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.homingService.NotifyCurrentAxisPositionAsync();
+                await this.verticalOriginProcedureService.NotifyCurrentAxisPositionAsync();
             }
             catch (System.Exception ex)
             {

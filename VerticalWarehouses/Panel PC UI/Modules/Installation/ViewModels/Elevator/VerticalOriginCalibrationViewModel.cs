@@ -7,17 +7,17 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalAxisCalibrationViewModel : BaseMainViewModel
+    public class VerticalOriginCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IMachineHomingProcedureService homingProcedureService;
+        private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
         private decimal? currentPosition;
 
@@ -53,16 +53,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public VerticalAxisCalibrationViewModel(
-            IMachineHomingProcedureService homingProcedureService)
+        public VerticalOriginCalibrationViewModel(
+            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
             : base(Services.PresentationMode.Installator)
         {
-            if (homingProcedureService == null)
+            if (verticalOriginProcedureService == null)
             {
-                throw new ArgumentNullException(nameof(homingProcedureService));
+                throw new ArgumentNullException(nameof(verticalOriginProcedureService));
             }
 
-            this.homingProcedureService = homingProcedureService;
+            this.verticalOriginProcedureService = verticalOriginProcedureService;
         }
 
         #endregion
@@ -177,14 +177,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.homingProcedureService.GetProcedureParametersAsync();
+                var procedureParameters = await this.verticalOriginProcedureService.GetProcedureParametersAsync();
 
                 this.UpperBound = procedureParameters.UpperBound;
                 this.LowerBound = procedureParameters.LowerBound;
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                await this.homingProcedureService.NotifyCurrentAxisPositionAsync();
+                await this.verticalOriginProcedureService.NotifyCurrentAxisPositionAsync();
             }
             catch (Exception ex)
             {
@@ -213,7 +213,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
-                await this.homingProcedureService.StartAsync();
+                await this.verticalOriginProcedureService.StartAsync();
             }
             catch (Exception ex)
             {
@@ -229,7 +229,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.homingProcedureService.StopAsync();
+                await this.verticalOriginProcedureService.StopAsync();
 
                 this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             }
