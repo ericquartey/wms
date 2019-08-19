@@ -69,8 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
                 this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
             this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
 
             return true;

@@ -98,8 +98,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
                 this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
             }
 
-            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
             if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
             {
                 this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));

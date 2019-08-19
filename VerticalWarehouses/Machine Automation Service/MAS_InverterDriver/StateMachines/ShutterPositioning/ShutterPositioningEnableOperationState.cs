@@ -84,8 +84,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             if (message.SystemIndex == this.InverterStatus.SystemIndex)
             {
-                //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
                 if (this.InverterStatus is AglInverterStatus currentStatus)
                 {
                     if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&

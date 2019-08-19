@@ -89,8 +89,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
                 this.ParentStateMachine.ChangeState(new DisableOperationErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
             if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
                 this.ParentStateMachine.ChangeState(new DisableOperationEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));

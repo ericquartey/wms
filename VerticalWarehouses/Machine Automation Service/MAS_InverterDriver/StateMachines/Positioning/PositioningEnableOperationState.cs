@@ -98,8 +98,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
             if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
                 this.ParentStateMachine.ChangeState(new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));

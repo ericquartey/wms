@@ -91,8 +91,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
             }
 
-            //this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
             if (this.InverterStatus is AngInverterStatus currentStatus)
             {
                 if (this.axisToCalibrate == Axis.Horizontal)
