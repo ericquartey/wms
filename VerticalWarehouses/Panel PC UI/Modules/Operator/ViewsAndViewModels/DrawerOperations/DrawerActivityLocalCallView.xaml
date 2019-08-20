@@ -17,7 +17,7 @@
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.DrawerActivityLocalCallHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="200,280,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -48,7 +48,7 @@
             SelectedItem="{Binding SelectedCompartment, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             ShowBackground="True"
             ShowRuler="False" />
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="199,420,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -56,7 +56,7 @@
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityLocalCallHeight}" />
         <!--ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="540,350,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -64,21 +64,21 @@
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityLocalCallGrossWeight}" />
         <!--ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="540,420,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             ContentText="325"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityLocalCallActualWeight}" />
         <!--ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="540,280,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             ContentText="500"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityLocalCallMaxCapacity}" />
         <!--ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
             Margin="200,350,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"

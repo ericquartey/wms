@@ -24,14 +24,14 @@
                                                     />
 
 
-        <controls:CustomLabelTextBlockControl Margin="420,370,0,0"
+        <controls:PpcLabeledText Margin="420,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="12"
                                               LabelText="{x:Static res:InstallationApp.DLUTestCompletedCycles}" />
         <!--  ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
-        <controls:CustomLabelTextBlockControl Margin="200,370,0,0"
+        <controls:PpcLabeledText Margin="200,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

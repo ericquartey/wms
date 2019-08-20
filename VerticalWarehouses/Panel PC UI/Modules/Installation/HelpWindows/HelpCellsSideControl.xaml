@@ -45,7 +45,7 @@
 
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                  Width="180"
                                                  ContentText="Anteriore"
                                                  LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}"  />

@@ -1,21 +1,19 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BeltBurnishingViewModel : BaseMainViewModel
+    public class BeltBurnishingViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -23,27 +21,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private string completedCycles;
+        private int? completedCycles;
 
-        private string currentPosition;
+        private decimal? currentPosition;
 
-        private string cycleQuantity;
+        private decimal? inputLowerBound;
 
-        private bool isStartButtonActive = true;
+        private int? inputRequiredCycles;
 
-        private bool isStopButtonActive;
+        private decimal? inputUpperBound;
 
-        private string lowerBound;
+        private bool isExecutingProcedure;
+
+        private bool isWaitingForResponse;
 
         private SubscriptionToken receivedActionUpdateToken;
 
-        private string requiredCycles;
+        private DelegateCommand startCommand;
 
-        private ICommand startButtonCommand;
-
-        private ICommand stopButtonCommand;
-
-        private string upperBound;
+        private DelegateCommand stopCommand;
 
         #endregion
 
@@ -66,77 +62,166 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.eventAggregator = eventAggregator;
             this.beltBurnishingService = beltBurnishingService;
-
-            this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
-
-        #endregion
-
-        #region Delegates
-
-        public delegate void CheckCorrectnessOnPropertyChangedEventHandler();
-
-        #endregion
-
-        #region Events
-
-        public event CheckCorrectnessOnPropertyChangedEventHandler InputsCorrectionControlEventHandler;
 
         #endregion
 
         #region Properties
 
-        public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
-
-        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
-
-        public string CycleQuantity
+        public int? CompletedCycles
         {
-            get => this.cycleQuantity;
+            get => this.completedCycles;
+            set => this.SetProperty(ref this.completedCycles, value);
+        }
+
+        public decimal? CurrentPosition
+        {
+            get => this.currentPosition;
+            set => this.SetProperty(ref this.currentPosition, value);
+        }
+
+        public string Error => string.Join(
+                Environment.NewLine,
+                this[nameof(this.InputLowerBound)],
+                this[nameof(this.InputUpperBound)],
+                this[nameof(this.InputRequiredCycles)]);
+
+        public decimal? InputLowerBound
+        {
+            get => this.inputLowerBound;
             set
             {
-                this.SetProperty(ref this.cycleQuantity, value);
-                this.InputsCorrectionControlEventHandler();
+                if (this.SetProperty(ref this.inputLowerBound, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
-
-        public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
-
-        public string LowerBound
+        public int? InputRequiredCycles
         {
-            get => this.lowerBound;
+            get => this.inputRequiredCycles;
             set
             {
-                this.SetProperty(ref this.lowerBound, value);
-                this.InputsCorrectionControlEventHandler();
+                if (this.SetProperty(ref this.inputRequiredCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public string RequiredCycles
+        public decimal? InputUpperBound
         {
-            get => this.requiredCycles;
+            get => this.inputUpperBound;
             set
             {
-                this.SetProperty(ref this.requiredCycles, value);
-                this.InputsCorrectionControlEventHandler();
+                if (this.SetProperty(ref this.inputUpperBound, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
-
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.ExecuteStopButtonCommandAsync()));
-
-        public string UpperBound
+        public bool IsExecutingProcedure
         {
-            get => this.upperBound;
+            get => this.isExecutingProcedure;
             set
             {
-                this.SetProperty(ref this.upperBound, value);
-                this.InputsCorrectionControlEventHandler();
+                if (this.SetProperty(ref this.isExecutingProcedure, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand StartCommand =>
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(
+                async () => await this.ExecuteStartCommandAsync(),
+                this.CanExecuteStartCommand));
+
+        public ICommand StopCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(
+                async () => await this.ExecuteStopCommandAsync(),
+                this.CanExecuteStopCommand));
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputRequiredCycles):
+                        if (!this.InputRequiredCycles.HasValue)
+                        {
+                            return $"InputRequiredCycles is required.";
+                        }
+
+                        if (this.InputRequiredCycles.Value <= 0)
+                        {
+                            return "InputRequiredCycles must be strictly positive.";
+                        }
+                        break;
+
+                    case nameof(this.InputLowerBound):
+                        if (!this.InputLowerBound.HasValue)
+                        {
+                            return $"InputLowerBound is required.";
+                        }
+
+                        if (this.InputLowerBound.Value <= 0)
+                        {
+                            return "InputLowerBound must be strictly positive.";
+                        }
+
+                        if (this.InputUpperBound.HasValue
+                          &&
+                          this.InputUpperBound.Value < this.InputLowerBound.Value)
+                        {
+                            return "InputLowerBound must be greater than InputLowerBound.";
+                        }
+                        break;
+
+                    case nameof(this.InputUpperBound):
+                        if (!this.InputUpperBound.HasValue)
+                        {
+                            return $"InputUpperBound is required.";
+                        }
+
+                        if (this.InputUpperBound.Value <= 0)
+                        {
+                            return "InputLowerBound must be strictly positive.";
+                        }
+
+                        if (this.InputLowerBound.HasValue
+                            &&
+                            this.InputUpperBound.Value < this.InputLowerBound.Value)
+                        {
+                            return "InputLowerBound must be greater than InputLowerBound.";
+                        }
+                        break;
+                }
+
+                return null;
             }
         }
 
@@ -144,122 +229,138 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public async Task GetParameterValuesAsync()
         {
             try
             {
-                var category = "VerticalAxis";
-                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "UpperBound")).ToString();
-                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "LowerBound")).ToString();
+                var procedureParameters = await this.beltBurnishingService.GetParametersAsync();
 
-                category = "BeltBurnishing";
-                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(category, "CycleQuantity")).ToString();
+                this.InputUpperBound = procedureParameters.UpperBound;
+                this.InputLowerBound = procedureParameters.LowerBound;
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
             }
-            catch (SwaggerException)
+            catch (Exception ex)
             {
+                this.ShowNotification(ex);
             }
         }
 
-        public async Task OnEnterViewAsync()
+        public async override Task OnNavigatedAsync()
         {
+            await base.OnNavigatedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
             await this.GetParameterValuesAsync();
 
             this.receivedActionUpdateToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(async
-                    message =>
-                    {
-                        await this.UpdateCompletion(new MessageNotifiedEventArgs(message));
-                    },
+                    message => await this.UpdateCompletion(message),
                     ThreadOption.PublisherThread,
                     false);
         }
 
-        public void UnSubscribeMethodFromEvent()
+        protected override void OnDispose()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
-        }
+            base.OnDispose();
 
-        private void CheckInputsCorrectness()
-        {
-            if (decimal.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.CycleQuantity, out var _cycleQuantity) &&
-                decimal.TryParse(this.UpperBound, out var _upperBound))
+            if (this.receivedActionUpdateToken != null)
             {
-                // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
-                this.IsStartButtonActive = ((_lowerBound > 0) && (_lowerBound < _upperBound) && (_upperBound > 0) && (_cycleQuantity > 0)) ? true : false;
-            }
-            else
-            {
-                this.IsStartButtonActive = false;
+                this.eventAggregator
+                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                  .Unsubscribe(this.receivedActionUpdateToken);
+
+                this.receivedActionUpdateToken = null;
             }
         }
 
-        private async Task ExecuteStartButtonCommandAsync()
+        private bool CanExecuteStartCommand()
+        {
+            return !this.IsExecutingProcedure
+                && !this.IsWaitingForResponse
+                && string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private bool CanExecuteStopCommand()
+        {
+            return this.IsExecutingProcedure
+                && !this.IsWaitingForResponse;
+        }
+
+        private async Task ExecuteStartCommandAsync()
         {
             try
             {
-                this.IsStartButtonActive = false;
-                this.IsStopButtonActive = true;
+                this.IsWaitingForResponse = true;
+                this.IsExecutingProcedure = true;
 
-                int.TryParse(this.CycleQuantity, out var reqCycles);
-                decimal.TryParse(this.LowerBound, out var lowerBound);
-                decimal.TryParse(this.UpperBound, out var upperBound);
-
-                await this.beltBurnishingService.StartAsync(upperBound, lowerBound, reqCycles);
+                await this.beltBurnishingService.StartAsync(
+                    this.InputUpperBound.Value,
+                    this.InputLowerBound.Value,
+                    this.InputRequiredCycles.Value);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // do nothing
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
-        private async Task ExecuteStopButtonCommandAsync()
+        private async Task ExecuteStopCommandAsync()
         {
             try
             {
+                this.IsWaitingForResponse = true;
+
                 await this.beltBurnishingService.StopAsync();
-                this.IsStartButtonActive = true;
-                this.IsStopButtonActive = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // do nothing
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsExecutingProcedure = false;
             }
         }
 
-        private async Task UpdateCompletion(MessageNotifiedEventArgs messageUI)
+        private void RaiseCanExecuteChanged()
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task UpdateCompletion(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message == null)
             {
-                this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                this.CurrentPosition = cp.Data.CurrentPosition.ToString();
+                return;
+            }
 
-                switch (cp.Status)
-                {
-                    case MessageStatus.OperationStart:
-                        this.IsStartButtonActive = false;
-                        this.IsStopButtonActive = true;
-                        break;
+            this.CompletedCycles = message.Data.ExecutedCycles;
+            this.CurrentPosition = message.Data.CurrentPosition;
 
-                    case MessageStatus.OperationEnd:
-                    case MessageStatus.OperationStop:
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.IsExecutingProcedure = true;
+                    break;
 
-                        await this.beltBurnishingService.MarkAsCompletedAsync();
-                        break;
+                case MessageStatus.OperationEnd:
+                case MessageStatus.OperationStop:
+                    this.IsExecutingProcedure = false;
 
-                    case MessageStatus.OperationError:
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
-                        break;
-                }
+                    await this.beltBurnishingService.MarkAsCompletedAsync();
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.IsExecutingProcedure = false;
+                    break;
             }
         }
 

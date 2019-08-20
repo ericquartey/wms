@@ -39,42 +39,42 @@
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                  />
 
-        <controls:CustomLabelTextBlockControl Width="255"
+        <controls:PpcLabeledText Width="255"
                                               Margin="110,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="VRT EF 84 L 990-BIS H 6345"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageModel}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="110,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="VW_190012"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageSerial}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="380,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="15-04-2017"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageInstallationDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="380,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="20-04-2018"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="580,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="20-04-2019"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="620,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

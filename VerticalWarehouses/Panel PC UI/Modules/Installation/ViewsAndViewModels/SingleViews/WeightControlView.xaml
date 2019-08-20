@@ -19,7 +19,7 @@
                                                    InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0"
                                                 ContentText="{Binding AcceptableWeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
@@ -28,11 +28,11 @@
                                                      InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.TestRun}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,210,0,0"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,210,0,0"
                                                 ContentText="{Binding MesuredWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="250,320,0,0" Width="500"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="250,320,0,0" Width="500"
                                                 ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.Output}" />
 

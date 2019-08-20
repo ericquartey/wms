@@ -21,19 +21,19 @@
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.UpperBound}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
             ContentText="500" Width="180"
             LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
             ContentText="3500" Width="180"
             LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 

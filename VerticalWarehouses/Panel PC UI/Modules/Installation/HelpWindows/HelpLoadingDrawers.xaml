@@ -35,17 +35,17 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpLDRNextDrawer}" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                  Width="180"
                                                  ContentText="55"
                                                  LabelText="{x:Static res:InstallationApp.LoadingDrawersTotalDrawers}"  />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                Width="180"
                                                ContentText="12"
                                                LabelText="{x:Static res:InstallationApp.LoadingDrawersInsertedDrawers}"  />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                Width="180"
                                                ContentText="500"
                                                LabelText="{x:Static res:InstallationApp.LoadingDrawersMaxWeight}" />

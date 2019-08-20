@@ -60,12 +60,12 @@
 
         </StackPanel>
 
-        <controls:CustomLabelTextBlockControl Grid.Row="3"
-                                              Margin="0,20,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Margin="0,20,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"

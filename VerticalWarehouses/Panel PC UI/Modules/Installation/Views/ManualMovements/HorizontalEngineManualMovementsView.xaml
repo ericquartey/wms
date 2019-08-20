@@ -38,18 +38,18 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.LSMTHorizontalAxisTitle}" />
 
-            <controls:CustomLabelTextBlockControl Grid.Row="1"
-                                                  Grid.ColumnSpan="2"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Top"
-                                                  ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
-                                                  LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.ColumnSpan="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
+                                     LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
 
-            <controls:CustomLabelTextBlockControl Grid.Row="2"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Top"
-                                                  ContentText="{Binding CurrentPosition}"
-                                                  LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+            <controls:PpcLabeledText Grid.Row="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding CurrentPosition}"
+                                     LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
             <StackPanel Grid.Row="2"
                         Grid.Column="1"

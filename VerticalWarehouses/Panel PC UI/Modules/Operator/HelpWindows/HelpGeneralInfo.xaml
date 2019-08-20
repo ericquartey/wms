@@ -35,35 +35,35 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpGeneralInfoInstallationDate}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoModel}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="2017-02-12"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoInstallationDate}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="54"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoTotDrawers}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="VW_190012"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoSerial}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="180"
                                                ContentText="1.1.01 Beta"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoSwRelease}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="2019-03-05"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
                                                ContentText="2018-03-05"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoOperativeStatus}"/>
 
@@ -137,7 +137,7 @@
                 IsEnabled="True"
                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="WMS in linea."
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoWmsStatus}"/>
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"

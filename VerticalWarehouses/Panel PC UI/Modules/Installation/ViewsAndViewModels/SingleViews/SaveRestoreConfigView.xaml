@@ -15,7 +15,7 @@
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,100,0,0"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,100,0,0"
                                                ContentText="F:\VW_190012"
                                                LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}"  />
 
@@ -35,7 +35,7 @@
                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                      Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}"  />
 
-         <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,420,0,0"
+         <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,420,0,0"
                                                 ContentText="F:"
                                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" IsEnabled="False" />
 

@@ -45,7 +45,7 @@
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
                                                     />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="610,450,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

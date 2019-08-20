@@ -13,7 +13,7 @@
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <controls:PpcButton Width="170"
-                                Height="70"
+                                Height="73"
                                 Margin="13,6,13,6"
                                 Command="{Binding NavigateCommand}">
                 <TextBlock Margin="5,0,5,0"

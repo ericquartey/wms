@@ -80,12 +80,12 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationMeasuredeValueHelp}" />
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,225,0,0"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,225,0,0"
                                                 Width="180"
                                                 ContentText="125,36"
                                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,295,0,0"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,295,0,0"
                                                 Width="180"
                                                 ContentText="127,12"
                                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />

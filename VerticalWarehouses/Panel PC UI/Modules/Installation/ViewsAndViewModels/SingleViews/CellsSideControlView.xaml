@@ -37,7 +37,7 @@
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}"
                                                     />
 
-        <controls:CustomLabelTextBlockControl Margin="200,310,0,0"
+        <controls:PpcLabeledText Margin="200,310,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

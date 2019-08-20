@@ -113,27 +113,27 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpMaintenanceDetailSendRequestContact}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailElementStatus}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="3"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailStopRequired}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
                                                ContentText="30.235"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailTotalCycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="15.000"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="15.235"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="NO"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceDetailPlatformRequired}"/>
 

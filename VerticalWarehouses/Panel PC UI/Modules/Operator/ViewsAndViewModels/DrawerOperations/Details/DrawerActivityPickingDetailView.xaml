@@ -17,7 +17,7 @@
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailHeader}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,90,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,90,0,0" MaxWidth="200"
                                                ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
 
@@ -25,51 +25,51 @@
                Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
                Stretch="Uniform" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,290,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,290,0,0" MaxWidth="200"
                                                ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,490,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,490,0,0" MaxWidth="200"
                                                ContentText="{Binding Position, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,150,0,0" MaxWidth="500"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,150,0,0" MaxWidth="500"
                                                ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,290,0,0" MaxWidth="500"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,290,0,0" MaxWidth="500"
                                                ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,210,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,210,0,0" MaxWidth="200"
                                                ContentText="{Binding ListRow, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailRowList}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,370,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,370,0,0" MaxWidth="200"
                                                ContentText="{Binding ProductionDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailProductionDate}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,430,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,430,0,0" MaxWidth="200"
                                                ContentText="{Binding MaterialStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailMaterialStatus}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,370,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,370,0,0" MaxWidth="200"
                                                ContentText="{Binding Batch, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailLotto}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,430,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,430,0,0" MaxWidth="200"
                                                ContentText="{Binding PackagingType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailPackagingType}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,90,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,90,0,0" MaxWidth="200"
                                                ContentText="{Binding PackingListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonPackingListCode}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,150,0,0" MaxWidth="500"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,150,0,0" MaxWidth="500"
                                                ContentText="{Binding PackingListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.CommonPackingListDescription}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,490,0,0" MaxWidth="200"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,490,0,0" MaxWidth="200"
                                                ContentText="{Binding RequestedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingDetailQtyRequest}"/>
 

@@ -41,11 +41,11 @@
                                                     InputText="10"
                                                     LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
 
-        <controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0" Width="180"
+        <controls:PpcLabeledText      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0" Width="180"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestCompletedCycles}"
                                                    ContentText="12" />
 
-        <controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <controls:PpcLabeledText      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                    ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
 

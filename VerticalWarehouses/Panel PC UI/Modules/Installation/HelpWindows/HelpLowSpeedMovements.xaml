@@ -29,7 +29,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLSMTActualPosition}" />
 
-        <controls:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,140,0,0"
+        <controls:PpcLabeledText  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,140,0,0"
                                                Width="180"
                                                ContentText="1235,2"
                                                LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
@@ -54,7 +54,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLSMTMoveDown}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="20,210,0,0" Width="180" Height="65"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="20,210,0,0" Width="180" Height="65"
                                                   LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}"
                                                   ContentText="{x:Static res:InstallationApp.LSMTComandNote}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"

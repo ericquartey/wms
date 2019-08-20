@@ -17,7 +17,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.MachineStatisticsHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,150,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -25,14 +25,14 @@
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalVerticalAxisCycles}" />
 
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,205,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalVerticalAxisKilometers}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,150,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -60,21 +60,21 @@
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutters}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalShutter1Cycles}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalShutter1Cycles}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,425,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalShutter2Cycles}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalShutter2Cycles}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,480,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -88,21 +88,21 @@
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionBays}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTraysInBay1}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay1}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,425,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTraysInBay2}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay2}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,480,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

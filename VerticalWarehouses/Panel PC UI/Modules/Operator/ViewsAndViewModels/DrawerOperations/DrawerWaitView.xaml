@@ -16,14 +16,14 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DrawerWaitPageHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="400"
+        <controls:PpcLabeledText MaxWidth="400"
                                               Margin="320,230,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="Operazione precedente terminata."
                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="320,350,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

@@ -62,11 +62,11 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsGridPercTotal}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="1.827"
                                                LabelText="{x:Static res:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
                                                ContentText="21.924"
                                                LabelText="{x:Static res:OperatorApp.ErrorsStatisticsTotDrawersMoved}"/>
 
@@ -74,11 +74,11 @@
                  Content="{x:Static res:OperatorApp.CommonUp}"
                   />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="12"
                                                LabelText="{x:Static res:OperatorApp.ErrorsStatisticsTotErrors}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="Errore di imbarco"
                                                LabelText="{x:Static res:OperatorApp.ErrorsStatisticsErrorDescription}"/>
 
@@ -86,7 +86,7 @@
                  Content="{x:Static res:OperatorApp.CommonDown}"
                   />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="99,9987"
                                                LabelText="{x:Static res:OperatorApp.ErrorsStatisticsReliabilityIndex}"/>
 

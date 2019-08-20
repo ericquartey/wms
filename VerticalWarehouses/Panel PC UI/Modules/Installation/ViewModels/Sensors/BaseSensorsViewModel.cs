@@ -74,9 +74,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnNavigatedAsync();
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void OnDispose()
         {
-            if (disposing && this.subscriptionToken != null)
+            base.OnDispose();
+
+            if (this.subscriptionToken != null)
             {
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
@@ -84,8 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.subscriptionToken = null;
             }
-
-            base.Dispose(disposing);
         }
 
         private void InitializeNavigationMenu()

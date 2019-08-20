@@ -39,11 +39,11 @@
                   Content="{x:Static res:OperatorApp.DrawerCompactingAntCompact}"
                    />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="8"
                                                LabelText="{x:Static res:OperatorApp.DrawerCompactingFragmentNumber}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="450"
                                                LabelText="{x:Static res:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 

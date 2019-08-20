@@ -16,17 +16,17 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
 
-        <controls:CustomLabelTextBlockControl Margin="410,120,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding ReferenceCellHeight}"
-                                              LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
+        <controls:PpcLabeledText Margin="410,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding ReferenceCellHeight}"
+                                 LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
-        <controls:CustomLabelTextBlockControl Margin="410,290,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding CurrentHeight}"
-                                              LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+        <controls:PpcLabeledText Margin="410,290,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentHeight}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
         <controls:PpcTextBox Margin="230,290,0,0"
                              HorizontalAlignment="Left"
@@ -34,11 +34,11 @@
                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-        <controls:CustomLabelTextBlockControl Margin="410,430,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
+        <controls:PpcLabeledText Margin="410,430,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
         <controls:PpcTextBox Margin="410,490,0,0"
                              HorizontalAlignment="Left"

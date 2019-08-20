@@ -54,7 +54,7 @@
                              InputText="1,5"
                              LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="20,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
