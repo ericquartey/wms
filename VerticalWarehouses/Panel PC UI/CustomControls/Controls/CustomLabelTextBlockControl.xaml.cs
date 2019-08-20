@@ -4,27 +4,27 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class CustomLabelTextBlockControl : UserControl, INotifyPropertyChanged
+    public partial class PpcLabeledText : UserControl, INotifyPropertyChanged
     {
         #region Fields
 
         public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register(
             nameof(ContentText),
             typeof(string),
-            typeof(CustomLabelTextBlockControl),
+            typeof(PpcLabeledText),
             new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             nameof(LabelText),
             typeof(string),
-            typeof(CustomLabelTextBlockControl),
+            typeof(PpcLabeledText),
             new PropertyMetadata(string.Empty));
 
         #endregion
 
         #region Constructors
 
-        public CustomLabelTextBlockControl()
+        public PpcLabeledText()
         {
             this.InitializeComponent();
             var customLabelTextBlockControl = this;

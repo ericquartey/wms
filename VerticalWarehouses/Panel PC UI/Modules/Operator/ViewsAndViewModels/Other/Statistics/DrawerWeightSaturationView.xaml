@@ -16,7 +16,7 @@
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DrawerWeightSaturationHeader}" />
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="590,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -28,7 +28,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{Binding DataGridViewModel}" />
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="140,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -52,19 +52,19 @@
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
                  />
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="350,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding MaxGrossWeight}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="590,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding NetWeight}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="350,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

@@ -29,7 +29,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                Width="180"
                                                ContentText="125,36"
                                                LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>

@@ -57,7 +57,7 @@
                   Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
                    />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="Lista non eseguibile"
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
 

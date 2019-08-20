@@ -15,31 +15,31 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
 
-        <controls:CustomLabelTextBlockControl Margin="170,110,0,0"
+        <controls:PpcLabeledText Margin="170,110,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding TotalPanels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.TotalPanels}" />
 
-        <controls:CustomLabelTextBlockControl Margin="430,110,0,0"
+        <controls:PpcLabeledText Margin="430,110,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentPanel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentPanel}" />
 
-        <controls:CustomLabelTextBlockControl Margin="170,210,0,0"
+        <controls:PpcLabeledText Margin="170,210,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <controls:CustomLabelTextBlockControl Margin="430,210,0,0"
+        <controls:PpcLabeledText Margin="430,210,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
-        <controls:CustomLabelTextBlockControl Margin="430,350,0,0"
+        <controls:PpcLabeledText Margin="430,350,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -52,7 +52,7 @@
                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
                                                   />
 
-        <controls:CustomLabelTextBlockControl Margin="430,490,0,0"
+        <controls:PpcLabeledText Margin="430,490,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

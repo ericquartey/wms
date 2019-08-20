@@ -57,35 +57,35 @@
                              IsEnabled="True"
                              LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="20,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="4,5"
                                               LabelText="{x:Static res:InstallationApp.Tolerance}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="20,210,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="3,5"
                                               LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="20,420,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="568,5"
                                               LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="20,490,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="-3,5"
                                               LabelText="{x:Static res:InstallationApp.GateCorrection}" />
 
-        <controls:CustomLabelTextBlockControl Width="180"
+        <controls:PpcLabeledText Width="180"
                                               Margin="530,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

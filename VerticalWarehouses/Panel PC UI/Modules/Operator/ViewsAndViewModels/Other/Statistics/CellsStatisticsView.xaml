@@ -17,7 +17,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.CellsStatisticsHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="490,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -32,7 +32,7 @@
                         Content="{Binding DataGridViewModel}" >
         </ContentControl>
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="220,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -46,7 +46,7 @@
                 Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
                  />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="490,145,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

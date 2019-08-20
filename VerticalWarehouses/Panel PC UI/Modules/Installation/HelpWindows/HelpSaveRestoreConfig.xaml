@@ -41,7 +41,7 @@
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpSRCSaveSide}" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,165,0,0" Width="180"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,165,0,0" Width="180"
                                                  ContentText="F:\VW_190012"
                                                  LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}"  />
 
@@ -57,7 +57,7 @@
                     Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortSaveButton}"
                      IsEnabled="True" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,165,0,0" Width="180"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,165,0,0" Width="180"
                                                  ContentText="F:\VW_190012"
                                                  LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" IsEnabled="True" />
 

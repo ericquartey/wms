@@ -80,12 +80,24 @@ namespace Ferretto.VW.App.Controls
         {
         }
 
+        protected virtual void OnDispose()
+        {
+            // do nothing
+            // let the derived classes implement the dispose behaviour
+        }
+
+        protected virtual void OnFinalize()
+        {
+            // do nothing
+            // let the derived classes implement the dispose behaviour
+        }
+
         /// <summary>
         /// Delete the object created from the object.
         /// <para>Free resources</para>
         /// </summary>
         /// <param name="disposing">If true the delete of managed object is required</param>
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.IsDisposed == false)
             {
@@ -100,14 +112,6 @@ namespace Ferretto.VW.App.Controls
                 // Free your own state (unmanaged objects).
                 this.OnFinalize();
             }
-        }
-
-        protected virtual void OnDispose()
-        {
-        }
-
-        protected virtual void OnFinalize()
-        {
         }
 
         #endregion

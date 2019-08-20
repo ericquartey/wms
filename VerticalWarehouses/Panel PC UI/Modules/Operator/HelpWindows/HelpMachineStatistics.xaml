@@ -34,39 +34,39 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsHorizontalCycles}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                                                ContentText="10.684"
                                                LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalVerticalAxisCycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                                                ContentText="39.562"
                                                LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,150,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,150,0,0" Width="180"
                                                ContentText="7.235"
                                                LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionHorizontalTotalCycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                ContentText="6.136"
                                                LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter2Cycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                ContentText="3.235"
                                                LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter1Cycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0" Width="180"
                                                ContentText="475"
                                                LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter3Cycles}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,340,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,340,0,0" Width="180"
                                                ContentText="980"
                                                LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay2}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,270,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,270,0,0" Width="180"
                                                ContentText="2.235"
                                                LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay1}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,410,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,410,0,0" Width="180"
                                                ContentText="1.058"
                                                LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay3}"/>
 

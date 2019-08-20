@@ -56,7 +56,7 @@
                                                     InputText="12"
                                                     LabelText="{x:Static res:OperatorApp.ItemSearchQtyRequest}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="14"
                                                LabelText="{x:Static res:OperatorApp.ItemSearchQtyAvailable}"/>
 

@@ -61,11 +61,11 @@
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
                      Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage }" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="300"
                                                LabelText="{x:Static res:OperatorApp.CellsStatisticsFrontCellsTotal}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="630"
                                                LabelText="{x:Static res:OperatorApp.CellsStatisticsCellsTotal}"/>
 
@@ -73,7 +73,7 @@
                  Content="{x:Static res:OperatorApp.CellsStatisticsOther}"
                   />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="330"
                                                LabelText="{x:Static res:OperatorApp.CellsStatisticsRearCellsTotal}"/>
 

@@ -17,14 +17,14 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.StatisticsGeneralDataHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="153,145,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTrays}"
                                               LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalMovedTrays}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="473,145,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

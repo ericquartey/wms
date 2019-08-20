@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.HelpWindows
 
         #region Methods
 
-        private void CustomLabelTextBlockControl_Loaded(object sender, RoutedEventArgs e)
+        private void PpcLabeledText_Loaded(object sender, RoutedEventArgs e)
         {
         }
 

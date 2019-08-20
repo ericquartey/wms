@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Models;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
@@ -50,7 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.configurationProvider = dataLayerConfigurationValueManagement;
             this.setupStatusProvider = setupStatusProvider;
             this.verticalAxis = verticalAxisDataLayer;
         }
@@ -59,73 +60,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("decimal-configuration-parameter/{category}/{parameter}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
+        [HttpGet("parameters")]
+        public ActionResult<BeltBurnishingParameters> GetParameters()
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            var categoryEnum = (ConfigurationCategory)categoryId;
-
-            var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
-
-            if (parseSuccess)
+            var parameters = new BeltBurnishingParameters
             {
-                decimal value1;
+                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.UpperBound,
+                        ConfigurationCategory.VerticalAxis),
+                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.LowerBound,
+                        ConfigurationCategory.VerticalAxis),
+                RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
+                        (long)BeltBurnishing.CycleQuantity,
+                         ConfigurationCategory.BeltBurnishing),
+            };
 
-                try
-                {
-                    value1 = this.dataLayerConfigurationValueManagement
-                        .GetDecimalConfigurationValue(
-                        (long)verticalAxisParameterId,
-                        categoryEnum);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                {
-                    return this.NotFound(new ProblemDetails { Title = "Parameter not found" });
-                }
-
-                return this.Ok(value1);
-            }
-            else
-            {
-                return this.NotFound(new ProblemDetails { Title = "Parameter not found" });
-            }
-        }
-
-        [HttpGet("integer-configuration-parameter/{category}/{parameter}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
-        {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
-            var categoryEnum = (ConfigurationCategory)categoryId;
-
-            if (parameterId != null)
-            {
-                int value;
-
-                try
-                {
-                    value = this.dataLayerConfigurationValueManagement
-                        .GetIntegerConfigurationValue(
-                        (long)parameterId,
-                        categoryEnum);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                {
-                    return this.NotFound(new ProblemDetails { Title = "Parameter not found" });
-                }
-
-                return this.Ok(value);
-            }
-            else
-            {
-                return this.NotFound(new ProblemDetails { Title = "Parameter not found" });
-            }
+            return this.Ok(parameters);
         }
 
         [HttpPost("mark-as-completed")]
@@ -144,17 +95,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (upperBound <= 0)
             {
-                return this.BadRequest(new ProblemDetails { Detail = "Upper bound cannot be negative or zero." });
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Detail = "Upper bound cannot be negative or zero."
+                    });
             }
 
             if (upperBound <= lowerBound)
             {
-                return this.BadRequest(new ProblemDetails { Detail = "Upper bound must be strictly greater than lower bound." });
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Detail = "Upper bound must be strictly greater than lower bound."
+                    });
             }
 
             if (requiredCycles <= 0)
             {
-                return this.BadRequest(new ProblemDetails { Detail = "Required cycles count must be strictly positive." });
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Detail = "Required cycles count must be strictly positive."
+                    });
             }
 
             var data = new PositioningMessageData(

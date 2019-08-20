@@ -44,15 +44,15 @@
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
                      Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderRow }" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="E' possibile eseguire"
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="1256"
                                                LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Lista in attesa"
                                                LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
 
@@ -129,7 +129,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitMachine}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="Prelievo"
                                                LabelText="{x:Static res:OperatorApp.CommonListType}"/>
 

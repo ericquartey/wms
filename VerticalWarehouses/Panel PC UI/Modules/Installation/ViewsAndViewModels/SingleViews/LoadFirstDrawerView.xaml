@@ -17,21 +17,21 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LoadFirstDrawerPageHeader}" />
 
-        <controls:CustomLabelTextBlockControl Margin="240,140,0,0"
+        <controls:PpcLabeledText Margin="240,140,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="4"
                                             LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}" />
         <!--  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
-        <controls:CustomLabelTextBlockControl Margin="240,240,0,0"
+        <controls:PpcLabeledText Margin="240,240,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="2"
                                             LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}" />
         <!--  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
-        <controls:CustomLabelTextBlockControl Margin="240,328,0,0"
+        <controls:PpcLabeledText Margin="240,328,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="234"
@@ -45,7 +45,7 @@
                                                   />
         <!--  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
-        <controls:CustomLabelTextBlockControl Margin="580,240,0,0"
+        <controls:PpcLabeledText Margin="580,240,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="500"

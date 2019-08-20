@@ -42,7 +42,7 @@
                                                      LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
                                                       />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                   ContentText="1023,5"
                                                   LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
@@ -53,7 +53,7 @@
                                                      LabelText="{x:Static res:InstallationApp.StepValue}"
                                                       />
 
-        <controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+        <controls:PpcLabeledText      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                    ContentText="145,0"
                                                    LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
@@ -84,7 +84,7 @@
                   IsEnabled="True"
                    />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
                                                ContentText="12"
                                                LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
 

@@ -35,15 +35,15 @@
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.HelpCCVSetPosition}" />
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
                                                 ContentText="125"
                                                 LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                ContentText="1250,0"
                                                LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                ContentText="1251,5"
                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
@@ -53,7 +53,7 @@
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                 ContentText="1,5"
                                                 LabelText="{x:Static res:InstallationApp.CellCorrection}" />
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"

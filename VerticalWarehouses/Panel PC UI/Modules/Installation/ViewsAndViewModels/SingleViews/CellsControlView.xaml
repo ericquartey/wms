@@ -16,19 +16,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.CellsControl}" />
 
-        <controls:CustomLabelTextBlockControl Margin="200,120,0,0"
+        <controls:PpcLabeledText Margin="200,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <controls:CustomLabelTextBlockControl Margin="436,120,0,0"
+        <controls:PpcLabeledText Margin="436,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
-        <controls:CustomLabelTextBlockControl Margin="436,300,0,0"
+        <controls:PpcLabeledText Margin="436,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -41,7 +41,7 @@
                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
                                                   />
 
-        <controls:CustomLabelTextBlockControl Margin="436,480,0,0"
+        <controls:PpcLabeledText Margin="436,480,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

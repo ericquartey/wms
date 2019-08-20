@@ -41,42 +41,42 @@
                 Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
                  />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="255"
+        <controls:PpcLabeledText MaxWidth="255"
                                               Margin="380,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="Manutenzione richiesta"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailElementStatus}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="600,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="3"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailStopRequired}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="110,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="30.235"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailTotalCycles}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="110,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="15.000"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="340,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="15.235"
                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:PpcLabeledText MaxWidth="200"
                                               Margin="600,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

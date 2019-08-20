@@ -9,56 +9,69 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="608">
-        <TextBlock Margin="230,30,0,0"
-                   HorizontalAlignment="Left"
+    <Grid Margin="230,30,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <controls:CustomLabelTextBlockControl Margin="230,159,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.UpperBound}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputUpperBound}"
+                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
-        <controls:CustomLabelTextBlockControl Margin="230,257,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.LowerBound}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputLowerBound}"
+                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
-        <controls:CustomLabelTextBlockControl Margin="230,358,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
+        <controls:PpcLabeledText Grid.Row="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
-        <controls:CustomLabelTextBlockControl Margin="607,257,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
-
-        <controls:PpcTextBox Margin="607,159,0,0"
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             InputText="{Binding CycleQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
-        <controls:PpcButton Margin="607,490,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StartButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CompletedCycles}"
+                                 LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
-        <controls:PpcButton Margin="230,490,0,0"
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StopButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
-                            IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
     </Grid>
 </ctrls:View>

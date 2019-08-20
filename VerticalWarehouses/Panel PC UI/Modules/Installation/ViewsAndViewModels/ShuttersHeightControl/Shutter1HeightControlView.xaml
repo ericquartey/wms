@@ -22,31 +22,31 @@
                              InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
-        <controls:CustomLabelTextBlockControl Margin="700,140,0,0"
+        <controls:PpcLabeledText Margin="700,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.Tolerance}" />
 
-        <controls:CustomLabelTextBlockControl Margin="410,140,0,0"
+        <controls:PpcLabeledText Margin="410,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
-        <controls:CustomLabelTextBlockControl Margin="160,260,0,0"
+        <controls:PpcLabeledText Margin="160,260,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <controls:CustomLabelTextBlockControl Margin="700,260,0,0"
+        <controls:PpcLabeledText Margin="700,260,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.GateCorrection}" />
 
-        <controls:CustomLabelTextBlockControl Margin="160,360,0,0"
+        <controls:PpcLabeledText Margin="160,360,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

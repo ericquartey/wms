@@ -42,7 +42,7 @@
 
                                                      LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
                                                   ContentText="5,0"
                                                   LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
@@ -53,11 +53,11 @@
 
                                                        LabelText="{x:Static res:InstallationApp.TestRun}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
                                                   ContentText="245,0"
                                                   LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
+        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
                                                   ContentText="Misura corretta"
                                                   LabelText="{x:Static res:InstallationApp.Output}" />
 

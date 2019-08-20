@@ -61,12 +61,12 @@
                                                  IsEnabled="{Binding IsMesuredMovementActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.MesuredMovement}"
                                                   />
-        <controls:CustomLabelTextBlockControl Margin="410,290,0,0"
+        <controls:PpcLabeledText Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
-        <controls:CustomLabelTextBlockControl Margin="411,350,0,0"
+        <controls:PpcLabeledText Margin="411,350,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

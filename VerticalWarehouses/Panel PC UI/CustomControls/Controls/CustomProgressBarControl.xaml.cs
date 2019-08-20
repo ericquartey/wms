@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
-    /// Interaction logic for CustomLabelTextBlockControl.xaml
+    /// Interaction logic for PpcLabeledText.xaml
     /// </summary>
     public partial class CustomProgressBarControl : UserControl, INotifyPropertyChanged
     {

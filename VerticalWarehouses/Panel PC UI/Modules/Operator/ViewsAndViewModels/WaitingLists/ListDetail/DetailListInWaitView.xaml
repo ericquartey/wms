@@ -22,7 +22,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:PpcLabeledText MaxWidth="500"
                                               Margin="140,530,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -35,13 +35,13 @@
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:PpcLabeledText MaxWidth="500"
                                               Margin="280,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding List.Code}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
-        <controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:PpcLabeledText MaxWidth="500"
                                               Margin="430,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -68,7 +68,7 @@
                 Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
                  />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:PpcLabeledText MaxWidth="500"
                                               Margin="140,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

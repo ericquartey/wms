@@ -25,15 +25,15 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                  Width="180" ContentText="4"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}"  />
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                 Width="180" ContentText="2"
                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}"  />
 
-        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                  Width="180" ContentText="234"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}"  />
 
@@ -43,7 +43,7 @@
 
                                                     LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
 
-        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
+        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
                                                 Width="180" ContentText="500"
                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerMaxWeight}"/>
 

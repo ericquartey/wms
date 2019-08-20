@@ -45,7 +45,7 @@
             IsEnabled="{Binding IsStartRecallButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
              />
 
-        <controls:CustomLabelTextBlockControl Margin="250,504,0,0"
+        <controls:PpcLabeledText Margin="250,504,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

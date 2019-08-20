@@ -63,7 +63,7 @@
                   Content="{x:Static res:OperatorApp.ImmediateDrawerCallDrawerCall}"
                    />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Cassetto bloccato."
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
 

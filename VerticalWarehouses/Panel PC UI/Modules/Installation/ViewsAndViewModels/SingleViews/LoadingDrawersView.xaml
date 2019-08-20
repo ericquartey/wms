@@ -16,19 +16,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LoadingDrawersPageHeader}" />
 
-        <controls:CustomLabelTextBlockControl Margin="240,140,0,0"
+        <controls:PpcLabeledText Margin="240,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.LoadingDrawersTotalDrawers}" />
 
-        <controls:CustomLabelTextBlockControl Margin="580,140,0,0"
+        <controls:PpcLabeledText Margin="580,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.LoadingDrawersInsertedDrawers}" />
 
-        <controls:CustomLabelTextBlockControl Margin="240,240,0,0"
+        <controls:PpcLabeledText Margin="240,240,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

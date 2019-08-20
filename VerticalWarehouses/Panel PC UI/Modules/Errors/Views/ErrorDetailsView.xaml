@@ -59,14 +59,14 @@
                            TextWrapping="Wrap" />
             </StackPanel>
 
-            <local:CustomLabelTextBlockControl Grid.Row="1"
+            <local:PpcLabeledText Grid.Row="1"
                                                Grid.Column="1"
                                                MinHeight="100"
                                                HorizontalAlignment="Left"
                                                ContentText="{Binding Error.Definition.Description}"
                                                LabelText="{x:Static res:VWApp.ErrorDescription}" />
 
-            <local:CustomLabelTextBlockControl Grid.Row="2"
+            <local:PpcLabeledText Grid.Row="2"
                                                Grid.ColumnSpan="2"
                                                MinHeight="100"
                                                HorizontalAlignment="Left"

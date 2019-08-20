@@ -22,63 +22,63 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.GeneralInfoHeader}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="90,100,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.ModelName}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoModel}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="90,260,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.InstallationDate}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="90,160,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TrayCount}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoTotDrawers}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="440,100,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.SerialNumber}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoSerial}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="440,160,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding SoftwareVersion}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="440,260,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.NextServiceDate}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="90,320,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.LastServiceDate}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="480,320,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.ServiceStatus, Converter={StaticResource MSSEC}}"
                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}" />
 
-        <controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:PpcLabeledText MaxWidth="300"
                                               Margin="130,420,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

@@ -31,23 +31,23 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingQtyRequest}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                                                ContentText="P_12487"
                                                LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="1258445984"
                                                LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
                                                ContentText="F-3"
                                                LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="Gruppo riduzione"
                                                LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,320,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,320,0,0" Width="180"
                                                ContentText="Ingranaggio"
                                                LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
 
@@ -56,11 +56,11 @@
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:OperatorApp.DrawerActivityPickingQtyPick}" />
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="4"
                                                LabelText="{x:Static res:OperatorApp.DrawerActivityPickingQtyReq}"/>
 
-        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
+        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="Note inserite"
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
 

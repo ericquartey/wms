@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly ShutterSensors sensors;
+
         private readonly IMachineShuttersService shuttersService;
 
         private readonly IMachineTestService testService;
@@ -38,8 +40,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken receivedActionUpdateCompletedToken;
 
         private SubscriptionToken receivedActionUpdateErrorToken;
-
-        private readonly ShutterSensors sensors;
 
         private DelegateCommand startCommand;
 
@@ -239,6 +239,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message.NotificationType == NotificationType.Error &&
                     message.ActionType == ActionType.ShutterControl &&
                     message.ActionStatus == ActionStatus.Error);
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
         }
 
         private bool CanExecuteStartCommand()
