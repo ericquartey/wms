@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseSensorsViewModel(IMachineSensorsService machineSensorsService)
-            : base(Services.PresentationMode.Installator)
+            : base(Services.PresentationMode.Installer)
         {
             if (machineSensorsService == null)
             {

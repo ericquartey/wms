@@ -36,6 +36,11 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             return configuration.GetConnectionString(SecondaryConnectionStringName);
         }
 
+        public static bool IsSetupStatusOverridden(this IConfiguration configuration)
+        {
+            return configuration.GetValue<bool>("Vertimag:DataLayer:OverrideSetupStatus");
+        }
+
         #endregion
     }
 }

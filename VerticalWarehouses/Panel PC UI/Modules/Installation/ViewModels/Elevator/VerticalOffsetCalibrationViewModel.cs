@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOffsetCalibrationViewModel(IMachineVerticalOffsetProcedureService verticalOffsetService)
-            : base(Services.PresentationMode.Installator)
+            : base(Services.PresentationMode.Installer)
         {
             if (verticalOffsetService == null)
             {

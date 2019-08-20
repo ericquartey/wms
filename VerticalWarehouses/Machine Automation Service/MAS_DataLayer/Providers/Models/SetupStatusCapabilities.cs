@@ -2,6 +2,27 @@
 {
     public class SetupStatusCapabilities
     {
+        #region Fields
+
+        internal static readonly SetupStatusCapabilities Complete = new SetupStatusCapabilities
+        {
+            AllLoadingUnits = SetupStepStatus.Complete,
+            Bay1 = BaySetupStatus.Complete,
+            Bay2 = BaySetupStatus.Complete,
+            Bay3 = BaySetupStatus.Complete,
+            BeltBurnishing = SetupStepStatus.Complete,
+            CellsHeightCheck = SetupStepStatus.Complete,
+            HorizontalHoming = SetupStepStatus.Complete,
+            IsComplete = true,
+            PanelsCheck = SetupStepStatus.Complete,
+            VerticalOffsetCalibration = SetupStepStatus.Complete,
+            VerticalOriginCalibration = SetupStepStatus.Complete,
+            VerticalResolution = SetupStepStatus.Complete,
+            WeightMeasurement = SetupStepStatus.Complete,
+        };
+
+        #endregion
+
         #region Properties
 
         public SetupStepStatus AllLoadingUnits { get; set; }

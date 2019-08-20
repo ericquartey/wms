@@ -1,8 +1,6 @@
-﻿using Ferretto.VW.App.Controls;
-
-namespace Ferretto.VW.App.Installation.Views
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class BaysSensorsView : View
+    public partial class BaysSensorsView
     {
         #region Constructors
 

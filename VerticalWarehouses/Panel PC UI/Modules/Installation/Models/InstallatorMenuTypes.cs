@@ -4,7 +4,7 @@
     {
         None,
 
-        Installator,
+        Installer,
 
         Sensors,
 

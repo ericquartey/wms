@@ -2,6 +2,20 @@
 {
     public class BaySetupStatus
     {
+        #region Fields
+
+        internal static readonly BaySetupStatus Complete = new BaySetupStatus
+        {
+            AllLoadingUnits = SetupStepStatus.Complete,
+            Check = SetupStepStatus.Complete,
+            FirstLoadingUnit = SetupStepStatus.Complete,
+            Laser = SetupStepStatus.Complete,
+            Shape = SetupStepStatus.Complete,
+            Shutter = SetupStepStatus.Complete,
+        };
+
+        #endregion
+
         #region Properties
 
         public SetupStepStatus AllLoadingUnits { get; set; }

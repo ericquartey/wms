@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalOriginCalibrationViewModel(
             IMachineVerticalOriginProcedureService verticalOriginProcedureService)
-            : base(Services.PresentationMode.Installator)
+            : base(Services.PresentationMode.Installer)
         {
             if (verticalOriginProcedureService == null)
             {

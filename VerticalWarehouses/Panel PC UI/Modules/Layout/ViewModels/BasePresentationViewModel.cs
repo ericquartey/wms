@@ -103,7 +103,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.Login:
                     break;
 
-                case PresentationMode.Installator:
+                case PresentationMode.Installer:
                     break;
 
                 case PresentationMode.Operator:

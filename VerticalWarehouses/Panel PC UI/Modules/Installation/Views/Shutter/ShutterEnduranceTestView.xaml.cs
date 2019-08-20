@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class ShutterEnduranceTestView : View
+    public partial class ShutterEnduranceTestView
     {
         #region Constructors
 

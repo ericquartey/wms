@@ -5,51 +5,51 @@ namespace Ferretto.VW.App.Installation.Resources
 {
     public enum InstallationMenus
     {
-        [View(Utils.Modules.Installation.SHUTTERENDURANCETEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.SHUTTERENDURANCETEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Test serranda")]
         BayShutter,
 
-        [View(Utils.Modules.Installation.VERTICALORIGINCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.VERTICALORIGINCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione origine asse verticale")]
         VerticalOriginCalibration,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.BELTBURNISHING, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Rodaggio cinghia")]
         BeltBurnishing,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione risoluzione asse verticale")]
         VerticalResolution,
 
-        [View(Utils.Modules.Installation.VERTICALOFFSETCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.VERTICALOFFSETCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione offset asse verticale")]
         VerticalOffsetCalibration,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo baia")]
         BayCheck,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Pannelli Mensola")]
         PanelsCheck,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
         BayShape,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Peso")]
         WeightMeasurement,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento cassetti")]
         AllLoadingUnits,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Salva e ripristina")]
         SaveRestore,
 

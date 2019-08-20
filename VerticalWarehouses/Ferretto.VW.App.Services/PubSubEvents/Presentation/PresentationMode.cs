@@ -8,9 +8,8 @@
 
         Login,
 
-        Installator,
+        Installer,
 
         Operator,
-     
     }
 }
