@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineTestService testService,
             IMachineShuttersService shuttersService,
             IBayManager bayManager)
-            : base(PresentationMode.Installator)
+            : base(PresentationMode.Installer)
         {
             if (testService == null)
             {

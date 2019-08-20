@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseManualMovementsViewModel(IMachineVerticalOriginProcedureService verticalOriginProcedureService)
-            : base(Services.PresentationMode.Installator)
+            : base(Services.PresentationMode.Installer)
         {
             if (verticalOriginProcedureService == null)
             {

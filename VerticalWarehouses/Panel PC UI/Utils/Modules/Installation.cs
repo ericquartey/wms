@@ -4,6 +4,8 @@
     {
         #region Fields
 
+        public const string BELTBURNISHING = "BeltBurnishingViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";

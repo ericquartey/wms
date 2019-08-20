@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public InstallatorMenuViewModel(
             IMachineSetupStatusService setupStatusService,
             IBayManager bayManager)
-            : base(PresentationMode.Installator)
+            : base(PresentationMode.Installer)
         {
             if (setupStatusService == null)
             {
@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (menuType)
             {
-                case InstallatorMenuTypes.Installator:
+                case InstallatorMenuTypes.Installer:
                     this.installatorItems.Add(menuItem);
                     break;
 

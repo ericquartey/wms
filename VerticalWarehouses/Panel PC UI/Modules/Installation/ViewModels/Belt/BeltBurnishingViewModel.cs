@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
@@ -12,9 +13,9 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BeltBurnishingViewModel : BindableBase, IBeltBurnishingViewModel
+    public class BeltBurnishingViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -51,6 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
             IMachineBeltBurnishingProcedureService beltBurnishingService)
+            : base(Services.PresentationMode.Installer)
         {
             if (eventAggregator == null)
             {
@@ -66,7 +68,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             this.beltBurnishingService = beltBurnishingService;
 
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
-            this.NavigationViewModel = null;
         }
 
         #endregion

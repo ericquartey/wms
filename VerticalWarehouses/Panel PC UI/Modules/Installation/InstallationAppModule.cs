@@ -93,6 +93,12 @@ namespace Ferretto.VW.App.Modules.Installation
 
             #endregion
 
+            #region Belt Views
+
+            containerRegistry.RegisterForNavigation<BeltBurnishingView>();
+
+            #endregion
+
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
 
             this.container.RegisterSingleton<INotificationService, NotificationService>();
@@ -102,7 +108,6 @@ namespace Ferretto.VW.App.Modules.Installation
 
             #region These views need refactoring
 
-            this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
             this.container.RegisterSingleton<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>();
             this.container.RegisterSingleton<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>();

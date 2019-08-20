@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class InstallatorMenuView : VW.App.Controls.View
+    public partial class InstallatorMenuView
     {
         #region Constructors
 

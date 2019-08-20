@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class HorizontalAxisManualMovementsView
+    public partial class BeltBurnishingView
     {
         #region Constructors
 
-        public HorizontalAxisManualMovementsView()
+        public BeltBurnishingView()
         {
             this.InitializeComponent();
         }

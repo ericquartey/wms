@@ -1,8 +1,6 @@
-﻿using Ferretto.VW.App.Controls;
-
-namespace Ferretto.VW.App.Installation.Views
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class CradleSensorsView : View
+    public partial class CradleSensorsView
     {
         #region Constructors
 

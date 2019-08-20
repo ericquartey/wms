@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Constructors
 
         public ErrorDetailsViewModel(IMachineErrorsService machineErrorsService)
-            : base(Services.PresentationMode.Installator)
+            : base(Services.PresentationMode.Installer)
         {
             if (machineErrorsService == null)
             {
