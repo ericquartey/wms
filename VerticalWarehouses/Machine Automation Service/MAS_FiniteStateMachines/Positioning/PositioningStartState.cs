@@ -116,15 +116,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 50, false, 0);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 50);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterSetTimer);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+            inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter axis position status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
@@ -137,7 +148,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn);
 
-            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogDebug($"4:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
@@ -156,7 +167,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageType.Positioning,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"5:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

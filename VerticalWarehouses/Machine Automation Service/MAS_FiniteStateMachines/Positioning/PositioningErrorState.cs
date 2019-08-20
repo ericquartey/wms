@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             IMachineSensorsStatus machineSensorsStatus,
             IPositioningMessageData positioningMessageData,
             FieldNotificationMessage errorMessage,
-            ILogger logger )
-            : base( parentMachine, logger )
+            ILogger logger)
+            : base(parentMachine, logger)
         {
             this.positioningMessageData = positioningMessageData;
             this.machineSensorsStatus = machineSensorsStatus;
@@ -46,21 +46,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         ~PositioningErrorState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage( CommandMessage message )
+        public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 0,
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
-                MessageVerbosity.Error );
+                MessageVerbosity.Error);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
@@ -84,15 +84,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     MessageStatus.OperationError,
-                    ErrorLevel.Error );
+                    ErrorLevel.Error);
 
-                this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
         }
 
-        public override void ProcessNotificationMessage( NotificationMessage message )
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -103,21 +103,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     description,
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop );
+                    FieldMessageType.InverterStop);
 
-            this.Logger.LogTrace( $"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
+            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 500);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterSetTimer);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+            inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter axis position status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
@@ -132,7 +143,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 0,
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
-                MessageVerbosity.Info );
+                MessageVerbosity.Info);
 
             var notificationMessage = new NotificationMessage(
                                     notificationMessageData,
@@ -140,17 +151,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.Positioning,
-                                    MessageStatus.OperationError );
+                                    MessageStatus.OperationError);
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -162,7 +173,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -344,13 +344,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace("1:Method Start");
 
             // Send a field message to force the Update of sensors (input lines) to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, true, 0);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterSetTimer);
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, true, 0);
+            inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter axis position status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
