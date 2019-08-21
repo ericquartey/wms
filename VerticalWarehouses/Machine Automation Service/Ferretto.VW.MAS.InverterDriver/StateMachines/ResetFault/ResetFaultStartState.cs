@@ -118,11 +118,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
                 this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-                returnValue = true;
-            }
-            else
-            {
                 this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
+
                 returnValue = true;
             }
 
