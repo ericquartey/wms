@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
     {
+
         #region Fields
 
         private readonly ManualResetEventSlim dataReady;
@@ -21,11 +23,15 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         #endregion
 
+
+
         #region Properties
 
         public WaitHandle WaitHandle => this.dataReady.WaitHandle;
 
         #endregion
+
+
 
         #region Methods
 

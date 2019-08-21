@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ParameterHidesMember
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
@@ -115,42 +116,33 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
 
-                IoIndex currentDevice;
+                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.SwitchAxis:
-                        switch (receivedMessage.DeviceIndex)
+                        switch (currentDevice)
                         {
-                            case (byte)IoIndex.IoDevice1:
+                            case IoIndex.IoDevice1:
                                 this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
-                                break;
-
-                            default:
                                 break;
                         }
                         break;
 
                     case FieldMessageType.IoReset:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteIoReset();
                         break;
 
                     case FieldMessageType.SensorsChanged:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
                     case FieldMessageType.ResetSecurity:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -242,6 +234,9 @@ namespace Ferretto.VW.MAS.IODriver
                     return;
                 }
                 this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
+
+                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
@@ -263,8 +258,7 @@ namespace Ferretto.VW.MAS.IODriver
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
-                            var index = (IoIndex)receivedMessage.DeviceIndex;
-                            this.ioDevices[index].DestroyStateMachine();
+                            this.ioDevices[currentDevice].DestroyStateMachine();
                         }
                         break;
                 }
