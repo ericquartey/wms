@@ -106,13 +106,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.menuItems.Add(
                 new NavigationMenuItem(
-                    Utils.Modules.Installation.Sensors.CRADLE,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Cradle,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.SHUTTER,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Shutter,

@@ -65,7 +65,6 @@ namespace Ferretto.VW.App.Modules.Installation
             #region Sensors Views
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
-            containerRegistry.RegisterForNavigation<CradleSensorsView>();
             containerRegistry.RegisterForNavigation<ShutterSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
