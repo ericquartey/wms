@@ -5,9 +5,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationStartState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -17,7 +18,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public SetConfigurationStartState(
             IIoStateMachine parentStateMachine,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
@@ -37,36 +38,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
+
+
         #region Methods
-
-        public override void ProcessMessage(IoSHDMessage message)
-        {
-        }
-
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
-        {
-            this.Logger.LogTrace("1:Method Start");
-
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
-            {
-                this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
-
-                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.Logger));
-            }
-        }
-
-        public override void Start()
-        {
-            var message = new IoSHDWriteMessage(
-                this.status.ComunicationTimeOut,
-                this.status.UseSetupOutputLines,
-                this.status.SetupOutputLines,
-                this.status.DebounceInput);
-
-            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
-
-            this.ParentStateMachine.EnqueueMessage(message);
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -82,6 +56,35 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
+            {
+                this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+
+                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.Logger));
+            }
+        }
+
+        public override void Start()
+        {
+            var message = new IoWriteMessage(
+                this.status.ComunicationTimeOut,
+                this.status.UseSetupOutputLines,
+                this.status.SetupOutputLines,
+                this.status.DebounceInput);
+
+            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+
+            this.ParentStateMachine.EnqueueMessage(message);
         }
 
         #endregion

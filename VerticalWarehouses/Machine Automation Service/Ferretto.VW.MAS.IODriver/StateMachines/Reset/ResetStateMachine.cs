@@ -8,11 +8,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     public class ResetStateMachine : IoStateMachineBase
     {
+
         #region Fields
 
         private const int PULSE_INTERVAL = 350;
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private Timer delayTimer;
 
@@ -25,16 +26,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         #region Constructors
 
         public ResetStateMachine(
-            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
-            IoSHDStatus status,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
+            IoStatus status,
             IEventAggregator eventAggregator,
-            ILogger logger )
-            : base( eventAggregator, logger )
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
 
-            logger.LogTrace( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -43,49 +44,26 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         ~ResetStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage( IoSHDMessage message )
+        private void DelayElapsed(object state)
         {
-            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}" );
+            var pulseIoMessage = new IoWriteMessage();
 
-            if (message.ValidOutputs && message.ResetSecurity)
-            {
-                this.delayTimer = new Timer( this.DelayElapsed, null, PULSE_INTERVAL, -1 );    //VALUE -1 period means timer does not fire multiple times
-            }
+            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
 
-            base.ProcessMessage( message );
+            this.EnqueueMessage(pulseIoMessage);
         }
 
-        public override void ProcessResponseMessage( IoSHDReadMessage message )
-        {
-            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}" );
-
-            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs && message.ResetSecurity;
-
-            if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
-            {
-                this.delayTimer = new Timer( this.DelayElapsed, null, PULSE_INTERVAL, -1 );    //VALUE -1 period means timer does not fire multiple times
-                this.pulseOneTime = true;
-            }
-
-            base.ProcessResponseMessage( message );
-        }
-
-        public override void Start()
-        {
-            this.pulseOneTime = false;
-            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
-            this.CurrentState?.Start();
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -100,17 +78,42 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
-        private void DelayElapsed( object state )
+        public override void ProcessMessage(IoMessage message)
         {
-            var pulseIoMessage = new IoSHDWriteMessage();
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            this.Logger.LogTrace( $"1:Pulse IO={pulseIoMessage}" );
-            this.status.UpdateOutputStates( pulseIoMessage.Outputs );
+            if (message.ValidOutputs && message.ResetSecurity)
+            {
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+            }
 
-            this.EnqueueMessage( pulseIoMessage );
+            base.ProcessMessage(message);
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+
+            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+                message.ValidOutputs && message.ResetSecurity;
+
+            if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
+            {
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.pulseOneTime = true;
+            }
+
+            base.ProcessResponseMessage(message);
+        }
+
+        public override void Start()
+        {
+            this.pulseOneTime = false;
+            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
+            this.CurrentState?.Start();
         }
 
         #endregion

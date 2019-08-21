@@ -1,15 +1,17 @@
 ﻿using System;
-using Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity;
+using Ferretto.VW.MAS.IODriver.StateMachines.Reset;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.IODriver.IoDevice
+namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
+
+
         #region Methods
 
-        public void ExecuteResetSecurity()
+        public void ExecuteIoReset()
         {
             if (this.CurrentStateMachine != null)
             {
@@ -20,7 +22,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             }
             else
             {
-                this.CurrentStateMachine = new ResetSecurityStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                this.CurrentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
                 this.CurrentStateMachine.Start();
             }
         }

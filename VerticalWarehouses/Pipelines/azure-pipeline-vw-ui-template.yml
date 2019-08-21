@@ -13,9 +13,9 @@ steps:
 
 
 - task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
+  displayName: 'Build PanelPC.sln'
   inputs:
-    solution: 'VerticalWarehouses/VerticalWarehouses.sln'
+    solution: 'VerticalWarehouses/PanelPC.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64

@@ -5,15 +5,17 @@ namespace Ferretto.VW.MAS.IODriver.Interface
 {
     public interface IIoStateMachine : IDisposable
     {
+
+
         #region Methods
 
         void ChangeState(IIoState newState);
 
-        void EnqueueMessage(IoSHDWriteMessage message);
+        void EnqueueMessage(IoWriteMessage message);
 
-        void ProcessMessage(IoSHDMessage message);
+        void ProcessMessage(IoMessage message);
 
-        void ProcessResponseMessage(IoSHDReadMessage message);
+        void ProcessResponseMessage(IoReadMessage message);
 
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 

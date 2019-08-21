@@ -10,11 +10,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
     public class PowerEnableStateMachine : IoStateMachineBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
-
         private readonly bool enable;
+
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -24,8 +25,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         public PowerEnableStateMachine(
             bool enable,
-            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
-            IoSHDStatus status,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
+            IoStatus status,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
@@ -48,8 +49,26 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
 
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.CurrentState.Dispose();
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void Start()
         {
@@ -69,23 +88,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             this.PublishNotificationEvent(notificationMessage);
 
             this.CurrentState?.Start();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.CurrentState.Dispose();
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

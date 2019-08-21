@@ -4,8 +4,9 @@ using Ferretto.VW.MAS.IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class IoSHDStatus
+    public class IoStatus
     {
+
         #region Fields
 
         private const short COMTOUT_DEFAULT = 20000;
@@ -44,7 +45,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public IoSHDStatus()
+        public IoStatus()
         {
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -59,6 +60,8 @@ namespace Ferretto.VW.MAS.IODriver
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -110,6 +113,8 @@ namespace Ferretto.VW.MAS.IODriver
         #endregion
 
         // Add other output signals names
+
+
 
         #region Methods
 

@@ -6,9 +6,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationStateMachine : IoStateMachineBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -17,8 +18,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         #region Constructors
 
         public SetConfigurationStateMachine(
-            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
-            IoSHDStatus status,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
+            IoStatus status,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
@@ -40,27 +41,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
+
+
         #region Methods
-
-        public override void ProcessMessage(IoSHDMessage message)
-        {
-            this.Logger.LogTrace("1:Method Start");
-
-            base.ProcessMessage(message);
-        }
-
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
-        {
-            this.Logger.LogTrace("1:Method Start");
-
-            base.ProcessResponseMessage(message);
-        }
-
-        public override void Start()
-        {
-            this.CurrentState = new SetConfigurationStartState(this, this.status, this.Logger);
-            this.CurrentState?.Start();
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -76,6 +59,26 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            base.ProcessMessage(message);
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            base.ProcessResponseMessage(message);
+        }
+
+        public override void Start()
+        {
+            this.CurrentState = new SetConfigurationStartState(this, this.status, this.Logger);
+            this.CurrentState?.Start();
         }
 
         #endregion

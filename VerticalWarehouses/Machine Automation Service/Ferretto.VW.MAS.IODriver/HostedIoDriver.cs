@@ -6,7 +6,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
+using Ferretto.VW.MAS.IODriver.IoDevices;
+using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -17,12 +18,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ParameterHidesMember
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class HostedSHDIoDriver : BackgroundService
+    public class HostedIoDriver : BackgroundService
     {
+
         #region Fields
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
@@ -53,11 +56,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public HostedSHDIoDriver(
+        public HostedIoDriver(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
-            ILogger<HostedSHDIoDriver> logger,
+            ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
         {
             logger.LogTrace("1:Method Start");
@@ -83,49 +86,16 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Destructors
 
-        ~HostedSHDIoDriver()
+        ~HostedIoDriver()
         {
             this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.Dispose();
-            }
-
-            this.disposed = true;
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            this.logger.LogDebug("1:Starting Tasks");
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
-            }
-
-            return Task.CompletedTask;
-        }
 
         private void CommandReceiveTaskFunction()
         {
@@ -146,42 +116,33 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
 
-                IoIndex currentDevice;
+                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.SwitchAxis:
-                        switch (receivedMessage.DeviceIndex)
+                        switch (currentDevice)
                         {
-                            case (byte)IoIndex.IoDevice1:
+                            case IoIndex.IoDevice1:
                                 this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
-                                break;
-
-                            default:
                                 break;
                         }
                         break;
 
                     case FieldMessageType.IoReset:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteIoReset();
                         break;
 
                     case FieldMessageType.SensorsChanged:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
                     case FieldMessageType.ResetSecurity:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
-                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -197,14 +158,14 @@ namespace Ferretto.VW.MAS.IODriver
 
             foreach (var ioIndex in ioDevicesList)
             {
-                ISHDTransport transport;
+                IIoTransport transport;
                 if (!useMockedTransport)
                 {
-                    transport = new SHDTransport();
+                    transport = new IoTransport();
                 }
                 else
                 {
-                    transport = new SHDTransportMock();
+                    transport = new IoTransportMock();
                 }
 
                 switch (ioIndex)
@@ -212,21 +173,21 @@ namespace Ferretto.VW.MAS.IODriver
                     case IoIndex.IoDevice1:
                         var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice2:
                         var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice3:
                         var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
 
                         break;
                 }
@@ -273,6 +234,9 @@ namespace Ferretto.VW.MAS.IODriver
                     return;
                 }
                 this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
+
+                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
@@ -294,8 +258,7 @@ namespace Ferretto.VW.MAS.IODriver
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
-                            var index = (IoIndex)receivedMessage.DeviceIndex;
-                            this.ioDevices[index].DestroyStateMachine();
+                            this.ioDevices[currentDevice].DestroyStateMachine();
                         }
                         break;
                 }
@@ -323,6 +286,41 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 await device.StartHardwareCommunications();
             }
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            this.logger.LogDebug("1:Starting Tasks");
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
+            }
+
+            return Task.CompletedTask;
         }
 
         #endregion

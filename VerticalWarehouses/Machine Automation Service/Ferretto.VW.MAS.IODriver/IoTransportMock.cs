@@ -7,8 +7,9 @@ using Ferretto.VW.MAS.IODriver.Interface;
 namespace Ferretto.VW.MAS.IODriver
 {
     //TEMP The TransportMock handle only data for fictitious device with firmware release 0x10
-    public class SHDTransportMock : ISHDTransport
+    public class IoTransportMock : IIoTransport
     {
+
         #region Fields
 
         private const byte FW_RELEASE = 0x10;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public SHDTransportMock()
+        public IoTransportMock()
         {
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
             this.responseMessage = this.buildRawMessageBytes();
@@ -33,67 +34,17 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+
+
         #region Properties
 
         public bool IsConnected => true;
 
         #endregion
 
+
+
         #region Methods
-
-        /// <inheritdoc />
-        public void Configure(IPAddress ioAddress, int sendPort)
-        {
-        }
-
-        /// <inheritdoc />
-        public Task ConnectAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <inheritdoc />
-        public void Disconnect()
-        {
-        }
-
-        /// <inheritdoc />
-        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
-        {
-            await Task.Delay(3, stoppingToken);
-
-            if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
-            {
-                lock (this.responseMessage)
-                {
-                    this.readCompleteEventSlim.Reset();
-                    return this.responseMessage;
-                }
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc />
-        public async ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
-        {
-            lock (this.responseMessage)
-            {
-                this.BuildResponseMessage(dataMessage);
-            }
-
-            await Task.Delay(3, stoppingToken);
-            this.readCompleteEventSlim.Set();
-
-            return this.responseMessage.Length - 5;
-        }
-
-        /// <inheritdoc />
-        public async ValueTask<int> WriteAsync(byte[] dataMessage, int delay, CancellationToken stoppingToken)
-        {
-            await Task.Delay(delay, stoppingToken);
-            return await this.WriteAsync(dataMessage, stoppingToken);
-        }
 
         private byte BoolArrayToByte(bool[] b)
         {
@@ -205,6 +156,60 @@ namespace Ferretto.VW.MAS.IODriver
                 default:
                     break;
             }
+        }
+
+        /// <inheritdoc />
+        public void Configure(IPAddress ioAddress, int sendPort)
+        {
+        }
+
+        /// <inheritdoc />
+        public Task ConnectAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
+        public void Disconnect()
+        {
+        }
+
+        /// <inheritdoc />
+        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
+        {
+            await Task.Delay(3, stoppingToken);
+
+            if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
+            {
+                lock (this.responseMessage)
+                {
+                    this.readCompleteEventSlim.Reset();
+                    return this.responseMessage;
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public async ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
+        {
+            lock (this.responseMessage)
+            {
+                this.BuildResponseMessage(dataMessage);
+            }
+
+            await Task.Delay(3, stoppingToken);
+            this.readCompleteEventSlim.Set();
+
+            return this.responseMessage.Length - 5;
+        }
+
+        /// <inheritdoc />
+        public async ValueTask<int> WriteAsync(byte[] dataMessage, int delay, CancellationToken stoppingToken)
+        {
+            await Task.Delay(delay, stoppingToken);
+            return await this.WriteAsync(dataMessage, stoppingToken);
         }
 
         #endregion

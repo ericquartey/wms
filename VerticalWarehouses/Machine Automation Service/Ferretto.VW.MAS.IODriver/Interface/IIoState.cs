@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS.IODriver.Interface
 {
     public interface IIoState : IDisposable
     {
+
+
         #region Properties
 
         /// <summary>
@@ -13,11 +15,13 @@ namespace Ferretto.VW.MAS.IODriver.Interface
 
         #endregion
 
+
+
         #region Methods
 
-        void ProcessMessage(IoSHDMessage message);
+        void ProcessMessage(IoMessage message);
 
-        void ProcessResponseMessage(IoSHDReadMessage message);
+        void ProcessResponseMessage(IoReadMessage message);
 
         void Start();
 

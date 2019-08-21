@@ -9,9 +9,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     public class ResetSecurityEndState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -21,7 +22,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         public ResetSecurityEndState(
             IIoStateMachine parentStateMachine,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
@@ -41,14 +42,32 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
         {
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
@@ -66,22 +85,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion
