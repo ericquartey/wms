@@ -108,6 +108,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             var messageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
 
             var commandMessage = new FieldCommandMessage(
@@ -117,7 +128,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ShutterPositioning);
 
-            this.Logger.LogDebug($"3:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogDebug($"4:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
@@ -130,7 +141,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 MessageType.ShutterPositioning,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"5:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

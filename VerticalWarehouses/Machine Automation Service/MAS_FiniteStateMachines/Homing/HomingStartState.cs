@@ -136,6 +136,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.homingOperation.AxisToCalibrate, InverterIndex.MainInverter);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -145,7 +156,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn);
 
-            this.Logger.LogTrace($"4:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
@@ -158,7 +169,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.Homing,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"5:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
