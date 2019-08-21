@@ -10,11 +10,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     public class SwitchAxisEndState : IoStateBase
     {
+
         #region Fields
 
         private readonly Axis axisToSwitchOn;
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -24,15 +25,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public SwitchAxisEndState(
             Axis axisToSwitchOn,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger,
-            IIoStateMachine parentStateMachine )
-            : base( parentStateMachine, logger )
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
         {
             this.status = status;
             this.axisToSwitchOn = axisToSwitchOn;
 
-            logger.LogTrace( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -41,40 +42,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         ~SwitchAxisEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage( IoSHDMessage message )
-        {
-            this.Logger.LogTrace( $"1:Message processed: {message}" );
-        }
-
-        public override void ProcessResponseMessage( IoSHDReadMessage message )
-        {
-            this.Logger.LogTrace( $"1:Message processed: {message}" );
-        }
-
-        public override void Start()
-        {
-            var messageData = new SwitchAxisFieldMessageData( this.axisToSwitchOn, MessageVerbosity.Info );
-            var endNotification = new FieldNotificationMessage(
-                messageData,
-                "Motor Switch complete",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.SwitchAxis,
-                MessageStatus.OperationEnd );
-
-            this.Logger.LogTrace( $"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}" );
-
-            this.ParentStateMachine.PublishNotificationEvent( endNotification );
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -87,7 +64,33 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void Start()
+        {
+            var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
+            var endNotification = new FieldNotificationMessage(
+                messageData,
+                "Motor Switch complete",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.SwitchAxis,
+                MessageStatus.OperationEnd);
+
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion

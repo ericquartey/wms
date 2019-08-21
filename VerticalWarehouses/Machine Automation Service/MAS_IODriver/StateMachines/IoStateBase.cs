@@ -7,6 +7,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateBase : IIoState
     {
+
         #region Fields
 
         private bool disposed;
@@ -32,29 +33,21 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #endregion
 
-        #region Properties
 
-        public virtual string Type => this.GetType().ToString();
+
+        #region Properties
 
         protected ILogger Logger { get; }
 
         protected IIoStateMachine ParentStateMachine { get; }
 
+        public virtual string Type => this.GetType().ToString();
+
         #endregion
 
+
+
         #region Methods
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public abstract void ProcessMessage(IoSHDMessage message);
-
-        public abstract void ProcessResponseMessage(IoSHDReadMessage message);
-
-        public abstract void Start();
 
         protected virtual void Dispose(bool disposing)
         {
@@ -69,6 +62,18 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
             this.disposed = true;
         }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public abstract void ProcessMessage(IoMessage message);
+
+        public abstract void ProcessResponseMessage(IoReadMessage message);
+
+        public abstract void Start();
 
         #endregion
     }

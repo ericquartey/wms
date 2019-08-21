@@ -9,8 +9,9 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class SHDTransport : ISHDTransport, IDisposable
+    public class IoTransport : IIoTransport, IDisposable
     {
+
         #region Fields
 
         private readonly byte[] receiveBuffer = new byte[1024];
@@ -27,14 +28,18 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+
+
         #region Destructors
 
-        ~SHDTransport()
+        ~IoTransport()
         {
             this.Dispose(true);
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -42,7 +47,28 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+
+
         #region Methods
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.transportStream?.Close();
+                    this.transportStream?.Dispose();
+                    this.transportStream = null;
+
+                    this.transportClient?.Close();
+                    this.transportClient?.Dispose();
+                    this.transportClient = null;
+                }
+
+                this.disposed = true;
+            }
+        }
 
         /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int sendPort)
@@ -267,25 +293,6 @@ namespace Ferretto.VW.MAS.IODriver
             }
 
             return 0;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
-            }
         }
 
         #endregion
