@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class IoWriteMessage
     {
-
         #region Fields
 
         private const int N_CONFIG_BYTES = 8;
@@ -39,7 +38,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoWriteMessage()
         {
-            this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -48,8 +46,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoWriteMessage(bool[] outputs)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -66,8 +62,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoWriteMessage(short comTout, bool useSetupOutputLines, byte setupOutputLines, byte debounceInput)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Configuration;
 
@@ -93,8 +87,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Properties
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
@@ -110,8 +102,6 @@ namespace Ferretto.VW.MAS.IODriver
         public byte DebounceInput => this.debounceInput;
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
-
-        public bool Force { get; set; }
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
@@ -129,25 +119,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Methods
-
-        private byte BoolArrayToByte(bool[] b)
-        {
-            byte value = 0x00;
-            var index = 0;
-            foreach (var el in b)
-            {
-                if (el)
-                {
-                    value |= (byte)(1 << index);
-                }
-                index++;
-            }
-
-            return value;
-        }
 
         /// <summary>
         /// Build the telegram to send to RemoteIO device.
@@ -320,6 +292,22 @@ namespace Ferretto.VW.MAS.IODriver
             returnString.Append("]");
 
             return returnString.ToString();
+        }
+
+        private byte BoolArrayToByte(bool[] b)
+        {
+            byte value = 0x00;
+            var index = 0;
+            foreach (var el in b)
+            {
+                if (el)
+                {
+                    value |= (byte)(1 << index);
+                }
+                index++;
+            }
+
+            return value;
         }
 
         #endregion

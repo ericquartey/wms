@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationEndState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoStatus status;
@@ -41,25 +40,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
@@ -89,7 +70,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         public override void Start()
         {
             var clearIoMessage = new IoWriteMessage();
-            clearIoMessage.Force = true;
 
             lock (this.status)
             {
@@ -99,6 +79,22 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -9,7 +9,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class IoMessage
     {
-
         #region Fields
 
         private const int N_CONFIG_BYTES = 8;
@@ -46,7 +45,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage()
         {
-            this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -56,7 +54,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(bool read)
         {
-            this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -72,7 +69,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(int inputs, int outputs)
         {
-            this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -89,7 +85,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(SHDCodeOperation codeOperation)
         {
-            this.Force = false;
             this.codeOperation = codeOperation;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
@@ -99,7 +94,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(bool[] data, bool input)
         {
-            this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -131,8 +125,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(bool[] inputs, bool[] outputs)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Data;
 
@@ -160,8 +152,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(byte[] configurationData)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Configuration;
 
@@ -185,8 +175,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(short comTout, bool useSetupOutputLines, byte setupOutputLines, byte debounceInput)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.Configuration;
 
@@ -213,8 +201,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoMessage(string ipAddress)
         {
-            this.Force = false;
-
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = SHDCodeOperation.SetIP;
             this.ipAddress = ipAddress;
@@ -233,8 +219,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Properties
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
@@ -250,8 +234,6 @@ namespace Ferretto.VW.MAS.IODriver
         public byte DebounceInput => this.debounceInput;
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
-
-        public bool Force { get; set; }
 
         public bool[] Inputs => this.inputs;
 
@@ -277,21 +259,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Methods
-
-        private byte BoolArrayToByte(bool[] b)
-        {
-            const int N_BITS_8 = 8;
-            var value = 0x00;
-            for (var i = 0; i < N_BITS_8; i++)
-            {
-                value += b[i] ? 1 : 0;
-            }
-
-            return Convert.ToByte(value);
-        }
 
         /// <summary>
         /// Get the telegram to send to RemoteIO device.
@@ -459,6 +427,18 @@ namespace Ferretto.VW.MAS.IODriver
             returnString.Append("]");
 
             return returnString.ToString();
+        }
+
+        private byte BoolArrayToByte(bool[] b)
+        {
+            const int N_BITS_8 = 8;
+            var value = 0x00;
+            for (var i = 0; i < N_BITS_8; i++)
+            {
+                value += b[i] ? 1 : 0;
+            }
+
+            return Convert.ToByte(value);
         }
 
         #endregion

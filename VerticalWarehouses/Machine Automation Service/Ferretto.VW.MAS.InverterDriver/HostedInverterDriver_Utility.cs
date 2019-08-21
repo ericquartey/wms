@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
 
                             decimal currentAxisPosition = 0;
-                            if (currentMessage.IntPayload != 0)
+                            if ((currentMessage.IntPayload != 0) && (configurationCategory != ConfigurationCategory.Undefined))
                             {
                                 currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
                             }
