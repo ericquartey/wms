@@ -1,0 +1,1158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActualPosition" xml:space="preserve">
+    <value>Actual position:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Backward" xml:space="preserve">
+    <value>Back</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Belt Burnishing</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Down</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Feed rate:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Forward</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GateSetUp" xml:space="preserve">
+    <value>Gate Set Up</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Installer" xml:space="preserve">
+    <value>Installer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Log Off</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LowSpeedMovementsTest" xml:space="preserve">
+    <value>Low Speed Movements</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Gate</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTGateEngineTitle" xml:space="preserve">
+    <value>Gate engine movements</value>
+    <comment>Title</comment>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Horizontal Axis</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTHorizontalAxisTitle" xml:space="preserve">
+    <value>Horizontal axis movements</value>
+    <comment>Title</comment>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Vertical Axis</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTVerticalEngineTitle" xml:space="preserve">
+    <value>Vertical axis movements</value>
+    <comment>Title</comment>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manu</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>Next &gt;  </value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="OffsetCalibration" xml:space="preserve">
+    <value>Offset Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerifyCircuitIntegrity" xml:space="preserve">
+    <value>Verify Circuit Integrity</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerifyPanelPosition" xml:space="preserve">
+    <value>Verify Panel Position</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerifyWeightController" xml:space="preserve">
+    <value>Verify Weight Controller</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Vertical axis origin</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>Vertical axis origin set correctly.</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Vertical axis origin not set.</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Lower bound [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Resolution:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Upper bound [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Sensors' State</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Bays and height control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Cradle</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate" xml:space="preserve">
+    <value>Gate</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VariousInputs" xml:space="preserve">
+    <value>Various Inputs</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerticalAxisAndCradle" xml:space="preserve">
+    <value>Vertical and cradle</value>
+    <comment>Title</comment>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Anti intrusion gate</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="BrakeResistanceOvertemperature" xml:space="preserve">
+    <value>Brake Resistance Overtemperature</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Cradle Engine Selected</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Elevator Engine Selected</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Emergency End Run</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorA" xml:space="preserve">
+    <value>Gate Sensor A</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorB" xml:space="preserve">
+    <value>Gate Sensor B</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>LU Presence on Machine Cradle Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>LU Presence on Operator Cradle Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresentInBay" xml:space="preserve">
+    <value>Loading Unit in Bay</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Micro carter left side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Micro carter right side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Mushroom Emergency Button</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="PawlEncoder" xml:space="preserve">
+    <value>Pawl Encoder</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ResetSecurityFunction" xml:space="preserve">
+    <value>Reset Security Function</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Security Function Active</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ShapeControl" xml:space="preserve">
+    <value>Shape Control</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="VerticalAxisBrake" xml:space="preserve">
+    <value>Vertical Axis Brake</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Zero Pawl Sensor</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Zero Vertical Sensor</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Gates Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Go to cell</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Initial position [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MeasuredLenght" xml:space="preserve">
+    <value>Measured lenght [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>New resolution [imp/mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="RepositionLenght" xml:space="preserve">
+    <value>Reposition lenght [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ResolutionModified" xml:space="preserve">
+    <value>Resolution correctly modified.</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Current resolution [imp/mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DesiredMovement" xml:space="preserve">
+    <value>Desired movement [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertDesiredMovement" xml:space="preserve">
+    <value>Insert desired movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertiInitialPosition" xml:space="preserve">
+    <value>Insert desired initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertMeasuredMovement" xml:space="preserve">
+    <value>Insert measured movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Measured movement [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Vertical Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerticalAxisCalibrating" xml:space="preserve">
+    <value>Calibrating verical axis...</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Closed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CompletedCycles" xml:space="preserve">
+    <value>Completed cycles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Current position [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Delay between cycles [s]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Middle" xml:space="preserve">
+    <value>Middle</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Required cycles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Gate Control 1</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate2Control" xml:space="preserve">
+    <value>Gate Control 2</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate3Control" xml:space="preserve">
+    <value>Gate Control 3</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="ActiveRaysQuantity" xml:space="preserve">
+    <value>Active rays quantity:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Current height [mm]:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateCalibrated" xml:space="preserve">
+    <value>Gate succesfully calibrated.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Gate correction [mm]:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateOutOfTolerance" xml:space="preserve">
+    <value>Gate is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Gate 1 Height Control</value>
+    <comment>Title</comment>
+  </data>
+  <data name="PanelsControl" xml:space="preserve">
+    <value>Panels Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Speed [mm/s]:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>System error [mm]:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerance (+/-) [mm]:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Vertical Offset Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Weight Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate2HeightControl" xml:space="preserve">
+    <value>Gate 2 Height Control</value>
+    <comment>Title</comment>
+  </data>
+  <data name="Gate3HeightControl" xml:space="preserve">
+    <value>Gate 3 Height Control</value>
+    <comment>Title</comment>
+  </data>
+  <data name="GateHeightControl" xml:space="preserve">
+    <value>Gate Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Acceptable weight tolerance [%]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Inserted weight [kg]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Measured weight [kg]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MeasuredWeightInTolerance" xml:space="preserve">
+    <value>Measured weight is in tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MeasuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Measured weight is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Test run:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Adjusted offset [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Current offset [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Close procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="AcceptOffset" xml:space="preserve">
+    <value>Accept Offset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Reference's cell position [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ReferenceCellNumber" xml:space="preserve">
+    <value>Reference's cell number:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StepDown" xml:space="preserve">
+    <value>Step -</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepUp" xml:space="preserve">
+    <value>Step +</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Step value [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Current cell's height [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsPanelControl" xml:space="preserve">
+    <value>Cells' Panel Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Current cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Current panel:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Panel correction [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Total panels:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Correct</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Installation State</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Belt burnishing</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1Done" xml:space="preserve">
+    <value>Gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate2Done" xml:space="preserve">
+    <value>Gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate3Done" xml:space="preserve">
+    <value>Gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="HorizontalAxisHomedDone" xml:space="preserve">
+    <value>Horizontal axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser1Done" xml:space="preserve">
+    <value>Laser gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser2Done" xml:space="preserve">
+    <value>Laser gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser3Done" xml:space="preserve">
+    <value>Laser gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineDone" xml:space="preserve">
+    <value>Installation completed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape1Done" xml:space="preserve">
+    <value>Shape gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape2Done" xml:space="preserve">
+    <value>Shape gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape3Done" xml:space="preserve">
+    <value>Shape gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Vertical axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Vertical resolution</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Vertical Axis Calibration</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Axis Calibrated Successfully</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Axis Not Calibrated Yet</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Cells  position control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Measured initial position [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MoveToInitialPosition" xml:space="preserve">
+    <value>Move to initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertMeasuredInitialPosition" xml:space="preserve">
+    <value>Insert measured initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Move to position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ConfirmResolution" xml:space="preserve">
+    <value>Confirm new resolution or cancel action.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MovingToDesiredPosition" xml:space="preserve">
+    <value>Moving to desired position...</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="SettingInitialPosition" xml:space="preserve">
+    <value>Setting initial position...</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Cell correction [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Vertical Offset Verified</value>
+  </data>
+  <data name="CellPositionDone" xml:space="preserve">
+    <value>Cell position verified</value>
+  </data>
+  <data name="HeightControlCheck" xml:space="preserve">
+    <value>Height control</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Sensor shutter A bay</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Sensor shutter B</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Final position</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Start procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Close procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTElevator" xml:space="preserve">
+    <value>Elevator</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Nex panel</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Panels control procedure</value>
+    <comment>Title</comment>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>ReadFinalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1HeightReaced" xml:space="preserve">
+    <value>Gate1 Height Reaced</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>VerticalAxisButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>Modify cell block</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Modify cell group position</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Initial cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Final cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Requested correction [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Selected side:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>Load Drawers</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Load Drawers</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Total drawers:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Max weight portance [kg]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Inserted drawers:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Drawer to insert:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Next drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Start insertion</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>Load First Drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Load First Drawer and Test Cells</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Total cells to test:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Total tested cells:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Testing cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Drawer to insert:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Max weight drawer portance [kg]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Insert Drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Call Drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControl" xml:space="preserve">
+    <value>Bays Control</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlHeader" xml:space="preserve">
+    <value>Bays Position Control</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlSelectedBay" xml:space="preserve">
+    <value>Selected bay:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlSelectedPosition" xml:space="preserve">
+    <value>Position in bay</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlPositionHeight" xml:space="preserve">
+    <value>Bay position [mm]:</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlStepValue" xml:space="preserve">
+    <value>Step value [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlActualHeight" xml:space="preserve">
+    <value>Current position [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlCorrectionValue" xml:space="preserve">
+    <value>Correction value [mm]:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlMoveToPosition" xml:space="preserve">
+    <value>Move to position</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepPiu" xml:space="preserve">
+    <value>Step +</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepMeno" xml:space="preserve">
+    <value>Step -</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlAdjust" xml:space="preserve">
+    <value>Correct position</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlNextPosition" xml:space="preserve">
+    <value>Next position</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>Embark / Disembark test</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Embark / Disembark in bay test</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Feed rate %:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Requested cycles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Current chain position:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Completed cycles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Stop cycle</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Start cycle</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Warning:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Manual commands currently available for non blocked low speed movements</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Carousel</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CarouselMovements" xml:space="preserve">
+    <value>Carousel movements</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="SaveRestoreConfigButton" xml:space="preserve">
+    <value>Save and Restore</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Save configuration files</value>
+    <comment>Page header alto</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Restore configuration files</value>
+    <comment>Page header basso</comment>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Selected folder:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Save configuration</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Confirm Saving</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Cancel Saving</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Load configuration</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Confirm loading</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Cancel loading</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="HomingCompleted" xml:space="preserve">
+    <value>Homing completed successfully</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Homing started</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Horizontal Homing Completed</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Horizontal Homing Executing ({0} of {1})</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Horizontal Homing Started</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Switch Engine Completed</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Switch Engine Started</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingCompleted" xml:space="preserve">
+    <value>Vertical Homing Completed</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Vertical Homing Executing ({0} of {1})</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Vertical Homing Started</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Vertical Homing Error ({0} of {1})</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Horizontal Homing Error ({0} of {1})</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Switch Engine Error</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Homing Error</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
+    <value>Couldn't fetch requested configuration data</value>
+  </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Value inserted not valid</value>
+    <comment>Value inserted not valid</comment>
+  </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Update Resolution</value>
+    <comment>Update Resolution</comment>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Store/recall drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LUPresentMiddleBottomBay" xml:space="preserve">
+    <value>Second LU Present in Bay</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Start recall from cell to bay</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Start store from bay to cell</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Drawer store and drawer recall</value>
+    <comment>Title</comment>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Initializing ...</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Bay 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Bay 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Bay 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Shutter Endurance Test for Bay {0}</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>Mid-way</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Step 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Step 2</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Step 3</value>
+  </data>
+  <data name="MeasuredFinalPosition" xml:space="preserve">
+    <value>Measured final position [mm]</value>
+  </data>
+  <data name="MeasuredDistance" xml:space="preserve">
+    <value>Measured distance [mm]</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+</root>
