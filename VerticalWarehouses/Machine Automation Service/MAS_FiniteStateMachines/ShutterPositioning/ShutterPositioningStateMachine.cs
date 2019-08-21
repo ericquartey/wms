@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     public class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
+
+        private readonly InverterIndex inverterIndex;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
@@ -27,12 +30,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public ShutterPositioningStateMachine(
             IEventAggregator eventAggregator,
             IShutterPositioningMessageData shutterPositioningMessageData,
+            InverterIndex inverterIndex,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory,
             IMachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
+
+            this.inverterIndex = inverterIndex;
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
 
@@ -99,11 +105,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 if (this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1)
                 {
-                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, ShutterPosition.None, null, this.Logger);
+                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger);
                 }
                 else
                 {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
+                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.inverterIndex, this.Logger, this.machineSensorsStatus);
                 }
 
                 this.CurrentState?.Start();

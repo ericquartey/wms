@@ -950,7 +950,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                var currentInverter = InverterIndex.Slave2;
+                InverterIndex currentInverter = (InverterIndex)receivedMessage.DeviceIndex;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {

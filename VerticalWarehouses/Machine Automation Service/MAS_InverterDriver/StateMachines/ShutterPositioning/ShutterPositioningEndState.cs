@@ -1,8 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
@@ -12,9 +14,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
-
         private readonly bool stopRequested;
+
+        private IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         #endregion
 
@@ -56,13 +58,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.InverterStatus.CommonControlWord.EnableOperation = false;
                 this.InverterStatus.CommonControlWord.EnableVoltage = false;
             }
+            if (this.InverterStatus is AglInverterStatus currentStatus)
+            {
+                this.shutterPositionData.ShutterPosition = currentStatus.CurrentShutterPosition;
+            }
             var endNotification = new FieldNotificationMessage(
-                this.shutterPositionData,
-                "Shutter Positioning complete",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.ShutterPositioning,
-                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+            this.shutterPositionData,
+            "Shutter Positioning complete",
+            FieldMessageActor.InverterDriver,
+            FieldMessageActor.InverterDriver,
+            FieldMessageType.ShutterPositioning,
+            (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

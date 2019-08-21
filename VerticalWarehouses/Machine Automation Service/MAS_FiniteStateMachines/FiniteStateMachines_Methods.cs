@@ -353,15 +353,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 FieldMessageType.InverterSetTimer);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
-            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, true, 0);
-            inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
-
             // Send a field message to force the Update of sensors (input lines) to IoDriver
             foreach (var index in this.ioIndexDeviceList)
             {
@@ -418,9 +409,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IShutterPositioningMessageData data)
             {
+                InverterIndex inverterIndex;
+                switch (data.BayNumber)
+                {
+                    case 1:
+                        inverterIndex = InverterIndex.Slave2;
+                        break;
+
+                    case 2:
+                        inverterIndex = InverterIndex.Slave4;
+                        break;
+
+                    case 3:
+                        inverterIndex = InverterIndex.Slave6;
+                        break;
+
+                    default:
+                        this.logger.LogError($"Bay number not valid {data.BayNumber}");
+                        return;
+                }
                 this.currentStateMachine = new ShutterPositioningStateMachine(
                     this.eventAggregator,
                     data,
+                    inverterIndex,
                     this.logger,
                     this.serviceScopeFactory,
                     this.machineSensorsStatus);
