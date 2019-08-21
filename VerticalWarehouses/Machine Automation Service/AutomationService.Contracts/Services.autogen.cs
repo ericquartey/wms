@@ -19,48 +19,48 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineBaysService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> ActivateAsync(int id)
         {
             return ActivateAsync(id, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> ActivateAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/activate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -69,12 +69,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -84,17 +84,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<Bay>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -118,24 +118,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> DeactivateAsync(int id)
         {
             return DeactivateAsync(id, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> DeactivateAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/deactivate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -144,12 +144,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -159,17 +159,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<Bay>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -201,21 +201,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -250,7 +250,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -282,54 +282,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineBeltBurnishingProcedureService : ServiceBase, IMachineBeltBurnishingProcedureService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineBeltBurnishingProcedureService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<BeltBurnishingParameters> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<BeltBurnishingParameters> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/parameters");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -337,12 +337,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -352,11 +352,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<BeltBurnishingParameters>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -364,10 +364,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(BeltBurnishingParameters);
                     }
                     finally
@@ -383,20 +383,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync()
         {
             return MarkAsCompletedAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/mark-as-completed");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -405,12 +405,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -420,24 +420,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -453,33 +453,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
             return StartAsync(upperBound, lowerBound, requiredCycles, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles, System.Threading.CancellationToken cancellationToken)
         {
             if (upperBound == null)
                 throw new System.ArgumentNullException("upperBound");
-
+    
             if (lowerBound == null)
                 throw new System.ArgumentNullException("lowerBound");
-
+    
             if (requiredCycles == null)
                 throw new System.ArgumentNullException("requiredCycles");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/start?");
             urlBuilder_.Append("upperBound=").Append(System.Uri.EscapeDataString(ConvertToString(upperBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("lowerBound=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("requiredCycles=").Append(System.Uri.EscapeDataString(ConvertToString(requiredCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -487,12 +487,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -502,16 +502,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -535,20 +535,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -556,12 +556,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -571,11 +571,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -598,7 +598,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -606,21 +606,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -655,7 +655,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -666,7 +666,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -687,54 +687,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineCarouselService : ServiceBase, IMachineCarouselService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineCarouselService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync()
         {
             return GetVerticalPositionAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/position");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -742,12 +742,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -757,11 +757,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -769,10 +769,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(decimal);
                     }
                     finally
@@ -788,20 +788,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveAsync(CarouselMovementParameters parameters)
         {
             return MoveAsync(parameters, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveAsync(CarouselMovementParameters parameters, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/move");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -811,12 +811,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -826,18 +826,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -854,20 +854,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -875,12 +875,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -890,11 +890,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -917,7 +917,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -925,21 +925,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -974,7 +974,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -985,7 +985,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1006,54 +1006,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineCellsService : ServiceBase, IMachineCellsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineCellsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync()
         {
             return GetStatisticsAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/statistics");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1061,12 +1061,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1076,11 +1076,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CellStatisticsSummary>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -1088,10 +1088,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(CellStatisticsSummary);
                     }
                     finally
@@ -1107,7 +1107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -1115,21 +1115,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1164,7 +1164,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -1175,7 +1175,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1196,54 +1196,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineElevatorService : ServiceBase, IMachineElevatorService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineElevatorService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync()
         {
             return GetVerticalPositionAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/position");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1251,12 +1251,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1266,11 +1266,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -1278,10 +1278,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(decimal);
                     }
                     finally
@@ -1297,20 +1297,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveHorizontalAsync(ElevatorMovementParameters data)
         {
             return MoveHorizontalAsync(data, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveHorizontalAsync(ElevatorMovementParameters data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/move");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1320,12 +1320,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1335,11 +1335,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -1362,20 +1362,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveVerticalAsync(ElevatorMovementParameters data)
         {
             return MoveVerticalAsync(data, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveVerticalAsync(ElevatorMovementParameters data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1385,12 +1385,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1400,11 +1400,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -1427,20 +1427,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1448,12 +1448,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1463,11 +1463,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -1490,7 +1490,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -1498,21 +1498,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1547,7 +1547,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -1558,7 +1558,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1579,54 +1579,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineErrorsService : ServiceBase, IMachineErrorsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineErrorsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Error> GetCurrentAsync()
         {
             return GetCurrentAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Error> GetCurrentAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/current");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1634,12 +1634,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1649,11 +1649,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -1661,10 +1661,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(Error);
                     }
                     finally
@@ -1680,20 +1680,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync()
         {
             return GetStatisticsAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/statistics");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1701,12 +1701,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1716,11 +1716,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorStatisticsSummary>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -1728,10 +1728,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(ErrorStatisticsSummary);
                     }
                     finally
@@ -1747,25 +1747,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Error> CreateAsync(MachineErrors code)
         {
             return CreateAsync(code, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Error> CreateAsync(MachineErrors code, System.Threading.CancellationToken cancellationToken)
         {
             if (code == null)
                 throw new System.ArgumentNullException("code");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors?");
             urlBuilder_.Append("code=").Append(System.Uri.EscapeDataString(ConvertToString(code, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1774,12 +1774,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1789,11 +1789,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -1801,10 +1801,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(Error);
                     }
                     finally
@@ -1820,24 +1820,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Error> ResolveAsync(int id)
         {
             return ResolveAsync(id, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Error> ResolveAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/{id}/resolve");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -1846,12 +1846,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1861,17 +1861,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -1895,7 +1895,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -1903,21 +1903,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1952,7 +1952,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -1963,7 +1963,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1984,54 +1984,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineIdentityService : ServiceBase, IMachineIdentityService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineIdentityService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineIdentity> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2039,12 +2039,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2054,11 +2054,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<MachineIdentity>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -2066,10 +2066,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(MachineIdentity);
                     }
                     finally
@@ -2085,7 +2085,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -2093,21 +2093,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2142,7 +2142,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -2153,7 +2153,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -2174,54 +2174,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineLoadingUnitsService : ServiceBase, IMachineLoadingUnitsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineLoadingUnitsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync()
         {
             return GetSpaceStatisticsAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/statistics/space");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2229,12 +2229,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2244,11 +2244,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -2256,10 +2256,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>);
                     }
                     finally
@@ -2275,20 +2275,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync()
         {
             return GetWeightStatisticsAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/statistics/weight");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2296,12 +2296,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2311,11 +2311,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -2323,10 +2323,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>);
                     }
                     finally
@@ -2342,20 +2342,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartMovingAsync(MoveDrawerMessageDataDTO data)
         {
             return StartMovingAsync(data, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartMovingAsync(MoveDrawerMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/start-moving");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2365,12 +2365,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2380,11 +2380,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -2407,32 +2407,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/stop-moving");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2442,11 +2442,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -2469,7 +2469,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -2477,21 +2477,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2526,7 +2526,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -2537,7 +2537,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -2558,54 +2558,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineMachineStatusService : ServiceBase, IMachineMachineStatusService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineMachineStatusService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task PowerOffAsync()
         {
             return PowerOffAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task PowerOffAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/power-off");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2613,12 +2613,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2628,18 +2628,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -2656,20 +2656,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task PowerOnAsync()
         {
             return PowerOnAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task PowerOnAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/power-on");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2677,12 +2677,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2692,18 +2692,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -2720,20 +2720,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ResetSecurityAsync()
         {
             return ResetSecurityAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ResetSecurityAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/reset-security");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2741,12 +2741,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2756,18 +2756,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -2784,7 +2784,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -2792,21 +2792,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2841,7 +2841,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -2852,7 +2852,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -2873,63 +2873,63 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineMissionOperationsService : ServiceBase, IMachineMissionOperationsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineMissionOperationsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity)
         {
             return CompleteAsync(id, quantity, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
-
+    
             if (quantity == null)
                 throw new System.ArgumentNullException("quantity");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/mission-operations/{id}/complete?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("quantity=").Append(System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -2938,12 +2938,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2953,24 +2953,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -2986,7 +2986,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -2994,21 +2994,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3043,7 +3043,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -3054,7 +3054,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -3075,63 +3075,63 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineResolutionCalibrationProcedureService : ServiceBase, IMachineResolutionCalibrationProcedureService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineResolutionCalibrationProcedureService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal readDistance, decimal desiredInitialPosition, decimal desiredFinalPosition, decimal resolution)
         {
             return GetComputedResolutionAsync(readDistance, desiredInitialPosition, desiredFinalPosition, resolution, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal readDistance, decimal desiredInitialPosition, decimal desiredFinalPosition, decimal resolution, System.Threading.CancellationToken cancellationToken)
         {
             if (readDistance == null)
                 throw new System.ArgumentNullException("readDistance");
-
+    
             if (desiredInitialPosition == null)
                 throw new System.ArgumentNullException("desiredInitialPosition");
-
+    
             if (desiredFinalPosition == null)
                 throw new System.ArgumentNullException("desiredFinalPosition");
-
+    
             if (resolution == null)
                 throw new System.ArgumentNullException("resolution");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/computed-resolution?");
             urlBuilder_.Append("readDistance=").Append(System.Uri.EscapeDataString(ConvertToString(readDistance, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -3139,7 +3139,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("desiredFinalPosition=").Append(System.Uri.EscapeDataString(ConvertToString(desiredFinalPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("resolution=").Append(System.Uri.EscapeDataString(ConvertToString(resolution, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3147,12 +3147,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3162,17 +3162,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -3196,13 +3196,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
             return GetDecimalConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
@@ -3211,7 +3211,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/decimal-configuration-parameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3219,12 +3219,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3234,17 +3234,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -3268,20 +3268,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync()
         {
             return MarkAsCompletedAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/mark-as-completed");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3290,12 +3290,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3305,24 +3305,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -3338,25 +3338,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> SetResolutionParameterAsync(decimal value)
         {
             return SetResolutionParameterAsync(value, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> SetResolutionParameterAsync(decimal value, System.Threading.CancellationToken cancellationToken)
         {
             if (value == null)
                 throw new System.ArgumentNullException("value");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/resolution?");
             urlBuilder_.Append("value=").Append(System.Uri.EscapeDataString(ConvertToString(value, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3365,12 +3365,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3380,24 +3380,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -3413,29 +3413,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync(decimal position, ResolutionCalibrationStep resolutionCalibrationStep)
         {
             return StartAsync(position, resolutionCalibrationStep, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(decimal position, ResolutionCalibrationStep resolutionCalibrationStep, System.Threading.CancellationToken cancellationToken)
         {
             if (position == null)
                 throw new System.ArgumentNullException("position");
-
+    
             if (resolutionCalibrationStep == null)
                 throw new System.ArgumentNullException("resolutionCalibrationStep");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/start?");
             urlBuilder_.Append("position=").Append(System.Uri.EscapeDataString(ConvertToString(position, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("resolutionCalibrationStep=").Append(System.Uri.EscapeDataString(ConvertToString(resolutionCalibrationStep, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3443,12 +3443,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3458,16 +3458,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
                         else
-                        if (status_ == "422")
+                        if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -3491,20 +3491,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3512,12 +3512,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3527,11 +3527,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -3554,7 +3554,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -3562,21 +3562,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3611,7 +3611,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -3622,7 +3622,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -3643,54 +3643,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineSensorsService : ServiceBase, IMachineSensorsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineSensorsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ForceNotificationAsync()
         {
             return ForceNotificationAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ForceNotificationAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/sensors/force-notification");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3698,12 +3698,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3713,11 +3713,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -3740,7 +3740,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -3748,21 +3748,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3797,7 +3797,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -3808,7 +3808,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -3829,54 +3829,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineServiceService : ServiceBase, IMachineServiceService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineServiceService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SearchHorizontalZeroAsync()
         {
             return SearchHorizontalZeroAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/service/search-horizontal-zero");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -3884,12 +3884,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3899,11 +3899,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -3926,7 +3926,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -3934,21 +3934,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3983,7 +3983,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -3994,7 +3994,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -4015,54 +4015,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineSetupStatusService : ServiceBase, IMachineSetupStatusService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineSetupStatusService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/setup-status");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4070,12 +4070,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4085,11 +4085,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SetupStatusCapabilities>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -4097,10 +4097,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(SetupStatusCapabilities);
                     }
                     finally
@@ -4116,7 +4116,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -4124,21 +4124,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -4173,7 +4173,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -4184,7 +4184,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -4205,54 +4205,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineShuttersService : ServiceBase, IMachineShuttersService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineShuttersService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync()
         {
             return GetTestParametersAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4260,12 +4260,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4275,11 +4275,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ShutterTestParameters>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -4287,10 +4287,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(ShutterTestParameters);
                     }
                     finally
@@ -4306,24 +4306,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data)
         {
             return MoveAsync(bayNumber, data, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4333,12 +4333,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4348,18 +4348,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -4376,33 +4376,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles)
         {
             return RunTestAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
-
+    
             if (delay == null)
                 throw new System.ArgumentNullException("delay");
-
+    
             if (numberCycles == null)
                 throw new System.ArgumentNullException("numberCycles");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/run-test?");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("delay=").Append(System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("numberCycles=").Append(System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4410,12 +4410,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4425,16 +4425,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -4458,20 +4458,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4479,12 +4479,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4494,11 +4494,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -4521,7 +4521,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -4529,21 +4529,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -4578,7 +4578,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -4589,7 +4589,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -4610,54 +4610,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineStatisticsService : ServiceBase, IMachineStatisticsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineStatisticsService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineStatistics> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineStatistics> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/statistics");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4665,12 +4665,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4680,11 +4680,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<MachineStatistics>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -4692,10 +4692,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(MachineStatistics);
                     }
                     finally
@@ -4711,7 +4711,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -4719,21 +4719,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -4768,7 +4768,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -4779,7 +4779,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -4800,66 +4800,66 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineTestService : ServiceBase, IMachineTestService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineTestService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task BayNowServiceableAsync()
         {
             return BayNowServiceableAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task BayNowServiceableAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/BayNowServiceable");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4869,18 +4869,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -4897,32 +4897,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteHomingAsync()
         {
             return ExecuteHomingAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HomingTest");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -4932,18 +4932,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -4960,28 +4960,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition)
         {
             return ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition, System.Threading.CancellationToken cancellationToken)
         {
             if (readInitialPosition == null)
                 throw new System.ArgumentNullException("readInitialPosition");
-
+    
             if (readFinalPosition == null)
                 throw new System.ArgumentNullException("readFinalPosition");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}");
             urlBuilder_.Replace("{readInitialPosition}", System.Uri.EscapeDataString(ConvertToString(readInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{readFinalPosition}", System.Uri.EscapeDataString(ConvertToString(readFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -4989,12 +4989,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5004,18 +5004,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5032,20 +5032,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDto data)
         {
             return ExecuteShutterPositioningMovementTestAsync(data, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -5055,12 +5055,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5070,18 +5070,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5098,32 +5098,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteStopHomingAsync()
         {
             return ExecuteStopHomingAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteStopHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HomingStop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5133,18 +5133,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5161,13 +5161,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string parameter)
         {
             return GetDecimalConfigurationParameterAsync(parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string parameter, System.Threading.CancellationToken cancellationToken)
@@ -5175,7 +5175,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/DecimalConfigurationValues/{parameter}");
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -5183,12 +5183,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5198,17 +5198,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -5216,10 +5216,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(decimal);
                     }
                     finally
@@ -5235,20 +5235,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<bool> GetInstallationStatusAsync()
         {
             return GetInstallationStatusAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<bool> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/GetInstallationStatus");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -5256,12 +5256,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5271,17 +5271,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "500")
+                        if (status_ == "500") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
@@ -5289,10 +5289,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(bool);
                     }
                     finally
@@ -5308,13 +5308,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
             return GetIntegerConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
@@ -5323,7 +5323,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/GetIntegerConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -5331,12 +5331,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5346,17 +5346,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -5364,10 +5364,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(decimal);
                     }
                     finally
@@ -5383,32 +5383,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task HomingAsync()
         {
             return HomingAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/Homing");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5418,18 +5418,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5446,32 +5446,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task HorizontalPositioningAsync()
         {
             return HorizontalPositioningAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task HorizontalPositioningAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HorizontalPositioning");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5481,18 +5481,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5509,44 +5509,44 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
             return StartShutterControlAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
-
+    
             if (delay == null)
                 throw new System.ArgumentNullException("delay");
-
+    
             if (numberCycles == null)
                 throw new System.ArgumentNullException("numberCycles");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/StartShutterControl/{bayNumber}/{delay}/{numberCycles}");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5556,18 +5556,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5584,40 +5584,40 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartShutterControlErrorAsync(int delay, int numberCycles)
         {
             return StartShutterControlErrorAsync(delay, numberCycles, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartShutterControlErrorAsync(int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
         {
             if (delay == null)
                 throw new System.ArgumentNullException("delay");
-
+    
             if (numberCycles == null)
                 throw new System.ArgumentNullException("numberCycles");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/StartShutterControlError/{delay}/{numberCycles}");
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5627,18 +5627,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5655,32 +5655,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopFiniteStateMachineAsync()
         {
             return StopFiniteStateMachineAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopFiniteStateMachineAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/StopFSM");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5690,18 +5690,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5718,32 +5718,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task UpdateCurrentPositionTestAsync()
         {
             return UpdateCurrentPositionTestAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task UpdateCurrentPositionTestAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/UpdateCurrentPositionTest");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5753,18 +5753,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5781,32 +5781,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task VerticalPositioningAsync()
         {
             return VerticalPositioningAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task VerticalPositioningAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/VerticalPositioning");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -5816,18 +5816,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             return;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
@@ -5844,7 +5844,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -5852,21 +5852,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -5901,7 +5901,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -5912,7 +5912,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -5933,47 +5933,47 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineUsersService : ServiceBase, IMachineUsersService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineUsersService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password)
         {
             return AuthenticateWithResourceOwnerPasswordAsync(userName, password, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, System.Threading.CancellationToken cancellationToken)
@@ -5983,7 +5983,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("userName=").Append(System.Uri.EscapeDataString(userName != null ? ConvertToString(userName, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append("password=").Append(System.Uri.EscapeDataString(password != null ? ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -5992,12 +5992,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6007,17 +6007,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserClaims>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == "401") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -6041,7 +6041,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -6049,21 +6049,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -6098,7 +6098,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -6109,7 +6109,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -6130,54 +6130,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineVerticalOffsetProcedureService : ServiceBase, IMachineVerticalOffsetProcedureService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineVerticalOffsetProcedureService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteStepDownAsync()
         {
             return ExecuteStepDownAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteStepDownAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/ExecuteStepDown");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6185,12 +6185,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6200,11 +6200,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -6227,20 +6227,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecuteStepUpAsync()
         {
             return ExecuteStepUpAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ExecuteStepUpAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/ExecuteStepUp");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6248,12 +6248,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6263,11 +6263,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -6290,13 +6290,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
             return GetDecimalConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
@@ -6305,7 +6305,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/GetDecimalConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6313,12 +6313,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6328,23 +6328,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -6368,13 +6368,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
             return GetIntegerConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
@@ -6383,7 +6383,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/GetIntegerConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6391,12 +6391,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6406,17 +6406,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<int>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -6440,24 +6440,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetLoadingUnitPositionParameterAsync(int referenceCell)
         {
             return GetLoadingUnitPositionParameterAsync(referenceCell, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetLoadingUnitPositionParameterAsync(int referenceCell, System.Threading.CancellationToken cancellationToken)
         {
             if (referenceCell == null)
                 throw new System.ArgumentNullException("referenceCell");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/GetLoadingUnitPositionParameter/{referenceCell}");
             urlBuilder_.Replace("{referenceCell}", System.Uri.EscapeDataString(ConvertToString(referenceCell, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6465,12 +6465,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6480,23 +6480,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -6520,13 +6520,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter)
         {
             return GetLoadingUnitSideParameterAsync(category, parameter, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
@@ -6535,7 +6535,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/GetLoadingUnitSideParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6543,12 +6543,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6558,23 +6558,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<int>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400")
+                        if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -6598,20 +6598,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync()
         {
             return MarkAsCompletedAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> MarkAsCompletedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/mark-as-completed");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6620,12 +6620,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6635,24 +6635,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -6668,25 +6668,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> SetAsync(decimal newOffset)
         {
             return SetAsync(newOffset, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> SetAsync(decimal newOffset, System.Threading.CancellationToken cancellationToken)
         {
             if (newOffset == null)
                 throw new System.ArgumentNullException("newOffset");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure?");
             urlBuilder_.Append("newOffset=").Append(System.Uri.EscapeDataString(ConvertToString(newOffset, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6695,12 +6695,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6710,24 +6710,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200" || status_ == "206")
+                        if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(FileResponse);
                     }
                     finally
@@ -6743,25 +6743,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync(decimal targetPosition)
         {
             return StartAsync(targetPosition, System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(decimal targetPosition, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
                 throw new System.ArgumentNullException("targetPosition");
-
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/start?");
             urlBuilder_.Append("targetPosition=").Append(System.Uri.EscapeDataString(ConvertToString(targetPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -6769,12 +6769,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6784,11 +6784,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -6811,32 +6811,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -6846,11 +6846,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -6873,7 +6873,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -6881,21 +6881,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -6930,7 +6930,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -6941,7 +6941,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -6962,54 +6962,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     internal partial class MachineVerticalOriginProcedureService : ServiceBase, IMachineVerticalOriginProcedureService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
+    
         public MachineVerticalOriginProcedureService(string baseUrl)
         {
-            BaseUrl = baseUrl;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
+            BaseUrl = baseUrl; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
         }
-
-        public string BaseUrl
+    
+        public string BaseUrl 
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-
+    
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
+    
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<HomingProcedureParameters> GetProcedureParametersAsync()
         {
             return GetProcedureParametersAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<HomingProcedureParameters> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/parameters");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -7017,12 +7017,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -7032,11 +7032,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        if (status_ == "200") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<HomingProcedureParameters>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
@@ -7044,10 +7044,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         if (status_ != "200" && status_ != "204")
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-
+            
                         return default(HomingProcedureParameters);
                     }
                     finally
@@ -7063,20 +7063,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task NotifyCurrentAxisPositionAsync()
         {
             return NotifyCurrentAxisPositionAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task NotifyCurrentAxisPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/nofity-current-axis-position");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -7084,12 +7084,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -7099,11 +7099,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -7126,20 +7126,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync()
         {
             return StartAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/start");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -7147,12 +7147,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -7162,11 +7162,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -7189,20 +7189,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
-
+    
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/stop");
-
+    
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
@@ -7210,12 +7210,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-
+    
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-
+    
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -7225,11 +7225,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-
+    
                         ProcessResponse(client_, response_);
-
+    
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202")
+                        if (status_ == "202") 
                         {
                             return;
                         }
@@ -7252,7 +7252,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     client_.Dispose();
             }
         }
-
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -7260,21 +7260,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-
+    
             public T Object { get; }
-
+    
             public string Text { get; }
         }
-
+    
         public bool ReadResponseAsString { get; set; }
-
+        
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-
+        
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -7309,7 +7309,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 }
             }
         }
-
+    
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value is System.Enum)
@@ -7320,7 +7320,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -7341,7 +7341,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-
+        
             return System.Convert.ToString(value, cultureInfo);
         }
     }
