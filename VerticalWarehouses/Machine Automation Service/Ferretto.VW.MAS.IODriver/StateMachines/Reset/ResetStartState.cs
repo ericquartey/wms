@@ -4,9 +4,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
-    public class ResetSecurityStartState : IoStateBase
+    public class ResetStartState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoStatus status;
@@ -17,7 +16,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public ResetSecurityStartState(
+        public ResetStartState(
             IIoStateMachine parentStateMachine,
             IoStatus status,
             ILogger logger)
@@ -32,32 +31,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Destructors
 
-        ~ResetSecurityStartState()
+        ~ResetStartState()
         {
             this.Dispose(false);
         }
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
@@ -65,7 +46,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.Logger));
+                this.ParentStateMachine.ChangeState(new ResetEndState(this.ParentStateMachine, this.status, this.Logger));
             }
         }
 
@@ -78,7 +59,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (this.status.MatchOutputs(message.Outputs))
             {
-                this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.Logger));
+                this.ParentStateMachine.ChangeState(new ResetEndState(this.ParentStateMachine, this.status, this.Logger));
             }
         }
 
@@ -94,6 +75,22 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 this.status.UpdateOutputStates(resetIoMessage.Outputs);
             }
             this.ParentStateMachine.EnqueueMessage(resetIoMessage);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion
