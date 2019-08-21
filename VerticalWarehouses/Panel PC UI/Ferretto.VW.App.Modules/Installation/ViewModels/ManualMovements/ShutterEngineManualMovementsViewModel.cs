@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             var messageData = new ShutterPositioningMovementMessageDataDto
             {
-                BayNumber = 1,
+                BayNumber = this.BayNumber,
                 ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Down
             };
 
@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             var messageData = new ShutterPositioningMovementMessageDataDto
             {
-                BayNumber = 1,
+                BayNumber = this.BayNumber,
                 ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Up
             };
 
