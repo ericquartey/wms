@@ -1,0 +1,96 @@
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
+
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
+{
+    public class PowerEnableEndState : IoStateBase
+    {
+
+        #region Fields
+
+        private readonly bool enable;
+
+        private readonly IoStatus status;
+
+        private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public PowerEnableEndState(
+            bool enable,
+            IoStatus status,
+            ILogger logger,
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
+        {
+            this.status = status;
+            this.enable = enable;
+
+            logger.LogTrace("1:Method Start");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PowerEnableEndState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+
+
+        #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void Start()
+        {
+            var endNotification = new FieldNotificationMessage(
+                null,
+                "Power Enable complete",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.PowerEnable,
+                MessageStatus.OperationEnd);
+
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
+        }
+
+        #endregion
+    }
+}

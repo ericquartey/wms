@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
+    <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
   </ItemGroup>
 
 </Project>

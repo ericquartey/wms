@@ -10,15 +10,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -84,8 +75,8 @@
       <Content Include="Images\Divieto_Light.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <ProjectReference Include="..\..\Panel PC UI\Themes\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
-      <ProjectReference Include="..\..\Panel PC UI\Utils\Ferretto.VW.Utils.csproj" />
+      <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
+      <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Controls\Ferretto.VW.Simulator.Controls.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Extensions\Ferretto.VW.Simulator.Extensions.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Resources\Ferretto.VW.Simulator.Resources.csproj" />
