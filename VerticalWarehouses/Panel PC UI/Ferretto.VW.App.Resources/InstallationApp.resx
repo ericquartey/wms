@@ -780,10 +780,6 @@
     <value>Panels control procedure</value>
     <comment>Title</comment>
   </data>
-  <data name="MeasuredInitialPosition" xml:space="preserve">
-    <value>MeasuredInitialPosition</value>
-    <comment>Label text</comment>
-  </data>
   <data name="ReadFinalPosition" xml:space="preserve">
     <value>ReadFinalPosition</value>
     <comment>Label text</comment>

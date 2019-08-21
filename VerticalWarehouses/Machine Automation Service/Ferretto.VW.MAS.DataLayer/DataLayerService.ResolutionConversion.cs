@@ -68,9 +68,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 default:
-                    this.Logger.LogDebug($"Wrong selected axis {configurationCategory} to get resolution");
+                    var message = $"Wrong selected axis {configurationCategory} to get resolution";
+                    this.Logger.LogDebug(message);
 
-                    throw new DataLayerException(DataLayerExceptionCode.WrongAxisException);
+                    throw new DataLayerException(message, DataLayerExceptionCode.WrongAxisException, null);
             }
 
             try

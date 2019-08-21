@@ -1465,7 +1465,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MeasuredInitialPosition.
+        ///   Looks up a localized string similar to Measured initial position [mm]:.
         /// </summary>
         public static string MeasuredInitialPosition {
             get {
