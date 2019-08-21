@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -56,6 +57,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
+            if (this.InverterStatus is AglInverterStatus currentStatus)
+            {
+                this.shutterPositionData.ShutterPosition = currentStatus.CurrentShutterPosition;
+            }
             var errorNotification = new FieldNotificationMessage(
                 this.shutterPositionData,
                 "Inverter operation error",

@@ -6,10 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
-        bool AxisPosition { get; }
-
-        int AxisUpdateInterval { get; }
-
         Axis CurrentAxis { get; }
 
         int CurrentPosition { get; }
@@ -19,10 +15,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
             "CA1819:Properties should not return arrays",
             Justification = "Review the code to see if it is really necessary to return a plain array.")]
         bool[] CurrentSensorStatus { get; }
-
-        bool SensorStatus { get; }
-
-        int SensorUpdateInterval { get; }
 
         #endregion
     }

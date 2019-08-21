@@ -10,32 +10,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Constructors
 
         public InverterStatusUpdateFieldMessageData(
-            bool sensorStatus,
-            int sensorUpdateInterval,
-            bool axisPosition,
-            int axisUpdateInterval,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
-            : base(verbosity)
-        {
-            this.SensorStatus = sensorStatus;
-            this.SensorUpdateInterval = sensorUpdateInterval;
-
-            this.AxisPosition = axisPosition;
-            this.AxisUpdateInterval = axisUpdateInterval;
-        }
-
-        public InverterStatusUpdateFieldMessageData(
             Axis currentAxis,
             bool[] currentSensorStatus,
             int currentPosition,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            this.AxisPosition = true;
             this.CurrentAxis = currentAxis;
             this.CurrentPosition = currentPosition;
 
-            this.SensorStatus = true;
             this.CurrentSensorStatus = currentSensorStatus;
         }
 
@@ -44,9 +27,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            this.AxisPosition = false;
-
-            this.SensorStatus = true;
             this.CurrentSensorStatus = currentSensorStatus;
         }
 
@@ -56,20 +36,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            this.AxisPosition = true;
             this.CurrentAxis = currentAxis;
             this.CurrentPosition = currentPosition;
-
-            this.SensorStatus = false;
         }
 
         #endregion
 
         #region Properties
-
-        public bool AxisPosition { get; }
-
-        public int AxisUpdateInterval { get; }
 
         public Axis CurrentAxis { get; }
 
@@ -80,10 +53,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             "CA1819:Properties should not return arrays",
             Justification = "Review the code to see if it is really necessary to return a plain array.")]
         public bool[] CurrentSensorStatus { get; }
-
-        public bool SensorStatus { get; }
-
-        public int SensorUpdateInterval { get; }
 
         #endregion
 
@@ -101,7 +70,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
                 }
                 currentSensorStatus = sb.ToString();
             }
-            return $"Position:{this.AxisPosition} Interval:{this.AxisUpdateInterval} Position:{this.AxisPosition} CurrentAxis:{this.CurrentAxis} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{currentSensorStatus}";
+            return $"CurrentAxis:{this.CurrentAxis} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{currentSensorStatus}";
         }
 
         #endregion
