@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             DiagnosticDetailsViewModel model)
             : base(PresentationTypes.Debug)
         {
-            if (container == null)
+            if (container is null)
             {
                 throw new System.ArgumentNullException(nameof(container));
             }

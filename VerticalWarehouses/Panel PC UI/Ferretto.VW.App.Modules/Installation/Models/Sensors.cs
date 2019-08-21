@@ -465,7 +465,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         public void Update(bool[] sensorStates)
         {
-            if (sensorStates == null)
+            if (sensorStates is null)
             {
                 return;
             }

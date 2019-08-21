@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private SubscriptionToken subscriptionToken;
+
         #endregion
 
         #region Constructors
@@ -24,12 +27,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IHealthProbeService healthProbeService)
             : base(PresentationMode.Login)
         {
-            if (bayManager == null)
+            if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            if (healthProbeService == null)
+            if (healthProbeService is null)
             {
                 throw new ArgumentNullException(nameof(healthProbeService));
             }
@@ -46,9 +49,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.healthProbeService.SubscribeToHealthStatusChangedEvent(async (e) => await this.OnHealthStatusChanged(e));
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
+                async (e) => await this.OnHealthStatusChanged(e),
+                ThreadOption.UIThread,
+                false);
+        }
 
-            await this.RetrieveMachineInfoAsync();
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+
+            if (this.subscriptionToken != null)
+            {
+                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
         }
 
         private void NavigateToLoginPage(MAS.AutomationService.Contracts.MachineIdentity machineIdentity)
@@ -83,7 +99,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowNotification("Impossibile connettersi al servizio di automazione");
+                    this.ShowNotification("Impossibile connettersi al servizio di automazione", Services.Models.NotificationSeverity.Error);
                     break;
             }
         }

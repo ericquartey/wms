@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    internal class AuthenticationService : IAuthenticationService
     {
         #region Fields
 
@@ -20,12 +20,12 @@ namespace Ferretto.VW.App.Services
             IMachineUsersService usersService,
             IStatusMessageService statusMessageService)
         {
-            if (usersService == null)
+            if (usersService is null)
             {
                 throw new System.ArgumentNullException(nameof(usersService));
             }
 
-            if (statusMessageService == null)
+            if (statusMessageService is null)
             {
                 throw new System.ArgumentNullException(nameof(statusMessageService));
             }

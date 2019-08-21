@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineVerticalOriginProcedureService verticalOriginProcedureService)
             : base(verticalOriginProcedureService)
         {
-            if (machineElevatorService == null)
+            if (machineElevatorService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineElevatorService));
             }

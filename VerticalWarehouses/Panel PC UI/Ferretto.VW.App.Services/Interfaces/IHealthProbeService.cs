@@ -8,6 +8,8 @@ namespace Ferretto.VW.App.Services
 
         HealthStatus HealthStatus { get; }
 
+        HealthStatusChangedPubSubEvent HealthStatusChanged { get; }
+
         #endregion
 
         #region Methods
@@ -15,10 +17,6 @@ namespace Ferretto.VW.App.Services
         void Start();
 
         void Stop();
-
-        object SubscribeToHealthStatusChangedEvent(Action<HealthStatusChangedEventArgs> action);
-
-        void UnsubscribeFromHealthStatusChangedEvent(object subscriptionToken);
 
         #endregion
     }

@@ -33,12 +33,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             IMachineMachineStatusService machineStatusService)
             : base(PresentationTypes.MachineMarch)
         {
-            if (machineSensorsService == null)
+            if (machineSensorsService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
             }
 
-            if (machineStatusService == null)
+            if (machineStatusService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineStatusService));
             }
@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void UpdateMachinePowerState(bool[] sensorsStates)
         {
-            if (sensorsStates == null)
+            if (sensorsStates is null)
             {
                 this.logger.Warn("Unable to update machine power state: empty sensors state array received.");
                 return;

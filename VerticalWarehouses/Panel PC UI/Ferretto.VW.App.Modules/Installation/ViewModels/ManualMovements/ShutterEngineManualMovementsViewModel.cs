@@ -45,12 +45,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(verticalOriginProcedureService)
         {
-            if (shuttersService == null)
+            if (shuttersService is null)
             {
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            if (bayManager == null)
+            if (bayManager is null)
             {
                 throw new System.ArgumentNullException(nameof(bayManager));
             }

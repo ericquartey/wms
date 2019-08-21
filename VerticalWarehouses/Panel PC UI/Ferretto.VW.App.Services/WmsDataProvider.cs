@@ -8,7 +8,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    public class WmsDataProvider : IWmsDataProvider
+    internal class WmsDataProvider : IWmsDataProvider
     {
         #region Fields
 
@@ -27,17 +27,17 @@ namespace Ferretto.VW.App.Services
             ILoadingUnitsDataService loadingUnitsDataService,
             IItemsDataService itemsDataService)
         {
-            if (statusMessageService == null)
+            if (statusMessageService is null)
             {
                 throw new ArgumentNullException(nameof(statusMessageService));
             }
 
-            if (loadingUnitsDataService == null)
+            if (loadingUnitsDataService is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnitsDataService));
             }
 
-            if (itemsDataService == null)
+            if (itemsDataService is null)
             {
                 throw new ArgumentNullException(nameof(itemsDataService));
             }

@@ -4,7 +4,7 @@ using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services
 {
-    public class StatusMessageService : IStatusMessageService
+    internal class StatusMessageService : IStatusMessageService
     {
         #region Events
 

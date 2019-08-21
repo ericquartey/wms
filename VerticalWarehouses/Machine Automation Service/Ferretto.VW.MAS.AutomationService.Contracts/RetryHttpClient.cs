@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             Func<int, TimeSpan> sleepDurationProvider = count =>
             {
                 System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count})");
-                return TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count, 2));
+                return TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count / 3.0, 2));
             };
 
             return await Policy

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public PresentationBack(INavigationService navigationService)
             : base(PresentationTypes.Back)
         {
-            if (navigationService == null)
+            if (navigationService is null)
             {
                 throw new System.ArgumentNullException(nameof(navigationService));
             }

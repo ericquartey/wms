@@ -39,12 +39,12 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsService loadingUnitsService)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (loadingUnitsService == null)
+            if (loadingUnitsService is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnitsService));
             }

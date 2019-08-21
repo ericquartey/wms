@@ -12,7 +12,7 @@ using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hub
 
 namespace Ferretto.VW.App.Services
 {
-    public class NotificationService : INotificationService
+    internal class NotificationService : INotificationService
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IInstallationHubClient installationHubClient)
         {
-            if (installationHubClient == null)
+            if (installationHubClient is null)
             {
                 throw new System.ArgumentNullException(nameof(installationHubClient));
             }

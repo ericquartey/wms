@@ -15,7 +15,7 @@ namespace Ferretto.VW.Utils.Extensions
 
         public static IDictionary<string, T> ToDictionary<T>(this object source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
             }

@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public ErrorDetailsViewModel(IMachineErrorsService machineErrorsService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineErrorsService == null)
+            if (machineErrorsService is null)
             {
                 throw new ArgumentNullException(nameof(machineErrorsService));
             }
@@ -87,7 +87,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private async Task ExecuteMarkAsResolvedCommandAsync()
         {
-            if (this.error == null)
+            if (this.error is null)
             {
                 return;
             }
@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.NavigationService.IsBusy = false;
 
-                if (nextError == null)
+                if (nextError is null)
                 {
                     this.NavigationService.GoBack();
                 }
