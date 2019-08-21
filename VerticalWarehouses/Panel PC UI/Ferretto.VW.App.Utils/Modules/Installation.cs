@@ -41,8 +41,6 @@
 
             public const string BAYS = "BaysSensorsViewModel";
 
-            public const string CRADLE = "CradleSensorsViewModel";
-
             public const string NAVIGATION = "SensorsNavigationViewModel";
 
             public const string OTHERS = "OtherSensorsViewModel";
