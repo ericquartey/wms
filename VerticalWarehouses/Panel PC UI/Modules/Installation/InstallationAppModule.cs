@@ -84,6 +84,9 @@ namespace Ferretto.VW.App.Modules.Installation
 
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
+            containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep1View>();
+            containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();
+            containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep3View>();
 
             #endregion
 
@@ -104,18 +107,15 @@ namespace Ferretto.VW.App.Modules.Installation
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
 
-            // TODO: all the following view models need refactoring
-
             #region These views need refactoring
 
+            // TODO: all the following view models need refactoring
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
             this.container.RegisterSingleton<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>();
             this.container.RegisterSingleton<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>();
             this.container.RegisterSingleton<IShutter2HeightControlViewModel, Shutter2HeightControlViewModel>();
             this.container.RegisterSingleton<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>();
             this.container.RegisterSingleton<IIdleViewModel, IdleViewModel>();
-
-            this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
 
             this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();
             this.container.RegisterSingleton<IBayControlViewModel, BayControlViewModel>();

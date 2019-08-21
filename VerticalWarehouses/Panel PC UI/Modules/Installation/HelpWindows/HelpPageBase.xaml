@@ -34,7 +34,7 @@
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
-                                                       LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                       LabelText="{x:Static res:InstallationApp.InitialPosition}"
                                                         />
 
         <controls:PpcLabeledText          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"

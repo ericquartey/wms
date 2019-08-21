@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersService shuttersService;
 
-        private readonly IMachineTestService testService;
-
         private int bayNumber;
 
         private int? completedCycles;
@@ -50,16 +48,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEnduranceTestViewModel(
-            IMachineTestService testService,
             IMachineShuttersService shuttersService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (testService == null)
-            {
-                throw new System.ArgumentNullException(nameof(testService));
-            }
-
             if (shuttersService == null)
             {
                 throw new System.ArgumentNullException(nameof(shuttersService));
@@ -70,7 +62,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
 
-            this.testService = testService;
             this.shuttersService = shuttersService;
 
             this.BayNumber = bayManager.BayNumber;
@@ -244,6 +235,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override void OnDispose()
         {
             base.OnDispose();
+
+            if (this.receivedActionUpdateCompletedToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
+                    .Unsubscribe(this.receivedActionUpdateCompletedToken);
+
+                this.receivedActionUpdateCompletedToken = null;
+            }
+
+            if (this.receivedActionUpdateErrorToken != null)
+            {
+                this.EventAggregator
+                 .GetEvent<MAS_ErrorEvent>()
+                 .Unsubscribe(this.receivedActionUpdateErrorToken);
+
+                this.receivedActionUpdateErrorToken = null;
+            }
         }
 
         private bool CanExecuteStartCommand()

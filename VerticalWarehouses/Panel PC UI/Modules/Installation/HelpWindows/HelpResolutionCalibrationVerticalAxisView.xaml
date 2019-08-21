@@ -33,7 +33,7 @@
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
-                                                       LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                       LabelText="{x:Static res:InstallationApp.InitialPosition}"
                                                         />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,295,0,0"
@@ -50,7 +50,7 @@
                                                       Width="180"
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="5150.0"
-                                                      LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
+                                                      LabelText="{x:Static res:InstallationApp.FinalPosition}"
                                                         />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,590,0,0"
@@ -72,7 +72,7 @@
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="4250,5"
-                                                       LabelText="{x:Static res:InstallationApp.MesuredMovement}"
+                                                       LabelText="{x:Static res:InstallationApp.MeasuredMovement}"
                                                          />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,155,0,0"
@@ -154,7 +154,7 @@
                                                      Width="180"
                                                      Highlighted="True"
                                                      InputText="875,5"
-                                                     LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
+                                                     LabelText="{x:Static res:InstallationApp.MeasuredInitialPosition}"
                                                       />
 
         <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"

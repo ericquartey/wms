@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Controls
 {
-    public partial class PpcStackedMenu : ItemsControl
+    public partial class PpcStackedMenu
     {
         #region Fields
 

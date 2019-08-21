@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Models;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
         private readonly IResolutionCalibrationDataLayer resolutionCalibration;
 
@@ -60,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.verticalAxis = verticalAxisDataLayer;
             this.setupStatusProvider = setupStatusProvider;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.configurationProvider = dataLayerConfigurationValueManagement;
             this.resolutionCalibration = resolutionCalibration;
         }
 
@@ -68,149 +69,95 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("computed-resolution")]
+        [HttpPost("complete")]
+        public IActionResult Complete(decimal newResolution)
+        {
+            this.ExecuteStep(newResolution, ResolutionCalibrationStep.CloseProcedure);
+
+            this.verticalAxis.Resolution = newResolution; // TODO move this into state machine
+
+            this.setupStatusProvider.CompleteVerticalResolution(); // TODO move this into state machine
+
+            return this.Ok();
+        }
+
+        [HttpGet("adjusted-resolution")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<decimal> GetComputedResolution(decimal readDistance, decimal desiredInitialPosition, decimal desiredFinalPosition, decimal resolution)
+        public ActionResult<decimal> GetAdjustedResolution(decimal measuredDistance, decimal expectedDistance)
         {
-            if (desiredFinalPosition == desiredInitialPosition)
+            if (measuredDistance <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Initial and final position values cannot be the same."
+                        Detail = "Measured distance must be strictly positive."
                     });
             }
 
-            // TODO: Is it better to compute the calculus inside the FSM ??
-
-            var desideredDistance = desiredFinalPosition - desiredInitialPosition;
-
-            return resolution * readDistance / desideredDistance;
-        }
-
-        [HttpGet("decimal-configuration-parameter/{category}/{parameter}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public ActionResult<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter)
-        {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            var categoryEnum = (ConfigurationCategory)categoryId;
-
-            switch (categoryId)
+            if (expectedDistance <= 0)
             {
-                case ConfigurationCategory.VerticalAxis:
-                    Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
-                    if (verticalAxisParameterId != null)
+                return this.BadRequest(
+                    new ProblemDetails
                     {
-                        decimal value1 = 0;
-
-                        try
-                        {
-                            value1 = this.dataLayerConfigurationValueManagement
-                                .GetDecimalConfigurationValue(
-                                (long)verticalAxisParameterId,
-                                categoryEnum);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value1);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
-
-                case ConfigurationCategory.ResolutionCalibration:
-                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
-                    if (resolutionCalibrationParameterId != null)
-                    {
-                        decimal value3 = 0;
-                        try
-                        {
-                            value3 = this.dataLayerConfigurationValueManagement
-                                .GetDecimalConfigurationValue
-                                ((long)resolutionCalibrationParameterId,
-                                categoryEnum);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value3);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
+                        Detail = "Expected distance must be strictly positive."
+                    });
             }
 
-            return 0;
+            var resolution = this.configurationProvider.GetDecimalConfigurationValue(
+                    (long)VerticalAxis.Resolution,
+                    ConfigurationCategory.VerticalAxis);
+
+            return resolution * measuredDistance / expectedDistance;
         }
 
-        [HttpPost("mark-as-completed")]
-        public IActionResult MarkAsCompleted()
+        [HttpGet("parameters")]
+        public ActionResult<ResolutionCalibrationParameters> GetParameters()
         {
-            this.setupStatusProvider.CompleteVerticalResolution();
+            var parameters = new ResolutionCalibrationParameters
+            {
+                CurrentResolution = this.configurationProvider.GetDecimalConfigurationValue(
+                    (long)VerticalAxis.Resolution,
+                    ConfigurationCategory.VerticalAxis),
 
-            return this.Ok();
+                InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                    (long)ResolutionCalibration.InitialPosition,
+                    ConfigurationCategory.ResolutionCalibration),
+
+                FinalPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                    (long)ResolutionCalibration.FinalPosition,
+                    ConfigurationCategory.ResolutionCalibration),
+            };
+
+            return this.Ok(parameters);
         }
 
-        [HttpPost("resolution")]
-        public IActionResult SetResolutionParameter(decimal value)
+        [HttpPost("move-to-initial-position")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToInitialPosition(decimal position)
         {
-            this.verticalAxis.Resolution = value;
+            return this.ExecuteStep(position, ResolutionCalibrationStep.InitialPosition);
+        }
 
-            return this.Ok();
+        [HttpPost("move-to-position")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToPosition(decimal position)
+        {
+            return this.ExecuteStep(position, ResolutionCalibrationStep.Move);
         }
 
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal position, ResolutionCalibrationStep resolutionCalibrationStep)
+        public IActionResult Start(decimal position)
         {
-            var setupStatus = this.setupStatusProvider.Get();
-            if (!setupStatus.VerticalResolution.CanBePerformed)
-            {
-                return this.UnprocessableEntity(
-                    new ProblemDetails
-                    {
-                        Detail = "Resolution calibration procedure cannot be started if the 'vertical origin calibration' and 'belt burnishing' procedures are not completed."
-                    });
-            }
-
-            var description = GetStepDescription(resolutionCalibrationStep);
-
-            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            var feedRate = this.resolutionCalibration.FeedRate;
-
-            var speed = maxSpeed * feedRate;
-            var messageData = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Absolute,
-                MovementMode.Position,
-                position,
-                speed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
-                0,
-                0,
-                0);
-
-            this.PublishCommand(
-                messageData,
-                description,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
-
-            return this.Accepted();
+            return this.ExecuteStep(position, ResolutionCalibrationStep.StartProcedure);
         }
 
         [HttpPost("stop")]
@@ -250,6 +197,45 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return message;
+        }
+
+        private IActionResult ExecuteStep(decimal position, ResolutionCalibrationStep resolutionCalibrationStep)
+        {
+            var setupStatus = this.setupStatusProvider.Get();
+            if (!setupStatus.VerticalResolution.CanBePerformed)
+            {
+                return this.UnprocessableEntity(
+                    new ProblemDetails
+                    {
+                        Detail = "Resolution calibration procedure cannot be started if the 'vertical origin calibration' and 'belt burnishing' procedures are not completed."
+                    });
+            }
+
+            var description = GetStepDescription(resolutionCalibrationStep);
+
+            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
+            var feedRate = this.resolutionCalibration.FeedRate;
+
+            var speed = maxSpeed * feedRate;
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.Position,
+                position,
+                speed,
+                this.verticalAxis.MaxEmptyAcceleration,
+                this.verticalAxis.MaxEmptyDeceleration,
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                description,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            return this.Accepted();
         }
 
         #endregion

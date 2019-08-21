@@ -53,7 +53,7 @@
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
-                                                     LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                     LabelText="{x:Static res:InstallationApp.InitialPosition}"
                                                       />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
