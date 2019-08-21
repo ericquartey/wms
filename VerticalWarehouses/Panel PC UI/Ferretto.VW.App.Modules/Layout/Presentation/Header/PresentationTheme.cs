@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public PresentationTheme(IThemeService themeService)
             : base(PresentationTypes.Theme)
         {
-            if (themeService == null)
+            if (themeService is null)
             {
                 throw new System.ArgumentNullException(nameof(themeService));
             }

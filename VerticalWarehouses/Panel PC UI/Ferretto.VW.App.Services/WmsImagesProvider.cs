@@ -5,7 +5,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    public class WmsImagesProvider : IWmsImagesProvider
+    internal class WmsImagesProvider : IWmsImagesProvider
     {
         #region Fields
 
@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Services
 
         public WmsImagesProvider(IImagesDataService imagesDataService)
         {
-            if (imagesDataService == null)
+            if (imagesDataService is null)
             {
                 throw new ArgumentNullException(nameof(imagesDataService));
             }

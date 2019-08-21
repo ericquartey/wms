@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected BaseSensorsViewModel(IMachineSensorsService machineSensorsService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineSensorsService == null)
+            if (machineSensorsService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
             }
@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.ShowNotification(ex.Message);
+                this.ShowNotification(ex);
             }
 
             await base.OnNavigatedAsync();

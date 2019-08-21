@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    public class HealthProbeService : IHealthProbeService
+    internal class HealthProbeService : IHealthProbeService
     {
         #region Fields
 
@@ -22,8 +21,6 @@ namespace Ferretto.VW.App.Services
         private readonly HealthStatusChangedPubSubEvent healthStatusChangedEvent;
 
         private readonly string liveHealthCheckPath;
-
-        private readonly INavigationService navigationService;
 
         private readonly string readyHealthCheckPath;
 
@@ -41,10 +38,9 @@ namespace Ferretto.VW.App.Services
             Uri baseAddress,
             string liveHealthCheckPath,
             string readyHealthCheckPath,
-            IEventAggregator eventAggregator,
-            INavigationService navigationService)
+            IEventAggregator eventAggregator)
         {
-            if (baseAddress == null)
+            if (baseAddress is null)
             {
                 throw new ArgumentNullException(nameof(baseAddress));
             }
@@ -59,20 +55,14 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentException(ErrorMessage, nameof(readyHealthCheckPath));
             }
 
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (navigationService == null)
-            {
-                throw new ArgumentNullException(nameof(navigationService));
             }
 
             this.baseAddress = baseAddress;
             this.liveHealthCheckPath = liveHealthCheckPath;
             this.readyHealthCheckPath = readyHealthCheckPath;
-            this.navigationService = navigationService;
             this.healthStatusChangedEvent = eventAggregator.GetEvent<HealthStatusChangedPubSubEvent>();
 
             this.healthProbeTask = new Task(
@@ -96,16 +86,11 @@ namespace Ferretto.VW.App.Services
 
                     this.healthStatusChangedEvent
                         .Publish(new HealthStatusChangedEventArgs(this.healthStatus));
-
-                    if (this.healthStatus == HealthStatus.Unhealthy)
-                    {
-                        this.navigationService.GoBackTo(
-                            nameof(Utils.Modules.Login),
-                            Utils.Modules.Login.LOGIN);
-                    }
                 }
             }
         }
+
+        public HealthStatusChangedPubSubEvent HealthStatusChanged => this.healthStatusChangedEvent;
 
         public int PollInterval
         {
@@ -133,23 +118,6 @@ namespace Ferretto.VW.App.Services
         public void Stop()
         {
             this.tokenSource.Cancel(false);
-        }
-
-        public object SubscribeToHealthStatusChangedEvent(Action<HealthStatusChangedEventArgs> action)
-        {
-            return this.healthStatusChangedEvent
-                .Subscribe(
-                    action,
-                    ThreadOption.UIThread,
-                    false);
-        }
-
-        public void UnsubscribeFromHealthStatusChangedEvent(object subscriptionToken)
-        {
-            if (subscriptionToken is SubscriptionToken token)
-            {
-                this.healthStatusChangedEvent.Unsubscribe(token);
-            }
         }
 
         private async Task CheckLivelinessStatus(RetryHttpClient client, CancellationToken cancellationToken)

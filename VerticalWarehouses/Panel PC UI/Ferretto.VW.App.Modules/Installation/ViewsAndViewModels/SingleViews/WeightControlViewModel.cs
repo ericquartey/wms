@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public WeightControlViewModel(IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
             }

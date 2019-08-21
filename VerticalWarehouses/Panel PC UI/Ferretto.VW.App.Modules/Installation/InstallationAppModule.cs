@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerProvider
                 .Resolve<IOperatorHubClient>()
                 .ConnectAsync();
+
+            this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -102,14 +104,11 @@ namespace Ferretto.VW.App.Modules.Installation
 
             #endregion
 
-            this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-
-            this.container.RegisterSingleton<INotificationService, NotificationService>();
-            this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
-
             #region These views need refactoring
 
             // TODO: all the following view models need refactoring
+
+            this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
             this.container.RegisterSingleton<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>();
             this.container.RegisterSingleton<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>();

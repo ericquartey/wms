@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalOffsetCalibrationViewModel(IMachineVerticalOffsetProcedureService verticalOffsetService)
             : base(Services.PresentationMode.Installer)
         {
-            if (verticalOffsetService == null)
+            if (verticalOffsetService is null)
             {
                 throw new ArgumentNullException(nameof(verticalOffsetService));
             }

@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Controls.Utils
         /// </summary>
         public static IEnumerable<DependencyObject> ElementsAfterSelf(this DependencyObject item)
         {
-            if (item.Ancestors().FirstOrDefault() == null)
+            if (item.Ancestors().FirstOrDefault() is null)
             {
                 yield break;
             }
@@ -191,7 +191,7 @@ namespace Ferretto.VW.App.Controls.Utils
         /// </summary>
         public static IEnumerable<DependencyObject> ElementsBeforeSelf(this DependencyObject item)
         {
-            if (item.Ancestors().FirstOrDefault() == null)
+            if (item.Ancestors().FirstOrDefault() is null)
             {
                 yield break;
             }

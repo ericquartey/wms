@@ -112,7 +112,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                 return false;
             }
 
-            if (cm.Drawers.Find(x => x.Id == drawerID) == null)
+            if (cm.Drawers.Find(x => x.Id == drawerID) is null)
             {
                 return false;
             }
