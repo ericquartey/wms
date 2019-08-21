@@ -7,9 +7,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
-    public class ResetSecurityEndState : IoStateBase
+    public class ResetEndState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoStatus status;
@@ -20,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public ResetSecurityEndState(
+        public ResetEndState(
             IIoStateMachine parentStateMachine,
             IoStatus status,
             ILogger logger)
@@ -35,32 +34,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Destructors
 
-        ~ResetSecurityEndState()
+        ~ResetEndState()
         {
             this.Dispose(false);
         }
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
@@ -118,6 +99,22 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
             }
             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

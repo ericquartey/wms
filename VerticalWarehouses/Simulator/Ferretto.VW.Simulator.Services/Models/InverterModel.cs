@@ -58,7 +58,7 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         Main = 0,
 
-        Chain = 1,
+        ElevatorChain = 1,
 
         Shutter1 = 2,
 
@@ -305,8 +305,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
             this.shutterTimerActive = false;
-
-            this.OperationMode = InverterOperationMode.Velocity;
             this.InverterType = inverterType;
 
             this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
@@ -318,10 +316,24 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
             this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
 
-            // Remove overrun signal
-            if (inverterType == InverterType.Ang)
+            this.OperationMode = InverterOperationMode.Velocity;
+
+            switch (inverterType)
             {
-                this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                case InverterType.Ang:
+                    // Remove overrun signal
+                    this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                    break;
+
+                case InverterType.Agl:
+                    break;
+
+                case InverterType.Acu:
+                    this.OperationMode = InverterOperationMode.Position;
+                    break;
+
+                default:
+                    break;
             }
 
             this.currentAxis = Axis.Horizontal;
@@ -475,6 +487,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
         }
+
         public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
