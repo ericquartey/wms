@@ -6,7 +6,7 @@
 
         decimal ReadFinalPosition { get; }
 
-        decimal ReadInitialPosition { get; }
+        decimal MeasuredInitialPosition { get; }
 
         decimal Resolution { get; set; }
 

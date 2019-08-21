@@ -386,11 +386,11 @@
     <comment>Button text</comment>
   </data>
   <data name="InitialPosition" xml:space="preserve">
-    <value>Initial position:</value>
+    <value>Initial position [mm]:</value>
     <comment>Label text</comment>
   </data>
-  <data name="MesuredLenght" xml:space="preserve">
-    <value>Mesured lenght [mm]:</value>
+  <data name="MeasuredLenght" xml:space="preserve">
+    <value>Measured lenght [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="NewResolution" xml:space="preserve">
@@ -409,10 +409,6 @@
     <value>Current resolution [imp/mm]:</value>
     <comment>Label text</comment>
   </data>
-  <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Initial position [mm]:</value>
-    <comment>Label text</comment>
-  </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Desired movement [mm]:</value>
     <comment>Label text</comment>
@@ -421,16 +417,16 @@
     <value>Insert desired movement.</value>
     <comment>Note text</comment>
   </data>
-  <data name="InsertiDesiredInitialPosition" xml:space="preserve">
+  <data name="InsertiInitialPosition" xml:space="preserve">
     <value>Insert desired initial position.</value>
     <comment>Note text</comment>
   </data>
-  <data name="InsertMesuredMovement" xml:space="preserve">
-    <value>Insert mesured movement.</value>
+  <data name="InsertMeasuredMovement" xml:space="preserve">
+    <value>Insert measured movement.</value>
     <comment>Note text</comment>
   </data>
-  <data name="MesuredMovement" xml:space="preserve">
-    <value>Mesured movement [mm]:</value>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Measured movement [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
@@ -549,16 +545,16 @@
     <value>Inserted weight [kg]:</value>
     <comment>Label text</comment>
   </data>
-  <data name="MesuredWeight" xml:space="preserve">
-    <value>Mesured weight [kg]:</value>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Measured weight [kg]:</value>
     <comment>Label text</comment>
   </data>
-  <data name="MesuredWeightInTolerance" xml:space="preserve">
-    <value>Mesured weight is in tolerance.</value>
+  <data name="MeasuredWeightInTolerance" xml:space="preserve">
+    <value>Measured weight is in tolerance.</value>
     <comment>Note text</comment>
   </data>
-  <data name="MesuredWeightOutOfTolerance" xml:space="preserve">
-    <value>Mesured weight is out of tolerance.</value>
+  <data name="MeasuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Measured weight is out of tolerance.</value>
     <comment>Note text</comment>
   </data>
   <data name="TestRun" xml:space="preserve">
@@ -710,7 +706,7 @@
     <value>Cells  position control</value>
     <comment>Title - Button text</comment>
   </data>
-  <data name="MesuredInitialPosition" xml:space="preserve">
+  <data name="MeasuredInitialPosition" xml:space="preserve">
     <value>Measured initial position [mm]:</value>
     <comment>Label text</comment>
   </data>
@@ -718,8 +714,8 @@
     <value>Move to initial position.</value>
     <comment>Note text</comment>
   </data>
-  <data name="InsertMesuredInitialPosition" xml:space="preserve">
-    <value>Insert mesured initial position.</value>
+  <data name="InsertMeasuredInitialPosition" xml:space="preserve">
+    <value>Insert measured initial position.</value>
     <comment>Note text</comment>
   </data>
   <data name="MoveToPosition" xml:space="preserve">
@@ -760,7 +756,7 @@
     <value>Sensor shutter B</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="RequestedFinalPosition" xml:space="preserve">
+  <data name="FinalPosition" xml:space="preserve">
     <value>Final position</value>
     <comment>Label text</comment>
   </data>
@@ -784,8 +780,8 @@
     <value>Panels control procedure</value>
     <comment>Title</comment>
   </data>
-  <data name="ReadInitialPosition" xml:space="preserve">
-    <value>ReadInitialPosition</value>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>MeasuredInitialPosition</value>
     <comment>Label text</comment>
   </data>
   <data name="ReadFinalPosition" xml:space="preserve">
@@ -1144,5 +1140,23 @@
   </data>
   <data name="ShutterOpen" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Step 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Step 2</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Step 3</value>
+  </data>
+  <data name="MeasuredFinalPosition" xml:space="preserve">
+    <value>Measured final position [mm]</value>
+  </data>
+  <data name="MeasuredDistance" xml:space="preserve">
+    <value>Measured distance [mm]</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
   </data>
 </root>

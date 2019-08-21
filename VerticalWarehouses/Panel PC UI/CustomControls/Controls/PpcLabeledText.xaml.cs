@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class PpcLabeledText : UserControl, INotifyPropertyChanged
+    public partial class PpcLabeledText : UserControl
     {
         #region Fields
 
@@ -27,15 +27,10 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcLabeledText()
         {
             this.InitializeComponent();
+
             var customLabelTextBlockControl = this;
             this.LayoutRoot.DataContext = customLabelTextBlockControl;
         }
-
-        #endregion
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -44,33 +39,13 @@ namespace Ferretto.VW.App.Controls.Controls
         public string ContentText
         {
             get => (string)this.GetValue(ContentTextProperty);
-            set
-            {
-                this.SetValue(ContentTextProperty, value);
-                this.RaisePropertyChanged(nameof(this.ContentText));
-            }
+            set => this.SetValue(ContentTextProperty, value);
         }
 
         public string LabelText
         {
             get => (string)this.GetValue(LabelProperty);
-            set
-            {
-                this.SetValue(LabelProperty, value);
-                this.RaisePropertyChanged(nameof(this.LabelText));
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            set => this.SetValue(LabelProperty, value);
         }
 
         #endregion

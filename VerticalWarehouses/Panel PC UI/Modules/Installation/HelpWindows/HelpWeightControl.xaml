@@ -55,7 +55,7 @@
 
         <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
                                                   ContentText="245,0"
-                                                  LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
+                                                  LabelText="{x:Static res:InstallationApp.MeasuredWeight}"  />
 
         <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
                                                   ContentText="Misura corretta"

@@ -54,6 +54,19 @@
             #endregion
         }
 
+        public static class VerticalResolutionCalibration
+        {
+            #region Fields
+
+            public const string STEP1 = "VerticalResolutionCalibrationStep1ViewModel";
+
+            public const string STEP2 = "VerticalResolutionCalibrationStep2ViewModel";
+
+            public const string STEP3 = "VerticalResolutionCalibrationStep3ViewModel";
+
+            #endregion
+        }
+
         #endregion
     }
 }

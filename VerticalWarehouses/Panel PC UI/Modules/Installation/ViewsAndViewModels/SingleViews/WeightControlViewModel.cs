@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private bool isSetStopButtonActive = true;
 
-        private int mesuredWeight;
+        private int measuredWeight;
 
         private string noteText = VW.App.Resources.InstallationApp.WeightControl;
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public bool IsSetStopButtonActive { get => this.isSetStopButtonActive; set => this.SetProperty(ref this.isSetStopButtonActive, value); }
 
-        public int MesuredWeight { get => this.mesuredWeight; set => this.SetProperty(ref this.mesuredWeight, value); }
+        public int MeasuredWeight { get => this.measuredWeight; set => this.SetProperty(ref this.measuredWeight, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 

@@ -49,4 +49,29 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HelpWindows\HelpPageBase.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep1View - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep2View - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep2View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep3View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+
+
+
 </Project>
