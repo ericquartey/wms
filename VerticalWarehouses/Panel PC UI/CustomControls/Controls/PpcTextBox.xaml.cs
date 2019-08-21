@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Controls.Controls
             if (e.Key == Key.Return)
             {
                 var b = this.GetBindingExpression(InputProperty);
-                b.UpdateSource();
+                b?.UpdateSource();
             }
         }
 

@@ -113,11 +113,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            if (!this.stopRequested)
             {
-                var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                {
+                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
-                setupStatusProvider.CompleteVerticalOrigin();
+                    setupStatusProvider.CompleteVerticalOrigin();
+                }
             }
         }
 

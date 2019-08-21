@@ -60,6 +60,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\PpcLabeledText.xaml.cs">
+      <DependentUpon>PpcLabeledText.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\CustomMainWindowDebugButton.xaml.cs">
       <DependentUpon>CustomMainWindowDebugButton.xaml</DependentUpon>
     </Compile>

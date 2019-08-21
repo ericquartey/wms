@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance [%]:.
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -583,15 +592,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial position [mm]:.
-        /// </summary>
-        public static string DesiredInitialPosition {
-            get {
-                return ResourceManager.GetString("DesiredInitialPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Desired movement [mm]:.
         /// </summary>
         public static string DesiredMovement {
@@ -741,6 +741,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FeedRate {
             get {
                 return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final position.
+        /// </summary>
+        public static string FinalPosition {
+            get {
+                return ResourceManager.GetString("FinalPosition", resourceCulture);
             }
         }
         
@@ -1042,7 +1051,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial position:.
+        ///   Looks up a localized string similar to Initial position [mm]:.
         /// </summary>
         public static string InitialPosition {
             get {
@@ -1071,27 +1080,27 @@ namespace Ferretto.VW.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Insert desired initial position..
         /// </summary>
-        public static string InsertiDesiredInitialPosition {
+        public static string InsertiInitialPosition {
             get {
-                return ResourceManager.GetString("InsertiDesiredInitialPosition", resourceCulture);
+                return ResourceManager.GetString("InsertiInitialPosition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert mesured initial position..
+        ///   Looks up a localized string similar to Insert measured initial position..
         /// </summary>
-        public static string InsertMesuredInitialPosition {
+        public static string InsertMeasuredInitialPosition {
             get {
-                return ResourceManager.GetString("InsertMesuredInitialPosition", resourceCulture);
+                return ResourceManager.GetString("InsertMeasuredInitialPosition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert mesured movement..
+        ///   Looks up a localized string similar to Insert measured movement..
         /// </summary>
-        public static string InsertMesuredMovement {
+        public static string InsertMeasuredMovement {
             get {
-                return ResourceManager.GetString("InsertMesuredMovement", resourceCulture);
+                return ResourceManager.GetString("InsertMeasuredMovement", resourceCulture);
             }
         }
         
@@ -1438,56 +1447,74 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured initial position [mm]:.
+        ///   Looks up a localized string similar to Measured distance [mm].
         /// </summary>
-        public static string MesuredInitialPosition {
+        public static string MeasuredDistance {
             get {
-                return ResourceManager.GetString("MesuredInitialPosition", resourceCulture);
+                return ResourceManager.GetString("MeasuredDistance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured lenght [mm]:.
+        ///   Looks up a localized string similar to Measured final position [mm].
         /// </summary>
-        public static string MesuredLenght {
+        public static string MeasuredFinalPosition {
             get {
-                return ResourceManager.GetString("MesuredLenght", resourceCulture);
+                return ResourceManager.GetString("MeasuredFinalPosition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured movement [mm]:.
+        ///   Looks up a localized string similar to MeasuredInitialPosition.
         /// </summary>
-        public static string MesuredMovement {
+        public static string MeasuredInitialPosition {
             get {
-                return ResourceManager.GetString("MesuredMovement", resourceCulture);
+                return ResourceManager.GetString("MeasuredInitialPosition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured weight [kg]:.
+        ///   Looks up a localized string similar to Measured lenght [mm]:.
         /// </summary>
-        public static string MesuredWeight {
+        public static string MeasuredLenght {
             get {
-                return ResourceManager.GetString("MesuredWeight", resourceCulture);
+                return ResourceManager.GetString("MeasuredLenght", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured weight is in tolerance..
+        ///   Looks up a localized string similar to Measured movement [mm]:.
         /// </summary>
-        public static string MesuredWeightInTolerance {
+        public static string MeasuredMovement {
             get {
-                return ResourceManager.GetString("MesuredWeightInTolerance", resourceCulture);
+                return ResourceManager.GetString("MeasuredMovement", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured weight is out of tolerance..
+        ///   Looks up a localized string similar to Measured weight [kg]:.
         /// </summary>
-        public static string MesuredWeightOutOfTolerance {
+        public static string MeasuredWeight {
             get {
-                return ResourceManager.GetString("MesuredWeightOutOfTolerance", resourceCulture);
+                return ResourceManager.GetString("MeasuredWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measured weight is in tolerance..
+        /// </summary>
+        public static string MeasuredWeightInTolerance {
+            get {
+                return ResourceManager.GetString("MeasuredWeightInTolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measured weight is out of tolerance..
+        /// </summary>
+        public static string MeasuredWeightOutOfTolerance {
+            get {
+                return ResourceManager.GetString("MeasuredWeightOutOfTolerance", resourceCulture);
             }
         }
         
@@ -1708,15 +1735,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ReadInitialPosition.
-        /// </summary>
-        public static string ReadInitialPosition {
-            get {
-                return ResourceManager.GetString("ReadInitialPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reference&apos;s cell position [mm]:.
         /// </summary>
         public static string ReferenceCellHeight {
@@ -1740,15 +1758,6 @@ namespace Ferretto.VW.App.Resources {
         public static string RepositionLenght {
             get {
                 return ResourceManager.GetString("RepositionLenght", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Final position.
-        /// </summary>
-        public static string RequestedFinalPosition {
-            get {
-                return ResourceManager.GetString("RequestedFinalPosition", resourceCulture);
             }
         }
         
@@ -2073,6 +2082,33 @@ namespace Ferretto.VW.App.Resources {
         public static string StartResolutionProcedure {
             get {
                 return ResourceManager.GetString("StartResolutionProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 1.
+        /// </summary>
+        public static string Step1 {
+            get {
+                return ResourceManager.GetString("Step1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 2.
+        /// </summary>
+        public static string Step2 {
+            get {
+                return ResourceManager.GetString("Step2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 3.
+        /// </summary>
+        public static string Step3 {
+            get {
+                return ResourceManager.GetString("Step3", resourceCulture);
             }
         }
         
