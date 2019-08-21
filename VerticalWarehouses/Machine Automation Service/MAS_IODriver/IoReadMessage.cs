@@ -6,8 +6,9 @@ using Ferretto.VW.MAS.IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class IoSHDReadMessage
+    public class IoReadMessage
     {
+
         #region Fields
 
         private const byte RELEASE_FW_10 = 0x10;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public IoSHDReadMessage(
+        public IoReadMessage(
             SHDFormatDataOperation formatDataOperation,
             byte fwRelease,
             bool[] inputs,
@@ -101,6 +102,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+
+
         #region Properties
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
@@ -121,8 +124,9 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
-        public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
         public bool PowerEnable => this.outputs?[(int)IoPorts.PowerEnable] ?? false;
+
+        public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         public bool ValidData => this.data != null;
 
@@ -131,6 +135,8 @@ namespace Ferretto.VW.MAS.IODriver
         public bool ValidOutputs => this.outputs != null;
 
         #endregion
+
+
 
         #region Methods
 

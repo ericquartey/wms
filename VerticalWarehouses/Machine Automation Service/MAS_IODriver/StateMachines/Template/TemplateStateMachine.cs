@@ -11,9 +11,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
     public class TemplateStateMachine : IoStateMachineBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private readonly ITemplateData templateData;
 
@@ -23,12 +24,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #region Constructors
 
-        public TemplateStateMachine( ITemplateData templateData,
-            IoSHDStatus status,
-            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+        public TemplateStateMachine(ITemplateData templateData,
+            IoStatus status,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IEventAggregator eventAggregator,
-            ILogger logger )
-            : base( eventAggregator, logger )
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
             this.templateData = templateData;
             this.IoCommandQueue = ioCommandQueue;
@@ -41,31 +42,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         ~TemplateStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void Start()
-        {
-            this.CurrentState = new TemplateStartState( this.templateData, this.status, this.Logger, this );
-
-            var notificationMessage = new FieldNotificationMessage(
-                null,
-                $"Template Message",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.SwitchAxis,
-                MessageStatus.OperationStart );
-
-            this.PublishNotificationEvent( notificationMessage );
-
-            this.CurrentState?.Start();
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -79,7 +65,24 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
+        }
+
+        public override void Start()
+        {
+            this.CurrentState = new TemplateStartState(this.templateData, this.status, this.Logger, this);
+
+            var notificationMessage = new FieldNotificationMessage(
+                null,
+                $"Template Message",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.SwitchAxis,
+                MessageStatus.OperationStart);
+
+            this.PublishNotificationEvent(notificationMessage);
+
+            this.CurrentState?.Start();
         }
 
         #endregion

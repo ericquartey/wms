@@ -8,9 +8,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationEndState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public SetConfigurationEndState(
             IIoStateMachine parentStateMachine,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
@@ -40,14 +41,32 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
         {
             this.Logger.LogTrace("1:Method Start");
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
 
@@ -69,7 +88,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public override void Start()
         {
-            var clearIoMessage = new IoSHDWriteMessage();
+            var clearIoMessage = new IoWriteMessage();
             clearIoMessage.Force = true;
 
             lock (this.status)
@@ -80,22 +99,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

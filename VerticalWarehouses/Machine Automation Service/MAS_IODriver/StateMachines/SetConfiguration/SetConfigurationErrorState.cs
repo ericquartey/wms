@@ -5,9 +5,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationErrorState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private bool disposed;
 
@@ -17,7 +18,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public SetConfigurationErrorState(
             IIoStateMachine parentStateMachine,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
@@ -37,22 +38,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
+
+
         #region Methods
-
-        public override void ProcessMessage(IoSHDMessage message)
-        {
-            this.Logger.LogTrace("1:Method Start");
-        }
-
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
-        {
-            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
-        }
-
-        public override void Start()
-        {
-            this.Logger.LogTrace("1:Method Start");
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -68,6 +56,21 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            this.Logger.LogTrace("1:Method Start");
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
+        }
+
+        public override void Start()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

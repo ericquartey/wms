@@ -4,12 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
+using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -19,12 +19,12 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 
-namespace Ferretto.VW.MAS.IODriver.IoDevice
+namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice
     {
+
         #region Fields
 
         private const int IO_POLLING_INTERVAL = 50;
@@ -35,13 +35,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private readonly IoIndex index;
 
-        private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
+        private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue;
 
         private readonly Task ioReceiveTask;
 
         private readonly Task ioSendTask;
 
-        private readonly IoSHDStatus ioSHDStatus;
+        private readonly IoStatus ioSHDStatus;
 
         private readonly IPAddress ipAddress;
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private readonly Timer publishIoTimer;
 
-        private readonly ISHDTransport shdTransport;
+        private readonly IIoTransport shdTransport;
 
         private readonly CancellationToken stoppingToken;
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         #region Constructors
 
-        public IoDevice(IEventAggregator eventAggregator, ISHDTransport shdTransport, IPAddress ipAddress, int port, IoIndex index, ILogger logger)
+        public IoDevice(IEventAggregator eventAggregator, IIoTransport shdTransport, IPAddress ipAddress, int port, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
@@ -82,9 +82,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             this.logger = logger;
             this.shdTransport = shdTransport;
 
-            this.ioSHDStatus = new IoSHDStatus();
+            this.ioSHDStatus = new IoStatus();
 
-            this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDWriteMessage>();
+            this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
@@ -102,6 +102,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -136,7 +138,25 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         #endregion
 
+
+
         #region Methods
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.pollIoTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
+            }
+
+            this.disposed = true;
+        }
 
         public void DestroyStateMachine()
         {
@@ -187,7 +207,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         continue;
                     }
 
-                    var message = new IoSHDWriteMessage(
+                    var message = new IoWriteMessage(
                         this.ioSHDStatus.ComunicationTimeOut,
                         this.ioSHDStatus.UseSetupOutputLines,
                         this.ioSHDStatus.SetupOutputLines,
@@ -253,7 +273,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     continue;
                 }
 
-                var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 3, 0, 0);
+                var extractedMessages = BufferUtility.GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 3, 0, 0);
                 if (this.receiveBuffer.Length > 0)
                 {
                     this.logger.LogWarning($" extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
@@ -332,7 +352,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                                 this.forceIoStatusPublish = false;
                             }
 
-                            var messageData = new IoSHDReadMessage(
+                            var messageData = new IoReadMessage(
                                 formatDataOperation,
                                 fwRelease,
                                 inputData,
@@ -346,7 +366,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
                         case SHDFormatDataOperation.Ack:
 
-                            var messageConfig = new IoSHDReadMessage(
+                            var messageConfig = new IoReadMessage(
                                 formatDataOperation,
                                 fwRelease,
                                 inputData,
@@ -370,7 +390,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             do
             {
-                IoSHDWriteMessage shdMessage;
+                IoWriteMessage shdMessage;
                 try
                 {
                     this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out shdMessage);
@@ -442,7 +462,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             if (!this.ioCommandQueue.Any(x => x.CodeOperation == SHDCodeOperation.Data))
             {
-                var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
+                var message = new IoWriteMessage(this.ioSHDStatus.OutputData);
 
                 this.ioCommandQueue.Enqueue(message);
             }
@@ -535,22 +555,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.pollIoTimer?.Dispose();
-                this.writeEnableEvent?.Dispose();
-            }
-
-            this.disposed = true;
         }
 
         #endregion

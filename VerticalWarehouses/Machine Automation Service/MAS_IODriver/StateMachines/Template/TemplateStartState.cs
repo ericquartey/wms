@@ -10,9 +10,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
     public class TemplateStartState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private readonly ITemplateData templateData;
 
@@ -25,10 +26,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
         /// <inheritdoc />
         public TemplateStartState(
             ITemplateData templateData,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger,
-            IIoStateMachine parentStateMachine )
-            : base( parentStateMachine, logger )
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
         {
             this.templateData = templateData;
             this.status = status;
@@ -40,56 +41,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         ~TemplateStartState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage( IoSHDMessage message )
-        {
-            if (message.ValidOutputs)
-            {
-                this.ParentStateMachine.ChangeState( new TemplateEndState( this.templateData, this.status, this.Logger, this.ParentStateMachine ) );
-            }
-        }
-
-        public override void ProcessResponseMessage( IoSHDReadMessage message )
-        {
-            if (message.ValidOutputs)
-            {
-                this.ParentStateMachine.ChangeState( new TemplateEndState( this.templateData, this.status, this.Logger, this.ParentStateMachine ) );
-            }
-            else
-            {
-                this.ParentStateMachine.ChangeState( new TemplateErrorState( this.templateData, this.status, this.Logger, this.ParentStateMachine ) );
-            }
-        }
-
-        public override void Start()
-        {
-            var switchOffAxisIoMessage = new IoSHDWriteMessage();
-
-            lock (this.status)
-            {
-                this.status.UpdateOutputStates( switchOffAxisIoMessage.Outputs );
-            }
-
-            this.ParentStateMachine.EnqueueMessage( switchOffAxisIoMessage );
-
-            var endNotification = new FieldNotificationMessage(
-                null,
-                "Template Start State",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.NoType,
-                MessageStatus.OperationStart );
-
-            this.ParentStateMachine.PublishNotificationEvent( endNotification );
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -102,7 +63,49 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            if (message.ValidOutputs)
+            {
+                this.ParentStateMachine.ChangeState(new TemplateEndState(this.templateData, this.status, this.Logger, this.ParentStateMachine));
+            }
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            if (message.ValidOutputs)
+            {
+                this.ParentStateMachine.ChangeState(new TemplateEndState(this.templateData, this.status, this.Logger, this.ParentStateMachine));
+            }
+            else
+            {
+                this.ParentStateMachine.ChangeState(new TemplateErrorState(this.templateData, this.status, this.Logger, this.ParentStateMachine));
+            }
+        }
+
+        public override void Start()
+        {
+            var switchOffAxisIoMessage = new IoWriteMessage();
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(switchOffAxisIoMessage.Outputs);
+            }
+
+            this.ParentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
+
+            var endNotification = new FieldNotificationMessage(
+                null,
+                "Template Start State",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.NoType,
+                MessageStatus.OperationStart);
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion

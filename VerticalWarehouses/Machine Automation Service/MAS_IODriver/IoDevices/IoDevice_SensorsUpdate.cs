@@ -5,10 +5,12 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.IODriver.IoDevice
+namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
+
+
         #region Methods
 
         public void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage)

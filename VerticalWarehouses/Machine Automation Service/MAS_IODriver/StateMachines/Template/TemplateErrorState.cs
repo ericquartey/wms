@@ -10,9 +10,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
     public class TemplateErrorState : IoStateBase
     {
+
         #region Fields
 
-        private readonly IoSHDStatus status;
+        private readonly IoStatus status;
 
         private readonly ITemplateData templateData;
 
@@ -24,10 +25,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public TemplateErrorState(
             ITemplateData templateData,
-            IoSHDStatus status,
+            IoStatus status,
             ILogger logger,
-            IIoStateMachine parentStateMachine )
-            : base( parentStateMachine, logger )
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
         {
             this.templateData = templateData;
             this.status = status;
@@ -39,39 +40,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         ~TemplateErrorState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessMessage( IoSHDMessage message )
-        {
-            //INFO This method should never be used in an error state
-            this.Logger.LogTrace( $"1:Message processed: {message}" );
-        }
-
-        public override void ProcessResponseMessage( IoSHDReadMessage message )
-        {
-            //INFO This method should never be used in an error state
-            this.Logger.LogTrace( $"1:Message processed: {message}" );
-        }
-
-        public override void Start()
-        {
-            var endNotification = new FieldNotificationMessage(
-                null,
-                "Template Error State",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.NoType,
-                MessageStatus.OperationError );
-
-            this.ParentStateMachine.PublishNotificationEvent( endNotification );
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -84,7 +62,32 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessMessage(IoMessage message)
+        {
+            //INFO This method should never be used in an error state
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void ProcessResponseMessage(IoReadMessage message)
+        {
+            //INFO This method should never be used in an error state
+            this.Logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        public override void Start()
+        {
+            var endNotification = new FieldNotificationMessage(
+                null,
+                "Template Error State",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.NoType,
+                MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion

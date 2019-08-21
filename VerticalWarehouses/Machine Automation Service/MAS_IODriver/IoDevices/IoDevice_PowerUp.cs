@@ -3,10 +3,12 @@ using Ferretto.VW.MAS.IODriver.StateMachines.PowerUp;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.IODriver.IoDevice
+namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
+
+
         #region Methods
 
         public void ExecuteIoPowerUp()

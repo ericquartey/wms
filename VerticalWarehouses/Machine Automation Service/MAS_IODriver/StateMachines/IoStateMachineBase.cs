@@ -14,11 +14,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateMachineBase : IIoStateMachine
     {
+
         #region Fields
 
-        protected BlockingConcurrentQueue<IoSHDWriteMessage> IoCommandQueue;
-
         private bool disposed;
+
+        protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue;
 
         #endregion
 
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #endregion
 
+
+
         #region Properties
 
         protected IIoState CurrentState { get; set; }
@@ -53,7 +56,34 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #endregion
 
+
+
         #region Methods
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"IoDriver current state null",
+                MessageActor.Any,
+                MessageActor.IoDriver,
+                MessageType.MachineStateActive,
+                MessageStatus.OperationStart);
+
+            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+            this.disposed = true;
+        }
 
         public void ChangeState(IIoState newState)
         {
@@ -80,17 +110,17 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             GC.SuppressFinalize(this);
         }
 
-        public void EnqueueMessage(IoSHDWriteMessage message)
+        public void EnqueueMessage(IoWriteMessage message)
         {
             this.IoCommandQueue.Enqueue(message);
         }
 
-        public virtual void ProcessMessage(IoSHDMessage message)
+        public virtual void ProcessMessage(IoMessage message)
         {
             this.CurrentState?.ProcessMessage(message);
         }
 
-        public virtual void ProcessResponseMessage(IoSHDReadMessage message)
+        public virtual void ProcessResponseMessage(IoReadMessage message)
         {
             this.CurrentState?.ProcessResponseMessage(message);
         }
@@ -103,31 +133,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         }
 
         public abstract void Start();
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"IoDriver current state null",
-                MessageActor.Any,
-                MessageActor.IoDriver,
-                MessageType.MachineStateActive,
-                MessageStatus.OperationStart);
-
-            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
-            this.disposed = true;
-        }
 
         #endregion
     }
