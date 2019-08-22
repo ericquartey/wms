@@ -41,9 +41,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEngineManualMovementsViewModel(
             IMachineShuttersService shuttersService,
-            IMachineVerticalOriginProcedureService verticalOriginProcedureService,
+            IMachineElevatorService machineElevatorService,
             IBayManager bayManager)
-            : base(verticalOriginProcedureService)
+            : base(machineElevatorService)
         {
             if (shuttersService is null)
             {
