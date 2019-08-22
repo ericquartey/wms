@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState(new ResetEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (this.status.MatchOutputs(message.Outputs))
             {
-                this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState(new ResetEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 

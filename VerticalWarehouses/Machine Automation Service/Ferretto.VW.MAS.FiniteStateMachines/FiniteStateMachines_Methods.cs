@@ -26,8 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
-
-
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -380,7 +378,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage(CommandMessage message)
+        private void ProcessResetSecurityMessage()
         {
             this.logger.LogTrace("1:Method Start");
 

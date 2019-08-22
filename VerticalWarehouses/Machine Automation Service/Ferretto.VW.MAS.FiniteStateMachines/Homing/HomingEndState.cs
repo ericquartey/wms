@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingEndState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingOperation homingOperation;
@@ -50,24 +49,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -108,14 +90,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             if (this.stopRequested)
             {
                 //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+                var data = new InverterStopFieldMessageData();
 
                 var stopMessage = new FieldCommandMessage(
                     data,
                     "Homing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
+                    FieldMessageType.InverterStop,
+                    (byte)InverterIndex.MainInverter);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
@@ -160,6 +143,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -119,7 +119,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageActor.InverterDriver,
                             FieldMessageType.ShutterPositioning,
-                            MessageStatus.OperationExecuting);
+                            MessageStatus.OperationExecuting,
+                            this.InverterStatus.SystemIndex);
 
                         this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
