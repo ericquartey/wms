@@ -579,8 +579,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(12);
-                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(12);
+                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(-5, 15);
 
                     this.homingTimerActive = true;
                     this.homingTimer.Change(0, 500);
