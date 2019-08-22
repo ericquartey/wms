@@ -33,9 +33,10 @@ namespace Ferretto.VW.App.Modules.Layout.Converters
 
                 case NotificationSeverity.Success:
                     return MahApps.Metro.IconPacks.PackIconModernKind.Check;
-            }
 
-            return null;
+                default:
+                    return MahApps.Metro.IconPacks.PackIconModernKind.None;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

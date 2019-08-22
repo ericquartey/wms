@@ -43,6 +43,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
+        #region Properties
+
+        public override EnableMask EnableMask => EnableMask.None;
+
+        #endregion
+
         #region Methods
 
         public override async Task OnNavigatedAsync()

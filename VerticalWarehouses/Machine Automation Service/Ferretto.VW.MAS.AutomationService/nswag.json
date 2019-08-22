@@ -77,7 +77,7 @@
       "typeAccessModifier": "public",
       "generateContractsOutput": true,
       "contractsNamespace": "Ferretto.VW.MAS.AutomationService.Contracts",
-      "contractsOutputFilePath": "../AutomationService.Contracts/ServiceContracts.autogen.cs",
+      "contractsOutputFilePath": "../Ferretto.VW.MAS.AutomationService.Contracts/ServiceContracts.autogen.cs",
       "parameterDateTimeFormat": "s",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "serializeTypeInformation": false,
@@ -131,7 +131,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../AutomationService.Contracts/Services.autogen.cs"
+      "output": "../Ferretto.VW.MAS.AutomationService.Contracts/Services.autogen.cs"
     }
   }
 }

@@ -54,7 +54,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return container;
         }
 
+        public static IContainerProvider UseMachineAutomationHubs(this IContainerProvider containerProvider)
+        {
+            if (containerProvider is null)
+            {
+                throw new System.ArgumentNullException(nameof(containerProvider));
+            }
 
+            containerProvider
+                .Resolve<IInstallationHubClient>()
+                .ConnectAsync();
+
+            containerProvider
+                .Resolve<IOperatorHubClient>()
+                .ConnectAsync();
+
+            return containerProvider;
+        }
 
     }
 }
