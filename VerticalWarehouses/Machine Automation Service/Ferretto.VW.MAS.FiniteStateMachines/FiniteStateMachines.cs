@@ -209,6 +209,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
                     && receivedMessage.Type != MessageType.PowerEnable
+                    && receivedMessage.Type != MessageType.RequestPosition
                     )
                 {
                     var errorNotification = new NotificationMessage(

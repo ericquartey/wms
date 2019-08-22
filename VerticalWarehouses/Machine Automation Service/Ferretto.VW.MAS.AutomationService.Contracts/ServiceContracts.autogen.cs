@@ -106,11 +106,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineElevatorService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync();
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync(Axis currentAxis);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync(Axis currentAxis, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveHorizontalAsync(HorizontalMovementDirection direction);
@@ -344,6 +344,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineShuttersService
     {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync();
     
@@ -855,6 +862,57 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SensorsChangedMessageData 
+    {
+        [Newtonsoft.Json.JsonProperty("sensorsStates", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<bool> SensorsStates { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("verbosity", Required = Newtonsoft.Json.Required.Always)]
+        public MessageVerbosity Verbosity { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SensorsChangedMessageData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SensorsChangedMessageData>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MessageVerbosity
+    {
+        Trace = 0,
+    
+        Debug = 1,
+    
+        Info = 2,
+    
+        Warning = 3,
+    
+        Error = 4,
+    
+        Fatal = 5,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Axis
+    {
+        None = 0,
+    
+        Horizontal = 1,
+    
+        Vertical = 2,
+    
+        Both = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
         Forwards = 0,
@@ -1210,44 +1268,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class SensorsChangedMessageData 
-    {
-        [Newtonsoft.Json.JsonProperty("sensorsStates", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<bool> SensorsStates { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("verbosity", Required = Newtonsoft.Json.Required.Always)]
-        public MessageVerbosity Verbosity { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static SensorsChangedMessageData FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SensorsChangedMessageData>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MessageVerbosity
-    {
-        Trace = 0,
-    
-        Debug = 1,
-    
-        Info = 2,
-    
-        Warning = 3,
-    
-        Error = 4,
-    
-        Fatal = 5,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupStatusCapabilities 
     {
         [Newtonsoft.Json.JsonProperty("allLoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1359,6 +1379,76 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ShutterPositioningMessageData 
+    {
+        [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public int BayNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shutterMovementDirection", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterMovementDirection ShutterMovementDirection { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shutterPosition", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterPosition ShutterPosition { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shutterType", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterType ShutterType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("speedRate", Required = Newtonsoft.Json.Required.Always)]
+        public decimal SpeedRate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("verbosity", Required = Newtonsoft.Json.Required.Always)]
+        public MessageVerbosity Verbosity { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ShutterPositioningMessageData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMessageData>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterMovementDirection
+    {
+        None = 0,
+    
+        Up = 1,
+    
+        Down = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterPosition
+    {
+        None = 0,
+    
+        Opened = 1,
+    
+        Half = 2,
+    
+        Closed = 3,
+    
+        Intermediate = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterType
+    {
+        NoType = 0,
+    
+        Shutter2Type = 1,
+    
+        Shutter3Type = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ShutterTestParameters 
     {
         [Newtonsoft.Json.JsonProperty("delayBetweenCycles", Required = Newtonsoft.Json.Required.Always)]
@@ -1400,28 +1490,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDto>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterMovementDirection
-    {
-        None = 0,
-    
-        Up = 1,
-    
-        Down = 2,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterType
-    {
-        NoType = 0,
-    
-        Shutter2Type = 1,
-    
-        Shutter3Type = 2,
     
     }
     
