@@ -16,22 +16,14 @@ namespace Ferretto.VW.App.Services
 
         private readonly ILoadingUnitsDataService loadingUnitsDataService;
 
-        private readonly IStatusMessageService statusMessageService;
-
         #endregion
 
         #region Constructors
 
         public WmsDataProvider(
-            IStatusMessageService statusMessageService,
             ILoadingUnitsDataService loadingUnitsDataService,
             IItemsDataService itemsDataService)
         {
-            if (statusMessageService is null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
-
             if (loadingUnitsDataService is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnitsDataService));
@@ -41,8 +33,6 @@ namespace Ferretto.VW.App.Services
             {
                 throw new ArgumentNullException(nameof(itemsDataService));
             }
-
-            this.statusMessageService = statusMessageService;
 
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.itemsDataService = itemsDataService;
@@ -61,7 +51,7 @@ namespace Ferretto.VW.App.Services
             }
             catch (SwaggerException ex)
             {
-                this.statusMessageService.Notify(ex);
+                return null;
             }
 
             return item.Image;
@@ -113,7 +103,6 @@ namespace Ferretto.VW.App.Services
             }
             catch (Exception ex)
             {
-                this.statusMessageService.Notify(ex);
                 return false;
             }
         }

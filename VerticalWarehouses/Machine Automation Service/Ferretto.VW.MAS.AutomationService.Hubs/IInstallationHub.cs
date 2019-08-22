@@ -9,17 +9,23 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
-        Task CurrentPositionNotify(IBaseNotificationMessageUI message);
+        Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
-        Task ExceptionNotify(IBaseNotificationMessageUI message);
+        Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
-        Task HomingNotify(IBaseNotificationMessageUI message);
+        Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
+
+        Task MachineStateActiveNotify(IBaseNotificationMessageUI message);
+
+        Task MachineStatusActiveNotify(IBaseNotificationMessageUI message);
 
         Task PositioningNotify(IBaseNotificationMessageUI message);
 
+        Task PowerEnableNotify(IBaseNotificationMessageUI message);
+
         Task ResolutionCalibrationNotify(IBaseNotificationMessageUI message);
 
-        Task SensorsChangedNotify(IBaseNotificationMessageUI message);
+        Task SensorsChanged(IBaseNotificationMessageUI message);
 
         Task ShutterControlNotify(IBaseNotificationMessageUI message);
 
@@ -27,17 +33,6 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
-        Task InverterStatusWordNotify(IBaseNotificationMessageUI message);
-
-        Task MachineStatusActiveNotify(IBaseNotificationMessageUI message);
-
-        Task MachineStateActiveNotify(IBaseNotificationMessageUI message);
-
         #endregion
-
-        //Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);
-        // -
-        // TODO: Add here methods for each notification message to be sent via SignalR related to a specific type of operation
-        // -
     }
 }

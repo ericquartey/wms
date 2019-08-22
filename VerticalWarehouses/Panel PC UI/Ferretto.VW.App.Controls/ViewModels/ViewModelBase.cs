@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
@@ -12,17 +14,6 @@ namespace Ferretto.VW.App.Controls
 
         protected ViewModelBase()
         {
-        }
-
-        #endregion
-
-        #region Destructors
-
-        // Use C# destructor syntax for finalization code.
-        ~ViewModelBase()
-        {
-            // Simply call Dispose(false).
-            this.Dispose(false);
         }
 
         #endregion
@@ -54,12 +45,12 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void Disappear()
         {
+            // do nothing
         }
 
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)
@@ -69,24 +60,21 @@ namespace Ferretto.VW.App.Controls
 
         public virtual Task OnNavigatedAsync()
         {
+            // do nothing
             return Task.CompletedTask;
         }
 
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)
         {
+            // do nothing
         }
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
+            // do nothing
         }
 
         protected virtual void OnDispose()
-        {
-            // do nothing
-            // let the derived classes implement the dispose behaviour
-        }
-
-        protected virtual void OnFinalize()
         {
             // do nothing
             // let the derived classes implement the dispose behaviour
@@ -108,10 +96,12 @@ namespace Ferretto.VW.App.Controls
                     // Free other state (managed objects).
                     this.OnDispose();
                 }
-
-                // Free your own state (unmanaged objects).
-                this.OnFinalize();
             }
+        }
+
+        private void OnMachineModeChanged(MachineModeChangedEventArgs obj)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

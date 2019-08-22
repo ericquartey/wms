@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -26,7 +26,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseSensorsViewModel(IMachineSensorsService machineSensorsService)
+        protected BaseSensorsViewModel(
+            MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService)
             : base(Services.PresentationMode.Installer)
         {
             if (machineSensorsService is null)
@@ -59,12 +60,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                     message => this.sensors.Update(message?.Data?.SensorsStates),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             try
             {
-                await this.machineSensorsService.ForceNotificationAsync();
+                var data = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(data.SensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {

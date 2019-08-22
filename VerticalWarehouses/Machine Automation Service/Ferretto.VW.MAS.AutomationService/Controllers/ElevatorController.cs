@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -87,6 +88,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
+            this.PublishCommand(
+                null,
+                "Request vertical position",
+                MessageActor.FiniteStateMachines,
+                MessageType.CurrentPosition);
+
+            // var data = this.WaitForResponseEventAsync<>();
+
             return 0; // TODO
             // throw new System.NotImplementedException();
         }
@@ -94,15 +103,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontal([FromBody]ElevatorMovementParameters data)
+        public IActionResult MoveHorizontal(HorizontalMovementDirection direction)
         {
-            var initialTargetPosition = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted
+            var setupStatus = this.setupStatusProvider.Get();
+
+            var initialTargetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
                 ? this.horizontalManualMovements.RecoveryTargetPositionHM
                 : this.horizontalManualMovements.InitialTargetPositionHM;
 
-            // INFO +1 for Forward, -1 for Back
-            // TODO: this is not very clear, rethink about it
-            initialTargetPosition *= data.Displacement;
+            initialTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var speed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
@@ -132,43 +141,43 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("vertical/move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveVertical([FromBody]ElevatorMovementParameters data)
+        public IActionResult MoveVertical(VerticalMovementDirection direction)
         {
-            decimal feedRate = 0;
-            decimal initialTargetPosition = 0;
             var movementType = MovementType.Relative;
 
-            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-
-            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            var maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
-            var maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+            decimal feedRate;
+            decimal targetPosition;
 
             //INFO Absolute movement using the min and max reachable positions for limits
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (homingDone)
             {
                 feedRate = this.verticalManualMovements.FeedRateAfterZero;
                 movementType = MovementType.Absolute;
-                //INFO For movements Up the limit is the UpperBound, for movements down the limit is the LowerBound
-                initialTargetPosition = data.Displacement > 0 ? this.verticalAxis.UpperBound : this.verticalAxis.LowerBound;
+
+                targetPosition = direction == VerticalMovementDirection.Up
+                    ? this.verticalAxis.UpperBound
+                    : this.verticalAxis.LowerBound;
             }
             else //INFO Before homing relative movements step by step
             {
                 feedRate = this.verticalManualMovements.FeedRateVM;
-                //INFO +1 for Up, -1 for Down
-                initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetDirection : -this.verticalManualMovements.NegativeTargetDirection;
+
+                targetPosition = direction == VerticalMovementDirection.Up
+                    ? this.verticalManualMovements.PositiveTargetDirection
+                    : -this.verticalManualMovements.NegativeTargetDirection;
             }
 
-            var speed = maxSpeed * feedRate;
+            var speed = this.verticalAxis.MaxEmptySpeed * feedRate;
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 movementType,
                 MovementMode.Position,
-                initialTargetPosition,
+                targetPosition,
                 speed,
-                maxAcceleration,
-                maxDeceleration,
+                this.verticalAxis.MaxEmptyAcceleration,
+                this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
                 0);
@@ -179,7 +188,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
 
-            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {data.MovementType}, target position {initialTargetPosition}");
+            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {movementType}, target position {targetPosition}");
 
             return this.Accepted();
         }

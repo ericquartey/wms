@@ -10,14 +10,15 @@
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{DynamicResource PpcButtonBorderBrush}"
-                BorderThickness="0"
-                TextBlock.FontSize="{DynamicResource PpcButtonFontSize}"
-                TextBlock.Foreground="{DynamicResource PpcButtonForeground}"
-                TextBlock.TextAlignment="Center">
+                BorderThickness="0">
 
             <ContentPresenter HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                              Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                              TextBlock.FontSize="{DynamicResource PpcButtonFontSize}"
+                              TextBlock.Foreground="{DynamicResource PpcButtonForeground}"
+                              TextBlock.TextAlignment="Center">
+            </ContentPresenter>
 
         </Border>
 

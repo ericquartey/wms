@@ -14,9 +14,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
+        private readonly IMachineElevatorService machineElevatorService;
 
-        private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
+        private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private decimal? currentPosition;
 
@@ -28,15 +28,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseManualMovementsViewModel(IMachineVerticalOriginProcedureService verticalOriginProcedureService)
+        protected BaseManualMovementsViewModel(IMachineElevatorService machineElevatorService)
             : base(Services.PresentationMode.Installer)
         {
-            if (verticalOriginProcedureService is null)
+            if (machineElevatorService is null)
             {
-                throw new System.ArgumentNullException(nameof(verticalOriginProcedureService));
+                throw new System.ArgumentNullException(nameof(machineElevatorService));
             }
 
-            this.verticalOriginProcedureService = verticalOriginProcedureService;
+            this.machineElevatorService = machineElevatorService;
 
             this.InitializeNavigationMenu();
         }
@@ -68,12 +68,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = message?.Data?.CurrentPosition,
-                  ThreadOption.PublisherThread,
+                  ThreadOption.UIThread,
                   false);
 
             try
             {
-                await this.verticalOriginProcedureService.NotifyCurrentAxisPositionAsync();
+                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
             }
             catch (System.Exception ex)
             {

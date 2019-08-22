@@ -138,6 +138,8 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NavigationCompleted>()
                     .Publish(new NavigationCompletedPubSubEventArgs(moduleName, viewModelName));
+
+                this.ClearNotifications();
             }
             catch (Exception ex)
             {

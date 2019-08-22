@@ -217,14 +217,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
                 .Subscribe(
                     message => this.OnShutterTestStatusChanged(message),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             this.receivedActionUpdateErrorToken = this.EventAggregator
-                .GetEvent<MAS_ErrorEvent>()
+                .GetEvent<MachineAutomationErrorPubSubEvent>()
                 .Subscribe(
                     msg => this.UpdateError(),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false,
                     message =>
                     message.NotificationType == NotificationType.Error &&
@@ -248,7 +248,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.receivedActionUpdateErrorToken != null)
             {
                 this.EventAggregator
-                 .GetEvent<MAS_ErrorEvent>()
+                 .GetEvent<MachineAutomationErrorPubSubEvent>()
                  .Unsubscribe(this.receivedActionUpdateErrorToken);
 
                 this.receivedActionUpdateErrorToken = null;

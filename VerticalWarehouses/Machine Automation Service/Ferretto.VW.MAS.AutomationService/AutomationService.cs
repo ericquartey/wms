@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.dataHubClient.ConnectAsync();
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -154,22 +154,13 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-
-#if DEBUG
-                // simulate error
-                await Task.Delay(20 * 1000);
-                using (var scope = this.serviceScopeFactory.CreateScope())
-                {
-                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                    errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
-                }
-#endif
             }
             catch (Exception ex)
             {
                 throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
             }
+
+            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -204,7 +195,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 },
                 ThreadOption.PublisherThread,
                 false,
-                commandMessage => commandMessage.Destination == MessageActor.AutomationService || commandMessage.Destination == MessageActor.Any);
+                commandMessage =>
+                    commandMessage.Destination == MessageActor.AutomationService
+                    ||
+                    commandMessage.Destination == MessageActor.Any);
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
@@ -215,7 +209,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 },
                 ThreadOption.PublisherThread,
                 false,
-                notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
+                notificationMessage =>
+                    notificationMessage.Destination == MessageActor.AutomationService
+                    ||
+                    notificationMessage.Destination == MessageActor.Any);
         }
 
         private async void NotificationReceiveTaskFunction()
@@ -239,7 +236,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SensorsChanged:
-                        this.SensorsChangedMethod(receivedMessage);
+                        this.OnSensorsChanged(receivedMessage);
                         break;
 
                     case MessageType.Homing:
@@ -255,8 +252,6 @@ namespace Ferretto.VW.MAS.AutomationService
                         break;
 
                     case MessageType.CalibrateAxis:
-                        //case MessageType.DataLayerReady:
-                        //case MessageType.IOPowerUp:
                         this.CalibrateAxisMethod(receivedMessage);
                         break;
 
@@ -269,15 +264,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         break;
 
                     case MessageType.Positioning:
-                        this.PositioningMethod(receivedMessage);
-                        break;
-
-                    case MessageType.FsmException:
-                    case MessageType.InverterException:
-                    case MessageType.IoDriverException:
-                    case MessageType.DlException:
-                    case MessageType.WebApiException:
-
+                        this.OnPositioningChanged(receivedMessage);
                         break;
 
                     case MessageType.ResolutionCalibration:
@@ -306,7 +293,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         break;
 
                     case MessageType.InverterStatusWord:
-                        this.InverterStatusWordMethod(receivedMessage);
+                        this.OnInverterStatusWordChanged(receivedMessage);
                         break;
 
                     case MessageType.MachineStateActive:
@@ -316,7 +303,6 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.MachineStatusActive:
                         this.MachineStatusActiveMethod(receivedMessage);
                         break;
-
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
