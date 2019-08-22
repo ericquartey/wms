@@ -50,14 +50,14 @@ namespace Ferretto.VW.MAS.AutomationService
 
             if (bay != null)
             {
-                this.logger.LogInformation($"Client on bay {bay.Id} connected to signalR hub.");
+                this.logger.LogInformation($"Client on bay {bay.Number} connected to signalR hub.");
                 if (this.Context.Items.ContainsKey(BayIdEntry))
                 {
-                    this.Context.Items[BayIdEntry] = bay.Id;
+                    this.Context.Items[BayIdEntry] = bay.Number;
                 }
                 else
                 {
-                    this.Context.Items.Add(BayIdEntry, bay.Id);
+                    this.Context.Items.Add(BayIdEntry, bay.Number);
                 }
             }
             else

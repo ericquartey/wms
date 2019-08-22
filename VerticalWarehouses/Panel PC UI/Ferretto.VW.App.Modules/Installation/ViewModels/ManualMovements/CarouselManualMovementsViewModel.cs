@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -30,8 +31,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel(
             IMachineCarouselService machineCarouselService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineElevatorService)
+            IMachineElevatorService machineElevatorService,
+            IBayManager bayManagerService)
+            : base(machineElevatorService, bayManagerService)
         {
             this.machineCarouselService = machineCarouselService;
 

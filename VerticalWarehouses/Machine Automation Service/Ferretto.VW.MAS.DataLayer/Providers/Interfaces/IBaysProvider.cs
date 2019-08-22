@@ -9,21 +9,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        Bay Activate(int id);
+        Bay Activate(int bayNumber);
 
         Bay AssignMissionOperation(int bayId, int? missionId, int? missionOperationId);
 
         void Create(Bay bay);
 
-        Bay Deactivate(int id);
+        Bay Deactivate(int bayNumber);
 
         IEnumerable<Bay> GetAll();
 
-        Bay GetById(int id);
-
         Bay GetByIpAddress(IPAddress remoteIpAddress);
 
-        void Update(int id, string ipAddress, BayType bayType);
+        Bay GetByNumber(int bayNumber);
+
+        void Update(int bayNumber, string ipAddress, BayType bayType);
 
         #endregion
     }

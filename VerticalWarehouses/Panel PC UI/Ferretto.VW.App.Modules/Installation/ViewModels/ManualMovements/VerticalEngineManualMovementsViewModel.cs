@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -26,8 +27,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public VerticalEngineManualMovementsViewModel(IMachineElevatorService machineElevatorService)
-            : base(machineElevatorService)
+        public VerticalEngineManualMovementsViewModel(
+            IMachineElevatorService machineElevatorService,
+            IBayManager bayManager)
+            : base(machineElevatorService, bayManager)
         {
             if (machineElevatorService is null)
             {

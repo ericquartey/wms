@@ -57,20 +57,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(parameters);
         }
 
-        [HttpPost("nofity-current-axis-position")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesDefaultResponseType]
-        public IActionResult NotifyCurrentAxisPosition()
-        {
-            this.PublishCommand(
-                null,
-                "Sensors changed Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.SensorsChanged);
-
-            return this.Accepted();
-        }
-
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

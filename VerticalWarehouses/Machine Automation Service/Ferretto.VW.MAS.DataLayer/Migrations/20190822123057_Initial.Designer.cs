@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190819160642_Initial")]
+    [Migration("20190822123057_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Number")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("CurrentMissionId");
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Type");
 
-                    b.HasKey("Id");
+                    b.HasKey("Number");
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
@@ -3606,10 +3606,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 1,
                             CellId = 1,
                             Code = "01001",
-                            GrossWeight = 262m,
-                            Height = 135m,
+                            GrossWeight = 369m,
+                            Height = 106m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 47,
+                            MissionsCount = 8,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3618,10 +3618,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 2,
                             CellId = 2,
                             Code = "01002",
-                            GrossWeight = 391m,
-                            Height = 183m,
+                            GrossWeight = 203m,
+                            Height = 226m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 11,
+                            MissionsCount = 19,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3630,10 +3630,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 3,
                             CellId = 3,
                             Code = "01003",
-                            GrossWeight = 370m,
-                            Height = 280m,
+                            GrossWeight = 381m,
+                            Height = 303m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 9,
+                            MissionsCount = 28,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3642,10 +3642,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 4,
                             CellId = 4,
                             Code = "01004",
-                            GrossWeight = 253m,
-                            Height = 69m,
+                            GrossWeight = 315m,
+                            Height = 290m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 41,
+                            MissionsCount = 40,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3654,10 +3654,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 5,
                             CellId = 5,
                             Code = "01005",
-                            GrossWeight = 283m,
-                            Height = 71m,
+                            GrossWeight = 280m,
+                            Height = 128m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 22,
+                            MissionsCount = 33,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3666,10 +3666,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 6,
                             CellId = 6,
                             Code = "01006",
-                            GrossWeight = 237m,
-                            Height = 57m,
+                            GrossWeight = 284m,
+                            Height = 319m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 21,
+                            MissionsCount = 40,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3678,10 +3678,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 7,
                             CellId = 7,
                             Code = "01007",
-                            GrossWeight = 361m,
-                            Height = 327m,
+                            GrossWeight = 346m,
+                            Height = 271m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 8,
+                            MissionsCount = 31,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3690,10 +3690,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 8,
                             CellId = 8,
                             Code = "01008",
-                            GrossWeight = 316m,
-                            Height = 224m,
+                            GrossWeight = 214m,
+                            Height = 244m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 7,
+                            MissionsCount = 1,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3702,10 +3702,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 9,
                             CellId = 9,
                             Code = "01009",
-                            GrossWeight = 324m,
-                            Height = 166m,
+                            GrossWeight = 240m,
+                            Height = 131m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 8,
+                            MissionsCount = 31,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3714,10 +3714,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 10,
                             CellId = 10,
                             Code = "01010",
-                            GrossWeight = 314m,
-                            Height = 298m,
+                            GrossWeight = 210m,
+                            Height = 222m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 7,
+                            MissionsCount = 0,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3726,10 +3726,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 11,
                             CellId = 11,
                             Code = "01011",
-                            GrossWeight = 346m,
-                            Height = 313m,
+                            GrossWeight = 221m,
+                            Height = 314m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 5,
+                            MissionsCount = 18,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3738,10 +3738,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 12,
                             CellId = 12,
                             Code = "01012",
-                            GrossWeight = 333m,
-                            Height = 95m,
+                            GrossWeight = 201m,
+                            Height = 267m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 36,
+                            MissionsCount = 45,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3750,10 +3750,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 13,
                             CellId = 13,
                             Code = "01013",
-                            GrossWeight = 239m,
-                            Height = 80m,
+                            GrossWeight = 296m,
+                            Height = 82m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 4,
+                            MissionsCount = 26,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3762,10 +3762,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 14,
                             CellId = 14,
                             Code = "01014",
-                            GrossWeight = 351m,
-                            Height = 90m,
+                            GrossWeight = 247m,
+                            Height = 263m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 44,
+                            MissionsCount = 3,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3774,10 +3774,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 15,
                             CellId = 15,
                             Code = "01015",
-                            GrossWeight = 391m,
-                            Height = 310m,
+                            GrossWeight = 291m,
+                            Height = 64m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 27,
+                            MissionsCount = 2,
                             Status = 3L,
                             Tare = 50m
                         });
@@ -3896,7 +3896,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 10, 19, 18, 6, 42, 100, DateTimeKind.Local).AddTicks(1051),
+                            InstallationDate = new DateTime(2016, 10, 22, 14, 30, 56, 886, DateTimeKind.Local).AddTicks(5884),
                             ServiceStatus = 86
                         });
                 });

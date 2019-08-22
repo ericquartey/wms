@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -14,11 +13,11 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        int BayNumber { get; }
+        Bay Bay { get; }
 
-        MissionInfo CurrentMission { get; }
+        WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; }
 
-        MissionOperation CurrentMissionOperation { get; }
+        WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
 
         MachineIdentity Identity { get; }
 

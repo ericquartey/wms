@@ -44,9 +44,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public Bay Activate(int id)
+        public Bay Activate(int bayNumber)
         {
-            var bay = this.GetById(id);
+            var bay = this.GetByNumber(bayNumber);
             if (bay != null)
             {
                 bay.IsActive = true;
@@ -57,9 +57,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return bay;
         }
 
-        public Bay AssignMissionOperation(int id, int? missionId, int? missionOperationId)
+        public Bay AssignMissionOperation(int bayNumber, int? missionId, int? missionOperationId)
         {
-            var bay = this.GetById(id);
+            var bay = this.GetByNumber(bayNumber);
             if (bay != null)
             {
                 bay.CurrentMissionId = missionId;
@@ -78,9 +78,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.SaveChanges();
         }
 
-        public Bay Deactivate(int id)
+        public Bay Deactivate(int bayNumber)
         {
-            var bay = this.GetById(id);
+            var bay = this.GetByNumber(bayNumber);
             if (bay != null)
             {
                 bay.IsActive = false;
@@ -96,20 +96,20 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.dataContext.Bays.ToArray();
         }
 
-        public Bay GetById(int id)
-        {
-            return this.dataContext.Bays.SingleOrDefault(b => b.Id == id);
-        }
-
         public Bay GetByIpAddress(IPAddress remoteIpAddress)
         {
             return this.dataContext.Bays
                 .SingleOrDefault(b => b.IpAddress == remoteIpAddress.ToString());
         }
 
-        public void Update(int id, string ipAddress, BayType bayType)
+        public Bay GetByNumber(int bayNumber)
         {
-            var bay = this.GetById(id);
+            return this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+        }
+
+        public void Update(int bayNumber, string ipAddress, BayType bayType)
+        {
+            var bay = this.GetByNumber(bayNumber);
             if (bay != null)
             {
                 bay.IpAddress = ipAddress;
@@ -129,10 +129,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 new NotificationMessage(
                     new BayOperationalStatusChangedMessageData
                     {
-                        BayId = bay.Id,
+                        BayNumber = bay.Number,
                         BayStatus = bay.Status,
                     },
-                    $"Bay #{bay.Id} status changed to {bay.Status}",
+                    $"Bay #{bay.Number} status changed to {bay.Status}",
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
                     MessageType.BayOperationalStatusChanged,
