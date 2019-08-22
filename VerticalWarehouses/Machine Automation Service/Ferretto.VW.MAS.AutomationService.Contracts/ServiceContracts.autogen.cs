@@ -359,11 +359,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineShuttersService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync();
@@ -1373,50 +1373,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ShutterPositioningMessageData 
-    {
-        [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
-        public int BayNumber { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("shutterMovementDirection", Required = Newtonsoft.Json.Required.Always)]
-        public ShutterMovementDirection ShutterMovementDirection { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("shutterPosition", Required = Newtonsoft.Json.Required.Always)]
-        public ShutterPosition ShutterPosition { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("shutterType", Required = Newtonsoft.Json.Required.Always)]
-        public ShutterType ShutterType { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("speedRate", Required = Newtonsoft.Json.Required.Always)]
-        public decimal SpeedRate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("verbosity", Required = Newtonsoft.Json.Required.Always)]
-        public MessageVerbosity Verbosity { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static ShutterPositioningMessageData FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMessageData>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterMovementDirection
-    {
-        None = 0,
-    
-        Up = 1,
-    
-        Down = 2,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
         None = 0,
@@ -1428,17 +1384,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Closed = 3,
     
         Intermediate = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterType
-    {
-        NoType = 0,
-    
-        Shutter2Type = 1,
-    
-        Shutter3Type = 2,
     
     }
     
@@ -1484,6 +1429,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDto>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterMovementDirection
+    {
+        None = 0,
+    
+        Up = 1,
+    
+        Down = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterType
+    {
+        NoType = 0,
+    
+        Shutter2Type = 1,
+    
+        Shutter3Type = 2,
     
     }
     

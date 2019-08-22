@@ -4453,14 +4453,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber)
+        public System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber)
         {
             return GetShutterPositionAsync(bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ShutterPositioningMessageData> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
@@ -4497,7 +4497,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ShutterPositioningMessageData>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ShutterPosition>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -4507,7 +4507,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(ShutterPositioningMessageData);
+                        return default(ShutterPosition);
                     }
                     finally
                     {
