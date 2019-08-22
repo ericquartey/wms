@@ -15,11 +15,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
+        private readonly ShutterPosition shutterDestination;
+
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private ShutterPosition oldShutterPosition;
-
-        private ShutterPosition shutterDestination;
 
         #endregion
 

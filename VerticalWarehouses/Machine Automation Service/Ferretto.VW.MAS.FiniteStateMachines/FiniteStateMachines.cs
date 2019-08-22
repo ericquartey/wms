@@ -427,17 +427,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case FieldMessageType.ShutterPositioning:
                         this.logger.LogTrace($"6:ShutterPositioning received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is IShutterPositioningMessageData positioningData)
+                        if (receivedMessage.Data is IInverterShutterPositioningFieldMessageData positioningData)
                         {
                             if (receivedMessage.Status == MessageStatus.OperationExecuting)
                             {
+                                var msgData = new ShutterPositioningMessageData();
+                                msgData.ShutterPosition = positioningData.ShutterPosition;
                                 msg = new NotificationMessage(
-                                positioningData,
-                                "Inverter Shutter Positioning",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.ShutterPositioning,
-                                MessageStatus.OperationExecuting);
+                                    msgData,
+                                    "Inverter Shutter Positioning",
+                                    MessageActor.Any,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.ShutterPositioning,
+                                    MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                             }
                         }

@@ -14,9 +14,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly bool stopRequested;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private IInverterShutterPositioningFieldMessageData shutterPositionData;
+        private readonly bool stopRequested;
 
         #endregion
 

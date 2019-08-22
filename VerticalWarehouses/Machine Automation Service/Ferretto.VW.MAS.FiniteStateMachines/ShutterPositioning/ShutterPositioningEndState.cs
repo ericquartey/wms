@@ -21,11 +21,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+
         private readonly bool stopRequested;
 
         private bool disposed;
-
-        private IShutterPositioningMessageData shutterPositioningMessageData;
 
         #endregion
 
