@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                                     break;
 
                                 case ShutterPosition.Opened:
-                                case ShutterPosition.Undefined:
+                                case ShutterPosition.Intermediate:
                                     var errorMessage = new FieldNotificationMessage(
                                         null,
                                         $"Invalid position of shutter",

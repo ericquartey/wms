@@ -297,6 +297,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterModel(InverterType inverterType)
         {
+            this.InverterType = inverterType;
+
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
             this.homingTimerActive = false;
 
@@ -305,7 +307,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
             this.shutterTimerActive = false;
-            this.InverterType = inverterType;
 
             this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
             this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
@@ -317,7 +318,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
 
             this.OperationMode = InverterOperationMode.Velocity;
-
             switch (inverterType)
             {
                 case InverterType.Ang:
@@ -492,9 +492,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
-        public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+        public bool IsShutterClosed => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
-        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+        public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
         {
@@ -861,6 +861,28 @@ namespace Ferretto.VW.Simulator.Services.Models
             else
             {
                 this.AxisPosition--;
+            }
+
+            // Shutter position
+            if (this.AxisPosition <= 300)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 304 && this.AxisPosition < 306)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 310)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
+            }
+            else
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
             }
 
             if (this.shutterTickCount > 100

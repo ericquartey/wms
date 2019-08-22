@@ -153,22 +153,22 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             {
                 if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
                 {
-                    value = ShutterPosition.Closed;
+                    value = ShutterPosition.Opened;
                 }
                 else
                 {
-                    value = ShutterPosition.Undefined;
+                    value = ShutterPosition.Half;
                 }
             }
             else
             {
                 if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
                 {
-                    value = ShutterPosition.Half;
+                    value = ShutterPosition.Intermediate;
                 }
                 else
                 {
-                    value = ShutterPosition.Opened;
+                    value = ShutterPosition.Closed;
                 }
             }
 
