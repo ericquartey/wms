@@ -55,13 +55,13 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void Expander_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (this.visualTreeAdapterInstance == null)
+            if (this.visualTreeAdapterInstance is null)
             {
                 this.visualTreeAdapterInstance = new VisualTreeAdapter(this);
             }
             if (sender is FrameworkElement parentControl)
             {
-                if (this.toggleButton == null)
+                if (this.toggleButton is null)
                 {
                     var toggleButtonFound = this.visualTreeAdapterInstance.Children()
                      .OfType<ToggleButton>()
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Controls.Controls
                         this.toggleButton = toggleButtonFound;
                     }
                 }
-                if (this.gridHeaderSite == null)
+                if (this.gridHeaderSite is null)
                 {
                     var gridFound = this.visualTreeAdapterInstance.Children()
                      .OfType<Grid>()

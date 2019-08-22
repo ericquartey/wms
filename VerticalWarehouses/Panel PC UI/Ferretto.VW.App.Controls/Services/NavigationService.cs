@@ -43,27 +43,27 @@ namespace Ferretto.VW.App.Services
             IRegionNavigationService regionNavigationService,
             IModuleManager moduleManager)
         {
-            if (unityContainer == null)
+            if (unityContainer is null)
             {
                 throw new ArgumentNullException(nameof(unityContainer));
             }
 
-            if (regionManager == null)
+            if (regionManager is null)
             {
                 throw new ArgumentNullException(nameof(regionManager));
             }
 
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (regionNavigationService == null)
+            if (regionNavigationService is null)
             {
                 throw new ArgumentNullException(nameof(regionNavigationService));
             }
 
-            if (moduleManager == null)
+            if (moduleManager is null)
             {
                 throw new ArgumentNullException(nameof(moduleManager));
             }
@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Services
             get
             {
                 var viewModel = this.GetBusyViewModel();
-                if (viewModel == null)
+                if (viewModel is null)
                 {
                     return false;
                 }
@@ -147,7 +147,7 @@ namespace Ferretto.VW.App.Services
 
         public void Disappear(INavigableViewModel viewModel)
         {
-            if (viewModel == null)
+            if (viewModel is null)
             {
                 return;
             }
@@ -213,6 +213,8 @@ namespace Ferretto.VW.App.Services
                 this.tracks.Pop();
             }
 
+            this.ClearNotifications();
+
             this.NavigateBackTo(this.tracks.Peek());
         }
 
@@ -220,7 +222,7 @@ namespace Ferretto.VW.App.Services
         {
             var catalog = this.container.Resolve<IModuleCatalog>();
             var module = catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName);
-            if (module == null)
+            if (module is null)
             {
                 this.logger.Error($"Module '{moduleName}': unable to load the module bacause it is not present in the catalog.");
                 return;
@@ -251,6 +253,13 @@ namespace Ferretto.VW.App.Services
                     .GetEvent<NavigationCompleted>()
                     .Unsubscribe(token);
             }
+        }
+
+        private void ClearNotifications()
+        {
+            this.eventAggregator
+              .GetEvent<PresentationChangedPubSubEvent>()
+              .Publish(new PresentationChangedMessage(null, Models.NotificationSeverity.Clear));
         }
 
         private IBusyViewModel GetBusyViewModel()

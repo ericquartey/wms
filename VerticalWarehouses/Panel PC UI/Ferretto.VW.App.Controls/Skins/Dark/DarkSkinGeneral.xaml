@@ -4,36 +4,6 @@
 
     <FontFamily x:Key="PpcFontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
-    <SolidColorBrush x:Key="FerrettoWhiteGray">#e6e6e6</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoLightGray">#c5c7c4</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoDarkGray">#293133</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoRed">#e2001a</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoOrange">#ffa500</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoGreen">#57A639</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoPureWhite">#ffffff</SolidColorBrush>
-
-    <Color x:Key="ColorFerrettoWhiteGray">#e6e6e6</Color>
-    <Color x:Key="ColorFerrettoLightGray">#c5c7c4</Color>
-    <Color x:Key="ColorFerrettoMediumGray">#707173</Color>
-    <Color x:Key="ColorFerrettoDarkGray">#293133</Color>
-    <Color x:Key="ColorFerrettoRed">#e2001a</Color>
-    <Color x:Key="ColorFerrettoBlack">#0A0A0A</Color>
-    <Color x:Key="ColorFerrettoGreen">#57A639</Color>
-    <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
-
-    <Color x:Key="EDBGrayA">#282828</Color>
-    <Color x:Key="EDBGrayA1">#2C2C2C</Color>
-    <Color x:Key="EDBGrayB">#323232</Color>
-    <Color x:Key="EDBGrayC">#3c3c3c</Color>
-    <Color x:Key="EDBGrayD">#505050</Color>
-    <Color x:Key="EDBGrayE">#5a5a5a</Color>
-    <Color x:Key="EDBGrayF">#828282</Color>
-    <Color x:Key="EDBGrayG">#a0a0a0</Color>
-    <Color x:Key="EDBGrayH">#b0b0b0</Color>
-    <Color x:Key="EDBGrayI">#e6e6e6</Color>
-
     <SolidColorBrush x:Key="VWAPP_BACKGROUND"
                      Color="{DynamicResource EDBGrayA}" />
 

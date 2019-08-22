@@ -85,27 +85,13 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
 
             containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
-            containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
 
+            // UI services
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
-            // UI services
-            containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
-            containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
-            containerRegistry.RegisterSingleton<IBayManager, BayManager>();
-            containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
-                new InjectionFactory(c =>
-                    new HealthProbeService(
-                        serviceUrl,
-                        serviceLiveHealthPath,
-                        serviceReadyHealthPath,
-                        c.Resolve<IEventAggregator>(),
-                        c.Resolve<INavigationService>())));
-
-            containerRegistry.RegisterInstance(ServiceFactory.Get<IThemeService>());
-            containerRegistry.RegisterInstance(ServiceFactory.Get<ISessionService>());
+            containerRegistry.RegisterUiServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
@@ -113,12 +99,13 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterMachineAutomationServices(serviceUrl);
             containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
 
-            RegisterHubs(containerRegistry);
+            // WMS Web API services
+            RegisterWmsHubs(containerRegistry);
 
             RegisterWmsProviders(containerRegistry);
         }
 
-        private static void RegisterHubs(IContainerRegistry container)
+        private static void RegisterWmsHubs(IContainerRegistry container)
         {
             var wmsHubPath = ConfigurationManager.AppSettings.Get("WMS:DataService:Hubs:Data:Path");
             var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new Uri(wmsHubPath));
@@ -128,9 +115,6 @@ namespace Ferretto.VW.App
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
             var wmsServiceUrl = new Uri(ConfigurationManager.AppSettings.Get("WMS:DataService:Url"));
-
-            container.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
-            container.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
 
             container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));

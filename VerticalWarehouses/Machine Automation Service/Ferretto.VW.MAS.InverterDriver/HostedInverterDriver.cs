@@ -294,7 +294,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     continue;
                 }
 
-                if (this.CurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterStatusUpdate)
+                if (this.CurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
                 {
                     this.logger.LogWarning($"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}");
 
@@ -326,8 +326,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
-                    case FieldMessageType.InverterStatusUpdate:
-                        this.ProcessInverterStatusUpdateMessage(receivedMessage);
+                    case FieldMessageType.InverterSetTimer:
+                        this.ProcessInverterSetTimerMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterSwitchOff:
@@ -1054,6 +1054,21 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterStatusUpdate,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSetTimer:
+                    if (messageData is IInverterSetTimerFieldMessageData setTimerData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        setTimerData,
+                        "Wrong message Data data type",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSetTimer,
+                        MessageStatus.OperationError,
                         ErrorLevel.Critical);
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }

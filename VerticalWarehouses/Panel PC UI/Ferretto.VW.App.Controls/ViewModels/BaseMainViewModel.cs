@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
@@ -45,16 +46,16 @@ namespace Ferretto.VW.App.Controls
             this.UpdatePresentation();
         }
 
-        public void ShowNotification(string message)
+        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(new PresentationChangedMessage(message));
+                .Publish(new PresentationChangedMessage(message, severity));
         }
 
         public void ShowNotification(System.Exception exception)
         {
-            if (exception == null)
+            if (exception is null)
             {
                 throw new System.ArgumentNullException(nameof(exception));
             }

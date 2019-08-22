@@ -8,7 +8,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    public class BayManager : IBayManager
+    internal class BayManager : IBayManager
     {
         #region Fields
 
@@ -38,32 +38,32 @@ namespace Ferretto.VW.App.Services
             IMissionsDataService missionsDataService,
             IStatusMessageService statusMessageService)
         {
-            if (operatorHubClient == null)
+            if (operatorHubClient is null)
             {
                 throw new ArgumentNullException(nameof(operatorHubClient));
             }
 
-            if (identityService == null)
+            if (identityService is null)
             {
                 throw new ArgumentNullException(nameof(identityService));
             }
 
-            if (missionOperationsDataService == null)
+            if (missionOperationsDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
 
-            if (missionOperationsAutomationService == null)
+            if (missionOperationsAutomationService is null)
             {
                 throw new ArgumentNullException(nameof(missionOperationsAutomationService));
             }
 
-            if (missionsDataService == null)
+            if (missionsDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionsDataService));
             }
 
-            if (statusMessageService == null)
+            if (statusMessageService is null)
             {
                 throw new ArgumentNullException(nameof(statusMessageService));
             }
@@ -97,11 +97,11 @@ namespace Ferretto.VW.App.Services
             get => this.currentMissionOperation;
             private set
             {
-                if (value == null)
+                if (value is null)
                 {
                     this.currentMissionOperation = null;
                 }
-                else if (this.currentMissionOperation == null)
+                else if (this.currentMissionOperation is null)
                 {
                     this.currentMissionOperation = value;
                     this.NewMissionOperationAvailable?.Invoke(this, null);

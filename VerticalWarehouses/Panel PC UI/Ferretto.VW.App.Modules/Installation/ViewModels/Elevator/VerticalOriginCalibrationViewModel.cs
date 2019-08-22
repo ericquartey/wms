@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineVerticalOriginProcedureService verticalOriginProcedureService)
             : base(Services.PresentationMode.Installer)
         {
-            if (verticalOriginProcedureService == null)
+            if (verticalOriginProcedureService is null)
             {
                 throw new ArgumentNullException(nameof(verticalOriginProcedureService));
             }
@@ -267,7 +267,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAxisSwitched(NotificationMessageUI<SwitchAxisMessageData> message)
         {
-            if (message == null || message.Data == null)
+            if (message == null || message.Data is null)
             {
                 return;
             }

@@ -105,14 +105,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            // Send a field message to the Update of position axis to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
-                "Update Inverter digital input status",
+                "Update Inverter axis position status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate,
+                FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
@@ -128,7 +127,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.Homing,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 

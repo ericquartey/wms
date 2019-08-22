@@ -50,12 +50,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineBeltBurnishingProcedureService beltBurnishingService)
             : base(Services.PresentationMode.Installer)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (beltBurnishingService == null)
+            if (beltBurnishingService is null)
             {
                 throw new ArgumentNullException(nameof(beltBurnishingService));
             }
@@ -337,7 +337,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task UpdateCompletion(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message == null)
+            if (message is null)
             {
                 return;
             }

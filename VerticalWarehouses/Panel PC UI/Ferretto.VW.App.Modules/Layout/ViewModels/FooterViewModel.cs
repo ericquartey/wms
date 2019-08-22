@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
@@ -10,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private string notificationMessage;
 
+        private NotificationSeverity notificationSeverity;
+
         #endregion
 
         #region Properties
@@ -18,6 +21,12 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             get => this.notificationMessage;
             set => this.SetProperty(ref this.notificationMessage, value);
+        }
+
+        public NotificationSeverity NotificationSeverity
+        {
+            get => this.notificationSeverity;
+            set => this.SetProperty(ref this.notificationSeverity, value);
         }
 
         #endregion
@@ -34,11 +43,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.UpdateChanges(message);
 
-            if (!string.IsNullOrEmpty(message.NotificationMessage))
+            if (message.NotificationSeverity == NotificationSeverity.NotSpecified)
             {
-                this.NotificationMessage = message.NotificationMessage;
+                return;
             }
-            else if (message.Exception != null)
+
+            if (message.NotificationSeverity == NotificationSeverity.Clear)
+            {
+                this.NotificationMessage = null;
+                return;
+            }
+
+            this.NotificationSeverity = message.NotificationSeverity;
+
+            if (message.Exception != null)
             {
                 if (message.Exception is SwaggerException<ProblemDetails> swaggerException)
                 {
@@ -55,6 +73,10 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 {
                     this.NotificationMessage = message.Exception.Message;
                 }
+            }
+            else
+            {
+                this.NotificationMessage = message.NotificationMessage;
             }
         }
 

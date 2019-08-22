@@ -19,12 +19,13 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            var healthProbeService = containerProvider.Resolve<IHealthProbeService>();
-            healthProbeService.Start();
+            containerProvider
+                .Resolve<IHealthProbeService>()?
+                .Start();
 
-            var regionManager = containerProvider.Resolve<IRegionManager>();
-
-            regionManager.RegisterViewWithRegion(
+            containerProvider
+                .Resolve<IRegionManager>()?
+                .RegisterViewWithRegion(
                     $"{Utils.Modules.Layout.REGION_MAINCONTENT}",
                     typeof(LoaderView));
 

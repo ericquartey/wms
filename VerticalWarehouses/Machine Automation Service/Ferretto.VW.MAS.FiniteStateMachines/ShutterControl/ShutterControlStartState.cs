@@ -112,6 +112,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Start()
         {
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             //TEMP Start means:
             // Send a InverterShutterPositioningMessage to move the shutter in Open position, before start the cycles
             var messageData = new ShutterPositioningFieldMessageData(
@@ -128,7 +139,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                 FieldMessageType.ShutterPositioning,
                 (byte)InverterIndex.Slave2);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 

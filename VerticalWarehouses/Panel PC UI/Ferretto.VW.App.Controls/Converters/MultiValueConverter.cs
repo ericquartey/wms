@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (this.Converter == null)
+            if (this.Converter is null)
             {
                 return null;
             }

@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected BaseManualMovementsViewModel(IMachineVerticalOriginProcedureService verticalOriginProcedureService)
             : base(Services.PresentationMode.Installer)
         {
-            if (verticalOriginProcedureService == null)
+            if (verticalOriginProcedureService is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalOriginProcedureService));
             }

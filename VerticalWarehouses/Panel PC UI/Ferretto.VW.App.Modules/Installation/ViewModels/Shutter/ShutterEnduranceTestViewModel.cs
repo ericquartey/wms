@@ -52,12 +52,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (shuttersService == null)
+            if (shuttersService is null)
             {
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            if (bayManager == null)
+            if (bayManager is null)
             {
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
@@ -312,7 +312,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnShutterTestStatusChanged(
             NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
-            if (message?.Data == null)
+            if (message?.Data is null)
             {
                 return;
             }

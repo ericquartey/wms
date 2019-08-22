@@ -30,17 +30,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             INavigationService navigationService)
             : base(PresentationTypes.Error)
         {
-            if (machineErrorsService == null)
+            if (machineErrorsService is null)
             {
                 throw new ArgumentNullException(nameof(machineErrorsService));
             }
 
-            if (operatorHubClient == null)
+            if (operatorHubClient is null)
             {
                 throw new ArgumentNullException(nameof(operatorHubClient));
             }
 
-            if (navigationService == null)
+            if (navigationService is null)
             {
                 throw new ArgumentNullException(nameof(navigationService));
             }

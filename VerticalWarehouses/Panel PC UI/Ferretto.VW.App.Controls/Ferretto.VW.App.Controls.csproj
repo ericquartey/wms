@@ -42,38 +42,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Skins\Palette.xaml" />
-    <None Remove="Styles\Styles.xaml" />
-    <None Remove="Templates\PpcSensorControlTemplate.xaml" />
-    <None Remove="Templates\Templates.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Controls\CustomMainWindowDebugButton.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\PpcLabeledText.xaml.cs">
-      <DependentUpon>PpcLabeledText.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\CustomMainWindowDebugButton.xaml.cs">
-      <DependentUpon>CustomMainWindowDebugButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\PpcIcon.xaml.cs">
-      <DependentUpon>PpcIcon.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Controls\PpcButton.xaml">
+    <None Update="Controls\CustomMainWindowDebugButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Controls\PpcIcon - Copy.xaml">
+    <None Update="Skins\Palette.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Templates\PpcSensorControlTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Templates\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

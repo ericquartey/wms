@@ -7,6 +7,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
@@ -16,7 +17,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
-        private ICommand loginCommand;
+        private readonly IHealthProbeService healthProbeService;
+
+        private SubscriptionToken subscriptionToken;
+
+        private DelegateCommand loginCommand;
+
+        private HealthStatus serviceHealthStatus;
 
         #endregion
 
@@ -24,21 +31,35 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public LoginViewModel(
             IAuthenticationService authenticationService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
             : base(PresentationMode.Login)
         {
-            if (authenticationService == null)
+            if (authenticationService is null)
             {
                 throw new ArgumentNullException(nameof(authenticationService));
             }
 
-            if (bayManager == null)
+            if (healthProbeService is null)
+            {
+                throw new ArgumentNullException(nameof(healthProbeService));
+            }
+
+            if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
             this.authenticationService = authenticationService;
+            this.healthProbeService = healthProbeService;
+
             this.BayNumber = bayManager.BayNumber;
+            this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
+
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
+                this.OnHealthStatusChanged,
+                ThreadOption.UIThread,
+                false);
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -51,6 +72,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #endif
         }
 
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+
+            if (this.subscriptionToken != null)
+            {
+                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -58,13 +91,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public ICommand LoginCommand =>
             this.loginCommand
             ??
-            (this.loginCommand = new DelegateCommand(async () => await this.ExecuteLoginCommandAsync(), this.CanExecuteLogin));
+            (this.loginCommand = new DelegateCommand(
+                async () => await this.ExecuteLoginCommandAsync(),
+                this.CanExecuteLogin));
 
         private bool CanExecuteLogin()
         {
             return this.machineIdentity != null
                 &&
-                string.IsNullOrEmpty(this.UserLogin.Error);
+                string.IsNullOrEmpty(this.UserLogin.Error)
+                &&
+                (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
         }
 
         public UserLogin UserLogin { get; }
@@ -76,12 +113,41 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 if (this.SetProperty(ref this.machineIdentity, value))
                 {
-                    ((DelegateCommand)this.LoginCommand).RaiseCanExecuteChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
 
+        private void RaiseCanExecuteChanged()
+        {
+            this.loginCommand?.RaiseCanExecuteChanged();
+        }
+
         public int BayNumber { get; }
+
+        public HealthStatus ServiceHealthStatus
+        {
+            get => this.serviceHealthStatus;
+            set
+            {
+                if (this.SetProperty(ref this.serviceHealthStatus, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        {
+            this.ServiceHealthStatus = e.HealthStatus;
+
+            if (this.ServiceHealthStatus == HealthStatus.Degraded
+                ||
+                this.ServiceHealthStatus == HealthStatus.Healthy)
+            {
+                this.ShowNotification("Connessione ai servizi ristabilita");
+            }
+        }
 
         private MachineIdentity machineIdentity;
 
@@ -104,7 +170,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.UserLogin.IsValidationEnabled = true;
             if (!string.IsNullOrEmpty(this.UserLogin.Error))
             {
-                this.ShowNotification(this.UserLogin.Error);
+                this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
                 return;
             }
 
@@ -129,7 +195,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials);
+                this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials, Services.Models.NotificationSeverity.Error);
             }
         }
 

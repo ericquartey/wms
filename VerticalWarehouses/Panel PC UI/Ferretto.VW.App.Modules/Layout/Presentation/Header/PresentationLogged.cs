@@ -24,12 +24,12 @@ namespace Ferretto.VW.App.Modules.Layout
             INavigationService navigationService)
             : base(PresentationTypes.Logged)
         {
-            if (authenticationService == null)
+            if (authenticationService is null)
             {
                 throw new System.ArgumentNullException(nameof(authenticationService));
             }
 
-            if (navigationService == null)
+            if (navigationService is null)
             {
                 throw new System.ArgumentNullException(nameof(navigationService));
             }

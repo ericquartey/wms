@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -36,52 +37,91 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Methods
 
-        private void ConfigureUpdates(IInverterStatusUpdateFieldMessageData updateData)
+        private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
-            if (updateData.SensorStatus)
+            switch (updateData.InverterTimer)
             {
-                if (updateData.SensorUpdateInterval == 0)
-                {
-                    var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
+                case InverterTimer.AxisPosition:
+                    if (updateData.Enable)
+                    {
+                        if (updateData.UpdateInterval == 0)
+                        {
+                            var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
 
-                    this.logger.LogTrace($"2:ReadSensorStatusMessage={readSensorStatusMessage}");
+                            this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
-                    this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
-                }
-                else
-                {
-                    this.logger.LogTrace("3:Change sensor update interval");
-                    this.sensorStatusUpdateTimer.Change(updateData.SensorUpdateInterval, updateData.SensorUpdateInterval);
-                }
-                this.forceStatusPublish = true;
-            }
-            else
-            {
-                this.logger.LogTrace("4:Stop sensor update timer");
-                this.sensorStatusUpdateTimer.Change(-1, Timeout.Infinite);
-            }
+                            this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                        }
+                        else
+                        {
+                            this.logger.LogTrace("2:Change axis update interval");
+                            this.axisPositionUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
+                        }
+                        this.forceStatusPublish = true;
+                    }
+                    else
+                    {
+                        this.logger.LogTrace("3:Stop axis update timer");
+                        this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    }
+                    break;
 
-            if (updateData.AxisPosition)
-            {
-                if (updateData.AxisUpdateInterval == 0)
-                {
-                    var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
+                case InverterTimer.SensorStatus:
+                    if (updateData.Enable)
+                    {
+                        if (updateData.UpdateInterval == 0)
+                        {
+                            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
-                    this.logger.LogTrace($"5:ReadAxisPositionMessage={readAxisPositionMessage}");
+                            this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
 
-                    this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
-                }
-                else
-                {
-                    this.logger.LogTrace("6:Change axis update interval");
-                    this.axisPositionUpdateTimer.Change(updateData.AxisUpdateInterval, updateData.AxisUpdateInterval);
-                }
-                this.forceStatusPublish = true;
-            }
-            else
-            {
-                this.logger.LogTrace("7:Stop axis update timer");
-                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                            this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+                        }
+                        else
+                        {
+                            this.logger.LogTrace("2:Change sensor update interval");
+                            this.sensorStatusUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
+                        }
+                        this.forceStatusPublish = true;
+                    }
+                    else
+                    {
+                        this.logger.LogTrace("3:Stop sensor update timer");
+                        this.sensorStatusUpdateTimer.Change(-1, Timeout.Infinite);
+                    }
+                    break;
+
+                case InverterTimer.StatusWord:
+                    if (updateData.Enable)
+                    {
+                        if (updateData.UpdateInterval == 0)
+                        {
+                            var readStatusWordMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.StatusWordParam);
+
+                            this.logger.LogTrace($"1:ReadSensorStatusMessage={readStatusWordMessage}");
+
+                            this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                        }
+                        else
+                        {
+                            this.logger.LogTrace("2:Change status word interval");
+                            this.statusWordUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
+                        }
+                        this.forceStatusPublish = true;
+                    }
+                    else
+                    {
+                        this.logger.LogTrace("3:Stop status word timer");
+                        this.statusWordUpdateTimer.Change(-1, Timeout.Infinite);
+                    }
+                    break;
+
+                default:
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
+                    break;
             }
         }
 
@@ -565,14 +605,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessInverterStatusUpdateMessage(FieldCommandMessage receivedMessage)
+        private void ProcessInverterSetTimerMessage(FieldCommandMessage receivedMessage)
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
             this.logger.LogTrace("1:Method Start");
-            if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData updateData)
+            if (receivedMessage.Data is IInverterSetTimerFieldMessageData updateData)
             {
-                this.ConfigureUpdates(updateData);
+                this.ConfigureTimer(updateData);
             }
             else
             {

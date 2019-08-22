@@ -341,14 +341,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace("1:Method Start");
 
             // Send a field message to force the Update of sensors (input lines) to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, true, 0);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate,
-                (byte)InverterIndex.MainInverter);
+                FieldMessageType.InverterStatusUpdate);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
@@ -407,9 +406,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IShutterPositioningMessageData data)
             {
+                InverterIndex inverterIndex;
+                switch (data.BayNumber)
+                {
+                    case 1:
+                        inverterIndex = InverterIndex.Slave2;
+                        break;
+
+                    case 2:
+                        inverterIndex = InverterIndex.Slave4;
+                        break;
+
+                    case 3:
+                        inverterIndex = InverterIndex.Slave6;
+                        break;
+
+                    default:
+                        this.logger.LogError($"Bay number not valid {data.BayNumber}");
+                        return;
+                }
                 this.currentStateMachine = new ShutterPositioningStateMachine(
                     this.eventAggregator,
                     data,
+                    inverterIndex,
                     this.logger,
                     this.serviceScopeFactory,
                     this.machineSensorsStatus);

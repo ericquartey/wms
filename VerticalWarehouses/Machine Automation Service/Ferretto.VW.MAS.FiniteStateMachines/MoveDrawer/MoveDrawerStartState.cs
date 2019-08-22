@@ -159,6 +159,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(Axis.Vertical);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -169,7 +180,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 FieldMessageType.InverterSwitchOn,
                 (byte)InverterIndex.MainInverter);
 
-            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogDebug($"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
@@ -186,7 +197,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogDebug($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

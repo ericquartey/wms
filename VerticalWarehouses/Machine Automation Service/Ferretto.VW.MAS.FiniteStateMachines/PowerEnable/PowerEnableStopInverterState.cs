@@ -91,6 +91,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer);
+            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             var inverterCommandMessageData = new InverterStopFieldMessageData();
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.App.Services.Models;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Services
@@ -7,14 +8,16 @@ namespace Ferretto.VW.App.Services
     {
         #region Constructors
 
-        public PresentationChangedMessage(string notificationMessage)
+        public PresentationChangedMessage(string notificationMessage, NotificationSeverity notificationSeverity)
         {
-            this.NotificationMessage = notificationMessage;
+            this.NotificationMessage = notificationMessage == string.Empty ? null : notificationMessage;
+            this.NotificationSeverity = notificationSeverity;
         }
 
         public PresentationChangedMessage(System.Exception exception)
         {
             this.Exception = exception;
+            this.NotificationSeverity = NotificationSeverity.Error;
         }
 
         public PresentationChangedMessage(List<Presentation> states)
@@ -48,6 +51,8 @@ namespace Ferretto.VW.App.Services
         public PresentationMode Mode { get; }
 
         public string NotificationMessage { get; }
+
+        public NotificationSeverity NotificationSeverity { get; }
 
         public PresentationTypes PresentationType { get; }
 

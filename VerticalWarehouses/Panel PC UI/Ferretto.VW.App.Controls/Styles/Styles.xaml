@@ -9,5 +9,6 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/NotificationSeverityStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
