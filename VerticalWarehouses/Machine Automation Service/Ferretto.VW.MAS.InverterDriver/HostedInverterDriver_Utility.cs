@@ -567,37 +567,38 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task ProcessInverterCommand()
         {
-            this.inverterCommandQueue.Peek(out var message);
-
-            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
-
-            var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
-            if (message.SendDelay > 0)
+            if (this.inverterCommandQueue.Peek(out var message))
             {
-                try
+                this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
+
+                var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
+                if (message.SendDelay > 0)
                 {
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
-                    this.inverterCommandQueue.Dequeue(out var consumedMessage);
+                    try
+                    {
+                        this.roundTripStopwatch.Reset();
+                        this.roundTripStopwatch.Start();
+                        await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
+                        this.inverterCommandQueue.Dequeue(out var consumedMessage);
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    }
                 }
-                catch (InverterDriverException ex)
+                else
                 {
-                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                }
-            }
-            else
-            {
-                try
-                {
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
-                    this.inverterCommandQueue.Dequeue(out var consumedMessage);
-                }
-                catch (InverterDriverException ex)
-                {
-                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    try
+                    {
+                        this.roundTripStopwatch.Reset();
+                        this.roundTripStopwatch.Start();
+                        await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
+                        this.inverterCommandQueue.Dequeue(out var consumedMessage);
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    }
                 }
             }
         }
