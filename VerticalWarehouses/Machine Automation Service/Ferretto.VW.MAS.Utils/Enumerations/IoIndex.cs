@@ -14,6 +14,10 @@
 
         IoDevice2 = 0x01,
 
-        IoDevice3 = 0x02
+        IoDevice3 = 0x02,
+
+        All = 0x10,
+
+        None = 0xFF
     }
 }

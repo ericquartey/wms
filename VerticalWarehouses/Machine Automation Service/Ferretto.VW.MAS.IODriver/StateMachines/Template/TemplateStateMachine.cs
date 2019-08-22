@@ -1,7 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
+﻿using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -13,6 +11,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
     {
 
         #region Fields
+
+        private readonly IoIndex index;
 
         private readonly IoStatus status;
 
@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public TemplateStateMachine(ITemplateData templateData,
             IoStatus status,
+            IoIndex index,
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IEventAggregator eventAggregator,
             ILogger logger)
@@ -34,6 +35,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
             this.templateData = templateData;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
+            this.index = index;
         }
 
         #endregion
@@ -70,17 +72,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public override void Start()
         {
-            this.CurrentState = new TemplateStartState(this.templateData, this.status, this.Logger, this);
-
-            var notificationMessage = new FieldNotificationMessage(
-                null,
-                $"Template Message",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.SwitchAxis,
-                MessageStatus.OperationStart);
-
-            this.PublishNotificationEvent(notificationMessage);
+            this.CurrentState = new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this);
 
             this.CurrentState?.Start();
         }

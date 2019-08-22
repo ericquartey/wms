@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningErrorState : InverterStateBase
     {
+
         #region Fields
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -68,6 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
                 MessageStatus.OperationError,
+                this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);
 
             this.Logger.LogTrace($"1:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");

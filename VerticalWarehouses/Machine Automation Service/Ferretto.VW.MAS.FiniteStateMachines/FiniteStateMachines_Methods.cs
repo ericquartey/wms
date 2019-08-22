@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -7,6 +8,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
@@ -22,6 +24,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
+
+
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -31,12 +35,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
                 this.currentStateMachine = null;
             }
-            this.currentStateMachine = new PowerEnableStateMachine(
-                this.eventAggregator,
-                (byte)this.ioIndexDeviceList[0],
-                data,
+
+            var powerEnableData = new PowerEnableData(this.eventAggregator,
+                this.vertimagConfiguration.GetInstalledIoList().ToList(),
+                this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
+                data.Enable,
                 this.logger,
                 this.serviceScopeFactory);
+
+            this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
 
             this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
 
@@ -69,9 +76,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     result = this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1;
                     break;
 
-                //TEMP Add here other condition getters
-                default:
-                    break;
+                    //TEMP Add here other condition getters
             }
             return result;
         }
@@ -122,8 +127,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CheckCondition,
-                MessageStatus.OperationEnd,
-                ErrorLevel.NoError);
+                MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
         }
@@ -216,15 +220,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            // Send a field message to stop inverters to InverterDriver
-            var inverterDataMessage = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-
             var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
+                null,
                 "Stop Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
+                FieldMessageType.InverterStop,
+                (byte)InverterIndex.All);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
@@ -273,12 +275,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
                         this.currentStateMachine = null;
                     }
-                    this.currentStateMachine = new PowerEnableStateMachine(
-                        this.eventAggregator,
-                        (byte)this.ioIndexDeviceList[0],
-                        data,
+
+                    var powerEnableData = new PowerEnableData(this.eventAggregator,
+                        this.vertimagConfiguration.GetInstalledIoList().ToList(),
+                        this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
+                        data.Enable,
                         this.logger,
                         this.serviceScopeFactory);
+
+                    this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
 
                     this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
 
@@ -311,7 +316,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage(CommandMessage message)
+        private void ProcessResetSecurityMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -350,7 +355,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
+                FieldMessageType.InverterStatusUpdate,
+                (byte)InverterIndex.MainInverter);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver

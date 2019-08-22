@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -10,9 +10,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableErrorState : StateBase
     {
+
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
+
+        private readonly IPowerEnableData machineData;
 
         private bool disposed;
 
@@ -22,10 +25,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public PowerEnableErrorState(
             IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+            IPowerEnableData machineData,
+            FieldNotificationMessage errorMessage)
+            : base(parentMachine, machineData.Logger)
         {
+            this.machineData = machineData;
             this.errorMessage = errorMessage;
         }
 
@@ -40,56 +44,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
-
-        public override void ProcessCommandMessage(CommandMessage message)
-        {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
-        }
-
-        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-
-            if (message.Type == FieldMessageType.PowerEnable && message.Status != MessageStatus.OperationStart)
-            {
-                var notificationMessage = new NotificationMessage(
-                    null,
-                    "Power Enable Stopped due to an error",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.PowerEnable,
-                    MessageStatus.OperationError,
-                    ErrorLevel.Error);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void ProcessNotificationMessage(NotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-        }
-
-        public override void Start()
-        {
-            var stopMessage = new FieldCommandMessage(
-                null,
-                $"Reset Security",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.PowerEnable);
-
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-        }
-
-        public override void Stop()
-        {
-            this.Logger.LogTrace("1:Method Start");
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -104,6 +61,41 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
             this.disposed = true;
             base.Dispose(disposing);
+        }
+
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
+
+        public override void Start()
+        {
+            var notificationMessage = new NotificationMessage(
+                null,
+                "Power Enable Stopped due to an error",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.PowerEnable,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+        }
+
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

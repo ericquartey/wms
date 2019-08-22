@@ -27,5 +27,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomInputText_TextBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridScrollButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridRepeatButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Palette.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
+

@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerSwitchAxisState : StateBase
     {
+
         #region Fields
 
         private readonly IDrawerOperationMessageData drawerOperationData;
@@ -68,7 +69,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -259,20 +278,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 $"Switch Axis {this.targetAxis}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis);
+                FieldMessageType.SwitchAxis,
+                (byte)IoIndex.IoDevice1);
 
             this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.targetAxis, InverterIndex.MainInverter);
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.targetAxis);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
                 $"Switch Axis {Axis.Vertical}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSwitchOn);
+                FieldMessageType.InverterSwitchOn,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
@@ -303,22 +324,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.drawerOperationData,
                 this.Logger,
                 true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

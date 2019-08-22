@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly IoIndex index;
+
         private readonly IoStatus status;
 
         private readonly bool switchOffOtherAxis;
@@ -38,6 +40,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             bool switchOffOtherAxis,
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
+            IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.pulseOneTime = false;
+            this.index = index;
 
             this.Logger.LogTrace("1:Method Start");
         }
@@ -69,7 +73,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         private void DelayElapsed(object state)
         {
             this.Logger.LogTrace("1:Change State to SwitchOnMotorState");
-            this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.Logger, this));
+            this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
         }
 
         protected override void Dispose(bool disposing)
@@ -104,7 +108,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
                                message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn;
 
             if (checkMessage && !this.pulseOneTime)
@@ -126,7 +130,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             if (this.switchOffOtherAxis)
             {
                 this.Logger.LogTrace("2:Change State to SwitchOffMotorState");
-                this.CurrentState = new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.Logger, this);
+                this.CurrentState = new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.index, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -135,7 +139,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     FieldMessageActor.Any,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SwitchAxis,
-                    MessageStatus.OperationStart);
+                    MessageStatus.OperationStart,
+                    (byte)this.index);
                 this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
@@ -144,7 +149,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             else
             {
                 this.Logger.LogTrace("4:Change State to SwitchOnMotorState");
-                this.CurrentState = new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.Logger, this);
+                this.CurrentState = new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -153,7 +158,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     FieldMessageActor.Any,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SwitchAxis,
-                    MessageStatus.OperationStart);
+                    MessageStatus.OperationStart,
+                    (byte)this.index);
                 this.Logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 

@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningErrorState : InverterStateBase
     {
+
+
         #region Constructors
 
         public PositioningErrorState(
@@ -31,6 +33,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -47,6 +51,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.Positioning,
                 MessageStatus.OperationError,
+                this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");

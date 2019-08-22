@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 {
     public class TemplateStartState : InverterStateBase
     {
+
         #region Fields
 
         private readonly ITemplateData templateData;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -64,7 +67,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

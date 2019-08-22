@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisEndState : InverterStateBase
     {
+
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -45,6 +46,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -69,7 +72,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.CalibrateAxis,
-                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -94,7 +98,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;    // EvaluateReadMessage will stop sending StatusWordParam 
+            return true;    // EvaluateReadMessage will stop sending StatusWordParam
         }
 
         #endregion

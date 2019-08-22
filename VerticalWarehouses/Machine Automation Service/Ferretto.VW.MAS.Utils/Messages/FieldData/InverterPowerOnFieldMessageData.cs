@@ -7,32 +7,33 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterPowerOnFieldMessageData : FieldMessageData, IInverterPowerOnFieldMessageData
     {
+
+
         #region Constructors
 
         public InverterPowerOnFieldMessageData(
-            InverterIndex inverterToPowerOn,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            this.InverterToPowerOn = inverterToPowerOn;
         }
 
         #endregion
 
-        #region Properties
 
-        public InverterIndex InverterToPowerOn { get; set; }
+
+        #region Properties
 
         public FieldCommandMessage NextCommandMessage { get; set; }
 
-
         #endregion
+
+
 
         #region Methods
 
         public override string ToString()
         {
-            return $"InverterToPowerOn:{this.InverterToPowerOn} NextCommandMessage:{this.NextCommandMessage}";
+            return $"InverterToPowerOn NextCommandMessage:{this.NextCommandMessage}";
         }
 
         #endregion

@@ -1,5 +1,7 @@
 ﻿using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
@@ -7,6 +9,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
     {
 
         #region Fields
+
+        private readonly IoIndex index;
 
         private readonly IoStatus status;
 
@@ -19,10 +23,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         public SetConfigurationStartState(
             IIoStateMachine parentStateMachine,
             IoStatus status,
+            IoIndex index,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
             this.status = status;
+            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -66,11 +72,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
+            if (message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Ack)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.Logger));
+                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 

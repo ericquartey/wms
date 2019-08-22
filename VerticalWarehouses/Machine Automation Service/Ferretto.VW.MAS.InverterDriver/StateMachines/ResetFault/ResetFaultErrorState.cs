@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
     public class ResetFaultErrorState : InverterStateBase
     {
+
         #region Fields
 
         private readonly InverterIndex inverterIndex;
@@ -40,6 +41,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -49,7 +52,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         public override void Start()
         {
 
-            var notificationMessageData = new InverterFaultFieldMessageData(this.inverterIndex);
+            var notificationMessageData = new InverterFaultFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Fault Reset Error",
@@ -57,6 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterFaultReset,
                 MessageStatus.OperationError,
+                this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");

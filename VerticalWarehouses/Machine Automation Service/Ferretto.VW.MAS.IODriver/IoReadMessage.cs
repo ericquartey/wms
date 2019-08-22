@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly byte[] data;
 
-        private readonly SHDFormatDataOperation formatDataOperation;
+        private readonly ShdFormatDataOperation formatDataOperation;
 
         private readonly byte fwRelease;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.IODriver
         #region Constructors
 
         public IoReadMessage(
-            SHDFormatDataOperation formatDataOperation,
+            ShdFormatDataOperation formatDataOperation,
             byte fwRelease,
             bool[] inputs,
             bool[] outputs,
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
-        public SHDFormatDataOperation FormatDataOperation => this.formatDataOperation;
+        public ShdFormatDataOperation FormatDataOperation => this.formatDataOperation;
 
         public byte FwRelease => this.fwRelease;
 

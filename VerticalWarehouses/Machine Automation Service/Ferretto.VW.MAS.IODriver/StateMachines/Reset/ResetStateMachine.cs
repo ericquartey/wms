@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         #region Fields
 
         private const int PULSE_INTERVAL = 350;
+
+        private readonly IoIndex index;
 
         private readonly IoStatus status;
 
@@ -28,12 +31,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public ResetStateMachine(
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
+            IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
         {
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
+            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -97,7 +102,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
                 message.ValidOutputs && message.ResetSecurity;
 
             if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
@@ -112,7 +117,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
+            this.CurrentState = new ResetSecurityStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
         }
 

@@ -1,18 +1,16 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     public class TemplateStateMachine : StateMachineBase
     {
+
         #region Fields
 
-        private readonly ITemplateData templateData;
+        private readonly ITemplateData machineData;
 
         private bool disposed;
 
@@ -21,15 +19,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(
-            IEventAggregator eventAggregator,
-            ITemplateData templateData,
-            ILogger logger,
-            IServiceScopeFactory serviceScopeFactory )
-            : base( eventAggregator, logger, serviceScopeFactory )
+            ITemplateData machineData)
+            : base(machineData.EventAggregator, machineData.Logger, machineData.ServiceScopeFactory)
         {
-            this.CurrentState = new EmptyState( logger );
+            this.CurrentState = new EmptyState(machineData.Logger);
 
-            this.templateData = templateData;
+            this.machineData = machineData;
         }
 
         #endregion
@@ -38,46 +33,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         ~TemplateStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        /// <inheritdoc/>
-        public override void ProcessCommandMessage( CommandMessage message )
-        {
-            this.CurrentState.ProcessCommandMessage( message );
-        }
-
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
-        {
-            this.CurrentState.ProcessFieldNotificationMessage( message );
-        }
-
-        /// <inheritdoc/>
-        public override void ProcessNotificationMessage( NotificationMessage message )
-        {
-            this.CurrentState.ProcessNotificationMessage( message );
-        }
-
-        /// <inheritdoc/>
-        /// <inheritdoc/>
-        public override void Start()
-        {
-            this.CurrentState = new TemplateStartState( this, this.templateData, this.Logger );
-            this.CurrentState?.Start();
-        }
-
-        public override void Stop()
-        {
-            this.Logger.LogTrace( "1:Method Start" );
-
-            this.CurrentState.Stop();
-        }
-
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -89,7 +54,43 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.CurrentState.ProcessCommandMessage(message);
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.CurrentState.ProcessFieldNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.CurrentState.ProcessNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            lock (this.CurrentState)
+            {
+                this.CurrentState = new TemplateStartState(this, this.machineData);
+                this.CurrentState?.Start();
+            }
+        }
+
+        public override void Stop()
+        {
+            lock (this.CurrentState)
+            {
+                this.CurrentState.Stop();
+            }
         }
 
         #endregion

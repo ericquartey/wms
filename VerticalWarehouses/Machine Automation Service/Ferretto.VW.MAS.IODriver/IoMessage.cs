@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const int TOTAL_OUTPUTS = 8;
 
-        private readonly SHDCodeOperation codeOperation;
+        private readonly ShdCodeOperation codeOperation;
 
         private readonly short comTout = 20000; // 20 s     // Time out
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Data;
+            this.codeOperation = ShdCodeOperation.Data;
 
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Data;
+            this.codeOperation = ShdCodeOperation.Data;
 
             if (read)
             {
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Data;
+            this.codeOperation = ShdCodeOperation.Data;
 
             if (inputs > 0)
             {
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
         }
 
-        public IoMessage(SHDCodeOperation codeOperation)
+        public IoMessage(ShdCodeOperation codeOperation)
         {
             this.Force = false;
             this.codeOperation = codeOperation;
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Data;
+            this.codeOperation = ShdCodeOperation.Data;
 
             if (input)
             {
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Force = false;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Data;
+            this.codeOperation = ShdCodeOperation.Data;
 
             this.inputs = new bool[inputs.Length];
             this.outputs = new bool[outputs.Length];
@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Force = false;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Configuration;
+            this.codeOperation = ShdCodeOperation.Configuration;
 
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Force = false;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.Configuration;
+            this.codeOperation = ShdCodeOperation.Configuration;
 
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Force = false;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.codeOperation = SHDCodeOperation.SetIP;
+            this.codeOperation = ShdCodeOperation.SetIP;
             this.ipAddress = ipAddress;
 
             this.inputs = new bool[TOTAL_INPUTS];
@@ -239,7 +239,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
 
-        public SHDCodeOperation CodeOperation => this.codeOperation;
+        public ShdCodeOperation CodeOperation => this.codeOperation;
 
         public short ComunicationTimeOut => this.comTout;
 
@@ -325,15 +325,15 @@ namespace Ferretto.VW.MAS.IODriver
             // Code op
             switch (this.codeOperation)
             {
-                case SHDCodeOperation.Data:
+                case ShdCodeOperation.Data:
                     telegram[2] = 0x00;
                     break;
 
-                case SHDCodeOperation.Configuration:
+                case ShdCodeOperation.Configuration:
                     telegram[2] = 0x01;
                     break;
 
-                case SHDCodeOperation.SetIP:
+                case ShdCodeOperation.SetIP:
                     telegram[2] = 0x02;
                     break;
 

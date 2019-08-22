@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             else
             {
-                this.CurrentStateMachine = new ResetSecurityStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                this.CurrentStateMachine = new ResetSecurityStateMachine(this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
                 this.CurrentStateMachine.Start();
             }
         }

@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         #region Fields
 
+        private readonly IoIndex deviceIndex;
+
         private readonly bool enable;
 
         private readonly IoStatus status;
@@ -26,11 +28,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             bool enable,
             IoStatus status,
             ILogger logger,
-            IIoStateMachine parentStateMachine)
+            IIoStateMachine parentStateMachine,
+            IoIndex deviceIndex)
             : base(parentStateMachine, logger)
         {
             this.status = status;
             this.enable = enable;
+
+            this.deviceIndex = deviceIndex;
 
             logger.LogTrace("1:Method Start");
         }
@@ -84,7 +89,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
                 FieldMessageActor.Any,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.PowerEnable,
-                MessageStatus.OperationEnd);
+                MessageStatus.OperationEnd,
+                (byte)this.deviceIndex);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

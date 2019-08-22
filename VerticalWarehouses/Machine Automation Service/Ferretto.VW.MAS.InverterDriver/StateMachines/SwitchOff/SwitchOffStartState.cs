@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     public class SwitchOffStartState : InverterStateBase
     {
+
+
         #region Constructors
 
         public SwitchOffStartState(
@@ -34,6 +36,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -52,14 +56,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
-            var notificationMessageData = new InverterSwitchOffFieldMessageData(inverterIndex);
+            var notificationMessageData = new InverterSwitchOffFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"SwitchOff Inverter {inverterIndex}",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOff,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

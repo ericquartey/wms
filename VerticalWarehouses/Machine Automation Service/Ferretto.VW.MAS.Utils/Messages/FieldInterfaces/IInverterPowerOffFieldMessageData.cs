@@ -4,9 +4,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
     public interface IInverterPowerOffFieldMessageData : IFieldMessageData
     {
+
+
         #region Properties
 
-        InverterIndex InverterToPowerOff { get; set; }
+        FieldCommandMessage NextCommandMessage { get; set; }
 
         #endregion
     }

@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisStartState : InverterStateBase
     {
+
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -65,7 +68,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.CalibrateAxis,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
@@ -101,7 +105,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     FieldMessageActor.Any,
                     FieldMessageActor.InverterDriver,
                     FieldMessageType.CalibrateAxis,
-                    MessageStatus.OperationExecuting);
+                    MessageStatus.OperationExecuting,
+                    this.InverterStatus.SystemIndex);
 
                 this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
@@ -115,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;    // EvaluateReadMessage will stop sending StatusWordParam 
+            return true;    // EvaluateReadMessage will stop sending StatusWordParam
         }
 
         #endregion

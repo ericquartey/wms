@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.IODriver.Enumerations
 {
-    public enum SHDCodeOperation
+    public enum ShdCodeOperation
     {
         Data = 0,
 

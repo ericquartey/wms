@@ -7,16 +7,18 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : InverterStateBase
     {
+
         #region Fields
 
-        private readonly bool stopRequested;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private IInverterShutterPositioningFieldMessageData shutterPositionData;
+        private readonly bool stopRequested;
 
         #endregion
 
@@ -45,6 +47,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -63,12 +67,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.shutterPositionData.ShutterPosition = currentStatus.CurrentShutterPosition;
             }
             var endNotification = new FieldNotificationMessage(
-            this.shutterPositionData,
-            "Shutter Positioning complete",
-            FieldMessageActor.InverterDriver,
-            FieldMessageActor.InverterDriver,
-            FieldMessageType.ShutterPositioning,
-            (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.shutterPositionData,
+                "Shutter Positioning complete",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.ShutterPositioning,
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

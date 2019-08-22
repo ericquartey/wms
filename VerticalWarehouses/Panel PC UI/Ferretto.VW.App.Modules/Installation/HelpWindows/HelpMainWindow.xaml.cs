@@ -10,9 +10,10 @@ namespace Ferretto.VW.App.Installation.HelpWindows
     /// </summary>
     public partial class HelpMainWindow : Window, IHelpMainWindow
     {
+
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -26,11 +27,15 @@ namespace Ferretto.VW.App.Installation.HelpWindows
 
         #endregion
 
+
+
         #region Properties
 
         public ContentPresenter HelpMainWindowContentRegion => this.HelpContentRegion;
 
         #endregion
+
+
 
         #region Methods
 

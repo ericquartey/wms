@@ -10,13 +10,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
     public class DisableOperationEndState : InverterStateBase
     {
+
+
         #region Constructors
 
         public DisableOperationEndState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
-            ILogger logger )
-            : base( parentStateMachine, inverterStatus, logger )
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
         }
 
@@ -26,10 +28,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         ~DisableOperationEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -45,31 +49,32 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterDisable,
-                MessageStatus.OperationEnd );
+                MessageStatus.OperationEnd,
+                this.InverterStatus.SystemIndex);
 
-            this.Logger.LogTrace( $"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}" );
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishNotificationEvent( notificationMessage );
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc />
-        public override bool ValidateCommandMessage( InverterMessage message )
+        public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace( $"1:message={message}:Is Error={message.IsError}" );
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             //True means I want to request a status word.
             return false;
         }
 
-        public override bool ValidateCommandResponse( InverterMessage message )
+        public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace( $"1:message={message}:Is Error={message.IsError}" );
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             //True means I got the expected response. Do not request more status words
             return true;

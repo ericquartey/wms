@@ -104,7 +104,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 FieldMessageActor.IoDriver,
                 FieldMessageType.IoPowerUp,
                 MessageStatus.OperationEnd,
-                ErrorLevel.NoError,
                 (byte)this.index);
 
             this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
