@@ -2,7 +2,9 @@
 {
     public enum ActionType
     {
-        None = 0,
+        VerticalPositioning = 1,
+
+        HorizontalPositiong = 2,
 
         ShutterPositioning = 3,
 
@@ -12,7 +14,11 @@
 
         HorizontalHoming = 6,
 
+        SwitchEngine = 7,
+
         ShutterControl = 8,
+
+        BeltBurnishing = 9,
 
         SensorsChanged = 10,
 
@@ -25,5 +31,7 @@
         InverterStop = 14,
 
         PowerEnable = 15,
+
+        Stop = 99,
     }
 }
