@@ -281,13 +281,19 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled;
 
+        private bool homingTimerActive;
+
         private ICommand inverterInFaultCommand;
 
         private InverterType inverterType;
 
         private InverterOperationMode operationMode;
 
+        private bool shutterTimerActive;
+
         private int statusWord;
+
+        private bool targetTimerActive;
 
         #endregion
 
@@ -416,10 +422,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsFault
         {
-            get
-            {
-                return (this.statusWord & 0x0008) > 0;
-            }
+            get => (this.statusWord & 0x0008) > 0;
             set
             {
                 if (value)
@@ -565,14 +568,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public Dictionary<Axis, int> TargetSpeed { get; set; }
 
-        private int homingTickCount { get; set; }
-
-        private bool homingTimerActive { get; set; }
-
-        private bool shutterTimerActive { get; set; }
-
-        private bool targetTimerActive { get; set; }
-
         #endregion
 
         #region Methods
@@ -584,12 +579,20 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 500);
+                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(12);
+                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(12);
+
                     this.homingTimerActive = true;
+                    this.homingTimer.Change(0, 500);
                 }
             }
             else
             {
+                if (this.homingTimerActive)
+                {
+                    this.homingTimer.Change(-1, Timeout.Infinite);
+                    this.homingTimerActive = false;
+                }
                 // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
             }
@@ -658,19 +661,24 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void HomingTick(object state)
         {
-            this.homingTickCount++;
-            this.AxisPosition++;
-
-            if (this.homingTickCount > 10)
+            if (this.AxisPosition < this.TargetPosition[this.currentAxis])
             {
-                this.StatusWord |= 0x1000;
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            {
+                this.StatusWord |= 0x1000;          // Set TargetReached
                 this.homingTimerActive = false;
-                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
-            else if (this.homingTickCount == 1)
+            else
             {
-                this.StatusWord &= 0xEFFF;
+                this.StatusWord &= 0xEFFF;          // Reset TargetReached
             }
         }
 
@@ -683,7 +691,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             if (this.controlWordArray != null)
             {
-                for (int i = 0; i < cw.Length; i++)
+                for (var i = 0; i < cw.Length; i++)
                 {
                     this.controlWordArray[i].Value = cw[i].Value;
                 }
