@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             Bay bay,
             IEnumerable<WMS.Data.WebAPI.Contracts.MissionInfo> pendingMissions)
         {
-            this.Logger.LogDebug($"Bay #{bay.Id}: there are {pendingMissions.Count()} pending missions.");
+            this.Logger.LogDebug($"Bay #{bay.Number}: there are {pendingMissions.Count()} pending missions.");
 
             if (!bay.CurrentMissionId.HasValue
                 &&
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                    "All the pending missions should be in the new state.");
                    */
 
-                this.Logger.LogDebug($"Bay #{bay.Id}: new mission id='{bay.CurrentMissionId}' assigned.");
+                this.Logger.LogDebug($"Bay #{bay.Number}: new mission id='{bay.CurrentMissionId}' assigned.");
             }
 
             if (bay.CurrentMissionId.HasValue)
@@ -99,17 +99,17 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                         if (missionOperation != null)
                         {
-                            bayProvider.AssignMissionOperation(bay.Id, mission.Id, missionOperation.Id);
+                            bayProvider.AssignMissionOperation(bay.Number, mission.Id, missionOperation.Id);
 
-                            this.Logger.LogDebug($"Bay #{bay.Id}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Number}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
 
                             this.NotifyNewMissionOperationAvailable(bay, pendingMissions.Count());
                         }
                         else
                         {
-                            bayProvider.AssignMissionOperation(bay.Id, null, null);
+                            bayProvider.AssignMissionOperation(bay.Number, null, null);
 
-                            this.Logger.LogDebug($"Bay #{bay.Id}: no more operations available for mission id='{mission.Id}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Number}: no more operations available for mission id='{mission.Id}'.");
                         }
                     }
                 }

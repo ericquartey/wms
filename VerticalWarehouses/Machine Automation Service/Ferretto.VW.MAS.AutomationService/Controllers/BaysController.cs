@@ -32,34 +32,49 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("{id}/activate")]
+        [HttpPost("{bayNumber}/activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(int id)
+        public ActionResult<Bay> ActivateAsync(int bayNumber)
         {
-            var bay = this.baysProvider.Activate(id);
-            if (bay == null)
+            var bay = this.baysProvider.Activate(bayNumber);
+            if (bay is null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok();
+            return this.Ok(bay);
         }
 
-        [HttpPost("{id}/deactivate")]
+        [HttpPost("{bayNumber}/deactivate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(int id)
+        public ActionResult<Bay> DeactivateAsync(int bayNumber)
         {
-            var bay = this.baysProvider.Deactivate(id);
-            if (bay == null)
+            var bay = this.baysProvider.Deactivate(bayNumber);
+            if (bay is null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok();
+            return this.Ok(bay);
+        }
+
+        [HttpGet("{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> GetByNumber(int bayNumber)
+        {
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+            if (bay is null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(bay);
         }
 
         #endregion
