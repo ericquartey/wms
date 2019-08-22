@@ -50,6 +50,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("shutters/position/{bayNumber}")]
+        public ActionResult<ShutterPositioningMessageData> GetShutterPosition(int bayNumber)
+        {
+            var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
+            this.PublishCommand(
+                messageData,
+                "Request vertical position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+
+            //this.logger.LogDebug($"Request position on BayNumber {bayNumber}");
+
+            var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
+                MessageType.ShutterPositioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(notifyData);
+        }
+
         [HttpGet]
         public ActionResult<ShutterTestParameters> GetTestParameters()
         {

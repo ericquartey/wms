@@ -85,19 +85,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("vertical/position")]
-        public ActionResult<decimal> GetVerticalPosition()
+        [HttpGet("vertical/position/{currentAxis}")]
+        public ActionResult<SensorsChangedMessageData> GetVerticalPosition(Axis currentAxis)
         {
+            var messageData = new RequestPositionMessageData(currentAxis, 0);
             this.PublishCommand(
-                null,
+                messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
-                MessageType.CurrentPosition);
+                MessageType.RequestPosition);
 
-            // var data = this.WaitForResponseEventAsync<>();
+            this.logger.LogDebug($"Request position on Axis {currentAxis}");
 
-            return 0; // TODO
-            // throw new System.NotImplementedException();
+            var notifyData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                MessageType.SensorsChanged,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(notifyData);
         }
 
         [HttpPost("horizontal/move")]
