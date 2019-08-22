@@ -257,7 +257,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(async
                     message => await this.UpdateCompletion(message),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
         }
 

@@ -3,11 +3,11 @@ using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.App.Services.Models
 {
-    public class MAS_EventMessage
+    public class MachineAutomationEventArgs
     {
         #region Constructors
 
-        public MAS_EventMessage(
+        public MachineAutomationEventArgs(
             NotificationType notificationType,
             ActionType actionType,
             ActionStatus actionStatus,

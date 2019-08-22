@@ -19,9 +19,7 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            containerProvider
-                .Resolve<IHealthProbeService>()?
-                .Start();
+            containerProvider.UseUiServices();
 
             containerProvider
                 .Resolve<IRegionManager>()?

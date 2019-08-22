@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
+        public override EnableMask EnableMask => EnableMask.None;
+
         #region Constructors
 
         public LoginViewModel(
