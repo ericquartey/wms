@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
@@ -19,6 +20,13 @@ namespace Ferretto.VW.App.Controls
 
         private async Task View_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            if (this.DataContext is IActivationViewModel activationViewModel)
+            {
+                this.SetBinding(
+                    IsEnabledProperty,
+                    new Binding(nameof(IActivationViewModel.IsEnabled)) { Source = activationViewModel });
+            }
+
             if (this.DataContext is INavigableViewModel viewModel)
             {
                 await viewModel.OnNavigatedAsync();

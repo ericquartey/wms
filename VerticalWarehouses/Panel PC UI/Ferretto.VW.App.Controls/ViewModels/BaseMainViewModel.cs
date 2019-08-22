@@ -1,15 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
+using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseMainViewModel : BaseNavigationViewModel
+    public class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
     {
         #region Fields
 
+        private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
+
+        private bool isEnabled;
+
         private PresentationMode mode;
+
+        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -24,6 +33,14 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
+        public virtual EnableMask EnableMask => EnableMask.MachineMode | EnableMask.MachinePower;
+
+        public bool IsEnabled
+        {
+            get => this.isEnabled;
+            set => this.SetProperty(ref this.isEnabled, value);
+        }
+
         public PresentationMode Mode
         {
             get => this.mode;
@@ -34,9 +51,23 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
+        public override void Appear()
+        {
+            base.Appear();
+        }
+
         public override async Task OnNavigatedAsync()
         {
             this.UpdatePresentation();
+
+            this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
+               .Subscribe(
+                   this.OnMachineModeChanged,
+                   ThreadOption.UIThread,
+                   false);
+
+            this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
+
             await base.OnNavigatedAsync();
         }
 
@@ -53,16 +84,46 @@ namespace Ferretto.VW.App.Controls
                 .Publish(new PresentationChangedMessage(message, severity));
         }
 
-        public void ShowNotification(System.Exception exception)
+        public void ShowNotification(Exception exception)
         {
             if (exception is null)
             {
-                throw new System.ArgumentNullException(nameof(exception));
+                throw new ArgumentNullException(nameof(exception));
             }
 
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Publish(new PresentationChangedMessage(exception));
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+
+            if (this.subscriptionToken != null)
+            {
+                this.machineModeService.MachineModeChangedEvent
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
+        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(e.MachineMode, e.MachinePower);
+        }
+
+        private void UpdateIsEnabled(MachineMode machineMode, MachinePowerState machinePower)
+        {
+            if ((this.EnableMask & EnableMask.MachinePower) != EnableMask.None)
+            {
+                this.IsEnabled = machinePower != MachinePowerState.Unpowered;
+            }
+            else
+            {
+                this.IsEnabled = true;
+            }
         }
 
         private void UpdatePresentation()

@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,10 +24,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("force-notification")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesDefaultResponseType]
-        public IActionResult ForceNotification()
+        [HttpGet]
+        public ActionResult<SensorsChangedMessageData> Get()
         {
             this.PublishCommand(
                     null,
@@ -31,7 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageActor.FiniteStateMachines,
                     MessageType.SensorsChanged);
 
-            return this.Accepted();
+            var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                MessageType.SensorsChanged,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(messageData);
         }
 
         #endregion

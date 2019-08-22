@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Palette.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomSensorControlStyle.xaml" />

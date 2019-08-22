@@ -91,13 +91,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             this.updateMachneStateActive = this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
                 .Subscribe(
                     message => this.UpdateMachneStateActive(message.Data.MessageActor, message.Data.MessageType),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             this.updateStateActive = this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
                 .Subscribe(
                     message => this.UpdateStateActive(message.Data.MessageActor, message.Data.CurrentState),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             this.IsOpen = true;

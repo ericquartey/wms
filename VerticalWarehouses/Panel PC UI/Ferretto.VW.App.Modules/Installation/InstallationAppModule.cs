@@ -5,6 +5,7 @@ using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -47,15 +48,7 @@ namespace Ferretto.VW.App.Modules.Installation
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            containerProvider
-                .Resolve<IInstallationHubClient>()
-                .ConnectAsync();
-
-            containerProvider
-                .Resolve<IOperatorHubClient>()
-                .ConnectAsync();
-
-            this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
+            containerProvider.UseMachineAutomationHubs();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

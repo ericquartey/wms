@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -14,11 +12,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
-        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly IMachineModeService machineModeService;
 
-        private readonly IMachineSensorsService machineSensorsService;
-
-        private readonly IMachineMachineStatusService machineStatusService;
+        private readonly SubscriptionToken subscriptionToken;
 
         private bool isBusy;
 
@@ -28,32 +24,21 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Constructors
 
-        public PresentationMachineMarch(
-            IMachineSensorsService machineSensorsService,
-            IMachineMachineStatusService machineStatusService)
+        public PresentationMachineMarch(IMachineModeService machineModeService)
             : base(PresentationTypes.MachineMarch)
         {
-            if (machineSensorsService is null)
+            if (machineModeService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineSensorsService));
+                throw new System.ArgumentNullException(nameof(machineModeService));
             }
 
-            if (machineStatusService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineStatusService));
-            }
+            this.machineModeService = machineModeService;
 
-            this.machineSensorsService = machineSensorsService;
-            this.machineStatusService = machineStatusService;
-
-            this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+            this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
                 .Subscribe(
-                    message => this.UpdateMachinePowerState(message?.Data.SensorsStates),
-                    ThreadOption.PublisherThread,
+                    this.OnMachineModeChanged,
+                    ThreadOption.UIThread,
                     false);
-
-            this.machineSensorsService.ForceNotificationAsync();
         }
 
         #endregion
@@ -84,63 +69,32 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            //this.IsBusy = true;
+            this.IsBusy = true;
 
-            try
+            if (this.IsMachinePoweredOn)
             {
-                if (this.IsMachinePoweredOn)
+                await this.machineModeService.PowerOffAsync();
+            }
+            else
+            {
+                var messageBoxResult = MessageBox.Show("Confirmation operation?", "March", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    await this.machineStatusService.PowerOffAsync();
-                }
-                else
-                {
-                    var messageBoxResult = System.Windows.MessageBox.Show("Confirmation operation?", "March", System.Windows.MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        await this.machineStatusService.PowerOnAsync();
-                    }
-                    else
-                    {
-                        this.IsBusy = false;
-                    }
+                    await this.machineModeService.PowerOnAsync();
                 }
             }
-            catch
-            {
-                // TODO: report error
-                this.IsBusy = false;
-            }
+
+            this.IsBusy = false;
         }
 
         protected override bool CanExecute()
         {
-            return !this.IsBusy;
+            return !this.isBusy;
         }
 
-        private void UpdateMachinePowerState(bool[] sensorsStates)
+        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
-            if (sensorsStates is null)
-            {
-                this.logger.Warn("Unable to update machine power state: empty sensors state array received.");
-                return;
-            }
-
-            var sensorIndex = (int)IOMachineSensors.NormalState;
-
-            if (sensorsStates.Length > sensorIndex)
-            {
-                var isPoweredOn = sensorsStates[sensorIndex];
-
-                if (this.IsBusy == true && this.IsMachinePoweredOn != isPoweredOn)
-                {
-                    this.IsBusy = false;
-                }
-                this.IsMachinePoweredOn = isPoweredOn;
-            }
-            else
-            {
-                this.logger.Warn("Unable to update machine power state: sensors state array length was shorter than expected.");
-            }
+            this.IsMachinePoweredOn = e.MachinePower == Services.Models.MachinePowerState.Powered;
         }
 
         #endregion
