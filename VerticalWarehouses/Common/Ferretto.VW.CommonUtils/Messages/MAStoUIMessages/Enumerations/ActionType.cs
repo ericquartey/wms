@@ -2,6 +2,8 @@
 {
     public enum ActionType
     {
+        None = 0,
+
         VerticalPositioning = 1,
 
         HorizontalPositiong = 2,
