@@ -75,8 +75,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             if (message.Type == FieldMessageType.InverterStop && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
-                var inverterStatus = new AglInverterStatus((byte)InverterIndex.Slave2);
-                Array.Copy(this.machineSensorsStatus.DisplayedInputs, (int)IOMachineSensors.AGLPowerOnOffBay1, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
+                int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+                Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                 notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
                 var notificationMessage = new NotificationMessage(
@@ -102,7 +103,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             if (this.shutterPositioningMessageData.BayNumber == 0)
             {
-                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
+                var stopMessageData = new InverterStopFieldMessageData(this.inverterIndex);
                 this.stopMessage = new FieldCommandMessage(
                     stopMessageData,
                  "Reset ShutterPositioning",
