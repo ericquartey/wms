@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.setupStatusService = setupStatusService;
-            this.bayNumber = bayManager.BayNumber;
+            this.bayNumber = bayManager.Bay.Number;
 
             this.InitializeData();
         }

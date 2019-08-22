@@ -6,7 +6,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
-        int BayId { get; }
+        int BayNumber { get; }
 
         BayStatus BayStatus { get; }
 

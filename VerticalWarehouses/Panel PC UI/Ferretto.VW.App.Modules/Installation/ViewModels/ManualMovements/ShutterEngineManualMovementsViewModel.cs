@@ -43,20 +43,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersService shuttersService,
             IMachineElevatorService machineElevatorService,
             IBayManager bayManager)
-            : base(machineElevatorService)
+            : base(machineElevatorService, bayManager)
         {
             if (shuttersService is null)
             {
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            if (bayManager is null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
             this.shuttersService = shuttersService;
-            this.BayNumber = bayManager.BayNumber;
 
             this.RefreshCanExecuteCommands();
         }
@@ -64,8 +58,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public int BayNumber { get; }
 
         public bool CanExecuteMoveDownCommand
         {

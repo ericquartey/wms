@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
         private decimal? currentPosition;
@@ -54,7 +56,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOriginCalibrationViewModel(
-            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
+            IMachineVerticalOriginProcedureService verticalOriginProcedureService,
+            IMachineElevatorService machineElevatorService)
             : base(Services.PresentationMode.Installer)
         {
             if (verticalOriginProcedureService is null)
@@ -62,7 +65,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(verticalOriginProcedureService));
             }
 
+            if (machineElevatorService is null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
             this.verticalOriginProcedureService = verticalOriginProcedureService;
+            this.machineElevatorService = machineElevatorService;
         }
 
         #endregion
@@ -184,7 +193,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                await this.verticalOriginProcedureService.NotifyCurrentAxisPositionAsync();
+                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {

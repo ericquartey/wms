@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             int pendingMissionsCount,
             int? currentMissionOperation)
         {
-            this.BayId = bayId;
+            this.BayNumber = bayId;
             this.BayType = bayType;
             this.BayStatus = bayStatus;
             this.PendingMissionsCount = pendingMissionsCount;
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Properties
 
-        public int BayId { get; }
+        public int BayNumber { get; }
 
         public CommonUtils.Messages.Enumerations.BayStatus BayStatus { get; }
 

@@ -45,21 +45,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Bay> ActivateAsync(int id)
+        public System.Threading.Tasks.Task<Bay> ActivateAsync(int bayNumber)
         {
-            return ActivateAsync(id, System.Threading.CancellationToken.None);
+            return ActivateAsync(bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Bay> ActivateAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Bay> ActivateAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/activate");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}/activate");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
@@ -120,21 +120,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Bay> DeactivateAsync(int id)
+        public System.Threading.Tasks.Task<Bay> DeactivateAsync(int bayNumber)
         {
-            return DeactivateAsync(id, System.Threading.CancellationToken.None);
+            return DeactivateAsync(bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Bay> DeactivateAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Bay> DeactivateAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/deactivate");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}/deactivate");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
@@ -143,6 +143,80 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Bay>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Bay> GetByNumberAsync(int bayNumber)
+        {
+            return GetByNumberAsync(bayNumber, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Bay> GetByNumberAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -7120,69 +7194,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         }
             
                         return default(HomingProcedureParameters);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task NotifyCurrentAxisPositionAsync()
-        {
-            return NotifyCurrentAxisPositionAsync(System.Threading.CancellationToken.None);
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task NotifyCurrentAxisPositionAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/nofity-current-axis-position");
-    
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
-            try
-            {
-                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "202") 
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
                     }
                     finally
                     {

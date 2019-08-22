@@ -12,11 +12,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int ExternalId { get; set; }
 
-        public int Id { get; set; }
-
         public string IpAddress { get; set; }
 
         public bool IsActive { get; set; }
+
+        public int Number { get; set; }
 
         public BayStatus Status
         {

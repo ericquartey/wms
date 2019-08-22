@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     public abstract class BaseManualMovementsViewModel : BaseMainViewModel
     {
         #region Fields
+
+        private readonly IBayManager bayManagerService;
 
         private readonly IMachineElevatorService machineElevatorService;
 
@@ -28,15 +31,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseManualMovementsViewModel(IMachineElevatorService machineElevatorService)
-            : base(Services.PresentationMode.Installer)
+        protected BaseManualMovementsViewModel(
+            IMachineElevatorService machineElevatorService,
+            IBayManager bayManagerService)
+            : base(PresentationMode.Installer)
         {
             if (machineElevatorService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineElevatorService));
             }
 
+            if (bayManagerService is null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManagerService));
+            }
+
             this.machineElevatorService = machineElevatorService;
+            this.bayManagerService = bayManagerService;
 
             this.InitializeNavigationMenu();
         }
@@ -44,6 +55,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public int BayNumber => this.bayManagerService.Bay.Number;
 
         public decimal? CurrentPosition
         {
@@ -122,12 +135,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.Shutter,
                     trackCurrentView: false));
 
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.ManualMovements.CAROUSEL,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Carousel,
-                    trackCurrentView: false));
+            if (this.bayManagerService.Bay.Type == BayType.Carousel
+                ||
+                this.bayManagerService.Bay.Type == BayType.ExternalCarousel)
+            {
+                this.menuItems.Add(
+                    new NavigationMenuItem(
+                        Utils.Modules.Installation.ManualMovements.CAROUSEL,
+                        nameof(Utils.Modules.Installation),
+                        VW.App.Resources.InstallationApp.Carousel,
+                        trackCurrentView: false));
+            }
         }
 
         #endregion

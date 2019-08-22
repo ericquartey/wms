@@ -80,8 +80,8 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 if (bay != null)
                 {
-                    bayProvider.AssignMissionOperation(bay.Id, bay.CurrentMissionId.Value, null);
-                    this.Logger.LogDebug($"Bay#{bay.Id}: operation competed.");
+                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
+                    this.Logger.LogDebug($"Bay#{bay.Number}: operation competed.");
 
                     this.bayStatusChangedEvent.Set();
                 }

@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder
-                .HasKey(b => b.Id);
+                .HasKey(b => b.Number);
 
             builder
                 .HasIndex(b => b.IpAddress)

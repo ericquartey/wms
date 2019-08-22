@@ -89,14 +89,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             for (var i = 0; i < baysCount; i++)
             {
-                var bayId = i + 1;
-                var bay = this.baysProvider.GetById(bayId);
+                var bayNumber = i + 1;
+                var bay = this.baysProvider.GetByNumber(bayNumber);
                 if (bay == null)
                 {
                     this.baysProvider.Create(new Bay
                     {
-                        Id = bayId,
-                        ExternalId = bayId,
+                        Number = bayNumber,
+                        ExternalId = bayNumber,
                         IpAddress = ipAddresses[i].ToString(),
                         Type = bayTypes[i],
                     });
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 else
                 {
                     this.baysProvider.Update(
-                        bayId,
+                        bayNumber,
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
                 }
