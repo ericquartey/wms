@@ -599,17 +599,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 this.StatusWord &= 0xEFFF;
             }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
-            }
         }
 
         public void BuildPositionStatusWord()
