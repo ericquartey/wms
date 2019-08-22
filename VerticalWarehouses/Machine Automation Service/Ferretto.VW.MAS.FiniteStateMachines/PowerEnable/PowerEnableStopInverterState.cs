@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -14,7 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
-        private readonly InverterIndex currentInverter;
+        private readonly IPowerEnableData machineData;
+
+        private int currentInverterIndex;
 
         private bool disposed;
 
@@ -24,11 +27,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public PowerEnableStopInverterState(
             IStateMachine parentMachine,
-            InverterIndex currentInverter,
-            ILogger logger)
-            : base(parentMachine, logger)
+            IPowerEnableData machineData)
+            : base(parentMachine, machineData.Logger)
         {
-            this.currentInverter = currentInverter;
+            this.machineData = machineData;
+            this.currentInverterIndex = 0;
         }
 
         #endregion
@@ -71,16 +74,38 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            switch (message.Status)
+            if (message.Type == FieldMessageType.InverterStop)
             {
-                case MessageStatus.OperationEnd:
-                case MessageStatus.OperationStop:
-                    this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
-                    break;
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.currentInverterIndex++;
 
-                case MessageStatus.OperationError:
-                    this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
-                    break;
+                        if (this.currentInverterIndex < this.machineData.ConfiguredInverters.Count)
+                        {
+                            var inverterCommandMessageData = new InverterFaultFieldMessageData();
+                            var inverterCommandMessage = new FieldCommandMessage(
+                                inverterCommandMessageData,
+                                $"Reset Fault Inverter",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.InverterStop,
+                                (byte)this.machineData.ConfiguredInverters[this.currentInverterIndex]);
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+                            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData));
+                        }
+
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
+                        break;
+                }
             }
         }
 
@@ -97,7 +122,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
             this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
@@ -109,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
-                (byte)this.currentInverter);
+                (byte)this.machineData.ConfiguredInverters[this.currentInverterIndex]);
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
@@ -119,7 +145,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
         }
 
         #endregion

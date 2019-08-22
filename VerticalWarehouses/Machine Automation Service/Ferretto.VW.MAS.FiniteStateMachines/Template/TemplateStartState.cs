@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
@@ -14,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Fields
 
-        private readonly ITemplateData templateData;
+        private readonly ITemplateData machineData;
 
         private bool disposed;
 
@@ -24,11 +23,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public TemplateStartState(
             IStateMachine parentMachine,
-            ITemplateData templateData,
-            ILogger logger)
-            : base(parentMachine, logger)
+            ITemplateData machineData)
+            : base(parentMachine, machineData.Logger)
         {
-            this.templateData = templateData;
+            this.machineData = machineData;
         }
 
         #endregion
@@ -73,11 +71,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.Logger));
+                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.templateData, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.machineData, message));
                         break;
                 }
             }
@@ -91,7 +89,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             var commandMessage = new FieldCommandMessage(
                 null,
-                $"Template Start State Field COmmand",
+                $"Template Start State Field Command",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.NoType,
@@ -112,7 +110,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop()
         {
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData, true));
         }
 
         #endregion

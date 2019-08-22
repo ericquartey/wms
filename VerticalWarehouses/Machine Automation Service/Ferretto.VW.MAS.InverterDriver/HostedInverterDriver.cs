@@ -1069,6 +1069,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageActor.InverterDriver,
                         FieldMessageType.InverterSetTimer,
                         MessageStatus.OperationError,
+                        (byte)inverterIndex,
                         ErrorLevel.Critical);
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }

@@ -3,18 +3,18 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     public class TemplateErrorState : StateBase
     {
+
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
 
-        private readonly ITemplateData templateData;
+        private readonly ITemplateData machineData;
 
         private bool disposed;
 
@@ -24,12 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public TemplateErrorState(
             IStateMachine parentMachine,
-            ITemplateData templateData,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+            ITemplateData machineData,
+            FieldNotificationMessage errorMessage)
+            : base(parentMachine, machineData.Logger)
         {
-            this.templateData = templateData;
+            this.machineData = machineData;
             this.errorMessage = errorMessage;
         }
 
@@ -44,7 +43,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -75,21 +91,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop()
         {
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

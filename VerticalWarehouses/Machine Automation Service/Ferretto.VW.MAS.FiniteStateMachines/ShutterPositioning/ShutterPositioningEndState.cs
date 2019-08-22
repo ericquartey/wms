@@ -22,11 +22,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+
         private readonly bool stopRequested;
 
         private bool disposed;
-
-        private IShutterPositioningMessageData shutterPositioningMessageData;
 
         #endregion
 
@@ -164,7 +164,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 

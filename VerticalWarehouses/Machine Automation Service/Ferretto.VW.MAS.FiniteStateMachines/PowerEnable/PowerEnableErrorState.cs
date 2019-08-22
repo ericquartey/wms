@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         private readonly FieldNotificationMessage errorMessage;
 
+        private readonly IPowerEnableData machineData;
+
         private bool disposed;
 
         #endregion
@@ -23,10 +25,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public PowerEnableErrorState(
             IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+            IPowerEnableData machineData,
+            FieldNotificationMessage errorMessage)
+            : base(parentMachine, machineData.Logger)
         {
+            this.machineData = machineData;
             this.errorMessage = errorMessage;
         }
 
@@ -68,20 +71,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-
-            if (message.Type == FieldMessageType.PowerEnable && message.Status != MessageStatus.OperationStart)
-            {
-                var notificationMessage = new NotificationMessage(
-                    null,
-                    "Power Enable Stopped due to an error",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.PowerEnable,
-                    MessageStatus.OperationError,
-                    ErrorLevel.Error);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            }
         }
 
         /// <inheritdoc/>
@@ -92,17 +81,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var stopMessage = new FieldCommandMessage(
+            var notificationMessage = new NotificationMessage(
                 null,
-                $"Reset Security",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.PowerEnable,
-                (byte)IoIndex.IoDevice1);
+                "Power Enable Stopped due to an error",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.PowerEnable,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
 
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()

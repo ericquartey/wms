@@ -136,19 +136,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 50, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter digital input status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-            }
             {
                 var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
                 var inverterMessage = new FieldCommandMessage(
@@ -156,7 +143,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     "Update Inverter status word status",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer);
+                    FieldMessageType.InverterSetTimer,
+                    (byte)InverterIndex.MainInverter);
                 this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
