@@ -26,10 +26,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public VerticalEngineManualMovementsViewModel(
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
-            : base(verticalOriginProcedureService)
+        public VerticalEngineManualMovementsViewModel(IMachineElevatorService machineElevatorService)
+            : base(machineElevatorService)
         {
             if (machineElevatorService is null)
             {
@@ -114,7 +112,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingDown = true;
             this.IsMovingUp = false;
 
-            await this.StartMovementAsync(-1.0m);
+            await this.StartMovementAsync(VerticalMovementDirection.Down);
         }
 
         public async Task MoveUpAsync()
@@ -122,7 +120,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingUp = true;
             this.IsMovingDown = false;
 
-            await this.StartMovementAsync(1.0m);
+            await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
         public override async Task OnNavigatedAsync()
@@ -167,17 +165,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(decimal displacement)
+        private async Task StartMovementAsync(VerticalMovementDirection direction)
         {
             try
             {
-                await this.MachineElevatorService.MoveVerticalAsync(
-                     new ElevatorMovementParameters
-                     {
-                         MovementType = MovementType.Relative,
-                         SpeedPercentage = 0,
-                         Displacement = displacement
-                     });
+                await this.MachineElevatorService.MoveVerticalAsync(direction);
             }
             catch (System.Exception ex)
             {

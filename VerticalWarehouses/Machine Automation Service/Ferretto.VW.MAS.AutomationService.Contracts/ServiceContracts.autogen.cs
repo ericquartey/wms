@@ -113,18 +113,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveHorizontalAsync(ElevatorMovementParameters data);
+        System.Threading.Tasks.Task MoveHorizontalAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveHorizontalAsync(ElevatorMovementParameters data, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveHorizontalAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveVerticalAsync(ElevatorMovementParameters data);
+        System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveVerticalAsync(ElevatorMovementParameters data, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -855,26 +855,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ElevatorMovementParameters 
+    public enum HorizontalMovementDirection
     {
-        [Newtonsoft.Json.JsonProperty("displacement", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Displacement { get; set; }
+        Forwards = 0,
     
-        [Newtonsoft.Json.JsonProperty("movementType", Required = Newtonsoft.Json.Required.Always)]
-        public MovementType MovementType { get; set; }
+        Backwards = 1,
     
-        [Newtonsoft.Json.JsonProperty("speedPercentage", Required = Newtonsoft.Json.Required.Always)]
-        public int SpeedPercentage { get; set; }
+    }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum VerticalMovementDirection
+    {
+        Up = 0,
     
-        public static ElevatorMovementParameters FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ElevatorMovementParameters>(data);
-        }
+        Down = 1,
     
     }
     
