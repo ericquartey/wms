@@ -5,11 +5,13 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : InverterStateBase
     {
+
         #region Fields
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
@@ -43,6 +45,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -62,7 +66,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
-                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

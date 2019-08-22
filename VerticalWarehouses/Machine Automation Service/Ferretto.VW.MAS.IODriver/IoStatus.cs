@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ferretto.VW.MAS.IODriver.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver
 {
@@ -31,7 +32,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private byte debounceInput;
 
-        private SHDFormatDataOperation formatDataOperation;
+        private ShdFormatDataOperation formatDataOperation;
 
         private byte fwRelease;
 
@@ -51,7 +52,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.outputs = new bool[TOTAL_OUTPUTS];
 
             this.fwRelease = RELEASE_FW_10;
-            this.formatDataOperation = SHDFormatDataOperation.Data;
+            this.formatDataOperation = ShdFormatDataOperation.Data;
             this.comTout = COMTOUT_DEFAULT;
             this.setupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
@@ -81,7 +82,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ElevatorMotorSelected => this.inputs?[(int)IoPorts.ElevatorMotorFeedback] ?? false;
 
-        public SHDFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
+        public ShdFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
 
         public byte FwRelease { get => this.fwRelease; set => this.fwRelease = value; }
 

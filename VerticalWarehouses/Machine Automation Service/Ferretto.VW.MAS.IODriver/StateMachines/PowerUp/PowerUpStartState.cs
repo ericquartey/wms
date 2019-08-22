@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
-            if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
+            if (message.CodeOperation == Enumerations.ShdCodeOperation.Configuration)
             {
                 this.ParentStateMachine.ChangeState(new PowerUpClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data)
+            if (message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 

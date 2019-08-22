@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #region Fields
 
+        private readonly IoIndex index;
+
         private readonly IoStatus status;
 
         private readonly ITemplateData templateData;
@@ -26,12 +28,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
         public TemplateErrorState(
             ITemplateData templateData,
             IoStatus status,
+            IoIndex index,
             ILogger logger,
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
         {
             this.templateData = templateData;
             this.status = status;
+            this.index = index;
         }
 
         #endregion
@@ -85,7 +89,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
                 FieldMessageActor.Any,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.NoType,
-                MessageStatus.OperationError);
+                MessageStatus.OperationError,
+                (byte)this.index);
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }

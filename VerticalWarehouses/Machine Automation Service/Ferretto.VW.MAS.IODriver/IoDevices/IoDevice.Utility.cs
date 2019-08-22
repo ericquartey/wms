@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         /// <summary>
         /// Parsing the incoming telegram from the SHDRemoteIO device.
         /// </summary>
-        public void ParsingDataBytes(byte[] telegram, out int nBytesReceived, out SHDFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
+        public void ParsingDataBytes(byte[] telegram, out int nBytesReceived, out ShdFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
         {
             const int N_BYTES8 = 8;
             const int N_BITS8 = 8;
@@ -51,7 +52,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             Array.Clear(outputs, 0, outputs.Length);
 
             configurationData = null;
-            formatDataOperation = SHDFormatDataOperation.Data;
+            formatDataOperation = ShdFormatDataOperation.Data;
             fwRelease = 0x00;
             errorCode = 0x00;
             nBytesReceived = 0;
@@ -60,8 +61,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             {
                 return;
             }
-
-            byte codeOp = 0x00;
 
             // Parsing incoming telegram
             try
@@ -81,7 +80,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 fwRelease = telegram[1];
 
                                 // Code op
-                                codeOp = telegram[2];
 
                                 // Error code
                                 errorCode = telegram[3];
@@ -91,10 +89,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                                 outputs = new bool[N_BITS8];
                                 Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
-
-                                if (outputs[1] == true)
-                                {
-                                }
 
                                 // Payload input (Low byte)
                                 var payloadInputLow = telegram[5];
@@ -111,7 +105,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 Array.Copy(telegram, 7, configurationData, 0, N_BYTES8);
 
                                 // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
+                                formatDataOperation = ShdFormatDataOperation.Data;
 
                                 break;
 
@@ -120,15 +114,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 fwRelease = telegram[1];
 
                                 // Code op
-                                codeOp = telegram[2];
 
                                 // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
+                                formatDataOperation = ShdFormatDataOperation.Ack;
 
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
                                 break;
                         }
 
@@ -140,12 +129,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             case NBYTES_TELEGRAM_DATA + 11: // 26
                                                             // Fw release
                                 fwRelease = telegram[1];
-
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Alignment
-                                var alignment = telegram[3];
 
                                 // Error code
                                 errorCode = telegram[4];
@@ -170,7 +153,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 Array.Copy(telegram, 8, configurationData, 0, 17);
 
                                 // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
+                                formatDataOperation = ShdFormatDataOperation.Data;
 
                                 break;
 
@@ -179,21 +162,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 fwRelease = telegram[1];
 
                                 // Code op
-                                codeOp = telegram[2];
 
                                 // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
+                                formatDataOperation = ShdFormatDataOperation.Ack;
 
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
                                 break;
                         }
 
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -206,6 +181,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         FieldMessageActor.InverterDriver,
                         FieldMessageType.InverterException,
                         MessageStatus.OperationError,
+                        (byte)this.deviceIndex,
                         ErrorLevel.Critical);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);

@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableResetSecurityState : StateBase
     {
+
         #region Fields
 
         private bool disposed;
@@ -37,7 +38,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -80,7 +99,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 $"Reset Security",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ResetSecurity);
+                FieldMessageType.ResetSecurity,
+                (byte)IoIndex.IoDevice1);
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
@@ -91,22 +111,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

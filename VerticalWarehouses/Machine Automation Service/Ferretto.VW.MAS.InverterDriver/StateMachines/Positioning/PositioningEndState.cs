@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningEndState : InverterStateBase
     {
+
         #region Fields
 
         private readonly bool stopRequested;
@@ -40,6 +41,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -64,7 +67,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.Positioning,
-                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 

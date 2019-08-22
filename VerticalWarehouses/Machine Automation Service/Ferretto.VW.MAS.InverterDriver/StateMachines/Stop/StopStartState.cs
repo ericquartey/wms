@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
     public class StopStartState : InverterStateBase
     {
+
+
         #region Constructors
 
         public StopStartState(
@@ -34,6 +36,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -52,14 +56,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
-            var notificationMessageData = new InverterStopFieldMessageData(inverterIndex);
+            var notificationMessageData = new InverterStopFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"Stop Inverter {inverterIndex}",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines : BackgroundService
     {
+
         #region Fields
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
@@ -142,43 +143,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
+
+
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.fieldNotificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-
-            await Task.CompletedTask;
-        }
 
         private void CommandReceiveTaskFunction()
         {
@@ -260,7 +227,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ResetSecurity:
-                        this.ProcessResetSecurityMessage(receivedMessage);
+                        this.ProcessResetSecurityMessage();
                         break;
 
                     case MessageType.PowerEnable:
@@ -537,7 +504,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             FieldMessageActor.Any,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.DataLayerReady,
-                            MessageStatus.NoStatus);
+                            MessageStatus.NoStatus,
+                            (byte)InverterIndex.None);
 
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);
 
@@ -797,6 +765,42 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.fieldNotificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+            }
+
+            await Task.CompletedTask;
         }
 
         #endregion

@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
+
+
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -69,9 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     result = this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1;
                     break;
 
-                //TEMP Add here other condition getters
-                default:
-                    break;
+                    //TEMP Add here other condition getters
             }
             return result;
         }
@@ -122,8 +122,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CheckCondition,
-                MessageStatus.OperationEnd,
-                ErrorLevel.NoError);
+                MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
         }
@@ -216,15 +215,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            // Send a field message to stop inverters to InverterDriver
-            var inverterDataMessage = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-
             var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
+                null,
                 "Stop Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
+                FieldMessageType.InverterStop,
+                (byte)InverterIndex.All);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
@@ -311,7 +308,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage(CommandMessage message)
+        private void ProcessResetSecurityMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -350,7 +347,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterStatusUpdate,
+                (byte)InverterIndex.MainInverter);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver

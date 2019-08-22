@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
@@ -32,7 +33,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 switch (switchAxisMessageData.AxisToSwitchOn)
                 {
                     case Axis.Horizontal:
-                        if (this.ioSHDStatus.CradleMotorOn)
+                        if (this.ioStatus.CradleMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
@@ -40,7 +41,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
-                                MessageStatus.OperationEnd);
+                                MessageStatus.OperationEnd,
+                                (byte)this.deviceIndex);
 
                             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -48,7 +50,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         }
                         else
                         {
-                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioSHDStatus.ElevatorMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("3:Method Start State Machine");
 
@@ -58,7 +60,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         break;
 
                     case Axis.Vertical:
-                        if (this.ioSHDStatus.ElevatorMotorOn)
+                        if (this.ioStatus.ElevatorMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
@@ -66,7 +68,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
-                                MessageStatus.OperationEnd);
+                                MessageStatus.OperationEnd,
+                                (byte)this.deviceIndex);
 
                             this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -74,7 +77,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         }
                         else
                         {
-                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioSHDStatus.CradleMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("5:Method Start State Machine");
 
@@ -93,6 +96,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 FieldMessageActor.IoDriver,
                                 receivedMessage.Type,
                                 MessageStatus.OperationError,
+                                (byte)this.deviceIndex,
                                 ErrorLevel.Error);
 
                             this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");

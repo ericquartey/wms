@@ -13,6 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningErrorState : StateBase
     {
+
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
@@ -53,7 +54,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -91,13 +105,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             if (this.shutterPositioningMessageData.BayNumber == 0)
             {
-                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
+                var stopMessageData = new InverterStopFieldMessageData();
                 this.stopMessage = new FieldCommandMessage(
                     stopMessageData,
                  "Reset ShutterPositioning",
                  FieldMessageActor.InverterDriver,
                  FieldMessageActor.FiniteStateMachines,
-                 FieldMessageType.InverterStop);
+                 FieldMessageType.InverterStop,
+                    (byte)InverterIndex.Slave2);
             }
             else
             {
@@ -106,7 +121,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 "Reset Inverter ShutterPositioning",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
+                FieldMessageType.InverterStop,
+                    (byte)InverterIndex.Slave4);
             }
 
             this.Logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
@@ -118,7 +134,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterStatusUpdate,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
@@ -130,17 +147,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

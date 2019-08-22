@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly IoIndex index;
+
         private readonly IoStatus status;
 
         private bool disposed;
@@ -23,12 +26,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         public SwitchAxisSwitchOnMotorState(
             Axis axisToSwitchOn,
             IoStatus status,
+            IoIndex index,
             ILogger logger,
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
+            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -77,7 +82,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
                     this.Logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.Logger, this.ParentStateMachine));
+                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
                 }
             }
         }
@@ -86,7 +91,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             this.Logger.LogTrace("1:Method Start");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
                                message.ValidOutputs;
 
             if (this.status.MatchOutputs(message.Outputs) && checkMessage)
@@ -98,7 +103,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
                     this.Logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.Logger, this.ParentStateMachine));
+                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningStartState : InverterStateBase
     {
+
         #region Fields
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
@@ -39,6 +40,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -85,7 +88,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
             this.Logger.LogDebug("Inverter Shutter Positioning Start State Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);

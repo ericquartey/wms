@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableResetFaultState : StateBase
     {
+
         #region Fields
 
         private InverterIndex currentInverter;
@@ -41,7 +42,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -60,13 +79,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                         if (this.currentInverter < InverterIndex.Slave7)
                         {
                             this.currentInverter++;
-                            var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
+                            var inverterCommandMessageData = new InverterFaultFieldMessageData();
                             var inverterCommandMessage = new FieldCommandMessage(
                                 inverterCommandMessageData,
                                 $"Reset Fault Inverter",
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.FiniteStateMachines,
-                                FieldMessageType.InverterFaultReset);
+                                FieldMessageType.InverterFaultReset,
+                                (byte)this.currentInverter);
                             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
                             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
@@ -91,13 +111,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
+            var inverterCommandMessageData = new InverterFaultFieldMessageData();
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
                 $"Reset Fault Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterFaultReset);
+                FieldMessageType.InverterFaultReset,
+                (byte)this.currentInverter);
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
@@ -108,22 +129,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     public class PowerOnErrorState : InverterStateBase
     {
+
+
         #region Constructors
 
         public PowerOnErrorState(
@@ -33,6 +35,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -41,9 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex systemIndex);
-
-            var notificationMessageData = new InverterPowerOnFieldMessageData(systemIndex);
+            var notificationMessageData = new InverterPowerOnFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Start error",
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterPowerOn,
                 MessageStatus.OperationError,
+                this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");

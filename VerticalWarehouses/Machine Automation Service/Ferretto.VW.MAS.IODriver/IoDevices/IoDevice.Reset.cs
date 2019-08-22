@@ -2,6 +2,7 @@
 using Ferretto.VW.MAS.IODriver.StateMachines.Reset;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
@@ -22,7 +23,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             else
             {
-                this.CurrentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                this.CurrentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
                 this.CurrentStateMachine.Start();
             }
         }

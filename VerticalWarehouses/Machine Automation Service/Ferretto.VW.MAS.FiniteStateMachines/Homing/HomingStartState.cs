@@ -13,6 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingStartState : StateBase
     {
+
         #region Fields
 
         private readonly IHomingOperation homingOperation;
@@ -47,7 +48,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -106,7 +125,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 $"Switch Axis {this.homingOperation.AxisToCalibrate}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis);
+                FieldMessageType.SwitchAxis,
+                (byte)IoIndex.IoDevice1);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
@@ -119,20 +139,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
+                FieldMessageType.InverterStatusUpdate,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.homingOperation.AxisToCalibrate, InverterIndex.MainInverter);
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.homingOperation.AxisToCalibrate);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
                 $"Switch Axis {this.homingOperation.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSwitchOn);
+                FieldMessageType.InverterSwitchOn,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
@@ -157,22 +179,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

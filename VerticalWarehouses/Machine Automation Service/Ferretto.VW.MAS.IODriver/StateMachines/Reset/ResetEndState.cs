@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Fields
 
+        private readonly IoIndex index;
+
         private readonly IoStatus status;
 
         private bool disposed;
@@ -23,10 +25,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public ResetSecurityEndState(
             IIoStateMachine parentStateMachine,
             IoStatus status,
+            IoIndex index,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
             this.status = status;
+            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -75,7 +79,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                     FieldMessageActor.Any,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
-                    MessageStatus.OperationEnd);
+                    MessageStatus.OperationEnd,
+                    (byte)this.index);
 
                 this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -97,7 +102,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                     FieldMessageActor.Any,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
-                    MessageStatus.OperationEnd);
+                    MessageStatus.OperationEnd,
+                    (byte)index);
 
                 this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
