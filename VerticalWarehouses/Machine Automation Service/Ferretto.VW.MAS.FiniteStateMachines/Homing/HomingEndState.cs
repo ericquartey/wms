@@ -87,6 +87,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            if (this.stopRequested)
+            {
+                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
+                var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+
+                var stopMessage = new FieldCommandMessage(
+                    data,
+                    "Homing Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
+
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,

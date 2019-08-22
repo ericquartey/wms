@@ -574,8 +574,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildHomingStatusWord()
         {
-            //StartHoming
-            if ((this.ControlWord & 0x0010) > 0)
+            //StartHoming && EnableOperation
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
                 if (!this.homingTimerActive)
                 {
