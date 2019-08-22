@@ -171,7 +171,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = message?.Data?.ShutterPosition,
-                  ThreadOption.PublisherThread,
+                  ThreadOption.UIThread,
                   false);
 
             await base.OnNavigatedAsync();

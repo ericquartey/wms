@@ -13,6 +13,7 @@
              d:DesignHeight="100"
              d:DesignWidth="800"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d">
     <Grid Height="60"
           Margin="15">

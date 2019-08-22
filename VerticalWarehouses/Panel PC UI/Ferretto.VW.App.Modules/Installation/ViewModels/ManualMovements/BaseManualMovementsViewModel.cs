@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = message?.Data?.CurrentPosition,
-                  ThreadOption.PublisherThread,
+                  ThreadOption.UIThread,
                   false);
 
             try

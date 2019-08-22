@@ -69,8 +69,8 @@ namespace Ferretto.VW.App.Services
                         break;
                 }
 
-                this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                    new MAS_EventMessage(NotificationType.Error, actionType, ActionStatus.Error));
+                this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                    new MachineAutomationEventArgs(NotificationType.Error, actionType, ActionStatus.Error));
             }
         }
 
@@ -82,8 +82,8 @@ namespace Ferretto.VW.App.Services
 
             if (!dataSensors[(int)IOMachineSensors.NormalState])
             {
-                this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                    new MAS_EventMessage(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
+                this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                    new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
             }
         }
 
@@ -105,8 +105,8 @@ namespace Ferretto.VW.App.Services
 
                     if (cc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
                     }
                     break;
 
@@ -115,8 +115,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sw.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.SwitchAxis, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.SwitchAxis, ActionStatus.Error));
                     }
                     break;
 
@@ -125,8 +125,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sp.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
                     }
                     break;
 
@@ -135,8 +135,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
                     }
                     break;
 
@@ -145,8 +145,8 @@ namespace Ferretto.VW.App.Services
 
                     if (h.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
                     }
                     break;
 
@@ -168,8 +168,8 @@ namespace Ferretto.VW.App.Services
 
                     if (rc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
                     }
                     break;
 
@@ -178,8 +178,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
                     }
                     break;
 
@@ -188,8 +188,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
                     }
                     break;
 
@@ -198,8 +198,8 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
-                            new MAS_EventMessage(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
                     }
                     break;
 

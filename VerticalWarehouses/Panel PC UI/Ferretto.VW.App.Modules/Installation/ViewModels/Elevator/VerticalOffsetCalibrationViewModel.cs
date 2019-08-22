@@ -255,7 +255,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
                 },
-                ThreadOption.PublisherThread,
+                ThreadOption.UIThread,
                 false);
 
             this.tokenSource = new CancellationTokenSource();

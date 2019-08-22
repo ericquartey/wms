@@ -345,14 +345,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
                 .Subscribe(
                     message => this.OnAxisSwitched(message),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             this.receivedCalibrateAxisUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
                 .Subscribe(
                     message => this.OnCalibrationStepCompleted(message),
-                    ThreadOption.PublisherThread,
+                    ThreadOption.UIThread,
                     false);
 
             this.receiveHomingUpdateToken = this.EventAggregator
@@ -362,7 +362,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message));
                 },
-                ThreadOption.PublisherThread,
+                ThreadOption.UIThread,
                 false);
 
             this.receiveExceptionToken = this.EventAggregator
@@ -372,14 +372,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message));
                 },
-                ThreadOption.PublisherThread,
+                ThreadOption.UIThread,
                 false);
 
             this.updateCurrentPositionToken = this.EventAggregator // TODO copy this in manual movements
                 .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
                 message => this.CurrentPosition = message?.Data?.CurrentPosition,
-                ThreadOption.PublisherThread,
+                ThreadOption.UIThread,
                 false);
         }
 

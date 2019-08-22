@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.CurrentPositionNotify(message);
+                this.installationHub.Clients.All.CurrentPositionChanged(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.HomingNotify(message);
+                this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 var msgUI = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.InverterStatusWordNotify(msgUI);
+                this.installationHub.Clients.All.InverterStatusWordChanged(msgUI);
             }
             catch (ArgumentNullException exNull)
             {
@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.SensorsChangedNotify(message);
+                this.installationHub.Clients.All.SensorsChanged(message);
             }
             catch (ArgumentNullException exNull)
             {

@@ -28,11 +28,11 @@ namespace Ferretto.VW.App.Services
             }
 
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
-            containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.RegisterSingleton<IThemeService, ThemeService>();
             containerRegistry.RegisterSingleton<ISessionService, SessionService>();
             containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
+            containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
 
             containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                 new InjectionFactory(c =>
@@ -43,6 +43,22 @@ namespace Ferretto.VW.App.Services
                         c.Resolve<IEventAggregator>())));
 
             return containerRegistry;
+        }
+
+        public static IContainerProvider UseUiServices(this IContainerProvider containerProvider)
+        {
+            if (containerProvider is null)
+            {
+                throw new System.ArgumentNullException(nameof(containerProvider));
+            }
+
+            // force the instantiation of the services
+            _ = containerProvider.Resolve<INotificationService>();
+            _ = containerProvider.Resolve<IMachineModeService>();
+
+            containerProvider.Resolve<IHealthProbeService>().Start();
+
+            return containerProvider;
         }
 
         #endregion

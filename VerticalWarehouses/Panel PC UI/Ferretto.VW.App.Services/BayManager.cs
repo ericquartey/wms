@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
-        private readonly IStatusMessageService statusMessageService;
-
         private MissionOperation currentMissionOperation;
 
         #endregion
@@ -35,8 +33,7 @@ namespace Ferretto.VW.App.Services
             IMachineIdentityService identityService,
             IMissionOperationsDataService missionOperationsDataService,
             IMachineMissionOperationsService missionOperationsAutomationService,
-            IMissionsDataService missionsDataService,
-            IStatusMessageService statusMessageService)
+            IMissionsDataService missionsDataService)
         {
             if (operatorHubClient is null)
             {
@@ -62,16 +59,9 @@ namespace Ferretto.VW.App.Services
             {
                 throw new ArgumentNullException(nameof(missionsDataService));
             }
-
-            if (statusMessageService is null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
-
             this.missionOperationsDataService = missionOperationsDataService;
             this.missionOperationsAutomationService = missionOperationsAutomationService;
             this.missionsDataService = missionsDataService;
-            this.statusMessageService = statusMessageService;
             this.operatorHubClient = operatorHubClient;
             this.identityService = identityService;
             this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
@@ -166,7 +156,7 @@ namespace Ferretto.VW.App.Services
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
-                this.statusMessageService.Notify(ex);
+                // TODO notify error
             }
         }
 
