@@ -27,9 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public HorizontalAxisManualMovementsViewModel(
-            IMachineElevatorService elevatorService,
-            IMachineVerticalOriginProcedureService verticalOriginProcedureService)
-            : base(verticalOriginProcedureService)
+            IMachineElevatorService elevatorService)
+            : base(elevatorService)
         {
             if (elevatorService is null)
             {
@@ -134,7 +133,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingBackwards = true;
             this.IsMovingForwards = false;
 
-            await this.StartMovementAsync(-1);
+            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
         private async Task MoveForwardsAsync()
@@ -142,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingForwards = true;
             this.IsMovingBackwards = false;
 
-            await this.StartMovementAsync(1);
+            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         private void RefreshCanExecuteCommands()
@@ -151,17 +150,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanExecuteMoveForwardsCommand = !this.IsMovingBackwards && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(decimal displacement)
+        private async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
             try
             {
-                await this.MachineElevatorService.MoveHorizontalAsync(
-                    new ElevatorMovementParameters
-                    {
-                        MovementType = MovementType.Relative,
-                        SpeedPercentage = 0,
-                        Displacement = displacement
-                    });
+                await this.MachineElevatorService.MoveHorizontalAsync(direction);
             }
             catch (System.Exception ex)
             {
