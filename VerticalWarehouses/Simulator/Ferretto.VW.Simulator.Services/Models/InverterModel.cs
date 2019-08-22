@@ -590,11 +590,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
-                    //this.AxisPosition = 0;
                 }
             }
             else
             {
+                // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
             }
         }
@@ -610,8 +610,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
-
-                    //this.AxisPosition = 0;
                 }
             }
             else
