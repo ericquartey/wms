@@ -64,7 +64,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.shuttersService = shuttersService;
 
-            this.BayNumber = bayManager.BayNumber;
+            this.BayNumber = bayManager.Bay.Number;
 
             this.sensors = new ShutterSensors(this.BayNumber);
         }

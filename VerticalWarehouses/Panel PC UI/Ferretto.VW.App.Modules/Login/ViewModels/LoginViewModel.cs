@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.authenticationService = authenticationService;
             this.healthProbeService = healthProbeService;
 
-            this.BayNumber = bayManager.BayNumber;
+            this.BayNumber = bayManager.Bay.Number;
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(

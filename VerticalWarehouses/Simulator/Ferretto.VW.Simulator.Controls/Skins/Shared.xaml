@@ -30,3 +30,4 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Palette.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
+

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             int missionOperationId,
             int pendingMissionsCount)
         {
-            this.BayId = bayId;
+            this.BayNumber = bayId;
             this.MissionId = missionId;
             this.MissionOperationId = missionOperationId;
             this.PendingMissionsCount = pendingMissionsCount;
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Properties
 
-        public int BayId { get; }
+        public int BayNumber { get; }
 
         public int MissionId { get; }
 

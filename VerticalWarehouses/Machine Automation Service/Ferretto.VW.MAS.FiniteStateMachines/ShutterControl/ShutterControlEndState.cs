@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 {
     public class ShutterControlEndState : StateBase
     {
+
         #region Fields
 
         private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
@@ -45,7 +46,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -97,14 +116,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
             if (this.stopRequested)
             {
                 //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData(InverterIndex.Slave2);
+                var data = new InverterStopFieldMessageData();
 
                 var stopMessage = new FieldCommandMessage(
                     data,
                     "Reset Inverter ShutterPositioning",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
+                    FieldMessageType.InverterStop,
+                    (byte)InverterIndex.Slave2);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
@@ -128,22 +148,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

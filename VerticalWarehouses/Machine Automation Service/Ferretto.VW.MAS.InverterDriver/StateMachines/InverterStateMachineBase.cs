@@ -15,11 +15,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {
+
         #region Fields
 
-        private const int CONTROL_WORD_TIMEOUT = 5000;
-
-        //private readonly Timer controlWordCheckTimer;
         private bool disposed;
 
         #endregion
@@ -40,8 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.EventAggregator = eventAggregator;
             this.InverterCommandQueue = inverterCommandQueue;
 
-            //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
-
             this.Logger.LogTrace($"Inverter FSM '{this.GetType().Name}' initialized.");
         }
 
@@ -56,6 +52,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
+
+
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
@@ -68,7 +66,38 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
+
+
         #region Methods
+
+        protected virtual void Dispose(bool disposing)
+        {
+            this.Logger.LogDebug($"Disposing {this.GetType()}");
+
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current status null",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            this.disposed = true;
+        }
 
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
@@ -99,7 +128,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            //this.controlWordCheckTimer.Change(CONTROL_WORD_TIMEOUT, Timeout.Infinite);
             this.Logger.LogTrace($"1:Enqueue message {message}");
             this.InverterCommandQueue.Enqueue(message);
         }
@@ -125,78 +153,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public bool ValidateCommandMessage(InverterMessage message)
         {
-            var returnValue = this.CurrentState?.ValidateCommandMessage(message) ?? false;
-            if (returnValue)
-            {
-                //this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            }
-            return returnValue;
+            return this.CurrentState?.ValidateCommandMessage(message) ?? false;
         }
 
         /// <inheritdoc />
         public bool ValidateCommandResponse(InverterMessage message)
         {
             return this.CurrentState?.ValidateCommandResponse(message) ?? false;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            this.Logger.LogDebug($"Disposing {this.GetType()}");
-
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                //this.controlWordCheckTimer?.Dispose();
-            }
-
-            {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"Inverter current status null",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.MachineStatusActive,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
-
-            {
-                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"Inverter current state null",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.MachineStateActive,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
-
-            this.disposed = true;
-        }
-
-        private void ControlWordCheckTimeout(object state)
-        {
-            //this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            var errorNotification = new FieldNotificationMessage(
-                null,
-                "Control Word set timeout",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterOperationTimeout,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
-
-            this.PublishNotificationEvent(errorNotification);
-
-            //TODO move current FSM to relevant EndState (Backlog item 2646)
         }
 
         #endregion

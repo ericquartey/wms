@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             if (receivedMessage.Data is ISensorsChangedFieldMessageData sensorsChangedMessageData)
             {
-                if (sensorsChangedMessageData.SensorsStatus == true)
+                if (sensorsChangedMessageData.SensorsStatus)
                 {
                     this.forceIoStatusPublish = true;
                 }
@@ -34,6 +35,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SensorsChanged,
                     MessageStatus.OperationError,
+                    (byte)this.deviceIndex,
                     ErrorLevel.Critical);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);

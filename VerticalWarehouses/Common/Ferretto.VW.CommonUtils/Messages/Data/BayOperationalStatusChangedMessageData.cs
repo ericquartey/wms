@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Properties
 
-        public int BayId { get; set; }
+        public int BayNumber { get; set; }
 
         public BayStatus BayStatus { get; set; }
 

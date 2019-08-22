@@ -173,21 +173,21 @@ namespace Ferretto.VW.MAS.IODriver
                     case IoIndex.IoDevice1:
                         var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger, this.stoppingToken);
 
                         break;
 
                     case IoIndex.IoDevice2:
                         var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger, this.stoppingToken);
 
                         break;
 
                     case IoIndex.IoDevice3:
                         var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger, this.stoppingToken);
 
                         break;
                 }
@@ -266,7 +266,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SendMessage(IFieldMessageData messageData)
+        private void SendMessage(IFieldMessageData messageData, IoIndex deviceIndex)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
             messageData,
@@ -275,6 +275,7 @@ namespace Ferretto.VW.MAS.IODriver
             FieldMessageActor.IoDriver,
             FieldMessageType.IoDriverException,
             MessageStatus.OperationError,
+            (byte)deviceIndex,
             ErrorLevel.Critical);
 
             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
@@ -317,7 +318,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), IoIndex.None);
             }
 
             return Task.CompletedTask;

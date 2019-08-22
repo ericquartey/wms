@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningEnableVoltageState : InverterStateBase
     {
+
         #region Fields
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void Release()
@@ -62,14 +65,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
-            var notificationMessageData = new InverterPowerOnFieldMessageData(inverterIndex);
+            var notificationMessageData = new InverterPowerOnFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"Power On Inverter {inverterIndex}",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterPowerOn,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

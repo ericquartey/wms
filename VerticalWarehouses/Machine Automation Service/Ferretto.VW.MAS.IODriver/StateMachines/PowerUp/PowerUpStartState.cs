@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data)
+            if (message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 

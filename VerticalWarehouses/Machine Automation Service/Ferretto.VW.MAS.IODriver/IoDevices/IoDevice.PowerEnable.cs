@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 }
                 if (this.CurrentStateMachine == null)
                 {
-                    this.CurrentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
                     this.CurrentStateMachine.Start();
                 }
             }
@@ -52,6 +53,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SensorsChanged,
                     MessageStatus.OperationError,
+                    (byte)this.deviceIndex,
                     ErrorLevel.Critical);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);

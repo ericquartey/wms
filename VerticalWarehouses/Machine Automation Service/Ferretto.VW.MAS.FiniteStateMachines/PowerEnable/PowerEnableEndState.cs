@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -9,7 +10,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableEndState : StateBase
     {
+
         #region Fields
+
+        private readonly IPowerEnableData machineData;
 
         private readonly bool stopRequested;
 
@@ -21,10 +25,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public PowerEnableEndState(
             IStateMachine parentMachine,
-            ILogger logger,
+            IPowerEnableData machineData,
             bool stopRequested = false)
-            : base(parentMachine, logger)
+            : base(parentMachine, machineData.Logger)
         {
+            this.machineData = machineData;
             this.stopRequested = stopRequested;
         }
 
@@ -39,7 +44,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -75,21 +97,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

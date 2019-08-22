@@ -8,6 +8,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldCommandMessage
     {
+
         #region Fields
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             FieldMessageActor destination,
             FieldMessageActor source,
             FieldMessageType type,
-            byte deviceIndex = 0x00)
+            byte deviceIndex)
         {
             this.Data = data;
             this.Description = description;
@@ -40,13 +41,15 @@ namespace Ferretto.VW.MAS.Utils.Messages
             {
                 StackTrace st = new StackTrace();
                 StackFrame sf = st.GetFrame(1);
-                string trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
+                string trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
 
                 Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data}][{trace}]");
             }
         }
 
         #endregion
+
+
 
         #region Properties
 

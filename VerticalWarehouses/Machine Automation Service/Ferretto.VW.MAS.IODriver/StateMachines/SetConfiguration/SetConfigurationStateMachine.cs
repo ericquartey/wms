@@ -1,6 +1,8 @@
-﻿using Ferretto.VW.MAS.Utils.Utilities;
+﻿using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
@@ -8,6 +10,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
     {
 
         #region Fields
+
+        private readonly IoIndex index;
 
         private readonly IoStatus status;
 
@@ -20,12 +24,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         public SetConfigurationStateMachine(
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
+            IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
         {
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
+            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -77,7 +83,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public override void Start()
         {
-            this.CurrentState = new SetConfigurationStartState(this, this.status, this.Logger);
+            this.CurrentState = new SetConfigurationStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
         }
 

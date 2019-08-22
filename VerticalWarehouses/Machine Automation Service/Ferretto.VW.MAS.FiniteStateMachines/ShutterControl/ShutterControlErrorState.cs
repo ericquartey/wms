@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 {
     public class ShutterControlErrorState : StateBase
     {
+
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
@@ -48,7 +49,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -104,13 +118,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         public override void Start()
         {
             //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
+            var stopMessageData = new InverterStopFieldMessageData();
             this.stopMessage = new FieldCommandMessage(
                 stopMessageData,
                 "Reset ShutterPositioning",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
+                FieldMessageType.InverterStop,
+                (byte)InverterIndex.Slave2);
 
             this.Logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
@@ -121,17 +136,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

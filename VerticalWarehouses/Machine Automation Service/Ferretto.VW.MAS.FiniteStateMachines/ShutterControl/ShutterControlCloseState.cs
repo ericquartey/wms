@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 {
     public class ShutterControlCloseState : StateBase
     {
+
         #region Fields
 
         private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
@@ -43,7 +44,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -85,7 +104,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                                         FieldMessageActor.FiniteStateMachines,
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.ShutterPositioning,
-                                        MessageStatus.OperationError);
+                                        MessageStatus.OperationError,
+                                        (byte)InverterIndex.Slave2);
                                     this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, errorMessage, this.Logger));
                                     break;
 
@@ -144,7 +164,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
                 $"Shutter to {shutterPositionTarget}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPositioning);
+                FieldMessageType.ShutterPositioning,
+                (byte)InverterIndex.Slave2);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
@@ -157,22 +178,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ShutterControlEndState(this.ParentStateMachine, this.shutterControlMessageData, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

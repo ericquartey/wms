@@ -16,6 +16,10 @@
 
         Slave6 = 0x06,
 
-        Slave7 = 0x07
+        Slave7 = 0x07,
+
+        All = 0x10,
+
+        None = 0xFF
     }
 }

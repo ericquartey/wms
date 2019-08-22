@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerErrorState : StateBase
     {
+
         #region Fields
 
         private readonly Axis axis;
@@ -49,7 +50,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -88,7 +106,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 $"Reset Inverter Axis {this.axis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
+                FieldMessageType.InverterStop,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
@@ -108,21 +127,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerElevatorToPositionState : StateBase
     {
+
         #region Fields
 
         private readonly IDrawerOperationMessageData drawerOperationData;
@@ -41,8 +42,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IVerticalAxisDataLayer verticalAxis,
             IHorizontalAxisDataLayer horizontalAxis,
             IMachineSensorsStatus machineSensorsStatus,
-            ILogger logger )
-            : base( parentMachine, logger )
+            ILogger logger)
+            : base(parentMachine, logger)
         {
             this.drawerOperationData = drawerOperationData;
             this.generalInfoDataLayer = generalInfoDataLayer;
@@ -57,133 +58,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         ~MoveDrawerElevatorToPositionState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
-
-        public override void ProcessCommandMessage( CommandMessage message )
-        {
-            this.Logger.LogTrace( $"1:Process CommandMessage {message.Type} Source {message.Source}" );
-        }
-
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
-        {
-            //TODO when Inverter Driver notifies completion of Positioning at the destination level move to next state
-            if (message.Type == FieldMessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-
-                        var currentStep = this.drawerOperationData.Step;
-                        if (currentStep == DrawerOperationStep.None)
-                        {
-                            this.drawerOperationData.Step = DrawerOperationStep.None;
-
-                            this.ParentStateMachine.ChangeState( new MoveDrawerSwitchAxisState(
-                                this.ParentStateMachine,
-                                Axis.Horizontal,
-                                this.drawerOperationData,
-                                this.generalInfoDataLayer,
-                                this.verticalAxis,
-                                this.horizontalAxis,
-                                this.machineSensorsStatus,
-                                this.Logger ) );
-                        }
-
-                        if (currentStep == DrawerOperationStep.MovingElevatorUp ||
-                            currentStep == DrawerOperationStep.MovingElevatorDown)
-                        {
-                            this.ParentStateMachine.ChangeState( new MoveDrawerSwitchAxisState(
-                                this.ParentStateMachine,
-                                Axis.Horizontal,
-                                this.drawerOperationData,
-                                this.generalInfoDataLayer,
-                                this.verticalAxis,
-                                this.horizontalAxis,
-                                this.machineSensorsStatus,
-                                this.Logger ) );
-                        }
-
-                        break;
-
-                    case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState( new MoveDrawerErrorState( this.ParentStateMachine, message, this.drawerOperationData, Axis.Vertical, this.Logger ) );
-                        break;
-                }
-            }
-        }
-
-        public override void ProcessNotificationMessage( NotificationMessage message )
-        {
-            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
-        }
-
-        public override void Start()
-        {
-            //TODO Send Vertical Positioning command to inverter driver, loading positioning data from data layer
-            this.GetParameters();
-
-            this.Logger.LogDebug( $"Started Positioning to {this.drawerOperationData.Source}" );
-
-            var positioningFieldMessageData = new PositioningFieldMessageData( this.positioningMessageData );
-
-            var commandMessage = new FieldCommandMessage(
-                positioningFieldMessageData,
-                $"{this.positioningMessageData.AxisMovement} Positioning State Started",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.Positioning );
-
-            this.Logger.LogDebug( $"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}" );
-
-            this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
-
-            // Send a notification message about the start operation for move elevator of MessageType.DrawerOperation
-            var notificationMessageData = new DrawerOperationMessageData(
-                this.drawerOperationData.Operation,
-                DrawerOperationStep.MovingElevatorUp,
-                MessageVerbosity.Info );
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"Moving elevator",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation,
-                MessageStatus.OperationStart );
-
-            this.Logger.LogDebug( $"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
-
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
-        }
-
-        public override void Stop()
-        {
-            this.ParentStateMachine.ChangeState( new MoveDrawerEndState(
-                this.ParentStateMachine,
-                this.drawerOperationData,
-                this.Logger,
-                true ) );
-        }
-
-        protected override void Dispose( bool disposing )
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose( disposing );
-        }
 
         //TEMP Check this code
         private void GetParameters()
@@ -287,7 +169,129 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 maxDeceleration,
                 0,
                 0,
-                0 );
+                0);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.Logger.LogTrace($"1:Process CommandMessage {message.Type} Source {message.Source}");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            //TODO when Inverter Driver notifies completion of Positioning at the destination level move to next state
+            if (message.Type == FieldMessageType.Positioning)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+
+                        var currentStep = this.drawerOperationData.Step;
+                        if (currentStep == DrawerOperationStep.None)
+                        {
+                            this.drawerOperationData.Step = DrawerOperationStep.None;
+
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                                this.ParentStateMachine,
+                                Axis.Horizontal,
+                                this.drawerOperationData,
+                                this.generalInfoDataLayer,
+                                this.verticalAxis,
+                                this.horizontalAxis,
+                                this.machineSensorsStatus,
+                                this.Logger));
+                        }
+
+                        if (currentStep == DrawerOperationStep.MovingElevatorUp ||
+                            currentStep == DrawerOperationStep.MovingElevatorDown)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                                this.ParentStateMachine,
+                                Axis.Horizontal,
+                                this.drawerOperationData,
+                                this.generalInfoDataLayer,
+                                this.verticalAxis,
+                                this.horizontalAxis,
+                                this.machineSensorsStatus,
+                                this.Logger));
+                        }
+
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, Axis.Vertical, this.Logger));
+                        break;
+                }
+            }
+        }
+
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+        }
+
+        public override void Start()
+        {
+            //TODO Send Vertical Positioning command to inverter driver, loading positioning data from data layer
+            this.GetParameters();
+
+            this.Logger.LogDebug($"Started Positioning to {this.drawerOperationData.Source}");
+
+            var positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+
+            var commandMessage = new FieldCommandMessage(
+                positioningFieldMessageData,
+                $"{this.positioningMessageData.AxisMovement} Positioning State Started",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.Positioning,
+                (byte)InverterIndex.MainInverter);
+
+            this.Logger.LogDebug($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            // Send a notification message about the start operation for move elevator of MessageType.DrawerOperation
+            var notificationMessageData = new DrawerOperationMessageData(
+                this.drawerOperationData.Operation,
+                DrawerOperationStep.MovingElevatorUp,
+                MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"Moving elevator",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.DrawerOperation,
+                MessageStatus.OperationStart);
+
+            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+        }
+
+        public override void Stop()
+        {
+            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                this.ParentStateMachine,
+                this.drawerOperationData,
+                this.Logger,
+                true));
         }
 
         #endregion

@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingEndState : StateBase
     {
+
         #region Fields
 
         private readonly IHomingOperation homingOperation;
@@ -49,7 +50,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -93,8 +111,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 "Update Inverter axis position status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
+
+            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
@@ -125,21 +145,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

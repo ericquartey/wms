@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void ExecuteSetConfiguration()
         {
-            this.CurrentStateMachine = new SetConfigurationStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+            this.CurrentStateMachine = new SetConfigurationStateMachine(this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
             this.CurrentStateMachine.Start();
         }
 

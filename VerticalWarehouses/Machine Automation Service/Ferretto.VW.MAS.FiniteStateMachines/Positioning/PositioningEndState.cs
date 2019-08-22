@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningEndState : StateBase
     {
+
         #region Fields
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
@@ -54,7 +55,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -107,14 +125,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             if (this.stopRequested)
             {
                 //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+                var data = new InverterStopFieldMessageData();
 
                 var stopMessage = new FieldCommandMessage(
                     data,
                     this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
+                    FieldMessageType.InverterStop,
+                    (byte)InverterIndex.MainInverter);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -149,7 +168,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
 
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
@@ -161,7 +181,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 "Update Inverter axis position status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer);
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
             this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
@@ -170,21 +191,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

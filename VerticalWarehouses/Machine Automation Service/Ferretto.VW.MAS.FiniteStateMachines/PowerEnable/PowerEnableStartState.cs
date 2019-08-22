@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -11,11 +12,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableStartState : StateBase
     {
+
         #region Fields
 
-        private readonly bool enable;
-
-        private readonly byte index;
+        private readonly IPowerEnableData machineData;
 
         private bool disposed;
 
@@ -24,14 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Constructors
 
         public PowerEnableStartState(
-            byte index,
-            bool enable,
             IStateMachine parentMachine,
-            ILogger logger)
-            : base(parentMachine, logger)
+            IPowerEnableData machineData)
+            : base(parentMachine, machineData.Logger)
         {
-            this.index = index;
-            this.enable = enable;
+            this.machineData = machineData;
         }
 
         #endregion
@@ -45,7 +42,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -61,24 +76,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if (!this.enable)
+                        if (this.machineData.Enable)
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableStopInverterState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, this.machineData));
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PowerEnableStopInverterState(this.ParentStateMachine, this.machineData));
                         }
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
                         break;
                 }
             }
             else if (message.Type == FieldMessageType.IoDriverException)
             {
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
+                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
             }
         }
 
@@ -89,14 +104,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var commandMessageData = new PowerEnableFieldMessageData(this.enable);
+            var commandMessageData = new PowerEnableFieldMessageData(this.machineData.Enable);
+
+            //TODO define a procedure to avoid hard coding IoIndex values even if enable/disable machine power is always done through IoDevice1
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
                 $"Power Enable IO digital input",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.PowerEnable,
-                this.index);
+                (byte)IoIndex.IoDevice1);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
@@ -119,23 +136,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
         }
 
         #endregion

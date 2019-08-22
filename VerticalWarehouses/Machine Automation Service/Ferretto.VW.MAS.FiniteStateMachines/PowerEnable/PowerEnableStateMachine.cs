@@ -1,20 +1,17 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableStateMachine : StateMachineBase
     {
+
         #region Fields
 
-        private readonly bool enable;
-
-        private readonly byte index;
+        private readonly IPowerEnableData machineData;
 
         private bool disposed;
 
@@ -23,16 +20,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Constructors
 
         public PowerEnableStateMachine(
-            IEventAggregator eventAggregator,
-            byte index,
-            IPowerEnableMessageData powerEnableMessageData,
-            ILogger logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            IPowerEnableData machineData)
+            : base(machineData.EventAggregator, machineData.Logger, machineData.ServiceScopeFactory)
         {
-            this.CurrentState = new EmptyState(logger);
-            this.index = index;
-            this.enable = powerEnableMessageData.Enable;
+            this.machineData = machineData;
+
+            this.CurrentState = new EmptyState(machineData.Logger);
         }
 
         #endregion
@@ -46,7 +39,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
+
+
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -74,7 +84,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new PowerEnableStartState(this.index, this.enable, this, this.Logger);
+                this.CurrentState = new PowerEnableStartState(this, this.machineData);
                 this.CurrentState?.Start();
             }
 
@@ -89,21 +99,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

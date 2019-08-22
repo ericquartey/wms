@@ -1,11 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldNotificationMessage
     {
+
+
         #region Constructors
 
         public FieldNotificationMessage()
@@ -35,8 +38,8 @@ namespace Ferretto.VW.MAS.Utils.Messages
             FieldMessageActor source,
             FieldMessageType type,
             MessageStatus status,
-            ErrorLevel level = ErrorLevel.NoError,
-            byte deviceIndex = 0x00)
+            byte deviceIndex,
+            ErrorLevel level = ErrorLevel.NoError)
         {
             this.Data = data;
             this.Description = description;
@@ -49,6 +52,8 @@ namespace Ferretto.VW.MAS.Utils.Messages
         }
 
         #endregion
+
+
 
         #region Properties
 
