@@ -498,7 +498,7 @@ namespace Ferretto.VW.Simulator.Services
 
             // Switch On
             inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
-            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0;
+            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
 
             // Enable Voltage
             inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;

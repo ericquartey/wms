@@ -287,8 +287,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterOperationMode operationMode;
 
-        private bool positionReached;
-
         private int statusWord;
 
         #endregion
@@ -571,11 +569,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool homingTimerActive { get; set; }
 
-        private int shutterTickCount { get; set; }
-
         private bool shutterTimerActive { get; set; }
-
-        private int targetTickCount { get; set; }
 
         private bool targetTimerActive { get; set; }
 
@@ -592,11 +586,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
-                    //this.AxisPosition = 0;
                 }
             }
             else
             {
+                // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
             }
         }
@@ -606,14 +600,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0)
             {
-                if (!this.targetTimerActive && !this.positionReached)
+                if (!this.targetTimerActive)
                 {
                     this.StatusWord &= 0xFBFF;
-
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
-
-                    //this.AxisPosition = 0;
                 }
             }
             else
@@ -621,11 +612,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.targetTimerActive)
                 {
                     this.targetTimer.Change(-1, Timeout.Infinite);
-                    // Reset contatore
-                    this.targetTickCount = 0;
-
                     this.targetTimerActive = false;
                 }
+
+                // Reset Set-Point Acknowledge
                 this.StatusWord &= 0xEFFF;
             }
         }
@@ -647,9 +637,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.shutterTimerActive)
                 {
                     this.shutterTimer.Change(-1, Timeout.Infinite);
-                    // Reset contatore
-                    this.shutterTickCount = 0;
-
                     this.shutterTimerActive = false;
                 }
                 this.StatusWord &= ~0x0400;
@@ -853,7 +840,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void ShutterTick(object state)
         {
-            this.shutterTickCount++;
             if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
             {
                 this.AxisPosition++;
@@ -869,7 +855,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 304 && this.AxisPosition < 306)
+            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
@@ -885,26 +871,24 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
             }
 
-            if (this.shutterTickCount > 100
-                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
-                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
-                )
+            if ((this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened))
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
+                this.ControlWord &= 0xFFEF; // Reset Rfg Enable Signal
+                this.StatusWord |= 0x0400;  // Set Target Reached
 
                 this.shutterTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.shutterTickCount = 0;
 
                 this.shutterTimerActive = false;
-                this.positionReached = true;
+            }
+            else
+            {
+                this.StatusWord &= ~0x0400; // Reset Target Reached
             }
         }
 
         private void TargetTick(object state)
         {
-            this.targetTickCount++;
             if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
             {
                 this.AxisPosition++;
@@ -914,17 +898,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.AxisPosition--;
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0 || this.targetTickCount > 100)
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
+                this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
+                this.StatusWord |= 0x0400;      // Set Target Reached
 
                 this.targetTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.targetTickCount = 0;
-
                 this.targetTimerActive = false;
-                this.positionReached = true;
+            }
+            else
+            {
+                this.StatusWord &= ~0x0400; // Reset Target Reached
             }
         }
 

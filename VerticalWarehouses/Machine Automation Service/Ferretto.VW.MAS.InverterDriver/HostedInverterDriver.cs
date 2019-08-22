@@ -298,7 +298,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
@@ -307,7 +307,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.inverterStatuses.Count == 0)
                 {
-                    this.logger.LogTrace("4:Invert Driver not configured for this message Type");
+                    this.logger.LogError("4:Invert Driver not configured for this message Type");
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
@@ -331,8 +331,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.CurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
                 {
-                    this.logger.LogWarning($"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}");
-
+                    this.logger.LogError($"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}");
+                    this.logger.LogError($"5a: Message {receivedMessage.Type} will be discarded!");
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
 
