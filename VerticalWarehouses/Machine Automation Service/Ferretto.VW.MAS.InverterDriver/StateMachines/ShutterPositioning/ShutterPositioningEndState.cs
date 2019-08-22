@@ -63,12 +63,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.shutterPositionData.ShutterPosition = currentStatus.CurrentShutterPosition;
             }
             var endNotification = new FieldNotificationMessage(
-            this.shutterPositionData,
-            "Shutter Positioning complete",
-            FieldMessageActor.InverterDriver,
-            FieldMessageActor.InverterDriver,
-            FieldMessageType.ShutterPositioning,
-            (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.shutterPositionData,
+                "Shutter Positioning complete",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.ShutterPositioning,
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

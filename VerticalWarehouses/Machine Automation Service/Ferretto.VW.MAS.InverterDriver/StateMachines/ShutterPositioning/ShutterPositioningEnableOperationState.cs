@@ -1,7 +1,11 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +16,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         #region Fields
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
+
+        private ShutterPosition oldShutterPosition;
+
+        private ShutterPosition shutterDestination;
 
         #endregion
 
@@ -25,6 +33,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.shutterPositionData = shutterPositionData;
+            this.shutterDestination = this.shutterPositionData.ShutterPosition;
         }
 
         #endregion
@@ -53,6 +62,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            if (this.InverterStatus is AglInverterStatus currentStatus)
+            {
+                this.oldShutterPosition = currentStatus.CurrentShutterPosition;
+            }
         }
 
         /// <inheritdoc />
@@ -88,12 +101,29 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
                         (currentStatus.ProfileVelocityStatusWord.TargetReached
-                            || currentStatus.CurrentShutterPosition == this.shutterPositionData.ShutterPosition
+                            || currentStatus.CurrentShutterPosition == this.shutterDestination
                             )
                         )
                     {
                         this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                         returnValue = true;
+                    }
+                    else if (this.oldShutterPosition != currentStatus.CurrentShutterPosition)
+                    {
+                        this.oldShutterPosition = currentStatus.CurrentShutterPosition;
+                        var messageData = this.shutterPositionData;
+                        messageData.ShutterPosition = this.oldShutterPosition;
+                        var endNotification = new FieldNotificationMessage(
+                            messageData,
+                            "Shutter Positioning executing",
+                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.ShutterPositioning,
+                            MessageStatus.OperationExecuting);
+
+                        this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                        this.ParentStateMachine.PublishNotificationEvent(endNotification);
                     }
                 }
             }

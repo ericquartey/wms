@@ -87,19 +87,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
-            var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Move to {commandMessageData.ShutterPosition}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPositioning,
-                (byte)this.inverterIndex);
-
-            this.Logger.LogDebug($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
             var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
             var inverterStatus = new AglInverterStatus((byte)InverterIndex.Slave2);
             Array.Copy(this.machineSensorsStatus.DisplayedInputs, (int)IOMachineSensors.AGLPowerOnOffBay1, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);

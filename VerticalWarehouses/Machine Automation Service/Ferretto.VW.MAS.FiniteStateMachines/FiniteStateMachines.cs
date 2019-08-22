@@ -425,6 +425,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         }
                         break;
 
+                    case FieldMessageType.ShutterPositioning:
+                        this.logger.LogTrace($"6:ShutterPositioning received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is IShutterPositioningMessageData positioningData)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationExecuting)
+                            {
+                                msg = new NotificationMessage(
+                                positioningData,
+                                "Inverter Shutter Positioning",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.ShutterPositioning,
+                                MessageStatus.OperationExecuting);
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
+                        }
+                        break;
+
                     // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
                     case FieldMessageType.InverterError:
