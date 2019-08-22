@@ -113,11 +113,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineElevatorService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync(Axis currentAxis);
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetHorizontalPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync(Axis currentAxis, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetHorizontalPositionAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<SensorsChangedMessageData> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveHorizontalAsync(HorizontalMovementDirection direction);
@@ -896,19 +903,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Error = 4,
     
         Fatal = 5,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum Axis
-    {
-        None = 0,
-    
-        Horizontal = 1,
-    
-        Vertical = 2,
-    
-        Both = 3,
     
     }
     

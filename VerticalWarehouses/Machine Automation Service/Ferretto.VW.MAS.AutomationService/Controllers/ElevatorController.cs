@@ -85,17 +85,37 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("vertical/position/{currentAxis}")]
-        public ActionResult<SensorsChangedMessageData> GetVerticalPosition(Axis currentAxis)
+        [HttpGet("horizontal/position")]
+        public ActionResult<SensorsChangedMessageData> GetHorizontalPosition()
         {
-            var messageData = new RequestPositionMessageData(currentAxis, 0);
+            var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
             this.PublishCommand(
                 messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 
-            this.logger.LogDebug($"Request position on Axis {currentAxis}");
+            this.logger.LogDebug($"Request position on Axis {Axis.Horizontal}");
+
+            var notifyData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                MessageType.SensorsChanged,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(notifyData);
+        }
+
+        [HttpGet("vertical/position")]
+        public ActionResult<SensorsChangedMessageData> GetVerticalPosition()
+        {
+            var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
+            this.PublishCommand(
+                messageData,
+                "Request vertical position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+
+            this.logger.LogDebug($"Request position on Axis {Axis.Vertical}");
 
             var notifyData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,
