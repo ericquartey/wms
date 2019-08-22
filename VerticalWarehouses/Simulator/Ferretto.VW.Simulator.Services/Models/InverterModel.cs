@@ -571,8 +571,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool homingTimerActive { get; set; }
 
-        private int shutterTickCount { get; set; }
-
         private bool shutterTimerActive { get; set; }
 
         private int targetTickCount { get; set; }
@@ -647,9 +645,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.shutterTimerActive)
                 {
                     this.shutterTimer.Change(-1, Timeout.Infinite);
-                    // Reset contatore
-                    this.shutterTickCount = 0;
-
                     this.shutterTimerActive = false;
                 }
                 this.StatusWord &= ~0x0400;
@@ -853,7 +848,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void ShutterTick(object state)
         {
-            this.shutterTickCount++;
             if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
             {
                 this.AxisPosition++;
@@ -869,7 +863,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 304 && this.AxisPosition < 306)
+            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
@@ -885,20 +879,20 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
             }
 
-            if (this.shutterTickCount > 100
-                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
-                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
-                )
+            if ((this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened))
             {
                 this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;
 
                 this.shutterTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.shutterTickCount = 0;
 
                 this.shutterTimerActive = false;
                 this.positionReached = true;
+            }
+            else
+            {
+                this.positionReached = false;
             }
         }
 
