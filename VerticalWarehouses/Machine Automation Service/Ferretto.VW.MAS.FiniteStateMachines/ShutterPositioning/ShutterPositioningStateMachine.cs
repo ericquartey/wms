@@ -58,6 +58,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #region Methods
 
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
+
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -103,7 +114,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                if (this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1)
+                if (!this.machineSensorsStatus.IsMachineInNormalState ||
+                    this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+                    !(this.shutterPositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningMessageData.MovementMode == MovementMode.TestLoop)
+                    )
                 {
                     this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger);
                 }
@@ -126,17 +140,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

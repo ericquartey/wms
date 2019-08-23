@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         bool IsMachineInEmergencyStateBay1 { get; }
 
+        bool IsMachineInNormalState { get; }
+
         bool IsSensorZeroOnCradle { get; }
 
         bool IsSensorZeroOnElevator { get; }
@@ -30,7 +32,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         #region Methods
 
-        bool UpdateInputs( byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor );
+        bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
 
         #endregion
     }
