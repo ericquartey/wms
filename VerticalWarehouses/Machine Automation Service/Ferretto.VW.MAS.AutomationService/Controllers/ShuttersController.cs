@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting);
 
-            return this.Ok(notifyData.ShutterPosition);
+            return this.Ok(notifyData?.ShutterPosition ?? ShutterPosition.None);
         }
 
         [HttpGet]

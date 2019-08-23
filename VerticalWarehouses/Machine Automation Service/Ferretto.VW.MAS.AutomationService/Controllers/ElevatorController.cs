@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting);
 
-            return this.Ok(notifyData.CurrentPosition);
+            return this.Ok(notifyData?.CurrentPosition ?? 0);
         }
 
         [HttpGet("vertical/position")]
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting);
 
-            return this.Ok(notifyData.CurrentPosition);
+            return this.Ok(notifyData?.CurrentPosition ?? 0);
         }
 
         [HttpPost("horizontal/move")]
