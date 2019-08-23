@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public override EnableMask EnableMask => EnableMask.None;
+
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
         public Sensors Sensors => this.sensors;

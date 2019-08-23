@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -113,12 +114,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public DelegateCommand MoveDownCommand =>
+        public ICommand MoveDownCommand =>
             this.moveDownCommand
             ??
             (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDownAsync()));
 
-        public DelegateCommand MoveUpCommand =>
+        public ICommand MoveUpCommand =>
             this.moveUpCommand
             ??
             (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUpAsync()));

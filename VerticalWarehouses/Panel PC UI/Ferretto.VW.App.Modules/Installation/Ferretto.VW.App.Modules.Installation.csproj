@@ -49,6 +49,13 @@
 
   <ItemGroup>
     <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
+    <None Remove="Views\Cells\CellsHeightCheckStep1View.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Cells\CellsHeightCheckStep1View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -27,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -52,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InitializeNavigationMenu();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -71,7 +72,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -84,16 +85,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   ThreadOption.UIThread,
                   false);
 
-            try
-            {
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            await this.RetrieveCurrentPositionAsync();
 
             await base.OnNavigatedAsync();
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            this.RetrieveCurrentPositionAsync();
         }
 
         protected override void OnDispose()
@@ -148,6 +149,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        #endregion
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            try
+            {
+                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        #endregion Methods
     }
 }

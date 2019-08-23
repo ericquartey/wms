@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class ShutterEnduranceTestView
+    public partial class CellsHeightCheckNavigationView
     {
         #region Constructors
 
-        public ShutterEnduranceTestView()
+        public CellsHeightCheckNavigationView()
         {
             this.InitializeComponent();
         }

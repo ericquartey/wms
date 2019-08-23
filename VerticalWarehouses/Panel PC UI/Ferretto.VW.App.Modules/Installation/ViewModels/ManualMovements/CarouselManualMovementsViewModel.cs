@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -56,7 +57,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.canExecuteOpenCommand, value);
         }
 
-        public DelegateCommand CloseCommand =>
+        public ICommand CloseCommand =>
             this.closeCommand
             ??
             (this.closeCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
@@ -97,7 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public DelegateCommand OpenCommand =>
+        public ICommand OpenCommand =>
             this.openCommand
             ??
             (this.openCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));

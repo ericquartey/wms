@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -96,12 +97,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IMachineElevatorService MachineElevatorService { get; }
 
-        public DelegateCommand MoveBackwardsCommand =>
+        public ICommand MoveBackwardsCommand =>
             this.moveBackwardsCommand
             ??
             (this.moveBackwardsCommand = new DelegateCommand(async () => await this.MoveBackwardsAsync()));
 
-        public DelegateCommand MoveForwardsCommand =>
+        public ICommand MoveForwardsCommand =>
             this.moveForwardsCommand
             ??
             (this.moveForwardsCommand = new DelegateCommand(async () => await this.MoveForwardsAsync()));

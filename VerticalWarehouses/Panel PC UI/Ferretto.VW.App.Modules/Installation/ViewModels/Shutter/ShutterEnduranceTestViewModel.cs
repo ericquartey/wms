@@ -147,7 +147,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ShutterSensors Sensors => this.sensors;
 
         public ICommand StartCommand =>
-                    this.startCommand
+            this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.ExecuteStartCommandAsync(),

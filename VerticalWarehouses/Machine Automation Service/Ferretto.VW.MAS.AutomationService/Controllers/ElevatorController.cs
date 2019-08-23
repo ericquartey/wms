@@ -138,6 +138,62 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/move-to")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToVerticalPosition(decimal targetPosition)
+        {
+            var lowerBound = this.verticalAxis.LowerBound;
+            var upperBound = this.verticalAxis.UpperBound;
+
+            if (targetPosition < lowerBound || targetPosition > upperBound)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Detail = $"Target position ({targetPosition}) must be in the range [{lowerBound}; {upperBound}]."
+                    });
+            }
+
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            if (!homingDone)
+            {
+                return this.UnprocessableEntity(
+                    new ProblemDetails
+                    {
+                        Detail = $"Vertical origin calibration must be performed before attempting to move the elevator to a given position."
+                    });
+            }
+
+            var movementType = MovementType.Absolute;
+
+            decimal feedRate = this.verticalManualMovements.FeedRateAfterZero;
+
+            var speed = this.verticalAxis.MaxEmptySpeed * feedRate;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                movementType,
+                MovementMode.Position,
+                targetPosition,
+                speed,
+                this.verticalAxis.MaxEmptyAcceleration, // TODO is this correct?
+                this.verticalAxis.MaxEmptyDeceleration, // TODO is this correct?
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            this.logger.LogDebug($"Starting elevator positioning, type {movementType}, target position {targetPosition}");
+
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

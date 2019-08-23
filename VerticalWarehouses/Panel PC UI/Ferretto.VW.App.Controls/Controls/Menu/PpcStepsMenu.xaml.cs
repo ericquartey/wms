@@ -1,10 +1,10 @@
-﻿namespace Ferretto.VW.App.Modules.Layout.Views
+﻿namespace Ferretto.VW.App.Controls
 {
-    public partial class HeaderView
+    public partial class PpcStepsMenu
     {
         #region Constructors
 
-        public HeaderView()
+        public PpcStepsMenu()
         {
             this.InitializeComponent();
         }

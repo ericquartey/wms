@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CellsController(ICellsProvider cellsProvider)
         {
-            if (cellsProvider == null)
+            if (cellsProvider is null)
             {
                 throw new ArgumentNullException(nameof(cellsProvider));
             }
@@ -30,6 +31,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Cell>> GetAll()
+        {
+            var cells = this.cellsProvider.GetAll();
+
+            return this.Ok(cells);
+        }
 
         [HttpGet("statistics")]
         public ActionResult<CellStatisticsSummary> GetStatistics()

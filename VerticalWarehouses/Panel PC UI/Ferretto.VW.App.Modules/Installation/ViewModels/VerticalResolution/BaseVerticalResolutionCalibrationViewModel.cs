@@ -76,36 +76,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.subscriptionToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    message => this.OnAutomationMessageReceived(message),
-                    ThreadOption.UIThread,
-                    false);
-        }
-
-        protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-        }
-
         private void InitializeNavigationMenu()
         {
             this.menuItems.Add(
@@ -128,33 +98,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Step3,
                     trackCurrentView: false));
+        }
 
-            foreach (var menuItem in this.menuItems)
+        protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+
+            if (this.subscriptionToken != null)
             {
-                menuItem.PropertyChanged += this.MenuItem_PropertyChanged;
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
             }
         }
 
-        private void MenuItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public override async Task OnNavigatedAsync()
         {
-            if (e.PropertyName == nameof(NavigationMenuItem.IsActive)
-                &&
-                sender is NavigationMenuItem changedMenuItem)
-            {
-                if (changedMenuItem.IsActive)
-                {
-                    var foundMenuItem = false;
-                    foreach (var menuItem in this.menuItems)
-                    {
-                        menuItem.IsEnabled = !foundMenuItem;
+            await base.OnNavigatedAsync();
 
-                        if (menuItem == changedMenuItem)
-                        {
-                            foundMenuItem = true;
-                        }
-                    }
-                }
-            }
+            this.IsBackNavigationAllowed = true;
+
+            this.subscriptionToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                    message => this.OnAutomationMessageReceived(message),
+                    ThreadOption.UIThread,
+                    false);
         }
 
         #endregion
