@@ -374,7 +374,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition;
                                 }
                             }
-                            else
+                            else if (dataInverters.CurrentAxis == Axis.Horizontal)
                             {
                                 lock (this.machineSensorsStatus)
                                 {

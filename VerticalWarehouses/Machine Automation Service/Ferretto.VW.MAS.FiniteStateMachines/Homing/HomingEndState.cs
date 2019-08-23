@@ -68,6 +68,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
+                            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+                            var inverterMessage = new FieldCommandMessage(
+                                inverterDataMessage,
+                                "Update Inverter axis position status",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.InverterSetTimer,
+                                (byte)InverterIndex.MainInverter);
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
                             break;
 
                         case MessageStatus.OperationError:
@@ -102,19 +115,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
-
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(

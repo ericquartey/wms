@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver
     {
-
-
         #region Methods
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
@@ -286,10 +284,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is AngInverterStatus angInverter)
                     {
-                        if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
+                        var axis = inverterStatus.CommonControlWord.HorizontalAxis ? Axis.Horizontal : Axis.Vertical;
+                        if (angInverter.UpdateANGInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
                         {
                             ConfigurationCategory configurationCategory;
-                            switch (this.currentAxis)
+                            switch (axis)
                             {
                                 case Axis.Horizontal:
                                     configurationCategory = ConfigurationCategory.HorizontalAxis;
@@ -310,7 +309,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
                             }
 
-                            var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
+                            var notificationData = new InverterStatusUpdateFieldMessageData(axis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
                             var msgNotification = new FieldNotificationMessage(
                               notificationData,
                               "Inverter encoder value update",
@@ -463,7 +462,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
         {
-
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
             if (receivedMessage.Data is ICalibrateAxisFieldMessageData calibrateData)
