@@ -541,7 +541,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError("3:Invalid message data for InverterStop message Type");
+                this.logger.LogError("3:Invalid message data for ProcessFaultResetMessage message Type");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
@@ -565,7 +565,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
+                    this.logger.LogTrace("3:Invalid message data for ProcessHeartbeat message Type");
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
@@ -657,7 +657,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError($"3:Invalid message data for InverterStop message Type");
+                this.logger.LogError($"3:Invalid message data for ProcessInverterSwitchOffMessage message Type");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message Type", 0), FieldMessageType.InverterSwitchOff);
@@ -741,7 +741,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError("3:Invalid message data for InverterStop message Type");
+                this.logger.LogError("3:Invalid message data for ProcessInverterSwitchOnMessage message Type");
 
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Invalid message data for InverterStop message Type", 0), FieldMessageType.InverterSwitchOn);
             }
@@ -1044,7 +1044,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError("3:Invalid message data for InverterStop message Type");
+                this.logger.LogError("3:Invalid message data for ProcessStopMessage message Type");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
