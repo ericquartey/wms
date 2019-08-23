@@ -346,16 +346,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IRequestPositionMessageData data)
             {
-                var msgData = new PositioningMessageData();
                 if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
                 {
+                    var msgData = new PositioningMessageData();
                     msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
                     var msg = new NotificationMessage(
                         msgData,
                         "Request Position",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
-                        MessageType.SensorsChanged,
+                        MessageType.Positioning,
                         MessageStatus.OperationExecuting);
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                 }

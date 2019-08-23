@@ -91,14 +91,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
             this.PublishCommand(
                 messageData,
-                "Request vertical position",
+                "Request Horizontal position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 
             this.logger.LogDebug($"Request position on Axis {Axis.Horizontal}");
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
-                MessageType.SensorsChanged,
+                MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting);
 
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.logger.LogDebug($"Request position on Axis {Axis.Vertical}");
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
-                MessageType.SensorsChanged,
+                MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting);
 
