@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)InverterIndex.Slave2);
+                    (byte)this.inverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
