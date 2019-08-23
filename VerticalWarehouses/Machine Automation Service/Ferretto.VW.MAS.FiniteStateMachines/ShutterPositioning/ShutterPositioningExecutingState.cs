@@ -102,22 +102,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
-            var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Move to {commandMessageData.ShutterPosition}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPositioning,
-                (byte)InverterIndex.Slave2);
-
-            this.Logger.LogDebug($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
             var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
-            var inverterStatus = new AglInverterStatus((byte)InverterIndex.Slave2);
-            Array.Copy(this.machineSensorsStatus.DisplayedInputs, (int)IOMachineSensors.AGLPowerOnOffBay1, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+            var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
+            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,

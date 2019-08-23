@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,6 +13,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -24,8 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
-
-
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -112,6 +112,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         //    return true;
         //}
+
+        private InverterIndex InverterFromBayNumber(int BayNumber)
+        {
+            InverterIndex inverterIndex;
+            switch (BayNumber)
+            {
+                case 1:
+                    inverterIndex = InverterIndex.Slave2;
+                    break;
+
+                case 2:
+                    inverterIndex = InverterIndex.Slave4;
+                    break;
+
+                case 3:
+                    inverterIndex = InverterIndex.Slave6;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Bay number not valid {BayNumber}");
+            }
+            return inverterIndex;
+        }
+
         private void ProcessCheckConditionMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
@@ -316,6 +340,44 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
+        private void ProcessRequestPositionMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IRequestPositionMessageData data)
+            {
+                if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
+                {
+                    var msgData = new PositioningMessageData();
+                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
+                    var msg = new NotificationMessage(
+                        msgData,
+                        "Request Position",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.Positioning,
+                        MessageStatus.OperationExecuting);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                }
+                else if (data.BayNumber > 0)
+                {
+                    var notificationMessageData = new ShutterPositioningMessageData();
+                    var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
+                    int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
+                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                    notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
+                    var msg = new NotificationMessage(
+                        notificationMessageData,
+                        $"Request Position",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.ShutterPositioning,
+                        MessageStatus.OperationExecuting);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                }
+            }
+        }
+
         private void ProcessResetSecurityMessage()
         {
             this.logger.LogTrace("1:Method Start");
@@ -355,7 +417,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate,
+                FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
@@ -415,37 +477,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IShutterPositioningMessageData data)
             {
-                InverterIndex inverterIndex;
-                switch (data.BayNumber)
-                {
-                    case 1:
-                        inverterIndex = InverterIndex.Slave2;
-                        break;
-
-                    case 2:
-                        inverterIndex = InverterIndex.Slave4;
-                        break;
-
-                    case 3:
-                        inverterIndex = InverterIndex.Slave6;
-                        break;
-
-                    default:
-                        this.logger.LogError($"Bay number not valid {data.BayNumber}");
-                        return;
-                }
-                this.currentStateMachine = new ShutterPositioningStateMachine(
-                    this.eventAggregator,
-                    data,
-                    inverterIndex,
-                    this.logger,
-                    this.serviceScopeFactory,
-                    this.machineSensorsStatus);
-
-                this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
                 try
                 {
+                    this.currentStateMachine = new ShutterPositioningStateMachine(
+                        this.eventAggregator,
+                        data,
+                        this.InverterFromBayNumber(data.BayNumber),
+                        this.logger,
+                        this.serviceScopeFactory,
+                        this.machineSensorsStatus);
+
+                    this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
                     this.currentStateMachine.Start();
                 }
                 catch (Exception ex)

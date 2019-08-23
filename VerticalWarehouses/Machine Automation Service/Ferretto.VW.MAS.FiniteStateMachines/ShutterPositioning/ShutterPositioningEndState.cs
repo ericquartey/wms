@@ -94,8 +94,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     switch (message.Status)
                     {
                         case MessageStatus.OperationEnd:
-                            var inverterStatus = new AglInverterStatus((byte)InverterIndex.Slave2);
-                            Array.Copy(this.machineSensorsStatus.DisplayedInputs, (int)IOMachineSensors.AGLPowerOnOffBay1, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                            var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
+                            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+                            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                             this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
                             var notificationMessage = new NotificationMessage(
@@ -137,14 +138,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)InverterIndex.Slave2);
+                    (byte)this.inverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
             else
             {
-                var inverterStatus = new AglInverterStatus((byte)InverterIndex.Slave2);
-                Array.Copy(this.machineSensorsStatus.DisplayedInputs, (int)IOMachineSensors.AGLPowerOnOffBay1, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
+                int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+                Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                 this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
                 var notificationMessage = new NotificationMessage(
