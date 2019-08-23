@@ -417,7 +417,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate,
+                FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
