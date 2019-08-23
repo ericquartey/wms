@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingEndState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingOperation homingOperation;
@@ -50,24 +49,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -86,6 +68,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
+                            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+                            var inverterMessage = new FieldCommandMessage(
+                                inverterDataMessage,
+                                "Update Inverter axis position status",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.InverterSetTimer,
+                                (byte)InverterIndex.MainInverter);
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
                             break;
 
                         case MessageStatus.OperationError:
@@ -105,18 +100,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
+            if (this.stopRequested)
+            {
+                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
+                var data = new InverterStopFieldMessageData();
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+                var stopMessage = new FieldCommandMessage(
+                    data,
+                    "Homing Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop,
+                    (byte)InverterIndex.MainInverter);
 
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
 
             var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
@@ -145,6 +143,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -85,19 +85,44 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("horizontal/position")]
+        public ActionResult<decimal> GetHorizontalPosition()
+        {
+            var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
+            this.PublishCommand(
+                messageData,
+                "Request Horizontal position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+
+            this.logger.LogDebug($"Request position on Axis {Axis.Horizontal}");
+
+            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
+                MessageType.Positioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(notifyData?.CurrentPosition ?? 0);
+        }
+
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
+            var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
             this.PublishCommand(
-                null,
+                messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
-                MessageType.CurrentPosition);
+                MessageType.RequestPosition);
 
-            // var data = this.WaitForResponseEventAsync<>();
+            this.logger.LogDebug($"Request position on Axis {Axis.Vertical}");
 
-            return 0; // TODO
-            // throw new System.NotImplementedException();
+            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
+                MessageType.Positioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting);
+
+            return this.Ok(notifyData?.CurrentPosition ?? 0);
         }
 
         [HttpPost("horizontal/move")]

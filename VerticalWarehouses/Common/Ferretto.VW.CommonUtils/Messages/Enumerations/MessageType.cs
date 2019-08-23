@@ -23,6 +23,7 @@
         CalibrateAxis,
 
         ShutterTestStatusChanged,
+
         MachineStateActive,
 
         MachineStatusActive,
@@ -69,6 +70,8 @@
 
         PowerEnable,
 
-        InverterStatusWord
+        InverterStatusWord,
+
+        RequestPosition,
     }
 }

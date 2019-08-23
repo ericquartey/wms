@@ -18,6 +18,6 @@
 
         Closed = 3,
 
-        Undefined = 4
+        Intermediate = 4
     }
 }

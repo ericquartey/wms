@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<SwitchAxisMessageData>>(
                  nameof(IInstallationHub.SwitchAxisNotify), this.OnSwitchAxisNotify);
 
-            connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
+            connection.On<NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>(
                  nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
             connection.On<NotificationMessageUI<ShutterTestStatusChangedMessageData>>(
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnShutterPositioningNotify(NotificationMessageUI<ShutterPositioningMessageData> message)
+        private void OnShutterPositioningNotify(NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

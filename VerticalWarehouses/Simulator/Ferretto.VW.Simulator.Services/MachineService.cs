@@ -121,20 +121,20 @@ namespace Ferretto.VW.Simulator.Services
                 this.listenerIoDriver3.Start();
             }
 
-            Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
+            _ = Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             if (this.RemoteIOs01.Enabled)
             {
-                Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
+                _ = Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
             }
 
             if (this.RemoteIOs02.Enabled)
             {
-                Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
+                _ = Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
             }
 
             if (this.RemoteIOs03.Enabled)
             {
-                Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
+                _ = Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
             }
 
             await Task.Delay(100);
@@ -435,7 +435,7 @@ namespace Ferretto.VW.Simulator.Services
                     var outputs = (from x in Enumerable.Range(0, 8)
                                    let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
                                    select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString(), Index = (7 - x) }).Reverse().ToArray();
-                    for (int i = 0; i < outputs.Length; i++)
+                    for (var i = 0; i < outputs.Length; i++)
                     {
                         device.Outputs[i].Value = outputs[i].Value;
                     }
@@ -498,7 +498,7 @@ namespace Ferretto.VW.Simulator.Services
 
             // Switch On
             inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
-            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0;
+            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
 
             // Enable Voltage
             inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;

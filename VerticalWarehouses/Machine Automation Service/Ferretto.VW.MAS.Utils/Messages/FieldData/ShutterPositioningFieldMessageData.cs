@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public ShutterMovementDirection ShutterMovementDirection { get; }
 
-        public ShutterPosition ShutterPosition { get; }
+        public ShutterPosition ShutterPosition { get; set; }
 
         public ShutterType ShutterType { get; }
 

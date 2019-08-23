@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using ShutterPosition = Ferretto.VW.CommonUtils.Messages.Enumerations.ShutterPosition;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -160,7 +161,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+              .GetEvent<NotificationEventUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = message?.Data?.ShutterPosition,
                   ThreadOption.UIThread,
