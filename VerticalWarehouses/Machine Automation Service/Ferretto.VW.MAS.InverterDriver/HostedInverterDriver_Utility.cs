@@ -285,7 +285,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is AngInverterStatus angInverter)
                     {
                         var axis = inverterStatus.CommonControlWord.HorizontalAxis ? Axis.Horizontal : Axis.Vertical;
-                        if (angInverter.UpdateANGInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
+                        if ((axis == this.currentAxis || currentStateMachine == null) &&
+                            (angInverter.UpdateANGInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
+                            )
                         {
                             ConfigurationCategory configurationCategory;
                             switch (axis)
