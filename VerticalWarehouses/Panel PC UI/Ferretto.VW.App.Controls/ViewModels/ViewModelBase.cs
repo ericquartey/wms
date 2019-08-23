@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 

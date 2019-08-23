@@ -1,12 +1,5 @@
-﻿using Ferretto.VW.App.Installation.HelpWindows;
-using Ferretto.VW.App.Installation.Interfaces;
-using Ferretto.VW.App.Installation.Views;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
+﻿using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -96,26 +89,9 @@ namespace Ferretto.VW.App.Modules.Installation
 
             #endregion
 
-            #region These views need refactoring
+            #region Cell Views
 
-            // TODO: all the following view models need refactoring
-
-            this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
-            this.container.RegisterSingleton<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>();
-            this.container.RegisterSingleton<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>();
-            this.container.RegisterSingleton<IShutter2HeightControlViewModel, Shutter2HeightControlViewModel>();
-            this.container.RegisterSingleton<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>();
-            this.container.RegisterSingleton<IIdleViewModel, IdleViewModel>();
-
-            this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();
-            this.container.RegisterSingleton<IBayControlViewModel, BayControlViewModel>();
-            this.container.RegisterSingleton<ILoadFirstDrawerViewModel, LoadFirstDrawerViewModel>();
-            this.container.RegisterSingleton<ILoadingDrawersViewModel, LoadingDrawersViewModel>();
-            this.container.RegisterSingleton<ISaveRestoreConfigViewModel, SaveRestoreConfigViewModel>();
-            this.container.RegisterSingleton<ICellsSideControlViewModel, CellsSideControlViewModel>();
-            this.container.RegisterSingleton<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>();
-            this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
+            containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
 
             #endregion
         }
