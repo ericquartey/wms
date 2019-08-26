@@ -30,10 +30,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
         {
-            if (this.currentStateMachine != null)
+            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
             {
-                this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                this.currentStateMachine = null;
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.currentStateMachines.Remove(BayIndex.ElevatorBay);
             }
 
             var powerEnableData = new PowerEnableData(this.eventAggregator,
@@ -43,13 +43,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.logger,
                 this.serviceScopeFactory);
 
-            this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
+            currentStateMachine = new PowerEnableStateMachine(powerEnableData);
+            this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
 
-            this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+            this.logger.LogTrace($"3:Starting FSM PowerEnableSTateMachine: Enable {data.Enable}");
 
             try
             {
-                this.currentStateMachine.Start();
+                currentStateMachine.Start();
             }
             catch (Exception ex)
             {
@@ -127,6 +128,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CheckCondition,
+                message.BayIndex,
                 MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
@@ -136,82 +138,88 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
-            if (receivedMessage.Data is IDrawerOperationMessageData data)
+            if (this.currentStateMachines.TryGetValue(receivedMessage.BayIndex, out var currentStateMachine))
             {
-                this.logger.LogTrace("2: Starting Drawer Operation FSM");
-
-                this.currentStateMachine = new MoveDrawerStateMachine(
-                    this.eventAggregator,
-                    this.setupStatusProvider,
-                    this.machineSensorsStatus,
-                    this.generalInfoDataLayer,
-                    this.verticalAxis,
-                    this.horizontalAxis,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogError($"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error));
-                }
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on bay {receivedMessage.BayIndex}", 1, MessageVerbosity.Error));
             }
             else
             {
-                this.logger.LogError($"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
+                if (receivedMessage.Data is IDrawerOperationMessageData data)
+                {
+                    this.logger.LogTrace("2: Starting Drawer Operation FSM");
 
-                this.SendMessage(new FsmExceptionMessageData(null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error));
+                    currentStateMachine = new MoveDrawerStateMachine(
+                        this.eventAggregator,
+                        this.setupStatusProvider,
+                        this.machineSensorsStatus,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
+                        data,
+                        this.logger,
+                        this.serviceScopeFactory);
+
+                    this.currentStateMachines.Add(receivedMessage.BayIndex, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(
+                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
+
+                        this.SendMessage(new FsmExceptionMessageData(ex,
+                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine", 1,
+                            MessageVerbosity.Error));
+                    }
+                }
+                else
+                {
+                    this.logger.LogError(
+                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
+
+                    this.SendMessage(new FsmExceptionMessageData(null,
+                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
+                        2, MessageVerbosity.Error));
+                }
             }
         }
 
-        private void ProcessHomingMessage(CommandMessage message)
+        private void ProcessHomingMessage(CommandMessage receivedMessage)
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IHomingMessageData data)
+            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
             {
-                //TEMP Check the conditions before start an homing procedure
-                //if (!this.IsHomingToExecute(out var condition))
-                //{
-                //    var notificationData = new HomingMessageData(data.AxisToCalibrate);
-
-                //    var msg = new NotificationMessage(
-                //        notificationData,
-                //        $"Condition: {condition}",
-                //        MessageActor.Any,
-                //        MessageActor.FiniteStateMachines,
-                //        MessageType.Homing,
-                //        MessageStatus.OperationError,
-                //        ErrorLevel.Error);
-                //    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-
-                //    return;
-                //}
-
-                //TEMP Instantiate the homing states machine
-                this.currentStateMachine = new HomingStateMachine(
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (receivedMessage.Data is IHomingMessageData data)
                 {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+                    currentStateMachine = new HomingStateMachine(
+                        this.eventAggregator,
+                        data,
+                        this.logger,
+                        this.serviceScopeFactory);
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
         }
@@ -232,29 +240,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void ProcessPositioningMessage(CommandMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IPositioningMessageData data)
+            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
             {
-                this.currentStateMachine = new PositioningStateMachine(
-                    this.machineSensorsStatus,
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (message.Data is IPositioningMessageData data)
                 {
-                    this.logger.LogDebug("Starting Positioning FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+                    currentStateMachine = new PositioningStateMachine(
+                        this.machineSensorsStatus,
+                        this.eventAggregator,
+                        data,
+                        this.logger,
+                        this.serviceScopeFactory);
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+
+                    try
+                    {
+                        this.logger.LogDebug("Starting Positioning FSM");
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
         }
@@ -270,10 +285,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     (!this.machineSensorsStatus.IsMachineInNormalState && data.Enable)
                     )
                 {
-                    if (this.currentStateMachine != null)
+                    if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
                     {
-                        this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                        this.currentStateMachine = null;
+                        this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                        this.currentStateMachines.Remove(BayIndex.ElevatorBay);
                     }
 
                     var powerEnableData = new PowerEnableData(this.eventAggregator,
@@ -283,13 +298,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger,
                         this.serviceScopeFactory);
 
-                    this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
+                    currentStateMachine = new PowerEnableStateMachine(powerEnableData);
 
-                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+                    this.logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType()}: Enable {data.Enable}");
+                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
 
                     try
                     {
-                        this.currentStateMachine.Start();
+                        currentStateMachine.Start();
                     }
                     catch (Exception ex)
                     {
@@ -307,6 +323,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.PowerEnable,
+                        message.BayIndex,
                         MessageStatus.OperationEnd);
 
                     this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -322,18 +339,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             //if (message.Data is IResetSecurityMessageData data)
             {
-                this.currentStateMachine = new ResetSecurityStateMachine(
+                if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+                {
+                    this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                    this.currentStateMachines.Remove(BayIndex.ElevatorBay);
+                }
+
+                currentStateMachine = new ResetSecurityStateMachine(
                     this.eventAggregator,
                     null,
                     this.logger,
                     this.serviceScopeFactory);
 
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
 
                 try
                 {
                     this.logger.LogDebug("Starting Reset Security FSM");
-                    this.currentStateMachine.Start();
+                    currentStateMachine.Start();
                 }
                 catch (Exception ex)
                 {
