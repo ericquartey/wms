@@ -22,13 +22,11 @@
 
         CalibrateAxis,
 
-        ShutterTestStatusChanged,   // TODO: remove this message
-
         MachineStateActive,
 
         MachineStatusActive,
 
-        ShutterControl,
+        //ShutterControl,       // TODO: remove this message
 
         NewMissionAvailable,
 

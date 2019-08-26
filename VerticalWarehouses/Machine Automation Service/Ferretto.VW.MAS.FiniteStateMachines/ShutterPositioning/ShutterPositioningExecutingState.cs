@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private bool disposed;
 
-        private int numberOfExecutedCycles;
-
         private ShutterMovementDirection OldDirection;
 
         #endregion
@@ -88,8 +86,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                             {
                                 if (messageData.ShutterPosition == ShutterPosition.Opened)
                                 {
-                                    this.numberOfExecutedCycles++;
-                                    if (this.numberOfExecutedCycles == this.numberOfRequestedCycles)
+                                    this.shutterPositioningMessageData.ExecutedCycles++;
+                                    if (this.shutterPositioningMessageData.ExecutedCycles == this.numberOfRequestedCycles)
                                     {
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, this.Logger));
                                     }

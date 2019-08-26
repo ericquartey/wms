@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : StateBase
     {
-
         #region Fields
 
         private readonly InverterIndex inverterIndex;
@@ -58,24 +57,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -189,6 +171,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

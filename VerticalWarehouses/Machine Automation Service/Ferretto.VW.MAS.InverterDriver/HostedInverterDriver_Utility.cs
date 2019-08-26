@@ -854,8 +854,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     catch (Exception ex)
                     {
                         this.logger.LogError($"Exception {ex.Message}");
-                        var exc = new Exception();
-                        this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(exc, "Wrong message Data Values", 0), FieldMessageType.Positioning);
+                        this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
                     }
                 }
                 else
