@@ -20,10 +20,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputInitialPosition;
 
-        private bool isExecutingProcedure;
-
-        private bool isWaitingForResponse;
-
         private DelegateCommand startCommand;
 
         #endregion
@@ -51,30 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set
             {
                 if (this.SetProperty(ref this.inputInitialPosition, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -153,6 +125,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.startCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteStartCommand()
         {
             return !this.IsExecutingProcedure
@@ -194,11 +171,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
                 procedureParameters,
                 trackCurrentView: false);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

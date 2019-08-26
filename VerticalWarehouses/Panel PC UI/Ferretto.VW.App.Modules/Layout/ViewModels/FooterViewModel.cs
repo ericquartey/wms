@@ -1,10 +1,7 @@
-﻿using System;
-using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -12,47 +9,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     {
         #region Fields
 
-        private readonly IMachineModeService machineModeService;
-
-        private bool isEnabled;
-
         private string notificationMessage;
 
         private NotificationSeverity notificationSeverity;
 
-        private SubscriptionToken subscriptionToken;
-
-        #endregion
-
-        #region Constructors
-
-        public FooterViewModel(IMachineModeService machineModeService)
-        {
-            if (machineModeService is null)
-            {
-                throw new ArgumentNullException(nameof(machineModeService));
-            }
-
-            this.machineModeService = machineModeService;
-
-            this.subscriptionToken = machineModeService.MachineModeChangedEvent
-               .Subscribe(
-                   this.OnMachineModeChanged,
-                   ThreadOption.UIThread,
-                   false);
-
-            this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
-        }
-
         #endregion
 
         #region Properties
-
-        public bool IsEnabled
-        {
-            get => this.isEnabled;
-            set => this.SetProperty(ref this.isEnabled, value);
-        }
 
         public string NotificationMessage
         {
@@ -73,6 +36,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         public override void InitializeData()
         {
             base.InitializeData();
+
             this.States.Add(this.GetInstance(nameof(PresentationBack)));
         }
 
@@ -145,28 +109,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Back, true);
                     break;
             }
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.machineModeService.MachineModeChangedEvent.Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-        }
-
-        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
-        {
-            this.UpdateIsEnabled(e.MachineMode, e.MachinePower);
-        }
-
-        private void UpdateIsEnabled(MachineMode machineMode, MachinePowerState machinePower)
-        {
-            this.IsEnabled = machinePower != MachinePowerState.Unpowered;
         }
 
         #endregion

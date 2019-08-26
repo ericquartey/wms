@@ -17,10 +17,15 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.CellsControl}" />
 
+        <controls:PpcLabeledText HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CellId}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+
         <controls:PpcLabeledText Margin="200,120,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ContentText="{Binding CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
         <controls:PpcLabeledText Margin="436,120,0,0"

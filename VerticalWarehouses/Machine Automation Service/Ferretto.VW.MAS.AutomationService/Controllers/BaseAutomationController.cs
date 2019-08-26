@@ -76,7 +76,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         protected TData WaitForResponseEventAsync<TData>(
             MessageType messageType,
             MessageActor messageSource = MessageActor.Any,
-            MessageStatus? messageStatus = null)
+            MessageStatus? messageStatus = null,
+            Action action = null)
             where TData : class, IMessageData
         {
             TData messageData = null;
@@ -99,9 +100,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                             &&
                             (messageSource == MessageActor.Any || message.Source == messageSource));
 
+                action?.Invoke();
+
                 const int MaximumWaitingTime = 10000;
-                semaphore.WaitOne(MaximumWaitingTime);
+                var signalReceived = semaphore.WaitOne(MaximumWaitingTime);
+
                 notificationEvent.Unsubscribe(subscriptionToken);
+                if (signalReceived == false)
+                {
+                    throw new TimeoutException("Waiting for the soecified event timed out.");
+                }
             }
 
             return messageData;

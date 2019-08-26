@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
@@ -14,13 +15,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineCellsService machineCellsService;
-
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private IEnumerable<Cell> cells;
 
         private decimal? currentPosition;
+
+        private bool isWaitingForResponse;
 
         private Cell selectedCell;
 
@@ -37,7 +38,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (machineCellsService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineCellsService));
+                throw new ArgumentNullException(nameof(machineCellsService));
             }
 
             if (machineElevatorService is null)
@@ -45,7 +46,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(machineElevatorService));
             }
 
-            this.machineCellsService = machineCellsService;
+            this.MachineCellsService = machineCellsService;
             this.MachineElevatorService = machineElevatorService;
 
             this.InitializeNavigationMenu();
@@ -55,18 +56,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        protected IMachineElevatorService MachineElevatorService { get; }
-
-        public IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set => this.SetProperty(ref this.cells, value);
-        }
-
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
@@ -74,18 +84,73 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public Cell SelectedCell
         {
             get => this.selectedCell;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.selectedCell, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
 
+        protected IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        protected IMachineCellsService MachineCellsService { get; }
+
+        protected IMachineElevatorService MachineElevatorService { get; }
+
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
+        public override async Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
+            this.subscriptionToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                    message => this.OnCurrentPositionChanged(message),
+                    ThreadOption.UIThread,
+                    false);
+
+            await this.RetrieveCurrentPositionAsync();
+
+            await this.RetrieveCellsAsync();
+        }
+
+        protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            this.CurrentPosition = message?.Data?.CurrentPosition;
+        }
+
+        protected abstract void RaiseCanExecuteChanged();
 
         private void InitializeNavigationMenu()
         {
@@ -108,7 +173,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.Cells = await this.machineCellsService.GetAllAsync();
+                this.Cells = await this.MachineCellsService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -126,24 +191,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        protected abstract void RefreshCanExecuteCommands();
-
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    message => this.CurrentPosition = message?.Data?.CurrentPosition,
-                    ThreadOption.UIThread,
-                    false);
-
-            await this.RetrieveCurrentPositionAsync();
-
-            await this.RetrieveCellsAsync();
         }
 
         #endregion

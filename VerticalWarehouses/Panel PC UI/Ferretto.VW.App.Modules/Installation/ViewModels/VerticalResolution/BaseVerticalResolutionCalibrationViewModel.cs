@@ -22,9 +22,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineResolutionCalibrationProcedureService resolutionCalibrationService;
 
-        private VerticalResolutionCalibrationData calibrationData;
-
         private decimal? currentResolution;
+
+        private bool isExecutingProcedure;
+
+        private bool isWaitingForResponse;
 
         private SubscriptionToken subscriptionToken;
 
@@ -33,7 +35,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BaseVerticalResolutionCalibrationViewModel(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(Services.PresentationMode.Installer)
         {
@@ -56,16 +58,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public VerticalResolutionCalibrationData CalibrationData
-        {
-            get => this.calibrationData;
-            set => this.SetProperty(ref this.calibrationData, value);
-        }
-
         public decimal? CurrentResolution
         {
             get => this.currentResolution;
-            set => this.SetProperty(ref this.currentResolution, value);
+            protected set => this.SetProperty(ref this.currentResolution, value);
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get => this.isExecutingProcedure;
+            protected set
+            {
+                if (this.SetProperty(ref this.isExecutingProcedure, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
@@ -76,35 +101,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        private void InitializeNavigationMenu()
+        public override void Disappear()
         {
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP1,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step1,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step2,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step3,
-                    trackCurrentView: false));
-        }
-
-        protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
+            base.Disappear();
 
             if (this.subscriptionToken != null)
             {
@@ -128,6 +127,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message => this.OnAutomationMessageReceived(message),
                     ThreadOption.UIThread,
                     false);
+        }
+
+        protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
+
+        protected abstract void RaiseCanExecuteChanged();
+
+        private void InitializeNavigationMenu()
+        {
+            this.menuItems.Add(
+                new NavigationMenuItem(
+                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP1,
+                    nameof(Utils.Modules.Installation),
+                    VW.App.Resources.InstallationApp.Step1,
+                    trackCurrentView: false));
+
+            this.menuItems.Add(
+                new NavigationMenuItem(
+                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
+                    nameof(Utils.Modules.Installation),
+                    VW.App.Resources.InstallationApp.Step2,
+                    trackCurrentView: false));
+
+            this.menuItems.Add(
+                new NavigationMenuItem(
+                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
+                    nameof(Utils.Modules.Installation),
+                    VW.App.Resources.InstallationApp.Step3,
+                    trackCurrentView: false));
         }
 
         #endregion

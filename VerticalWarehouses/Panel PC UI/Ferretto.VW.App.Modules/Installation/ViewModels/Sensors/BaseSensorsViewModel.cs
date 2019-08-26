@@ -54,6 +54,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
         public override async Task OnNavigatedAsync()
         {
             this.IsBackNavigationAllowed = true;
@@ -67,9 +81,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var data = await this.machineSensorsService.GetAsync();
+                var sensorsStates = await this.machineSensorsService.GetAsync();
 
-                this.sensors.Update(data.SensorsStates.ToArray());
+                this.sensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {
@@ -77,20 +91,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             await base.OnNavigatedAsync();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         private void InitializeNavigationMenu()

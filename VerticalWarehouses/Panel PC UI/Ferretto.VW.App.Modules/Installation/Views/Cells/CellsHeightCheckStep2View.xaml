@@ -1,9 +1,10 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.CellsHeightCheckStep1View"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.CellsHeightCheckStep2View"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -15,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="90" />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -37,23 +39,22 @@
                                               Grid.ColumnSpan="3"
                                               VerticalAlignment="Top" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding CanInputCellId}"
-                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Cell.Id}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding SelectedCell.Coord}"
+                                 ContentText="{Binding Cell.Coord}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
         <controls:PpcLabeledText Grid.Row="4"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding SelectedCell.Side}"
+                                 ContentText="{Binding Cell.Side}"
                                  LabelText="{x:Static res:InstallationApp.CellSide}" />
 
         <controls:PpcLabeledText Grid.Row="3"
@@ -63,19 +64,41 @@
                                  ContentText="{Binding CurrentPosition}"
                                  LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Command="{Binding MoveUpCommand}"
+                            Content="{x:Static res:InstallationApp.Up}"
+                            IsBusy="{Binding IsElevatorMovingUp}" />
+
+        <controls:PpcTextBox Grid.Row="4"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <controls:PpcButton Grid.Row="5"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding MoveToCellHeightCommand}"
-                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
-                            IsBusy="{Binding IsElevatorMoving}" />
+                            Command="{Binding MoveDownCommand}"
+                            Content="{x:Static res:InstallationApp.Down}"
+                            IsBusy="{Binding IsElevatorMovingDown}" />
+
+        <controls:PpcTextBox Grid.Row="6"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.CellCorrection}" />
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding ApplyCorrectionCommand}"
+                            Content="{x:Static res:InstallationApp.Correct}" />
 
     </Grid>
 </ctrls:View>

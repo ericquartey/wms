@@ -25,11 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputMeasuredFinalPosition;
 
-        private bool isExecutingProcedure;
-
         private bool isRetrievingNewResolution;
-
-        private bool isWaitingForResponse;
 
         private decimal? measuredDistance;
 
@@ -64,7 +60,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanExecuteAcceptCommand));
 
         public string Error => string.Join(
-              System.Environment.NewLine,
+              Environment.NewLine,
               this[nameof(this.InputMeasuredFinalPosition)],
               this[nameof(this.NewResolution)]);
 
@@ -106,34 +102,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public bool IsRetrievingNewResolution
         {
             get => this.isRetrievingNewResolution;
             set => this.SetProperty(ref this.isRetrievingNewResolution, value);
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public decimal? MeasuredDistance
@@ -226,6 +198,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.acceptCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteAcceptCommand()
         {
             return !this.IsExecutingProcedure
@@ -253,11 +230,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.acceptCommand?.RaiseCanExecuteChanged();
         }
 
         private void RetrieveInputData()

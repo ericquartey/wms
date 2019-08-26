@@ -82,13 +82,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int BayNumber
         {
             get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value);
+            private set => this.SetProperty(ref this.bayNumber, value);
         }
 
         public int? CompletedCycles
         {
             get => this.completedCycles;
-            set => this.SetProperty(ref this.completedCycles, value);
+            private set => this.SetProperty(ref this.completedCycles, value);
         }
 
         public string Error => string.Join(
@@ -123,7 +123,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
@@ -135,10 +135,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -203,6 +208,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.receivedActionUpdateCompletedToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
+                    .Unsubscribe(this.receivedActionUpdateCompletedToken);
+
+                this.receivedActionUpdateCompletedToken = null;
+            }
+
+            if (this.receivedActionUpdateErrorToken != null)
+            {
+                this.EventAggregator
+                 .GetEvent<MachineAutomationErrorPubSubEvent>()
+                 .Unsubscribe(this.receivedActionUpdateErrorToken);
+
+                this.receivedActionUpdateErrorToken = null;
+            }
+        }
+
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
@@ -230,29 +258,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message.NotificationType == NotificationType.Error &&
                     message.ActionType == ActionType.ShutterControl &&
                     message.ActionStatus == ActionStatus.Error);
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.receivedActionUpdateCompletedToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
-                    .Unsubscribe(this.receivedActionUpdateCompletedToken);
-
-                this.receivedActionUpdateCompletedToken = null;
-            }
-
-            if (this.receivedActionUpdateErrorToken != null)
-            {
-                this.EventAggregator
-                 .GetEvent<MachineAutomationErrorPubSubEvent>()
-                 .Unsubscribe(this.receivedActionUpdateErrorToken);
-
-                this.receivedActionUpdateErrorToken = null;
-            }
         }
 
         private bool CanExecuteStartCommand()

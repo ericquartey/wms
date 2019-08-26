@@ -50,10 +50,14 @@
   <ItemGroup>
     <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
     <None Remove="Views\Cells\CellsHeightCheckStep1View.xaml" />
+    <None Remove="Views\Cells\CellsHeightCheckStep2View.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Views\Cells\CellsHeightCheckStep1View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Cells\CellsHeightCheckStep2View.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

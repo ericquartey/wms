@@ -74,19 +74,19 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public bool IsOpen { get; set; }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override void ExitFromViewMethod()
         {
             this.UnSubscribeMethodFromEvent();
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
+            await base.OnEnterViewAsync();
+
             this.updateMachneStateActive = this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
                 .Subscribe(
                     message => this.UpdateMachneStateActive(message.Data.MessageActor, message.Data.MessageType),
@@ -102,8 +102,10 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             this.IsOpen = true;
         }
 
-        public void UnSubscribeMethodFromEvent()
+        public override void UnSubscribeMethodFromEvent()
         {
+            base.UnSubscribeMethodFromEvent();
+
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Unsubscribe(this.updateMachneStateActive);
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Unsubscribe(this.updateStateActive);
             this.IsOpen = false;

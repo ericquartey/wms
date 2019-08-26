@@ -114,6 +114,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int cellId, decimal height);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int cellId, decimal height, System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -153,6 +160,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(decimal distance);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(decimal distance, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -337,11 +351,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineSensorsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SensorsChangedMessageData> GetAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SensorsChangedMessageData> GetAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1340,44 +1354,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ResolutionCalibrationParameters>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class SensorsChangedMessageData 
-    {
-        [Newtonsoft.Json.JsonProperty("sensorsStates", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<bool> SensorsStates { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("verbosity", Required = Newtonsoft.Json.Required.Always)]
-        public MessageVerbosity Verbosity { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static SensorsChangedMessageData FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SensorsChangedMessageData>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MessageVerbosity
-    {
-        Trace = 0,
-    
-        Debug = 1,
-    
-        Info = 2,
-    
-        Warning = 3,
-    
-        Error = 4,
-    
-        Fatal = 5,
     
     }
     

@@ -64,6 +64,38 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return cellStatistics;
         }
 
+        public Cell UpdateHeight(int cellId, decimal height)
+        {
+            var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+            if (cell == null)
+            {
+                throw new Exceptions.EntityNotFoundException(cellId);
+            }
+
+            var higherCell = this.dataContext.Cells.OrderBy(c => c.Coord).FirstOrDefault(c => c.Coord > cell.Coord);
+            var lowerCell = this.dataContext.Cells.OrderBy(c => c.Coord).FirstOrDefault(c => c.Coord < cell.Coord);
+
+            if ((higherCell == null
+                ||
+                higherCell.Coord > height)
+                &&
+                (lowerCell == null
+                ||
+                lowerCell.Coord < height))
+            {
+                cell.Coord = height;
+
+                this.dataContext.Cells.Update(cell);
+                this.dataContext.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("The specified height is not between the adjacent cells' heights.");
+            }
+
+            return this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+        }
+
         #endregion
     }
 }

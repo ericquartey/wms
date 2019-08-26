@@ -50,19 +50,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteMoveBackwardsCommand
         {
             get => this.canExecuteMoveBackwardsCommand;
-            set => this.SetProperty(ref this.canExecuteMoveBackwardsCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveBackwardsCommand, value);
         }
 
         public bool CanExecuteMoveForwardsCommand
         {
             get => this.canExecuteMoveForwardCommand;
-            set => this.SetProperty(ref this.canExecuteMoveForwardCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveForwardCommand, value);
         }
 
         public bool IsMovingBackwards
         {
             get => this.isMovingBackwards;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingBackwards, value))
                 {
@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingForwards
         {
             get => this.isMovingForwards;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingForwards, value))
                 {
@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {

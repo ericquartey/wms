@@ -35,6 +35,7 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void Appear()
         {
+            // do nothing
         }
 
         public virtual bool CanClose()

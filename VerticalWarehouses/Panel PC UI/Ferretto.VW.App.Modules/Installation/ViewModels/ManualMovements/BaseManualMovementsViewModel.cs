@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InitializeNavigationMenu();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
-            set => this.SetProperty(ref this.currentPosition, value);
+            protected set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
@@ -72,9 +72,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
 
         public override async Task OnNavigatedAsync()
         {
@@ -95,20 +109,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             this.RetrieveCurrentPositionAsync();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         protected abstract Task StopMovementAsync();
@@ -161,6 +161,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

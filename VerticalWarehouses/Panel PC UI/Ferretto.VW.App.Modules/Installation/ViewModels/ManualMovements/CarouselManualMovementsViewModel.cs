@@ -48,13 +48,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteCloseCommand
         {
             get => this.canExecuteCloseCommand;
-            set => this.SetProperty(ref this.canExecuteCloseCommand, value);
+            private set => this.SetProperty(ref this.canExecuteCloseCommand, value);
         }
 
         public bool CanExecuteOpenCommand
         {
             get => this.canExecuteOpenCommand;
-            set => this.SetProperty(ref this.canExecuteOpenCommand, value);
+            private set => this.SetProperty(ref this.canExecuteOpenCommand, value);
         }
 
         public ICommand CloseCommand =>
@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsClosing
         {
             get => this.isClosing;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isClosing, value))
                 {
@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsOpening
         {
             get => this.isOpening;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isOpening, value))
                 {
@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {

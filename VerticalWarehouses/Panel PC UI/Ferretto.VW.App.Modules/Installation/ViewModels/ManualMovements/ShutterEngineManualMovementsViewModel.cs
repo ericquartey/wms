@@ -64,25 +64,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteMoveDownCommand
         {
             get => this.canExecuteMoveDownCommand;
-            set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
         }
 
         public bool CanExecuteMoveUpCommand
         {
             get => this.canExecuteMoveUpCommand;
-            set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
         }
 
         public new ShutterPosition? CurrentPosition
         {
             get => this.currentPosition;
-            set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public bool IsMovingDown
         {
             get => this.isMovingDown;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingUp
         {
             get => this.isMovingUp;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {
@@ -130,6 +130,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
 
         public async Task MoveDownAsync()
         {
@@ -169,20 +183,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   false);
 
             await base.OnNavigatedAsync();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         protected override async Task StopMovementAsync()

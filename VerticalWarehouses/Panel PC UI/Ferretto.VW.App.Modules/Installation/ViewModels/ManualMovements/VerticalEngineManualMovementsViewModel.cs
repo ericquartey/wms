@@ -50,19 +50,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteMoveDownCommand
         {
             get => this.canExecuteMoveDownCommand;
-            set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
         }
 
         public bool CanExecuteMoveUpCommand
         {
             get => this.canExecuteMoveUpCommand;
-            set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
         }
 
         public bool IsMovingDown
         {
             get => this.isMovingDown;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingUp
         {
             get => this.isMovingUp;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {

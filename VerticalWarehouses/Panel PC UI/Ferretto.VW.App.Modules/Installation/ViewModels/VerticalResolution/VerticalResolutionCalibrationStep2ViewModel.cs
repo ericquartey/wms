@@ -22,10 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputMeasuredInitialPosition;
 
-        private bool isExecutingProcedure;
-
-        private bool isWaitingForResponse;
-
         private DelegateCommand moveToInitialPositionCommand;
 
         private DelegateCommand moveToPositionCommand;
@@ -82,30 +78,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set
             {
                 if (this.SetProperty(ref this.inputMeasuredInitialPosition, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -188,6 +160,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.moveToInitialPositionCommand?.RaiseCanExecuteChanged();
+            this.moveToPositionCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteMoveToInitialPositionCommand()
         {
             return !this.IsExecutingProcedure
@@ -251,12 +229,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
                 this.procedureParameters,
                 trackCurrentView: false);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.moveToInitialPositionCommand?.RaiseCanExecuteChanged();
-            this.moveToPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private void RetrieveInputData()

@@ -14,26 +14,24 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private readonly PresentationChangedPubSubEvent notificationEvent;
 
-        private readonly SubscriptionToken presentationEventSubscription;
-
         private readonly List<IPresentation> states;
 
         private PresentationMode currentPresentation;
+
+        private SubscriptionToken presentationEventSubscription;
 
         #endregion
 
         #region Constructors
 
-        public BasePresentationViewModel()
+        protected BasePresentationViewModel()
         {
             this.currentPresentation = PresentationMode.None;
             this.states = new List<IPresentation>();
             this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
+
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
-                notificationMessage =>
-                {
-                    this.PresentationChanged(notificationMessage);
-                },
+                notificationMessage => this.PresentationChanged(notificationMessage),
                 ThreadOption.PublisherThread,
                 false);
 
@@ -56,6 +54,17 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.presentationEventSubscription != null)
+            {
+                this.notificationEvent.Unsubscribe(this.presentationEventSubscription);
+                this.presentationEventSubscription = null;
+            }
+        }
+
         public IPresentation GetInstance(string presentationName)
         {
             return ServiceLocator.Current.GetInstance<IPresentation>(presentationName);
@@ -63,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public virtual void InitializeData()
         {
+            // do nothing
         }
 
         public void PresentationChanged(PresentationChangedMessage presentation)
@@ -88,6 +98,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public virtual void UpdateChanges(PresentationChangedMessage presentation)
         {
+            // do nothing
         }
 
         public virtual void UpdatePresentation(PresentationMode mode)
@@ -112,12 +123,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.None:
                     break;
             }
-        }
-
-        protected override void OnDispose()
-        {
-            this.notificationEvent.Unsubscribe(this.presentationEventSubscription);
-            base.OnDispose();
         }
 
         #endregion
