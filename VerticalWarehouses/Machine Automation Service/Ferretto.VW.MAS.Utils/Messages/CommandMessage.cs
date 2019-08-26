@@ -1,10 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class CommandMessage
     {
+
+
         #region Constructors
 
         public CommandMessage()
@@ -17,6 +20,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
+            BayIndex bayIndex,
             MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Data = data;
@@ -24,12 +28,17 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
+            this.BayIndex = bayIndex;
             this.Verbosity = verbosity;
         }
 
         #endregion
 
+
+
         #region Properties
+
+        public BayIndex BayIndex { get; }
 
         public IMessageData Data { get; }
 

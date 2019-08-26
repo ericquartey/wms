@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -17,11 +16,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService : BackgroundService
     {
+
         #region Fields
 
         private readonly IBaysDataService baysDataService;
@@ -137,31 +138,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
+
+
         #region Methods
-
-        public override async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await base.StartAsync(cancellationToken);
-
-            await this.dataHubClient.ConnectAsync();
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
-            }
-
-            return Task.CompletedTask;
-        }
 
         private void CommandReceiveTaskFunction()
         {
@@ -318,6 +297,30 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 baysConfigurationProvider.LoadFromConfiguration();
             }
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            await base.StartAsync(cancellationToken);
+
+            await this.dataHubClient.ConnectAsync();
         }
 
         #endregion

@@ -2,12 +2,14 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ErrorsController : ControllerBase
+    public class ErrorsController : BaseAutomationController
     {
         #region Fields
 
@@ -17,7 +19,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public ErrorsController(IErrorsProvider errorsProvider)
+        public ErrorsController(IEventAggregator eventAggregator,
+            IErrorsProvider errorsProvider)
+            : base(eventAggregator)
         {
             if (errorsProvider == null)
             {
@@ -52,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost]
         public ActionResult<Error> Create(MachineErrors code)
         {
-            var newError = this.errorsProvider.RecordNew(code);
+            var newError = this.errorsProvider.RecordNew(code, TODO);
 
             return this.Ok(newError);
         }

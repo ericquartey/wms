@@ -9,6 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public class OperatorHub : Hub<IOperatorHub>
     {
+
         #region Fields
 
         private const string BayIdEntry = "bayId";
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
+
+
         #region Methods
 
         public override async Task OnConnectedAsync()
@@ -50,14 +53,14 @@ namespace Ferretto.VW.MAS.AutomationService
 
             if (bay != null)
             {
-                this.logger.LogInformation($"Client on bay {bay.Number} connected to signalR hub.");
+                this.logger.LogInformation($"Client on bay {bay.Index} connected to signalR hub.");
                 if (this.Context.Items.ContainsKey(BayIdEntry))
                 {
-                    this.Context.Items[BayIdEntry] = bay.Number;
+                    this.Context.Items[BayIdEntry] = bay.Index;
                 }
                 else
                 {
-                    this.Context.Items.Add(BayIdEntry, bay.Number);
+                    this.Context.Items.Add(BayIdEntry, bay.Index);
                 }
             }
             else

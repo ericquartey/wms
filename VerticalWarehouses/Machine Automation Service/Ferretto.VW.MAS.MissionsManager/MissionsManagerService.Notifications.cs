@@ -13,13 +13,60 @@ namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManagerService
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
         #endregion
 
+
+
         #region Methods
+
+        private void OnBayOperationalStatusChanged()
+        {
+            this.bayStatusChangedEvent.Set();
+        }
+
+        private void OnDataLayerReady()
+        {
+            this.missionManagementTask.Start();
+        }
+
+        private void OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
+        {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+
+                var bay = bayProvider.GetAll()
+                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
+                    .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
+
+                if (bay != null)
+                {
+                    bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
+                    this.Logger.LogDebug($"Bay#{bay.Index}: operation competed.");
+
+                    this.bayStatusChangedEvent.Set();
+                }
+                else
+                {
+                    this.Logger.LogWarning($"No bay with mission operation id={e.MissionOperationId} was found.");
+                }
+            }
+        }
+
+        private void OnNewMissionAvailable()
+        {
+            this.newMissionArrivedResetEvent.Set();
+        }
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
@@ -51,50 +98,6 @@ namespace Ferretto.VW.MAS.MissionsManager
             }
 
             return Task.CompletedTask;
-        }
-
-        private void OnBayOperationalStatusChanged()
-        {
-            this.bayStatusChangedEvent.Set();
-        }
-
-        private void OnDataLayerReady()
-        {
-            this.missionManagementTask.Start();
-        }
-
-        private void OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
-        {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
-
-                var bay = bayProvider.GetAll()
-                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                    .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
-
-                if (bay != null)
-                {
-                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
-                    this.Logger.LogDebug($"Bay#{bay.Number}: operation competed.");
-
-                    this.bayStatusChangedEvent.Set();
-                }
-                else
-                {
-                    this.Logger.LogWarning($"No bay with mission operation id={e.MissionOperationId} was found.");
-                }
-            }
-        }
-
-        private void OnNewMissionAvailable()
-        {
-            this.newMissionArrivedResetEvent.Set();
         }
 
         #endregion

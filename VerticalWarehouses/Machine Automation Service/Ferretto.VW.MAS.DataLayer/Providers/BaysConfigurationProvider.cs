@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class BaysConfigurationProvider : Interfaces.IBaysConfigurationProvider
     {
+
         #region Fields
 
         private readonly Interfaces.IBaysProvider baysProvider;
@@ -46,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -90,12 +94,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             for (var i = 0; i < baysCount; i++)
             {
                 var bayNumber = i + 1;
-                var bay = this.baysProvider.GetByNumber(bayNumber);
+                var bayIndex = Enum.Parse<BayIndex>(bayNumber.ToString());
+
+                var bay = this.baysProvider.GetByIndex(bayIndex);
                 if (bay == null)
                 {
                     this.baysProvider.Create(new Bay
                     {
-                        Number = bayNumber,
+                        Index = bayIndex,
                         ExternalId = bayNumber,
                         IpAddress = ipAddresses[i].ToString(),
                         Type = bayTypes[i],
@@ -103,8 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 }
                 else
                 {
-                    this.baysProvider.Update(
-                        bayNumber,
+                    this.baysProvider.Update(bayIndex,
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
                 }

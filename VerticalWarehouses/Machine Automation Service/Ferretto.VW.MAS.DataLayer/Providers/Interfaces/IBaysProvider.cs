@@ -2,28 +2,39 @@
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IBaysProvider
     {
+
+
         #region Methods
 
-        Bay Activate(int bayNumber);
+        Bay Activate(BayIndex bayIndex);
 
-        Bay AssignMissionOperation(int bayId, int? missionId, int? missionOperationId);
+        Bay AssignMissionOperation(BayIndex bayIndex, int? missionId, int? missionOperationId);
 
         void Create(Bay bay);
 
-        Bay Deactivate(int bayNumber);
+        Bay Deactivate(BayIndex bayIndex);
 
         IEnumerable<Bay> GetAll();
 
+        Bay GetByIndex(BayIndex bayIndex);
+
+        BayIndex GetByInverterIndex(InverterIndex inverterIndex);
+
+        BayIndex GetByIoIndex(IoIndex ioIndex);
+
         Bay GetByIpAddress(IPAddress remoteIpAddress);
 
-        Bay GetByNumber(int bayNumber);
+        List<InverterIndex> GetInverterList(BayIndex bayIndex);
 
-        void Update(int bayNumber, string ipAddress, BayType bayType);
+        IoIndex GetIoDevice(BayIndex bayIndex);
+
+        void Update(BayIndex bayIndex, string ipAddress, BayType bayType);
 
         #endregion
     }

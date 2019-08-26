@@ -1,3 +1,4 @@
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             int pendingMissionsCount,
             int? currentMissionOperation)
         {
-            this.BayNumber = bayId;
+            this.Index = bayId;
             this.BayType = bayType;
             this.BayStatus = bayStatus;
             this.PendingMissionsCount = pendingMissionsCount;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Properties
 
-        public int BayNumber { get; }
+        public BayIndex Index { get; }
 
         public CommonUtils.Messages.Enumerations.BayStatus BayStatus { get; }
 

@@ -4,9 +4,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IBayOperationalStatusChangedMessageData
     {
-        #region Properties
 
-        int BayNumber { get; }
+
+        #region Properties
 
         BayStatus BayStatus { get; }
 

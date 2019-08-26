@@ -31,11 +31,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+        private readonly Dictionary<BayIndex, IStateMachine> currentStateMachines;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -63,8 +65,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
-        private IStateMachine currentStateMachine;
-
         private bool disposed;
 
         private bool forceInverterIoStatusPublish;
@@ -82,17 +82,52 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         public FiniteStateMachines(
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             ISetupStatusProvider setupStatusProvider,
             IVertimagConfigurationDataLayer vertimagConfiguration,
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
             IHorizontalAxisDataLayer horizontalAxis,
+            IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
-            if (setupStatusProvider == null)
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
+            }
+
+            if (vertimagConfiguration is null)
+            {
+                throw new ArgumentNullException(nameof(vertimagConfiguration));
+            }
+
+            if (generalInfoDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(generalInfoDataLayer));
+            }
+
+            if (verticalAxis is null)
+            {
+                throw new ArgumentNullException(nameof(verticalAxis));
+            }
+
+            if (horizontalAxis is null)
+            {
+                throw new ArgumentNullException(nameof(horizontalAxis));
+            }
+
+            if (baysProvider is null)
+            {
+                throw new ArgumentNullException(nameof(baysProvider));
             }
 
             if (serviceScopeFactory == null)
@@ -104,8 +139,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.logger = logger;
 
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-
             this.setupStatusProvider = setupStatusProvider;
 
             this.vertimagConfiguration = vertimagConfiguration;
@@ -115,8 +148,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.verticalAxis = verticalAxis;
 
             this.horizontalAxis = horizontalAxis;
+
+            this.baysProvider = baysProvider;
+
             this.serviceScopeFactory = serviceScopeFactory;
+
             this.machineSensorsStatus = new MachineSensorsStatus();
+
+            this.currentStateMachines = new Dictionary<BayIndex, IStateMachine>();
+            this.currentStateMachines.Add(BayIndex.ElevatorBay, null);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -148,6 +188,42 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Methods
 
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.fieldNotificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+            }
+
+            await Task.CompletedTask;
+        }
+
         private void CommandReceiveTaskFunction()
         {
             do
@@ -172,7 +248,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.currentStateMachine != null
+                this.currentStateMachines.TryGetValue(receivedMessage.BayIndex, out var messageCurrentStateMachine);
+
+                if (messageCurrentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
                     && receivedMessage.Type != MessageType.PowerEnable
@@ -184,6 +262,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         receivedMessage.Type,
+                        receivedMessage.BayIndex,
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
@@ -247,9 +326,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
+                    receivedMessage.BayIndex,
                     MessageStatus.OperationStart);
 
-                this.currentStateMachine?.PublishNotificationMessage(notificationMessage);
+                messageCurrentStateMachine?.PublishNotificationMessage(notificationMessage);
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -279,6 +359,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
+                BayIndex messageByaBayIndex = BayIndex.None;
+                if (receivedMessage.Source is FieldMessageActor.IoDriver)
+                {
+                    var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                    messageByaBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex);
+                }
+
+                if (receivedMessage.Source is FieldMessageActor.InverterDriver)
+                {
+                    var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+                    messageByaBayIndex = this.baysProvider.GetByInverterIndex(messageInverterIndex);
+                }
+
+                this.currentStateMachines.TryGetValue(messageByaBayIndex, out var messageCurrentStateMachine);
+
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
@@ -304,14 +399,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
+                                    messageByaBayIndex,
                                     MessageStatus.OperationExecuting);
+
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceRemoteIoStatusPublish = false;
                             }
                             if (oldNormalState
                                 && !this.machineSensorsStatus.IsMachineInNormalState
-                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                && (!messageCurrentStateMachine?.GetType().ToString().Contains("PowerEnableStateMachine") ?? false)
                                 )
                             {
                                 this.logger.LogWarning($"3b:Normal machine state fall detected! Set Power Enable Off.");
@@ -346,8 +443,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                             if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
-                                var msgData = new SensorsChangedMessageData();
-                                msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+                                var msgData = new SensorsChangedMessageData
+                                {
+                                    SensorsStates = this.machineSensorsStatus.DisplayedInputs
+                                };
 
                                 msg = new NotificationMessage(
                                     msgData,
@@ -355,12 +454,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
+                                    messageByaBayIndex,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceInverterIoStatusPublish = false;
-
-                                //if(this.machineSensorsStatus.IsInverterFault)
                             }
                         }
                         break;
@@ -372,7 +470,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             var statusWord = new StatusWordBase(statusWordData.Value);
                             if (statusWord.IsFault
                                 && this.machineSensorsStatus.IsMachineInNormalState
-                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                && (!messageCurrentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
                                 )
                             {
                                 this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
@@ -387,6 +485,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterStatusWord,
+                            messageByaBayIndex,
                             MessageStatus.OperationExecuting);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                         }
@@ -403,6 +502,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterException,
+                            messageByaBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -419,13 +519,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,
+                            messageByaBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
                 }
-                this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+                messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -492,6 +593,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
+                this.currentStateMachines.TryGetValue(receivedMessage.BayIndex, out var messageCurrentStateMachine);
+
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
@@ -529,24 +632,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                         this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                                     }
 
-                                    this.logger.LogTrace($"5:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"5:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"6:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationError:
 
-                                    this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"7:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
 
@@ -563,24 +666,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 case MessageStatus.OperationEnd:
 
-                                    this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"8:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"9:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"9:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationError:
 
-                                    this.logger.LogTrace($"10:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"10:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
 
@@ -597,24 +700,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 case MessageStatus.OperationEnd:
 
-                                    this.logger.LogTrace($"11:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"11:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"12:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"12:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationError:
 
-                                    this.logger.LogTrace($"13:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"13:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
 
@@ -631,24 +734,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 case MessageStatus.OperationEnd:
 
-                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationError:
 
-                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
 
@@ -665,21 +768,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 case MessageStatus.OperationEnd:
 
-                                    this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogDebug($"17:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"18:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
-                                    break;
-
-                                default:
                                     break;
                             }
                         }
@@ -693,24 +793,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 case MessageStatus.OperationEnd:
 
-                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
                                     break;
 
                                 case MessageStatus.OperationError:
 
-                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
+                                    this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);
 
@@ -721,7 +821,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
                 }
 
-                this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
+                messageCurrentStateMachine?.ProcessNotificationMessage(receivedMessage);
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -741,6 +841,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
+                    BayIndex.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -754,6 +855,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStateActive,
+                    BayIndex.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -768,6 +870,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.FsmException,
+                BayIndex.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -786,42 +889,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.fieldNotificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-
-            await Task.CompletedTask;
         }
 
         #endregion

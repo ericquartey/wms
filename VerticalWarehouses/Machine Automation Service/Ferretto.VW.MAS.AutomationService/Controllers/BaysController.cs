@@ -1,8 +1,10 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -10,6 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class BaysController : ControllerBase
     {
+
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -20,7 +23,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BaysController(IBaysProvider baysProvider)
         {
-            if (baysProvider == null)
+            if (baysProvider is null)
             {
                 throw new ArgumentNullException(nameof(baysProvider));
             }
@@ -30,15 +33,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+
+
         #region Methods
 
         [HttpPost("{bayNumber}/activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(int bayNumber)
+        public ActionResult<Bay> ActivateAsync(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.Activate(bayNumber);
+            var bay = this.baysProvider.Activate(bayIndex);
             if (bay is null)
             {
                 return this.NotFound();
@@ -51,9 +56,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(int bayNumber)
+        public ActionResult<Bay> DeactivateAsync(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.Deactivate(bayNumber);
+            var bay = this.baysProvider.Deactivate(bayIndex);
             if (bay is null)
             {
                 return this.NotFound();
@@ -66,9 +71,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber(int bayNumber)
+        public ActionResult<Bay> GetByNumber(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysProvider.GetByIndex(bayIndex);
             if (bay is null)
             {
                 return this.NotFound();

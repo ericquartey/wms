@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
     internal class BaysConfiguration : IEntityTypeConfiguration<Bay>
     {
+
+
         #region Methods
 
         public void Configure(EntityTypeBuilder<Bay> builder)
@@ -16,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder
-                .HasKey(b => b.Number);
+                .HasKey(b => b.Index);
 
             builder
                 .HasIndex(b => b.IpAddress)

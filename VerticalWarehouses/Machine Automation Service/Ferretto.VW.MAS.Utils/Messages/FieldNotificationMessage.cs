@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Source = otherMessage.Source;
             this.Type = otherMessage.Type;
             this.Status = otherMessage.Status;
+            this.DeviceIndex = otherMessage.DeviceIndex;
             this.ErrorLevel = otherMessage.ErrorLevel;
         }
 

@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             {
                                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
+                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, TODO);
                             }
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

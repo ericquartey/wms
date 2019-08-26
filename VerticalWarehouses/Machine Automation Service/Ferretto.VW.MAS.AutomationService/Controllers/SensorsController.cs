@@ -1,11 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Data;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -13,6 +10,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class SensorsController : BaseAutomationController
     {
+
+
         #region Constructors
 
         public SensorsController(IEventAggregator eventAggregator)
@@ -21,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -31,7 +32,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     null,
                     "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
-                    MessageType.SensorsChanged);
+                    MessageType.SensorsChanged,
+                    BayIndex.None);
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -8,11 +7,13 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     public class BaseAutomationController : ControllerBase
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -33,6 +34,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+
+
+        #region Properties
+
+        public BayIndex BayIndex { get; set; }
+
+        #endregion
+
+
+
         #region Methods
 
         protected void PublishCommand(
@@ -49,7 +60,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         description,
                         receiver,
                         MessageActor.WebApi,
-                        messageType));
+                        messageType,
+                        this.BayIndex));
         }
 
         protected void PublishNotification(
@@ -69,6 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         MessageActor.WebApi,
                         type,
+                        this.BayIndex,
                         status,
                         level));
         }

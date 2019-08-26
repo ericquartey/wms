@@ -1,11 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public class EmptyState : StateBase
     {
+
+
         #region Constructors
 
         public EmptyState(ILogger logger)
@@ -15,6 +18,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         }
 
         #endregion
+
+
 
         #region Methods
 

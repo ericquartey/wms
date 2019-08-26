@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class BeltBurnishingProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -57,6 +58,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

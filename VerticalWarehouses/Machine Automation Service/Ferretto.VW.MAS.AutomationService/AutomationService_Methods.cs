@@ -7,11 +7,14 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService
     {
+
+
         #region Methods
 
         private void CalibrateAxisMethod(NotificationMessage receivedMessage)
@@ -231,7 +234,8 @@ namespace Ferretto.VW.MAS.AutomationService
                                 "New mission operation from WMS",
                                 MessageActor.MissionsManager,
                                 MessageActor.AutomationService,
-                                MessageType.NewMissionAvailable);
+                                MessageType.NewMissionAvailable,
+                                BayIndex.None);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
                         }
                         break;

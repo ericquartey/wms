@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -11,8 +12,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ErrorsProvider : Interfaces.IErrorsProvider
+    internal class ErrorsProvider : IErrorsProvider
     {
+
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -43,6 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -100,7 +104,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return summary;
         }
 
-        public Error RecordNew(MachineErrors code)
+        public Error RecordNew(MachineErrors code, BayIndex bayIndex)
         {
             var newError = new Error
             {
@@ -111,12 +115,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.Errors.Add(newError);
 
             var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
-            errorStatistics.TotalErrors++;
-            this.dataContext.ErrorStatistics.Update(errorStatistics);
+            if (errorStatistics != null)
+            {
+                errorStatistics.TotalErrors++;
+                this.dataContext.ErrorStatistics.Update(errorStatistics);
+            }
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorCreation(newError);
+            this.NotifyErrorCreation(newError, bayIndex);
 
             return newError;
         }
@@ -132,13 +139,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 this.dataContext.SaveChanges();
 
-                this.NotifyErrorResolution(error);
+                this.NotifyErrorResolution(error, error.BayIndex);
             }
 
             return error;
         }
 
-        private void NotifyErrorCreation(Error error)
+        private void NotifyErrorCreation(Error error, BayIndex bayIndex)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -146,12 +153,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                MessageStatus.NoStatus);
+                bayIndex);
 
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error)
+        private void NotifyErrorResolution(Error error, BayIndex bayIndex)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -159,7 +166,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                MessageStatus.NoStatus);
+                bayIndex);
 
             this.notificationEvent.Publish(message);
         }

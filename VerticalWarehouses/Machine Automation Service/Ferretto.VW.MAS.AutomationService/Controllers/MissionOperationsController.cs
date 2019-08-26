@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class MissionOperationsController : BaseWmsProxyBaseController
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -54,6 +55,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+
+
         #region Methods
 
         [HttpPost("{id}/complete")]
@@ -73,7 +76,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     "Mission Operation Completed",
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
-                    MessageType.MissionOperationCompleted);
+                    MessageType.MissionOperationCompleted,
+                    BayIndex.None);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 this.logger.LogDebug($"AS-OC Operator marked mission operation id={id} as completed, with quantity {quantity}.");

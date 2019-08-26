@@ -140,7 +140,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            if (this.Bay?.Number == e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);

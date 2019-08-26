@@ -6,14 +6,18 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class BaysProvider : Interfaces.IBaysProvider
+    internal class BaysProvider : IBaysProvider
     {
+
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -42,11 +46,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
+
+
         #region Methods
 
-        public Bay Activate(int bayNumber)
+        public Bay Activate(BayIndex bayIndex)
         {
-            var bay = this.GetByNumber(bayNumber);
+            var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
                 bay.IsActive = true;
@@ -57,9 +63,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return bay;
         }
 
-        public Bay AssignMissionOperation(int bayNumber, int? missionId, int? missionOperationId)
+        public Bay AssignMissionOperation(BayIndex bayIndex, int? missionId, int? missionOperationId)
         {
-            var bay = this.GetByNumber(bayNumber);
+            var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
                 bay.CurrentMissionId = missionId;
@@ -78,9 +84,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.SaveChanges();
         }
 
-        public Bay Deactivate(int bayNumber)
+        public Bay Deactivate(BayIndex bayIndex)
         {
-            var bay = this.GetByNumber(bayNumber);
+            var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
                 bay.IsActive = false;
@@ -96,20 +102,134 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.dataContext.Bays.ToArray();
         }
 
+        public Bay GetByIndex(BayIndex bayIndex)
+        {
+            return this.dataContext.Bays.SingleOrDefault(b => b.Index == bayIndex);
+        }
+
+        public BayIndex GetByInverterIndex(InverterIndex inverterIndex)
+        {
+            BayIndex returnValue = BayIndex.None;
+
+            switch (inverterIndex)
+            {
+                case InverterIndex.MainInverter:
+                case InverterIndex.Slave1:
+                    returnValue = BayIndex.ElevatorBay;
+                    break;
+
+                case InverterIndex.Slave2:
+                case InverterIndex.Slave3:
+                    returnValue = BayIndex.BayOne;
+                    break;
+
+                case InverterIndex.Slave4:
+                case InverterIndex.Slave5:
+                    returnValue = BayIndex.BayTwo;
+                    break;
+
+                case InverterIndex.Slave6:
+                case InverterIndex.Slave7:
+                    returnValue = BayIndex.BayThree;
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public BayIndex GetByIoIndex(IoIndex ioIndex)
+        {
+            BayIndex returnValue = BayIndex.None;
+
+            switch (ioIndex)
+            {
+                case IoIndex.IoDevice1:
+                    returnValue = BayIndex.BayOne;
+                    break;
+
+                case IoIndex.IoDevice2:
+                    returnValue = BayIndex.BayTwo;
+                    break;
+
+                case IoIndex.IoDevice3:
+                    returnValue = BayIndex.BayThree;
+                    break;
+            }
+
+            return returnValue;
+        }
+
         public Bay GetByIpAddress(IPAddress remoteIpAddress)
         {
             return this.dataContext.Bays
                 .SingleOrDefault(b => b.IpAddress == remoteIpAddress.ToString());
         }
 
-        public Bay GetByNumber(int bayNumber)
+        public List<InverterIndex> GetInverterList(BayIndex bayIndex)
         {
-            return this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+            var returnValue = new List<InverterIndex>();
+
+            var bay = this.GetByIndex(bayIndex);
+
+            switch (bay.Type)
+            {
+                case BayType.Elevator:
+                    //TODO define a way to identify the machine version 1000 Kg or not
+                    bool bigMachine = false;
+                    if (bigMachine)
+                    {
+                        returnValue.Add(InverterIndex.MainInverter);
+                        returnValue.Add(InverterIndex.Slave1); ;
+                    }
+                    else
+                    {
+                        returnValue.Add(InverterIndex.MainInverter);
+                    }
+
+                    break;
+
+                case BayType.Single:
+                case BayType.Double:
+                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
+                    break;
+
+                case BayType.ExternalSingle:
+                case BayType.ExternalDouble:
+                case BayType.Carousel:
+                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
+                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
+                    break;
+            }
+
+            return returnValue;
         }
 
-        public void Update(int bayNumber, string ipAddress, BayType bayType)
+        public IoIndex GetIoDevice(BayIndex bayIndex)
         {
-            var bay = this.GetByNumber(bayNumber);
+            IoIndex returnValue = IoIndex.None;
+
+            switch (bayIndex)
+            {
+                case BayIndex.ElevatorBay:
+                case BayIndex.BayOne:
+                    returnValue = IoIndex.IoDevice1;
+                    break;
+
+                case BayIndex.BayTwo:
+                    returnValue = IoIndex.IoDevice2;
+                    break;
+
+                case BayIndex.BayThree:
+                    returnValue = IoIndex.IoDevice3;
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public void Update(BayIndex bayIndex, string ipAddress, BayType bayType)
+        {
+            var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
                 bay.IpAddress = ipAddress;
@@ -129,14 +249,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 new NotificationMessage(
                     new BayOperationalStatusChangedMessageData
                     {
-                        BayNumber = bay.Number,
                         BayStatus = bay.Status,
                     },
-                    $"Bay #{bay.Number} status changed to {bay.Status}",
+                    $"Bay #{bay.Index} status changed to {bay.Status}",
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
                     MessageType.BayOperationalStatusChanged,
-                    MessageStatus.NoStatus));
+                    bay.Index));
 
             return entry.Entity;
         }

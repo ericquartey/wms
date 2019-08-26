@@ -11,11 +11,14 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManagerService
     {
+
+
         #region Methods
 
         private async Task ExecuteNextMissionAsync()
@@ -63,7 +66,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             Bay bay,
             IEnumerable<WMS.Data.WebAPI.Contracts.MissionInfo> pendingMissions)
         {
-            this.Logger.LogDebug($"Bay #{bay.Number}: there are {pendingMissions.Count()} pending missions.");
+            this.Logger.LogDebug($"Bay #{bay.Index}: there are {pendingMissions.Count()} pending missions.");
 
             if (!bay.CurrentMissionId.HasValue
                 &&
@@ -80,7 +83,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                    "All the pending missions should be in the new state.");
                    */
 
-                this.Logger.LogDebug($"Bay #{bay.Number}: new mission id='{bay.CurrentMissionId}' assigned.");
+                this.Logger.LogDebug($"Bay #{bay.Index}: new mission id='{bay.CurrentMissionId}' assigned.");
             }
 
             if (bay.CurrentMissionId.HasValue)
@@ -99,17 +102,17 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                         if (missionOperation != null)
                         {
-                            bayProvider.AssignMissionOperation(bay.Number, mission.Id, missionOperation.Id);
+                            bayProvider.AssignMissionOperation(bay.Index, mission.Id, missionOperation.Id);
 
-                            this.Logger.LogDebug($"Bay #{bay.Number}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Index}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
 
                             this.NotifyNewMissionOperationAvailable(bay, pendingMissions.Count());
                         }
                         else
                         {
-                            bayProvider.AssignMissionOperation(bay.Number, null, null);
+                            bayProvider.AssignMissionOperation(bay.Index, null, null);
 
-                            this.Logger.LogDebug($"Bay #{bay.Number}: no more operations available for mission id='{mission.Id}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Index}: no more operations available for mission id='{mission.Id}'.");
                         }
                     }
                 }
