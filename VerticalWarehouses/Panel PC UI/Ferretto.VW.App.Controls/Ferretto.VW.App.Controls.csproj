@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Wpf.Core" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.1.5" />
     <PackageReference Include="NLog" Version="4.6.6" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
@@ -42,8 +46,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
+    <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
+    <None Remove="Skins\DXStyle.xaml" />
+    <None Remove="Skins\Light\LightDialogPopup.xaml" />
+    <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
+      <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

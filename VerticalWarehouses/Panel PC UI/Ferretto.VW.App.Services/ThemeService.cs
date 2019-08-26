@@ -7,6 +7,15 @@ namespace Ferretto.VW.App.Services
 {
     internal class ThemeService : IThemeService
     {
+        #region Constructors
+
+        public ThemeService()
+        {
+            this.ApplyDXTheme(this.ActiveTheme);
+        }
+
+        #endregion
+
         #region Properties
 
         public ApplicationTheme ActiveTheme { get; private set; } = ApplicationTheme.Dark;
@@ -32,12 +41,14 @@ namespace Ferretto.VW.App.Services
             switch (theme)
             {
                 case ApplicationTheme.Light:
+                    this.ApplyDXTheme(ApplicationTheme.Light);
                     themeDictionary.Source = new Uri(
                         "/Ferretto.VW.App.Controls;Component/Skins/Light/LightSkin.xaml",
                         UriKind.Relative);
                     break;
 
                 case ApplicationTheme.Dark:
+                    this.ApplyDXTheme(ApplicationTheme.Dark);
                     themeDictionary.Source = new Uri(
                          "/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkSkin.xaml",
                          UriKind.Relative);
@@ -49,6 +60,23 @@ namespace Ferretto.VW.App.Services
 
             this.ActiveTheme = theme;
             Application.Current.Resources.MergedDictionaries.Add(themeDictionary);
+        }
+
+        private void ApplyDXTheme(ApplicationTheme theme)
+        {
+            switch (theme)
+            {
+                case ApplicationTheme.Light:
+                    DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = VW.Utils.Common.DX_THEME_LIGHT;
+                    break;
+
+                case ApplicationTheme.Dark:
+                    DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = VW.Utils.Common.DX_THEME_DARK;
+                    break;
+
+                default:
+                    throw new NotSupportedException("The specified theme is not supported.");
+            }
         }
 
         #endregion
