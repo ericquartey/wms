@@ -495,6 +495,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsShutterClosed => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
+        public bool IsShutterHalf => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
         public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
@@ -848,11 +850,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void ShutterTick(object state)
         {
-            if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 304)
+                )
             {
                 this.AxisPosition++;
             }
-            else
+            else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 306)
+                )
             {
                 this.AxisPosition--;
             }
@@ -880,7 +886,9 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
 
             if ((this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed) ||
-                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened))
+                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Half && this.IsShutterHalf)
+                )
             {
                 this.ControlWord &= 0xFFEF; // Reset Rfg Enable Signal
                 this.StatusWord |= 0x0400;  // Set Target Reached

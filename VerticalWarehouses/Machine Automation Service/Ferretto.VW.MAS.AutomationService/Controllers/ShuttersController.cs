@@ -132,6 +132,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 data.BayNumber,
                 speedRate,
                 MovementMode.Position,
+                0,
                 0);
 
             this.PublishCommand(
@@ -187,7 +188,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 bayNumber,
                 speedRate,
                 MovementMode.TestLoop,
-                numberCycles);
+                numberCycles,
+                delay * 1000);  // milliseconds
 
             this.PublishCommand(
                 messageData,

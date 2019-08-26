@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     public class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
+
+        private readonly Timer delayTimer;
 
         private readonly InverterIndex inverterIndex;
 
@@ -33,7 +36,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             InverterIndex inverterIndex,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory,
-            IMachineSensorsStatus machineSensorsStatus)
+            IMachineSensorsStatus machineSensorsStatus,
+            Timer delayTimer)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
@@ -43,6 +47,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.shutterPositioningMessageData = shutterPositioningMessageData;
 
             this.machineSensorsStatus = machineSensorsStatus;
+
+            this.delayTimer = delayTimer;
         }
 
         #endregion
@@ -123,7 +129,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 }
                 else
                 {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.inverterIndex, this.Logger, this.machineSensorsStatus);
+                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.inverterIndex, this.Logger, this.machineSensorsStatus, this.delayTimer);
                 }
 
                 this.CurrentState?.Start();

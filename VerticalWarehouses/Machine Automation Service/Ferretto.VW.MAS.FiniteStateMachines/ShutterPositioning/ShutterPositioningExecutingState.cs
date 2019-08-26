@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     public class ShutterPositioningExecutingState : StateBase
     {
         #region Fields
+
+        private readonly Timer delayTimer;
 
         private readonly InverterIndex inverterIndex;
 
@@ -41,12 +44,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             IShutterPositioningMessageData shutterPositioningMessageData,
             InverterIndex inverterIndex,
             IMachineSensorsStatus machineSensorsStatus,
+            Timer delayTimer,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.shutterPositioningMessageData = shutterPositioningMessageData;
             this.numberOfRequestedCycles = shutterPositioningMessageData.RequestedCycles;
             this.machineSensorsStatus = machineSensorsStatus;
+            this.delayTimer = delayTimer;
             this.inverterIndex = inverterIndex;
         }
 
@@ -105,7 +110,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 "ShutterControl Test Executing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterTestStatusChanged,
+                MessageType.ShutterPositioning,
                 MessageStatus.OperationExecuting);
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -159,8 +164,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                 }
                                 else if (messageData.ShutterPosition == ShutterPosition.Closed)
                                 {
-                                    // TODO: implement a timer to generate the delay
-                                    this.StartPositioning(messageData.ShutterPosition, ShutterMovementDirection.Up);
+                                    if (this.shutterPositioningMessageData.Delay > 0)
+                                    {
+                                        this.delayTimer.Change(this.shutterPositioningMessageData.Delay, this.shutterPositioningMessageData.Delay);
+                                    }
+                                    else
+                                    {
+                                        this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
+                                    }
                                 }
                                 else if (messageData.ShutterPosition == ShutterPosition.Half)
                                 {
@@ -189,6 +200,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            if (message.Type == MessageType.CheckCondition &&
+                message.Status == MessageStatus.OperationExecuting)
+            {
+                // delay expired
+                this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
+            }
         }
 
         public override void Start()
@@ -209,6 +226,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.OldDirection = ShutterMovementDirection.Down;
         }
 
         public override void Stop()
