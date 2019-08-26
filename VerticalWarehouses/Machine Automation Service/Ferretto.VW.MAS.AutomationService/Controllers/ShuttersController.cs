@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
             this.PublishCommand(
                 messageData,
-                "Request vertical position",
+                "Request shutter position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 

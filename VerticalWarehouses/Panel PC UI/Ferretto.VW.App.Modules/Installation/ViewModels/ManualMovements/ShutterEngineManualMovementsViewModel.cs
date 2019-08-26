@@ -14,9 +14,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
-        #region Fields
+        //private readonly IMachineShuttersService shuttersService;
 
-        private readonly IMachineShuttersService shuttersService;
+        #region Fields
 
         private bool canExecuteMoveDownCommand;
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            this.shuttersService = shuttersService;
+            this.ShuttersService = shuttersService;
 
             this.RefreshCanExecuteCommands();
         }
@@ -126,6 +126,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BindableBase NavigationViewModel { get; set; }
 
+        public IMachineShuttersService ShuttersService { get; }
+
         #endregion
 
         #region Methods
@@ -168,6 +170,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   false);
 
             await base.OnNavigatedAsync();
+
+            try
+            {
+                this.CurrentPosition = (Ferretto.VW.CommonUtils.Messages.Enumerations.ShutterPosition)await this.ShuttersService.GetShutterPositionAsync(this.BayNumber);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         protected override void OnDispose()
@@ -190,7 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.shuttersService.StopAsync();
+                await this.ShuttersService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -214,7 +225,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.shuttersService.MoveAsync(this.BayNumber, messageData);
+                await this.ShuttersService.MoveAsync(this.BayNumber, messageData);
             }
             catch (System.Exception ex)
             {

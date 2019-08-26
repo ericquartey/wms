@@ -64,18 +64,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -158,22 +146,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            // Send a field message to the Update of position axis to InverterDriver
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 50);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
             var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter digital input status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
-            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-            inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
@@ -234,6 +208,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, this.Logger, true));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion
