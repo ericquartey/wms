@@ -18,6 +18,17 @@
 
         #region Classes
 
+        public static class CellsHeightCheck
+        {
+            #region Fields
+
+            public const string STEP1 = "CellsHeightCheckStep1ViewModel";
+
+            public const string STEP2 = "CellsHeightCheckStep2ViewModel";
+
+            #endregion
+        }
+
         public static class ManualMovements
         {
             #region Fields

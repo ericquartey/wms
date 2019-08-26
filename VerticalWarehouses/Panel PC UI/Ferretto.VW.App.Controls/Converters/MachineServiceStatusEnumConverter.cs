@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Controls.Converters
                 case MachineServiceStatus.Valid:
                     return Resources.OperatorApp.MachineServiceStatus_Valid;
 
-               default:
+                default:
                     return Resources.OperatorApp.MachineServiceStatus_Unknown;
             }
         }

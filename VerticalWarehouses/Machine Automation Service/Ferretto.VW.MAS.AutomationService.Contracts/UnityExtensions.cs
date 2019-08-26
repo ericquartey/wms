@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Unity;
-using Unity.Injection;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {

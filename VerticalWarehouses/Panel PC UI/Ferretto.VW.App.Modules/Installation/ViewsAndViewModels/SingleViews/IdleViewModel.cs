@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class IdleViewModel : BindableBase, IIdleViewModel
+    public class IdleViewModel : BindableBase
     {
         #region Fields
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -9,7 +8,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class DrawerStoreRecallViewModel : BindableBase, IDrawerStoreRecallViewModel
+    public class DrawerStoreRecallViewModel : BindableBase
     {
         #region Fields
 

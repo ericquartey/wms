@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -61,7 +62,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
-            set => this.SetProperty(ref this.currentPosition, value);
+            protected set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
@@ -75,30 +76,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override void Disappear()
         {
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  message => this.CurrentPosition = message?.Data?.CurrentPosition,
-                  ThreadOption.UIThread,
-                  false);
-
-            try
-            {
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-
-            await base.OnNavigatedAsync();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
+            base.Disappear();
 
             if (this.subscriptionToken != null)
             {
@@ -108,6 +88,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.subscriptionToken = null;
             }
+        }
+
+        public override async Task OnNavigatedAsync()
+        {
+            this.subscriptionToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<PositioningMessageData>>()
+              .Subscribe(
+                  message => this.CurrentPosition = message?.Data?.CurrentPosition,
+                  ThreadOption.UIThread,
+                  false);
+
+            await this.RetrieveCurrentPositionAsync();
+
+            await base.OnNavigatedAsync();
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            this.RetrieveCurrentPositionAsync();
         }
 
         protected abstract Task StopMovementAsync();
@@ -145,6 +146,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         nameof(Utils.Modules.Installation),
                         VW.App.Resources.InstallationApp.Carousel,
                         trackCurrentView: false));
+            }
+        }
+
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            try
+            {
+                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

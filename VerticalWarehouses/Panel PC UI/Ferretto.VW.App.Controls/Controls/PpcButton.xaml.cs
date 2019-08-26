@@ -12,6 +12,11 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(bool),
             typeof(PpcButton));
 
+        public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
+            nameof(IsBusy),
+            typeof(bool),
+            typeof(PpcButton));
+
         #endregion
 
         #region Constructors
@@ -29,6 +34,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (bool)this.GetValue(IsActiveProperty);
             set => this.SetValue(IsActiveProperty, value);
+        }
+
+        public bool IsBusy
+        {
+            get => (bool)this.GetValue(IsBusyProperty);
+            set => this.SetValue(IsBusyProperty, value);
         }
 
         #endregion

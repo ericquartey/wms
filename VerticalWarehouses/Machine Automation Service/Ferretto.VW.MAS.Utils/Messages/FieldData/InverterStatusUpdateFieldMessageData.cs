@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public override string ToString()
         {
-            string currentSensorStatus = string.Empty;
+            var currentSensorStatus = string.Empty;
             if (this.CurrentSensorStatus != null)
             {
                 var sb = new StringBuilder();

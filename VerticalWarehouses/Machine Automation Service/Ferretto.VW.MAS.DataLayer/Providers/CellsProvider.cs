@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
@@ -29,6 +30,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
+        public IEnumerable<Cell> GetAll()
+        {
+            return this.dataContext.Cells.ToArray();
+        }
+
         public CellStatisticsSummary GetStatistics()
         {
             var totalCells = this.dataContext.Cells.Count();
@@ -56,6 +62,38 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             };
 
             return cellStatistics;
+        }
+
+        public Cell UpdateHeight(int cellId, decimal height)
+        {
+            var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+            if (cell == null)
+            {
+                throw new Exceptions.EntityNotFoundException(cellId);
+            }
+
+            var higherCell = this.dataContext.Cells.OrderBy(c => c.Coord).FirstOrDefault(c => c.Coord > cell.Coord);
+            var lowerCell = this.dataContext.Cells.OrderBy(c => c.Coord).FirstOrDefault(c => c.Coord < cell.Coord);
+
+            if ((higherCell == null
+                ||
+                higherCell.Coord > height)
+                &&
+                (lowerCell == null
+                ||
+                lowerCell.Coord < height))
+            {
+                cell.Coord = height;
+
+                this.dataContext.Cells.Update(cell);
+                this.dataContext.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("The specified height is not between the adjacent cells' heights.");
+            }
+
+            return this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
         }
 
         #endregion

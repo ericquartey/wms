@@ -22,9 +22,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineResolutionCalibrationProcedureService resolutionCalibrationService;
 
-        private VerticalResolutionCalibrationData calibrationData;
-
         private decimal? currentResolution;
+
+        private bool isExecutingProcedure;
+
+        private bool isWaitingForResponse;
 
         private SubscriptionToken subscriptionToken;
 
@@ -33,7 +35,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BaseVerticalResolutionCalibrationViewModel(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(Services.PresentationMode.Installer)
         {
@@ -56,16 +58,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public VerticalResolutionCalibrationData CalibrationData
-        {
-            get => this.calibrationData;
-            set => this.SetProperty(ref this.calibrationData, value);
-        }
-
         public decimal? CurrentResolution
         {
             get => this.currentResolution;
-            set => this.SetProperty(ref this.currentResolution, value);
+            protected set => this.SetProperty(ref this.currentResolution, value);
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get => this.isExecutingProcedure;
+            protected set
+            {
+                if (this.SetProperty(ref this.isExecutingProcedure, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
@@ -76,7 +101,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
@@ -92,19 +131,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
 
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-        }
+        protected abstract void RaiseCanExecuteChanged();
 
         private void InitializeNavigationMenu()
         {
@@ -128,33 +155,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Step3,
                     trackCurrentView: false));
-
-            foreach (var menuItem in this.menuItems)
-            {
-                menuItem.PropertyChanged += this.MenuItem_PropertyChanged;
-            }
-        }
-
-        private void MenuItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(NavigationMenuItem.IsActive)
-                &&
-                sender is NavigationMenuItem changedMenuItem)
-            {
-                if (changedMenuItem.IsActive)
-                {
-                    var foundMenuItem = false;
-                    foreach (var menuItem in this.menuItems)
-                    {
-                        menuItem.IsEnabled = !foundMenuItem;
-
-                        if (menuItem == changedMenuItem)
-                        {
-                            foundMenuItem = true;
-                        }
-                    }
-                }
-            }
         }
 
         #endregion

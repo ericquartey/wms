@@ -23,10 +23,7 @@ namespace Ferretto.VW.App.Controls.Utils
 
         #region Properties
 
-        public DependencyObject Parent
-        {
-            get { return VisualTreeHelper.GetParent(this.item); }
-        }
+        public DependencyObject Parent => VisualTreeHelper.GetParent(this.item);
 
         #endregion Properties
 
@@ -34,8 +31,8 @@ namespace Ferretto.VW.App.Controls.Utils
 
         public IEnumerable<DependencyObject> Children()
         {
-            int childrenCount = VisualTreeHelper.GetChildrenCount(this.item);
-            for (int i = 0; i < childrenCount; i++)
+            var childrenCount = VisualTreeHelper.GetChildrenCount(this.item);
+            for (var i = 0; i < childrenCount; i++)
             {
                 yield return VisualTreeHelper.GetChild(this.item, i);
             }

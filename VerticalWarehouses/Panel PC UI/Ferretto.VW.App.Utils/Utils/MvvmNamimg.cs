@@ -21,7 +21,7 @@ namespace Ferretto.VW.Utils
         public static string GetViewModelName(string viewFullname)
         {
             // TO DO remove when Installation modules moved into modules
-            string modulePresent = string.Empty;
+            var modulePresent = string.Empty;
             if (viewFullname.Contains("Modules"))
             {
                 modulePresent = ".Modules";

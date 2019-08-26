@@ -54,6 +54,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.Error = null;
+        }
+
         public override async Task OnNavigatedAsync()
         {
             await this.CheckErrorsPresenceAsync();

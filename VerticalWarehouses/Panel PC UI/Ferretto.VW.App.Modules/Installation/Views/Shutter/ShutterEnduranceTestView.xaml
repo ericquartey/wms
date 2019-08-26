@@ -64,14 +64,15 @@
                                  Margin="0,20,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ContentText="{Binding CompletedCycles}"
                                  LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{x:Static res:InstallationApp.Start}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="1"

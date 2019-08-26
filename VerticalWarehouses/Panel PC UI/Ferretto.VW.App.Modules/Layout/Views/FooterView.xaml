@@ -55,7 +55,7 @@
 
             <ctrls:PpcControl PresentationType="{x:Static enums:PresentationTypes.Back}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Margin="20,0,0,0"
+                <controls:PpcButton Margin="0,0,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Content="{x:Static res:InstallationApp.Back}" />
