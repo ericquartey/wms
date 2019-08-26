@@ -58,6 +58,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #region Methods
 
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
+
         /// <inheritdoc/>
         public override void ChangeState(IState newState, CommandMessage message = null)
         {
@@ -120,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         {
             this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == MessageType.ShutterTestStatusChanged && message.Status == MessageStatus.OperationExecuting)
+            if (message.Type == MessageType.ShutterPositioning && message.Status == MessageStatus.OperationExecuting)
             {
                 //TEMP Update the number of executed cycles so far
                 if (message.Data is IShutterTestStatusChangedMessageData s)
@@ -156,21 +171,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion
