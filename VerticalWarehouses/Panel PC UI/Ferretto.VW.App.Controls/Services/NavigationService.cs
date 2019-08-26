@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Services
                 var parameters = new NavigationParameters();
                 parameters.Add(viewModelName, data);
 
+                this.DisappearActiveView();
+
                 this.regionManager.RequestNavigate(Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
 
                 if (trackCurrentView)
@@ -264,6 +266,16 @@ namespace Ferretto.VW.App.Services
               .Publish(new PresentationChangedMessage(null, Models.NotificationSeverity.Clear));
         }
 
+        private void DisappearActiveView()
+        {
+            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
+
+            if (activeView is View view && view.DataContext is ViewModelBase viewModel)
+            {
+                viewModel.Disappear();
+            }
+        }
+
         private IBusyViewModel GetBusyViewModel()
         {
             if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
@@ -277,6 +289,8 @@ namespace Ferretto.VW.App.Services
 
         private void NavigateBackTo(NavigationTrack historyRecord)
         {
+            this.DisappearActiveView();
+
             this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
 
             this.regionManager.RequestNavigate(

@@ -485,7 +485,7 @@
     <value>Valore step [mm]</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Quota cella selezionata [mm]</value>
+    <value>Quota cella [mm]</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
     <value>Controllo pannelli mensola</value>
@@ -560,10 +560,10 @@
     <value>Controllo quote celle</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
-    <value>Correzione cella [mm]</value>
+    <value>Nuova quota cella [mm]</value>
   </data>
   <data name="MeasuredInitialPosition" xml:space="preserve">
-    <value>Posizione iniziale misurata [mm]</value>
+    <value>Quota iniziale misurata [mm]</value>
   </data>
   <data name="MoveToInitialPosition" xml:space="preserve">
     <value>Sposta nella posizione iniziale.</value>
@@ -612,9 +612,6 @@
   </data>
   <data name="PanelsControlDescription" xml:space="preserve">
     <value>Verifica posizione pannelli mensola</value>
-  </data>
-  <data name="MeasuredInitialPosition" xml:space="preserve">
-    <value>Quota iniziale letta [mm]</value>
   </data>
   <data name="ReadFinalPosition" xml:space="preserve">
     <value>Quota finale letta [mm]</value>
@@ -910,5 +907,11 @@
   </data>
   <data name="Accept" xml:space="preserve">
     <value>Accetta</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Lato Cella</value>
+  </data>
+  <data name="MoveToCellHeight" xml:space="preserve">
+    <value>Porta a Quota Cella</value>
   </data>
 </root>

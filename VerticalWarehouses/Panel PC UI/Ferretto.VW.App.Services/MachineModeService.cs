@@ -176,9 +176,9 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var data = await this.machineSensorsService.GetAsync();
+                    var sensorStates = await this.machineSensorsService.GetAsync();
 
-                    this.OnSensorsChanged(data?.SensorsStates.ToArray());
+                    this.OnSensorsChanged(sensorStates.ToArray());
                 }
                 catch (Exception ex)
                 {

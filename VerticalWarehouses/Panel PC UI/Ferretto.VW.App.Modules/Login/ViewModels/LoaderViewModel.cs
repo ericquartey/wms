@@ -51,6 +51,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+        }
+
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
@@ -59,18 +71,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 async (e) => await this.OnHealthStatusChanged(e),
                 ThreadOption.UIThread,
                 false);
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         private void NavigateToLoginPage(MAS.AutomationService.Contracts.MachineIdentity machineIdentity)

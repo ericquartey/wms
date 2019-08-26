@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier

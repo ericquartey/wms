@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
@@ -36,6 +35,7 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void Appear()
         {
+            // do nothing
         }
 
         public virtual bool CanClose()

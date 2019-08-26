@@ -15,9 +15,6 @@
         mc:Ignorable="d">
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
-            <helpWindows:CellsControlHelpView />
-        </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
             <helpWindows:HelpCellsPanelControl />

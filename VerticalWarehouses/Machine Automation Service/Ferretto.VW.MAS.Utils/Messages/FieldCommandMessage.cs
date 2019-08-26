@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.MAS.Utils.Enumerations;
+﻿using System.Diagnostics;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using NLog;
-using System.Diagnostics;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
@@ -39,9 +39,9 @@ namespace Ferretto.VW.MAS.Utils.Messages
 
             if (Logger?.IsTraceEnabled ?? false)
             {
-                StackTrace st = new StackTrace();
-                StackFrame sf = st.GetFrame(1);
-                string trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
+                var st = new StackTrace();
+                var sf = st.GetFrame(1);
+                var trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
 
                 Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data}][{trace}]");
             }

@@ -74,9 +74,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #endif
         }
 
-        protected override void OnDispose()
+        public override void Disappear()
         {
-            base.OnDispose();
+            base.Disappear();
+
+            this.UserLogin.IsValidationEnabled = false;
+            this.UserLogin.Password = null;
+            this.UserLogin.UserName = null;
 
             if (this.subscriptionToken != null)
             {

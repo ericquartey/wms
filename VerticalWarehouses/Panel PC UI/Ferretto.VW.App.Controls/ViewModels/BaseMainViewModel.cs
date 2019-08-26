@@ -8,7 +8,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
+    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
     {
         #region Fields
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public BaseMainViewModel(PresentationMode mode)
+        protected BaseMainViewModel(PresentationMode mode)
         {
             this.mode = mode;
         }
@@ -54,6 +54,19 @@ namespace Ferretto.VW.App.Controls
         public override void Appear()
         {
             base.Appear();
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.machineModeService.MachineModeChangedEvent
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
         }
 
         public override async Task OnNavigatedAsync()
@@ -94,19 +107,6 @@ namespace Ferretto.VW.App.Controls
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Publish(new PresentationChangedMessage(exception));
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.subscriptionToken != null)
-            {
-                this.machineModeService.MachineModeChangedEvent
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         private void OnMachineModeChanged(MachineModeChangedEventArgs e)

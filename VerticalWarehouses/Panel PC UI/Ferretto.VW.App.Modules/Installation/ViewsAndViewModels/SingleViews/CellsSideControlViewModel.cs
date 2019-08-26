@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class CellsSideControlViewModel : BindableBase, ICellsSideControlViewModel
+    public class CellsSideControlViewModel : BindableBase
     {
         #region Properties
 

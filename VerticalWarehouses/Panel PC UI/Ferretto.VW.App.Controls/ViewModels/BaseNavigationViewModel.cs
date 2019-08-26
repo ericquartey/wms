@@ -6,7 +6,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseNavigationViewModel : ViewModelBase
+    public abstract class BaseNavigationViewModel : ViewModelBase
     {
         #region Fields
 
@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public BaseNavigationViewModel()
+        protected BaseNavigationViewModel()
         {
         }
 

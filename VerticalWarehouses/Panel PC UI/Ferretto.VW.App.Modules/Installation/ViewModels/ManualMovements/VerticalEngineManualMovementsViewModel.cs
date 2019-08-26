@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -49,19 +50,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteMoveDownCommand
         {
             get => this.canExecuteMoveDownCommand;
-            set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
         }
 
         public bool CanExecuteMoveUpCommand
         {
             get => this.canExecuteMoveUpCommand;
-            set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
         }
 
         public bool IsMovingDown
         {
             get => this.isMovingDown;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
@@ -73,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingUp
         {
             get => this.isMovingUp;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
@@ -85,7 +86,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {
@@ -96,12 +97,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IMachineElevatorService MachineElevatorService { get; }
 
-        public DelegateCommand MoveDownCommand =>
+        public ICommand MoveDownCommand =>
             this.moveDownCommand
             ??
             (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDownAsync()));
 
-        public DelegateCommand MoveUpCommand =>
+        public ICommand MoveUpCommand =>
             this.moveUpCommand
             ??
             (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUpAsync()));

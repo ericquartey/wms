@@ -1,6 +1,4 @@
-﻿using Ferretto.VW.MAS.Utils.Enumerations;
-
-namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
+﻿namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
     public interface IInverterPowerOffFieldMessageData : IFieldMessageData
     {
