@@ -265,6 +265,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] controlWordArray;
 
+        private const int LOWER_SPEED_Y_AXIS = 17928;
+
         private readonly Dictionary<Axis, int> axisPosition;
 
         private readonly Timer homingTimer;
@@ -608,7 +610,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (!this.targetTimerActive)
                 {
                     this.StatusWord &= 0xFBFF;
-                    this.targetTimer.Change(0, 500);
+                    this.targetTimer.Change(0, 250);
                     this.targetTimerActive = true;
                 }
             }
@@ -917,7 +919,12 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             if (target > this.AxisPosition)
             {
-                this.AxisPosition++;
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition += this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                }
+                else { this.AxisPosition++; }
+
                 if (this.IsRelativeMovement)
                 {
                     this.TargetPosition[this.currentAxis]--;
@@ -925,7 +932,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else
             {
-                this.AxisPosition--;
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition -= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                }
+                else { this.AxisPosition--; }
+
                 if (this.IsRelativeMovement)
                 {
                     this.TargetPosition[this.currentAxis]++;

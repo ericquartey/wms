@@ -21,7 +21,7 @@ namespace Ferretto.VW.Simulator.Services
 
         public byte[] Buffer;
 
-        private const int DELAY_INVERTER_CLIENT = 50;
+        private const int DELAY_INVERTER_CLIENT = 5;
 
         private const int DELAY_IO_CLIENT = 5;
 
