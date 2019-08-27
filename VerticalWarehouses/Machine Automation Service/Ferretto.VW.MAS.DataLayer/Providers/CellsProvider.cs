@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public CellsProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
+            if (dataContext is null)
             {
                 throw new ArgumentNullException(nameof(dataContext));
             }
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Cell UpdateHeight(int cellId, decimal height)
         {
             var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
-            if (cell == null)
+            if (cell is null)
             {
                 throw new Exceptions.EntityNotFoundException(cellId);
             }

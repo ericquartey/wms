@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly DataLayerContext dataContext;
 
-        private readonly IVerticalOriginSetupStatusProvider verticalOriginSetupStatusProvider;
+        private readonly IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider;
 
         private readonly IConfiguration configuration;
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public SetupStatusProvider(
             DataLayerContext dataContext,
-            IVerticalOriginSetupStatusProvider verticalOriginSetupStatusProvider,
+            IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider,
             IConfiguration configuration)
         {
             if (dataContext is null)

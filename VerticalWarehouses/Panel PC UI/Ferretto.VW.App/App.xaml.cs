@@ -102,6 +102,7 @@ namespace Ferretto.VW.App
 
                 var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
                 client.DefaultRequestHeaders.Add("Bay-Number", bayNumber.ToString());
+                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
 
                 return client;
             });

@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
-            ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {

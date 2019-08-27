@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface IVerticalOriginSetupStatusProvider
+    public interface IVerticalOriginVolatileSetupStatusProvider
     {
         #region Methods
 

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.AutomationService.Filters;
+﻿using System.Globalization;
+using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -7,6 +8,7 @@ using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -20,7 +22,6 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
-
         #region Fields
 
         private const string LiveHealthCheckTag = "live";
@@ -38,43 +39,30 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
-
-
         #region Properties
 
         public IConfiguration Configuration { get; }
 
         #endregion
 
-
-
         #region Methods
-
-        private void InitialiseWmsInterfaces(IServiceCollection services)
-        {
-            var wmsServiceAddress = this.Configuration.GetDataServiceUrl();
-            services.AddWebApiServices(wmsServiceAddress);
-
-            var wmsServiceAddressHubsEndpoint = this.Configuration.GetDataServiceHubUrl();
-            services.AddDataHub(wmsServiceAddressHubsEndpoint);
-        }
-
-        private void RegisterSocketTransport(IServiceCollection services)
-        {
-            var useMockedTransport = this.Configuration.UseInverterDriverMock();
-            if (useMockedTransport)
-            {
-                services.AddSingleton<ISocketTransport, SocketTransportMock>();
-            }
-            else
-            {
-                services.AddSingleton<ISocketTransport, SocketTransport>();
-            }
-        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("it"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+            });
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<InstallationHub>("/installation-endpoint");
@@ -106,6 +94,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             services.AddDataLayer();
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services
               .AddMvc(options =>
               {
@@ -120,8 +110,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services
                 .AddHealthChecks()
-                .AddCheck<LivelinessHealthCheck>("live", null, tags: new[] { LiveHealthCheckTag })
-                .AddCheck<ReadinessHealthCheck>("ready", null, tags: new[] { ReadyHealthCheckTag });
+                .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
+                .AddCheck<ReadinessHealthCheck>("readyness-check", null, tags: new[] { ReadyHealthCheckTag });
 
             this.InitialiseWmsInterfaces(services);
 
@@ -158,6 +148,28 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddHostedService<MissionsManagerService>();
 
             services.AddHostedService<AutomationService>();
+        }
+
+        private void InitialiseWmsInterfaces(IServiceCollection services)
+        {
+            var wmsServiceAddress = this.Configuration.GetDataServiceUrl();
+            services.AddWebApiServices(wmsServiceAddress);
+
+            var wmsServiceAddressHubsEndpoint = this.Configuration.GetDataServiceHubUrl();
+            services.AddDataHub(wmsServiceAddressHubsEndpoint);
+        }
+
+        private void RegisterSocketTransport(IServiceCollection services)
+        {
+            var useMockedTransport = this.Configuration.UseInverterDriverMock();
+            if (useMockedTransport)
+            {
+                services.AddSingleton<ISocketTransport, SocketTransportMock>();
+            }
+            else
+            {
+                services.AddSingleton<ISocketTransport, SocketTransport>();
+            }
         }
 
         #endregion

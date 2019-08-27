@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IGeneralInfoConfigurationDataLayer generalInfo;
 
-        private readonly ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public IdentityController(
             IGeneralInfoConfigurationDataLayer generalInfo,
-            ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider)
         {
             if (generalInfo is null)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ferretto.VW.MAS.DataLayer.Exceptions
 {
@@ -9,7 +7,13 @@ namespace Ferretto.VW.MAS.DataLayer.Exceptions
         #region Constructors
 
         public EntityNotFoundException(int entityId)
-            : base($"No entity with the specified id '{entityId}' exists.")
+            : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))
+        {
+            this.EntityId = entityId.ToString();
+        }
+
+        public EntityNotFoundException(string entityId)
+            : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))
         {
             this.EntityId = entityId;
         }
@@ -18,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer.Exceptions
 
         #region Properties
 
-        public int EntityId { get; }
+        public string EntityId { get; }
 
         #endregion
     }
