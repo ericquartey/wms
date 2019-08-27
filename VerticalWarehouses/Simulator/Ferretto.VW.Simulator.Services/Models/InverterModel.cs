@@ -915,28 +915,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            int target;
-            if (this.IsRelativeMovement)
-            {
-                target = this.AxisPosition + this.TargetPosition[this.currentAxis];
-            }
-            else
-            {
-                target = this.TargetPosition[this.currentAxis];
-            }
 
-            if (target > this.AxisPosition)
+            if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
             {
                 if (this.CurrentAxis == Axis.Vertical)
                 {
                     this.AxisPosition += this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
                 }
                 else { this.AxisPosition++; }
-
-                if (this.IsRelativeMovement)
-                {
-                    this.TargetPosition[this.currentAxis]--;
-                }
             }
             else
             {
@@ -945,15 +931,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.AxisPosition -= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
                 }
                 else { this.AxisPosition--; }
-
-                if (this.IsRelativeMovement)
-                {
-                    this.TargetPosition[this.currentAxis]++;
-                }
             }
 
-            bool directionUp = (target > this.AxisPosition);
-            if ((directionUp && target - this.AxisPosition <= 0) || (!directionUp && this.AxisPosition - target <= 0))
+            bool directionUp = (this.TargetPosition[this.currentAxis] > this.AxisPosition);
+            if ((directionUp && this.TargetPosition[this.currentAxis] - this.AxisPosition <= 0) || (!directionUp && this.AxisPosition - this.TargetPosition[this.currentAxis] <= 0))
             {
                 this.AxisPosition = this.TargetPosition[this.currentAxis];
 
