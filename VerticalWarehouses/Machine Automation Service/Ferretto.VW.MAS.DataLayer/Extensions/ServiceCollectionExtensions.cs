@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IUsersProvider, UsersProvider>()
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
-                .AddTransient<ILoadingUnitsProvider, LoadingUnitStatisticsProvider>()
+                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>();
 
