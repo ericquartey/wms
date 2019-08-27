@@ -1032,7 +1032,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.axisStopwatch.Reset();
             this.axisStopwatch.Start();
-            this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.ActualPositionShaft && x.SystemIndex == (byte)InverterIndex.MainInverter))
+            {
+                this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+            }
         }
 
         private void RequestSensorStatusUpdate(object state)

@@ -1,23 +1,25 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using ShutterPosition = Ferretto.VW.CommonUtils.Messages.Enumerations.ShutterPosition;
+using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosition;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
-        //private readonly IMachineShuttersService shuttersService;
-
         #region Fields
+
+        private readonly IMachineShuttersService shuttersService;
 
         private bool canExecuteMoveDownCommand;
 
@@ -52,7 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            this.ShuttersService = shuttersService;
+            this.shuttersService = shuttersService;
 
             this.RefreshCanExecuteCommands();
         }
@@ -127,8 +129,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public IMachineShuttersService ShuttersService { get; }
-
         #endregion
 
         #region Methods
@@ -178,9 +178,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>()
+              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
-                  message => this.CurrentPosition = message?.Data?.ShutterPosition,
+                  message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
                   ThreadOption.UIThread,
                   false);
 
@@ -188,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                this.CurrentPosition = (Ferretto.VW.CommonUtils.Messages.Enumerations.ShutterPosition)await this.ShuttersService.GetShutterPositionAsync(this.BayNumber);
+                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync(this.BayNumber);
             }
             catch (System.Exception ex)
             {
@@ -202,7 +202,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.ShuttersService.StopAsync();
+                await this.shuttersService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -226,7 +226,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.ShuttersService.MoveAsync(this.BayNumber, messageData);
+                await this.shuttersService.MoveAsync(this.BayNumber, messageData);
             }
             catch (System.Exception ex)
             {

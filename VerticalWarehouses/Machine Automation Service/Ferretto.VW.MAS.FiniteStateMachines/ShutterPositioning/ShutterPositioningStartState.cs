@@ -158,6 +158,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
+            var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
+            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+            notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
+
             ShutterPositioningFieldMessageData messageData;
             if (this.shutterPositioningMessageData.MovementMode == MovementMode.Position)
             {
@@ -165,7 +171,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             }
             else
             {
-                // TestLoop: first move the shutter in Open position
+                // TestLoop:
+                // not all starting positions are allowed
+                if (this.shutterPositioningMessageData.ShutterType == ShutterType.Shutter3Type &&
+                    inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate
+                    )
+                {
+                    this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger));
+                    return;
+                }
+                // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(
                     ShutterPosition.Opened,
                     ShutterMovementDirection.Up,
@@ -185,11 +201,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
-            var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
-            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
-            notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Get shutter status",

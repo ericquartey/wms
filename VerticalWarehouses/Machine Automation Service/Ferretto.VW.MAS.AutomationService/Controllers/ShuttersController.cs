@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new Exception("Cannot get current shutter position.");
             }
 
-            return this.Ok(notifyData?.ShutterPosition);
+            return this.Ok(notifyData?.ShutterPosition ?? ShutterPosition.None);
         }
 
         [HttpGet]
