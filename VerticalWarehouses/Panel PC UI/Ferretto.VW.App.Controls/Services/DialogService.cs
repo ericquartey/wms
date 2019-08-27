@@ -124,7 +124,8 @@ namespace Ferretto.VW.App.Services
                 message,
                 title,
                 ConvertDialogButtons(buttons),
-                ConvertDialogIcon(type)));
+                ConvertDialogIcon(type),
+                MessageBoxResult.Cancel));
         }
 
         private void ShowCustomMessage(string title, string message)
