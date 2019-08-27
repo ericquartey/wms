@@ -32,12 +32,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (shutterTestParametersProvider == null)
+            if (shutterTestParametersProvider is null)
             {
                 throw new ArgumentNullException(nameof(shutterTestParametersProvider));
             }
 
-            if (configurationProvider == null)
+            if (configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationExecuting,
                 publishAction);
 
-            if (notifyData?.ShutterPosition == null)
+            if (notifyData?.ShutterPosition is null)
             {
                 throw new Exception("Cannot get current shutter position.");
             }

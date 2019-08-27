@@ -33,12 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationValueManagmentDataLayer)
             : base(eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (configurationValueManagmentDataLayer == null)
+            if (configurationValueManagmentDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(configurationValueManagmentDataLayer));
             }

@@ -36,17 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<ServiceController> logger)
             : base(eventAggregator)
         {
-            if (horizontalAxisDataLayer == null)
+            if (horizontalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
-            if (horizontalManualMovementsDataLayer == null)
+            if (horizontalManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }

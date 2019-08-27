@@ -610,6 +610,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Displacement [mm].
+        /// </summary>
+        public static string Displacement {
+            get {
+                return ResourceManager.GetString("Displacement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current chain position:.
         /// </summary>
         public static string DLUTestActualposition {
@@ -898,7 +907,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate correction [mm]:.
+        ///   Looks up a localized string similar to Gate correction [mm].
         /// </summary>
         public static string GateCorrection {
             get {
@@ -1060,7 +1069,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial position [mm]:.
+        ///   Looks up a localized string similar to Initial position [mm].
         /// </summary>
         public static string InitialPosition {
             get {
@@ -1078,7 +1087,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inserted weight [kg]:.
+        ///   Looks up a localized string similar to Inserted weight [kg].
         /// </summary>
         public static string InsertedWeight {
             get {
@@ -1159,7 +1168,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Testing cell:.
+        ///   Looks up a localized string similar to Testing cell.
         /// </summary>
         public static string LoadFirstDrawerActualCellToCheck {
             get {
@@ -1177,7 +1186,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer to insert:.
+        ///   Looks up a localized string similar to Drawer to insert.
         /// </summary>
         public static string LoadFirstDrawerDrawerToInsert {
             get {
@@ -1186,7 +1195,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max weight drawer portance [kg]:.
+        ///   Looks up a localized string similar to Max weight drawer portance [kg].
         /// </summary>
         public static string LoadFirstDrawerMaxWeight {
             get {
@@ -1267,7 +1276,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max weight portance [kg]:.
+        ///   Looks up a localized string similar to Max weight portance [kg].
         /// </summary>
         public static string LoadingDrawersMaxWeight {
             get {
@@ -1321,7 +1330,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lower bound [mm]:.
+        ///   Looks up a localized string similar to Lower bound [mm].
         /// </summary>
         public static string LowerBound {
             get {
@@ -1474,7 +1483,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured initial position [mm]:.
+        ///   Looks up a localized string similar to Measured initial position [mm].
         /// </summary>
         public static string MeasuredInitialPosition {
             get {
@@ -1483,7 +1492,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured lenght [mm]:.
+        ///   Looks up a localized string similar to Measured lenght [mm].
         /// </summary>
         public static string MeasuredLenght {
             get {
@@ -1492,7 +1501,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured movement [mm]:.
+        ///   Looks up a localized string similar to Measured movement [mm].
         /// </summary>
         public static string MeasuredMovement {
             get {
@@ -1501,7 +1510,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured weight [kg]:.
+        ///   Looks up a localized string similar to Measured weight [kg].
         /// </summary>
         public static string MeasuredWeight {
             get {
@@ -1609,7 +1618,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New resolution [imp/mm]:.
+        ///   Looks up a localized string similar to New resolution [imp/mm].
         /// </summary>
         public static string NewResolution {
             get {
@@ -1645,7 +1654,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset [mm]:.
+        ///   Looks up a localized string similar to Offset [mm].
         /// </summary>
         public static string Offset {
             get {
@@ -1708,7 +1717,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Panel correction [mm]:.
+        ///   Looks up a localized string similar to Panel correction [mm].
         /// </summary>
         public static string PanelCorrection {
             get {
@@ -1753,7 +1762,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reference&apos;s cell position [mm]:.
+        ///   Looks up a localized string similar to Reference&apos;s cell position [mm].
         /// </summary>
         public static string ReferenceCellHeight {
             get {
@@ -1762,7 +1771,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reference&apos;s cell number:.
+        ///   Looks up a localized string similar to Reference&apos;s cell number.
         /// </summary>
         public static string ReferenceCellNumber {
             get {
@@ -1771,7 +1780,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reposition lenght [mm]:.
+        ///   Looks up a localized string similar to Reposition lenght [mm].
         /// </summary>
         public static string RepositionLenght {
             get {
@@ -2059,7 +2068,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed [mm/s]:.
+        ///   Looks up a localized string similar to Speed [mm/s].
         /// </summary>
         public static string SpeedMMSec {
             get {
@@ -2149,7 +2158,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step value [mm]:.
+        ///   Looks up a localized string similar to Step value [mm].
         /// </summary>
         public static string StepValue {
             get {
@@ -2194,7 +2203,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System error [mm]:.
+        ///   Looks up a localized string similar to System error [mm].
         /// </summary>
         public static string SystemErrorMM {
             get {
@@ -2212,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tolerance (+/-) [mm]:.
+        ///   Looks up a localized string similar to Tolerance (+/-) [mm].
         /// </summary>
         public static string Tolerance {
             get {
@@ -2248,7 +2257,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper bound [mm]:.
+        ///   Looks up a localized string similar to Upper bound [mm].
         /// </summary>
         public static string UpperBound {
             get {

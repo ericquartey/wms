@@ -36,17 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalAxisDataLayer verticalAxisDataLayer)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }

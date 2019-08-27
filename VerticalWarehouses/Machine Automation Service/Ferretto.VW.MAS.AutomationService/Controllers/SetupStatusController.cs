@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public SetupStatusController(ISetupStatusProvider setupStatusProvider)
         {
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
