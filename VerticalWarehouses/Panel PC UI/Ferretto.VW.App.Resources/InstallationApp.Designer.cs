@@ -754,6 +754,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External Bay.
+        /// </summary>
+        public static string ExternalBay {
+            get {
+                return ResourceManager.GetString("ExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Bay Manual Movements.
+        /// </summary>
+        public static string ExternalBayManualMovements {
+            get {
+                return ResourceManager.GetString("ExternalBayManualMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed rate:.
         /// </summary>
         public static string FeedRate {

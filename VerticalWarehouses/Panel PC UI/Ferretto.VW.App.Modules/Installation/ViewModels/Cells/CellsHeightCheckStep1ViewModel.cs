@@ -76,14 +76,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand
             ??
             (this.moveToCellHeightCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveToCellHeightCommandAsync(),
+                async () => await this.MoveToCellHeightAsync(),
                 this.CanExecuteMoveToCellHeightCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
+                async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
         #endregion
@@ -143,7 +143,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsWaitingForResponse && this.IsElevatorMoving;
         }
 
-        private async Task ExecuteMoveToCellHeightCommandAsync()
+        private async Task MoveToCellHeightAsync()
         {
             try
             {
@@ -164,7 +164,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStopCommandAsync()
+        private async Task StopAsync()
         {
             try
             {

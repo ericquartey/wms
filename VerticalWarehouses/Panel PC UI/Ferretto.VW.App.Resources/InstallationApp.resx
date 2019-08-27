@@ -1164,4 +1164,10 @@
   <data name="Displacement" xml:space="preserve">
     <value>Displacement [mm]</value>
   </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>External Bay</value>
+  </data>
+  <data name="ExternalBayManualMovements" xml:space="preserve">
+    <value>External Bay Manual Movements</value>
+  </data>
 </root>

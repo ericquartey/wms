@@ -412,7 +412,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int Id { get; set; }
 
-        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.ExecuteInverterInFaultCommand()));
+        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.InverterInFault()));
 
         public InverterRole InverterRole => (InverterRole)this.Id;
 
@@ -845,7 +845,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             return "Free";
         }
 
-        private void ExecuteInverterInFaultCommand()
+        private void InverterInFault()
         {
             this.IsFault = !this.IsFault;
         }
