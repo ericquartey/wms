@@ -38,7 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver : BackgroundService
     {
-
         #region Fields
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 100;
@@ -195,8 +194,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-
-
         #region Properties
 
         public InverterDiagnosticsData AxisIntervalTimeData { get; }
@@ -215,9 +212,47 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-
-
         #region Methods
+
+        public void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.heartBeatTimer?.Dispose();
+                this.sensorStatusUpdateTimer?.Dispose();
+                this.axisPositionUpdateTimer?.Dispose();
+                this.statusWordUpdateTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
+            }
+
+            return Task.CompletedTask;
+        }
 
         private void CommandReceiveTaskFunction()
         {
@@ -248,7 +283,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
@@ -259,7 +294,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.inverterStatuses.Count == 0)
                 {
-                    this.logger.LogTrace("4:Invert Driver not configured for this message Type");
+                    this.logger.LogError("4:Invert Driver not configured for this message Type");
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
@@ -282,7 +317,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
                 {
                     this.logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
-
+                    this.logger.LogError($"5a: Message {receivedMessage.Type} will be discarded!");
                     var ex = new Exception();
                     this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
 
@@ -436,7 +471,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.InverterStop,
-                                    (byte)InverterIndex.MainInverter);
+                                    receivedMessage.DeviceIndex);
                                 this.commandQueue.Enqueue(stopMessage);
                             }
 
@@ -476,7 +511,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageType.InverterStop,
-                                (byte)InverterIndex.MainInverter);
+                                receivedMessage.DeviceIndex);
                             this.commandQueue.Enqueue(stopMessage);
                         }
 
@@ -515,7 +550,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageType.InverterStop,
-                                (byte)InverterIndex.MainInverter);
+                                receivedMessage.DeviceIndex);
                             this.commandQueue.Enqueue(stopMessage);
                         }
 
@@ -1056,46 +1091,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     break;
             }
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.heartBeatTimer?.Dispose();
-                this.sensorStatusUpdateTimer?.Dispose();
-                this.axisPositionUpdateTimer?.Dispose();
-                this.statusWordUpdateTimer?.Dispose();
-                this.writeEnableEvent?.Dispose();
-            }
-
-            this.disposed = true;
         }
 
         #endregion

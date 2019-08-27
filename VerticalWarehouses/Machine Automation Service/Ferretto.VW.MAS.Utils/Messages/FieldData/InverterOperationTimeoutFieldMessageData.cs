@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterOperationTimeoutFieldMessageData : FieldMessageData,  IInverterOperationTimeoutFieldMessageData
+    public class InverterOperationTimeoutFieldMessageData : FieldMessageData, IInverterOperationTimeoutFieldMessageData
     {
         #region Constructors
 

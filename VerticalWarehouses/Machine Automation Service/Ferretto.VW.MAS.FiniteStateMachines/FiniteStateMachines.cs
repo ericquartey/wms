@@ -28,7 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines : BackgroundService
     {
-
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -64,6 +63,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly IVerticalAxisDataLayer verticalAxis;
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
+
+        private Timer delayTimer;
 
         private bool disposed;
 
@@ -184,48 +185,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-
-
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.fieldNotificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-
-            await Task.CompletedTask;
-        }
 
         private void CommandReceiveTaskFunction()
         {
+            this.delayTimer?.Dispose();
+            this.delayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
             do
             {
                 CommandMessage receivedMessage;
@@ -254,6 +219,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
                     && receivedMessage.Type != MessageType.PowerEnable
+                    && receivedMessage.Type != MessageType.RequestPosition
                     )
                 {
                     var errorNotification = new NotificationMessage(
@@ -316,6 +282,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.InverterStop:
                         this.ProcessInverterStopMessage();
+                        break;
+
+                    case MessageType.RequestPosition:
+                        this.ProcessRequestPositionMessage(receivedMessage);
                         break;
                 }
 
@@ -433,7 +403,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition;
                                 }
                             }
-                            else
+                            else if (dataInverters.CurrentAxis == Axis.Horizontal)
                             {
                                 lock (this.machineSensorsStatus)
                                 {
@@ -488,6 +458,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             messageByaBayIndex,
                             MessageStatus.OperationExecuting);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        }
+                        break;
+
+                    case FieldMessageType.ShutterPositioning:
+                        this.logger.LogTrace($"6:ShutterPositioning received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is IInverterShutterPositioningFieldMessageData positioningData)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationExecuting)
+                            {
+                                var msgData = new ShutterPositioningMessageData();
+                                msgData.ShutterPosition = positioningData.ShutterPosition;
+                                msg = new NotificationMessage(
+                                    msgData,
+                                    "Inverter Shutter Positioning",
+                                    MessageActor.Any,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.ShutterPositioning,
+                                    MessageStatus.OperationExecuting);
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
                         }
                         break;
 
@@ -889,6 +879,43 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.delayTimer?.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.fieldNotificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+            }
+
+            await Task.CompletedTask;
         }
 
         #endregion

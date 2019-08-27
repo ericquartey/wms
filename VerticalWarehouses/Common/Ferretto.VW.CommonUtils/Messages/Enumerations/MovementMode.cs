@@ -10,6 +10,8 @@
 
         BeltBurnishing = 3,
 
-        FindZero = 4
+        FindZero = 4,
+
+        TestLoop = 5,
     }
 }

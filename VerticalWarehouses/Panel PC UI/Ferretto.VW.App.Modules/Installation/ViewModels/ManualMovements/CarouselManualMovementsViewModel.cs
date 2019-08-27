@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -47,16 +48,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteCloseCommand
         {
             get => this.canExecuteCloseCommand;
-            set => this.SetProperty(ref this.canExecuteCloseCommand, value);
+            private set => this.SetProperty(ref this.canExecuteCloseCommand, value);
         }
 
         public bool CanExecuteOpenCommand
         {
             get => this.canExecuteOpenCommand;
-            set => this.SetProperty(ref this.canExecuteOpenCommand, value);
+            private set => this.SetProperty(ref this.canExecuteOpenCommand, value);
         }
 
-        public DelegateCommand CloseCommand =>
+        public ICommand CloseCommand =>
             this.closeCommand
             ??
             (this.closeCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
@@ -64,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsClosing
         {
             get => this.isClosing;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isClosing, value))
                 {
@@ -76,7 +77,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsOpening
         {
             get => this.isOpening;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isOpening, value))
                 {
@@ -88,7 +89,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {
@@ -97,7 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public DelegateCommand OpenCommand =>
+        public ICommand OpenCommand =>
             this.openCommand
             ??
             (this.openCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));

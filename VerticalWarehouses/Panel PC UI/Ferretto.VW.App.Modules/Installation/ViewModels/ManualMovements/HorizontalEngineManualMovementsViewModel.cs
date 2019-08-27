@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -49,19 +50,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool CanExecuteMoveBackwardsCommand
         {
             get => this.canExecuteMoveBackwardsCommand;
-            set => this.SetProperty(ref this.canExecuteMoveBackwardsCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveBackwardsCommand, value);
         }
 
         public bool CanExecuteMoveForwardsCommand
         {
             get => this.canExecuteMoveForwardCommand;
-            set => this.SetProperty(ref this.canExecuteMoveForwardCommand, value);
+            private set => this.SetProperty(ref this.canExecuteMoveForwardCommand, value);
         }
 
         public bool IsMovingBackwards
         {
             get => this.isMovingBackwards;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingBackwards, value))
                 {
@@ -73,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingForwards
         {
             get => this.isMovingForwards;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isMovingForwards, value))
                 {
@@ -85,7 +86,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsStopping
         {
             get => this.isStopping;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isStopping, value))
                 {
@@ -96,12 +97,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IMachineElevatorService MachineElevatorService { get; }
 
-        public DelegateCommand MoveBackwardsCommand =>
+        public ICommand MoveBackwardsCommand =>
             this.moveBackwardsCommand
             ??
             (this.moveBackwardsCommand = new DelegateCommand(async () => await this.MoveBackwardsAsync()));
 
-        public DelegateCommand MoveForwardsCommand =>
+        public ICommand MoveForwardsCommand =>
             this.moveForwardsCommand
             ??
             (this.moveForwardsCommand = new DelegateCommand(async () => await this.MoveForwardsAsync()));
@@ -109,6 +110,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override async Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
+            try
+            {
+                this.CurrentPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
 
         protected override async Task StopMovementAsync()
         {

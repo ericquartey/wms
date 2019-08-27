@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.App.Services
+﻿namespace Ferretto.VW.App.Services
 {
     public interface IHealthProbeService
     {

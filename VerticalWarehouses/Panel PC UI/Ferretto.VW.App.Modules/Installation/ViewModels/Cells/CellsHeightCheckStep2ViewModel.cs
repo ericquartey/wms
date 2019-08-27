@@ -1,0 +1,300 @@
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
+
+namespace Ferretto.VW.App.Installation.ViewModels
+{
+    public class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
+    {
+        #region Fields
+
+        private DelegateCommand applyCorrectionCommand;
+
+        private Cell cell;
+
+        private decimal? inputCellHeight;
+
+        private decimal inputStepValue;
+
+        private bool isElevatorMovingDown;
+
+        private bool isElevatorMovingUp;
+
+        private bool isWaitingForResponse;
+
+        private DelegateCommand moveDownCommand;
+
+        private DelegateCommand moveUpCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public CellsHeightCheckStep2ViewModel(
+            IMachineCellsService machineCellsService,
+            IMachineElevatorService machineElevatorService)
+            : base(machineCellsService, machineElevatorService)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand ApplyCorrectionCommand =>
+            this.applyCorrectionCommand
+            ??
+            (this.applyCorrectionCommand = new DelegateCommand(
+                async () => await this.ExecuteApplyCorrectionCommandAsync(),
+                this.CanExecuteApplyCorrectionCommand));
+
+        public Cell Cell
+        {
+            get => this.cell;
+            set => this.SetProperty(ref this.cell, value);
+        }
+
+        public string Error => string.Join(
+              Environment.NewLine,
+              this[nameof(this.InputCellHeight)]);
+
+        public decimal? InputCellHeight
+        {
+            get => this.inputCellHeight;
+            set
+            {
+                if (this.SetProperty(ref this.inputCellHeight, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public decimal InputStepValue
+        {
+            get => this.inputStepValue;
+            set
+            {
+                if (this.SetProperty(ref this.inputStepValue, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsElevatorMovingDown
+        {
+            get => this.isElevatorMovingDown;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingDown, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsElevatorMovingUp
+        {
+            get => this.isElevatorMovingUp;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingUp, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand MoveDownCommand =>
+            this.moveDownCommand
+            ??
+            (this.moveDownCommand = new DelegateCommand(
+                async () => await this.ExecuteMoveDownCommandAsync(),
+                this.CanExecuteMoveDownCommand));
+
+        public ICommand MoveUpCommand =>
+            this.moveUpCommand
+            ??
+            (this.moveUpCommand = new DelegateCommand(
+                async () => await this.ExecuteMoveUpCommandAsync(),
+                this.CanExecuteMoveUpCommand));
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputCellHeight):
+                        if (!this.InputCellHeight.HasValue)
+                        {
+                            return $"InputCellHeight is required.";
+                        }
+
+                        if (this.InputCellHeight.Value < 0)
+                        {
+                            return "InputFinalPosition must be positive.";
+                        }
+                        break;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public async override Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            if (this.Data is Cell cell)
+            {
+                this.Cell = cell;
+            }
+        }
+
+        protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            base.OnCurrentPositionChanged(message);
+
+            switch (message?.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsElevatorMovingDown = false;
+                        this.IsElevatorMovingUp = false;
+
+                        break;
+                    }
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.IsElevatorMovingDown = false;
+                        this.IsElevatorMovingUp = false;
+
+                        this.ShowNotification(
+                            "Procedura di posizionamento interrotta.",
+                            Services.Models.NotificationSeverity.Warning);
+
+                        break;
+                    }
+            }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.moveDownCommand?.RaiseCanExecuteChanged();
+            this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecuteApplyCorrectionCommand()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMovingUp
+                &&
+                !this.IsElevatorMovingDown
+                &&
+                string.IsNullOrWhiteSpace(this[nameof(this.InputCellHeight)]);
+        }
+
+        private bool CanExecuteMoveDownCommand()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMovingUp
+                &&
+                !this.IsElevatorMovingDown
+                &&
+                string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
+        }
+
+        private bool CanExecuteMoveUpCommand()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMovingUp
+                &&
+                !this.IsElevatorMovingDown
+                &&
+                string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
+        }
+
+        private async Task ExecuteApplyCorrectionCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.Cell = await this.MachineCellsService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
+
+                this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task ExecuteMoveDownCommandAsync()
+        {
+            try
+            {
+                this.IsElevatorMovingDown = true;
+                this.IsWaitingForResponse = true;
+
+                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingDown = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task ExecuteMoveUpCommandAsync()
+        {
+            try
+            {
+                this.IsElevatorMovingUp = true;
+                this.IsWaitingForResponse = true;
+
+                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue);
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingDown = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        #endregion
+    }
+}

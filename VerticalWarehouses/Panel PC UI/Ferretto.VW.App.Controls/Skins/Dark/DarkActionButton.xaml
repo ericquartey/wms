@@ -34,6 +34,6 @@
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />-->
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
-                     Color="{DynamicResource EDBGrayE}" />
+                     Color="{DynamicResource EDBGrayD}" />
 
 </ResourceDictionary>

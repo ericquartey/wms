@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,6 +50,17 @@
 
   <ItemGroup>
     <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
+    <None Remove="Views\Cells\CellsHeightCheckStep1View.xaml" />
+    <None Remove="Views\Cells\CellsHeightCheckStep2View.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Cells\CellsHeightCheckStep1View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Cells\CellsHeightCheckStep2View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +80,10 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
+  </Target>
 
 
 

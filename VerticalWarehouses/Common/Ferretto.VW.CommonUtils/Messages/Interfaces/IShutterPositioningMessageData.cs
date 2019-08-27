@@ -8,6 +8,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         #region Properties
 
+        int Delay { get; set; }
+
+        int ExecutedCycles { get; set; }
+
+        MovementMode MovementMode { get; set; }
+
+        int RequestedCycles { get; set; }
+
         ShutterMovementDirection ShutterMovementDirection { get; }
 
         ShutterPosition ShutterPosition { get; set; }

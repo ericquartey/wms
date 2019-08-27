@@ -26,7 +26,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Exception InnerException { get; }
 
-        public MessageVerbosity Verbosity { get;  }
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

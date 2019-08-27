@@ -71,13 +71,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? CompletedCycles
         {
             get => this.completedCycles;
-            set => this.SetProperty(ref this.completedCycles, value);
+            private set => this.SetProperty(ref this.completedCycles, value);
         }
 
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
-            set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public string Error => string.Join(
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
@@ -137,10 +137,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -229,6 +234,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.receivedActionUpdateToken != null)
+            {
+                this.eventAggregator
+                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                  .Unsubscribe(this.receivedActionUpdateToken);
+
+                this.receivedActionUpdateToken = null;
+            }
+        }
+
         public async Task GetParameterValuesAsync()
         {
             try
@@ -245,7 +264,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public async override Task OnNavigatedAsync()
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
@@ -259,20 +278,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message => await this.UpdateCompletion(message),
                     ThreadOption.UIThread,
                     false);
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            if (this.receivedActionUpdateToken != null)
-            {
-                this.eventAggregator
-                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                  .Unsubscribe(this.receivedActionUpdateToken);
-
-                this.receivedActionUpdateToken = null;
-            }
         }
 
         private bool CanExecuteStartCommand()

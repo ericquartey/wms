@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
-        public bool Enable{ get; }
+        public bool Enable { get; }
 
         #endregion
     }

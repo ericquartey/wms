@@ -6,7 +6,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
     public class PowerUpStartState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoIndex index;
@@ -43,34 +42,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #endregion
 
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
-
-            if (message.CodeOperation == Enumerations.ShdCodeOperation.Configuration)
-            {
-                this.ParentStateMachine.ChangeState(new PowerUpClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
-            }
         }
 
         public override void ProcessResponseMessage(IoReadMessage message)
@@ -90,6 +66,22 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             var message = new IoWriteMessage(this.status.OutputData);
 
             this.ParentStateMachine.EnqueueMessage(message);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

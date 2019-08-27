@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
+using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -29,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal lowerBound;
 
-        private string noteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString;
 
         private decimal offset;
 
@@ -81,7 +82,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
-            set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public bool IsExecutingProcedure
@@ -103,6 +104,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -158,6 +164,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
+            base.Disappear();
+
             this.EventAggregator
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
                 .Unsubscribe(this.receivedSwitchAxisUpdateToken);
@@ -219,15 +227,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
                 await this.verticalOriginProcedureService.StartAsync();
+
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
                 this.IsExecutingProcedure = false;
+            }
+            finally
+            {
                 this.IsWaitingForResponse = false;
             }
         }
@@ -240,12 +252,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.verticalOriginProcedureService.StopAsync();
 
-                this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
+                    Services.Models.NotificationSeverity.Warning);
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsWaitingForResponse = false;
+                this.IsExecutingProcedure = false;
             }
             finally
             {
@@ -276,7 +290,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAxisSwitched(NotificationMessageUI<SwitchAxisMessageData> message)
         {
-            if (message == null || message.Data is null)
+            if (message is null || message.Data is null)
             {
                 return;
             }
@@ -284,15 +298,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineStarted;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineStarted);
                     break;
 
                 case MessageStatus.OperationEnd:
-                    this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineCompleted;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineCompleted);
+
                     break;
 
                 case MessageStatus.OperationError:
-                    this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineError;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineError);
+
                     break;
             }
         }
@@ -303,10 +319,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 ||
                 message.Status == MessageStatus.OperationError)
             {
-                this.NoteString = string.Format(
-                    this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
-                    message.Data.CurrentStepCalibrate,
-                    message.Data.MaxStepCalibrate);
+                this.ShowNotification(
+                    string.Format(
+                        this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
+                        message.Data.CurrentStepCalibrate,
+                        message.Data.MaxStepCalibrate));
 
                 if (message.Status == MessageStatus.OperationError)
                 {
@@ -322,19 +339,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (h.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingStarted;
+                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+
                         this.IsWaitingForResponse = false;
                         this.IsExecutingProcedure = true;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingCompleted;
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
+                            Services.Models.NotificationSeverity.Success);
+
                         this.IsWaitingForResponse = false;
                         this.IsExecutingProcedure = false;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingError;
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingError,
+                            Services.Models.NotificationSeverity.Error);
+
                         this.IsWaitingForResponse = false;
                         this.IsExecutingProcedure = false;
                         break;
@@ -367,24 +391,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.receiveHomingUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<HomingMessageData>>()
                 .Subscribe(
-                message =>
-                {
-                    this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message));
-                },
+                message => this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message)),
                 ThreadOption.UIThread,
                 false);
 
             this.receiveExceptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
                 .Subscribe(
-                message =>
-                {
-                    this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message));
-                },
+                message => this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message)),
                 ThreadOption.UIThread,
                 false);
 
-            this.updateCurrentPositionToken = this.EventAggregator // TODO copy this in manual movements
+            this.updateCurrentPositionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
                 message => this.CurrentPosition = message?.Data?.CurrentPosition,

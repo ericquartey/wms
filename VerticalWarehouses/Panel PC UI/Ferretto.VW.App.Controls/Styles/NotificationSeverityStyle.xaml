@@ -3,7 +3,8 @@
 
     <SolidColorBrush x:Key="NotificationSeverityInfo">#3366ff</SolidColorBrush>
     <SolidColorBrush x:Key="NotificationSeverityError">#EE0011</SolidColorBrush>
-    <SolidColorBrush x:Key="NotificationSeverityWarning">#FFCC00</SolidColorBrush>
+    <SolidColorBrush x:Key="NotificationSeverityWarning"
+                     Color="{DynamicResource ColorFerrettoOrange}" />
     <SolidColorBrush x:Key="NotificationSeveritySuccess">#009933</SolidColorBrush>
 
 </ResourceDictionary>

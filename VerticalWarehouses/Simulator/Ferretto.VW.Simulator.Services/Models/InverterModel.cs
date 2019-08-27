@@ -58,7 +58,7 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         Main = 0,
 
-        Chain = 1,
+        ElevatorChain = 1,
 
         Shutter1 = 2,
 
@@ -281,15 +281,19 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled;
 
+        private bool homingTimerActive;
+
         private ICommand inverterInFaultCommand;
 
         private InverterType inverterType;
 
         private InverterOperationMode operationMode;
 
-        private bool positionReached;
+        private bool shutterTimerActive;
 
         private int statusWord;
+
+        private bool targetTimerActive;
 
         #endregion
 
@@ -297,6 +301,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterModel(InverterType inverterType)
         {
+            this.InverterType = inverterType;
+
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
             this.homingTimerActive = false;
 
@@ -305,9 +311,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
             this.shutterTimerActive = false;
-
-            this.OperationMode = InverterOperationMode.Velocity;
-            this.InverterType = inverterType;
 
             this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
             this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
@@ -318,10 +321,23 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
             this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
 
-            // Remove overrun signal
-            if (inverterType == InverterType.Ang)
+            this.OperationMode = InverterOperationMode.Velocity;
+            switch (inverterType)
             {
-                this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                case InverterType.Ang:
+                    // Remove overrun signal
+                    this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                    break;
+
+                case InverterType.Agl:
+                    break;
+
+                case InverterType.Acu:
+                    this.OperationMode = InverterOperationMode.Position;
+                    break;
+
+                default:
+                    break;
             }
 
             this.currentAxis = Axis.Horizontal;
@@ -406,10 +422,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsFault
         {
-            get
-            {
-                return (this.statusWord & 0x0008) > 0;
-            }
+            get => (this.statusWord & 0x0008) > 0;
             set
             {
                 if (value)
@@ -475,13 +488,16 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
         }
+
         public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
-        public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+        public bool IsShutterClosed => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
-        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+        public bool IsShutterHalf => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
         {
@@ -554,48 +570,33 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public Dictionary<Axis, int> TargetSpeed { get; set; }
 
-        private int homingTickCount { get; set; }
-
-        private bool homingTimerActive { get; set; }
-
-        private int shutterTickCount { get; set; }
-
-        private bool shutterTimerActive { get; set; }
-
-        private int targetTickCount { get; set; }
-
-        private bool targetTimerActive { get; set; }
-
         #endregion
 
         #region Methods
 
         public void BuildHomingStatusWord()
         {
-            //StartHoming
-            if ((this.ControlWord & 0x0010) > 0)
+            //StartHoming && EnableOperation
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 500);
+                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(-5, 15);
+
                     this.homingTimerActive = true;
-                    //this.AxisPosition = 0;
+                    this.homingTimer.Change(0, 500);
                 }
             }
             else
             {
+                if (this.homingTimerActive)
+                {
+                    this.homingTimer.Change(-1, Timeout.Infinite);
+                    this.homingTimerActive = false;
+                }
+                // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
             }
         }
 
@@ -604,14 +605,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0)
             {
-                if (!this.targetTimerActive && !this.positionReached)
+                if (!this.targetTimerActive)
                 {
                     this.StatusWord &= 0xFBFF;
-
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
-
-                    //this.AxisPosition = 0;
                 }
             }
             else
@@ -619,11 +617,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.targetTimerActive)
                 {
                     this.targetTimer.Change(-1, Timeout.Infinite);
-                    // Reset contatore
-                    this.targetTickCount = 0;
-
                     this.targetTimerActive = false;
                 }
+
+                // Reset Set-Point Acknowledge
                 this.StatusWord &= 0xEFFF;
             }
         }
@@ -645,9 +642,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.shutterTimerActive)
                 {
                     this.shutterTimer.Change(-1, Timeout.Infinite);
-                    // Reset contatore
-                    this.shutterTickCount = 0;
-
                     this.shutterTimerActive = false;
                 }
                 this.StatusWord &= ~0x0400;
@@ -669,19 +663,24 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void HomingTick(object state)
         {
-            this.homingTickCount++;
-            this.AxisPosition++;
-
-            if (this.homingTickCount > 10)
+            if (this.AxisPosition < this.TargetPosition[this.currentAxis])
             {
-                this.StatusWord |= 0x1000;
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            {
+                this.StatusWord |= 0x1000;          // Set TargetReached
                 this.homingTimerActive = false;
-                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
-            else if (this.homingTickCount == 1)
+            else
             {
-                this.StatusWord &= 0xEFFF;
+                this.StatusWord &= 0xEFFF;          // Reset TargetReached
             }
         }
 
@@ -694,7 +693,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             if (this.controlWordArray != null)
             {
-                for (int i = 0; i < cw.Length; i++)
+                for (var i = 0; i < cw.Length; i++)
                 {
                     this.controlWordArray[i].Value = cw[i].Value;
                 }
@@ -851,36 +850,61 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void ShutterTick(object state)
         {
-            this.shutterTickCount++;
-            if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 304)
+                )
             {
                 this.AxisPosition++;
             }
-            else
+            else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 306)
+                )
             {
                 this.AxisPosition--;
             }
 
-            if (this.shutterTickCount > 100
-                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
-                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
+            // Shutter position
+            if (this.AxisPosition <= 300)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 310)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
+            }
+            else
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
+            }
+
+            if ((this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Half && this.IsShutterHalf)
                 )
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
+                this.ControlWord &= 0xFFEF; // Reset Rfg Enable Signal
+                this.StatusWord |= 0x0400;  // Set Target Reached
 
                 this.shutterTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.shutterTickCount = 0;
 
                 this.shutterTimerActive = false;
-                this.positionReached = true;
+            }
+            else
+            {
+                this.StatusWord &= ~0x0400; // Reset Target Reached
             }
         }
 
         private void TargetTick(object state)
         {
-            this.targetTickCount++;
             if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
             {
                 this.AxisPosition++;
@@ -890,17 +914,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.AxisPosition--;
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0 || this.targetTickCount > 100)
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
+                this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
+                this.StatusWord |= 0x0400;      // Set Target Reached
 
                 this.targetTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.targetTickCount = 0;
-
                 this.targetTimerActive = false;
-                this.positionReached = true;
+            }
+            else
+            {
+                this.StatusWord &= ~0x0400; // Reset Target Reached
             }
         }
 

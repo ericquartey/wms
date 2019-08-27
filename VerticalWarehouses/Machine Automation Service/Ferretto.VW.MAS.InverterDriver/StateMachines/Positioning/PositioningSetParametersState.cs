@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
-
         #endregion
 
         #region Constructors
@@ -39,12 +37,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Dispose(false);
         }
-
-        #endregion
-
-        #region Properties
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue => this.inverterCommandQueue;
 
         #endregion
 

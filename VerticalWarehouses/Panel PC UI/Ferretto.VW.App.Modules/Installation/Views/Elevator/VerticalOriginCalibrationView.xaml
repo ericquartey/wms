@@ -78,6 +78,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
+                            IsBusy="{Binding IsExecutingProcedure}"
                             Content="{x:Static res:InstallationApp.Start}" />
     </Grid>
 </ctrls:View>

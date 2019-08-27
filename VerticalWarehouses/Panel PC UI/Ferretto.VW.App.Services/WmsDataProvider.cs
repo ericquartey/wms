@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -49,7 +48,7 @@ namespace Ferretto.VW.App.Services
             {
                 item = await this.itemsDataService.GetByIdAsync(itemId);
             }
-            catch (SwaggerException ex)
+            catch
             {
                 return null;
             }
@@ -101,7 +100,7 @@ namespace Ferretto.VW.App.Services
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl
 {
-    public class Shutter1HeightControlViewModel : BindableBase, IShutter1HeightControlViewModel
+    public class Shutter1HeightControlViewModel : BindableBase
     {
         #region Fields
 

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Diagnostics;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using NLog;
-using System.Diagnostics;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages

@@ -22,7 +22,8 @@
 
         CalibrateAxis,
 
-        ShutterTestStatusChanged,
+        ShutterTestStatusChanged,   // TODO: remove this message
+
         MachineStateActive,
 
         MachineStatusActive,
@@ -69,6 +70,8 @@
 
         PowerEnable,
 
-        InverterStatusWord
+        InverterStatusWord,
+
+        RequestPosition,
     }
 }

@@ -26,9 +26,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public ActionResult<SensorsChangedMessageData> Get()
+        public ActionResult<bool[]> Get()
         {
-            this.PublishCommand(
+            void publishAction() => this.PublishCommand(
                     null,
                     "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
@@ -38,9 +38,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting);
+                MessageStatus.OperationExecuting,
+                publishAction);
 
-            return this.Ok(messageData);
+            return this.Ok(messageData.SensorsStates);
         }
 
         #endregion

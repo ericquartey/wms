@@ -358,7 +358,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell correction [mm]:.
+        ///   Looks up a localized string similar to Cell correction [mm].
         /// </summary>
         public static string CellCorrection {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current cell&apos;s height [mm]:.
+        ///   Looks up a localized string similar to Cell Height [mm].
         /// </summary>
         public static string CellHeight {
             get {
@@ -390,6 +390,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CellsControl {
             get {
                 return ResourceManager.GetString("CellsControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Side.
+        /// </summary>
+        public static string CellSide {
+            get {
+                return ResourceManager.GetString("CellSide", resourceCulture);
             }
         }
         
@@ -1551,6 +1560,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Move {
             get {
                 return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to Cell Height.
+        /// </summary>
+        public static string MoveToCellHeight {
+            get {
+                return ResourceManager.GetString("MoveToCellHeight", resourceCulture);
             }
         }
         
