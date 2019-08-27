@@ -960,7 +960,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 else { this.AxisPosition--; }
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
+            if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
             {
                 this.AxisPosition = target;
 
