@@ -352,6 +352,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.TargetPosition.Add(Axis.Horizontal, 0);
             this.TargetPosition.Add(Axis.Vertical, 0);
 
+            this.StartPosition = new Dictionary<Axis, int>();
+            this.StartPosition.Add(Axis.Horizontal, 0);
+            this.StartPosition.Add(Axis.Vertical, 0);
+
             this.TargetAcceleration = new Dictionary<Axis, int>();
             this.TargetAcceleration.Add(Axis.Horizontal, 0);
             this.TargetAcceleration.Add(Axis.Vertical, 0);
@@ -519,6 +523,22 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
+        public bool IsTargetReached
+        {
+            get => (this.StatusWord & 0x0400) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0400;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0400;
+                }
+            }
+        }
+
         public bool IsVoltageEnabled
         {
             get => (this.StatusWord & 0x0010) > 0;
@@ -546,6 +566,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         }
 
         public int SpeedRate { get; set; }
+
+        public Dictionary<Axis, int> StartPosition { get; set; }
 
         public int StatusWord
         {
@@ -609,10 +631,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.targetTimerActive)
                 {
-                    if (this.IsRelativeMovement)
-                    {
-                        this.TargetPosition[this.CurrentAxis] += this.AxisPosition;
-                    }
                     this.StatusWord &= 0xFBFF;
                     this.targetTimer.Change(0, 250);
                     this.targetTimerActive = true;
@@ -637,7 +655,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             if ((this.ControlWord & 0x0008) > 0)
             {
                 this.StatusWord |= 0x0004;
-                if (!this.shutterTimerActive && (this.StatusWord & 0x0400) == 0)
+                if (!this.shutterTimerActive && !this.IsTargetReached)
                 {
                     this.shutterTimer.Change(0, 500);
                     this.shutterTimerActive = true;
@@ -650,7 +668,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.shutterTimer.Change(-1, Timeout.Infinite);
                     this.shutterTimerActive = false;
                 }
-                this.StatusWord &= ~0x0400;
+                this.IsTargetReached = false;
             }
         }
 
@@ -901,7 +919,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 )
             {
                 this.ControlWord &= 0xFFEF; // Reset Rfg Enable Signal
-                this.StatusWord |= 0x0400;  // Set Target Reached
+                this.IsTargetReached = true;
 
                 this.shutterTimer.Change(-1, Timeout.Infinite);
 
@@ -909,7 +927,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else
             {
-                this.StatusWord &= ~0x0400; // Reset Target Reached
+                this.IsTargetReached = false;
             }
         }
 
@@ -919,8 +937,13 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
+            int target = this.TargetPosition[this.currentAxis];
+            if (this.IsRelativeMovement)
+            {
+                target += this.StartPosition[this.currentAxis];
+            }
 
-            if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
+            if (target > this.AxisPosition)
             {
                 if (this.CurrentAxis == Axis.Vertical)
                 {
@@ -937,21 +960,19 @@ namespace Ferretto.VW.Simulator.Services.Models
                 else { this.AxisPosition--; }
             }
 
-            bool directionUp = (this.TargetPosition[this.currentAxis] > this.AxisPosition);
-
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
             {
-                this.AxisPosition = this.TargetPosition[this.currentAxis];
+                this.AxisPosition = target;
 
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
-                this.StatusWord |= 0x0400;      // Set Target Reached
+                this.IsTargetReached = true;
 
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 this.targetTimerActive = false;
             }
             else
             {
-                this.StatusWord &= ~0x0400; // Reset Target Reached
+                this.IsTargetReached = false;
             }
         }
 

@@ -343,6 +343,7 @@ namespace Ferretto.VW.Simulator.Services
 
                         case InverterParameterId.PositionTargetPositionParam:
                             inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
+                            inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
                             result = client.Client.Send(extractedMessage);
                             break;
 
