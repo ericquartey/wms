@@ -44,11 +44,7 @@
             </ctrls:PpcControl>
 
             <controls:CustomControlLoggedUser Margin="15,0,15,0"
-                                              IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
                                               Items="{Binding States}"
-                                              LogOffCommand="{Binding LogOffCommand}"
-                                              OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                              UserText="{Binding UserName}"
                                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <controls:CustomMachineModeToggleButton Margin="15,0,0,0"

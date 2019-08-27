@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         protected ActionResult NegativeResult(WMS.Data.WebAPI.Contracts.SwaggerException exception)
         {
-            if (exception == null)
+            if (exception is null)
             {
                 return this.Ok();
             }

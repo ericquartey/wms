@@ -25,8 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingUp;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
@@ -286,7 +284,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
-                this.IsElevatorMovingDown = false;
+                this.IsElevatorMovingUp = false;
                 this.ShowNotification(ex);
             }
             finally

@@ -8,7 +8,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="140,30,0,0">
+    <Grid Margin="130,30,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="90" />

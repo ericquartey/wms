@@ -78,9 +78,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             base.Disappear();
 
-            this.UserLogin.IsValidationEnabled = false;
+            this.UserLogin.IsValidationEnabled = true;
             this.UserLogin.Password = null;
-            this.UserLogin.UserName = null;
 
             if (this.subscriptionToken != null)
             {

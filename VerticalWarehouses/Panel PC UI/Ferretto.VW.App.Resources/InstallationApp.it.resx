@@ -914,4 +914,7 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Porta a Quota Cella</value>
   </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Spostamento [mm]</value>
+  </data>
 </root>

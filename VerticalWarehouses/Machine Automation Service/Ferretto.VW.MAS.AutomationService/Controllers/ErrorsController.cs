@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ErrorsController(IErrorsProvider errorsProvider)
         {
-            if (errorsProvider == null)
+            if (errorsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(errorsProvider));
             }
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var resolvedError = this.errorsProvider.Resolve(id);
 
-            if (resolvedError == null)
+            if (resolvedError is null)
             {
                 return this.NotFound();
             }

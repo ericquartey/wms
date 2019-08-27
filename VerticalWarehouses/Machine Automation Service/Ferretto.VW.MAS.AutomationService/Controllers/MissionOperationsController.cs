@@ -32,17 +32,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<AutomationService> logger,
             IMissionOperationsDataService missionOperationsDataService)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            if (missionOperationsDataService == null)
+            if (missionOperationsDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }

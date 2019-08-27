@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Ferretto.VW.App.Controls.Utils;
 
-namespace Ferretto.VW.App.Controls.Utils
+namespace Ferretto.VW.App.Controls
 {
     public static class TreeExtensions
     {
@@ -217,6 +218,6 @@ namespace Ferretto.VW.App.Controls.Utils
             return item.ElementsBeforeSelf().OfType<T>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

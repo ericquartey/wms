@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BaysController(IBaysProvider baysProvider)
         {
-            if (baysProvider == null)
+            if (baysProvider is null)
             {
                 throw new ArgumentNullException(nameof(baysProvider));
             }

@@ -65,9 +65,7 @@
                                           Margin="20,350,0,0"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
-                                          IsPopupOpen="False"
-                                          RenderTransformOrigin="0.5,0.5"
-                                          UserText="Installer">
+                                          RenderTransformOrigin="0.5,0.5">
             <controls:CustomControlLoggedUser.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

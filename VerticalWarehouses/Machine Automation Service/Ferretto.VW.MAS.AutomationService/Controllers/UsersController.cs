@@ -25,12 +25,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IUsersDataService usersDataService,
             IUsersProvider usersProvider)
         {
-            if (usersDataService == null)
+            if (usersDataService is null)
             {
                 throw new ArgumentNullException(nameof(usersDataService));
             }
 
-            if (usersProvider == null)
+            if (usersProvider is null)
             {
                 throw new ArgumentNullException(nameof(usersProvider));
             }

@@ -4,6 +4,8 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -15,18 +17,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
+
         #endregion
 
         #region Constructors
 
-        public CellsController(ICellsProvider cellsProvider)
+        public CellsController(
+            ICellsProvider cellsProvider,
+            IConfigurationValueManagmentDataLayer configurationProvider)
         {
             if (cellsProvider is null)
             {
                 throw new ArgumentNullException(nameof(cellsProvider));
             }
 
+            if (configurationProvider is null)
+            {
+                throw new ArgumentNullException(nameof(configurationProvider));
+            }
+
             this.cellsProvider = cellsProvider;
+            this.configurationProvider = configurationProvider;
         }
 
         #endregion

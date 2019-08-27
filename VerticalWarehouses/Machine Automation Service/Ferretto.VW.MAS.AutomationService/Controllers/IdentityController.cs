@@ -27,17 +27,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider)
         {
-            if (generalInfo == null)
+            if (generalInfo is null)
             {
                 throw new System.ArgumentNullException(nameof(generalInfo));
             }
 
-            if (loadingUnitStatisticsProvider == null)
+            if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
-            if (servicingProvider == null)
+            if (servicingProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(servicingProvider));
             }
