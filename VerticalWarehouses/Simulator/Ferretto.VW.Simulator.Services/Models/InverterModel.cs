@@ -609,6 +609,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.targetTimerActive)
                 {
+                    if (this.IsRelativeMovement)
+                    {
+                        this.TargetPosition[this.CurrentAxis] += this.AxisPosition;
+                    }
                     this.StatusWord &= 0xFBFF;
                     this.targetTimer.Change(0, 250);
                     this.targetTimerActive = true;
