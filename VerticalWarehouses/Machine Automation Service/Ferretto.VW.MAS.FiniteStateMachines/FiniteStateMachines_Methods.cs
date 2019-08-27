@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
@@ -117,29 +118,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         //    return true;
         //}
 
-        private InverterIndex InverterFromBayNumber(int bayNumber)
-        {
-            InverterIndex inverterIndex;
-            switch (bayNumber)
-            {
-                case 1:
-                    inverterIndex = InverterIndex.Slave2;
-                    break;
-
-                case 2:
-                    inverterIndex = InverterIndex.Slave4;
-                    break;
-
-                case 3:
-                    inverterIndex = InverterIndex.Slave6;
-                    break;
-
-                default:
-                    throw new ArgumentException($"Bay number not valid {bayNumber}");
-            }
-            return inverterIndex;
-        }
-
         private void ProcessCheckConditionMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
@@ -228,12 +206,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (receivedMessage.Data is IHomingMessageData data)
                 {
-                    currentStateMachine = new HomingStateMachine(
-                        this.eventAggregator,
-                        data,
+                    var homingData = new HomingOperation(
+                        this.machineConfigurationProvider.IsOneKMachine(),
                         receivedMessage.BayIndex,
+                        this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
+                    currentStateMachine = new HomingStateMachine(data.AxisToCalibrate, homingData);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
                     this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);

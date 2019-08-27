@@ -1,14 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
@@ -18,36 +15,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Fields
 
-        private readonly Axis calibrateAxis;
+        private readonly Axis axisToCalibrate;
 
-        private readonly ILogger logger;
-
-        private readonly BayIndex requestingBay;
+        private readonly HomingOperation homingOperation;
 
         private bool disposed;
-
-        private HomingOperation homingOperation;
 
         #endregion
 
         #region Constructors
 
         public HomingStateMachine(
-            IEventAggregator eventAggregator,
-            IHomingMessageData calibrateMessageData,
-            BayIndex requestingBay,
-            ILogger logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            Axis axixToCalibrate,
+            HomingOperation homingOperation)
+            : base(homingOperation.EventAggregator, homingOperation.Logger, homingOperation.ServiceScopeFactory)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
+            this.axisToCalibrate = axixToCalibrate;
 
-            this.CurrentState = new EmptyState(logger);
+            this.homingOperation = homingOperation;
 
-            this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
-
-            this.requestingBay = requestingBay;
+            this.CurrentState = new EmptyState(homingOperation.Logger);
         }
 
         #endregion
@@ -68,7 +55,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
@@ -78,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.CalibrateAxis)
             {
@@ -91,7 +78,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
-                        this.requestingBay,
+                        this.homingOperation.RequestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -121,7 +108,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
-                        this.requestingBay,
+                        this.homingOperation.RequestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.PublishNotificationMessage(notificationMessage);
@@ -137,7 +124,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -148,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void PublishNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             base.PublishNotificationMessage(message);
         }
@@ -156,38 +143,41 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            this.logger.LogTrace("1:Method Start");
-            switch (this.calibrateAxis)
+            this.Logger.LogTrace("1:Method Start");
+            switch (this.axisToCalibrate)
             {
                 case Axis.Both:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3, this.requestingBay);
+                    this.homingOperation.AxisToCalibrate = Axis.Horizontal;
+                    this.homingOperation.NumberOfExecutedSteps = 0;
+                    this.homingOperation.MaximumSteps = 3;
                     break;
 
                 case Axis.Horizontal:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1, this.requestingBay);
+                    this.homingOperation.AxisToCalibrate = Axis.Horizontal;
+                    this.homingOperation.NumberOfExecutedSteps = 0;
+                    this.homingOperation.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:
-                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1, this.requestingBay);
+                    this.homingOperation.AxisToCalibrate = Axis.Vertical;
+                    this.homingOperation.NumberOfExecutedSteps = 0;
+                    this.homingOperation.MaximumSteps = 1;
                     break;
             }
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new HomingStartState(
-                    this,
-                    this.homingOperation,
-                    this.logger);
+                this.CurrentState = new HomingStartState(this, this.homingOperation);
 
                 this.CurrentState.Start();
             }
 
-            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces
         IEventAggregator EventAggregator { get; }
 
         ILogger<FiniteStateMachines> Logger { get; }
+
+        BayIndex RequestingBay { get; }
 
         IServiceScopeFactory ServiceScopeFactory { get; }
 

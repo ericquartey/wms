@@ -51,6 +51,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly ILogger<FiniteStateMachines> logger;
 
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+
         private readonly MachineSensorsStatus machineSensorsStatus;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
@@ -87,6 +89,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
             IHorizontalAxisDataLayer horizontalAxis,
+            IMachineConfigurationProvider machineConfigurationProvider,
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
@@ -130,6 +133,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 throw new ArgumentNullException(nameof(baysProvider));
             }
 
+            if (machineConfigurationProvider is null)
+            {
+                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+            }
+
             if (serviceScopeFactory == null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
@@ -150,6 +158,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.horizontalAxis = horizontalAxis;
 
             this.baysProvider = baysProvider;
+
+            this.machineConfigurationProvider = machineConfigurationProvider;
 
             this.serviceScopeFactory = serviceScopeFactory;
 

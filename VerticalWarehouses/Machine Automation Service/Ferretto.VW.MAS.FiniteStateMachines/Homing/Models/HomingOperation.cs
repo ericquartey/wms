@@ -1,5 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
@@ -21,12 +25,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         #region Constructors
 
-        public HomingOperation(Axis axisToCalibrate, int numberOfExecutedSteps, int maximumSteps, BayIndex requestingBay)
+        public HomingOperation(
+            bool isOneKMachine,
+            BayIndex requestingBay,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            this.axisToCalibrate = axisToCalibrate;
-            this.numberOfExecutedSteps = numberOfExecutedSteps;
-            this.maximumSteps = maximumSteps;
+            this.IsOneKMachine = isOneKMachine;
             this.RequestingBay = requestingBay;
+            this.EventAggregator = eventAggregator;
+            this.Logger = logger;
+            this.ServiceScopeFactory = serviceScopeFactory;
         }
 
         #endregion
@@ -51,11 +61,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public Axis AxisToCalibrated { get => this.axisToCalibrated; set => this.axisToCalibrated = value; }
 
+        public IEventAggregator EventAggregator { get; }
+
+        public bool IsOneKMachine { get; }
+
+        public ILogger<FiniteStateMachines> Logger { get; }
+
         public int MaximumSteps { get => this.maximumSteps; set => this.maximumSteps = value; }
 
         public int NumberOfExecutedSteps { get => this.numberOfExecutedSteps; set => this.numberOfExecutedSteps = value; }
 
         public BayIndex RequestingBay { get; set; }
+
+        public IServiceScopeFactory ServiceScopeFactory { get; }
 
         #endregion
     }
