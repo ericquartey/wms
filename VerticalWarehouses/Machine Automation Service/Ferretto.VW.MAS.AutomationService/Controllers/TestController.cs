@@ -167,18 +167,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.HorizontalPositioningMethod();
         }
 
-        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
-        {
-            await this.StartShutterControlMethod();
-        }
-
-        [HttpGet("StartShutterControlError/{delay}/{numberCycles}")]
-        public void StartShutterControlError(int delay, int numberCycles)
-        {
-            this.StartShutterControlErrorMethod(delay, numberCycles);
-        }
-
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
@@ -224,7 +212,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var speedRate = 1.2m;
             var dto = new ShutterPositioningMovementMessageDataDto(ShutterMovementDirection.Up, 1);
             dto.ShutterType = ShutterType.NoType;
-            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate, MovementMode.Position, 0, 0);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
                 dataInterface,
@@ -345,43 +333,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         sender,
                         messageType));
-        }
-
-        private void StartShutterControlErrorMethod(int delay, int numberCycles)
-        {
-            var bayNumber = 2;
-            var speed = 100;
-
-            var dataInterface = new ShutterTestStatusChangedMessageData(bayNumber, delay, numberCycles, speed);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
-                dataInterface,
-                "Simulated Shutter Error",
-                 MessageActor.AutomationService,
-                 MessageActor.FiniteStateMachines,
-                 MessageType.ShutterTestStatusChanged,
-                 MessageStatus.OperationError));
-        }
-
-        private async Task StartShutterControlMethod()
-        {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
-                null,
-                "Shutter Started",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.ShutterTestStatusChanged,
-                MessageStatus.OperationStart));
-
-            await Task.Delay(2000);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
-                null,
-                "Shutter Completed",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.ShutterTestStatusChanged,
-                MessageStatus.OperationEnd));
         }
 
         private void StopFiniteStateMachineMethod()

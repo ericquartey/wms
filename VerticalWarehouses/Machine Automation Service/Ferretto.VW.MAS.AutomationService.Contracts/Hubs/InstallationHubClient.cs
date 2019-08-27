@@ -39,9 +39,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>(
                  nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
-            connection.On<NotificationMessageUI<ShutterTestStatusChangedMessageData>>(
-                 nameof(IInstallationHub.ShutterControlNotify), this.OnShutterControlNotify);
-
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                  nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
@@ -113,11 +110,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnSensorsChanged(NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        private void OnShutterControlNotify(NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

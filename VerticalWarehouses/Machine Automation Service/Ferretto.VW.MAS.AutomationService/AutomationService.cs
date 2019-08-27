@@ -258,10 +258,6 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.CurrentPositionMethod(receivedMessage);
                         break;
 
-                    case MessageType.ShutterTestStatusChanged:
-                        this.ShutterControlMethod(receivedMessage);
-                        break;
-
                     case MessageType.Positioning:
                         this.OnPositioningChanged(receivedMessage);
                         break;

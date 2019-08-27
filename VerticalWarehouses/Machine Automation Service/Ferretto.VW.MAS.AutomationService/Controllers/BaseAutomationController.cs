@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 notificationEvent.Unsubscribe(subscriptionToken);
                 if (signalReceived == false)
                 {
-                    throw new TimeoutException("Waiting for the soecified event timed out.");
+                    throw new TimeoutException("Waiting for the specified event timed out.");
                 }
             }
 

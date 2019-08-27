@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
             void publishAction() => this.PublishCommand(
                 messageData,
-                "Request vertical position",
+                "Request shutter position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new Exception("Cannot get current shutter position.");
             }
 
-            return this.Ok(notifyData?.ShutterPosition);
+            return this.Ok(notifyData?.ShutterPosition ?? ShutterPosition.None);
         }
 
         [HttpGet]
@@ -134,7 +134,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 data.ShutterPositionMovement,
                 ShutterType.Shutter3Type,
                 data.BayNumber,
-                speedRate);
+                speedRate,
+                MovementMode.Position,
+                0,
+                0);
 
             this.PublishCommand(
                 messageData,
@@ -164,18 +167,39 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)ShutterHeightControl.FeedRate,
                 ConfigurationCategory.ShutterHeightControl);
 
-            var shutterControlMessageData = new ShutterTestStatusChangedMessageData(
+            // TODO what is this?
+
+            //TEMP Speed rate parameter need to be multiply by 100
+            //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
+            var speedRate = 100m;
+
+            //var shutterControlMessageData = new ShutterTestStatusChangedMessageData(
+            //    bayNumber,
+            //    delay,
+            //    numberCycles,
+            //    (int)maxSpeed);
+
+            //this.PublishCommand(
+            //    shutterControlMessageData,
+            //    "Shutter Started",
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.ShutterTestStatusChanged);
+
+            var messageData = new ShutterPositioningMessageData(
+                ShutterPosition.None,
+                ShutterMovementDirection.None,
+                ShutterType.Shutter3Type,
                 bayNumber,
-                delay,
+                speedRate,
+                MovementMode.TestLoop,
                 numberCycles,
-                (int)maxSpeed);
+                delay * 1000);  // milliseconds
 
             this.PublishCommand(
-                shutterControlMessageData,
-                "Shutter Started",
+                messageData,
+                "Execute Shutter Test Loop Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.ShutterTestStatusChanged);
-
+                MessageType.ShutterPositioning);
             return this.Accepted();
         }
 

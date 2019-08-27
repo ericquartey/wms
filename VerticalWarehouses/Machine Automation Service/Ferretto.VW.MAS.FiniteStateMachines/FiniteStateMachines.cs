@@ -64,6 +64,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
+        private Timer delayTimer;
+
         private bool disposed;
 
         private bool forceInverterIoStatusPublish;
@@ -154,6 +156,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (disposing)
             {
+                this.delayTimer?.Dispose();
             }
 
             this.disposed = true;
@@ -183,6 +186,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void CommandReceiveTaskFunction()
         {
+            this.delayTimer?.Dispose();
+            this.delayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
             do
             {
                 CommandMessage receivedMessage;
@@ -239,10 +244,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.ShutterPositioning:
                         this.ProcessShutterPositioningMessage(receivedMessage);
-                        break;
-
-                    case MessageType.ShutterTestStatusChanged:
-                        this.ProcessShutterControlMessage(receivedMessage);
                         break;
 
                     case MessageType.Positioning:
@@ -672,40 +673,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"13:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
-                                    this.currentStateMachine = null;
-                                    this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
-
-                                    //TODO: According to the type of error we can try to resolve here
-                                    break;
-                            }
-                        }
-                        break;
-
-                    case MessageType.ShutterTestStatusChanged:
-                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
-                        {
-                            switch (receivedMessage.Status)
-                            {
-                                case MessageStatus.OperationEnd:
-
-                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
-                                    this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
-                                    break;
-
-                                case MessageStatus.OperationStop:
-
-                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                    this.currentStateMachine = null;
-                                    this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
-                                    break;
-
-                                case MessageStatus.OperationError:
-
-                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
                                     this.SendStatusWordTimer(true, 600);

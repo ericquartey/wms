@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -11,7 +12,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
-using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -57,6 +57,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
+        }
+
+        private void DelayTimerMethod(object state)
+        {
+            // stop timer
+            this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            // send a notification to wake up the state machine waiting for the delay
+            var notificationMessage = new NotificationMessage(
+                null,
+                "Delay Timer Expired",
+                MessageActor.FiniteStateMachines,
+                MessageActor.FiniteStateMachines,
+                MessageType.CheckCondition,
+                MessageStatus.OperationExecuting);
+
+            this.logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         private bool EvaluateCondition(ConditionToCheckType condition)
@@ -441,36 +460,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.forceRemoteIoStatusPublish = true;
         }
 
-        private void ProcessShutterControlMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IShutterTestStatusChangedMessageData data)
-            {
-                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
-                data.ShutterType = ShutterType.Shutter2Type;
-
-                this.currentStateMachine = new ShutterControlStateMachine(
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
-            }
-        }
-
         private void ProcessShutterPositioningMessage(CommandMessage message)
         {
             this.logger.LogTrace("1:Method Start");
@@ -485,7 +474,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.InverterFromBayNumber(data.BayNumber),
                         this.logger,
                         this.serviceScopeFactory,
-                        this.machineSensorsStatus);
+                        this.machineSensorsStatus,
+                        this.delayTimer);
 
                     this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
 

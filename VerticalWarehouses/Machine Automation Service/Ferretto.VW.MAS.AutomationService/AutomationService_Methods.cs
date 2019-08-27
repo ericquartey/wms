@@ -262,29 +262,6 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void ShutterControlMethod(NotificationMessage receivedMessage)
-        {
-            try
-            {
-                this.logger.LogTrace($"17:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ShutterControlNotify(message);
-
-                this.logger.LogTrace($"18:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-            }
-            catch (ArgumentNullException exNull)
-            {
-                this.logger.LogTrace($"19:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogTrace($"20:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-            }
-        }
-
         private void ShutterPositioningMethod(NotificationMessage receivedMessage)
         {
             try
