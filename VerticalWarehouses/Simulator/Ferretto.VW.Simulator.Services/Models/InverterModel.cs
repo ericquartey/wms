@@ -944,8 +944,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
 
-            if (Math.Abs(target - this.AxisPosition) == 0)
+            bool directionUp = (target > this.AxisPosition);
+            if ((directionUp && target - this.AxisPosition <= 0) || (!directionUp && this.AxisPosition - target <= 0))
             {
+                this.AxisPosition = this.TargetPosition[this.currentAxis];
+
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x0400;      // Set Target Reached
 
