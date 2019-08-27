@@ -16,7 +16,8 @@
                         Height="60"
                         Command="{Binding ExecuteCommand}">
 
-        <Grid Width="100" Height="60">
+        <Grid Width="100"
+              Height="60">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
@@ -25,7 +26,6 @@
             <TextBlock VerticalAlignment="Center"
                        FontSize="{DynamicResource PpcButtonFontSize}"
                        Foreground="{DynamicResource PpcButtonForeground}"
-
                        TextAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
