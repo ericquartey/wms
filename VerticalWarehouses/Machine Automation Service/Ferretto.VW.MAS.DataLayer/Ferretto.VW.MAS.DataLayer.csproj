@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
   </ItemGroup>
   

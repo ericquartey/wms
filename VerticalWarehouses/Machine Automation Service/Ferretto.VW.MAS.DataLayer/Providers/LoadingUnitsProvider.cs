@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class LoadingUnitStatisticsProvider : Interfaces.ILoadingUnitStatisticsProvider
+    internal class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
     {
         #region Fields
 
@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public LoadingUnitStatisticsProvider(DataLayerContext dataContext)
+        public LoadingUnitsProvider(DataLayerContext dataContext)
         {
             if (dataContext == null)
             {

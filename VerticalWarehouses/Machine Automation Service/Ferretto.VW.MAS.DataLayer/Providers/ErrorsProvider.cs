@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -49,24 +50,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Error GetCurrent()
         {
             return this.dataContext.Errors
-            .Where(e => !e.ResolutionDate.HasValue)
-            .OrderBy(e => e.Definition.Severity)
-            .ThenBy(e => e.OccurrenceDate)
-            .Select(e => new Error
-            {
-                Id = e.Id,
-                Code = e.Code,
-                OccurrenceDate = e.OccurrenceDate,
-                ResolutionDate = e.ResolutionDate,
-                Definition = new ErrorDefinition
+                .Where(e => !e.ResolutionDate.HasValue)
+                .OrderBy(e => e.Definition.Severity)
+                .ThenBy(e => e.OccurrenceDate)
+                .Select(e => new Error
                 {
+                    Id = e.Id,
                     Code = e.Code,
-                    Description = e.Definition.Description,
-                    Reason = e.Definition.Reason,
-                    Severity = e.Definition.Severity
-                }
-            })
-            .FirstOrDefault();
+                    OccurrenceDate = e.OccurrenceDate,
+                    ResolutionDate = e.ResolutionDate,
+                    Definition = new ErrorDefinition
+                    {
+                        Code = e.Code,
+                        Description = e.Definition.Description,
+                        Reason = e.Definition.Reason,
+                        Severity = e.Definition.Severity
+                    }
+                })
+                .FirstOrDefault();
         }
 
         public ErrorStatisticsSummary GetStatistics()
@@ -124,16 +125,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Error Resolve(int id)
         {
             var error = this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
-            if (error != null)
+            if (error is null)
             {
-                error.ResolutionDate = DateTime.UtcNow;
-
-                this.dataContext.Errors.Update(error);
-
-                this.dataContext.SaveChanges();
-
-                this.NotifyErrorResolution(error);
+                throw new EntityNotFoundException(id);
             }
+
+            error.ResolutionDate = DateTime.UtcNow;
+
+            this.dataContext.Errors.Update(error);
+
+            this.dataContext.SaveChanges();
+
+            this.NotifyErrorResolution(error);
 
             return error;
         }
