@@ -905,16 +905,34 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void TargetTick(object state)
         {
-            if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
+            int target;
+            if (this.IsRelativeMovement)
+            {
+                target = this.AxisPosition + this.TargetPosition[this.currentAxis];
+            }
+            else
+            {
+                target = this.TargetPosition[this.currentAxis];
+            }
+
+            if (target > this.AxisPosition)
             {
                 this.AxisPosition++;
+                if (this.IsRelativeMovement)
+                {
+                    this.TargetPosition[this.currentAxis]--;
+                }
             }
             else
             {
                 this.AxisPosition--;
+                if (this.IsRelativeMovement)
+                {
+                    this.TargetPosition[this.currentAxis]++;
+                }
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            if (Math.Abs(target - this.AxisPosition) == 0)
             {
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x0400;      // Set Target Reached
