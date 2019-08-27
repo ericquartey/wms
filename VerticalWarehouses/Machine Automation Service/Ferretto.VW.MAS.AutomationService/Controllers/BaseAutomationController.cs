@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             TData messageData = null;
 
-            using (var semaphore = new Semaphore(0, 1))
+            using (var semaphore = new Semaphore(0, 100))
             {
                 var notificationEvent = this.eventAggregator
                     .GetEvent<NotificationEvent>();

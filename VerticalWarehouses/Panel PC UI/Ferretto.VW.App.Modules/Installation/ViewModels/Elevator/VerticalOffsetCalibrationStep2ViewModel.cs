@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.applyCorrectionCommand
             ??
             (this.applyCorrectionCommand = new DelegateCommand(
-                async () => await this.ExecuteApplyCorrectionCommandAsync(),
+                async () => await this.ApplyCorrectionAsync(),
                 this.CanExecuteApplyCorrectionCommand));
 
         public Cell Cell
@@ -129,14 +129,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveDownCommand
             ??
             (this.moveDownCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveDownCommandAsync(),
+                async () => await this.MoveDownAsync(),
                 this.CanExecuteMoveDownCommand));
 
         public ICommand MoveUpCommand =>
             this.moveUpCommand
             ??
             (this.moveUpCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveUpCommandAsync(),
+                async () => await this.MoveUpAsync(),
                 this.CanExecuteMoveUpCommand));
 
         #endregion
@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
         }
 
-        private async Task ExecuteApplyCorrectionCommandAsync()
+        private async Task ApplyCorrectionAsync()
         {
             try
             {
@@ -283,7 +283,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteMoveDownCommandAsync()
+        private async Task MoveDownAsync()
         {
             try
             {
@@ -305,7 +305,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteMoveUpCommandAsync()
+        private async Task MoveUpAsync()
         {
             try
             {

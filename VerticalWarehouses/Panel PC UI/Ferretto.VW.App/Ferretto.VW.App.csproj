@@ -66,8 +66,4 @@
     </None>
   </ItemGroup>
 
-  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="mkdir  &quot;$(ProjectDir)publish\$(ConfigurationName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Installation.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Installation.dll&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Modules.Operator.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Modules.Operator.dll&quot;" />
-  </Target>-->
-
 </Project>

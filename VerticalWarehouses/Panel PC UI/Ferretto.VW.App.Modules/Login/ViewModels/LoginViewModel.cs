@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.loginCommand
             ??
             (this.loginCommand = new DelegateCommand(
-                async () => await this.ExecuteLoginCommandAsync(),
+                async () => await this.LoginAsync(),
                 this.CanExecuteLogin));
 
         private bool CanExecuteLogin()
@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private async Task ExecuteLoginCommandAsync()
+        private async Task LoginAsync()
         {
             this.ShowNotification(string.Empty);
 

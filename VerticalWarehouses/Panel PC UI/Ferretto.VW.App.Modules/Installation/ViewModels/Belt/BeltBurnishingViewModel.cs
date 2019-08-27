@@ -155,14 +155,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync(),
+                async () => await this.StartAsync(),
                 this.CanExecuteStartCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
+                async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
         #endregion
@@ -293,7 +293,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && !this.IsWaitingForResponse;
         }
 
-        private async Task ExecuteStartCommandAsync()
+        private async Task StartAsync()
         {
             try
             {
@@ -315,7 +315,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStopCommandAsync()
+        private async Task StopAsync()
         {
             try
             {

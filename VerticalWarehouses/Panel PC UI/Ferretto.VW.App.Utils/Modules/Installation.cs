@@ -33,6 +33,8 @@
 
             public const string CAROUSEL = "CarouselManualMovementsViewModel";
 
+            public const string EXTERNALBAY = "ExternalBayManualMovementsViewModel";
+
             public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
 
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
