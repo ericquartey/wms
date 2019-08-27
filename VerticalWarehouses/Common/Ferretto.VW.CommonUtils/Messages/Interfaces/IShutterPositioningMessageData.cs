@@ -4,9 +4,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IShutterPositioningMessageData : IMessageData
     {
-        #region Properties
 
-        int BayNumber { get; }
+
+        #region Properties
 
         ShutterMovementDirection ShutterMovementDirection { get; }
 

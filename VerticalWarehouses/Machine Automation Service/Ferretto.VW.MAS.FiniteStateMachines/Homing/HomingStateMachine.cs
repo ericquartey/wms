@@ -15,11 +15,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingStateMachine : StateMachineBase
     {
+
         #region Fields
 
         private readonly Axis calibrateAxis;
 
         private readonly ILogger logger;
+
+        private readonly BayIndex requestingBay;
 
         private bool disposed;
 
@@ -32,6 +35,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public HomingStateMachine(
             IEventAggregator eventAggregator,
             IHomingMessageData calibrateMessageData,
+            BayIndex requestingBay,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
@@ -42,6 +46,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.CurrentState = new EmptyState(logger);
 
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
+
+            this.requestingBay = requestingBay;
         }
 
         #endregion
@@ -54,6 +60,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -83,6 +91,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
+                        this.requestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -112,6 +121,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
+                        this.requestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.PublishNotificationMessage(notificationMessage);
@@ -150,15 +160,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3);
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3, this.requestingBay);
                     break;
 
                 case Axis.Horizontal:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1);
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1, this.requestingBay);
                     break;
 
                 case Axis.Vertical:
-                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1);
+                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1, this.requestingBay);
                     break;
             }
 

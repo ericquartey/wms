@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IGeneralInfoConfigurationDataLayer
     {
+
+
         #region Properties
 
         string Address { get; }
@@ -81,6 +83,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         int MaxAcceptedBai2Height { get; }
 
         int MaxAcceptedBai3Height { get; }
+
+        int MaxDrawerGrossWeight { get; }
 
         double MaxGrossWeight { get; }
 

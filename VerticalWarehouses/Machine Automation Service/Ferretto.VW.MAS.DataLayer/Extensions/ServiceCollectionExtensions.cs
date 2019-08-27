@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+
+
         #region Methods
 
         public static IServiceCollection AddDataLayer(
@@ -67,7 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
-                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>();
+                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
+                .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
             services.AddSingleton<IVerticalOriginSetupStatusProvider, VerticalOriginSetupStatusProvider>();
 

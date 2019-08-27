@@ -22,25 +22,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
 
         #region Constructors
 
-        public BaysProvider(DataLayerContext dataContext, IEventAggregator eventAggregator)
+        public BaysProvider(DataLayerContext dataContext, IMachineConfigurationProvider machineConfigurationProvider, IEventAggregator eventAggregator)
         {
             if (eventAggregator == null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
-            this.dataContext = dataContext;
+            this.machineConfigurationProvider = machineConfigurationProvider ?? throw new ArgumentNullException(nameof(machineConfigurationProvider));
+
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
 
@@ -174,9 +174,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             switch (bay.Type)
             {
                 case BayType.Elevator:
-                    //TODO define a way to identify the machine version 1000 Kg or not
-                    bool bigMachine = false;
-                    if (bigMachine)
+                    if (this.machineConfigurationProvider.IsOneKMachine())
                     {
                         returnValue.Add(InverterIndex.MainInverter);
                         returnValue.Add(InverterIndex.Slave1); ;

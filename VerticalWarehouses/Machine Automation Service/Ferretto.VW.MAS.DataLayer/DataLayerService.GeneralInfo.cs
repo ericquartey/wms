@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IGeneralInfoConfigurationDataLayer
     {
+
+
         #region Properties
 
         public string Address => this.GetStringConfigurationValue((long)GeneralInfo.Address, ConfigurationCategory.GeneralInfo);
@@ -85,6 +87,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public int MaxAcceptedBai2Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai2Height, ConfigurationCategory.GeneralInfo);
 
         public int MaxAcceptedBai3Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai3Height, ConfigurationCategory.GeneralInfo);
+
+        public int MaxDrawerGrossWeight => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxDrawerGrossWeight, ConfigurationCategory.GeneralInfo);
 
         public double MaxGrossWeight => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxGrossWeight, ConfigurationCategory.GeneralInfo);
 

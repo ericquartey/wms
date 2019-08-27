@@ -16,6 +16,7 @@
     "Serial": "VM_190001",
     "Height": 4.563,
     "MaxGrossWeight": 50000,
+    "MaxDrawerGrossWeight": 990,
     "DrawersQuantity": 15,
     "BaysQuantity": 2,
     "Bay1Type": 4,

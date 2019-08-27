@@ -204,6 +204,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     currentStateMachine = new HomingStateMachine(
                         this.eventAggregator,
                         data,
+                        receivedMessage.BayIndex,
                         this.logger,
                         this.serviceScopeFactory);
 
@@ -407,28 +408,39 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IShutterTestStatusChangedMessageData data)
+            if (this.currentStateMachines.TryGetValue(message.BayIndex, out var currentStateMachine))
             {
-                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
-                data.ShutterType = ShutterType.Shutter2Type;
-
-                this.currentStateMachine = new ShutterControlStateMachine(
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (message.Data is IShutterTestStatusChangedMessageData data)
                 {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+                    // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
+                    data.ShutterType = ShutterType.Shutter2Type;
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    currentStateMachine = new ShutterControlStateMachine(
+                        this.eventAggregator,
+                        data,
+                        this.logger,
+                        this.serviceScopeFactory);
+
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(message.BayIndex, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
         }
@@ -437,46 +449,40 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IShutterPositioningMessageData data)
+            if (this.currentStateMachines.TryGetValue(message.BayIndex, out var currentStateMachine))
             {
-                InverterIndex inverterIndex;
-                switch (data.BayNumber)
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (message.Data is IShutterPositioningMessageData data)
                 {
-                    case 1:
-                        inverterIndex = InverterIndex.Slave2;
-                        break;
+                    var inverters = this.baysProvider.GetInverterList(message.BayIndex);
 
-                    case 2:
-                        inverterIndex = InverterIndex.Slave4;
-                        break;
+                    currentStateMachine = new ShutterPositioningStateMachine(
+                        this.eventAggregator,
+                        data,
+                        inverters[0],
+                        this.logger,
+                        this.serviceScopeFactory,
+                        this.machineSensorsStatus);
 
-                    case 3:
-                        inverterIndex = InverterIndex.Slave6;
-                        break;
+                    this.logger.LogDebug($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(message.BayIndex, currentStateMachine);
 
-                    default:
-                        this.logger.LogError($"Bay number not valid {data.BayNumber}");
-                        return;
-                }
-                this.currentStateMachine = new ShutterPositioningStateMachine(
-                    this.eventAggregator,
-                    data,
-                    inverterIndex,
-                    this.logger,
-                    this.serviceScopeFactory,
-                    this.machineSensorsStatus);
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
         }
@@ -485,7 +491,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
-            this.currentStateMachine?.Stop();
+            if (this.currentStateMachines.TryGetValue(receivedMessage.BayIndex, out var currentStateMachine))
+            {
+                currentStateMachine.Stop();
+            }
         }
 
         #endregion

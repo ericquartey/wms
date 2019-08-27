@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
+
+
         #region Methods
 
         public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
@@ -67,6 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case GeneralInfo.Barrier2Height:
                 case GeneralInfo.Barrier3Height:
                 case GeneralInfo.MaxGrossWeight:
+                case GeneralInfo.MaxDrawerGrossWeight:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
