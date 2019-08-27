@@ -61,23 +61,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.currentInverterIndex++;
+                        //this.currentInverterIndex++;
 
-                        if (this.currentInverterIndex < this.machineData.ConfiguredInverters.Count)
-                        {
-                            var inverterCommandMessageData = new InverterStopFieldMessageData();
-                            var inverterCommandMessage = new FieldCommandMessage(
-                                inverterCommandMessageData,
-                                $"Reset Fault Inverter",
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageActor.FiniteStateMachines,
-                                FieldMessageType.InverterStop,
-                                (byte)this.machineData.ConfiguredInverters[this.currentInverterIndex]);
-                            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+                        //if (this.currentInverterIndex < this.machineData.ConfiguredInverters.Count)
+                        //{
+                        //    var inverterCommandMessageData = new InverterStopFieldMessageData();
+                        //    var inverterCommandMessage = new FieldCommandMessage(
+                        //        inverterCommandMessageData,
+                        //        $"Reset Fault Inverter",
+                        //        FieldMessageActor.InverterDriver,
+                        //        FieldMessageActor.FiniteStateMachines,
+                        //        FieldMessageType.InverterStop,
+                        //        (byte)this.machineData.ConfiguredInverters[this.currentInverterIndex]);
+                        //    this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-                            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-                        }
-                        else
+                        //    this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+                        //}
+                        //else
                         {
                             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData));
                         }

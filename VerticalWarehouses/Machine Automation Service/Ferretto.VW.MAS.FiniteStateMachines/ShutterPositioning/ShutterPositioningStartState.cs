@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 // TestLoop:
                 // not all starting positions are allowed
                 if (this.shutterPositioningMessageData.ShutterType == ShutterType.Shutter3Type &&
-                    inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate
+                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate || inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
                     )
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
