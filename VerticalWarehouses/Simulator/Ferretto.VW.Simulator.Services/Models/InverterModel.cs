@@ -938,7 +938,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
 
             bool directionUp = (this.TargetPosition[this.currentAxis] > this.AxisPosition);
-            if ((directionUp && this.TargetPosition[this.currentAxis] - this.AxisPosition <= 0) || (!directionUp && this.AxisPosition - this.TargetPosition[this.currentAxis] <= 0))
+
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
             {
                 this.AxisPosition = this.TargetPosition[this.currentAxis];
 
