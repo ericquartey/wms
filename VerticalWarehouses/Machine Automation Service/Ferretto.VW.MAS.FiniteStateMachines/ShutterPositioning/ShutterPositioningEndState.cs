@@ -1,9 +1,10 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -18,11 +19,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #region Fields
 
-        private readonly InverterIndex inverterIndex;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+        private readonly IShutterPositioningStateMachineData shutterPositioningStateMachineData;
 
         private readonly bool stopRequested;
 
@@ -34,16 +31,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public ShutterPositioningEndState(
             IStateMachine parentMachine,
-            IShutterPositioningMessageData shutterPositioningMessageData,
-            InverterIndex inverterIndex,
-            IMachineSensorsStatus machineSensorsStatus,
-            ILogger logger,
+            IShutterPositioningStateMachineData shutterPositioningStateMachineData,
             bool stopRequested = false)
-            : base(parentMachine, logger)
+            : base(parentMachine, shutterPositioningStateMachineData.Logger)
         {
-            this.shutterPositioningMessageData = shutterPositioningMessageData;
-            this.inverterIndex = inverterIndex;
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.shutterPositioningStateMachineData = shutterPositioningStateMachineData;
             this.stopRequested = stopRequested;
         }
 
@@ -62,21 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -94,24 +71,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     switch (message.Status)
                     {
                         case MessageStatus.OperationEnd:
-                            var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-                            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
-                            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
-                            this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
+                            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningStateMachineData.PositioningMessageData);
+                            var inverterStatus = new AglInverterStatus(message.DeviceIndex);
+                            int sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.aglInverterInputs.Length);
+                            Array.Copy(this.shutterPositioningStateMachineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                            notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
                             var notificationMessage = new NotificationMessage(
-                               this.shutterPositioningMessageData,
+                                notificationMessageData,
                                "ShutterPositioning Complete",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
                                MessageType.ShutterPositioning,
+                                this.shutterPositioningStateMachineData.RequestingBay,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningStateMachineData, null));
                             break;
                     }
                     break;
@@ -138,23 +117,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)this.inverterIndex);
+                    (byte)this.shutterPositioningStateMachineData.InverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
             else
             {
-                var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-                int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
-                Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
-                this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
+                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningStateMachineData.PositioningMessageData);
+                var inverterStatus = new AglInverterStatus((byte)this.shutterPositioningStateMachineData.InverterIndex);
+                int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.shutterPositioningStateMachineData.InverterIndex * inverterStatus.aglInverterInputs.Length);
+                Array.Copy(this.shutterPositioningStateMachineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
                 var notificationMessage = new NotificationMessage(
-                    this.shutterPositioningMessageData,
+                    notificationMessageData,
                     "ShutterPositioning Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
+                    this.shutterPositioningStateMachineData.RequestingBay,
                     MessageStatus.OperationEnd);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -189,6 +170,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

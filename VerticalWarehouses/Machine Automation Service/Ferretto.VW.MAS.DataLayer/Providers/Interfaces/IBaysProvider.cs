@@ -10,6 +10,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
 
 
+        #region Properties
+
+        int BayInverterPosition { get; }
+
+        int ShutterInverterPosition { get; }
+
+        #endregion
+
+
+
         #region Methods
 
         Bay Activate(BayIndex bayIndex);

@@ -48,6 +48,22 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
 
 
+        #region Properties
+
+        /// <summary>
+        /// Helper property used to identify Chain/Carouser inverter in Inverter list
+        /// </summary>
+        public int BayInverterPosition => 1;
+
+        /// <summary>
+        /// Helper property used to identify Shutter inverter in Inverter list
+        /// </summary>
+        public int ShutterInverterPosition => 0;
+
+        #endregion
+
+
+
         #region Methods
 
         public Bay Activate(BayIndex bayIndex)
@@ -177,7 +193,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     if (this.machineConfigurationProvider.IsOneKMachine())
                     {
                         returnValue.Add(InverterIndex.MainInverter);
-                        returnValue.Add(InverterIndex.Slave1); ;
+                        returnValue.Add(InverterIndex.Slave1);
                     }
                     else
                     {

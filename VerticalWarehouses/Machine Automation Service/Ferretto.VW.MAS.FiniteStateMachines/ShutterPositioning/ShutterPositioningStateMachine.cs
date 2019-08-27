@@ -1,28 +1,20 @@
 ﻿using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningStateMachine : StateMachineBase
     {
+
         #region Fields
 
-        private readonly Timer delayTimer;
-
-        private readonly InverterIndex inverterIndex;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+        private readonly IShutterPositioningStateMachineData shutterPositioningStateMachineData;
 
         private bool disposed;
 
@@ -31,24 +23,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(
-            IEventAggregator eventAggregator,
-            IShutterPositioningMessageData shutterPositioningMessageData,
-            InverterIndex inverterIndex,
-            ILogger logger,
-            IServiceScopeFactory serviceScopeFactory,
-            IMachineSensorsStatus machineSensorsStatus,
-            Timer delayTimer)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            IShutterPositioningStateMachineData shutterPositioningStateMachineData)
+            : base(shutterPositioningStateMachineData.EventAggregator, shutterPositioningStateMachineData.Logger, shutterPositioningStateMachineData.ServiceScopeFactory)
         {
-            this.CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(shutterPositioningStateMachineData.Logger);
 
-            this.inverterIndex = inverterIndex;
-
-            this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            this.machineSensorsStatus = machineSensorsStatus;
-
-            this.delayTimer = delayTimer;
+            this.shutterPositioningStateMachineData = shutterPositioningStateMachineData;
         }
 
         #endregion
@@ -62,18 +42,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -118,18 +89,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void Start()
         {
+            this.shutterPositioningStateMachineData.DelayTimer?.Dispose();
+            this.shutterPositioningStateMachineData.DelayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
+
             lock (this.CurrentState)
             {
-                if (!this.machineSensorsStatus.IsMachineInNormalState ||
-                    this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                    !(this.shutterPositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningMessageData.MovementMode == MovementMode.TestLoop)
+                if (!this.shutterPositioningStateMachineData.MachineSensorsStatus.IsMachineInNormalState ||
+                    this.shutterPositioningStateMachineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+                    !(this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.TestLoop)
                     )
                 {
-                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger);
+                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningStateMachineData, null);
                 }
                 else
                 {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.inverterIndex, this.Logger, this.machineSensorsStatus, this.delayTimer);
+                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningStateMachineData);
                 }
 
                 this.CurrentState?.Start();
@@ -146,6 +120,41 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.Stop();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                this.shutterPositioningStateMachineData.DelayTimer?.Dispose();
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
+
+        private void DelayTimerMethod(object state)
+        {
+            // stop timer
+            this.shutterPositioningStateMachineData.DelayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            // send a notification to wake up the state machine waiting for the delay
+            var notificationMessage = new NotificationMessage(
+                null,
+                "Delay Timer Expired",
+                MessageActor.FiniteStateMachines,
+                MessageActor.FiniteStateMachines,
+                MessageType.CheckCondition,
+                this.shutterPositioningStateMachineData.RequestingBay,
+                MessageStatus.OperationExecuting);
+
+            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         #endregion

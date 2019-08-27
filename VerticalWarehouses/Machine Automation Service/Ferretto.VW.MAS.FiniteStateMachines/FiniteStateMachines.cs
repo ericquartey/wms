@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines : BackgroundService
     {
+
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -63,8 +64,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly IVerticalAxisDataLayer verticalAxis;
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
-        private Timer delayTimer;
 
         private bool disposed;
 
@@ -185,12 +184,48 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
+
+
         #region Methods
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.fieldNotificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+            }
+
+            await Task.CompletedTask;
+        }
 
         private void CommandReceiveTaskFunction()
         {
-            this.delayTimer?.Dispose();
-            this.delayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
             do
             {
                 CommandMessage receivedMessage;
@@ -879,43 +914,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.delayTimer?.Dispose();
-            }
-
-            this.disposed = true;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.fieldNotificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-
-            await Task.CompletedTask;
         }
 
         #endregion
