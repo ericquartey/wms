@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Reflection;
 using System.Windows;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -83,6 +84,7 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
 
             containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
+            containerRegistry.RegisterSingleton<IDialogService, DialogService>();
 
             // UI services
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
