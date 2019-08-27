@@ -278,7 +278,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false,
                     message =>
                     message.NotificationType == NotificationType.Error &&
-                    message.ActionType == ActionType.ShutterControl &&
+                    message.ActionType == ActionType.ShutterPositioning &&
                     message.ActionStatus == ActionStatus.Error);
 
             this.receivedSensorsToken = this.EventAggregator

@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             var notificationMessage = new NotificationMessage(
                 this.shutterPositioningMessageData,
-                "ShutterControl Test Executing",
+                "Shutter Positioning Executing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,

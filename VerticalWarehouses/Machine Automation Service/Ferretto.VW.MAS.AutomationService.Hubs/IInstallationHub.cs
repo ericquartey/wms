@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task SensorsChanged(IBaseNotificationMessageUI message);
 
-        Task ShutterControlNotify(IBaseNotificationMessageUI message);
-
         Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);

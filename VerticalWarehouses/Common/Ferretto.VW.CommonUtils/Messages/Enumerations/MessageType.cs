@@ -26,8 +26,6 @@
 
         MachineStatusActive,
 
-        //ShutterControl,       // TODO: remove this message
-
         NewMissionAvailable,
 
         CreateMission,
