@@ -89,7 +89,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<decimal> GetHorizontalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
-            this.PublishCommand(
+
+            void publishAction() => this.PublishCommand(
                 messageData,
                 "Request Horizontal position",
                 MessageActor.FiniteStateMachines,
@@ -100,16 +101,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting);
+                MessageStatus.OperationExecuting,
+                publishAction);
 
-            return this.Ok(notifyData?.CurrentPosition ?? 0);
+            if (notifyData?.CurrentPosition == null)
+            {
+                throw new System.Exception("Cannot get current vertical position.");
+            }
+
+            return this.Ok(notifyData?.CurrentPosition);
         }
 
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
-            this.PublishCommand(
+            void publishAction() => this.PublishCommand(
                 messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
@@ -120,9 +127,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting);
+                MessageStatus.OperationExecuting,
+                publishAction);
 
-            return this.Ok(notifyData?.CurrentPosition ?? 0);
+            if (notifyData?.CurrentPosition == null)
+            {
+                throw new System.Exception("Cannot get current vertical position.");
+            }
+
+            return this.Ok(notifyData?.CurrentPosition);
         }
 
         [HttpPost("horizontal/move")]
@@ -132,11 +145,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var setupStatus = this.setupStatusProvider.Get();
 
-            var initialTargetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
+            var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
                 ? this.horizontalManualMovements.RecoveryTargetPositionHM
                 : this.horizontalManualMovements.InitialTargetPositionHM;
 
-            initialTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var speed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
@@ -144,7 +157,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 Axis.Horizontal,
                 MovementType.Relative,
                 MovementMode.Position,
-                initialTargetPosition,
+                targetPosition,
                 speed,
                 this.horizontalAxis.MaxEmptyAccelerationHA,
                 this.horizontalAxis.MaxEmptyDecelerationHA,
@@ -158,7 +171,63 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
 
-            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {MovementType.Relative}, target position {initialTargetPosition}");
+            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {MovementType.Relative}, target position {targetPosition}");
+
+            return this.Accepted();
+        }
+
+        [HttpPost("vertical/move-to")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToVerticalPosition(decimal targetPosition)
+        {
+            var lowerBound = this.verticalAxis.LowerBound;
+            var upperBound = this.verticalAxis.UpperBound;
+
+            if (targetPosition < lowerBound || targetPosition > upperBound)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Detail = $"Target position ({targetPosition}) must be in the range [{lowerBound}; {upperBound}]."
+                    });
+            }
+
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            if (!homingDone)
+            {
+                return this.UnprocessableEntity(
+                    new ProblemDetails
+                    {
+                        Detail = $"Vertical origin calibration must be performed before attempting to move the elevator to a given position."
+                    });
+            }
+
+            var movementType = MovementType.Absolute;
+
+            var feedRate = this.verticalManualMovements.FeedRateAfterZero;
+
+            var speed = this.verticalAxis.MaxEmptySpeed * feedRate;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                movementType,
+                MovementMode.Position,
+                targetPosition,
+                speed,
+                this.verticalAxis.MaxEmptyAcceleration, // TODO is this correct?
+                this.verticalAxis.MaxEmptyDeceleration, // TODO is this correct?
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            this.logger.LogDebug($"Starting elevator positioning, type {movementType}, target position {targetPosition}");
 
             return this.Accepted();
         }
@@ -214,6 +283,46 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Positioning);
 
             this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {movementType}, target position {targetPosition}");
+
+            return this.Accepted();
+        }
+
+        [HttpPost("vertical/move-relative")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveVerticalOfDistance(decimal distance)
+        {
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            if (!homingDone)
+            {
+                return this.UnprocessableEntity(
+                   new ProblemDetails
+                   {
+                       Detail = $"Vertical origin calibration must be performed before attempting to move the elevator of a given relative position."
+                   });
+            }
+
+            var speed = this.verticalAxis.MaxEmptySpeed * this.verticalManualMovements.FeedRateAfterZero;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Relative,
+                MovementMode.Position,
+                distance,
+                speed,
+                this.verticalAxis.MaxEmptyAcceleration,
+                this.verticalAxis.MaxEmptyDeceleration,
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            this.logger.LogDebug($"Starting vertical axis movement, displacement={distance}");
 
             return this.Accepted();
         }

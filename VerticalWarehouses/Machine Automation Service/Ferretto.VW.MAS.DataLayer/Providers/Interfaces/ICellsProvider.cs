@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
@@ -6,7 +7,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
+        IEnumerable<Cell> GetAll();
+
         CellStatisticsSummary GetStatistics();
+
+        Cell UpdateHeight(int cellId, decimal height);
 
         #endregion
     }

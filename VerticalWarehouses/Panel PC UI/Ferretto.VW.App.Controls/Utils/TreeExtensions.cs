@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Controls
                 yield break;
             }
 
-            bool afterSelf = false;
+            var afterSelf = false;
             foreach (var child in item.Ancestors().First().Elements())
             {
                 if (afterSelf)

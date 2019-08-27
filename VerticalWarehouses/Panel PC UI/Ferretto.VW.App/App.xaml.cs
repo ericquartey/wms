@@ -12,9 +12,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Prism.Unity;
 using Unity;
-using Unity.Injection;
 
 namespace Ferretto.VW.App
 {

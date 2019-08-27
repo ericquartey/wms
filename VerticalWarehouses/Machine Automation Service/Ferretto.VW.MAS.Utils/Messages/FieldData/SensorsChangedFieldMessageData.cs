@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public override string ToString()
         {
-            string sensorsStates = string.Empty;
+            var sensorsStates = string.Empty;
             if (this.SensorsStates != null)
             {
                 var sb = new StringBuilder();

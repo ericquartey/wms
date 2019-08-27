@@ -68,6 +68,9 @@
     <None Update="Controls\CustomMainWindowDebugButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Controls\Menu\PpcStepsMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Skins\Palette.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

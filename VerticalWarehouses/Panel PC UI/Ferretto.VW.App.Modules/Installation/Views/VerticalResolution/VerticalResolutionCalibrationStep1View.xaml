@@ -34,8 +34,8 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              InputText="{Binding InputInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
         <controls:PpcButton Grid.Row="4"

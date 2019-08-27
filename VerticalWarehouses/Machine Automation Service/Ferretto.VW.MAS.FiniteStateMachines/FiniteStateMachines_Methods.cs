@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -57,6 +58,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
+        }
+
+        private void DelayTimerMethod(object state)
+        {
+            // stop timer
+            this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            // send a notification to wake up the state machine waiting for the delay
+            var notificationMessage = new NotificationMessage(
+                null,
+                "Delay Timer Expired",
+                MessageActor.FiniteStateMachines,
+                MessageActor.FiniteStateMachines,
+                MessageType.CheckCondition,
+                MessageStatus.OperationExecuting);
+
+            this.logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         private bool EvaluateCondition(ConditionToCheckType condition)
@@ -485,7 +505,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.InverterFromBayNumber(data.BayNumber),
                         this.logger,
                         this.serviceScopeFactory,
-                        this.machineSensorsStatus);
+                        this.machineSensorsStatus,
+                        this.delayTimer);
 
                     this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
 

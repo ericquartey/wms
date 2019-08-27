@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Movimenti manuali a bassa velocità")]
         VerticalEngineManualMovements,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Controllo quote celle")]
         CellsHeightCheck,
 

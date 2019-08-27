@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-namespace Ferretto.VW.App.Controls.Controls
+﻿namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMainWindowDebugButton.xaml

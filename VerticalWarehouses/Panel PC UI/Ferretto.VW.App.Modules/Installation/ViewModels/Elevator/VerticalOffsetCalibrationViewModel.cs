@@ -187,14 +187,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
+            base.Disappear();
+
             if (this.receivePositioningUpdateToken != null)
             {
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Unsubscribe(this.receivePositioningUpdateToken);
             }
-
-            base.Disappear();
         }
 
         public async Task ExecuteSetPositionCommand()

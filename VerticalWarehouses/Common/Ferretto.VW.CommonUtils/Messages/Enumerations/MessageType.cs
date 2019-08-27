@@ -22,7 +22,7 @@
 
         CalibrateAxis,
 
-        ShutterTestStatusChanged,
+        ShutterTestStatusChanged,   // TODO: remove this message
 
         MachineStateActive,
 

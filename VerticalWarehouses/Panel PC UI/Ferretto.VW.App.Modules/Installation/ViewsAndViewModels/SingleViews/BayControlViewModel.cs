@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    internal class BayControlViewModel : BindableBase, IBayControlViewModel
+    internal class BayControlViewModel : BindableBase
     {
         #region Fields
 
