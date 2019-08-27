@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         protected BaseAutomationController(IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }

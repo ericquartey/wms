@@ -131,8 +131,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
             try
             {
                 this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();

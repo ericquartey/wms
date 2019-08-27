@@ -9,7 +9,7 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="250,30,0,0">
+    <Grid Margin="130,30,0,0">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />

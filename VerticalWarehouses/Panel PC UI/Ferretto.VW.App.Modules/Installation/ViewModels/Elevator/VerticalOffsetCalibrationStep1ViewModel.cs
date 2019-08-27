@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsHeightCheckStep1ViewModel : BaseCellsHeightCheckViewModel
+    public class VerticalOffsetCalibrationStep1ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
 
@@ -27,10 +27,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public CellsHeightCheckStep1ViewModel(
+        public VerticalOffsetCalibrationStep1ViewModel(
             IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineCellsService, machineElevatorService)
+            IMachineElevatorService machineElevatorService,
+            IMachineVerticalOffsetProcedureService verticalOffsetService)
+            : base(machineCellsService, machineElevatorService, verticalOffsetService)
         {
         }
 
@@ -90,6 +91,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public async override Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            try
+            {
+                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+
+                this.InputCellId = parameters.ReferenceCellId;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             base.OnCurrentPositionChanged(message);
@@ -148,7 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Coord, false);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Coord, true);
 
                 this.IsElevatorMoving = true;
             }
@@ -180,7 +197,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.CellsHeightCheck.STEP2,
+                Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
                 this.SelectedCell,
                 trackCurrentView: false);
         }

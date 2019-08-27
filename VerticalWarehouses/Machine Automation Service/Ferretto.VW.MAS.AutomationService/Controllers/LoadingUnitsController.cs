@@ -33,12 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider == null)
+            if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
-            if (machinesDataService == null)
+            if (machinesDataService is null)
             {
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }

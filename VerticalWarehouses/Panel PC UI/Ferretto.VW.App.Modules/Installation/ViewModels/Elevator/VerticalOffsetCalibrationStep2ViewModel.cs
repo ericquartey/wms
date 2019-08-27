@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages;
@@ -9,15 +8,19 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
+    public class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
+
+        private readonly IMachineVerticalOffsetProcedureService verticalOffsetService;
 
         private DelegateCommand applyCorrectionCommand;
 
         private Cell cell;
 
-        private decimal? inputCellHeight;
+        private decimal? currentVerticalOffset;
+
+        private decimal? inputDisplacement;
 
         private decimal inputStepValue;
 
@@ -33,11 +36,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public CellsHeightCheckStep2ViewModel(
+        public VerticalOffsetCalibrationStep2ViewModel(
             IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineCellsService, machineElevatorService)
+            IMachineElevatorService machineElevatorService,
+            IMachineVerticalOffsetProcedureService verticalOffsetService)
+            : base(machineCellsService, machineElevatorService, verticalOffsetService)
         {
+            if (verticalOffsetService is null)
+            {
+                throw new ArgumentNullException(nameof(verticalOffsetService));
+            }
+
+            this.verticalOffsetService = verticalOffsetService;
         }
 
         #endregion
@@ -57,16 +67,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.cell, value);
         }
 
+        public decimal? CurrentVerticalOffset
+        {
+            get => this.currentVerticalOffset;
+            set => this.SetProperty(ref this.currentVerticalOffset, value);
+        }
+
         public string Error => string.Join(
               Environment.NewLine,
-              this[nameof(this.InputCellHeight)]);
+              this[nameof(this.InputDisplacement)]);
 
-        public decimal? InputCellHeight
+        public decimal? InputDisplacement
         {
-            get => this.inputCellHeight;
+            get => this.inputDisplacement;
             set
             {
-                if (this.SetProperty(ref this.inputCellHeight, value))
+                if (this.SetProperty(ref this.inputDisplacement, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -133,15 +149,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
-                    case nameof(this.InputCellHeight):
-                        if (!this.InputCellHeight.HasValue)
+                    case nameof(this.InputDisplacement):
+                        if (!this.InputDisplacement.HasValue)
                         {
-                            return $"InputCellHeight is required.";
-                        }
-
-                        if (this.InputCellHeight.Value < 0)
-                        {
-                            return "InputFinalPosition must be positive.";
+                            return $"InputOffset is required.";
                         }
                         break;
                 }
@@ -161,6 +172,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Data is Cell cell)
             {
                 this.Cell = cell;
+            }
+
+            try
+            {
+                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+
+                this.InputStepValue = parameters.StepValue;
+                this.CurrentVerticalOffset = parameters.VerticalOffset;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 
@@ -207,7 +230,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMovingDown
                 &&
-                string.IsNullOrWhiteSpace(this[nameof(this.InputCellHeight)]);
+                string.IsNullOrWhiteSpace(this[nameof(this.InputDisplacement)])
+                &&
+                this.CurrentVerticalOffset.HasValue;
         }
 
         private bool CanExecuteMoveDownCommand()
@@ -239,9 +264,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.Cell = await this.MachineCellsService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
 
-                this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
+                var newOffset = this.CurrentVerticalOffset.Value - this.InputDisplacement.Value;
+                await this.verticalOffsetService.CompleteAsync(newOffset);
+
+                this.CurrentVerticalOffset = newOffset;
+                this.InputDisplacement = null;
+
+                this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -261,6 +291,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.MachineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
+
+                this.InputDisplacement = this.InputDisplacement ?? 0 - this.InputStepValue;
             }
             catch (Exception ex)
             {
@@ -281,6 +313,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.MachineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue);
+
+                this.InputDisplacement = this.InputDisplacement ?? 0 + this.InputStepValue;
             }
             catch (Exception ex)
             {

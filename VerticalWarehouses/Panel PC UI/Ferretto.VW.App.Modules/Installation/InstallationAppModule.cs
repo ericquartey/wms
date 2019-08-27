@@ -69,7 +69,8 @@ namespace Ferretto.VW.App.Modules.Installation
 
             #region Elevator Views
 
-            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep1View>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep1View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();

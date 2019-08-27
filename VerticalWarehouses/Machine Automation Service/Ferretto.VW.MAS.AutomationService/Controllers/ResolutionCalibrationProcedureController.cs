@@ -39,22 +39,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (resolutionCalibration == null)
+            if (resolutionCalibration is null)
             {
                 throw new ArgumentNullException(nameof(resolutionCalibration));
             }
 
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }

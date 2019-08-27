@@ -84,12 +84,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Delegates
-
-        public delegate void CheckAccuracyOnPropertyChangedEventHandler();
-
-        #endregion
-
         #region Properties
 
         public int BayNumber
@@ -154,7 +148,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isWaitingForResponse)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ShowNotification(string.Empty, NotificationSeverity.Clear);
                     }
 
                     this.RaiseCanExecuteChanged();

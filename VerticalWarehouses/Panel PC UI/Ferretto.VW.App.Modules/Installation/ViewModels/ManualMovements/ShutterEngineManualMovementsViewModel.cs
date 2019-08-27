@@ -177,15 +177,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            await base.OnNavigatedAsync();
+
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
                   ThreadOption.UIThread,
                   false);
-
-            await base.OnNavigatedAsync();
-
             try
             {
                 this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync(this.BayNumber);

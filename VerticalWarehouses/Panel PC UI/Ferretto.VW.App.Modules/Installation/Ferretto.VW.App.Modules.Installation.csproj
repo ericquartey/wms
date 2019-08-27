@@ -61,6 +61,9 @@
     <Compile Update="Views\Cells\CellsHeightCheckStep2View.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\Elevator\VerticalOffsetCalibrationStep2View.xaml.cs">
+      <DependentUpon>VerticalOffsetCalibrationStep2View.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

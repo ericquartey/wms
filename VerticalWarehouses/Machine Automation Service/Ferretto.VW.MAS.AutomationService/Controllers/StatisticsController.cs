@@ -25,12 +25,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachineStatisticsProvider machineStatisticsProvider,
             IMachinesDataService machinesDataService)
         {
-            if (machineStatisticsProvider == null)
+            if (machineStatisticsProvider is null)
             {
                 throw new ArgumentNullException(nameof(machineStatisticsProvider));
             }
 
-            if (machinesDataService == null)
+            if (machinesDataService is null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
             }

@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.verticalOriginProcedureService.GetProcedureParametersAsync();
+                var procedureParameters = await this.verticalOriginProcedureService.GetParametersAsync();
 
                 this.UpperBound = procedureParameters.UpperBound;
                 this.LowerBound = procedureParameters.LowerBound;
