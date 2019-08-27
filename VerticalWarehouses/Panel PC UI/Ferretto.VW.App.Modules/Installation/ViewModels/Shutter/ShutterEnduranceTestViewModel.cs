@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     public class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly IMachineSensorsService machineSensorsService;
 
         private readonly ShutterSensors sensors;
 
@@ -39,6 +42,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receivedActionUpdateErrorToken;
 
+        private SubscriptionToken receivedSensorsToken;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -49,7 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEnduranceTestViewModel(
             IMachineShuttersService shuttersService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IMachineSensorsService machineSensorsService)
             : base(PresentationMode.Installer)
         {
             if (shuttersService is null)
@@ -61,6 +67,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
+
+            if (machineSensorsService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
+
+            this.machineSensorsService = machineSensorsService;
 
             this.shuttersService = shuttersService;
 
@@ -215,10 +228,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.receivedActionUpdateCompletedToken != null)
             {
                 this.EventAggregator
-                    .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                     .Unsubscribe(this.receivedActionUpdateCompletedToken);
 
                 this.receivedActionUpdateCompletedToken = null;
+            }
+
+            if (this.receivedSensorsToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.receivedSensorsToken);
+
+                this.receivedSensorsToken = null;
             }
 
             if (this.receivedActionUpdateErrorToken != null)
@@ -242,7 +264,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             // TODO swap between 2/3 positions bay
 
             this.receivedActionUpdateCompletedToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
+                .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
                     message => this.OnShutterTestStatusChanged(message),
                     ThreadOption.UIThread,
@@ -256,8 +278,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false,
                     message =>
                     message.NotificationType == NotificationType.Error &&
-                    message.ActionType == ActionType.ShutterControl &&
+                    message.ActionType == ActionType.ShutterPositioning &&
                     message.ActionStatus == ActionStatus.Error);
+
+            this.receivedSensorsToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message => this.sensors.Update(message?.Data?.SensorsStates),
+                    ThreadOption.UIThread,
+                    false);
+
+            try
+            {
+                var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private bool CanExecuteStartCommand()
@@ -315,9 +355,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         private void OnShutterTestStatusChanged(
-            NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
+            NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            if (message?.Data is null)
+            if (message?.Data is null || message.Data.BayNumber == 0)
             {
                 return;
             }

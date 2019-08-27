@@ -265,6 +265,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] controlWordArray;
 
+        private const int LOWER_SPEED_Y_AXIS = 17928;
+
         private readonly Dictionary<Axis, int> axisPosition;
 
         private readonly Timer homingTimer;
@@ -608,7 +610,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (!this.targetTimerActive)
                 {
                     this.StatusWord &= 0xFBFF;
-                    this.targetTimer.Change(0, 500);
+                    this.targetTimer.Change(0, 250);
                     this.targetTimerActive = true;
                 }
             }
@@ -905,17 +907,48 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void TargetTick(object state)
         {
-            if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
+            int target;
+            if (this.IsRelativeMovement)
             {
-                this.AxisPosition++;
+                target = this.AxisPosition + this.TargetPosition[this.currentAxis];
             }
             else
             {
-                this.AxisPosition--;
+                target = this.TargetPosition[this.currentAxis];
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            if (target > this.AxisPosition)
             {
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition += this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                }
+                else { this.AxisPosition++; }
+
+                if (this.IsRelativeMovement)
+                {
+                    this.TargetPosition[this.currentAxis]--;
+                }
+            }
+            else
+            {
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition -= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                }
+                else { this.AxisPosition--; }
+
+                if (this.IsRelativeMovement)
+                {
+                    this.TargetPosition[this.currentAxis]++;
+                }
+            }
+
+            bool directionUp = (target > this.AxisPosition);
+            if ((directionUp && target - this.AxisPosition <= 0) || (!directionUp && this.AxisPosition - target <= 0))
+            {
+                this.AxisPosition = this.TargetPosition[this.currentAxis];
+
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x0400;      // Set Target Reached
 

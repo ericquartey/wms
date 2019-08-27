@@ -130,16 +130,6 @@ namespace Ferretto.VW.App.Services
                     }
                     break;
 
-                case NotificationMessageUI<ShutterTestStatusChangedMessageData> sc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>().Publish(sc);
-
-                    if (sc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
-                    }
-                    break;
-
                 case NotificationMessageUI<HomingMessageData> h:
                     this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Publish(h);
 

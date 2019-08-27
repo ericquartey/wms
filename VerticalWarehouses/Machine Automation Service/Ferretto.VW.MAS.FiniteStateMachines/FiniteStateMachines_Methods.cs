@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
-using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -459,36 +458,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
-        }
-
-        private void ProcessShutterControlMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IShutterTestStatusChangedMessageData data)
-            {
-                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
-                data.ShutterType = ShutterType.Shutter2Type;
-
-                this.currentStateMachine = new ShutterControlStateMachine(
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
-            }
         }
 
         private void ProcessShutterPositioningMessage(CommandMessage message)

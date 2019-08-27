@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
             void publishAction() => this.PublishCommand(
                 messageData,
-                "Request vertical position",
+                "Request shutter position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new Exception("Cannot get current shutter position.");
             }
 
-            return this.Ok(notifyData?.ShutterPosition);
+            return this.Ok(notifyData?.ShutterPosition ?? ShutterPosition.None);
         }
 
         [HttpGet]

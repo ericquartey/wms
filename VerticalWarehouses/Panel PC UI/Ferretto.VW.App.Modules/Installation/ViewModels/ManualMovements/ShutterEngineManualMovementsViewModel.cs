@@ -1,14 +1,16 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using ShutterPosition = Ferretto.VW.CommonUtils.Messages.Enumerations.ShutterPosition;
+using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosition;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -176,13 +178,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>()
+              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
-                  message => this.CurrentPosition = message?.Data?.ShutterPosition,
+                  message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
                   ThreadOption.UIThread,
                   false);
 
             await base.OnNavigatedAsync();
+
+            try
+            {
+                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync(this.BayNumber);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         protected override async Task StopMovementAsync()
