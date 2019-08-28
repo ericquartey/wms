@@ -88,14 +88,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToInitialPositionCommand
             ??
             (this.moveToInitialPositionCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveToInitialPositionCommandAsync(),
+                async () => await this.MoveToInitialPositionAsync(),
                 this.CanExecuteMoveToInitialPositionCommand));
 
         public ICommand MoveToPositionCommand =>
            this.moveToPositionCommand
            ??
            (this.moveToPositionCommand = new DelegateCommand(
-               async () => await this.ExecuteMoveToPositionCommandAsync(),
+               async () => await this.MoveToPositionAsync(),
                this.CanExecuteMoveToPositionCommand));
 
         #endregion
@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                && string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private async Task ExecuteMoveToInitialPositionCommandAsync()
+        private async Task MoveToInitialPositionAsync()
         {
             try
             {
@@ -199,7 +199,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteMoveToPositionCommandAsync()
+        private async Task MoveToPositionAsync()
         {
             try
             {

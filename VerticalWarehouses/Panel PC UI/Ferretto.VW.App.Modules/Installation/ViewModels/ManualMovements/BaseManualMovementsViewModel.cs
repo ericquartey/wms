@@ -18,8 +18,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private readonly IMachineElevatorService machineElevatorService;
-
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private decimal? currentPosition;
@@ -47,7 +45,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(bayManagerService));
             }
 
-            this.machineElevatorService = machineElevatorService;
+            this.MachineElevatorService = machineElevatorService;
             this.bayManagerService = bayManagerService;
 
             this.InitializeNavigationMenu();
@@ -71,6 +69,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovementCommand
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
+
+        protected IMachineElevatorService MachineElevatorService { get; }
 
         #endregion
 
@@ -115,6 +115,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected abstract Task StopMovementAsync();
 
+        private bool HasCarousel(Bay bay)
+        {
+            return
+                bay.Type == BayType.Carousel
+                ||
+                bay.Type == BayType.ExternalCarousel;
+        }
+
         private void InitializeNavigationMenu()
         {
             this.menuItems.Add(
@@ -138,9 +146,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.Shutter,
                     trackCurrentView: false));
 
-            if (this.bayManagerService.Bay.Type == BayType.Carousel
-                ||
-                this.bayManagerService.Bay.Type == BayType.ExternalCarousel)
+            if (this.HasCarousel(this.bayManagerService.Bay))
             {
                 this.menuItems.Add(
                     new NavigationMenuItem(
@@ -149,13 +155,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         VW.App.Resources.InstallationApp.Carousel,
                         trackCurrentView: false));
             }
+
+            if (this.IsExternal(this.bayManagerService.Bay))
+            {
+                this.menuItems.Add(
+                    new NavigationMenuItem(
+                        Utils.Modules.Installation.ManualMovements.EXTERNALBAY,
+                        nameof(Utils.Modules.Installation),
+                        VW.App.Resources.InstallationApp.ExternalBay,
+                        trackCurrentView: false));
+            }
+        }
+
+        private bool IsExternal(Bay bay)
+        {
+            return
+                bay.Type == BayType.ExternalCarousel
+                ||
+                bay.Type == BayType.ExternalDouble
+                ||
+                bay.Type == BayType.ExternalSingle;
         }
 
         private async Task RetrieveCurrentPositionAsync()
         {
             try
             {
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
             }
             catch (System.Exception ex)
             {

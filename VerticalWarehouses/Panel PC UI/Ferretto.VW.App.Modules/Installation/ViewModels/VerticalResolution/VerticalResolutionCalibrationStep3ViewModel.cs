@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.acceptCommand
             ??
             (this.acceptCommand = new DelegateCommand(
-                async () => await this.ExecuteAcceptCommandAsync(),
+                async () => await this.AcceptAsync(),
                 this.CanExecuteAcceptCommand));
 
         public string Error => string.Join(
@@ -210,7 +210,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                && string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private async Task ExecuteAcceptCommandAsync()
+        private async Task AcceptAsync()
         {
             try
             {

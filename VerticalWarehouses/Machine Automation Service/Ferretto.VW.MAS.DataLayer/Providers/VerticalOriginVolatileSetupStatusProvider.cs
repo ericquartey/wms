@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Models;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class VerticalOriginSetupStatusProvider : IVerticalOriginSetupStatusProvider
+    public class VerticalOriginVolatileSetupStatusProvider : IVerticalOriginVolatileSetupStatusProvider
     {
         #region Fields
 

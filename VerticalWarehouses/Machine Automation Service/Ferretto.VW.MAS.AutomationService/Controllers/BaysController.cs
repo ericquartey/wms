@@ -1,14 +1,16 @@
 ﻿using System;
+using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaysController : ControllerBase
+    public class BaysController : BaseAutomationController
     {
         #region Fields
 
@@ -18,7 +20,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public BaysController(IBaysProvider baysProvider)
+        public BaysController(
+            IEventAggregator eventAggregator,
+            IBaysProvider baysProvider)
+            : base(eventAggregator)
         {
             if (baysProvider is null)
             {
@@ -75,6 +80,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(bay);
+        }
+
+        [HttpPost("move")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public IActionResult Move(int bayNumber, HorizontalMovementDirection direction)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

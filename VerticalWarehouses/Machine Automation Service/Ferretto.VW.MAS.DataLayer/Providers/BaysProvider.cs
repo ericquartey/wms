@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -26,12 +27,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public BaysProvider(DataLayerContext dataContext, IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (dataContext == null)
+            if (dataContext is null)
             {
                 throw new ArgumentNullException(nameof(dataContext));
             }
@@ -47,12 +48,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay Activate(int bayNumber)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (bay != null)
+            if (bay is null)
             {
-                bay.IsActive = true;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.IsActive = true;
+
+            this.Update(bay);
 
             return bay;
         }
@@ -60,19 +63,26 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay AssignMissionOperation(int bayNumber, int? missionId, int? missionOperationId)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (bay != null)
+            if (bay is null)
             {
-                bay.CurrentMissionId = missionId;
-                bay.CurrentMissionOperationId = missionOperationId;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.CurrentMissionId = missionId;
+            bay.CurrentMissionOperationId = missionOperationId;
+
+            this.Update(bay);
 
             return bay;
         }
 
         public void Create(Bay bay)
         {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+
             this.dataContext.Bays.Add(bay);
 
             this.dataContext.SaveChanges();
@@ -81,12 +91,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay Deactivate(int bayNumber)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (bay != null)
+            if (bay is null)
             {
-                bay.IsActive = false;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.IsActive = false;
+
+            this.Update(bay);
 
             return bay;
         }
@@ -104,23 +116,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public Bay GetByNumber(int bayNumber)
         {
-            return this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+            var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(bayNumber);
+            }
+
+            return bay;
         }
 
         public void Update(int bayNumber, string ipAddress, BayType bayType)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (bay != null)
+            if (bay is null)
             {
-                bay.IpAddress = ipAddress;
-                bay.Type = bayType;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+            bay.IpAddress = ipAddress;
+            bay.Type = bayType;
+
+            this.Update(bay);
         }
 
         private Bay Update(Bay bay)
         {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+
             var entry = this.dataContext.Bays.Update(bay);
 
             this.dataContext.SaveChanges();
