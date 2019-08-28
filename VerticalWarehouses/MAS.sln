@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DataModels"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Hubs", "Machine Automation Service\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj", "{65FCE6C6-6072-4072-9D50-9082121273D7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Resources", "Machine Automation Service\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj", "{1B2EC41C-6217-402E-9718-4087DB57F0B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Autogen|Any CPU = Autogen|Any CPU
@@ -335,6 +337,30 @@ Global
 		{65FCE6C6-6072-4072-9D50-9082121273D7}.Release|x64.Build.0 = Release|Any CPU
 		{65FCE6C6-6072-4072-9D50-9082121273D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{65FCE6C6-6072-4072-9D50-9082121273D7}.Release|x86.Build.0 = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|Any CPU.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|x64.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|x64.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|x86.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Autogen|x86.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|x64.Build.0 = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -352,6 +378,7 @@ Global
 		{6A1B4468-5DF1-48ED-8887-E1A5A1814056} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{4478B189-730C-440F-AA5A-BFCC92A5024E} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{65FCE6C6-6072-4072-9D50-9082121273D7} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{1B2EC41C-6217-402E-9718-4087DB57F0B4} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
