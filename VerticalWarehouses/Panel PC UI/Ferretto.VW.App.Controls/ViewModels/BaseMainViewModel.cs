@@ -109,7 +109,7 @@ namespace Ferretto.VW.App.Controls
                 .Publish(new PresentationChangedMessage(exception));
         }
 
-        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected virtual void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             this.UpdateIsEnabled(e.MachineMode, e.MachinePower);
         }

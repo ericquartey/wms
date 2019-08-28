@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.HelpWindows
@@ -8,9 +7,8 @@ namespace Ferretto.VW.App.Installation.HelpWindows
     /// <summary>
     /// Interaction logic for HelpMainWindow.xaml
     /// </summary>
-    public partial class HelpMainWindow : Window, IHelpMainWindow
+    public partial class HelpMainWindow : Window
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -27,15 +25,11 @@ namespace Ferretto.VW.App.Installation.HelpWindows
 
         #endregion
 
-
-
         #region Properties
 
         public ContentPresenter HelpMainWindowContentRegion => this.HelpContentRegion;
 
         #endregion
-
-
 
         #region Methods
 

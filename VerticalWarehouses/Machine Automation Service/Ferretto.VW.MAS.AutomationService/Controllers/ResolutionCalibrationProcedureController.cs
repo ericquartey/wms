@@ -92,7 +92,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Measured distance must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.MeasuredDistanceMustBeStrictlyPositive
                     });
             }
 
@@ -101,7 +102,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Expected distance must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.ExpectedDistanceMustBeStrictlyPositive
                     });
             }
 
@@ -207,7 +209,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity(
                     new ProblemDetails
                     {
-                        Detail = "Resolution calibration procedure cannot be started if the 'vertical origin calibration' and 'belt burnishing' procedures are not completed."
+                        Title = Resources.General.UnprocessableEntityTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus
                     });
             }
 

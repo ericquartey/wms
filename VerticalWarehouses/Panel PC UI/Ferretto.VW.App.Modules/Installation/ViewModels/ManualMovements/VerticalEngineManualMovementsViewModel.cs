@@ -33,13 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(machineElevatorService, bayManager)
         {
-            if (machineElevatorService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            this.MachineElevatorService = machineElevatorService;
-
             this.RefreshCanExecuteCommands();
         }
 
@@ -94,8 +87,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
-
-        public IMachineElevatorService MachineElevatorService { get; }
 
         public ICommand MoveDownCommand =>
             this.moveDownCommand

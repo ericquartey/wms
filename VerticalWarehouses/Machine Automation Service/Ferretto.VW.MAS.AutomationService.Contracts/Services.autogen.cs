@@ -599,29 +599,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount)
         {
-            return StartAsync(upperBound, lowerBound, requiredCycles, System.Threading.CancellationToken.None);
+            return StartAsync(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, System.Threading.CancellationToken cancellationToken)
         {
-            if (upperBound == null)
-                throw new System.ArgumentNullException("upperBound");
+            if (upperBoundPosition == null)
+                throw new System.ArgumentNullException("upperBoundPosition");
     
-            if (lowerBound == null)
-                throw new System.ArgumentNullException("lowerBound");
+            if (lowerBoundPosition == null)
+                throw new System.ArgumentNullException("lowerBoundPosition");
     
-            if (requiredCycles == null)
-                throw new System.ArgumentNullException("requiredCycles");
+            if (totalTestCycleCount == null)
+                throw new System.ArgumentNullException("totalTestCycleCount");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/start?");
-            urlBuilder_.Append("upperBound=").Append(System.Uri.EscapeDataString(ConvertToString(upperBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("lowerBound=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("requiredCycles=").Append(System.Uri.EscapeDataString(ConvertToString(requiredCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("upperBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(upperBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("lowerBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("totalTestCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(totalTestCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -4901,30 +4901,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data)
+        public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction)
         {
-            return MoveAsync(bayNumber, data, System.Threading.CancellationToken.None);
+            return MoveAsync(bayNumber, direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
     
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move?");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -4969,29 +4972,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles)
+        public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount)
         {
-            return RunTestAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
+            return RunTestAsync(bayNumber, delayInSeconds, testCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
     
-            if (delay == null)
-                throw new System.ArgumentNullException("delay");
+            if (delayInSeconds == null)
+                throw new System.ArgumentNullException("delayInSeconds");
     
-            if (numberCycles == null)
-                throw new System.ArgumentNullException("numberCycles");
+            if (testCycleCount == null)
+                throw new System.ArgumentNullException("testCycleCount");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/run-test?");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append("delay=").Append(System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("numberCycles=").Append(System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("delayInSeconds=").Append(System.Uri.EscapeDataString(ConvertToString(delayInSeconds, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("testCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(testCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
