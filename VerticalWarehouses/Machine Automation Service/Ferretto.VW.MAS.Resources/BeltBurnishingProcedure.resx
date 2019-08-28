@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>The number of test cycles must be strictly positive.</value>
+  </data>
+  <data name="UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition" xml:space="preserve">
+    <value>The upper bound position must be striclty greater than the lower bound position.</value>
+  </data>
+  <data name="UpperBoundPositionMustBeStrictlyPositive" xml:space="preserve">
+    <value>Upper bound position must be strictly positive.</value>
+  </data>
 </root>

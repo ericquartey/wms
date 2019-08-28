@@ -186,13 +186,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         protected void PublishNotification(
-                                                                                                                         IMessageData data,
-         string description,
-         MessageActor receiver,
-         MessageActor sender,
-         MessageType type,
-         MessageStatus status,
-         ErrorLevel level = ErrorLevel.NoError)
+            IMessageData data,
+            string description,
+            MessageActor receiver,
+            MessageActor sender,
+            MessageType type,
+            MessageStatus status,
+            ErrorLevel level = ErrorLevel.NoError)
         {
             this.eventAggregator
                 .GetEvent<NotificationEvent>()

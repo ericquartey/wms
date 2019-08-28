@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
@@ -43,13 +44,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync(int bayNumber)
         {
-            var bay = this.baysProvider.Activate(bayNumber);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.Activate(bayNumber);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         [HttpPost("{bayNumber}/deactivate")]
@@ -58,13 +62,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync(int bayNumber)
         {
-            var bay = this.baysProvider.Deactivate(bayNumber);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.Deactivate(bayNumber);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         [HttpGet("{bayNumber}")]
@@ -73,13 +80,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> GetByNumber(int bayNumber)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.GetByNumber(bayNumber);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         [HttpPost("move")]
