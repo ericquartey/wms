@@ -886,7 +886,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (this.socketTransport.IsConnected)
                     {
-                        if (this.inverterCommandQueue.Count > 10 && Debugger.IsAttached)
+                        if (this.inverterCommandQueue.Count > 20 && Debugger.IsAttached)
                         {
                             Debugger.Break();
                         }

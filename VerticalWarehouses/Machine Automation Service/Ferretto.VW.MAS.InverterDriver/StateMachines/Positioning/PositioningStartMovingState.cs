@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private Timer requestStatusWordMessageTimer;
 
+        private object syncTimer = new object();
+
         #endregion
 
         #region Constructors
@@ -133,11 +135,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private void RequestStatusWordMessage(object state)
         {
-            var readStatusWordMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
+            lock (this.syncTimer)
+            {
+                var readStatusWordMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
 
-            this.Logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
+                this.Logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(readStatusWordMessage);
+                this.ParentStateMachine.EnqueueMessage(readStatusWordMessage);
+            }
         }
 
         #endregion
