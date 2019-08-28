@@ -550,7 +550,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.logger.LogTrace("3:Invalid message data for ProcessHeartbeat message Type");
+                    this.logger.LogError("3:Invalid message data for ProcessHeartbeat message Type");
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
@@ -597,6 +597,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                     }
                 }
+            }
+            else
+            {
+                this.writeEnableEvent.Set();
+                this.logger.LogWarning($"inverterCommandQueue not available");
             }
         }
 
