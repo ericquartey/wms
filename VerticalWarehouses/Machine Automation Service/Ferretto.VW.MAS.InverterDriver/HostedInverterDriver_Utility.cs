@@ -1101,23 +1101,26 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void SendHeartBeat(object state)
         {
-            if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+            if (this.socketTransport.IsConnected)
             {
-                this.logger.LogTrace("1:Inverter status not configured for Main Inverter");
+                if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                {
+                    this.logger.LogTrace("1:Inverter status not configured for Main Inverter");
 
-                var ex = new Exception();
-                this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for Main Inverter", 0), FieldMessageType.InverterError);
+                    var ex = new Exception();
+                    this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for Main Inverter", 0), FieldMessageType.InverterError);
 
-                return;
+                    return;
+                }
+
+                inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+                if (inverterStatus is AngInverterStatus mainInverterStatus)
+                {
+                    mainInverterStatus.WaitingHeartbeatAck = true;
+                }
+                var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+                this.heartbeatQueue.Enqueue(message);
             }
-
-            inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
-            if (inverterStatus is AngInverterStatus mainInverterStatus)
-            {
-                mainInverterStatus.WaitingHeartbeatAck = true;
-            }
-            var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-            this.heartbeatQueue.Enqueue(message);
         }
 
         private async Task StartHardwareCommunications()
