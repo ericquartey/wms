@@ -947,7 +947,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (this.CurrentAxis == Axis.Vertical)
                 {
-                    this.AxisPosition += this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                    this.AxisPosition += this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS * 3;
                 }
                 else { this.AxisPosition++; }
             }
@@ -955,7 +955,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (this.CurrentAxis == Axis.Vertical)
                 {
-                    this.AxisPosition -= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS;
+                    this.AxisPosition -= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS * 3;
                 }
                 else { this.AxisPosition--; }
             }

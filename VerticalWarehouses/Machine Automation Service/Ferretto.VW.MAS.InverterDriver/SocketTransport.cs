@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private IPAddress inverterAddress;
 
+        private int ReadTimeoutMilliSeconds = -1;
+
         private int sendPort;
 
         private TcpClient transportClient;
@@ -193,28 +195,38 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
-            byte[] receivedData;
+            byte[] receivedData = null;
             try
             {
                 this.readStopwatch.Reset();
                 this.readStopwatch.Start();
-                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                this.readStopwatch.Stop();
-                this.roundTripStopwatch.Stop();
-                this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
-                this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
 
-                if (readBytes > 0)
+                if (this.transportClient.Client.Poll(this.ReadTimeoutMilliSeconds * 1000, SelectMode.SelectRead))
                 {
-                    receivedData = new byte[readBytes];
+                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
 
-                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    this.readStopwatch.Stop();
+                    this.roundTripStopwatch.Stop();
+                    this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
+                    this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
+
+                    if (readBytes > 0)
+                    {
+                        receivedData = new byte[readBytes];
+
+                        Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    }
+                    else
+                    {
+                        //return null;
+                        this.Disconnect();
+                        throw new InvalidOperationException("Error reading data from Transport Stream");
+                    }
                 }
                 else
                 {
-                    //return null;
                     this.Disconnect();
-                    throw new InvalidOperationException("Error reading data from Transport Stream");
+                    throw new InvalidOperationException("Timeout reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
