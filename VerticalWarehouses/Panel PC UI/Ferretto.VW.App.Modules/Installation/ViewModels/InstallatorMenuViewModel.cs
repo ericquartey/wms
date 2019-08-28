@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSetupStatusService setupStatusService;
 
+        private bool areItemsEnabled;
+
         #endregion
 
         #region Constructors
@@ -59,6 +61,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool AreItemsEnabled
+        {
+            get => this.areItemsEnabled;
+            private set => this.SetProperty(ref this.areItemsEnabled, value);
+        }
+
         public override EnableMask EnableMask => EnableMask.None;
 
         public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
@@ -85,6 +93,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             await this.UpdateMenuItemsStatus();
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            this.AreItemsEnabled = e.MachinePower != Services.Models.MachinePowerState.Unpowered;
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
