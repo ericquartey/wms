@@ -804,6 +804,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.writeEnableEvent.Set();
                 }
+                if (extractedMessages.Count > 1)
+                    this.logger.LogDebug($"Received {extractedMessages.Count} messages");
                 foreach (var extractedMessage in extractedMessages)
                 {
                     InverterMessage currentMessage;
@@ -888,7 +890,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (this.inverterCommandQueue.Count > 20 && Debugger.IsAttached)
                         {
-                            Debugger.Break();
+                            //Debugger.Break();
                         }
                         switch (handleIndex)
                         {
@@ -900,6 +902,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 await this.ProcessInverterCommand();
                                 break;
                         }
+                    }
+                    else
+                    {
+                        this.logger.LogWarning($"Socket not connected");
                     }
                 }
             }

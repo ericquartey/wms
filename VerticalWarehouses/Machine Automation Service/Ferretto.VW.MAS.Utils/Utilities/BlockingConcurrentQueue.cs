@@ -7,7 +7,6 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
     {
-
         #region Fields
 
         private readonly ManualResetEventSlim dataReady;
@@ -23,15 +22,11 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         #endregion
 
-
-
         #region Properties
 
         public WaitHandle WaitHandle => this.dataReady.WaitHandle;
 
         #endregion
-
-
 
         #region Methods
 
@@ -52,7 +47,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool Peek(out T result)
         {
-            this.dataReady?.Reset();
+            //this.dataReady?.Reset();
             return this.TryPeek(out result);
         }
 
@@ -96,7 +91,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
-                    this.dataReady.Reset();
+                    //this.dataReady.Reset();
                     return this.TryPeek(out result);
                 }
             }
