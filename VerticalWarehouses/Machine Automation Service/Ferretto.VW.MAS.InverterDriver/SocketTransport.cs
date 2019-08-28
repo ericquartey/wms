@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.Configuration;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private IPAddress inverterAddress;
 
-        private int ReadTimeoutMilliSeconds = -1;
+        private int readTimeoutMilliseconds;        // -1 is no timeout
 
         private int sendPort;
 
@@ -39,7 +40,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Constructors
 
-        public SocketTransport()
+        public SocketTransport(
+            IConfiguration configuration
+            )
         {
             this.readStopwatch = new Stopwatch();
 
@@ -48,6 +51,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.ReadWaitTimeData = new InverterDiagnosticsData();
 
             this.WriteRoundtripTimeData = new InverterDiagnosticsData();
+
+            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
         }
 
         #endregion
@@ -201,7 +206,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.readStopwatch.Reset();
                 this.readStopwatch.Start();
 
-                if (this.transportClient.Client.Poll(this.ReadTimeoutMilliSeconds * 1000, SelectMode.SelectRead))
+                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
                 {
                     var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
 

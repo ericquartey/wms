@@ -19,11 +19,22 @@ namespace Ferretto.VW.MAS.IODriver
 
         private IPAddress ioAddress;
 
+        private int readTimeoutMilliseconds;    // -1 is no timeout
+
         private int sendPort;
 
         private TcpClient transportClient;
 
         private NetworkStream transportStream;
+
+        #endregion
+
+        #region Constructors
+
+        public IoTransport(int readTimeoutMilliseconds)
+        {
+            this.readTimeoutMilliseconds = readTimeoutMilliseconds;
+        }
 
         #endregion
 
@@ -172,7 +183,7 @@ namespace Ferretto.VW.MAS.IODriver
             byte[] receivedData;
             try
             {
-                if (this.transportClient.Client.Poll(5000000, SelectMode.SelectRead))
+                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
                 {
                     var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
                     if (readBytes > 0)
