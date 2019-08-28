@@ -34,6 +34,16 @@ namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver
     {
+        #region Fields
+
+        private readonly object syncAxysTimer = new object();
+
+        private readonly object syncSensorTimer = new object();
+
+        private readonly object syncStatusTimer = new object();
+
+        #endregion
+
         #region Methods
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
@@ -70,11 +80,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
+                            //if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs && x.SystemIndex == (byte)InverterIndex.MainInverter) < 2)
+                            {
+                                var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
-                            this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
+                                this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
 
-                            this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+                                this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+                            }
                         }
                         else
                         {
@@ -97,7 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             var readStatusWordMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.StatusWordParam);
 
-                            this.logger.LogTrace($"1:ReadSensorStatusMessage={readStatusWordMessage}");
+                            this.logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
 
                             this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         }
@@ -1018,57 +1031,67 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void RequestAxisPositionUpdate(object state)
         {
-            var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
-
-            this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
-
-            this.axisIntervalStopwatch.Stop();
-            this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
-            this.axisIntervalStopwatch.Reset();
-            this.axisIntervalStopwatch.Start();
-
-            this.axisStopwatch.Reset();
-            this.axisStopwatch.Start();
-            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.ActualPositionShaft && x.SystemIndex == (byte)InverterIndex.MainInverter))
+            lock (this.syncAxysTimer)
             {
-                this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
+
+                this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
+
+                //this.axisIntervalStopwatch.Stop();
+                //this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
+                //this.axisIntervalStopwatch.Reset();
+                //this.axisIntervalStopwatch.Start();
+
+                //this.axisStopwatch.Reset();
+                //this.axisStopwatch.Start();
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ActualPositionShaft) < 2)
+                {
+                    this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                }
             }
         }
 
         private void RequestSensorStatusUpdate(object state)
         {
-            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
-
-            this.sensorIntervalStopwatch.Stop();
-            this.SensorIntervalTimeData.AddValue(this.sensorIntervalStopwatch.ElapsedTicks);
-            this.sensorIntervalStopwatch.Reset();
-            this.sensorIntervalStopwatch.Start();
-
-            this.sensorStopwatch.Reset();
-            this.sensorStopwatch.Start();
-            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs && x.SystemIndex == (byte)InverterIndex.MainInverter))
+            lock (this.syncSensorTimer)
             {
-                this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
+                var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
-                this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+                //this.sensorIntervalStopwatch.Stop();
+                //this.SensorIntervalTimeData.AddValue(this.sensorIntervalStopwatch.ElapsedTicks);
+                //this.sensorIntervalStopwatch.Reset();
+                //this.sensorIntervalStopwatch.Start();
+
+                //this.sensorStopwatch.Reset();
+                //this.sensorStopwatch.Start();
+
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs) < 2)
+                {
+                    this.logger.LogTrace($"1:ReadSensorStatusTimer={readSensorStatusMessage} Count:{this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs)}");
+
+                    this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+                }
             }
         }
 
         // poll the inverter to have the Fault status
         private void RequestStatusWordMessage(object state)
         {
-            foreach (var installedInverter in this.inverterStatuses)
+            lock (this.syncStatusTimer)
             {
-                if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)installedInverter.Key))
+                foreach (var installedInverter in this.inverterStatuses)
                 {
-                    var readStatusWordMessage = new InverterMessage(installedInverter.Key, (short)InverterParameterId.StatusWordParam);
+                    if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)installedInverter.Key) < 2)
+                    {
+                        var readStatusWordMessage = new InverterMessage(installedInverter.Key, (short)InverterParameterId.StatusWordParam);
 
-                    this.logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
+                        this.logger.LogTrace($"1:readStatusWordTimer={readStatusWordMessage}");
 
-                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                    }
+                    // there are problems of too many messages: only ask the main?
+                    break;
                 }
-                // there are problems of too many messages: only ask the main?
-                break;
             }
         }
 
