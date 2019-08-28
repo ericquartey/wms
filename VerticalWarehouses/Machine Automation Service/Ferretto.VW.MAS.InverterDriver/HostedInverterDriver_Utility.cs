@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly object syncAxysTimer = new object();
+        private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
 
@@ -1004,7 +1004,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void RequestAxisPositionUpdate(object state)
         {
-            lock (this.syncAxysTimer)
+            lock (this.syncAxisTimer)
             {
                 var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
 
