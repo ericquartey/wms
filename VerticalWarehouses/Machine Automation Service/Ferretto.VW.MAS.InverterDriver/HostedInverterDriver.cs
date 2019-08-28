@@ -27,6 +27,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -769,6 +770,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 catch (InvalidOperationException ex)
                 {
                     // connection error
+                    this.logger.LogError($"Exception {ex.Message}");
                     this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                     continue;
                 }
@@ -884,6 +886,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (this.socketTransport.IsConnected)
                     {
+                        if (this.inverterCommandQueue.Count > 10 && Debugger.IsAttached)
+                        {
+                            Debugger.Break();
+                        }
                         switch (handleIndex)
                         {
                             case 0:

@@ -25,7 +25,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class HostedIoDriver : BackgroundService
     {
-
         #region Fields
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
@@ -93,9 +92,42 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Methods
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            this.logger.LogDebug("1:Starting Tasks");
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), IoIndex.None);
+            }
+
+            return Task.CompletedTask;
+        }
 
         private void CommandReceiveTaskFunction()
         {
@@ -155,13 +187,14 @@ namespace Ferretto.VW.MAS.IODriver
             IIoDevice ioDevice = null;
 
             var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+            var readTimeoutMilliseconds = this.configuration.GetValue<int>("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
 
             foreach (var ioIndex in ioDevicesList)
             {
                 IIoTransport transport;
                 if (!useMockedTransport)
                 {
-                    transport = new IoTransport();
+                    transport = new IoTransport(readTimeoutMilliseconds);
                 }
                 else
                 {
@@ -287,41 +320,6 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 await device.StartHardwareCommunications();
             }
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.Dispose();
-            }
-
-            this.disposed = true;
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            this.logger.LogDebug("1:Starting Tasks");
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), IoIndex.None);
-            }
-
-            return Task.CompletedTask;
         }
 
         #endregion

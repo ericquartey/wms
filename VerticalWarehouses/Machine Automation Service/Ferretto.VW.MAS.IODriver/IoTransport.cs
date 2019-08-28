@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class IoTransport : IIoTransport, IDisposable
     {
-
         #region Fields
 
         private readonly byte[] receiveBuffer = new byte[1024];
@@ -19,6 +18,8 @@ namespace Ferretto.VW.MAS.IODriver
         private bool disposed;
 
         private IPAddress ioAddress;
+
+        private int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 
@@ -28,7 +29,14 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+        #region Constructors
 
+        public IoTransport(int readTimeoutMilliseconds)
+        {
+            this.readTimeoutMilliseconds = readTimeoutMilliseconds;
+        }
+
+        #endregion
 
         #region Destructors
 
@@ -39,36 +47,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
         #endregion
 
-
-
         #region Methods
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
-            }
-        }
 
         /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int sendPort)
@@ -198,17 +183,25 @@ namespace Ferretto.VW.MAS.IODriver
             byte[] receivedData;
             try
             {
-                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                if (readBytes > 0)
+                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
                 {
-                    receivedData = new byte[readBytes];
+                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                    if (readBytes > 0)
+                    {
+                        receivedData = new byte[readBytes];
 
-                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                        Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    }
+                    else
+                    {
+                        this.Disconnect();
+                        throw new IoDriverException("Error reading data from Transport Stream");
+                    }
                 }
                 else
                 {
                     this.Disconnect();
-                    throw new IoDriverException("Error reading data from Transport Stream");
+                    throw new IoDriverException("Timeout reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
@@ -293,6 +286,25 @@ namespace Ferretto.VW.MAS.IODriver
             }
 
             return 0;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.transportStream?.Close();
+                    this.transportStream?.Dispose();
+                    this.transportStream = null;
+
+                    this.transportClient?.Close();
+                    this.transportClient?.Dispose();
+                    this.transportClient = null;
+                }
+
+                this.disposed = true;
+            }
         }
 
         #endregion
