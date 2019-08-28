@@ -17,12 +17,14 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ctrls:PpcMenuWrap ItemsSource="{Binding InstallatorItems}" />
+        <ctrls:PpcMenuWrap IsEnabled="{Binding AreItemsEnabled}"
+                           ItemsSource="{Binding InstallatorItems}" />
 
         <ctrls:PpcMenuWrap Grid.Row="2"
                            ItemsSource="{Binding SensorsItems}" />
 
         <ctrls:PpcMenuWrap Grid.Row="4"
+                           IsEnabled="{Binding AreItemsEnabled}"
                            ItemsSource="{Binding OtherItems}" />
 
     </Grid>

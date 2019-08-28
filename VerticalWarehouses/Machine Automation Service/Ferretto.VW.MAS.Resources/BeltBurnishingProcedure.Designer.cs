@@ -22,14 +22,14 @@ namespace Ferretto.VW.MAS.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class General {
+    public class BeltBurnishingProcedure {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal General() {
+        internal BeltBurnishingProcedure() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.Resources.General", typeof(General).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.Resources.BeltBurnishingProcedure", typeof(BeltBurnishingProcedure).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,29 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bad Request..
+        ///   Looks up a localized string similar to The number of test cycles must be strictly positive..
         /// </summary>
-        public static string BadRequestTitle {
+        public static string TheNumberOfTestCyclesMustBeStrictlyPositive {
             get {
-                return ResourceManager.GetString("BadRequestTitle", resourceCulture);
+                return ResourceManager.GetString("TheNumberOfTestCyclesMustBeStrictlyPositive", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal Server Error..
+        ///   Looks up a localized string similar to The upper bound position must be striclty greater than the lower bound position..
         /// </summary>
-        public static string InternalServerErrorTitle {
+        public static string UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition {
             get {
-                return ResourceManager.GetString("InternalServerErrorTitle", resourceCulture);
+                return ResourceManager.GetString("UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No entity with the specified id &apos;{0}&apos; exists..
+        ///   Looks up a localized string similar to Upper bound position must be strictly positive..
         /// </summary>
-        public static string NoEntityWithTheSpecifiedIdExists {
+        public static string UpperBoundPositionMustBeStrictlyPositive {
             get {
-                return ResourceManager.GetString("NoEntityWithTheSpecifiedIdExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not Found..
-        /// </summary>
-        public static string NotFoundTitle {
-            get {
-                return ResourceManager.GetString("NotFoundTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unprocessable Entity..
-        /// </summary>
-        public static string UnprocessableEntityTitle {
-            get {
-                return ResourceManager.GetString("UnprocessableEntityTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value cannot be null or whitespace..
-        /// </summary>
-        public static string ValueCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", resourceCulture);
+                return ResourceManager.GetString("UpperBoundPositionMustBeStrictlyPositive", resourceCulture);
             }
         }
     }

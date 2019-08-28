@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Movement distance cannot be zero.</value>
+  </data>
+  <data name="TargetPositionMustBeInRange" xml:space="preserve">
+    <value>Target position ({0}) must be in the range [{1}; {2}].</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Vertical origin calibration must be performed before attempting to move the elevator to a given position.</value>
+  </data>
 </root>
