@@ -809,8 +809,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
-
-                this.writeEnableEvent.Set();
+                if (extractedMessages.Count > 0)
+                {
+                    this.writeEnableEvent.Set();
+                }
 
                 foreach (var extractedMessage in extractedMessages)
                 {
