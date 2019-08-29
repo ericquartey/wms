@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Fields
 
+        private const int STATUS_WORD_UPDATE_INTERVAL = 600;
+
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
@@ -591,7 +593,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"5:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationStop:
@@ -599,7 +601,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationError:
@@ -607,7 +609,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
 
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
@@ -625,7 +627,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationStop:
@@ -633,7 +635,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"9:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationError:
@@ -641,7 +643,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"10:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
 
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
@@ -659,7 +661,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"11:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationStop:
@@ -667,7 +669,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"12:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationError:
@@ -675,7 +677,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"13:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
 
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
@@ -693,7 +695,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationStop:
@@ -701,7 +703,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 default:
@@ -721,7 +723,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationStop:
@@ -729,7 +731,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
                                     break;
 
                                 case MessageStatus.OperationError:
@@ -737,7 +739,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
                                     this.currentStateMachine = null;
                                     this.SendCleanDebug();
-                                    this.SendStatusWordTimer(true, 600);
+                                    this.SendStatusWordTimer(true, STATUS_WORD_UPDATE_INTERVAL);
 
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
