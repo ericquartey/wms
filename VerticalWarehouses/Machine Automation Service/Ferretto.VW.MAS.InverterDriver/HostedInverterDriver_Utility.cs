@@ -533,76 +533,80 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private async Task ProcessHeartbeat()
+        private async Task<bool> ProcessHeartbeat()
         {
-            this.heartbeatQueue.Dequeue(out var message);
-
-            try
+            if (this.heartbeatQueue.Dequeue(out var message))
             {
-                if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                try
                 {
-                    var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-                    this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
+                    if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                    {
+                        var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+                        this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
 
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
-                    await this.socketTransport.WriteAsync(newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue), this.stoppingToken);
+                        this.roundTripStopwatch.Reset();
+                        this.roundTripStopwatch.Start();
+
+                        var heartbeat = newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue);
+                        return await this.socketTransport.WriteAsync(heartbeat, this.stoppingToken) == heartbeat.Length;
+                    }
+                    else
+                    {
+                        this.logger.LogError("3:Invalid message data for ProcessHeartbeat message Type");
+
+                        var ex = new Exception();
+                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+                    }
                 }
-                else
+                catch (InverterDriverException ex)
                 {
-                    this.logger.LogError("3:Invalid message data for ProcessHeartbeat message Type");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
             }
-            catch (InverterDriverException ex)
+            else if (Debugger.IsAttached)
             {
-                this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                Debugger.Break();
             }
+            return false;
         }
 
-        private async Task ProcessInverterCommand()
+        private async Task<bool> ProcessInverterCommand()
         {
+            bool result = false;
+
             if (this.inverterCommandQueue.Peek(out var message))
             {
                 this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
 
                 var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
-                if (message.SendDelay > 0)
+
+                this.roundTripStopwatch.Reset();
+                this.roundTripStopwatch.Start();
+
+                try
                 {
-                    try
-                    {
-                        this.roundTripStopwatch.Reset();
-                        this.roundTripStopwatch.Start();
-                        await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
-                        this.inverterCommandQueue.Dequeue(out var consumedMessage);
-                    }
-                    catch (InverterDriverException ex)
-                    {
-                        this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                    }
+                    result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken) == inverterMessagePacket.Length;
                 }
-                else
+                catch (InverterDriverException ex)
                 {
-                    try
-                    {
-                        this.roundTripStopwatch.Reset();
-                        this.roundTripStopwatch.Start();
-                        await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
-                        this.inverterCommandQueue.Dequeue(out var consumedMessage);
-                    }
-                    catch (InverterDriverException ex)
-                    {
-                        this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                    }
+                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                }
+
+                if (result)
+                {
+                    this.inverterCommandQueue.Dequeue(out _);
+                }
+                else if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
                 }
             }
-            else
+            else if (Debugger.IsAttached)
             {
-                this.writeEnableEvent.Set();
-                this.logger.LogWarning($"inverterCommandQueue not available");
+                Debugger.Break();
             }
+
+            return result;
         }
 
         private void ProcessInverterSetTimerMessage(FieldCommandMessage receivedMessage)
