@@ -422,7 +422,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsElevatorMovingToHeight = true;
-                await this.machineElevatorService.MoveToVerticalPositionAsync(this.PositionHeight);
+                await this.machineElevatorService.MoveToVerticalPositionAsync(this.PositionHeight, false);
             }
             catch (Exception ex)
             {
