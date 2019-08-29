@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ManualResetEventSlim writeEnableEvent;
 
-        private Timer axisPositionUpdateTimer;
+        private Timer[] axisPositionUpdateTimer;
 
         private Axis currentAxis;
 
@@ -182,6 +182,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogTrace("1:Subscription Command");
 
             this.InitializeMethodSubscriptions();
+
+            this.axisPositionUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
         }
 
         #endregion
@@ -226,7 +228,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
-                this.axisPositionUpdateTimer?.Dispose();
+                for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+                {
+                    this.axisPositionUpdateTimer[(int)id]?.Dispose();
+                }
                 this.statusWordUpdateTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }
@@ -260,8 +265,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.sensorStatusUpdateTimer?.Dispose();
             this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
-            this.axisPositionUpdateTimer?.Dispose();
-            this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+            for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+            {
+                this.axisPositionUpdateTimer[(int)id]?.Dispose();
+                this.axisPositionUpdateTimer[(int)id] = new Timer(this.RequestAxisPositionUpdate, id, -1, Timeout.Infinite);
+            }
 
             this.statusWordUpdateTimer?.Dispose();
             this.statusWordUpdateTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
@@ -308,7 +316,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
                 {
                     this.logger.LogTrace("4: Stop the timer for update shaft position");
-                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
 
                     messageCurrentStateMachine.Stop();
 
@@ -446,7 +454,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
 
                                 this.logger.LogTrace("4: Stop the timer for update shaft position");
-                                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                                this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
                             }
 
                             if (receivedMessage.Status == MessageStatus.OperationStop)
@@ -463,7 +471,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
 
                                 this.logger.LogTrace("4: Stop the timer for update shaft position");
-                                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                                this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
 
                                 // Enqueue a message to execute the Stop states machine
                                 var stopMessage = new FieldCommandMessage(
