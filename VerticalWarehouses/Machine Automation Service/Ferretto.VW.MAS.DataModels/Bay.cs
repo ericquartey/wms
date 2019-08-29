@@ -5,7 +5,7 @@ namespace Ferretto.VW.MAS.DataModels
     public class Bay
     {
         #region Properties
-
+        public decimal[] Positions { get; set; }
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }

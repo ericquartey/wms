@@ -138,6 +138,12 @@ namespace Ferretto.VW.App.Services
             this.bay = await this.machineBaysService.GetByNumberAsync(bayNumber);
         }
 
+        public async Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+        {
+            this.bay = await this.machineBaysService.UpdatePositionAsync(bayNumber, position, height);
+            return this.bay;
+        }
+
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
             if (this.Bay?.Number == e.BayNumber)

@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class BayControlView
+    public partial class BayHeightCheckView : UserControl
     {
         #region Constructors
 
-        public BayControlView()
+        public BayHeightCheckView()
         {
             this.InitializeComponent();
         }
