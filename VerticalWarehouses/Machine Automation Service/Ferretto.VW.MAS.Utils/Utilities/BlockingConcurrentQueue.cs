@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         private readonly ManualResetEventSlim dataReady;
 
+        private readonly object syncRoot = new object();
+
         #endregion
 
         #region Constructors
@@ -32,22 +34,27 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool Dequeue(out T result)
         {
-            this.dataReady?.Reset();
-            return this.TryDequeue(out result);
+            lock (this.syncRoot)
+            {
+                this.dataReady?.Reset();
+                return this.TryDequeue(out result);
+            }
         }
 
         public new void Enqueue(T item)
         {
             if (item != null)
             {
-                base.Enqueue(item);
-                this.dataReady?.Set();
+                lock (this.syncRoot)
+                {
+                    base.Enqueue(item);
+                    this.dataReady?.Set();
+                }
             }
         }
 
         public bool Peek(out T result)
         {
-            //this.dataReady?.Reset();
             return this.TryPeek(out result);
         }
 
@@ -62,8 +69,11 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
-                    this.dataReady.Reset();
-                    return this.TryDequeue(out result);
+                    lock (this.syncRoot)
+                    {
+                        this.dataReady.Reset();
+                        return this.TryDequeue(out result);
+                    }
                 }
             }
             catch (OperationCanceledException)
@@ -91,7 +101,6 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
-                    //this.dataReady.Reset();
                     return this.TryPeek(out result);
                 }
             }

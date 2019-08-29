@@ -25,7 +25,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice
     {
-
         #region Fields
 
         private const int IO_POLLING_INTERVAL = 50;
@@ -103,8 +102,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #endregion
 
-
-
         #region Properties
 
         private IIoStateMachine CurrentStateMachine
@@ -138,25 +135,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #endregion
 
-
-
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.pollIoTimer?.Dispose();
-                this.writeEnableEvent?.Dispose();
-            }
-
-            this.disposed = true;
-        }
 
         public void DestroyStateMachine()
         {
@@ -279,7 +258,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.logger.LogWarning($" extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
                 }
 
-                if (extractedMessages != null)
+                if (extractedMessages.Count > 0)
                 {
                     this.writeEnableEvent.Set();
                 }
@@ -554,6 +533,22 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.pollIoTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         #endregion

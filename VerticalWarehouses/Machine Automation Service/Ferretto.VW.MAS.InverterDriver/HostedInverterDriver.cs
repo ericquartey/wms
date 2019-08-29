@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -733,8 +734,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
                         continue;
                     }
-                    this.writeEnableEvent.Set();
                 }
+
                 // socket connected
                 byte[] inverterData;
                 try
@@ -808,12 +809,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
-                if (extractedMessages != null)
+                if (extractedMessages.Count > 0)
                 {
                     this.writeEnableEvent.Set();
                 }
-                if (extractedMessages.Count > 1)
-                    this.logger.LogDebug($"Received {extractedMessages.Count} messages");
+
                 foreach (var extractedMessage in extractedMessages)
                 {
                     InverterMessage currentMessage;
@@ -875,46 +875,57 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             do
             {
-                int handleIndex;
-
                 this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
 
-                if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
+                if (this.inverterCommandQueue.Count > 20 && Debugger.IsAttached)
                 {
-                    handleIndex = WaitHandle.WaitAny(commandHandles);
-                }
-                else
-                {
-                    handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
+                    Debugger.Break();
                 }
 
-                this.logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
-
-                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                if (this.socketTransport.IsConnected)
                 {
-                    this.writeEnableEvent.Reset();
+                    int handleIndex;
 
-                    if (this.socketTransport.IsConnected)
+                    if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
                     {
-                        if (this.inverterCommandQueue.Count > 200 && Debugger.IsAttached)
-                        {
-                            Debugger.Break();
-                        }
-                        switch (handleIndex)
-                        {
-                            case 0:
-                                await this.ProcessHeartbeat();
-                                break;
-
-                            case 1:
-                                await this.ProcessInverterCommand();
-                                break;
-                        }
+                        handleIndex = WaitHandle.WaitAny(commandHandles);
                     }
                     else
                     {
-                        this.logger.LogWarning($"Socket not connected");
+                        handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
                     }
+
+                    this.logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
+
+                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                    {
+                        if (this.socketTransport.IsConnected)
+                        {
+                            this.writeEnableEvent.Reset();
+
+                            var result = false;
+
+                            switch (handleIndex)
+                            {
+                                case 0:
+                                    result = await this.ProcessHeartbeat();
+                                    break;
+
+                                case 1:
+                                    result = await this.ProcessInverterCommand();
+                                    break;
+                            }
+
+                            if (!result)
+                            {
+                                this.writeEnableEvent.Set();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Thread.Sleep(5);
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
