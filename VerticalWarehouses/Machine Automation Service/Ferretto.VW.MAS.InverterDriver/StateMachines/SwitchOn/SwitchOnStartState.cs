@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
     public class SwitchOnStartState : InverterStateBase
     {
-
         #region Fields
 
         private readonly Axis axisToSwitchOn;
@@ -42,8 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         }
 
         #endregion
-
-
 
         #region Methods
 

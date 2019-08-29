@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
     public class StopEndState : InverterStateBase
     {
-
-
         #region Constructors
 
         public StopEndState(
@@ -33,8 +31,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         }
 
         #endregion
-
-
 
         #region Methods
 

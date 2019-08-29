@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -13,8 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     public class PowerOnEndState : InverterStateBase
     {
-
-
         #region Constructors
 
         public PowerOnEndState(
@@ -35,8 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningEndState : InverterStateBase
     {
-
         #region Fields
 
         private readonly bool stopRequested;
@@ -40,8 +39,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         }
 
         #endregion
-
-
 
         #region Methods
 

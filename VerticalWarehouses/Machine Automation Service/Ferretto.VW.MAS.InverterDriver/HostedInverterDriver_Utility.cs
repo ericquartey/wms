@@ -155,14 +155,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!currentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
                 {
-                    if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex))
-                    {
-                        var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                    //x if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex))
+                    //x {
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
 
-                        this.logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
+                    this.logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
 
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-                    }
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                    //x }
                 }
                 else
                 {
