@@ -51,11 +51,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             switch (updateData.InverterTimer)
             {
                 case InverterTimer.AxisPosition:
+                    var inverterIndex = updateData.inverterIndex;
                     if (updateData.Enable)
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
+                            var readAxisPositionMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.ActualPositionShaft);
 
                             this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
@@ -64,14 +65,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                         else
                         {
                             this.logger.LogTrace("2:Change axis update interval");
-                            this.axisPositionUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
+                            this.axisPositionUpdateTimer[(int)inverterIndex].Change(updateData.UpdateInterval, updateData.UpdateInterval);
                         }
                         this.forceStatusPublish = true;
                     }
                     else
                     {
                         this.logger.LogTrace("3:Stop axis update timer");
-                        this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        this.axisPositionUpdateTimer[(int)inverterIndex].Change(Timeout.Infinite, Timeout.Infinite);
                     }
                     break;
 
@@ -616,6 +617,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogTrace("1:Method Start");
             if (receivedMessage.Data is IInverterSetTimerFieldMessageData updateData)
             {
+                updateData.inverterIndex = currentInverter;
                 this.ConfigureTimer(updateData);
             }
             else
@@ -811,7 +813,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     }
                                     else
                                     {
-                                        this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                        this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                         var currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                         this.currentStateMachines.Add(currentInverter, currentStateMachine);
                                         currentStateMachine.Start();
@@ -834,7 +836,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     }
                                     else
                                     {
-                                        this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                        this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                         var currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                         this.currentStateMachines.Add(currentInverter, currentStateMachine);
                                         currentStateMachine.Start();
@@ -1015,7 +1017,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             lock (this.syncAxisTimer)
             {
-                var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
+                InverterIndex inverterIndex = (InverterIndex)state;
+                var readAxisPositionMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.ActualPositionShaft);
 
                 this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
@@ -1026,7 +1029,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.axisStopwatch.Reset();
                 this.axisStopwatch.Start();
-                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ActualPositionShaft) < 2)
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ActualPositionShaft && x.SystemIndex == (byte)inverterIndex) < 2)
                 {
                     this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
                 }

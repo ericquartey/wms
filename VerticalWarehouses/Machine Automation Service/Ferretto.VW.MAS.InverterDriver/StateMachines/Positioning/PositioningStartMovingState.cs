@@ -10,16 +10,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningStartMovingState : InverterStateBase
     {
-        #region Fields
-
-        private const int STATUS_WORD_REQUEST_INTERVAL = 100;
-
-        private Timer requestStatusWordMessageTimer;
-
-        private object syncTimer = new object();
-
-        #endregion
-
         #region Constructors
 
         public PositioningStartMovingState(
@@ -45,8 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public override void Release()
         {
-            //TEMP Stop the timer
-            this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
         }
 
         /// <inheritdoc />
@@ -58,10 +46,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             //TODO complete type failure check
             this.Logger.LogDebug("Set New Setpoint");
-
-            //TEMP Create the timer
-            this.requestStatusWordMessageTimer?.Dispose();
-            this.requestStatusWordMessageTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
 
@@ -75,9 +59,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            //TEMP Stop the timer
-            this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
-
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
         }
 
@@ -88,9 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (message.ParameterId == InverterParameterId.ControlWordParam)
             {
-                //TEMP Start the timer
-                this.requestStatusWordMessageTimer.Change(STATUS_WORD_REQUEST_INTERVAL, STATUS_WORD_REQUEST_INTERVAL);
-
                 return false;
             }
 
@@ -111,9 +89,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 if (currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    //TEMP Stop the timer
-                    this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
-
                     this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     this.Logger.LogDebug("Position Reached !");
                 }
@@ -129,20 +104,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         protected override void OnDisposing()
         {
-            this.requestStatusWordMessageTimer?.Dispose();
-            this.requestStatusWordMessageTimer = null;
-        }
-
-        private void RequestStatusWordMessage(object state)
-        {
-            lock (this.syncTimer)
-            {
-                var readStatusWordMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
-
-                this.Logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
-
-                this.ParentStateMachine.EnqueueMessage(readStatusWordMessage);
-            }
         }
 
         #endregion
