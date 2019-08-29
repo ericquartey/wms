@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.BayHeightCheckView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="150" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1"
+                   Margin="0,20,0,20"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.BayControlHeader}" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Margin="0,20,0,20"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.BayControlPosition1}"
+                   Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVIC}}" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVC}}">
+            <ctrls:PpcButton Command="{Binding ChangeBayPosition1Command}"
+                             Content="{x:Static res:InstallationApp.BayControlPosition1}" />
+
+            <ctrls:PpcButton Margin="50,0,0,0"
+                             Command="{Binding ChangeBayPosition2Command}"
+                             Content="{x:Static res:InstallationApp.BayControlPosition2}" />
+
+        </StackPanel>
+
+        <Grid Name="GridBayPosition"
+              Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <ctrls:PpcLabeledText VerticalAlignment="Center"
+                                  ContentText="{Binding PositionHeight}"
+                                  LabelText="{x:Static res:InstallationApp.BayControlPositionHeight}" />
+
+            <ctrls:PpcButton Grid.Column="1"
+                             Margin="0,20,0,0"
+                             Command="{Binding MoveToBayHeightCommand}"
+                             Content="{x:Static res:InstallationApp.BayControlMoveToPosition}"
+                             IsBusy="{Binding IsElevatorMovingToHeight}" />
+
+        </Grid>
+
+        <Grid Name="GridStep"
+              Grid.Row="3"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <ctrls:PpcTextBox VerticalAlignment="Center"
+                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+                              LabelText="{x:Static res:InstallationApp.BayControlStepValue}" />
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Vertical">
+                <ctrls:PpcButton Margin="0,20,0,0"
+                                 Command="{Binding MoveUpCommand}"
+                                 Content="{x:Static res:InstallationApp.BayControlStepPiu}"
+                                 IsBusy="{Binding IsElevatorMovingUp}" />
+
+                <ctrls:PpcButton Margin="0,20,0,0"
+                                 Command="{Binding MoveDownCommand}"
+                                 Content="{x:Static res:InstallationApp.BayControlStepMeno}"
+                                 IsBusy="{Binding IsElevatorMovingDown}" />
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Name="GridSaveHeight"
+              Grid.Row="4"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <ctrls:PpcLabeledText VerticalAlignment="Center"
+                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  LabelText="{x:Static res:InstallationApp.BayControlActualHeight}" />
+
+            <ctrls:PpcButton Name="SaveHeight"
+                             Grid.Column="1"
+                             Margin="0,0,0,0"
+                             VerticalAlignment="Center"
+                             Command="{Binding SaveHeightCorrectionCommand}"
+                             Content="{x:Static res:InstallationApp.BayControlAdjust}" />
+        </Grid>
+
+    </Grid>
+</UserControl>

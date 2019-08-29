@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Calibrazione offset asse verticale")]
         VerticalOffsetCalibration,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.Bays.BAYHEIGHTCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo baia")]
         BayCheck,
 

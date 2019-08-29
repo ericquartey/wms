@@ -181,6 +181,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void NavigateToNextStep()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
+                this.SelectedCell,
+                trackCurrentView: false);
+        }
+
         private async Task StopAsync()
         {
             try
@@ -191,15 +200,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
         }
 
         #endregion
