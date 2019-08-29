@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,8 +21,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Fields
 
         private readonly IBayManager bayManager;
-
-        private readonly List<PositionInfo> bayPositions = new List<PositionInfo>();
 
         private readonly IMachineElevatorService machineElevatorService;
 
@@ -72,8 +69,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public IEnumerable<PositionInfo> BayPositions => new List<PositionInfo>(this.bayPositions);
 
         public ICommand ChangeBayPosition1Command =>
             this.changeBayPosition1Command
@@ -277,7 +272,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                        false);
 
             this.IsBackNavigationAllowed = true;
-            this.InitializeBayPositions();
+            if (this.bayManager.Bay.Positions.Count() > 1)
+            {
+                this.IsBayPositionsVisible = true;
+            }
             this.InitializeData();
             this.ChangeDataFromBayPosition();
         }
@@ -462,18 +460,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void InitializeBayPositions()
-        {
-            this.bayPositions.Clear();
-            this.bayPositions.Add(new PositionInfo(1));
-            if (this.bayManager.Bay.Positions.Count() > 1)
-            {
-                this.IsBayPositionsVisible = true;
-                this.bayPositions.Add(new PositionInfo(2));
-            }
-            this.RaisePropertyChanged(nameof(this.BayPositions));
         }
 
         private void InitializeData()
