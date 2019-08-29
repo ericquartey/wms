@@ -70,12 +70,14 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<ManualMovementsNavigationView>();
             containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
+            containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
             #endregion
 
             #region Elevator Views
 
-            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep1View>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep1View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();

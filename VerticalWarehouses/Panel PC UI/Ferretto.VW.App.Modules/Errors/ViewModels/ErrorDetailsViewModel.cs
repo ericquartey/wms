@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.markAsResolvedCommand
             ??
             (this.markAsResolvedCommand = new DelegateCommand(
-                async () => await this.ExecuteMarkAsResolvedCommandAsync(),
+                async () => await this.MarkAsResolvedAsync(),
                 this.CanExecuteMarkAsResolvedCommand)
             .ObservesProperty(() => this.Error));
 
@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
         }
 
-        private async Task ExecuteMarkAsResolvedCommandAsync()
+        private async Task MarkAsResolvedAsync()
         {
             if (this.error is null)
             {

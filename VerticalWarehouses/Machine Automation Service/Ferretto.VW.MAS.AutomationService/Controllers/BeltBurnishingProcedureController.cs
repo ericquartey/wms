@@ -36,17 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalAxisDataLayer verticalAxisDataLayer)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
@@ -91,32 +91,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount)
         {
-            if (upperBound <= 0)
+            if (upperBoundPosition <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Upper bound cannot be negative or zero."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive
                     });
             }
 
-            if (upperBound <= lowerBound)
+            if (upperBoundPosition <= lowerBoundPosition)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Upper bound must be strictly greater than lower bound."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition
                     });
             }
 
-            if (requiredCycles <= 0)
+            if (totalTestCycleCount <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Required cycles count must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive
                     });
             }
 
@@ -124,13 +127,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.BeltBurnishing,
-                upperBound,
+                upperBoundPosition,
                 this.verticalAxis.MaxEmptySpeed,
                 this.verticalAxis.MaxEmptyAcceleration,
                 this.verticalAxis.MaxEmptyDeceleration,
-                requiredCycles,
-                lowerBound,
-                upperBound);
+                totalTestCycleCount,
+                lowerBoundPosition,
+                upperBoundPosition);
 
             this.PublishCommand(
                 data,

@@ -25,12 +25,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachineStatisticsProvider machineStatisticsProvider,
             IMachinesDataService machinesDataService)
         {
-            if (machineStatisticsProvider == null)
+            if (machineStatisticsProvider is null)
             {
                 throw new ArgumentNullException(nameof(machineStatisticsProvider));
             }
 
-            if (machinesDataService == null)
+            if (machinesDataService is null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
             }
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                var machineId = 1; // TODO get WMS machine id
+                var machineId = 1; // TODO HACK remove this hardcoded value
                 var machine = await this.machinesDataService.GetByIdAsync(machineId);
 
                 statics.AreaFillPercentage = machine.AreaFillRate;
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             catch (Exception)
             {
                 // do nothing:
-                // if the call fails, some data will not be populated
+                // if the call fails, data from WMS will not be populated
             }
 
             return this.Ok(statics);

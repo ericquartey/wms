@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILogger logger;
 
+        private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
+
         private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
@@ -39,36 +41,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
             ISetupStatusProvider setupStatusProvider,
             ILogger<ElevatorController> logger)
             : base(eventAggregator)
         {
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if (verticalManualMovementsDataLayer == null)
+            if (verticalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
-            if (horizontalAxisDataLayer == null)
+            if (horizontalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
-            if (horizontalManualMovementsDataLayer == null)
+            if (horizontalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (setupStatusProvider == null)
+            if (offsetCalibrationDataLayer is null)
+            {
+                throw new System.ArgumentNullException(nameof(offsetCalibrationDataLayer));
+            }
+
+            if (setupStatusProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (logger == null)
+            if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
             }
@@ -77,6 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
+            this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
             this.setupStatusProvider = setupStatusProvider;
             this.logger = logger;
         }
@@ -104,18 +113,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationExecuting,
                 publishAction);
 
-            if (notifyData?.CurrentPosition == null)
-            {
-                throw new System.Exception("Cannot get current vertical position.");
-            }
-
-            return this.Ok(notifyData?.CurrentPosition);
+            return this.Ok(notifyData.CurrentPosition);
         }
 
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
+
             void publishAction() => this.PublishCommand(
                 messageData,
                 "Request vertical position",
@@ -130,12 +135,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationExecuting,
                 publishAction);
 
-            if (notifyData?.CurrentPosition == null)
-            {
-                throw new System.Exception("Cannot get current vertical position.");
-            }
-
-            return this.Ok(notifyData?.CurrentPosition);
+            return this.Ok(notifyData.CurrentPosition);
         }
 
         [HttpPost("horizontal/move")]
@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(decimal targetPosition)
+        public IActionResult MoveToVerticalPosition(decimal targetPosition, bool useOffsetCalibrationFeedRate = false)
         {
             var lowerBound = this.verticalAxis.LowerBound;
             var upperBound = this.verticalAxis.UpperBound;
@@ -190,7 +190,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = $"Target position ({targetPosition}) must be in the range [{lowerBound}; {upperBound}]."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound)
                     });
             }
 
@@ -200,24 +201,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity(
                     new ProblemDetails
                     {
-                        Detail = $"Vertical origin calibration must be performed before attempting to move the elevator to a given position."
+                        Title = Resources.General.UnprocessableEntityTitle,
+                        Detail = Resources.Elevator.VerticalOriginCalibrationMustBePerformed
                     });
             }
 
-            var movementType = MovementType.Absolute;
-
-            var feedRate = this.verticalManualMovements.FeedRateAfterZero;
+            var feedRate = useOffsetCalibrationFeedRate
+                ? this.offsetCalibrationDataLayer.FeedRateOC
+                : this.verticalManualMovements.FeedRateAfterZero;
 
             var speed = this.verticalAxis.MaxEmptySpeed * feedRate;
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
-                movementType,
+                MovementType.Absolute,
                 MovementMode.Position,
                 targetPosition,
                 speed,
-                this.verticalAxis.MaxEmptyAcceleration, // TODO is this correct?
-                this.verticalAxis.MaxEmptyDeceleration, // TODO is this correct?
+                this.verticalAxis.MaxEmptyAcceleration,
+                this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
                 0);
@@ -228,7 +230,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
 
-            this.logger.LogDebug($"Starting elevator positioning, type {movementType}, target position {targetPosition}");
+            this.logger.LogDebug($"Starting elevator absolute vertical positioning, target position is '{targetPosition}'.");
 
             return this.Accepted();
         }
@@ -293,13 +295,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVerticalOfDistance(decimal distance)
         {
+            if (distance == 0)
+            {
+                return this.BadRequest(
+                  new ProblemDetails
+                  {
+                      Title = Resources.General.BadRequestTitle,
+                      Detail = Resources.Elevator.MovementDistanceCannotBeZero
+                  });
+            }
+
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
                 return this.UnprocessableEntity(
                    new ProblemDetails
                    {
-                       Detail = $"Vertical origin calibration must be performed before attempting to move the elevator of a given relative position."
+                       Title = Resources.General.UnprocessableEntityTitle,
+                       Detail = Resources.Elevator.VerticalOriginCalibrationMustBePerformed
                    });
             }
 

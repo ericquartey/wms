@@ -152,13 +152,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingDown = true;
             this.IsMovingUp = false;
 
-            var messageData = new ShutterPositioningMovementMessageDataDto
-            {
-                BayNumber = this.BayNumber,
-                ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Down
-            };
-
-            await this.StartMovementAsync(messageData);
+            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Down);
         }
 
         public async Task MoveUpAsync()
@@ -166,26 +160,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingUp = true;
             this.IsMovingDown = false;
 
-            var messageData = new ShutterPositioningMovementMessageDataDto
-            {
-                BayNumber = this.BayNumber,
-                ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Up
-            };
-
-            await this.StartMovementAsync(messageData);
+            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Up);
         }
 
         public override async Task OnNavigatedAsync()
         {
+            await base.OnNavigatedAsync();
+
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
                   message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
                   ThreadOption.UIThread,
                   false);
-
-            await base.OnNavigatedAsync();
-
             try
             {
                 this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync(this.BayNumber);
@@ -222,11 +209,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(ShutterPositioningMovementMessageDataDto messageData)
+        private async Task StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection direction)
         {
             try
             {
-                await this.shuttersService.MoveAsync(this.BayNumber, messageData);
+                await this.shuttersService.MoveAsync(this.BayNumber, direction);
             }
             catch (System.Exception ex)
             {

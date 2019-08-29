@@ -39,22 +39,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (resolutionCalibration == null)
+            if (resolutionCalibration is null)
             {
                 throw new ArgumentNullException(nameof(resolutionCalibration));
             }
 
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
@@ -92,7 +92,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Measured distance must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.MeasuredDistanceMustBeStrictlyPositive
                     });
             }
 
@@ -101,7 +102,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Expected distance must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.ExpectedDistanceMustBeStrictlyPositive
                     });
             }
 
@@ -207,7 +209,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity(
                     new ProblemDetails
                     {
-                        Detail = "Resolution calibration procedure cannot be started if the 'vertical origin calibration' and 'belt burnishing' procedures are not completed."
+                        Title = Resources.General.UnprocessableEntityTitle,
+                        Detail = Resources.ResolutionCalibrationProcedure.ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus
                     });
             }
 

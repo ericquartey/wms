@@ -2,12 +2,13 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ErrorsController : ControllerBase
+    public class ErrorsController : BaseAutomationController
     {
         #region Fields
 
@@ -17,9 +18,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public ErrorsController(IErrorsProvider errorsProvider)
+        public ErrorsController(
+            IErrorsProvider errorsProvider,
+            IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
-            if (errorsProvider == null)
+            if (errorsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(errorsProvider));
             }
@@ -65,14 +69,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Error> Resolve(int id)
         {
-            var resolvedError = this.errorsProvider.Resolve(id);
-
-            if (resolvedError == null)
+            try
             {
-                return this.NotFound();
-            }
+                var resolvedError = this.errorsProvider.Resolve(id);
 
-            return this.Ok(resolvedError);
+                return this.Ok(resolvedError);
+            }
+            catch (System.Exception ex)
+            {
+                return this.NegativeResponse<Error>(ex);
+            }
         }
 
         #endregion

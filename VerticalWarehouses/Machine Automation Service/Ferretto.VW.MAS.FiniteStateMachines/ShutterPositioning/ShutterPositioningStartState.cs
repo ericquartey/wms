@@ -83,14 +83,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                         {
                             if (this.shutterPositioningMessageData.MovementMode == MovementMode.TestLoop)
                             {
-                                if (messageData.ShutterPosition != ShutterPosition.Opened)
+                                if (messageData.ShutterPosition == ShutterPosition.Half)
+                                {
+                                    ShutterPosition shutterPositionTarget;
+                                    shutterPositionTarget = ShutterPosition.Opened;
+                                    var commandData = new ShutterPositioningFieldMessageData(
+                                        shutterPositionTarget,
+                                        ShutterMovementDirection.Up,
+                                        this.shutterPositioningMessageData.ShutterType,
+                                        this.shutterPositioningMessageData.SpeedRate);
+
+                                    var commandMessage = new FieldCommandMessage(
+                                        commandData,
+                                        $"Shutter to {shutterPositionTarget}",
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageType.ShutterPositioning,
+                                        (byte)this.inverterIndex);
+
+                                    this.Logger.LogDebug($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+
+                                    this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+                                }
+                                else if (messageData.ShutterPosition != ShutterPosition.Opened)
                                 {
                                     this.Logger.LogError($"Shutter not in Opened position before Test Loop: {messageData.ShutterPosition}");
                                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, message, this.Logger));
                                 }
                                 else
                                 {
-                                    // TestLoop: close shutter
+                                    // first step: close shutter
                                     ShutterPosition shutterPositionTarget;
                                     shutterPositionTarget = ShutterPosition.Closed;
                                     if (this.shutterPositioningMessageData.ShutterType == ShutterType.Shutter3Type)
@@ -111,7 +133,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         FieldMessageType.ShutterPositioning,
                                         (byte)this.inverterIndex);
 
-                                    this.Logger.LogDebug($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+                                    this.Logger.LogDebug($"3:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
                                     this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
@@ -174,16 +196,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 // TestLoop:
                 // not all starting positions are allowed
                 if (this.shutterPositioningMessageData.ShutterType == ShutterType.Shutter3Type &&
-                    inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate
+                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
                     )
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger));
                     return;
                 }
+                ShutterPosition destination = ShutterPosition.Opened;
+                if (this.shutterPositioningMessageData.ShutterType == ShutterType.Shutter3Type && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
+                {
+                    destination = ShutterPosition.Half;
+                }
                 // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(
-                    ShutterPosition.Opened,
+                    destination,
                     ShutterMovementDirection.Up,
                     this.shutterPositioningMessageData.ShutterType,
                     this.shutterPositioningMessageData.SpeedRate);

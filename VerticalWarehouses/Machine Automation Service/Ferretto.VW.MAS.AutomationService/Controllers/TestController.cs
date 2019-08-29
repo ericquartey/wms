@@ -33,12 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationValueManagmentDataLayer)
             : base(eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (configurationValueManagmentDataLayer == null)
+            if (configurationValueManagmentDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(configurationValueManagmentDataLayer));
             }
@@ -186,13 +186,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         protected void PublishNotification(
-                                                                                                                         IMessageData data,
-         string description,
-         MessageActor receiver,
-         MessageActor sender,
-         MessageType type,
-         MessageStatus status,
-         ErrorLevel level = ErrorLevel.NoError)
+            IMessageData data,
+            string description,
+            MessageActor receiver,
+            MessageActor sender,
+            MessageType type,
+            MessageStatus status,
+            ErrorLevel level = ErrorLevel.NoError)
         {
             this.eventAggregator
                 .GetEvent<NotificationEvent>()

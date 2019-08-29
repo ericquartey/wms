@@ -920,4 +920,13 @@
   <data name="BayControlPosition2" xml:space="preserve">
     <value>Posizione 2</value>
   </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Spostamento [mm]</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Baia Esterna</value>
+  </data>
+  <data name="ExternalBayManualMovements" xml:space="preserve">
+    <value>Movimenti Manuali Baia Esterna</value>
+  </data>
 </root>

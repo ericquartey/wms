@@ -52,6 +52,7 @@
     <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
     <None Remove="Views\Cells\CellsHeightCheckStep1View.xaml" />
     <None Remove="Views\Cells\CellsHeightCheckStep2View.xaml" />
+    <None Remove="Views\ManualMovements\ExternalBayManualMovementsView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,12 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Cells\CellsHeightCheckStep2View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Elevator\VerticalOffsetCalibrationStep2View.xaml.cs">
+      <DependentUpon>VerticalOffsetCalibrationStep2View.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ManualMovements\ExternalBayManualMovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

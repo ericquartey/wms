@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -29,16 +29,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
-            ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider == null)
+            if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
-            if (machinesDataService == null)
+            if (machinesDataService is null)
             {
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                var machineId = 1; // TODO this is the WMS machine ID
+                var machineId = 1; // TODO HACK remove this hardcoded value
                 var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                 foreach (var stat in statistics)
                 {
@@ -72,7 +72,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
             catch (System.Exception)
             {
-                // do nothing: data from WMS will remain to its default values
+                // do nothing:
+                // data from WMS will remain to its default values
             }
 
             return this.Ok(statistics);
@@ -84,7 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var statistics = this.loadingUnitStatisticsProvider.GetWeightStatistics();
             try
             {
-                var machineId = 1; // TODO this is the WMS machine ID
+                var machineId = 1; // TODO HACK remove this hardcoded value
                 var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                 foreach (var stat in statistics)
                 {
@@ -97,7 +98,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
             catch (System.Exception)
             {
-                // do nothing: data from WMS will remain to its default values
+                // do nothing:
+                // data from WMS will remain to its default values
             }
 
             return this.Ok(statistics);
@@ -112,7 +114,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                data.DrawerOperation,
                DrawerOperationStep.None);
 
-            drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO do not hardcode bay number
+            drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO HACK remove this hardcoded value
             drawerOperationData.Destination = DrawerDestination.Cell;
 
             this.PublishCommand(

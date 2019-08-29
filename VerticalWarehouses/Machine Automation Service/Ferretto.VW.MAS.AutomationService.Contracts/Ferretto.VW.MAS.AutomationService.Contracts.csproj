@@ -16,7 +16,7 @@
     <PackageReference Include="Unity" Version="4.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net471'">
     <Compile Remove="UnityExtensions.cs" />
   </ItemGroup>
   

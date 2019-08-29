@@ -20,6 +20,11 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.6" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
+
+    <!-- begin: these references are included to ensure dynamic module dependencies can be resolved -->
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="1.4.18" />
+    <!-- end -->
   </ItemGroup>
 
   <ItemGroup>
@@ -60,9 +65,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="mkdir  &quot;$(ProjectDir)publish\$(ConfigurationName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Installation.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Installation.dll&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Modules.Operator.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Modules.Operator.dll&quot;" />
-  </Target>-->
 
 </Project>

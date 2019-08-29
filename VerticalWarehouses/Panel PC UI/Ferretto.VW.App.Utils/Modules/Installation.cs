@@ -10,8 +10,6 @@
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
-        public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
-
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         #endregion
@@ -34,6 +32,8 @@
             #region Fields
 
             public const string CAROUSEL = "CarouselManualMovementsViewModel";
+
+            public const string EXTERNALBAY = "ExternalBayManualMovementsViewModel";
 
             public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
 
@@ -64,6 +64,17 @@
             public const string SHUTTER = "ShutterSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
+
+            #endregion
+        }
+
+        public static class VerticalOffsetCalibration
+        {
+            #region Fields
+
+            public const string STEP1 = "VerticalOffsetCalibrationStep1ViewModel";
+
+            public const string STEP2 = "VerticalOffsetCalibrationStep2ViewModel";
 
             #endregion
         }

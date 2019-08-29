@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface ILoadingUnitStatisticsProvider
+    public interface ILoadingUnitsProvider
     {
         #region Methods
 

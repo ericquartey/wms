@@ -84,12 +84,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Delegates
-
-        public delegate void CheckAccuracyOnPropertyChangedEventHandler();
-
-        #endregion
-
         #region Properties
 
         public int BayNumber
@@ -154,7 +148,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isWaitingForResponse)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ShowNotification(string.Empty, NotificationSeverity.Clear);
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -168,14 +162,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync(),
+                async () => await this.StartAsync(),
                 this.CanExecuteStartCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
+                async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
         #endregion
@@ -313,7 +307,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && !this.IsWaitingForResponse;
         }
 
-        private async Task ExecuteStartCommandAsync()
+        private async Task StartAsync()
         {
             this.IsExecutingProcedure = true;
             this.IsWaitingForResponse = true;
@@ -335,7 +329,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStopCommandAsync()
+        private async Task StopAsync()
         {
             this.IsWaitingForResponse = true;
 

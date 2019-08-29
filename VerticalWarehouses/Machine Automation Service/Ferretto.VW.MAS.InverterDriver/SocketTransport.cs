@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.Configuration;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private IPAddress inverterAddress;
 
+        private int readTimeoutMilliseconds;        // -1 is no timeout
+
         private int sendPort;
 
         private TcpClient transportClient;
@@ -37,7 +40,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Constructors
 
-        public SocketTransport()
+        public SocketTransport(
+            IConfiguration configuration
+            )
         {
             this.readStopwatch = new Stopwatch();
 
@@ -46,6 +51,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.ReadWaitTimeData = new InverterDiagnosticsData();
 
             this.WriteRoundtripTimeData = new InverterDiagnosticsData();
+
+            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
         }
 
         #endregion
@@ -193,28 +200,38 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
-            byte[] receivedData;
+            byte[] receivedData = null;
             try
             {
                 this.readStopwatch.Reset();
                 this.readStopwatch.Start();
-                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                this.readStopwatch.Stop();
-                this.roundTripStopwatch.Stop();
-                this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
-                this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
 
-                if (readBytes > 0)
+                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
                 {
-                    receivedData = new byte[readBytes];
+                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
 
-                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    this.readStopwatch.Stop();
+                    this.roundTripStopwatch.Stop();
+                    this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
+                    this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
+
+                    if (readBytes > 0)
+                    {
+                        receivedData = new byte[readBytes];
+
+                        Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    }
+                    else
+                    {
+                        //return null;
+                        this.Disconnect();
+                        throw new InvalidOperationException("Error reading data from Transport Stream");
+                    }
                 }
                 else
                 {
-                    //return null;
                     this.Disconnect();
-                    throw new InvalidOperationException("Error reading data from Transport Stream");
+                    throw new InvalidOperationException("Timeout reading data from Transport Stream");
                 }
             }
             catch (Exception ex)

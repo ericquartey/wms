@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         protected BaseAutomationController(IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
@@ -34,6 +34,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        protected ActionResult<T> NegativeResponse<T>(Exception exception)
+        {
+            if (exception is DataLayer.Exceptions.EntityNotFoundException)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Title = Resources.General.NotFoundTitle,
+                    Detail = exception.Message
+                });
+            }
+            else if (exception is ArgumentOutOfRangeException)
+            {
+                return this.BadRequest(new ProblemDetails
+                {
+                    Title = Resources.General.BadRequestTitle,
+                    Detail = exception.Message
+                });
+            }
+            else if (exception is InvalidOperationException)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Title = Resources.General.UnprocessableEntityTitle,
+                    Detail = exception.Message
+                });
+            }
+            else
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = Resources.General.InternalServerErrorTitle,
+                    Detail = exception.Message
+                });
+            }
+        }
 
         protected void PublishCommand(
             IMessageData messageData,
@@ -77,12 +113,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             MessageType messageType,
             MessageActor messageSource = MessageActor.Any,
             MessageStatus? messageStatus = null,
-            Action action = null)
+            Action action = null,
+            int timeoutInMilliseconds = 10000)
             where TData : class, IMessageData
         {
             TData messageData = null;
 
-            using (var semaphore = new Semaphore(0, 1))
+            using (var semaphore = new Semaphore(0, 100))
             {
                 var notificationEvent = this.eventAggregator
                     .GetEvent<NotificationEvent>();
@@ -102,13 +139,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 action?.Invoke();
 
-                const int MaximumWaitingTime = 10000;
-                var signalReceived = semaphore.WaitOne(MaximumWaitingTime);
+                var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
 
                 notificationEvent.Unsubscribe(subscriptionToken);
                 if (signalReceived == false)
                 {
-                    throw new TimeoutException("Waiting for the specified event timed out.");
+                    throw new InvalidOperationException("Waiting for the specified event timed out.");
                 }
             }
 
