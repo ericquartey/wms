@@ -38,7 +38,7 @@
 
         LoadingUnitInLowerBay = 6,
 
-        FreeSensor = 7,
+        InverterInFault = 7,
 
         ElevatorMotorFeedback = 8,
 

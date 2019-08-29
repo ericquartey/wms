@@ -18,7 +18,7 @@
 
         LUPresentMiddleBottomBay1 = 6,
 
-        Free1Bay1 = 7,
+        InverterInFault1 = 7,
 
         ElevatorEngineSelectedBay1 = 8,
 
