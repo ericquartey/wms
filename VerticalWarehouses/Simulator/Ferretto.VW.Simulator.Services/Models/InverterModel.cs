@@ -943,7 +943,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                 target += this.StartPosition[this.currentAxis];
             }
             int increment = 1;
-            if (Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10)
+            if (this.TargetSpeed[Axis.Vertical] >= LOWER_SPEED_Y_AXIS &&
+                Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10)
             {
                 increment = (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10;
             }
