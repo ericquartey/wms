@@ -25,8 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingUp;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;

@@ -46,6 +46,11 @@
             #endregion
         }
 
+        public static class Bays
+        {
+            public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+        }
+
         public static class Sensors
         {
             #region Fields

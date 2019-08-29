@@ -178,6 +178,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(decimal targetPosition)
         {

@@ -704,7 +704,7 @@
     <value>Posizione nella baia</value>
   </data>
   <data name="BayControlPositionHeight" xml:space="preserve">
-    <value>Quota posizione baia [mm]</value>
+    <value>Quota baia [mm]</value>
   </data>
   <data name="BayControlStepValue" xml:space="preserve">
     <value>Valore di step [mm]</value>
@@ -913,5 +913,11 @@
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Porta a Quota Cella</value>
+  </data>
+  <data name="BayControlPosition1" xml:space="preserve">
+    <value>Posizione 1</value>
+  </data>
+  <data name="BayControlPosition2" xml:space="preserve">
+    <value>Posizione 2</value>
   </data>
 </root>

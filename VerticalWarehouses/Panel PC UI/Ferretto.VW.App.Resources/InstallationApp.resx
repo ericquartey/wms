@@ -901,8 +901,8 @@
     <comment>Label text</comment>
   </data>
   <data name="BayControlPositionHeight" xml:space="preserve">
-    <value>Bay position [mm]:</value>
-    <comment>Page header</comment>
+    <value>Bay height [mm]:</value>
+    <comment>Field label</comment>
   </data>
   <data name="BayControlStepValue" xml:space="preserve">
     <value>Step value [mm]:</value>
@@ -1160,5 +1160,13 @@
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Move to Cell Height</value>
+  </data>
+  <data name="BayControlPosition1" xml:space="preserve">
+    <value>Position 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlPosition2" xml:space="preserve">
+    <value>Position 1</value>
+    <comment>Label text</comment>
   </data>
 </root>
