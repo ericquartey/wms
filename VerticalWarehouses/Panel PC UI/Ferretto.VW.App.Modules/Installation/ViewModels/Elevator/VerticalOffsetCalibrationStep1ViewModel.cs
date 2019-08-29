@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Coord, true);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Position, true);
 
                 this.IsElevatorMoving = true;
             }

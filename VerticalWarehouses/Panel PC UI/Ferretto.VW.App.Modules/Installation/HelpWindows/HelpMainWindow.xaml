@@ -5,59 +5,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Installation.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
-        xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Window.Resources>
 
-
-        <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
-            <helpWindows:HelpCellsPanelControl />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter1HeightControlViewModel}">
-            <helpWindows:HelpShutterHeightControl />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:WeightControlViewModel}">
-            <helpWindows:HelpWeightControl />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:CellsSideControlViewModel}">
-            <helpWindows:HelpCellsSideControl />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:LoadFirstDrawerViewModel}">
-            <helpWindows:HelpLoadFirstDrawer />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:LoadingDrawersViewModel}">
-            <helpWindows:HelpLoadingDrawers />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:BayControlViewModel}">
-            <helpWindows:HelpBayControl />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:IdleViewModel}">
-            <helpWindows:HelpInitialPage />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:DrawerLoadingUnloadingTestViewModel}">
-            <helpWindows:HelpDLUTest />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:SaveRestoreConfigViewModel}">
-            <helpWindows:HelpSaveRestoreConfig />
-        </DataTemplate>
-
-
-    </Window.Resources>
     <Grid Width="1024"
           Height="768"
           Background="{DynamicResource VWAPP_BACKGROUND}">

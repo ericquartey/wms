@@ -8,7 +8,7 @@
 
         public int BookedCellsNumber { get; set; }
 
-        public decimal Coord { get; set; }
+        public decimal Position { get; set; }
 
         public int FreeBlockId { get; set; }
 
@@ -18,7 +18,7 @@
 
         public int Priority { get; set; }
 
-        public CellSide Side { get; set; }
+        public WarehouseSide Side { get; set; }
 
         public int StartCell { get; set; }
 

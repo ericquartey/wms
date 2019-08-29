@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 
@@ -90,8 +91,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             for (var i = 0; i < baysCount; i++)
             {
                 var bayNumber = i + 1;
-                var bay = this.baysProvider.GetByNumber(bayNumber);
-                if (bay == null)
+                try
+                {
+                    var bay = this.baysProvider.GetByNumber(bayNumber);
+
+                    this.baysProvider.Update(
+                        bayNumber,
+                        ipAddresses[i].ToString(),
+                        bayTypes[i]);
+                }
+                catch (EntityNotFoundException)
                 {
                     this.baysProvider.Create(new Bay
                     {
@@ -100,13 +109,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         IpAddress = ipAddresses[i].ToString(),
                         Type = bayTypes[i],
                     });
-                }
-                else
-                {
-                    this.baysProvider.Update(
-                        bayNumber,
-                        ipAddresses[i].ToString(),
-                        bayTypes[i]);
                 }
             }
         }

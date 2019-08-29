@@ -2,9 +2,9 @@
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl
+namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class Shutter3HeightControlViewModel : BindableBase
+    public class Shutter1HeightControlViewModel : BindableBase
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl
 
         #region Constructors
 
-        public Shutter3HeightControlViewModel(IEventAggregator eventAggregator)
+        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;

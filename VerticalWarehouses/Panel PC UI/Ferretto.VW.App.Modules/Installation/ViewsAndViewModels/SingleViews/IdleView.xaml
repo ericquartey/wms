@@ -1,9 +1,0 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews.IdleView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Width="774">
-        <Image Margin="50"
-               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
-               Stretch="Uniform" />
-    </Grid>
-</UserControl>
