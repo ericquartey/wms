@@ -621,6 +621,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
+                this.IsTargetReached = false;
             }
         }
 
@@ -645,6 +646,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
 
                 // Reset Set-Point Acknowledge
+                this.IsTargetReached = false;
                 this.StatusWord &= 0xEFFF;
             }
         }
