@@ -77,14 +77,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand
             ??
             (this.moveToCellHeightCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveToCellHeightCommandAsync(),
+                async () => await this.MoveToCellHeightAsync(),
                 this.CanExecuteMoveToCellHeightCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
+                async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
         #endregion
@@ -160,12 +160,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsWaitingForResponse && this.IsElevatorMoving;
         }
 
-        private async Task ExecuteMoveToCellHeightCommandAsync()
+        private async Task MoveToCellHeightAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Coord, true);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Position, true);
 
                 this.IsElevatorMoving = true;
             }
@@ -181,7 +181,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStopCommandAsync()
+        private void NavigateToNextStep()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
+                this.SelectedCell,
+                trackCurrentView: false);
+        }
+
+        private async Task StopAsync()
         {
             try
             {
@@ -191,15 +200,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
         }
 
         #endregion

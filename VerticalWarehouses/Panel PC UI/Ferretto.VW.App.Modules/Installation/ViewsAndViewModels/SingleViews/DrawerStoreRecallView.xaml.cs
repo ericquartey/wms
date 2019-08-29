@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Interaction logic for DrawerStoreRecallView.xaml
-    /// </summary>
-    public partial class DrawerStoreRecallView : UserControl
+    public partial class DrawerStoreRecallView
     {
         #region Constructors
 

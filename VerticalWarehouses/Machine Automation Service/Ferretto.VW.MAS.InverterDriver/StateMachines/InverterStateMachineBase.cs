@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -15,7 +16,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {
-
         #region Fields
 
         private bool disposed;
@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
-
-
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
@@ -66,38 +64,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
-
-
         #region Methods
-
-        protected virtual void Dispose(bool disposing)
-        {
-            this.Logger.LogDebug($"Disposing {this.GetType()}");
-
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"Inverter current status null",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.MachineStatusActive,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
-
-            this.disposed = true;
-        }
 
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
@@ -128,8 +95,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:Enqueue message {message}");
-            this.InverterCommandQueue.Enqueue(message);
+            if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
+            {
+                this.Logger.LogTrace($"1:Enqueue message {message}");
+                this.InverterCommandQueue.Enqueue(message);
+            }
         }
 
         /// <inheritdoc />
@@ -160,6 +130,35 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         public bool ValidateCommandResponse(InverterMessage message)
         {
             return this.CurrentState?.ValidateCommandResponse(message) ?? false;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            this.Logger.LogDebug($"Disposing {this.GetType()}");
+
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current status null",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            this.disposed = true;
         }
 
         #endregion

@@ -89,7 +89,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding AcceptCommand}"
-                            Content="{x:Static res:InstallationApp.Accept}" />
+                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
 
     </Grid>
 </ctrls:View>

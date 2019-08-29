@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29215.179
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
@@ -78,6 +78,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Themes", "Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj", "{E9153A64-A20D-4AA8-B2CC-49CADE123412}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Errors", "Panel PC UI\Ferretto.VW.App.Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj", "{D81C6B47-11EC-4B7D-B087-F580639106C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.MAS.Resources", "Machine Automation Service\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj", "{96D3417B-1043-4F63-85D1-073561F098E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -578,6 +580,24 @@ Global
 		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x64.Build.0 = Release|Any CPU
 		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x64.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x86.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x64.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x64.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -611,6 +631,7 @@ Global
 		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{E9153A64-A20D-4AA8-B2CC-49CADE123412} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
+		{96D3417B-1043-4F63-85D1-073561F098E2} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

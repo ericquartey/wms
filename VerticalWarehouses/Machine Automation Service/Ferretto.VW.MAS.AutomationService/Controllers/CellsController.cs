@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CellsController : ControllerBase
+    public class CellsController : BaseAutomationController
     {
         #region Fields
 
@@ -25,7 +26,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CellsController(
             ICellsProvider cellsProvider,
-            IConfigurationValueManagmentDataLayer configurationProvider)
+            IConfigurationValueManagmentDataLayer configurationProvider,
+            IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
             if (cellsProvider is null)
             {
@@ -74,13 +77,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 return this.Ok(cell);
             }
-            catch (DataLayer.Exceptions.EntityNotFoundException ex)
+            catch (Exception ex)
             {
-                return this.NotFound(new ProblemDetails { Detail = ex.Message });
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return this.BadRequest(new ProblemDetails { Detail = ex.Message });
+                return this.NegativeResponse<Cell>(ex);
             }
         }
 

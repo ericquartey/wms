@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Logica di interazione per SaveRestoreConfigView.xaml
-    /// </summary>
-    public partial class SaveRestoreConfigView : UserControl
+    public partial class SaveRestoreConfigView
     {
+        #region Constructors
+
         public SaveRestoreConfigView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

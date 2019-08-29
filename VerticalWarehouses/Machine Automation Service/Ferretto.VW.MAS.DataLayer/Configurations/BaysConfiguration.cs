@@ -23,7 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .IsUnique();
 
             builder
-                .Ignore(b => b.Status);
+                .Ignore(b => b.Status)
+                .Ignore(b => b.Positions);
         }
 
         #endregion

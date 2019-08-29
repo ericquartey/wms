@@ -25,31 +25,31 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Calibrazione offset asse verticale")]
         VerticalOffsetCalibration,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.Bays.BAYHEIGHTCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo baia")]
         BayCheck,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.CELLPANELSCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Pannelli Mensola")]
         PanelsCheck,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
         BayShape,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Peso")]
         WeightMeasurement,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento cassetti")]
         AllLoadingUnits,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Salva e ripristina")]
         SaveRestore,
 
@@ -65,15 +65,15 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo quote celle")]
         CellsHeightCheck,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Modifica blocco celle")]
         CellsBlockTuning,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Test di Imbarco/Sbarco")]
         HorizontalHoming,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Puntatore Laser")]
         BayLaser,
 

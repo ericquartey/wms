@@ -113,18 +113,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationExecuting,
                 publishAction);
 
-            if (notifyData?.CurrentPosition is null)
-            {
-                throw new System.Exception("Cannot get current vertical position.");
-            }
-
-            return this.Ok(notifyData?.CurrentPosition);
+            return this.Ok(notifyData.CurrentPosition);
         }
 
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
+
             void publishAction() => this.PublishCommand(
                 messageData,
                 "Request vertical position",
@@ -139,12 +135,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationExecuting,
                 publishAction);
 
-            if (notifyData?.CurrentPosition is null)
-            {
-                throw new System.Exception("Cannot get current vertical position.");
-            }
-
-            return this.Ok(notifyData?.CurrentPosition);
+            return this.Ok(notifyData.CurrentPosition);
         }
 
         [HttpPost("horizontal/move")]
@@ -187,6 +178,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(decimal targetPosition, bool useOffsetCalibrationFeedRate = false)
         {
@@ -198,7 +190,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = $"Target position ({targetPosition}) must be in the range [{lowerBound}; {upperBound}]."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound)
                     });
             }
 
@@ -208,7 +201,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity(
                     new ProblemDetails
                     {
-                        Detail = $"Vertical origin calibration must be performed before attempting to move the elevator to a given position."
+                        Title = Resources.General.UnprocessableEntityTitle,
+                        Detail = Resources.Elevator.VerticalOriginCalibrationMustBePerformed
                     });
             }
 
@@ -301,13 +295,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVerticalOfDistance(decimal distance)
         {
+            if (distance == 0)
+            {
+                return this.BadRequest(
+                  new ProblemDetails
+                  {
+                      Title = Resources.General.BadRequestTitle,
+                      Detail = Resources.Elevator.MovementDistanceCannotBeZero
+                  });
+            }
+
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
                 return this.UnprocessableEntity(
                    new ProblemDetails
                    {
-                       Detail = $"Vertical origin calibration must be performed before attempting to move the elevator of a given relative position."
+                       Title = Resources.General.UnprocessableEntityTitle,
+                       Detail = Resources.Elevator.VerticalOriginCalibrationMustBePerformed
                    });
             }
 

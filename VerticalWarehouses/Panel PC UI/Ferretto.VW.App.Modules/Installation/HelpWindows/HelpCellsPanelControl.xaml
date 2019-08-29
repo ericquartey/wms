@@ -74,11 +74,11 @@
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
-                  Content="{x:Static res:InstallationApp.StepUp}"
+                  Content="{x:Static res:InstallationApp.Up}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,350,0,0"
-                  Content="{x:Static res:InstallationApp.StepDown}"
+                  Content="{x:Static res:InstallationApp.Down}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,420,0,0"

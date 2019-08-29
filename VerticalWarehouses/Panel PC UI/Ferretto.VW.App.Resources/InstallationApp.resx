@@ -585,14 +585,6 @@
     <value>Reference's cell number</value>
     <comment>Label text</comment>
   </data>
-  <data name="StepDown" xml:space="preserve">
-    <value>Step -</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="StepUp" xml:space="preserve">
-    <value>Step +</value>
-    <comment>Button text</comment>
-  </data>
   <data name="StepValue" xml:space="preserve">
     <value>Step value [mm]</value>
     <comment>Label text</comment>
@@ -901,8 +893,8 @@
     <comment>Label text</comment>
   </data>
   <data name="BayControlPositionHeight" xml:space="preserve">
-    <value>Bay position [mm]:</value>
-    <comment>Page header</comment>
+    <value>Bay height [mm]:</value>
+    <comment>Field label</comment>
   </data>
   <data name="BayControlStepValue" xml:space="preserve">
     <value>Step value [mm]:</value>
@@ -1152,16 +1144,30 @@
   <data name="MeasuredDistance" xml:space="preserve">
     <value>Measured distance [mm]</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Accept</value>
-  </data>
   <data name="CellSide" xml:space="preserve">
     <value>Cell Side</value>
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Move to Cell Height</value>
   </data>
+  <data name="BayControlPosition1" xml:space="preserve">
+    <value>Position 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlPosition2" xml:space="preserve">
+    <value>Position 1</value>
+    <comment>Label text</comment>
+  </data>
   <data name="Displacement" xml:space="preserve">
     <value>Displacement [mm]</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>External Bay</value>
+  </data>
+  <data name="ExternalBayManualMovements" xml:space="preserve">
+    <value>External Bay Manual Movements</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Apply Correction</value>
   </data>
 </root>

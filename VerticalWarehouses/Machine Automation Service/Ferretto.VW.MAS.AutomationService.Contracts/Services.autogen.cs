@@ -18,11 +18,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineBaysService : ServiceBase, IMachineBaysService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineBaysService(string baseUrl)
+        public MachineBaysService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -61,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}/activate");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -114,8 +116,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}/deactivate");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -189,8 +189,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -211,7 +209,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -263,8 +261,170 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction)
+        {
+            return MoveAsync(bayNumber, direction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/move?");
+            urlBuilder_.Append("bayNumber=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Bay> UpdatePositionAsync(int bayNumber, int position, decimal height)
+        {
+            return UpdatePositionAsync(bayNumber, position, height, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Bay> UpdatePositionAsync(int bayNumber, int position, decimal height, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
+            if (position == null)
+                throw new System.ArgumentNullException("position");
+    
+            if (height == null)
+                throw new System.ArgumentNullException("height");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{bayNumber}/update-position?");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("position=").Append(System.Uri.EscapeDataString(ConvertToString(position, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("height=").Append(System.Uri.EscapeDataString(ConvertToString(height, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Bay>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
             }
         }
     
@@ -365,11 +525,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineBeltBurnishingProcedureService : ServiceBase, IMachineBeltBurnishingProcedureService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineBeltBurnishingProcedureService(string baseUrl)
+        public MachineBeltBurnishingProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -404,7 +566,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/parameters");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -453,8 +615,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -471,7 +631,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/mark-as-completed");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -501,7 +661,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
@@ -523,38 +683,36 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount)
         {
-            return StartAsync(upperBound, lowerBound, requiredCycles, System.Threading.CancellationToken.None);
+            return StartAsync(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StartAsync(decimal upperBound, decimal lowerBound, int requiredCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, System.Threading.CancellationToken cancellationToken)
         {
-            if (upperBound == null)
-                throw new System.ArgumentNullException("upperBound");
+            if (upperBoundPosition == null)
+                throw new System.ArgumentNullException("upperBoundPosition");
     
-            if (lowerBound == null)
-                throw new System.ArgumentNullException("lowerBound");
+            if (lowerBoundPosition == null)
+                throw new System.ArgumentNullException("lowerBoundPosition");
     
-            if (requiredCycles == null)
-                throw new System.ArgumentNullException("requiredCycles");
+            if (totalTestCycleCount == null)
+                throw new System.ArgumentNullException("totalTestCycleCount");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/start?");
-            urlBuilder_.Append("upperBound=").Append(System.Uri.EscapeDataString(ConvertToString(upperBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("lowerBound=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBound, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("requiredCycles=").Append(System.Uri.EscapeDataString(ConvertToString(requiredCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("upperBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(upperBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("lowerBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("totalTestCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(totalTestCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -605,8 +763,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -623,7 +779,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -668,8 +824,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -770,11 +924,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineCarouselService : ServiceBase, IMachineCarouselService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineCarouselService(string baseUrl)
+        public MachineCarouselService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -809,7 +965,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/position");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -858,8 +1014,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -876,7 +1030,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/move");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -924,8 +1078,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -942,7 +1094,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -987,8 +1139,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1089,11 +1239,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineCellsService : ServiceBase, IMachineCellsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineCellsService(string baseUrl)
+        public MachineCellsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -1128,7 +1280,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1177,8 +1329,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1195,7 +1345,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/statistics");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1244,8 +1394,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1271,7 +1419,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("height=").Append(System.Uri.EscapeDataString(ConvertToString(height, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1330,8 +1478,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1432,11 +1578,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineElevatorService : ServiceBase, IMachineElevatorService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineElevatorService(string baseUrl)
+        public MachineElevatorService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -1471,7 +1619,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/position");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1520,8 +1668,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1538,7 +1684,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/position");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1587,8 +1733,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1610,7 +1754,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1655,8 +1799,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1682,7 +1824,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1713,6 +1855,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             return;
                         }
                         else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
@@ -1727,8 +1875,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1750,7 +1896,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1795,8 +1941,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1818,7 +1962,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("distance=").Append(System.Uri.EscapeDataString(ConvertToString(distance, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1863,8 +2007,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1881,7 +2023,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1926,8 +2068,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2028,11 +2168,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineErrorsService : ServiceBase, IMachineErrorsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineErrorsService(string baseUrl)
+        public MachineErrorsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -2067,7 +2209,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/current");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2116,8 +2258,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2134,7 +2274,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/statistics");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2183,8 +2323,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2206,7 +2344,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("code=").Append(System.Uri.EscapeDataString(ConvertToString(code, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2256,8 +2394,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2278,7 +2414,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/errors/{id}/resolve");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2331,8 +2467,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2433,11 +2567,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineIdentityService : ServiceBase, IMachineIdentityService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineIdentityService(string baseUrl)
+        public MachineIdentityService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -2472,7 +2608,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2521,8 +2657,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2623,11 +2757,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineLoadingUnitsService : ServiceBase, IMachineLoadingUnitsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineLoadingUnitsService(string baseUrl)
+        public MachineLoadingUnitsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -2662,7 +2798,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/statistics/space");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2711,8 +2847,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2729,7 +2863,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/statistics/weight");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2778,8 +2912,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2796,7 +2928,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/start-moving");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2843,8 +2975,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2861,7 +2991,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/stop-moving");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2905,8 +3035,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3007,11 +3135,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineMachineStatusService : ServiceBase, IMachineMachineStatusService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineMachineStatusService(string baseUrl)
+        public MachineMachineStatusService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3046,7 +3176,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/power-off");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3092,8 +3222,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3110,7 +3238,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/power-on");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3156,8 +3284,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3174,7 +3300,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machine-status/reset-security");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3220,8 +3346,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3322,11 +3446,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineMissionOperationsService : ServiceBase, IMachineMissionOperationsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineMissionOperationsService(string baseUrl)
+        public MachineMissionOperationsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3370,7 +3496,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("quantity=").Append(System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3400,7 +3526,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
@@ -3422,8 +3548,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3524,11 +3648,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineResolutionCalibrationProcedureService : ServiceBase, IMachineResolutionCalibrationProcedureService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineResolutionCalibrationProcedureService(string baseUrl)
+        public MachineResolutionCalibrationProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3568,7 +3694,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("newResolution=").Append(System.Uri.EscapeDataString(ConvertToString(newResolution, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3598,7 +3724,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
@@ -3620,8 +3746,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3647,7 +3771,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("expectedDistance=").Append(System.Uri.EscapeDataString(ConvertToString(expectedDistance, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3699,8 +3823,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3717,7 +3839,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/parameters");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3766,8 +3888,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3789,7 +3909,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("position=").Append(System.Uri.EscapeDataString(ConvertToString(position, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3840,8 +3960,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3863,7 +3981,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("position=").Append(System.Uri.EscapeDataString(ConvertToString(position, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3914,8 +4032,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3937,7 +4053,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("position=").Append(System.Uri.EscapeDataString(ConvertToString(position, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3988,8 +4104,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4006,7 +4120,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/resolution-calibration-procedure/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4051,8 +4165,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4153,11 +4265,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineSensorsService : ServiceBase, IMachineSensorsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineSensorsService(string baseUrl)
+        public MachineSensorsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4192,7 +4306,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/sensors");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4241,8 +4355,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4343,11 +4455,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineServiceService : ServiceBase, IMachineServiceService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineServiceService(string baseUrl)
+        public MachineServiceService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4382,7 +4496,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/service/search-horizontal-zero");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4427,8 +4541,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4529,11 +4641,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineSetupStatusService : ServiceBase, IMachineSetupStatusService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineSetupStatusService(string baseUrl)
+        public MachineSetupStatusService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4568,7 +4682,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/setup-status");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4617,8 +4731,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4719,11 +4831,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineShuttersService : ServiceBase, IMachineShuttersService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineShuttersService(string baseUrl)
+        public MachineShuttersService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4763,7 +4877,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("bayNumber=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4812,8 +4926,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4830,7 +4942,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4879,36 +4991,37 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data)
+        public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction)
         {
-            return MoveAsync(bayNumber, data, System.Threading.CancellationToken.None);
+            return MoveAsync(bayNumber, direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
     
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move");
-            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move?");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -4949,38 +5062,36 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles)
+        public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount)
         {
-            return RunTestAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
+            return RunTestAsync(bayNumber, delayInSeconds, testCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
                 throw new System.ArgumentNullException("bayNumber");
     
-            if (delay == null)
-                throw new System.ArgumentNullException("delay");
+            if (delayInSeconds == null)
+                throw new System.ArgumentNullException("delayInSeconds");
     
-            if (numberCycles == null)
-                throw new System.ArgumentNullException("numberCycles");
+            if (testCycleCount == null)
+                throw new System.ArgumentNullException("testCycleCount");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/run-test?");
             urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append("delay=").Append(System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("numberCycles=").Append(System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("delayInSeconds=").Append(System.Uri.EscapeDataString(ConvertToString(delayInSeconds, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("testCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(testCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5031,8 +5142,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5049,7 +5158,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5094,8 +5203,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5196,11 +5303,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineStatisticsService : ServiceBase, IMachineStatisticsService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineStatisticsService(string baseUrl)
+        public MachineStatisticsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -5235,7 +5344,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/statistics");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5284,8 +5393,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5386,11 +5493,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineTestService : ServiceBase, IMachineTestService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineTestService(string baseUrl)
+        public MachineTestService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -5425,7 +5534,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/BayNowServiceable");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5470,8 +5579,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5488,7 +5595,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HomingTest");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5533,8 +5640,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5559,7 +5664,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Replace("{readInitialPosition}", System.Uri.EscapeDataString(ConvertToString(readInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{readFinalPosition}", System.Uri.EscapeDataString(ConvertToString(readFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5605,8 +5710,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5623,7 +5726,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5671,8 +5774,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5689,7 +5790,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HomingStop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5734,8 +5835,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5753,7 +5852,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/DecimalConfigurationValues/{parameter}");
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5808,8 +5907,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5826,7 +5923,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/GetInstallationStatus");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5881,8 +5978,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5901,7 +5996,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5956,8 +6051,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5974,7 +6067,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/Homing");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6019,8 +6112,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6037,7 +6128,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/HorizontalPositioning");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6082,8 +6173,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6100,7 +6189,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/StopFSM");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6145,8 +6234,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6163,7 +6250,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/UpdateCurrentPositionTest");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6208,8 +6295,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6226,7 +6311,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/test/VerticalPositioning");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6271,8 +6356,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6373,11 +6456,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineUsersService : ServiceBase, IMachineUsersService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineUsersService(string baseUrl)
+        public MachineUsersService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -6415,7 +6500,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("password=").Append(System.Uri.EscapeDataString(password != null ? ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6468,8 +6553,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6570,11 +6653,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineVerticalOffsetProcedureService : ServiceBase, IMachineVerticalOffsetProcedureService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineVerticalOffsetProcedureService(string baseUrl)
+        public MachineVerticalOffsetProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -6614,7 +6699,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append("newOffset=").Append(System.Uri.EscapeDataString(ConvertToString(newOffset, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6644,7 +6729,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
@@ -6666,8 +6751,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6684,7 +6767,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/parameters");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6733,8 +6816,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6751,7 +6832,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/move-down");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6796,8 +6877,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6814,7 +6893,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-offset-procedure/move-up");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6859,8 +6938,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6961,11 +7038,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     internal partial class MachineVerticalOriginProcedureService : ServiceBase, IMachineVerticalOriginProcedureService
     {
         private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineVerticalOriginProcedureService(string baseUrl)
+        public MachineVerticalOriginProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -7000,7 +7079,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/parameters");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7049,8 +7128,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7067,7 +7144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/start");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7112,8 +7189,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7130,7 +7205,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/vertical-origin-procedure/stop");
     
-            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7175,8 +7250,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     

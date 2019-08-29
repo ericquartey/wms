@@ -44,7 +44,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         LoadingUnitInLowerBay = 6,
 
-        FreeSensor = 7,
+        InverterInFault = 7,
 
         ElevatorMotorFeedback = 8,
 
@@ -89,7 +89,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("04", false, "Barriera ottica anti-intrusione"));
             this.inputs.Add(new BitModel("05", false, "Sensore presenza cassetto in baia"));
             this.inputs.Add(new BitModel("06", false, "Sensore presenza cassetto inferiore / baia intermedia"));
-            this.inputs.Add(new BitModel("07", false, "Libero"));
+            this.inputs.Add(new BitModel("07", false, "Cumulativo Inverter In Fault"));
             this.inputs.Add(new BitModel("08", false, "Selezione motore elevatore (feedback)"));
             this.inputs.Add(new BitModel("09", false, "Selezione motore culla (feedback)"));
             this.inputs.Add(new BitModel("10", false, "Presenza cassetto su culla lato macchina"));

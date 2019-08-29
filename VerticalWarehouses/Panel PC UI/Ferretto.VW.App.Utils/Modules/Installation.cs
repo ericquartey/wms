@@ -6,6 +6,8 @@
 
         public const string BELTBURNISHING = "BeltBurnishingViewModel";
 
+        public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
@@ -33,6 +35,8 @@
 
             public const string CAROUSEL = "CarouselManualMovementsViewModel";
 
+            public const string EXTERNALBAY = "ExternalBayManualMovementsViewModel";
+
             public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
 
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
@@ -42,6 +46,11 @@
             public const string VERTICALENGINE = "VerticalEngineManualMovementsViewModel";
 
             #endregion
+        }
+
+        public static class Bays
+        {
+            public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
         }
 
         public static class Sensors

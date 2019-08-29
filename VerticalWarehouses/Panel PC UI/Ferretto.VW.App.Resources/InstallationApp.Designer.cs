@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -57,15 +57,6 @@ namespace Ferretto.VW.App.Resources {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accept.
-        /// </summary>
-        public static string Accept {
-            get {
-                return ResourceManager.GetString("Accept", resourceCulture);
             }
         }
         
@@ -111,6 +102,15 @@ namespace Ferretto.VW.App.Resources {
         public static string AntiIntrusionGate {
             get {
                 return ResourceManager.GetString("AntiIntrusionGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Correction.
+        /// </summary>
+        public static string ApplyCorrection {
+            get {
+                return ResourceManager.GetString("ApplyCorrection", resourceCulture);
             }
         }
         
@@ -250,7 +250,25 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay position [mm]:.
+        ///   Looks up a localized string similar to Position 1.
+        /// </summary>
+        public static string BayControlPosition1 {
+            get {
+                return ResourceManager.GetString("BayControlPosition1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 1.
+        /// </summary>
+        public static string BayControlPosition2 {
+            get {
+                return ResourceManager.GetString("BayControlPosition2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay height [mm]:.
         /// </summary>
         public static string BayControlPositionHeight {
             get {
@@ -750,6 +768,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ErrorRetrievingConfigurationData {
             get {
                 return ResourceManager.GetString("ErrorRetrievingConfigurationData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Bay.
+        /// </summary>
+        public static string ExternalBay {
+            get {
+                return ResourceManager.GetString("ExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Bay Manual Movements.
+        /// </summary>
+        public static string ExternalBayManualMovements {
+            get {
+                return ResourceManager.GetString("ExternalBayManualMovements", resourceCulture);
             }
         }
         
@@ -2136,24 +2172,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Step3 {
             get {
                 return ResourceManager.GetString("Step3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Step -.
-        /// </summary>
-        public static string StepDown {
-            get {
-                return ResourceManager.GetString("StepDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Step +.
-        /// </summary>
-        public static string StepUp {
-            get {
-                return ResourceManager.GetString("StepUp", resourceCulture);
             }
         }
         

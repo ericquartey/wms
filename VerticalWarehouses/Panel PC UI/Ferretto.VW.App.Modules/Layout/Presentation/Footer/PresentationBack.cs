@@ -29,10 +29,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Subscribe(this.Update);
-
-            this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()
-                .Subscribe(this.Update);
         }
 
         #endregion

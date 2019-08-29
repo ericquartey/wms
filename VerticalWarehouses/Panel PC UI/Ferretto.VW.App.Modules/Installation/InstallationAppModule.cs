@@ -48,6 +48,12 @@ namespace Ferretto.VW.App.Modules.Installation
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
+            #region Bays
+
+            containerRegistry.RegisterForNavigation<BayHeightCheckView>();
+
+            #endregion
+
             #region Sensors Views
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
@@ -64,6 +70,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<ManualMovementsNavigationView>();
             containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
+            containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
             #endregion
 
@@ -94,6 +101,7 @@ namespace Ferretto.VW.App.Modules.Installation
 
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
+            containerRegistry.RegisterForNavigation<CellsPanelsCheckView>();
 
             #endregion
         }

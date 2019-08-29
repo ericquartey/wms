@@ -16,13 +16,13 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(m => m.Code);
+            builder.HasKey(d => d.Code);
 
-            builder.Property(m => m.Description)
+            builder.Property(d => d.Description)
                 .IsRequired();
 
             builder
-                .HasOne(e => e.Statistics)
+                .HasOne(d => d.Statistics)
                 .WithOne(s => s.Error)
                 .HasForeignKey<ErrorStatistic>(s => s.Code)
                 .OnDelete(DeleteBehavior.ClientSetNull);

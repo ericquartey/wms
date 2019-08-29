@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync(),
+                async () => await this.StartAsync(),
                 this.CanExecuteStartCommand));
 
         #endregion
@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
               && string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private async Task ExecuteStartCommandAsync()
+        private async Task StartAsync()
         {
             try
             {
