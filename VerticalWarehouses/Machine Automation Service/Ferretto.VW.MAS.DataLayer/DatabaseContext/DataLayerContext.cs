@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
+        public DbSet<Panel> Panels { get; set; }
+
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
@@ -65,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder == null)
+            if (optionsBuilder is null)
             {
                 throw new ArgumentNullException(nameof(optionsBuilder));
             }
@@ -92,21 +94,23 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null)
+            if (modelBuilder is null)
             {
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
             modelBuilder.ApplyConfiguration(new BaysConfiguration());
+            modelBuilder.ApplyConfiguration(new PanelsConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
-            modelBuilder.ApplyConfiguration(new UsersConfiguration());
             modelBuilder.ApplyConfiguration(new SetupStatusConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

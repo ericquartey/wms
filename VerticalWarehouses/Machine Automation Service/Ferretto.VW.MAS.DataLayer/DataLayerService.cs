@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -124,12 +125,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                var redundancyService = scope.ServiceProvider
-                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-                redundancyService.IsEnabled = false;
-
                 try
                 {
+                    var redundancyService = scope.ServiceProvider
+                        .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+                    redundancyService.IsEnabled = false;
+
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
                         var pendingMigrationsCount = activeDbContext.Database.GetPendingMigrations().Count();
@@ -164,7 +166,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
-                    //this.EnsureMachinestatusInitialization();
                 }
                 catch (Exception ex)
                 {
@@ -172,22 +173,37 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.SendErrorMessage(new DLExceptionMessageData(ex));
                     return;
                 }
+
+                try
+                {
+                    this.Logger.LogInformation("Loading cells from configuration file ...");
+
+                    scope.ServiceProvider
+                        .GetRequiredService<ICellsProvider>()
+                        .LoadFrom(configuration.GetCellsConfigurationFile());
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while loading cells.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    return;
+                }
+
+                this.IsReady = true;
+
+                var message = new NotificationMessage(
+                    null,
+                    "DataLayer initialization complete.",
+                    MessageActor.Any,
+                    MessageActor.DataLayer,
+                    MessageType.DataLayerReady);
+
+                this.EventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(message);
+
+                this.Logger.LogDebug("Data layer service initialized.");
             }
-
-            var message = new NotificationMessage(
-                null,
-                "DataLayer initialization complete.",
-                MessageActor.Any,
-                MessageActor.DataLayer,
-                MessageType.DataLayerReady);
-
-            this.IsReady = true;
-
-            this.EventAggregator
-                .GetEvent<NotificationEvent>()
-                .Publish(message);
-
-            this.Logger.LogDebug("Data layer service initialized.");
         }
 
         private void SendErrorMessage(IMessageData data)

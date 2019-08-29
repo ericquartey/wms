@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class DrawerLoadingUnloadingTestViewModel : BindableBase
     {

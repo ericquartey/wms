@@ -95,6 +95,7 @@ namespace Ferretto.VW.App.Modules.Installation
 
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
+            containerRegistry.RegisterForNavigation<CellsPanelsCheckView>();
 
             #endregion
         }
