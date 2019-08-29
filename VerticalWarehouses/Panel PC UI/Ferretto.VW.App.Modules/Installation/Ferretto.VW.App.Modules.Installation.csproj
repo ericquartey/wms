@@ -74,6 +74,24 @@
     <None Update="HelpWindows\HelpPageBase.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\IdleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Cells\CellsHeightCheckView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep1View - Copy.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
