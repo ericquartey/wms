@@ -61,15 +61,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accept.
-        /// </summary>
-        public static string Accept {
-            get {
-                return ResourceManager.GetString("Accept", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance [%]:.
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -111,6 +102,15 @@ namespace Ferretto.VW.App.Resources {
         public static string AntiIntrusionGate {
             get {
                 return ResourceManager.GetString("AntiIntrusionGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Correction.
+        /// </summary>
+        public static string ApplyCorrection {
+            get {
+                return ResourceManager.GetString("ApplyCorrection", resourceCulture);
             }
         }
         
@@ -2172,24 +2172,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Step3 {
             get {
                 return ResourceManager.GetString("Step3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Step -.
-        /// </summary>
-        public static string StepDown {
-            get {
-                return ResourceManager.GetString("StepDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Step +.
-        /// </summary>
-        public static string StepUp {
-            get {
-                return ResourceManager.GetString("StepUp", resourceCulture);
             }
         }
         

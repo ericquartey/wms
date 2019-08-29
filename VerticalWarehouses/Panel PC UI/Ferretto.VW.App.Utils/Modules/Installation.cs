@@ -6,6 +6,8 @@
 
         public const string BELTBURNISHING = "BeltBurnishingViewModel";
 
+        public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";

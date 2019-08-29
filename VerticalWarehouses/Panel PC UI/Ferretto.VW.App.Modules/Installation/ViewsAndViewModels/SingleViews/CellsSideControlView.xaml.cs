@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Logica di interazione per CellsSideControlView.xaml
-    /// </summary>
-    public partial class CellsSideControlView : UserControl
+    public partial class CellsSideControlView
     {
+        #region Constructors
+
         public CellsSideControlView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

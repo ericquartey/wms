@@ -796,26 +796,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cell 
     {
-        [Newtonsoft.Json.JsonProperty("coord", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Coord { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoadingUnit LoadingUnit { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("panelId", Required = Newtonsoft.Json.Required.Always)]
+        public int PanelId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.Always)]
+        public decimal Position { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
-        public CellSide Side { get; set; }
+        public WarehouseSide Side { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public CellStatus Status { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("workingStatus", Required = Newtonsoft.Json.Required.Always)]
-        public CellStatus WorkingStatus { get; set; }
     
         public string ToJson() 
         {
@@ -891,11 +891,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum CellSide
+    public enum WarehouseSide
     {
-        Front = 0,
+        NotSpecified = 0,
     
-        Back = 1,
+        Front = 1,
+    
+        Back = 2,
     
     }
     

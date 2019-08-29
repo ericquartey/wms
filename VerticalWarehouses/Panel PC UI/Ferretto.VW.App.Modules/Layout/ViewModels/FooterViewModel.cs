@@ -68,7 +68,22 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 }
                 else if (message.Exception is SwaggerException)
                 {
-                    this.NotificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+                    var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+
+                    if (message.Exception.InnerException != null)
+                    {
+                        notificationMessage +=
+                            System.Environment.NewLine +
+                            message.Exception.InnerException.Message;
+                    }
+                    else
+                    {
+                        notificationMessage +=
+                           System.Environment.NewLine +
+                           message.Exception.Message;
+                    }
+
+                    this.NotificationMessage = notificationMessage;
                 }
                 else
                 {

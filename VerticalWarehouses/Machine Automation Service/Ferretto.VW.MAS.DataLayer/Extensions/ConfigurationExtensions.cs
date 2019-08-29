@@ -14,6 +14,11 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
         #region Methods
 
+        public static string GetCellsConfigurationFile(this IConfiguration configuration)
+        {
+            return configuration.GetValue<string>("Vertimag:DataLayer:CellsFile", "cells.json");
+        }
+
         public static string GetDataLayerConfigurationFile(this IConfiguration configuration)
         {
             return configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile");
