@@ -475,12 +475,6 @@
   <data name="ReferenceCellNumber" xml:space="preserve">
     <value>Numero cella di riferimento</value>
   </data>
-  <data name="StepDown" xml:space="preserve">
-    <value>Step -</value>
-  </data>
-  <data name="StepUp" xml:space="preserve">
-    <value>Step +</value>
-  </data>
   <data name="StepValue" xml:space="preserve">
     <value>Valore step [mm]</value>
   </data>
@@ -905,9 +899,6 @@
   <data name="MeasuredDistance" xml:space="preserve">
     <value>Corsa misurata [mm]</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Accetta</value>
-  </data>
   <data name="CellSide" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
@@ -922,5 +913,8 @@
   </data>
   <data name="ExternalBayManualMovements" xml:space="preserve">
     <value>Movimenti Manuali Baia Esterna</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Applica Correzione</value>
   </data>
 </root>

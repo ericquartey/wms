@@ -1,15 +1,16 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Logica di interazione per BayControlView.xaml
-    /// </summary>
-    public partial class BayControlView : UserControl
+    public partial class BayControlView
     {
+        #region Constructors
+
         public BayControlView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

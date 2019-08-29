@@ -585,14 +585,6 @@
     <value>Reference's cell number</value>
     <comment>Label text</comment>
   </data>
-  <data name="StepDown" xml:space="preserve">
-    <value>Step -</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="StepUp" xml:space="preserve">
-    <value>Step +</value>
-    <comment>Button text</comment>
-  </data>
   <data name="StepValue" xml:space="preserve">
     <value>Step value [mm]</value>
     <comment>Label text</comment>
@@ -1152,9 +1144,6 @@
   <data name="MeasuredDistance" xml:space="preserve">
     <value>Measured distance [mm]</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Accept</value>
-  </data>
   <data name="CellSide" xml:space="preserve">
     <value>Cell Side</value>
   </data>
@@ -1169,5 +1158,8 @@
   </data>
   <data name="ExternalBayManualMovements" xml:space="preserve">
     <value>External Bay Manual Movements</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Apply Correction</value>
   </data>
 </root>

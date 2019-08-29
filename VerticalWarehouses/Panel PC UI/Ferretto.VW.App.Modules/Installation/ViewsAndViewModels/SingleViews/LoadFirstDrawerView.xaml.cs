@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Logica di interazione per LoadFirstDrawerView.xaml
-    /// </summary>
-    public partial class LoadFirstDrawerView : UserControl
+    public partial class LoadFirstDrawerView
     {
+        #region Constructors
+
         public LoadFirstDrawerView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

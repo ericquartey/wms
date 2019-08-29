@@ -1,7 +1,9 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public enum CellSide
+    public enum WarehouseSide
     {
+        NotSpecified,
+
         Front,
 
         Back
