@@ -621,14 +621,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
-                this.IsTargetReached = false;
             }
         }
 
         public void BuildPositionStatusWord()
         {
             //New SetPoint
-            if ((this.ControlWord & 0x0010) > 0)
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
                 if (!this.targetTimerActive)
                 {
@@ -646,7 +645,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
 
                 // Reset Set-Point Acknowledge
-                this.IsTargetReached = false;
                 this.StatusWord &= 0xEFFF;
             }
         }
@@ -670,7 +668,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.shutterTimer.Change(-1, Timeout.Infinite);
                     this.shutterTimerActive = false;
                 }
-                this.IsTargetReached = false;
             }
         }
 
