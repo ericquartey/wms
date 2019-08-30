@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -62,7 +61,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 {
                     case MessageStatus.OperationEnd:
                         this.currentInverterIndex++;
-
                         if (this.currentInverterIndex < this.machineData.ConfiguredInverters.Count)
                         {
                             var inverterCommandMessageData = new InverterStopFieldMessageData();
