@@ -513,13 +513,15 @@ namespace Ferretto.VW.Simulator.Services
             }
             else
             {
-                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;   // Enable Operation
+                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;
             }
 
             if (!inverter.IsOperationEnabled)
             {
                 inverter.IsTargetReached = false;
+                inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
+
             inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
         }
 

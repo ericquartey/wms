@@ -629,9 +629,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
-                if (!this.targetTimerActive)
+                if (!this.targetTimerActive && (this.StatusWord & 0x1000) == 0)
                 {
-                    this.StatusWord &= 0xFBFF;
                     this.targetTimer.Change(0, 50);
                     this.targetTimerActive = true;
                 }
@@ -643,9 +642,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.targetTimer.Change(-1, Timeout.Infinite);
                     this.targetTimerActive = false;
                 }
-
-                // Reset Set-Point Acknowledge
-                this.StatusWord &= 0xEFFF;
             }
         }
 
@@ -963,14 +959,12 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 else { this.AxisPosition--; }
             }
-
             if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
             {
                 this.AxisPosition = target;
-
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
+                this.StatusWord |= 0x1000;      // Set Point Ack
                 this.IsTargetReached = true;
-
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 this.targetTimerActive = false;
             }

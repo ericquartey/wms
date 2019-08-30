@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -87,7 +86,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                if (currentStatus.PositionStatusWord.PositioningAttained)
+                if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
                 {
                     this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     this.Logger.LogDebug("Position Reached !");
