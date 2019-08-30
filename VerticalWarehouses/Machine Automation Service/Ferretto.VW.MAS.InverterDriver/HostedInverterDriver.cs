@@ -734,6 +734,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
                         continue;
                     }
+
+                    this.writeEnableEvent.Set();
                 }
 
                 // socket connected

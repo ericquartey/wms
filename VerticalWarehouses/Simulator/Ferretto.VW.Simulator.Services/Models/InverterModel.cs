@@ -627,7 +627,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public void BuildPositionStatusWord()
         {
             //New SetPoint
-            if ((this.ControlWord & 0x0010) > 0)
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
                 if (!this.targetTimerActive)
                 {
@@ -668,7 +668,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.shutterTimer.Change(-1, Timeout.Infinite);
                     this.shutterTimerActive = false;
                 }
-                this.IsTargetReached = false;
             }
         }
 
