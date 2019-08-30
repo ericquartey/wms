@@ -516,6 +516,10 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;   // Enable Operation
             }
 
+            if (!inverter.IsOperationEnabled)
+            {
+                inverter.IsTargetReached = false;
+            }
             inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
         }
 

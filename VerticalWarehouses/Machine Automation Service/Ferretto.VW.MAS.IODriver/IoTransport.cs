@@ -219,35 +219,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] message, CancellationToken stoppingToken)
         {
-            if (this.transportStream == null)
-            {
-                throw new IoDriverException(
-                    "Transport Stream is null",
-                    IoDriverExceptionCode.UninitializedNetworkStream);
-            }
-
-            if (!this.transportStream.CanWrite)
-            {
-                throw new IoDriverException(
-                    "Transport Stream not configured for sending data",
-                    IoDriverExceptionCode.MisconfiguredNetworkStream);
-            }
-
-            if (!this.IsConnected)
-            {
-                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
-            }
-            try
-            {
-                await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                this.Disconnect();
-                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
-            }
-
-            return 0;
+            return await this.WriteAsync(message, 0, stoppingToken);
         }
 
         /// <inheritdoc />
@@ -278,14 +250,13 @@ namespace Ferretto.VW.MAS.IODriver
                     await Task.Delay(delay, stoppingToken);
                 }
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
+                return message.Length;
             }
             catch (Exception ex)
             {
                 this.Disconnect();
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
-
-            return 0;
         }
 
         protected virtual void Dispose(bool disposing)
