@@ -187,6 +187,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         continue;
                     }
 
+                    this.writeEnableEvent.Set();
+
                     var message = new IoWriteMessage(
                         this.ioStatus.ComunicationTimeOut,
                         this.ioStatus.UseSetupOutputLines,
