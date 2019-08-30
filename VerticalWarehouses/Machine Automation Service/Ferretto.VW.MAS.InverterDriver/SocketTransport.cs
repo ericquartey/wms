@@ -286,6 +286,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     await Task.Delay(delay, stoppingToken);
                 }
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
+                return inverterMessage.Length;
             }
             catch (Exception ex)
             {
@@ -295,8 +296,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.NetworkStreamWriteFailure,
                     ex);
             }
-
-            return inverterMessage.Length;
         }
 
         protected virtual void Dispose(bool disposing)
