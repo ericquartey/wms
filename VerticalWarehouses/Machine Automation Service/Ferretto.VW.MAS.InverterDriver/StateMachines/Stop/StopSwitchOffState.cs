@@ -3,14 +3,13 @@ using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
-    public class StopDisableOperationState : InverterStateBase
+    public class StopSwitchOffState : InverterStateBase
     {
         #region Constructors
 
-        public StopDisableOperationState(
+        public StopSwitchOffState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
@@ -22,7 +21,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         #region Destructors
 
-        ~StopDisableOperationState()
+        ~StopSwitchOffState()
         {
             this.Dispose(false);
         }
@@ -37,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.EnableOperation = false;
+            this.InverterStatus.CommonControlWord.SwitchOn = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
@@ -46,14 +45,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
 
-        /// <inheritdoc />
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
             this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
         }
 
-        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
@@ -72,10 +69,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                 this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
             {
-                //this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                this.ParentStateMachine.ChangeState(new StopSwitchOffState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 returnValue = true;
             }
 
