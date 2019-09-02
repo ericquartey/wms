@@ -20,6 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder.HasKey(l => l.Id);
 
             var random = new Random();
+
             for (var i = 1; i <= 15; i++)
             {
                 builder.HasData(

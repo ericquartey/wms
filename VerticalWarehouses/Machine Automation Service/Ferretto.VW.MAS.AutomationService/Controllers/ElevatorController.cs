@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBayPositionControlDataLayer bayPositionControl;
 
+        private readonly ICellControlDataLayer cellControlDataLayer;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
@@ -59,6 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ISetupStatusProvider setupStatusProvider,
             IBayPositionControlDataLayer bayPositionControl,
             IElevatorProvider elevatorProvider,
+            ICellControlDataLayer cellControlDataLayer,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<ElevatorController> logger)
             : base(eventAggregator)
@@ -108,6 +111,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(elevatorProvider));
             }
 
+            if (cellControlDataLayer is null)
+            {
+                throw new System.ArgumentNullException(nameof(cellControlDataLayer));
+            }
+
             if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
@@ -122,6 +130,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.setupStatusProvider = setupStatusProvider;
             this.bayPositionControl = bayPositionControl;
             this.elevatorProvider = elevatorProvider;
+            this.cellControlDataLayer = cellControlDataLayer;
             this.installationHub = installationHub;
             this.logger = logger;
         }
@@ -457,7 +466,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     break;
 
                 case FeedRateCategory.CellControl:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                    feedRate = this.cellControlDataLayer.FeedRateCC;
+                    break;
 
                 case FeedRateCategory.PanelControl:
                     throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
