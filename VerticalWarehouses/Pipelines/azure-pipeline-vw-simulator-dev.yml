@@ -15,6 +15,7 @@ trigger:
     - develop
   paths:
     include:
+    - VerticalWarehouses\Common
     - VerticalWarehouses\Simulator
 
 steps:

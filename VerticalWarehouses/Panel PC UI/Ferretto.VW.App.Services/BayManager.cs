@@ -140,7 +140,7 @@ namespace Ferretto.VW.App.Services
 
         public async Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
         {
-            this.bay = await this.machineBaysService.UpdatePositionAsync(bayNumber, position, height);
+            this.bay = await this.machineBaysService.UpdateHeightAsync(bayNumber, position, height);
             return this.bay;
         }
 

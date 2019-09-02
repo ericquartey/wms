@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataModels
         public LoadingUnit LoadingUnit { get; set; }
 
         [JsonIgnore]
-        public Panel Panel { get; set; }
+        public CellPanel Panel { get; set; }
 
         public int PanelId { get; set; }
 

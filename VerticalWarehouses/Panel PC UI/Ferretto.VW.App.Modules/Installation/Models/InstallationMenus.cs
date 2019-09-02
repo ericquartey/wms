@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using Ferretto.VW.App.Installation.Attributes;
 
 namespace Ferretto.VW.App.Installation.Resources
@@ -77,7 +78,6 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Puntatore Laser")]
         BayLaser,
 
-        //To DO remove after implementing PpcControl for navigation of sub menus
-        None
+        None,
     }
 }

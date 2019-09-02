@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -143,6 +145,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputFinalPosition must be positive.";
                         }
+
                         break;
                 }
 
@@ -154,7 +157,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
@@ -177,6 +180,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorMovingDown = false;
@@ -196,6 +200,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task ApplyCorrectionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.Cell = await this.MachineCellsService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
+
+                this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private bool CanExecuteApplyCorrectionCommand()
@@ -232,25 +255,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMovingDown
                 &&
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
-        }
-
-        private async Task ApplyCorrectionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.Cell = await this.MachineCellsService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
-
-                this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private async Task MoveDownAsync()

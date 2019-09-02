@@ -26,6 +26,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CellPanels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Side = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CellPanels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ConfigurationValues",
                 columns: table => new
                 {
@@ -105,19 +118,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Panels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Side = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Panels", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServicingInfo",
                 columns: table => new
                 {
@@ -184,6 +184,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cells",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PanelId = table.Column<int>(nullable: false),
+                    Position = table.Column<decimal>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cells", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cells_CellPanels_PanelId",
+                        column: x => x.PanelId,
+                        principalTable: "CellPanels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Errors",
                 columns: table => new
                 {
@@ -220,28 +242,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalTable: "ErrorDefinitions",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cells",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PanelId = table.Column<int>(nullable: false),
-                    Position = table.Column<decimal>(nullable: false),
-                    Priority = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cells", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cells_Panels_PanelId",
-                        column: x => x.PanelId,
-                        principalTable: "Panels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 10, 29, 9, 25, 17, 89, DateTimeKind.Local).AddTicks(8666), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 10, 29, 17, 16, 52, 6, DateTimeKind.Local).AddTicks(4965), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -401,7 +401,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Cells");
 
             migrationBuilder.DropTable(
-                name: "Panels");
+                name: "CellPanels");
         }
     }
 }

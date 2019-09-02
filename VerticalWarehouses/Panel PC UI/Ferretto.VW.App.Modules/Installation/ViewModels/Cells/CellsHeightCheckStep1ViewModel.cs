@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -104,6 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorMoving = false;
@@ -164,6 +167,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void NavigateToNextStep()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.CellsHeightCheck.STEP2,
+                this.SelectedCell,
+                trackCurrentView: false);
+        }
+
         private async Task StopAsync()
         {
             try
@@ -174,15 +186,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
         }
 
         #endregion

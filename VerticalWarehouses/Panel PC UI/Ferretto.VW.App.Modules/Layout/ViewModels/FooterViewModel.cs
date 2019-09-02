@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using System.Linq;
+using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -64,7 +65,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.NotificationMessage =
                         swaggerException.Result.Title +
                         System.Environment.NewLine +
-                        swaggerException.Result.Detail;
+                        swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
                 }
                 else if (message.Exception is SwaggerException)
                 {
@@ -80,7 +81,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     {
                         notificationMessage +=
                            System.Environment.NewLine +
-                           message.Exception.Message;
+                           message.Exception.Message.Split('\n', '\r').FirstOrDefault();
                     }
 
                     this.NotificationMessage = notificationMessage;
