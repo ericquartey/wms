@@ -413,13 +413,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult WeightCheck(int id, decimal runToTest, decimal weight)
+        public IActionResult WeightCheck(int loadingUnitId, decimal runToTest, decimal weight)
         {
             try
             {
-                this.elevatorProvider.Start(id, runToTest, weight);
+                this.elevatorProvider.Start(loadingUnitId, runToTest, weight);
                 var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
-                this.installationHub.Clients.All.ElavtorWeightCheck(new NotificationMessageUI<IElevatorWeightCheckMessageData>() { Data = data });
+                this.installationHub.Clients.All.ElevatorWeightCheck(new NotificationMessageUI<IElevatorWeightCheckMessageData>() { Data = data });
                 return this.Ok();
             }
             catch (DataLayer.Exceptions.EntityNotFoundException ex)

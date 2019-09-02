@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                  nameof(IInstallationHub.PowerEnableNotify), this.OnPowerEnableNotify);
 
             connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
-                 nameof(IInstallationHub.ElavtorWeightCheck), this.OnElavtorWeightCheck);
+                 nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)

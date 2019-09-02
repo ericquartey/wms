@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 this.logger.LogTrace($"29:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ElavtorWeightCheck(message);
+                this.installationHub.Clients.All.ElevatorWeightCheck(message);
 
                 this.logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
