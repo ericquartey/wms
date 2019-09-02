@@ -28,17 +28,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding InputUpperBound}"
-                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.SelectUpperBound}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding InputLowerBound}"
-                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
+        <controls:PpcTextBox Grid.Row="2"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.SelectLowerBound}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"

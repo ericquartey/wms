@@ -1176,4 +1176,12 @@
   <data name="Side" xml:space="preserve">
     <value>Side</value>
   </data>
+  <data name="SelectLowerBound" xml:space="preserve">
+    <value>Select lower bound [mm]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SelectUpperBound" xml:space="preserve">
+    <value>Select upper bound [mm]</value>
+    <comment>Label text</comment>
+  </data>
 </root>

@@ -926,4 +926,12 @@
   <data name="Side" xml:space="preserve">
     <value>Lato</value>
   </data>
+  <data name="SelectLowerBound" xml:space="preserve">
+    <value>Seleziona limite inferiore [mm]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SelectUpperBound" xml:space="preserve">
+    <value>Seleziona limite superiore [mm]</value>
+    <comment>Label text</comment>
+  </data>
 </root>
