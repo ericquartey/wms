@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -34,18 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
-
-        //public bool IsExecutingProcedure
-        //{
-        //    get => this.isExecutingProcedure;
-        //    protected set
-        //    {
-        //        if (this.SetProperty(ref this.isExecutingProcedure, value))
-        //        {
-        //            this.RaiseCanExecuteChanged();
-        //        }
-        //    }
-        //}
 
         #region Properties
 

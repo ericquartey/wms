@@ -46,10 +46,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public ElevatorWeightCheckStep2ViewModel(IMachineElevatorService machineElevatorService,
-                                                    INavigationService navigationService,
-                                                    IEventAggregator eventAggregator) : base(eventAggregator)
+        public ElevatorWeightCheckStep2ViewModel(
+                                                 IMachineElevatorService machineElevatorService,
+                                                 INavigationService navigationService,
+                                                 IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
+            if (machineElevatorService == null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
             this.machineElevatorService = machineElevatorService;
             this.navigationService = navigationService;
         }
@@ -159,6 +166,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return $"Test to Run must be positive";
                         }
+
                         break;
 
                     case nameof(this.InputWeight):
@@ -171,6 +179,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "Input Weight must be strictly positive.";
                         }
+
                         break;
 
                     case nameof(this.WeightTolerance):
@@ -179,6 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "Weight Tolerance must be strictly positive.";
                         }
+
                         break;
                 }
 

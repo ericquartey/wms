@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string Error => string.Join(
                       System.Environment.NewLine,
-              this[nameof(this.InputLoadingUnitId)]);
+                      this[nameof(this.InputLoadingUnitId)]);
 
         public int? InputLoadingUnitId
         {
@@ -80,6 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "LoadingUnit Id must be strictly positive.";
                         }
+
                         break;
                 }
 
