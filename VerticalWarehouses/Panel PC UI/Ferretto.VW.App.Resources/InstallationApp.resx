@@ -1170,6 +1170,14 @@
   <data name="ApplyCorrection" xml:space="preserve">
     <value>Apply Correction</value>
   </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Insert desired loading unit id</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verify</value>
+    <comment>Button text</comment>
+  </data>
   <data name="GoToCellHeight" xml:space="preserve">
     <value>Go To Cell Height</value>
   </data>

@@ -1123,6 +1123,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert desired loading unit id.
+        /// </summary>
+        public static string InsertDesiredLoadingUnitId {
+            get {
+                return ResourceManager.GetString("InsertDesiredLoadingUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert desired movement..
         /// </summary>
         public static string InsertDesiredMovement {
@@ -2316,6 +2325,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VariousInputs {
             get {
                 return ResourceManager.GetString("VariousInputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string Verify {
+            get {
+                return ResourceManager.GetString("Verify", resourceCulture);
             }
         }
         
