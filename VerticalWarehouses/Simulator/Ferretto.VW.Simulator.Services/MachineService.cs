@@ -495,6 +495,7 @@ namespace Ferretto.VW.Simulator.Services
             else if ((inverter.ControlWord & 0x0080) > 0)   // Reset fault
             {
                 inverter.IsFault = false;
+                this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = false;
             }
 
             // Switch On
@@ -512,7 +513,13 @@ namespace Ferretto.VW.Simulator.Services
             }
             else
             {
-                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;   // Enable Operation
+                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;
+            }
+
+            if (!inverter.IsOperationEnabled)
+            {
+                inverter.IsTargetReached = false;
+                inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
             inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
@@ -533,6 +540,14 @@ namespace Ferretto.VW.Simulator.Services
 
                 // Power up inverters
                 this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
+            }
+            foreach (var inverter in this.Inverters)
+            {
+                if (inverter.IsFault)
+                {
+                    this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = true;
+                    break;
+                }
             }
         }
 

@@ -101,25 +101,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("{bayNumber}/update-position")]
+        [HttpPost("{bayNumber}/height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdatePosition(int bayNumber, int position, decimal height)
+        public ActionResult<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
         {
             try
             {
                 var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+
                 return this.Ok(bay);
             }
-            catch (DataLayer.Exceptions.EntityNotFoundException ex)
+            catch (Exception ex)
             {
-                return this.NotFound(new ProblemDetails { Detail = ex.Message });
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return this.BadRequest(new ProblemDetails { Detail = ex.Message });
+                return this.NegativeResponse<Bay>(ex);
             }
         }
 

@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalResolutionCalibrationStep3ViewModel(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(eventAggregator, resolutionCalibrationService)
         {
@@ -158,6 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputMeasuredFinalPosition must be strictly positive.";
                         }
+
                         break;
 
                     case nameof(this.NewResolution):
@@ -170,6 +171,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "NewResolution must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -190,24 +192,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                ||
-                message.Status == MessageStatus.OperationStop) // TODO why OperationStop as well and not only OperationEnd?
-            {
-                this.IsExecutingProcedure = false;
-            }
+            this.IsExecutingProcedure =
+                message.Status != MessageStatus.OperationEnd
+                &&
+                message.Status != MessageStatus.OperationStop;
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             this.acceptCommand?.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteAcceptCommand()
-        {
-            return !this.IsExecutingProcedure
-               && !this.IsWaitingForResponse
-               && string.IsNullOrWhiteSpace(this.Error);
         }
 
         private async Task AcceptAsync()
@@ -230,6 +223,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private bool CanExecuteAcceptCommand()
+        {
+            return !this.IsExecutingProcedure
+               && !this.IsWaitingForResponse
+               && string.IsNullOrWhiteSpace(this.Error);
         }
 
         private void RetrieveInputData()

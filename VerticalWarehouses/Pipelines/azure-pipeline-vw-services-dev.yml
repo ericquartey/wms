@@ -14,10 +14,9 @@ trigger:
     include:
     - develop
   paths:
-    exclude:
-    - Common
-    - WMS
-    - VerticalWarehouses\Panel PC UI
+    include:
+    - VerticalWarehouses\Common
+    - VerticalWarehouses\Machine Automation Service
 
 steps:
 

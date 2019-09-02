@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
+        public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
+
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalState];
 

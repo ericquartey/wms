@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
@@ -25,6 +26,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public bool Enable { get; }
+
+        public InverterIndex inverterIndex { get; set; }
 
         public InverterTimer InverterTimer { get; }
 

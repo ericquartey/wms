@@ -929,4 +929,7 @@
   <data name="Verify" xml:space="preserve">
     <value>Verifica</value>
   </data>
+  <data name="Side" xml:space="preserve">
+    <value>Lato</value>
+  </data>
 </root>

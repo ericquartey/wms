@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new EntityNotFoundException(bayNumber);
             }
 
-            this.UpdatebayWithpositions(bay);
+            this.UpdateBayWithPositions(bay);
 
             return bay;
         }
@@ -164,33 +164,29 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay UpdatePosition(int bayNumber, int position, decimal height)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (bay is null)
+            if (bay.Positions.Count() < position)
             {
-                throw new Exceptions.EntityNotFoundException(bayNumber);
-            }
-
-            if (bay.Positions.Length < position)
-            {
-                throw new ArgumentOutOfRangeException($"Bay {bayNumber}, position {position} is not valid.");
+                throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }
 
             var lowerBound = this.verticalAxis.LowerBound;
             var upperBound = this.verticalAxis.UpperBound;
-
             if (height < lowerBound || height > upperBound)
             {
-                throw new ArgumentOutOfRangeException($"Bay {bayNumber},  position {position}, height ({height}) must be in the range [{lowerBound}; {upperBound}].");
+                throw new ArgumentOutOfRangeException(
+                    string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, lowerBound, upperBound));
             }
 
             var bayPosition = $"Bay{bayNumber}Position{position}";
-            if (Enum.TryParse<GeneralInfo>(bayPosition, out GeneralInfo positionValue))
+            if (Enum.TryParse<GeneralInfo>(bayPosition, out var positionValue))
             {
                 this.configurationValueManagment.SetDecimalConfigurationValue((long)positionValue, ConfigurationCategory.GeneralInfo, height);
+
                 return this.GetByNumber(bayNumber);
             }
             else
             {
-                throw new ArgumentOutOfRangeException($"Bay {bayNumber}, position {position}, is not valid.");
+                throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }
         }
 
@@ -221,23 +217,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return entry.Entity;
         }
 
-        private void UpdatebayWithpositions(Bay bay)
+        private void UpdateBayWithPositions(Bay bay)
         {
-            if (bay == null)
+            if (bay is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(bay));
             }
 
             var positions = new List<decimal>();
 
-            for (int position = 1; position <= 2; position++)
+            for (var position = 1; position <= 2; position++)
             {
                 var bayPosition = $"Bay{bay.Number}Position{position}";
                 if (Enum.TryParse<GeneralInfo>(bayPosition, out var positionFound))
                 {
                     try
                     {
-                        positions.Add(this.configurationValueManagment.GetDecimalConfigurationValue((long)positionFound, ConfigurationCategory.GeneralInfo));
+                        positions.Add(
+                            this.configurationValueManagment
+                                .GetDecimalConfigurationValue((long)positionFound, ConfigurationCategory.GeneralInfo));
                     }
                     catch
                     {
@@ -245,7 +243,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 }
             }
 
-            bay.Positions = positions.ToArray();
+            bay.Positions = positions;
         }
 
         #endregion

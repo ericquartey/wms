@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -993,6 +993,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GateSetUp {
             get {
                 return ResourceManager.GetString("GateSetUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go To Cell Height.
+        /// </summary>
+        public static string GoToCellHeight {
+            get {
+                return ResourceManager.GetString("GoToCellHeight", resourceCulture);
             }
         }
         
@@ -2109,6 +2118,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ShutterSensorB {
             get {
                 return ResourceManager.GetString("ShutterSensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        public static string Side {
+            get {
+                return ResourceManager.GetString("Side", resourceCulture);
             }
         }
         

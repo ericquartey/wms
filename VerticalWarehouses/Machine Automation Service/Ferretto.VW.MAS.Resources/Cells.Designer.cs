@@ -22,14 +22,14 @@ namespace Ferretto.VW.MAS.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Bays {
+    public class Cells {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Bays() {
+        internal Cells() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.Resources.Bays", typeof(Bays).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.Resources.Cells", typeof(Cells).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The bay height ({0}) must be in range [{1},{2}]..
+        ///   Looks up a localized string similar to The specified height is not between the adjacent cells&apos; heights..
         /// </summary>
-        public static string TheBayHeightMustBeInRange {
+        public static string TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights {
             get {
-                return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+                return ResourceManager.GetString("TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified bay position is not valid..
+        ///   Looks up a localized string similar to The specified height would cause the panel to overlap with other panels..
         /// </summary>
-        public static string TheSpecifiedBayPositionIsNotValid {
+        public static string TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels {
             get {
-                return ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", resourceCulture);
+                return ResourceManager.GetString("TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels", resourceCulture);
             }
         }
     }

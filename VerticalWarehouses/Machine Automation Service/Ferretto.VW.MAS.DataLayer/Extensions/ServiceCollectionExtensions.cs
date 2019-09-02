@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IServicingProvider, ServicingProvider>()
                 .AddTransient<IBaysProvider, BaysProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()
+                .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
                 .AddTransient<IErrorsProvider, ErrorsProvider>()
                 .AddTransient<IMachineStatisticsProvider, MachineStatisticsProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>()

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190829072518_Initial")]
+    [Migration("20190829151652_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("PanelId");
 
                     b.ToTable("Cells");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CellPanel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Side");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CellPanels");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ConfigurationValue", b =>
@@ -149,9 +161,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BookedCellsNumber");
 
-                    b.Property<decimal>("Position");
-
                     b.Property<int>("LoadingUnitId");
+
+                    b.Property<decimal>("Position");
 
                     b.Property<int>("Priority");
 
@@ -289,18 +301,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Panel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Side");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Panels");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 10, 29, 9, 25, 17, 89, DateTimeKind.Local).AddTicks(8666),
+                            InstallationDate = new DateTime(2016, 10, 29, 17, 16, 52, 6, DateTimeKind.Local).AddTicks(4965),
                             ServiceStatus = 86
                         });
                 });
@@ -450,7 +450,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Panel", "Panel")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.CellPanel", "Panel")
                         .WithMany("Cells")
                         .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade);

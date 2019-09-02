@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningStartState : InverterStateBase
     {
-
         #region Fields
 
         private readonly IInverterPositioningFieldMessageData data;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         }
 
         #endregion
-
-
 
         #region Methods
 

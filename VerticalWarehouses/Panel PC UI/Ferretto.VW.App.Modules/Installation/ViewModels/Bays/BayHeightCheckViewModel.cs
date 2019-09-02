@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int currentBayPosition;
 
-        private decimal currentHeight;
+        private decimal? currentHeight;
 
         private decimal? inputStepValue;
 
@@ -60,8 +60,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BayHeightCheckViewModel(
             IBayManager bayManager,
-            IMachineElevatorService machineElevatorService) : base(PresentationMode.Installer)
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
+            if (bayManager is null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            if (machineElevatorService is null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
             this.bayManager = bayManager;
             this.machineElevatorService = machineElevatorService;
         }
@@ -78,11 +89,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanChangeCurrentPosition1));
 
         public ICommand ChangeBayPosition2Command =>
-     this.changeBayPosition2Command
-     ??
-     (this.changeBayPosition2Command = new DelegateCommand(
-         this.ChangeCurrentPosition2,
-         this.CanChangeCurrentPosition2));
+            this.changeBayPosition2Command
+            ??
+            (this.changeBayPosition2Command = new DelegateCommand(
+                this.ChangeCurrentPosition2,
+                this.CanChangeCurrentPosition2));
 
         public int CurrentBayPosition
         {
@@ -96,7 +107,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal CurrentHeight
+        public decimal? CurrentHeight
         {
             get => this.currentHeight;
             set
@@ -109,8 +120,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-              Environment.NewLine,
-              this[nameof(this.positionHeight)]);
+            Environment.NewLine,
+            this[nameof(this.InputStepValue)]);
 
         public decimal? InputStepValue
         {
@@ -237,6 +248,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "Step must be positive.";
                         }
+
                         break;
                 }
 
@@ -248,16 +260,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override void Disappear()
         {
-            await base.OnNavigatedAsync();
-        }
+            base.Disappear();
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-            this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Unsubscribe(this.subscriptionToken);
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
@@ -265,17 +279,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             this.subscriptionToken = this.EventAggregator
-                                        .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                                        .Subscribe(
-                                       message => this.OnAutomationMessageReceived(message),
-                                       ThreadOption.UIThread,
-                                       false);
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                    message => this.OnAutomationMessageReceived(message),
+                    ThreadOption.UIThread,
+                    false);
 
             this.IsBackNavigationAllowed = true;
-            if (this.bayManager.Bay.Positions.Count() > 1)
-            {
-                this.IsBayPositionsVisible = true;
-            }
+
+            this.IsBayPositionsVisible = this.bayManager.Bay.Positions.Count() > 1;
+
             this.InitializeData();
             this.ChangeDataFromBayPosition();
         }
@@ -290,21 +303,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.changeBayPosition2Command?.RaiseCanExecuteChanged();
         }
 
-        private bool CanChangeCurrentPosition(int position)
-        {
-            if (position == 1 &&
-                !this.IsBayPositionsVisible)
-            {
-                return false;
-            }
-
-            return !this.isElevatorMovingDown
-                    &&
-                    !this.isElevatorMovingToHeight
-                    &&
-                    !this.isElevatorMovingUp;
-        }
-
         private bool CanChangeCurrentPosition1()
         {
             return !this.isElevatorMovingDown
@@ -312,8 +310,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         !this.isElevatorMovingToHeight
                         &&
                         !this.isElevatorMovingUp
-                        &&
-                        this.IsBayPositionsVisible;
+                &&
+                this.IsBayPositionsVisible;
         }
 
         private bool CanChangeCurrentPosition2()
@@ -323,8 +321,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
              !this.isElevatorMovingToHeight
              &&
              !this.isElevatorMovingUp
-             &&
-             this.IsBayPositionsVisible;
+                &&
+                this.IsBayPositionsVisible;
         }
 
         private bool CanExecuteApplyCorrectionCommand()
@@ -374,11 +372,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
         }
 
-        private void ChangeCurrentPosition(int newPosition)
-        {
-            this.CurrentBayPosition = newPosition;
-        }
-
         private void ChangeCurrentPosition1()
         {
             this.CurrentBayPosition = 1;
@@ -399,6 +392,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.PositionHeight = this.bayManager.Bay.Positions.Last();
             }
+
             this.InputStepValue = null;
         }
 
@@ -450,11 +444,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.bayManager.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight);
+                await this.bayManager.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
 
                 this.ChangeDataFromBayPosition();
 
-                this.ShowNotification($"Quota posizione {this.currentBayPosition} aggiornata.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(
+                    $"Quota posizione {this.currentBayPosition} aggiornata.",
+                    Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -464,14 +460,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InitializeData()
         {
-            this.currentBayPosition = 1;
+            this.CurrentBayPosition = 1;
 
             this.IsElevatorMovingDown = false;
             this.IsElevatorMovingUp = false;
             this.IsElevatorMovingToHeight = false;
 
             this.RaisePropertyChanged(nameof(this.IsBayPositionsVisible));
-            this.RaisePropertyChanged(nameof(this.CurrentBayPosition));
         }
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)

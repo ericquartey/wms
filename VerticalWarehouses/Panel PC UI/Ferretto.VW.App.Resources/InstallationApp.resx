@@ -1178,4 +1178,10 @@
     <value>Verify</value>
     <comment>Button text</comment>
   </data>
+  <data name="GoToCellHeight" xml:space="preserve">
+    <value>Go To Cell Height</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Side</value>
+  </data>
 </root>

@@ -2,12 +2,14 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+
 using Prism.Commands;
 using Prism.Events;
 
@@ -185,6 +187,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputRequiredCycles must be strictly positive.";
                         }
+
                         break;
 
                     case nameof(this.InputLowerBound):
@@ -204,6 +207,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputLowerBound must be greater than InputLowerBound.";
                         }
+
                         break;
 
                     case nameof(this.InputUpperBound):
@@ -223,6 +227,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputLowerBound must be greater than InputLowerBound.";
                         }
+
                         break;
                 }
 
@@ -274,8 +279,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.receivedActionUpdateToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(async
-                    message => await this.UpdateCompletion(message),
+                .Subscribe(
+                    async message => await this.UpdateCompletion(message),
                     ThreadOption.UIThread,
                     false);
         }
@@ -291,6 +296,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.IsExecutingProcedure
                 && !this.IsWaitingForResponse;
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         private async Task StartAsync()
@@ -332,12 +343,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = false;
                 this.IsExecutingProcedure = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         private async Task UpdateCompletion(NotificationMessageUI<PositioningMessageData> message)
