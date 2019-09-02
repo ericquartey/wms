@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
+        private readonly IPanelControlDataLayer panelControlDataLayer;
+
         private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
@@ -62,6 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IBayPositionControlDataLayer bayPositionControl,
             IElevatorProvider elevatorProvider,
             ICellControlDataLayer cellControlDataLayer,
+            IPanelControlDataLayer panelControlDataLayer,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<ElevatorController> logger)
             : base(eventAggregator)
@@ -116,6 +119,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(cellControlDataLayer));
             }
 
+            if (panelControlDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(panelControlDataLayer));
+            }
+
             if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
@@ -131,6 +139,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.bayPositionControl = bayPositionControl;
             this.elevatorProvider = elevatorProvider;
             this.cellControlDataLayer = cellControlDataLayer;
+            this.panelControlDataLayer = panelControlDataLayer;
             this.installationHub = installationHub;
             this.logger = logger;
         }
@@ -407,7 +416,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("{id}/Weight-Check")]
+        [HttpPost("Weight-Check")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -470,7 +479,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     break;
 
                 case FeedRateCategory.PanelControl:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                    feedRate = this.panelControlDataLayer.FeedRatePC;
+                    break;
 
                 case FeedRateCategory.ShutterHeightControl:
                     throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));

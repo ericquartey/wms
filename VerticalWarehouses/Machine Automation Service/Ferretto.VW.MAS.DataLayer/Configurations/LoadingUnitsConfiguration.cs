@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                       Id = i,
                       Code = $"01{i:000}",
                       Status = LoadingUnitStatus.InLocation,
-                      Height = random.Next(50, 350),
+                      Height = 150,
                       Tare = i == 3 || i == 12 || i == 13 ? 65 : 50,
                       GrossWeight = random.Next(200, 400),
                       MissionsCount = random.Next(0, 50),
