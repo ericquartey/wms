@@ -70,6 +70,6 @@
 
         RequestPosition,
 
-        ElavtorWeightCheck,
+        ElevatorWeightCheck,
     }
 }

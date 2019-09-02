@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         }
                         break;
 
-                    case MessageType.ElavtorWeightCheck:
+                    case MessageType.ElevatorWeightCheck:
                         this.ElevatorWeightCheckMethod(receivedMessage);
                         break;
 
