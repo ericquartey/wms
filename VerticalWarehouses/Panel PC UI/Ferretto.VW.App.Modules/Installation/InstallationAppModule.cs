@@ -48,22 +48,12 @@ namespace Ferretto.VW.App.Modules.Installation
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
-            #region Bays
-
             containerRegistry.RegisterForNavigation<BayHeightCheckView>();
-
-            #endregion
-
-            #region Sensors Views
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
             containerRegistry.RegisterForNavigation<ShutterSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
-
-            #endregion
-
-            #region Manual Movements Views
 
             containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
             containerRegistry.RegisterForNavigation<HorizontalAxisManualMovementsView>();
@@ -72,10 +62,6 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
-            #endregion
-
-            #region Elevator Views
-
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep1View>();
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
@@ -83,27 +69,13 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep3View>();
 
-            #endregion
-
-            #region Shutter Views
-
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
-
-            #endregion
-
-            #region Belt Views
 
             containerRegistry.RegisterForNavigation<BeltBurnishingView>();
 
-            #endregion
-
-            #region Cell Views
-
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
-            containerRegistry.RegisterForNavigation<CellsPanelsCheckView>();
-
-            #endregion
+            containerRegistry.RegisterForNavigation<CellPanelsCheckView>();
         }
 
         #endregion

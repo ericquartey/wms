@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class CellsPanelsCheckView
+    public partial class CellPanelsCheckView
     {
         #region Constructors
 
-        public CellsPanelsCheckView()
+        public CellPanelsCheckView()
         {
             this.InitializeComponent();
         }

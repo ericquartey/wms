@@ -28,6 +28,10 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="Unity" Version="4.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -48,69 +52,8 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="ViewModels\VerticalResolution\VerticalResolutionCalibrationViewModel.cs_" />
-    <None Remove="Views\Cells\CellsHeightCheckStep1View.xaml" />
-    <None Remove="Views\Cells\CellsHeightCheckStep2View.xaml" />
-    <None Remove="Views\ManualMovements\ExternalBayManualMovementsView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\Cells\CellsHeightCheckStep1View.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Cells\CellsHeightCheckStep2View.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Elevator\VerticalOffsetCalibrationStep2View.xaml.cs">
-      <DependentUpon>VerticalOffsetCalibrationStep2View.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ManualMovements\ExternalBayManualMovementsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="HelpWindows\HelpPageBase.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\SingleViews\IdleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\Cells\CellsHeightCheckView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep1View - Copy.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep2View - Copy.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep2View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep3View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
   </Target>
-
-
-
 
 </Project>

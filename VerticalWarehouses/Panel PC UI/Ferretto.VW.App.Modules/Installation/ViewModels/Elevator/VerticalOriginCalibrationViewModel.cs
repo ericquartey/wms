@@ -223,51 +223,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private async Task StartAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.verticalOriginProcedureService.StartAsync();
-
-                this.IsExecutingProcedure = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task StopAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.verticalOriginProcedureService.StopAsync();
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
-                    Services.Models.NotificationSeverity.Warning);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
-                this.IsExecutingProcedure = false;
-            }
-        }
-
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
         {
             var res = string.Empty;
@@ -285,6 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         VW.App.Resources.InstallationApp.VerticalHomingError;
                     break;
             }
+
             return res;
         }
 
@@ -370,6 +326,51 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task StartAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureService.StartAsync();
+
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureService.StopAsync();
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
+                this.IsExecutingProcedure = false;
+            }
         }
 
         private void SubscribeToEvents()

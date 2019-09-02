@@ -98,14 +98,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public Cell UpdateHeight(int cellId, decimal height)
         {
-            var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+            var cell = this.dataContext.Cells
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.Id == cellId);
+
             if (cell is null)
             {
                 throw new Exceptions.EntityNotFoundException(cellId);
             }
 
-            var higherCell = this.dataContext.Cells.OrderBy(c => c.Position).FirstOrDefault(c => c.Position > cell.Position);
-            var lowerCell = this.dataContext.Cells.OrderBy(c => c.Position).FirstOrDefault(c => c.Position < cell.Position);
+            var cellsOnSameSide = this.dataContext.Cells
+                .Where(c => c.Side == cell.Side)
+                .OrderBy(c => c.Position);
+
+            var higherCell = cellsOnSameSide.FirstOrDefault(c => c.Position > cell.Position);
+            var lowerCell = cellsOnSameSide.FirstOrDefault(c => c.Position < cell.Position);
 
             if ((higherCell == null
                 ||
@@ -122,7 +129,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
             else
             {
-                throw new ArgumentOutOfRangeException("The specified height is not between the adjacent cells' heights.");
+                throw new ArgumentOutOfRangeException(
+                    Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
             }
 
             return this.dataContext.Cells
@@ -130,7 +138,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .SingleOrDefault(c => c.Id == cellId);
         }
 
-        private static void ReadAllCells(DataLayerContext dataContext, JsonReader jsonFile, Panel panel)
+        private static void ReadAllCells(DataLayerContext dataContext, JsonReader jsonFile, CellPanel panel)
         {
             while (jsonFile.Read() && jsonFile.TokenType != JsonToken.EndArray)
             {
@@ -181,19 +189,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 if (jsonFile.TokenType == JsonToken.StartObject)
                 {
-                    var panel = new Panel();
-                    dataContext.Panels.Add(panel);
+                    var panel = new CellPanel();
+                    dataContext.CellPanels.Add(panel);
                     dataContext.SaveChanges();
                     while (jsonFile.Read() && jsonFile.TokenType != JsonToken.EndObject)
                     {
                         if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)
                         {
-                            if (string.Equals(propertyName, nameof(Panel.Side), StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(propertyName, nameof(CellPanel.Side), StringComparison.InvariantCultureIgnoreCase))
                             {
                                 while (jsonFile.Read() && jsonFile.TokenType != JsonToken.String) { }
                                 panel.Side = (WarehouseSide)Enum.Parse(typeof(WarehouseSide), jsonFile.Value.ToString(), true);
                             }
-                            else if (string.Equals(propertyName, nameof(Panel.Cells), StringComparison.InvariantCultureIgnoreCase))
+                            else if (string.Equals(propertyName, nameof(CellPanel.Cells), StringComparison.InvariantCultureIgnoreCase))
                             {
                                 ReadAllCells(dataContext, jsonFile, panel);
                             }

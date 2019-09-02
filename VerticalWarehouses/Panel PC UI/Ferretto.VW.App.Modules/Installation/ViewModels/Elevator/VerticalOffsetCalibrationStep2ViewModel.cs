@@ -154,6 +154,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return $"InputOffset is required.";
                         }
+
                         break;
                 }
 
@@ -165,7 +166,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
@@ -200,6 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorMovingDown = false;
@@ -219,6 +221,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task ApplyCorrectionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var newOffset = this.CurrentVerticalOffset.Value - this.InputDisplacement.Value;
+                await this.verticalOffsetService.CompleteAsync(newOffset);
+
+                this.CurrentVerticalOffset = newOffset;
+                this.InputDisplacement = null;
+
+                this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private bool CanExecuteApplyCorrectionCommand()
@@ -257,30 +283,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMovingDown
                 &&
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
-        }
-
-        private async Task ApplyCorrectionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                var newOffset = this.CurrentVerticalOffset.Value - this.InputDisplacement.Value;
-                await this.verticalOffsetService.CompleteAsync(newOffset);
-
-                this.CurrentVerticalOffset = newOffset;
-                this.InputDisplacement = null;
-
-                this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private async Task MoveDownAsync()

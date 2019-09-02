@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class HorizontalAxisManualMovementsViewModel : BaseManualMovementsViewModel
+    public class HorizontalEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public HorizontalAxisManualMovementsViewModel(
+        public HorizontalEngineManualMovementsViewModel(
             IMachineElevatorService elevatorService,
             IBayManager bayManager)
             : base(elevatorService, bayManager)

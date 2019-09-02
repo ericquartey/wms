@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-//using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {

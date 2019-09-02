@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var baySetupStatus = dictionary[bayName] as BaySetupStatus;
                     var bayDictionary = baySetupStatus.ToDictionary();
 
-                    var bayPropertyName = propertyName.Replace("Bay", "");
+                    var bayPropertyName = propertyName.Replace("Bay", string.Empty);
 
                     if (bayDictionary.ContainsKey(bayPropertyName))
                     {

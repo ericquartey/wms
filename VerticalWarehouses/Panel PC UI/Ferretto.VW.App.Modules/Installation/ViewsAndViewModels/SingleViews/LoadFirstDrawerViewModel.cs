@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

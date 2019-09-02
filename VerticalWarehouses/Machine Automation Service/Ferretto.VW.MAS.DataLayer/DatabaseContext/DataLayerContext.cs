@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<CellPanel> CellPanels { get; set; }
+
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
@@ -52,8 +54,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<LogEntry> LogEntries { get; set; }
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
-
-        public DbSet<Panel> Panels { get; set; }
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 

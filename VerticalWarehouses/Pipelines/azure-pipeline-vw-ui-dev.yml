@@ -14,10 +14,9 @@ trigger:
     include:
     - develop
   paths:
-    exclude:
-    - Common
-    - WMS
-    - VerticalWarehouses\Machine Automation Service
+    include:
+    - VerticalWarehouses\Common
+    - VerticalWarehouses\Panel PC UI
 
 steps:
 - template: azure-pipeline-vw-ui-template.yml

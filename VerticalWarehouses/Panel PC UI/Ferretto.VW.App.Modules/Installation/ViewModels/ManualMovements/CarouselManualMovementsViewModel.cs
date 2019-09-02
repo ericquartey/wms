@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         MovementType = MovementType.Absolute,
                         SpeedPercentage = 50,
-                        Displacement = displacement
+                        Displacement = displacement,
                     });
             }
             catch (System.Exception ex)

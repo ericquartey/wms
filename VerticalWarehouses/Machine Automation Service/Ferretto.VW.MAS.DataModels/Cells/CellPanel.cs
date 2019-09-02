@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class Panel
+    public class CellPanel
     {
         #region Properties
 

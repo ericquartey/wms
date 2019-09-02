@@ -15,6 +15,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BeltBurnishingProcedure.resx</DependentUpon>
     </Compile>
+    <Compile Update="Cells.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Cells.resx</DependentUpon>
+    </Compile>
     <Compile Update="Elevator.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -45,6 +50,10 @@
     <EmbeddedResource Update="BeltBurnishingProcedure.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>BeltBurnishingProcedure.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Cells.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Cells.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Elevator.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
