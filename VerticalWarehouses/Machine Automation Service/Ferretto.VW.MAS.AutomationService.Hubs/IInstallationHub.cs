@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
+        Task ElavtorWeightCheck(IBaseNotificationMessageUI message);
+
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);

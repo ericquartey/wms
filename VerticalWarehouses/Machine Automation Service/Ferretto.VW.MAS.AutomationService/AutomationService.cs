@@ -274,6 +274,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         }
                         break;
 
+                    case MessageType.ElavtorWeightCheck:
+                        this.ElevatorWeightCheckMethod(receivedMessage);
+                        break;
+
                     case MessageType.BayOperationalStatusChanged:
                         this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
                         this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);

@@ -106,11 +106,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdatePositionAsync(int bayNumber, int position, decimal height)
+        public ActionResult<Bay> UpdatePosition(int bayNumber, int position, decimal height)
         {
             try
             {
-                var bay =this.baysProvider.UpdatePosition(bayNumber, position, height);
+                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
                 return this.Ok(bay);
             }
             catch (DataLayer.Exceptions.EntityNotFoundException ex)

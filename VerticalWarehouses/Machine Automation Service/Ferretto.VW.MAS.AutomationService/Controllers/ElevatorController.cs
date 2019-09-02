@@ -1,11 +1,16 @@
-﻿using Ferretto.VW.CommonUtils.DTOs;
+﻿using System;
+using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -17,9 +22,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBayPositionControlDataLayer bayPositionControl;
+
+        private readonly IElevatorProvider elevatorProvider;
+
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+
+        private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
         private readonly ILogger logger;
 
@@ -31,21 +42,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
+        private readonly IWeightControlDataLayer weightControl;
+
         #endregion
 
         #region Constructors
 
         public ElevatorController(
             IEventAggregator eventAggregator,
+            IWeightControlDataLayer weightControl,
             IVerticalAxisDataLayer verticalAxisDataLayer,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
             ISetupStatusProvider setupStatusProvider,
+            IBayPositionControlDataLayer bayPositionControl,
+            IElevatorProvider elevatorProvider,
+            IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<ElevatorController> logger)
             : base(eventAggregator)
         {
+            if (weightControl is null)
+            {
+                throw new System.ArgumentNullException(nameof(weightControl));
+            }
+
             if (verticalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
@@ -76,17 +98,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
+            if (bayPositionControl is null)
+            {
+                throw new System.ArgumentNullException(nameof(bayPositionControl));
+            }
+
+            if (elevatorProvider is null)
+            {
+                throw new System.ArgumentNullException(nameof(elevatorProvider));
+            }
+
             if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
             }
 
+            this.weightControl = weightControl;
             this.verticalAxis = verticalAxisDataLayer;
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
             this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
             this.setupStatusProvider = setupStatusProvider;
+            this.bayPositionControl = bayPositionControl;
+            this.elevatorProvider = elevatorProvider;
+            this.installationHub = installationHub;
             this.logger = logger;
         }
 
@@ -180,7 +216,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(decimal targetPosition, bool useOffsetCalibrationFeedRate = false)
+        public IActionResult MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
         {
             var lowerBound = this.verticalAxis.LowerBound;
             var upperBound = this.verticalAxis.UpperBound;
@@ -206,9 +242,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            var feedRate = useOffsetCalibrationFeedRate
-                ? this.offsetCalibrationDataLayer.FeedRateOC
-                : this.verticalManualMovements.FeedRateAfterZero;
+            var feedRate = this.GetFeedRate(feedRateCategory);
 
             var speed = this.verticalAxis.MaxEmptySpeed * feedRate;
 
@@ -353,6 +387,100 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
+        }
+
+        [HttpPost("weight-check-stop")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StopWeightCheck()
+        {
+            // TO DO
+            return this.Accepted();
+        }
+
+        [HttpPost("{id}/Weight-Check")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult WeightCheck(int id, decimal runToTest, decimal weight)
+        {
+            try
+            {
+                this.elevatorProvider.Start(id, runToTest, weight);
+                var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
+                this.installationHub.Clients.All.ElavtorWeightCheck(new NotificationMessageUI<IElevatorWeightCheckMessageData>() { Data = data });
+                return this.Ok();
+            }
+            catch (DataLayer.Exceptions.EntityNotFoundException ex)
+            {
+                return this.NotFound(new Microsoft.AspNetCore.Mvc.ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return this.BadRequest(new Microsoft.AspNetCore.Mvc.ProblemDetails { Detail = ex.Message });
+            }
+        }
+
+        private decimal GetFeedRate(FeedRateCategory feedRateCategory)
+        {
+            decimal feedRate = 0;
+            switch (feedRateCategory)
+            {
+                case FeedRateCategory.Undefined:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.Undefined));
+
+                case FeedRateCategory.VerticalManualMovements:
+                    feedRate = this.verticalManualMovements.FeedRateVM;
+                    break;
+
+                case FeedRateCategory.VerticalManualMovementsAfterZero:
+                    feedRate = this.verticalManualMovements.FeedRateAfterZero;
+                    break;
+
+                case FeedRateCategory.HorizontalManualMovements:
+                    feedRate = this.horizontalManualMovements.FeedRateHM;
+                    break;
+
+                case FeedRateCategory.ShutterManualMovements:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                case FeedRateCategory.ResolutionCalibration:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                case FeedRateCategory.OffsetCalibration:
+                    feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
+                    break;
+
+                case FeedRateCategory.CellControl:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                case FeedRateCategory.PanelControl:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                case FeedRateCategory.ShutterHeightControl:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                case FeedRateCategory.LoadingUnitWeight:
+                    feedRate = this.weightControl.FeedRateWC;
+                    break;
+
+                case FeedRateCategory.BayHeight:
+                    feedRate = this.bayPositionControl.FeedRateBP;
+                    break;
+
+                case FeedRateCategory.LoadFirstDrawer:
+                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+
+                default:
+                    break;
+            }
+
+            return feedRate;
         }
 
         #endregion

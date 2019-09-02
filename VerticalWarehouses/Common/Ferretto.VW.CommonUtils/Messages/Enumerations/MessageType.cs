@@ -69,5 +69,7 @@
         InverterStatusWord,
 
         RequestPosition,
+
+        ElavtorWeightCheck,
     }
 }

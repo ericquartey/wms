@@ -1,0 +1,159 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
+using Prism.Events;
+
+namespace Ferretto.VW.App.Installation.ViewModels
+{
+    public class ElevatorWeightCheckStep1ViewModel : BaseElevatorWeightCheckViewModel
+    {
+        #region Fields
+
+        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+
+        private DelegateCommand checkLoadingUnitCommand;
+
+        private int? inputLoadingUnitId;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
+
+        #endregion
+
+        #region Constructors
+
+        public ElevatorWeightCheckStep1ViewModel(
+            IMachineLoadingUnitsService machineLoadingUnitsService,
+            IEventAggregator eventAggregator)
+            : base(eventAggregator)
+        {
+            this.machineLoadingUnitsService = machineLoadingUnitsService;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand CheckLoadingUnitCommand =>
+            this.checkLoadingUnitCommand
+            ??
+            (this.checkLoadingUnitCommand = new DelegateCommand(
+                this.CheckLoadingUnit,
+                this.CanCheckLoadingUnit));
+
+        public string Error => string.Join(
+                      System.Environment.NewLine,
+              this[nameof(this.InputLoadingUnitId)]);
+
+        public int? InputLoadingUnitId
+        {
+            get => this.inputLoadingUnitId;
+            set
+            {
+                if (this.SetProperty(ref this.inputLoadingUnitId, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputLoadingUnitId):
+                        if (!this.InputLoadingUnitId.HasValue)
+                        {
+                            return $"LoadingUnit Id is required.";
+                        }
+
+                        if (this.InputLoadingUnitId.Value <= 0)
+                        {
+                            return "LoadingUnit Id must be strictly positive.";
+                        }
+                        break;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public async Task GetLoadingUnitsAsync()
+        {
+            try
+            {
+                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        public override async Task OnNavigatedAsync()
+        {
+            this.InputLoadingUnitId = null;
+
+            await base.OnNavigatedAsync();
+
+            await this.GetLoadingUnitsAsync();
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.checkLoadingUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanCheckLoadingUnit()
+        {
+            return !(this.loadingUnits is null)
+              &&
+              this.loadingUnits.Count() > 0
+              &&
+              this.InputLoadingUnitId.HasValue
+              &&
+              string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private void CheckLoadingUnit()
+        {
+            try
+            {
+                if (this.loadingUnits.SingleOrDefault(l => l.Id == this.inputLoadingUnitId.Value) is LoadingUnit loadingUnitFound)
+                {
+                    this.NavigateToNextStep();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private void NavigateToNextStep()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Elevator.WeightCheck.STEP2,
+                this.inputLoadingUnitId.Value,
+                trackCurrentView: false);
+        }
+
+        #endregion
+    }
+}

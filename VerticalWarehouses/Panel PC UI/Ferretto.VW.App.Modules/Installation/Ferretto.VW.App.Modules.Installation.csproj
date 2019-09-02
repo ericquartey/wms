@@ -65,6 +65,12 @@
     <Compile Update="Views\Elevator\VerticalOffsetCalibrationStep2View.xaml.cs">
       <DependentUpon>VerticalOffsetCalibrationStep2View.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Elevator\ElevatorWeightCheckStep2View.xaml.cs">
+      <DependentUpon>ElevatorWeightCheckStep2View.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Elevator\ElevatorWeightCheckStep1View.xaml.cs">
+      <DependentUpon>ElevatorWeightCheckStep1View.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ManualMovements\ExternalBayManualMovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -72,6 +78,12 @@
 
   <ItemGroup>
     <None Update="HelpWindows\HelpPageBase.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Elevator\ElevatorWeightCheckStep1View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Elevator\ElevatorWeightCheckStep2View.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\VerticalResolution\VerticalResolutionCalibrationStep1View - Copy.xaml">

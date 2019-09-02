@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Barriera misura altezza")]
         BayShape,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.Elevator.WeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Peso")]
         WeightMeasurement,
 
