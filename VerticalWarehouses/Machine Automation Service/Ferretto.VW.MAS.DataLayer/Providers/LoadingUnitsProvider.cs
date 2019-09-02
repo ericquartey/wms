@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
@@ -28,6 +29,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #endregion
 
         #region Methods
+
+        public IEnumerable<LoadingUnit> GetAll()
+        {
+            return this.dataContext.LoadingUnits.ToArray();
+        }
 
         public IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics()
         {
