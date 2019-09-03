@@ -48,10 +48,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
+            var inverterIndex = updateData.inverterIndex;
             switch (updateData.InverterTimer)
             {
                 case InverterTimer.AxisPosition:
-                    var inverterIndex = updateData.inverterIndex;
                     if (updateData.Enable)
                     {
                         if (updateData.UpdateInterval == 0)
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readStatusWordMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.StatusWordParam);
+                            var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
 
                             this.logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
 
@@ -115,14 +115,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                         else
                         {
                             this.logger.LogTrace("2:Change status word interval");
-                            this.statusWordUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
+                            this.statusWordUpdateTimer[(int)inverterIndex].Change(updateData.UpdateInterval, updateData.UpdateInterval);
                         }
                         this.forceStatusPublish = true;
                     }
                     else
                     {
                         this.logger.LogTrace("3:Stop status word timer");
-                        this.statusWordUpdateTimer.Change(-1, Timeout.Infinite);
+                        this.statusWordUpdateTimer[(int)inverterIndex].Change(-1, Timeout.Infinite);
                     }
                     break;
 
@@ -1064,18 +1064,14 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             lock (this.syncStatusTimer)
             {
-                foreach (var installedInverter in this.inverterStatuses)
+                InverterIndex inverterIndex = (InverterIndex)state;
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex) < 2)
                 {
-                    if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)installedInverter.Key) < 2)
-                    {
-                        var readStatusWordMessage = new InverterMessage(installedInverter.Key, (short)InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
 
-                        this.logger.LogTrace($"1:readStatusWordTimer={readStatusWordMessage}");
+                    this.logger.LogTrace($"1:readStatusWordTimer={readStatusWordMessage}");
 
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-                    }
-                    // there are problems of too many messages: only ask the main?
-                    break;
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                 }
             }
         }

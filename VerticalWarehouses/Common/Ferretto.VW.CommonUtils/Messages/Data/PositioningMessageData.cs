@@ -54,6 +54,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int ExecutedCycles { get; set; }
 
+        public bool IsOneKMachine { get; set; }
+
         public decimal LowerBound { get; set; }
 
         public MovementMode MovementMode { get; set; }

@@ -104,22 +104,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
-            var ioCommandMessage = new FieldCommandMessage(
-                ioCommandMessageData,
-                $"Switch Axis {this.positioningMessageData.AxisMovement}",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis,
-                (byte)IoIndex.IoDevice1);
+            if (!this.positioningMessageData.IsOneKMachine)
+            {
+                var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
+                var ioCommandMessage = new FieldCommandMessage(
+                    ioCommandMessageData,
+                    $"Switch Axis {this.positioningMessageData.AxisMovement}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.SwitchAxis,
+                    (byte)IoIndex.IoDevice1);
 
-            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+                this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+            }
+            else
+            {
+                this.ioSwitched = true;
+            }
 
             {
                 // Send a field message to the Update of position axis to InverterDriver
-                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 50);
+                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_FAST);
                 var inverterMessage = new FieldCommandMessage(
                     inverterDataMessage,
                     "Update Inverter digital input status",
@@ -133,21 +140,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
-            {
-                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-                var inverterMessage = new FieldCommandMessage(
-                    inverterDataMessage,
-                    "Update Inverter status word status",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer,
-                    (byte)InverterIndex.MainInverter);
-                this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
 
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-            }
-
-            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.positioningMessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
@@ -155,7 +149,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn,
-                (byte)InverterIndex.MainInverter);
+                (byte)inverterIndex);
 
             this.Logger.LogDebug($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
