@@ -241,6 +241,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.currentStateMachine = new HomingStateMachine(
                     this.eventAggregator,
                     data,
+                    this.machineConfigurationProvider.IsOneKMachine(),
                     this.logger,
                     this.serviceScopeFactory);
 
