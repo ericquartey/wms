@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>La quota della baia ({0}) deve essere nell'intervallo [{1},{2}].</value>
+  </data>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>La posizione di baia specificata non è valida.</value>
+  </data>
 </root>

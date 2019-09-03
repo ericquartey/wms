@@ -10,6 +10,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.DTOs;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using System;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -43,7 +44,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }
 
-            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
+            this.loadingUnitsProvider = loadingUnitStatisticsProvider;
             this.machinesDataService = machinesDataService;
         }
 
@@ -51,10 +52,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet]
+        public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
+        {
+            var loadingUnits = this.loadingUnitsProvider.GetAll();
+            return this.Ok(loadingUnits);
+        }
+
         [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
         {
-            var statistics = this.loadingUnitStatisticsProvider.GetSpaceStatistics();
+            var statistics = this.loadingUnitsProvider.GetSpaceStatistics();
 
             try
             {
@@ -82,7 +90,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("statistics/weight")]
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
         {
-            var statistics = this.loadingUnitStatisticsProvider.GetWeightStatistics();
+            var statistics = this.loadingUnitsProvider.GetWeightStatistics();
             try
             {
                 var machineId = 1; // TODO HACK remove this hardcoded value

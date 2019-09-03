@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    internal class PanelsConfiguration : IEntityTypeConfiguration<Panel>
+    internal class PanelsConfiguration : IEntityTypeConfiguration<CellPanel>
     {
         #region Methods
 
-        public void Configure(EntityTypeBuilder<Panel> builder)
+        public void Configure(EntityTypeBuilder<CellPanel> builder)
         {
             if (builder == null)
             {

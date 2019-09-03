@@ -59,5 +59,23 @@ namespace Ferretto.VW.MAS.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay height ({0}) must be in range [{1},{2}]..
+        /// </summary>
+        public static string TheBayHeightMustBeInRange {
+            get {
+                return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified bay position is not valid..
+        /// </summary>
+        public static string TheSpecifiedBayPositionIsNotValid {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", resourceCulture);
+            }
+        }
     }
 }

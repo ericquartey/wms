@@ -20,7 +20,7 @@
       "defaultEnumHandling": "Integer",
       "flattenInheritanceHierarchy": false,
       "generateKnownTypes": true,
-      "generateEnumMappingDescription": false,
+      "generateEnumMappingDescription": true,
       "generateXmlObjects": false,
       "generateAbstractProperties": true,
       "generateAbstractSchemas": true,

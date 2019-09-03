@@ -1155,7 +1155,7 @@
     <comment>Label text</comment>
   </data>
   <data name="BayControlPosition2" xml:space="preserve">
-    <value>Position 1</value>
+    <value>Position 2</value>
     <comment>Label text</comment>
   </data>
   <data name="Displacement" xml:space="preserve">
@@ -1169,5 +1169,19 @@
   </data>
   <data name="ApplyCorrection" xml:space="preserve">
     <value>Apply Correction</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Insert desired loading unit id</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verify</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="GoToCellHeight" xml:space="preserve">
+    <value>Go To Cell Height</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Side</value>
   </data>
 </root>

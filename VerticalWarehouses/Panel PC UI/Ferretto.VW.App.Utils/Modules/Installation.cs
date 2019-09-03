@@ -18,6 +18,15 @@
 
         #region Classes
 
+        public static class Bays
+        {
+            #region Fields
+
+            public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+
+            #endregion
+        }
+
         public static class CellsHeightCheck
         {
             #region Fields
@@ -25,6 +34,24 @@
             public const string STEP1 = "CellsHeightCheckStep1ViewModel";
 
             public const string STEP2 = "CellsHeightCheckStep2ViewModel";
+
+            #endregion
+        }
+
+        public static class Elevator
+        {
+            #region Classes
+
+            public static class WeightCheck
+            {
+                #region Fields
+
+                public const string STEP1 = "ElevatorWeightCheckStep1ViewModel";
+
+                public const string STEP2 = "ElevatorWeightCheckStep2ViewModel";
+
+                #endregion
+            }
 
             #endregion
         }
@@ -46,11 +73,6 @@
             public const string VERTICALENGINE = "VerticalEngineManualMovementsViewModel";
 
             #endregion
-        }
-
-        public static class Bays
-        {
-            public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
         }
 
         public static class Sensors

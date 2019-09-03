@@ -192,6 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputRequiredCycles must be strictly positive.";
                         }
+
                         break;
 
                     case nameof(this.InputDelayBetweenCycles):
@@ -204,6 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputDelayBetweenCycles must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -256,7 +258,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveTestParametersAsync();
 
             // TODO swap between 2/3 positions bay
-
             this.receivedActionUpdateCompletedToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
@@ -307,6 +308,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && !this.IsWaitingForResponse;
         }
 
+        private void OnShutterTestStatusChanged(
+            NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (message?.Data is null || message.Data.BayNumber == 0)
+            {
+                return;
+            }
+
+            this.CompletedCycles = message.Data.ExecutedCycles;
+
+            if (this.InputRequiredCycles <= message.Data.ExecutedCycles)
+            {
+                this.IsExecutingProcedure = false;
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task RetrieveTestParametersAsync()
+        {
+            try
+            {
+                var procedureParameters = await this.shuttersService.GetTestParametersAsync();
+
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+                this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private async Task StartAsync()
         {
             this.IsExecutingProcedure = true;
@@ -345,43 +383,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void OnShutterTestStatusChanged(
-            NotificationMessageUI<ShutterPositioningMessageData> message)
-        {
-            if (message?.Data is null || message.Data.BayNumber == 0)
-            {
-                return;
-            }
-
-            this.CompletedCycles = message.Data.ExecutedCycles;
-
-            if (this.InputRequiredCycles <= message.Data.ExecutedCycles)
-            {
-                this.IsExecutingProcedure = false;
-            }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
-        }
-
-        private async Task RetrieveTestParametersAsync()
-        {
-            try
-            {
-                var procedureParameters = await this.shuttersService.GetTestParametersAsync();
-
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
-                this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
             }
         }
 

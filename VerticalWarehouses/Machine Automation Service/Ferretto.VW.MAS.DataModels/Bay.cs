@@ -1,11 +1,12 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
     public class Bay
     {
         #region Properties
-        public decimal[] Positions { get; set; }
+
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsActive { get; set; }
 
         public int Number { get; set; }
+
+        public IEnumerable<decimal> Positions { get; set; }
 
         public BayStatus Status
         {

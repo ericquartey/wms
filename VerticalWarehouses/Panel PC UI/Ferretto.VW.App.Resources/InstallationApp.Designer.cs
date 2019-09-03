@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Position 2.
         /// </summary>
         public static string BayControlPosition2 {
             get {
@@ -997,6 +997,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go To Cell Height.
+        /// </summary>
+        public static string GoToCellHeight {
+            get {
+                return ResourceManager.GetString("GoToCellHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go to cell.
         /// </summary>
         public static string GoToInitialPosition {
@@ -1110,6 +1119,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InitialPosition {
             get {
                 return ResourceManager.GetString("InitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert desired loading unit id.
+        /// </summary>
+        public static string InsertDesiredLoadingUnitId {
+            get {
+                return ResourceManager.GetString("InsertDesiredLoadingUnitId", resourceCulture);
             }
         }
         
@@ -2104,6 +2122,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        public static string Side {
+            get {
+                return ResourceManager.GetString("Side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speed [mm/s].
         /// </summary>
         public static string SpeedMMSec {
@@ -2298,6 +2325,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VariousInputs {
             get {
                 return ResourceManager.GetString("VariousInputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string Verify {
+            get {
+                return ResourceManager.GetString("Verify", resourceCulture);
             }
         }
         

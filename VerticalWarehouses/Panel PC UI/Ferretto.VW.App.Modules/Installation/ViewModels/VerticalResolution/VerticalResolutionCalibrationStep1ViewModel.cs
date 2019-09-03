@@ -80,6 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputInitialPosition must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -115,12 +116,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                ||
-                message.Status == MessageStatus.OperationStop) // TODO why OperationStop as well and not only OperationEnd?
-            {
-                this.IsExecutingProcedure = false;
+            this.IsExecutingProcedure =
+               message.Status != MessageStatus.OperationEnd
+               &&
+               message.Status != MessageStatus.OperationStop;
 
+            if (message.Status == MessageStatus.OperationEnd)
+            {
                 this.NavigateToNextStep();
             }
         }
@@ -135,6 +137,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsExecutingProcedure
               && !this.IsWaitingForResponse
               && string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private void NavigateToNextStep()
+        {
+            var procedureParameters = new VerticalResolutionCalibrationData
+            {
+                CurrentResolution = this.CurrentResolution.Value,
+                FinalPosition = this.defaultParameters.FinalPosition,
+                InitialPosition = this.InputInitialPosition.Value,
+            };
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
+                procedureParameters,
+                trackCurrentView: false);
         }
 
         private async Task StartAsync()
@@ -155,22 +173,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            var procedureParameters = new VerticalResolutionCalibrationData
-            {
-                CurrentResolution = this.CurrentResolution.Value,
-                FinalPosition = this.defaultParameters.FinalPosition,
-                InitialPosition = this.InputInitialPosition.Value
-            };
-
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
-                procedureParameters,
-                trackCurrentView: false);
         }
 
         #endregion

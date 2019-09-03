@@ -923,4 +923,13 @@
   <data name="ApplyCorrection" xml:space="preserve">
     <value>Applica Correzione</value>
   </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Inserisci l'id del cassetto</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verifica</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Lato</value>
+  </data>
 </root>

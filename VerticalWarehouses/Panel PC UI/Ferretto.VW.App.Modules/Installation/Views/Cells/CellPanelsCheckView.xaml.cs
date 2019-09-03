@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class WeightControlView
+    public partial class CellPanelsCheckView
     {
         #region Constructors
 
-        public WeightControlView()
+        public CellPanelsCheckView()
         {
             this.InitializeComponent();
         }

@@ -59,8 +59,10 @@ namespace Ferretto.VW.App.Modules.Installation.Models
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                         }
+
                         break;
                     }
+
                 case 2:
                     {
                         var maxArrayIndex = System.Math.Max(
@@ -73,8 +75,10 @@ namespace Ferretto.VW.App.Modules.Installation.Models
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                         }
+
                         break;
                     }
+
                 case 3:
                     {
                         var maxArrayIndex = System.Math.Max(
@@ -87,6 +91,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                         }
+
                         break;
                     }
             }

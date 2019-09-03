@@ -118,6 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputFinalPosition must be strictly positive.";
                         }
+
                         break;
 
                     case nameof(this.InputMeasuredInitialPosition):
@@ -130,6 +131,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputMeasuredInitialPosition must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -150,12 +152,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                ||
-                message.Status == MessageStatus.OperationStop) // TODO why OperationStop as well and not only OperationEnd?
-            {
-                this.IsExecutingProcedure = false;
+            this.IsExecutingProcedure =
+                message.Status != MessageStatus.OperationEnd
+                &&
+                message.Status != MessageStatus.OperationStop;
 
+            if (message.Status == MessageStatus.OperationEnd)
+            {
                 this.NavigateToNextStep();
             }
         }

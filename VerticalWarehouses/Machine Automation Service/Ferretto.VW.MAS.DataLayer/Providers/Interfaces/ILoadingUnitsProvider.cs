@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
+        IEnumerable<LoadingUnit> GetAll();
+
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();

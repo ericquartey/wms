@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnNavigatedAsync()
+        public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
@@ -121,6 +121,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorMoving = false;
@@ -148,7 +149,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteMoveToCellHeightCommand()
         {
-            return this.SelectedCell != null
+            return
+                this.SelectedCell != null
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -165,7 +167,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Position, true);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Position, FeedRateCategory.OffsetCalibration);
 
                 this.IsElevatorMoving = true;
             }
