@@ -1192,4 +1192,8 @@
     <value>Select upper bound [mm]</value>
     <comment>Label text</comment>
   </data>
+  <data name="TimeDelay" xml:space="preserve">
+    <value>Select waiting time</value>
+    <comment>Label text</comment>
+  </data>
 </root>

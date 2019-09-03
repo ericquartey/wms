@@ -2284,6 +2284,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select waiting time.
+        /// </summary>
+        public static string TimeDelay {
+            get {
+                return ResourceManager.GetString("TimeDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tolerance (+/-) [mm].
         /// </summary>
         public static string Tolerance {

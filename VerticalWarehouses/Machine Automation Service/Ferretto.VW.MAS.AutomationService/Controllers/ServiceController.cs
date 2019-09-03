@@ -77,6 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.horizontalAxis.MaxEmptyDecelerationHA,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(

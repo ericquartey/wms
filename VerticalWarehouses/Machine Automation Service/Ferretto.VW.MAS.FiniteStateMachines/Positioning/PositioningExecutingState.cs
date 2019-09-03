@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private FieldCommandMessage commandMessage;
+
+        private Timer delayTimer;
 
         private bool disposed;
 
@@ -134,7 +137,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.positioningMessageData.TargetDeceleration,
                     this.positioningMessageData.NumberCycles,
                     this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.UpperBound);
+                    this.positioningMessageData.UpperBound,
+                    this.positioningMessageData.Delay);
 
                 // Build message for DOWN
                 this.positioningDownMessageData = new PositioningMessageData(
@@ -147,7 +151,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.positioningMessageData.TargetDeceleration,
                     this.positioningMessageData.NumberCycles,
                     this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.UpperBound);
+                    this.positioningMessageData.UpperBound,
+                    this.positioningMessageData.Delay);
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
@@ -195,6 +200,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
+            // stop timer
+            this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps, true));
         }
 
@@ -207,11 +215,48 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             if (disposing)
             {
+                this.delayTimer?.Dispose();
             }
 
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        private void DelayElapsed(object state)
+        {
+            // INFO Even to go Up and Odd for Down
+            this.commandMessage = new FieldCommandMessage(
+                this.numberExecutedSteps % 2 == 0
+                    ? this.positioningUpFieldMessageData
+                    : this.positioningDownFieldMessageData,
+                $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.Positioning,
+                (byte)InverterIndex.MainInverter);
+
+            this.Logger.LogTrace(
+                $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+
+            var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0
+                ? BeltBurnishingPosition.LowerBound
+                : BeltBurnishingPosition.UpperBound;
+
+            this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
+
+            // Notification message
+            var notificationMessage = new NotificationMessage(
+                this.positioningMessageData,
+                $"Current position {beltBurnishingPosition}",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         private void ProcessEndPositioning()
@@ -234,38 +279,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     }
                     else
                     {
-                        // INFO Even to go Up and Odd for Down
-                        this.commandMessage = new FieldCommandMessage(
-                            this.numberExecutedSteps % 2 == 0
-                                ? this.positioningUpFieldMessageData
-                                : this.positioningDownFieldMessageData,
-                            $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageType.Positioning,
-                            (byte)InverterIndex.MainInverter);
-
-                        this.Logger.LogTrace(
-                            $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-                        this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
-
-                        var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0
-                            ? BeltBurnishingPosition.LowerBound
-                            : BeltBurnishingPosition.UpperBound;
-
-                        this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
-
-                        // Notification message
-                        var notificationMessage = new NotificationMessage(
-                            this.positioningMessageData,
-                            $"Current position {beltBurnishingPosition}",
-                            MessageActor.AutomationService,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Positioning,
-                            MessageStatus.OperationExecuting);
-
-                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        if (this.positioningMessageData.Delay > 0)
+                        {
+                            this.delayTimer = new Timer(this.DelayElapsed, null, this.positioningMessageData.Delay * 1000, Timeout.Infinite);
+                        }
+                        else
+                        {
+                            this.DelayElapsed(null);
+                        }
                     }
                     break;
 
@@ -291,6 +312,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.positioningMessageData.TargetSpeed / 2,
                     this.positioningMessageData.TargetAcceleration,
                     this.positioningMessageData.TargetDeceleration,
+                    0,
                     0,
                     0,
                     0);
