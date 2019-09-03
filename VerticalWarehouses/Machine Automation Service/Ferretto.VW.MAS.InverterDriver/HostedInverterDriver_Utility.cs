@@ -573,7 +573,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task<bool> ProcessInverterCommand()
         {
-            bool result = false;
+            var result = false;
 
             if (this.inverterCommandQueue.Peek(out var message))
             {
@@ -757,14 +757,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
                     ConfigurationCategory configurationCategory;
+                    var configurationValue = (long)HorizontalAxis.Offset;
                     switch (positioningData.AxisMovement)
                     {
                         case Axis.Horizontal:
                             configurationCategory = ConfigurationCategory.HorizontalAxis;
+                            configurationValue = (long)HorizontalAxis.Offset;
                             break;
 
                         case Axis.Vertical:
                             configurationCategory = ConfigurationCategory.VerticalAxis;
+                            configurationValue = (long)VerticalAxis.Offset;
                             break;
 
                         default:
@@ -774,9 +777,20 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
+                        var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+                        this.logger.LogDebug($"Offset = {offset}");
+
+                        var position = positioningData.TargetPosition;
+                        if (positioningData.MovementType == MovementType.Absolute)
+                        {
+                            position = position - offset;
+                        }
+
                         var targetAcceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
                         var targetDeceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
-                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                        //var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
+
                         var targetSpeed = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
@@ -793,7 +807,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                             this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
 
-                            this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition}; movement type: {positioningData.MovementType}");
+                            this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition}; impulses: {targetPosition}; movement type: {positioningData.MovementType}");
 
                             switch (positioningData.MovementType)
                             {
@@ -1017,7 +1031,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             lock (this.syncAxisTimer)
             {
-                InverterIndex inverterIndex = (InverterIndex)state;
+                var inverterIndex = (InverterIndex)state;
                 var readAxisPositionMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.ActualPositionShaft);
 
                 this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
