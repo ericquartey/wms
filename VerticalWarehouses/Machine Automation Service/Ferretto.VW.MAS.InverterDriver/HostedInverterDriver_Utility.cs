@@ -777,20 +777,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
-                        var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
-                        this.logger.LogDebug($"Offset = {offset}");
-
-                        var position = positioningData.TargetPosition;
-                        if (positioningData.MovementType == MovementType.Absolute)
-                        {
-                            position = position - offset;
-                        }
-
                         var targetAcceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
                         var targetDeceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
-                        //var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
-                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-
+                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
                         var targetSpeed = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
@@ -807,7 +796,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                             this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
 
-                            this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition}; impulses: {targetPosition}; movement type: {positioningData.MovementType}");
+                            this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
 
                             switch (positioningData.MovementType)
                             {
