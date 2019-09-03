@@ -12,6 +12,8 @@
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
+        public const string SHUTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
+
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         #endregion

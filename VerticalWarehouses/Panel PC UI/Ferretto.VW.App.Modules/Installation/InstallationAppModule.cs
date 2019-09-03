@@ -62,10 +62,6 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
-            #endregion
-
-            #region Elevator Views
-
             containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep2View>();
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep1View>();
@@ -76,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep3View>();
 
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
+            containerRegistry.RegisterForNavigation<ShutterHeightControlView>();
 
             containerRegistry.RegisterForNavigation<BeltBurnishingView>();
 
