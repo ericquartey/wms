@@ -94,7 +94,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Environment.NewLine,
                 this[nameof(this.InputLowerBound)],
                 this[nameof(this.InputUpperBound)],
-                this[nameof(this.InputRequiredCycles)]);
+                this[nameof(this.InputRequiredCycles)],
+                this[nameof(this.InputDelay)]);
 
         public int InputDelay
         {
@@ -197,6 +198,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
+                    case nameof(this.InputDelay):
+                        if (this.InputDelay < 0)
+                        {
+                            return "InputDelay must be strictly positive.";
+                        }
+
+                        break;
+
                     case nameof(this.InputRequiredCycles):
                         if (!this.InputRequiredCycles.HasValue)
                         {
@@ -225,7 +234,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                           &&
                           this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputLowerBound must be greater than InputLowerBound.";
+                            return "InputLowerBound must be greater than InputUpperBound.";
+                        }
+
+                        if (this.InputLowerBound.Value < this.machineLowerBound)
+                        {
+                            return $"InputLowerBound must be greater than {this.machineLowerBound}.";
                         }
 
                         break;
@@ -245,7 +259,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             &&
                             this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputLowerBound must be greater than InputLowerBound.";
+                            return "InputUpperBound must be greater than InputLowerBound.";
+                        }
+
+                        if (this.InputUpperBound.Value > this.machineUpperBound)
+                        {
+                            return $"InputUpperBound must be greater than {this.machineUpperBound}.";
                         }
 
                         break;
