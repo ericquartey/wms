@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
 
-            if (inverterIndex == InverterIndex.MainInverter)
+            if (!this.homingOperation.IsOneKMachine)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.homingOperation.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(
