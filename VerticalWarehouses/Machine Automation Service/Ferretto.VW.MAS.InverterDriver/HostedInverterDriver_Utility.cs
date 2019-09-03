@@ -777,9 +777,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
+                        var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+
+                        var position = positioningData.TargetPosition;
+                        if (positioningData.MovementType == MovementType.Absolute)
+                        {
+                            position = position - offset;
+                        }
+
                         var targetAcceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
                         var targetDeceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
-                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
                         var targetSpeed = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
