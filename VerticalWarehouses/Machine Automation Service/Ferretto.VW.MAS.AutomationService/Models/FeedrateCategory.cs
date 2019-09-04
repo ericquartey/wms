@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS.AutomationService.Models
+﻿namespace Ferretto.VW.MAS.AutomationService.Models
 {
     public enum FeedRateCategory
     {
@@ -17,15 +12,15 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         ShutterManualMovements,
 
-        ResolutionCalibration,
+        VerticalResolutionCalibration,
 
-        OffsetCalibration,
+        VerticalOffsetCalibration,
 
-        CellControl,
+        CellHeightCheck,
 
-        PanelControl,
+        PanelHeightCheck,
 
-        ShutterHeightControl,
+        ShutterHeightCheck,
 
         LoadingUnitWeight,
 

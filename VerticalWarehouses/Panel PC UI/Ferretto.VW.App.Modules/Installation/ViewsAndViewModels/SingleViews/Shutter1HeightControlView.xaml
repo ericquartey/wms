@@ -67,7 +67,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="{Binding LuPresentInBay}"
-                                   Text="{x:Static res:InstallationApp.Gate1HeightReaced}" />
+                                   Text="{x:Static res:InstallationApp.Gate1HeightReached}" />
 
     </Grid>
 </UserControl>

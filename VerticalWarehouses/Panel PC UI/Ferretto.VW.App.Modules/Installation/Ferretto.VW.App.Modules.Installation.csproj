@@ -52,6 +52,25 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\SemiAutoMovementsView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\SemiAutoMovementsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Views\ManualMovements\Console\CarouselConsoleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\ManualMovements\Console\ShutterConsoleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
   </Target>

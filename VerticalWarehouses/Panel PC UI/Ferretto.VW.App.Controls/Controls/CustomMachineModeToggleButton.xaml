@@ -12,25 +12,7 @@
                   mc:Ignorable="d">
 
     <controls:PpcButton x:Name="LayoutRoot"
-                        Width="100"
-                        Height="60"
-                        Command="{Binding ExecuteCommand}">
-
-        <Grid Width="100"
-              Height="60">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBlock VerticalAlignment="Center"
-                       FontSize="{DynamicResource PpcButtonFontSize}"
-                       Foreground="{DynamicResource PpcButtonForeground}"
-                       Text="{x:Static res:VWApp.ManualMode}"
-                       TextAlignment="Center" />
-            <Rectangle Grid.Row="1"
-                       Height="12"
-                       Fill="Green" />
-        </Grid>
-    </controls:PpcButton>
+                        Command="{Binding ExecuteCommand}"
+                        Content="{x:Static res:VWApp.ManualMode}"
+                        Style="{DynamicResource PpcButtonMachineModeHeaderStyle}" />
 </ctrls:PpcControl>

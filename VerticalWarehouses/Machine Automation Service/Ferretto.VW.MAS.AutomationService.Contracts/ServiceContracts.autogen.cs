@@ -216,6 +216,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StopWeightCheckAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, decimal runToTest, decimal weight);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -351,13 +358,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineResolutionCalibrationProcedureService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(decimal newResolution);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(decimal measuredDistance, decimal expectedDistance);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -370,34 +370,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ResolutionCalibrationParameters> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToInitialPositionAsync(decimal position);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToInitialPositionAsync(decimal position, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToPositionAsync(decimal position);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToPositionAsync(decimal position, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartAsync(decimal position);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartAsync(decimal position, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1068,11 +1040,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 2 = VerticalManualMovementsAfterZero
     /// 3 = HorizontalManualMovements
     /// 4 = ShutterManualMovements
-    /// 5 = ResolutionCalibration
-    /// 6 = OffsetCalibration
-    /// 7 = CellControl
-    /// 8 = PanelControl
-    /// 9 = ShutterHeightControl
+    /// 5 = VerticalResolutionCalibration
+    /// 6 = VerticalOffsetCalibration
+    /// 7 = CellHeightCheck
+    /// 8 = PanelHeightCheck
+    /// 9 = ShutterHeightCheck
     /// 10 = LoadingUnitWeight
     /// 11 = BayHeight
     /// 12 = LoadFirstDrawer</summary>
@@ -1089,15 +1061,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ShutterManualMovements = 4,
     
-        ResolutionCalibration = 5,
+        VerticalResolutionCalibration = 5,
     
-        OffsetCalibration = 6,
+        VerticalOffsetCalibration = 6,
     
-        CellControl = 7,
+        CellHeightCheck = 7,
     
-        PanelControl = 8,
+        PanelHeightCheck = 8,
     
-        ShutterHeightControl = 9,
+        ShutterHeightCheck = 9,
     
         LoadingUnitWeight = 10,
     

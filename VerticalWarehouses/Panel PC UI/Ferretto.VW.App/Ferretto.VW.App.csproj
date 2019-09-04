@@ -10,6 +10,10 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

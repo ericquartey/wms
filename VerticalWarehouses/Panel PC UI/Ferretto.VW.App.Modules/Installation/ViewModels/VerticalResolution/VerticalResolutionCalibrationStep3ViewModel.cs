@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private DelegateCommand acceptCommand;
+        private DelegateCommand applyCorrectionCommand;
 
         private decimal? finalPosition;
 
@@ -25,11 +25,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputMeasuredFinalPosition;
 
+        private bool isProcedureCompleted;
+
         private bool isRetrievingNewResolution;
 
         private decimal? measuredDistance;
 
         private decimal? measuredInitialPosition;
+
+        private DelegateCommand moveToInitialPositionCommand;
 
         private decimal? newResolution;
 
@@ -43,8 +47,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep3ViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorService machineElevatorService,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
         {
         }
 
@@ -52,17 +57,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand AcceptCommand =>
-            this.acceptCommand
+        public ICommand ApplyCorrectionCommand =>
+            this.applyCorrectionCommand
             ??
-            (this.acceptCommand = new DelegateCommand(
-                async () => await this.AcceptAsync(),
-                this.CanExecuteAcceptCommand));
+            (this.applyCorrectionCommand = new DelegateCommand(
+                async () => await this.ApplyCorrectionAsync(),
+                this.CanApplyCorrection));
+
+        public bool CanInputFinalPosition => !this.IsExecutingProcedure && !this.IsProcedureCompleted;
 
         public string Error => string.Join(
-              Environment.NewLine,
-              this[nameof(this.InputMeasuredFinalPosition)],
-              this[nameof(this.NewResolution)]);
+            Environment.NewLine,
+            this[nameof(this.InputMeasuredFinalPosition)],
+            this[nameof(this.NewResolution)]);
 
         public decimal? FinalPosition
         {
@@ -102,6 +109,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsProcedureCompleted
+        {
+            get => this.isProcedureCompleted;
+            set
+            {
+                if (this.SetProperty(ref this.isProcedureCompleted, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsRetrievingNewResolution
         {
             get => this.isRetrievingNewResolution;
@@ -125,6 +144,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public ICommand MoveToInitialPositionCommand =>
+            this.moveToInitialPositionCommand
+            ??
+            (this.moveToInitialPositionCommand = new DelegateCommand(
+              async () => await this.MoveToInitialPositionAsync(),
+              this.CanMoveToInitialPosition));
 
         public decimal? NewResolution
         {
@@ -183,36 +209,116 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.CurrentPosition = null;
+            this.CurrentResolution = null;
+            this.FinalPosition = null;
+            this.InitialPosition = null;
+            this.InputMeasuredFinalPosition = null;
+            this.IsExecutingProcedure = false;
+            this.IsProcedureCompleted = false;
+            this.IsRetrievingNewResolution = false;
+            this.IsWaitingForResponse = false;
+            this.MeasuredDistance = null;
+            this.MeasuredInitialPosition = null;
+            this.NewResolution = null;
+        }
+
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
             this.RetrieveInputData();
+
+            this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.IsExecutingProcedure =
-                message.Status != MessageStatus.OperationEnd
-                &&
-                message.Status != MessageStatus.OperationStop;
+            if (this.IsExecutingProcedure)
+            {
+                if (message.Data.AxisMovement == Axis.Vertical
+                    &&
+                    message.Status == MessageStatus.OperationEnd)
+                {
+                    this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
+
+                    this.IsProcedureCompleted = true;
+                }
+            }
+
+            base.OnAutomationMessageReceived(message);
         }
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.acceptCommand?.RaiseCanExecuteChanged();
+            base.RaiseCanExecuteChanged();
+
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.moveToInitialPositionCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.CanInputFinalPosition));
         }
 
-        private async Task AcceptAsync()
+        private async Task ApplyCorrectionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.MachineElevatorService.UpdateResolutionAsync(this.NewResolution.Value);
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.VerticalAxisResolutionUpdated,
+                    Services.Models.NotificationSeverity.Success);
+
+                this.CurrentResolution = this.NewResolution;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private bool CanApplyCorrection()
+        {
+            return
+               !this.IsExecutingProcedure
+               &&
+               !this.IsWaitingForResponse
+               &&
+               !this.IsProcedureCompleted
+               &&
+               string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private bool CanMoveToInitialPosition()
+        {
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsProcedureCompleted;
+        }
+
+        private async Task MoveToInitialPositionAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.ResolutionCalibrationService.CompleteAsync(this.NewResolution.Value);
-
-                this.NavigationService.GoBack();
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                    this.InitialPosition.Value,
+                    FeedRateCategory.VerticalResolutionCalibration);
             }
             catch (Exception ex)
             {
@@ -223,13 +329,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private bool CanExecuteAcceptCommand()
-        {
-            return !this.IsExecutingProcedure
-               && !this.IsWaitingForResponse
-               && string.IsNullOrWhiteSpace(this.Error);
         }
 
         private void RetrieveInputData()
@@ -284,6 +383,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsRetrievingNewResolution = true;
 
+                this.ShowNotification(null, Services.Models.NotificationSeverity.Clear);
+
                 this.NewResolution = await this.ResolutionCalibrationService
                     .GetAdjustedResolutionAsync(
                         this.MeasuredDistance.Value,
@@ -292,8 +393,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsRetrievingNewResolution = false;
             }
-            catch
+            catch (Exception ex)
             {
+                this.ShowNotification(ex);
                 this.NewResolution = null;
             }
         }

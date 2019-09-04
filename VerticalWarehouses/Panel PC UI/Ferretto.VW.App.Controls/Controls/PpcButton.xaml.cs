@@ -1,11 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     public partial class PpcButton : Button
     {
         #region Fields
+
+        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
+            nameof(ImageSource),
+            typeof(ImageSource),
+            typeof(PpcButton));
 
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
             nameof(IsActive),
@@ -29,6 +35,12 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public ImageSource ImageSource
+        {
+            get => (ImageSource)this.GetValue(ImageSourceProperty);
+            set => this.SetValue(ImageSourceProperty, value);
+        }
 
         public bool IsActive
         {
