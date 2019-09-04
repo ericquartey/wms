@@ -1987,6 +1987,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select lower bound [mm].
+        /// </summary>
+        public static string SelectLowerBound {
+            get {
+                return ResourceManager.GetString("SelectLowerBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select upper bound [mm].
+        /// </summary>
+        public static string SelectUpperBound {
+            get {
+                return ResourceManager.GetString("SelectUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sensors&apos; State.
         /// </summary>
         public static string SensorsState {
@@ -2262,6 +2280,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TestRun {
             get {
                 return ResourceManager.GetString("TestRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select waiting time.
+        /// </summary>
+        public static string TimeDelay {
+            get {
+                return ResourceManager.GetString("TimeDelay", resourceCulture);
             }
         }
         

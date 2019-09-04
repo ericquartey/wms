@@ -241,6 +241,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.currentStateMachine = new HomingStateMachine(
                     this.eventAggregator,
                     data,
+                    this.machineConfigurationProvider.IsOneKMachine(),
                     this.logger,
                     this.serviceScopeFactory);
 
@@ -279,6 +280,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IPositioningMessageData data)
             {
+                data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+
                 this.currentStateMachine = new PositioningStateMachine(
                     this.machineSensorsStatus,
                     this.eventAggregator,

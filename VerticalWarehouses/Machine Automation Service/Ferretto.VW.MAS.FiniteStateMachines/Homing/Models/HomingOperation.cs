@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         private Axis axisToCalibrated;
 
+        private bool isOneKMachine;
+
         private int maximumSteps = 0;
 
         private int numberOfExecutedSteps = 0;
@@ -19,11 +21,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         #region Constructors
 
-        public HomingOperation(Axis axisToCalibrate, int numberOfExecutedSteps, int maximumSteps)
+        public HomingOperation(Axis axisToCalibrate, int numberOfExecutedSteps, int maximumSteps, bool isOneKMachine)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.numberOfExecutedSteps = numberOfExecutedSteps;
             this.maximumSteps = maximumSteps;
+            this.isOneKMachine = isOneKMachine;
         }
 
         #endregion
@@ -45,6 +48,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
         }
 
         public Axis AxisToCalibrated { get => this.axisToCalibrated; set => this.axisToCalibrated = value; }
+
+        public bool IsOneKMachine { get => this.isOneKMachine; set => this.isOneKMachine = value; }
 
         public int MaximumSteps { get => this.maximumSteps; set => this.maximumSteps = value; }
 

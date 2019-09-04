@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private HomingOperation homingOperation;
 
+        private bool isOneKMachine;
+
         #endregion
 
         #region Constructors
@@ -32,6 +34,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public HomingStateMachine(
             IEventAggregator eventAggregator,
             IHomingMessageData calibrateMessageData,
+            bool isOneKMachine,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
@@ -42,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.CurrentState = new EmptyState(logger);
 
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
+
+            this.isOneKMachine = isOneKMachine;
         }
 
         #endregion
@@ -150,15 +155,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3);
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3, this.isOneKMachine);
                     break;
 
                 case Axis.Horizontal:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1);
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1, this.isOneKMachine);
                     break;
 
                 case Axis.Vertical:
-                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1);
+                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1, this.isOneKMachine);
                     break;
             }
 

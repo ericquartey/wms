@@ -217,6 +217,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.horizontalAxis.MaxEmptyDecelerationHA,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -274,6 +275,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -329,6 +331,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -378,6 +381,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 speed,
                 this.verticalAxis.MaxEmptyAcceleration,
                 this.verticalAxis.MaxEmptyDeceleration,
+                0,
                 0,
                 0,
                 0);

@@ -687,14 +687,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount)
+        public System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
-            return StartAsync(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, System.Threading.CancellationToken.None);
+            return StartAsync(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart, System.Threading.CancellationToken cancellationToken)
         {
             if (upperBoundPosition == null)
                 throw new System.ArgumentNullException("upperBoundPosition");
@@ -705,11 +705,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (totalTestCycleCount == null)
                 throw new System.ArgumentNullException("totalTestCycleCount");
     
+            if (delayStart == null)
+                throw new System.ArgumentNullException("delayStart");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/start?");
             urlBuilder_.Append("upperBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(upperBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("lowerBoundPosition=").Append(System.Uri.EscapeDataString(ConvertToString(lowerBoundPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("totalTestCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(totalTestCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("delayStart=").Append(System.Uri.EscapeDataString(ConvertToString(delayStart, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

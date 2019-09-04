@@ -27,6 +27,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int numberCycles,
             decimal lowerBound,
             decimal upperBound,
+            int delay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -40,6 +41,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
+            this.Delay = delay;
         }
 
         #endregion
@@ -52,7 +54,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal CurrentPosition { get; set; }
 
+        public int Delay { get; set; }
+
         public int ExecutedCycles { get; set; }
+
+        public bool IsOneKMachine { get; set; }
 
         public decimal LowerBound { get; set; }
 
@@ -80,7 +86,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.NumberCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound}";
+            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.NumberCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound} Delay:{this.Delay}";
         }
 
         #endregion

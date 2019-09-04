@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Timer sensorStatusUpdateTimer;
 
-        private Timer statusWordUpdateTimer;
+        private Timer[] statusWordUpdateTimer;
 
         private CancellationToken stoppingToken;
 
@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.InitializeMethodSubscriptions();
 
             this.axisPositionUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
+            this.statusWordUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
         }
 
         #endregion
@@ -232,8 +233,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
                 {
                     this.axisPositionUpdateTimer[(int)id]?.Dispose();
+                    this.statusWordUpdateTimer[(int)id]?.Dispose();
                 }
-                this.statusWordUpdateTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }
 
@@ -270,10 +271,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.axisPositionUpdateTimer[(int)id]?.Dispose();
                 this.axisPositionUpdateTimer[(int)id] = new Timer(this.RequestAxisPositionUpdate, id, -1, Timeout.Infinite);
+                this.statusWordUpdateTimer[(int)id]?.Dispose();
+                this.statusWordUpdateTimer[(int)id] = new Timer(this.RequestStatusWordMessage, id, -1, Timeout.Infinite);
             }
-
-            this.statusWordUpdateTimer?.Dispose();
-            this.statusWordUpdateTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
             do
             {

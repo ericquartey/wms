@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningErrorState : InverterStateBase
     {
-
-
         #region Constructors
 
         public PositioningErrorState(
@@ -32,8 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         }
 
         #endregion
-
-
 
         #region Methods
 

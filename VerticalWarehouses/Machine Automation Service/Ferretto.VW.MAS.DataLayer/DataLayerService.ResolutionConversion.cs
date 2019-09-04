@@ -35,18 +35,12 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    if (this.VerticalResolution == 0)
-                    {
-                        this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
-                    }
+                    this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     resolution = this.VerticalResolution;
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    if (this.HorizontalResolution == 0)
-                    {
-                        this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
-                    }
+                    this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     resolution = this.HorizontalResolution;
                     break;
 
@@ -76,18 +70,12 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    if (this.VerticalResolution == 0)
-                    {
-                        this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
-                    }
+                    this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     resolution = this.VerticalResolution;
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    if (this.HorizontalResolution == 0)
-                    {
-                        this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
-                    }
+                    this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     resolution = this.HorizontalResolution;
                     break;
 

@@ -102,6 +102,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public async Task MoveBackwardsAsync()
+        {
+            this.IsMovingBackwards = true;
+            this.IsMovingForwards = false;
+
+            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
+        }
+
+        public async Task MoveForwardsAsync()
+        {
+            this.IsMovingForwards = true;
+            this.IsMovingBackwards = false;
+
+            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+        }
+
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
@@ -134,22 +150,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMovingBackwards = false;
                 this.IsStopping = false;
             }
-        }
-
-        private async Task MoveBackwardsAsync()
-        {
-            this.IsMovingBackwards = true;
-            this.IsMovingForwards = false;
-
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
-        }
-
-        private async Task MoveForwardsAsync()
-        {
-            this.IsMovingForwards = true;
-            this.IsMovingBackwards = false;
-
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         private void RefreshCanExecuteCommands()
