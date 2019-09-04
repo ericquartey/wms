@@ -82,6 +82,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         int MaxAcceptedBai3Height { get; }
 
+        int MaxDrawerGrossWeight { get; }
+
         double MaxGrossWeight { get; }
 
         string Model { get; }

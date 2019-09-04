@@ -16,6 +16,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
+        bool IsOneKMachine { get; set; }
+
         decimal LowerBound { get; }
 
         MovementMode MovementMode { get; set; }

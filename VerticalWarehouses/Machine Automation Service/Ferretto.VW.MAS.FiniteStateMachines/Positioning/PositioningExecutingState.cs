@@ -111,6 +111,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
+            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
             if (this.positioningMessageData.MovementMode == MovementMode.Position)
             {
                 this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
@@ -121,7 +122,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)inverterIndex);
             }
 
             if (this.positioningMessageData.MovementMode == MovementMode.BeltBurnishing)
@@ -178,7 +179,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)inverterIndex);
             }
 
             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
@@ -190,7 +191,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
+                (byte)inverterIndex);
             this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
@@ -327,13 +328,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 if (this.machineSensorsStatus.IsSensorZeroOnCradle)
                 {
+                    var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                     this.commandMessage = new FieldCommandMessage(
                         null,
                         $"Stop Operation due to zero position reached",
                         FieldMessageActor.InverterDriver,
                         FieldMessageActor.FiniteStateMachines,
                         FieldMessageType.InverterStop,
-                        (byte)InverterIndex.MainInverter);
+                        (byte)inverterIndex);
 
                     this.Logger.LogTrace(
                         $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");

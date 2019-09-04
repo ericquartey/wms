@@ -86,6 +86,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int MaxAcceptedBai3Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai3Height, ConfigurationCategory.GeneralInfo);
 
+        public int MaxDrawerGrossWeight => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxDrawerGrossWeight, ConfigurationCategory.GeneralInfo);
+
         public double MaxGrossWeight => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxGrossWeight, ConfigurationCategory.GeneralInfo);
 
         public string Model => this.GetStringConfigurationValue((long)GeneralInfo.Model, ConfigurationCategory.GeneralInfo);
