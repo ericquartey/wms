@@ -107,7 +107,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="True"
-                                   Text="{x:Static res:InstallationApp.Gate1HeightReaced}" />
+                                   Text="{x:Static res:InstallationApp.Gate1HeightReached}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -131,7 +131,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCHeightReaced}" />
+                   Text="{x:Static res:HelpDescriptions.HelpGHCHeightReached}" />
 
         <TextBlock Width="260"
                    Height="70"

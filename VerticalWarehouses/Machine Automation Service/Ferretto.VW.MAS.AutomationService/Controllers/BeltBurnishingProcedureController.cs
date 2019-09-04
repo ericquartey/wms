@@ -91,8 +91,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount)
+        public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
+            var parameters = new BeltBurnishingParameters
+            {
+                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.UpperBound,
+                        ConfigurationCategory.VerticalAxis),
+                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.LowerBound,
+                        ConfigurationCategory.VerticalAxis)
+            };
+
             if (upperBoundPosition <= 0)
             {
                 return this.BadRequest(
@@ -103,6 +113,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
+            if (upperBoundPosition > parameters.UpperBound)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange
+                    });
+            }
+
             if (upperBoundPosition <= lowerBoundPosition)
             {
                 return this.BadRequest(
@@ -110,6 +130,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         Title = Resources.General.BadRequestTitle,
                         Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition
+                    });
+            }
+
+            if (lowerBoundPosition < parameters.LowerBound)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange
                     });
             }
 
@@ -133,7 +163,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 totalTestCycleCount,
                 lowerBoundPosition,
-                upperBoundPosition);
+                upperBoundPosition,
+                delayStart);
 
             this.PublishCommand(
                 data,

@@ -288,6 +288,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnElevatorPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            this.CurrentPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+        }
+
         private void OnHomingProcedureStatusChanged(MessageNotifiedEventArgs message)
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
@@ -406,7 +416,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.updateCurrentPositionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
-                message => this.CurrentPosition = message?.Data?.CurrentPosition,
+                message => this.OnElevatorPositionChanged(message),
                 ThreadOption.UIThread,
                 false);
         }

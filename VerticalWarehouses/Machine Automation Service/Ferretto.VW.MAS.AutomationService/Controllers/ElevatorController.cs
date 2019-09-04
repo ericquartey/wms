@@ -40,6 +40,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IPanelControlDataLayer panelControlDataLayer;
 
+        private readonly IResolutionCalibrationDataLayer resolutionCalibrationDataLayer;
+
         private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
@@ -56,6 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IWeightControlDataLayer weightControl,
             IVerticalAxisDataLayer verticalAxisDataLayer,
+            IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
@@ -71,66 +74,72 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (weightControl is null)
             {
-                throw new System.ArgumentNullException(nameof(weightControl));
+                throw new ArgumentNullException(nameof(weightControl));
             }
 
             if (verticalAxisDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
+                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
+            }
+
+            if (resolutionCalibrationDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(resolutionCalibrationDataLayer));
             }
 
             if (verticalManualMovementsDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
+                throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
             if (horizontalAxisDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
+                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
             if (horizontalManualMovementsDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+                throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
             if (offsetCalibrationDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(offsetCalibrationDataLayer));
+                throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
             }
 
             if (setupStatusProvider is null)
             {
-                throw new System.ArgumentNullException(nameof(setupStatusProvider));
+                throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
             if (bayPositionControl is null)
             {
-                throw new System.ArgumentNullException(nameof(bayPositionControl));
+                throw new ArgumentNullException(nameof(bayPositionControl));
             }
 
             if (elevatorProvider is null)
             {
-                throw new System.ArgumentNullException(nameof(elevatorProvider));
+                throw new ArgumentNullException(nameof(elevatorProvider));
             }
 
             if (cellControlDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(cellControlDataLayer));
+                throw new ArgumentNullException(nameof(cellControlDataLayer));
             }
 
-            if (panelControlDataLayer == null)
+            if (panelControlDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(panelControlDataLayer));
             }
 
             if (logger is null)
             {
-                throw new System.ArgumentNullException(nameof(logger));
+                throw new ArgumentNullException(nameof(logger));
             }
 
             this.weightControl = weightControl;
             this.verticalAxis = verticalAxisDataLayer;
+            this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
@@ -217,6 +226,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.horizontalAxis.MaxEmptyDecelerationHA,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -274,6 +284,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -329,6 +340,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -380,6 +392,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.verticalAxis.MaxEmptyDeceleration,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -416,6 +429,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/resolution")]
+        public IActionResult UpdateResolution(decimal newResolution)
+        {
+            this.verticalAxis.Resolution = newResolution;
+
+            this.setupStatusProvider.CompleteVerticalResolution();
+
+            return this.Ok();
+        }
+
         [HttpPost("Weight-Check")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -450,7 +473,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             switch (feedRateCategory)
             {
                 case FeedRateCategory.Undefined:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.Undefined));
+                    throw new NotImplementedException(nameof(FeedRateCategory.Undefined));
 
                 case FeedRateCategory.VerticalManualMovements:
                     feedRate = this.verticalManualMovements.FeedRateVM;
@@ -465,25 +488,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     break;
 
                 case FeedRateCategory.ShutterManualMovements:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterManualMovements));
 
-                case FeedRateCategory.ResolutionCalibration:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                case FeedRateCategory.VerticalResolutionCalibration:
+                    feedRate = this.resolutionCalibrationDataLayer.FeedRate;
+                    break;
 
-                case FeedRateCategory.OffsetCalibration:
+                case FeedRateCategory.VerticalOffsetCalibration:
                     feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
                     break;
 
-                case FeedRateCategory.CellControl:
+                case FeedRateCategory.CellHeightCheck:
                     feedRate = this.cellControlDataLayer.FeedRateCC;
                     break;
 
-                case FeedRateCategory.PanelControl:
+                case FeedRateCategory.PanelHeightCheck:
                     feedRate = this.panelControlDataLayer.FeedRatePC;
                     break;
 
-                case FeedRateCategory.ShutterHeightControl:
-                    throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                case FeedRateCategory.ShutterHeightCheck:
+                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterHeightCheck));
 
                 case FeedRateCategory.LoadingUnitWeight:
                     feedRate = this.weightControl.FeedRateWC;
@@ -495,9 +519,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 case FeedRateCategory.LoadFirstDrawer:
                     throw new System.NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
-
-                default:
-                    break;
             }
 
             return feedRate;

@@ -69,18 +69,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("complete")]
-        public IActionResult Complete(decimal newResolution)
-        {
-            this.ExecuteStep(newResolution, ResolutionCalibrationStep.CloseProcedure);
-
-            this.verticalAxis.Resolution = newResolution; // TODO move this into state machine
-
-            this.setupStatusProvider.CompleteVerticalResolution(); // TODO move this into state machine
-
-            return this.Ok();
-        }
-
         [HttpGet("adjusted-resolution")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -133,112 +121,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             };
 
             return this.Ok(parameters);
-        }
-
-        [HttpPost("move-to-initial-position")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
-        public IActionResult MoveToInitialPosition(decimal position)
-        {
-            return this.ExecuteStep(position, ResolutionCalibrationStep.InitialPosition);
-        }
-
-        [HttpPost("move-to-position")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
-        public IActionResult MoveToPosition(decimal position)
-        {
-            return this.ExecuteStep(position, ResolutionCalibrationStep.Move);
-        }
-
-        [HttpPost("start")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
-        public IActionResult Start(decimal position)
-        {
-            return this.ExecuteStep(position, ResolutionCalibrationStep.StartProcedure);
-        }
-
-        [HttpPost("stop")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesDefaultResponseType]
-        public IActionResult Stop()
-        {
-            this.PublishCommand(
-                   null,
-                   "Stop Command",
-                   MessageActor.FiniteStateMachines,
-                   MessageType.Stop);
-
-            return this.Accepted();
-        }
-
-        private static string GetStepDescription(ResolutionCalibrationStep resolutionCalibrationStep)
-        {
-            string message;
-            switch (resolutionCalibrationStep)
-            {
-                case ResolutionCalibrationStep.StartProcedure:
-                    message = "Resolution Calibration Start";
-                    break;
-
-                case ResolutionCalibrationStep.InitialPosition:
-                    message = "Resolution Calibration go to initial position";
-                    break;
-
-                case ResolutionCalibrationStep.Move:
-                    message = "Resolution Calibration move to final position";
-                    break;
-
-                default:
-                    message = string.Empty;
-                    break;
-            }
-
-            return message;
-        }
-
-        private IActionResult ExecuteStep(decimal position, ResolutionCalibrationStep resolutionCalibrationStep)
-        {
-            var setupStatus = this.setupStatusProvider.Get();
-            if (!setupStatus.VerticalResolution.CanBePerformed)
-            {
-                return this.UnprocessableEntity(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.UnprocessableEntityTitle,
-                        Detail = Resources.ResolutionCalibrationProcedure.ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus
-                    });
-            }
-
-            var description = GetStepDescription(resolutionCalibrationStep);
-
-            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            var feedRate = this.resolutionCalibration.FeedRate;
-
-            var speed = maxSpeed * feedRate;
-            var messageData = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Absolute,
-                MovementMode.Position,
-                position,
-                speed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
-                0,
-                0,
-                0);
-
-            this.PublishCommand(
-                messageData,
-                description,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
-
-            return this.Accepted();
         }
 
         #endregion

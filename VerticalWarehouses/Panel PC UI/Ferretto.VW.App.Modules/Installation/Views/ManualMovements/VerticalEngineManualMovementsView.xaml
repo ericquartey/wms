@@ -49,7 +49,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding CurrentPosition}"
-                                     LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+                                     LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
             <StackPanel Grid.Row="2"
                         Grid.Column="1"

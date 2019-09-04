@@ -29,8 +29,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep1ViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorService machineElevatorService,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
         {
         }
 
@@ -39,8 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public string Error => string.Join(
-              System.Environment.NewLine,
-              this[nameof(this.InputInitialPosition)]);
+            Environment.NewLine,
+            this[nameof(this.InputInitialPosition)]);
 
         public decimal? InputInitialPosition
         {
@@ -59,7 +60,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.StartAsync(),
-                this.CanExecuteStartCommand));
+                this.CanStart));
 
         #endregion
 
@@ -119,10 +120,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.IsExecutingProcedure =
-               message.Status != MessageStatus.OperationEnd
-               &&
-               message.Status != MessageStatus.OperationStop;
+            base.OnAutomationMessageReceived(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {
@@ -140,14 +138,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.startCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanExecuteStartCommand()
+        private bool CanStart()
         {
-            return !this.IsExecutingProcedure
-              && !this.IsWaitingForResponse
-              && string.IsNullOrWhiteSpace(this.Error);
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
         }
 
         private void NavigateToNextStep()
@@ -173,7 +176,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.ResolutionCalibrationService.StartAsync(this.InputInitialPosition.Value);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                    this.InputInitialPosition.Value,
+                    FeedRateCategory.VerticalResolutionCalibration);
             }
             catch (Exception ex)
             {

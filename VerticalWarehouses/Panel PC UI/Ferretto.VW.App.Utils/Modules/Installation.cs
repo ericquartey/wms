@@ -10,6 +10,8 @@
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
+        public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
+
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
@@ -64,7 +66,7 @@
 
             public const string EXTERNALBAY = "ExternalBayManualMovementsViewModel";
 
-            public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
+            public const string HORIZONTALENGINE = "HorizontalEngineManualMovementsViewModel";
 
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
 

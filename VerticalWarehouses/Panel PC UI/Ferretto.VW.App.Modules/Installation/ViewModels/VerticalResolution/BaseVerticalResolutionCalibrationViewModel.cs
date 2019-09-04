@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -22,11 +25,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineResolutionCalibrationProcedureService resolutionCalibrationService;
 
+        private decimal? currentPosition;
+
         private decimal? currentResolution;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
+
+        private DelegateCommand stopCommand;
 
         private SubscriptionToken subscriptionToken;
 
@@ -36,6 +43,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BaseVerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorService machineElevatorService,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(Services.PresentationMode.Installer)
         {
@@ -44,19 +52,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
+            if (machineElevatorService is null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
             if (resolutionCalibrationService is null)
             {
                 throw new ArgumentNullException(nameof(resolutionCalibrationService));
             }
 
-            this.InitializeNavigationMenu();
             this.eventAggregator = eventAggregator;
+            this.MachineElevatorService = machineElevatorService;
             this.resolutionCalibrationService = resolutionCalibrationService;
+
+            this.InitializeNavigationMenu();
         }
 
         #endregion
 
         #region Properties
+
+        public decimal? CurrentPosition
+        {
+            get => this.currentPosition;
+            protected set => this.SetProperty(ref this.currentPosition, value);
+        }
 
         public decimal? CurrentResolution
         {
@@ -71,6 +92,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
+                    if (this.isExecutingProcedure)
+                    {
+                        this.ShowNotification(null, Services.Models.NotificationSeverity.Clear);
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -93,9 +119,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public IMachineElevatorService MachineElevatorService { get; }
+
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
         public IMachineResolutionCalibrationProcedureService ResolutionCalibrationService => this.resolutionCalibrationService;
+
+        public ICommand StopCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(
+                async () => await this.StopAsync(),
+                this.CanStop));
 
         #endregion
 
@@ -127,6 +162,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message => this.OnAutomationMessageReceived(message),
                     ThreadOption.UIThread,
                     false);
+
+            await this.RetrieveCurrentPositionAsync();
+        }
+
+        protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            if (message.Data.AxisMovement == Axis.Vertical)
+            {
+                this.CurrentPosition = message.Data.CurrentPosition;
+
+                this.IsExecutingProcedure =
+                    message.Status != MessageStatus.OperationEnd
+                    &&
+                    message.Status != MessageStatus.OperationStop;
+
+                if (message.Status == MessageStatus.OperationStop)
+                {
+                    this.ShowNotification(
+                        VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                        Services.Models.NotificationSeverity.Warning);
+                }
+            }
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -138,9 +200,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowAbortStep(false, false);
         }
 
-        protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);
 
-        protected abstract void RaiseCanExecuteChanged();
+        protected virtual void RaiseCanExecuteChanged()
+        {
+            this.stopCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanStop()
+        {
+            return
+                this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
+        }
 
         private void InitializeNavigationMenu()
         {
@@ -164,6 +236,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Step3,
                     trackCurrentView: false));
+        }
+
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.MachineElevatorService.StopAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

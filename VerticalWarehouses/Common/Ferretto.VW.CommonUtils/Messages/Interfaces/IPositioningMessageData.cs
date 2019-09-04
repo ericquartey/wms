@@ -12,7 +12,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         decimal CurrentPosition { get; set; }
 
+        int Delay { get; set; }
+
         int ExecutedCycles { get; set; }
+
+        bool IsOneKMachine { get; set; }
 
         decimal LowerBound { get; }
 

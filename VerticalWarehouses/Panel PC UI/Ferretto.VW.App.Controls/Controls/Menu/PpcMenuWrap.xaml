@@ -13,25 +13,10 @@
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <controls:PpcButton Width="170"
-                                Height="73"
-                                Margin="13,6,13,6"
-                                Command="{Binding NavigateCommand}">
-                <TextBlock Margin="5,0,5,0"
-                           FontSize="{DynamicResource PpcButtonFontSize}"
-                           Foreground="{DynamicResource PpcButtonForeground}"
-                           Text="{Binding Description}"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap" />
-                <controls:PpcButton.Style>
-                    <Style TargetType="controls:PpcButton">
-                        <Style.Triggers>
-                            <Trigger Property="IsActive" Value="True">
-                                <Setter Property="BorderThickness" Value="0,0,0,10" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </controls:PpcButton.Style>
-            </controls:PpcButton>
+                                Height="70"
+                                Margin="15,0,15,15"
+                                Command="{Binding NavigateCommand}"
+                                Content="{Binding Description}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
 </ItemsControl>

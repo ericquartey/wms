@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -27,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? currentPosition;
 
+        private int inputDelay;
+
         private decimal? inputLowerBound;
 
         private int? inputRequiredCycles;
@@ -36,6 +39,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
+
+        private decimal? machineLowerBound;
+
+        private decimal? machineUpperBound;
 
         private SubscriptionToken receivedActionUpdateToken;
 
@@ -64,6 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.eventAggregator = eventAggregator;
             this.beltBurnishingService = beltBurnishingService;
+            this.inputDelay = 0;
         }
 
         #endregion
@@ -86,7 +94,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Environment.NewLine,
                 this[nameof(this.InputLowerBound)],
                 this[nameof(this.InputUpperBound)],
-                this[nameof(this.InputRequiredCycles)]);
+                this[nameof(this.InputRequiredCycles)],
+                this[nameof(this.InputDelay)]);
+
+        public int InputDelay
+        {
+            get => this.inputDelay;
+            set
+            {
+                if (this.SetProperty(ref this.inputDelay, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public decimal? InputLowerBound
         {
@@ -177,6 +198,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
+                    case nameof(this.InputDelay):
+                        if (this.InputDelay < 0)
+                        {
+                            return "InputDelay must be strictly positive.";
+                        }
+
+                        break;
+
                     case nameof(this.InputRequiredCycles):
                         if (!this.InputRequiredCycles.HasValue)
                         {
@@ -205,7 +234,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                           &&
                           this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputLowerBound must be greater than InputLowerBound.";
+                            return "InputLowerBound must be greater than InputUpperBound.";
+                        }
+
+                        if (this.InputLowerBound.Value < this.machineLowerBound)
+                        {
+                            return $"InputLowerBound must be greater than {this.machineLowerBound}.";
                         }
 
                         break;
@@ -225,7 +259,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             &&
                             this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputLowerBound must be greater than InputLowerBound.";
+                            return "InputUpperBound must be greater than InputLowerBound.";
+                        }
+
+                        if (this.InputUpperBound.Value > this.machineUpperBound)
+                        {
+                            return $"InputUpperBound must be greater than {this.machineUpperBound}.";
                         }
 
                         break;
@@ -260,7 +299,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var procedureParameters = await this.beltBurnishingService.GetParametersAsync();
 
                 this.InputUpperBound = procedureParameters.UpperBound;
+                this.machineUpperBound = procedureParameters.UpperBound;
                 this.InputLowerBound = procedureParameters.LowerBound;
+                this.machineLowerBound = procedureParameters.LowerBound;
+
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
             }
             catch (Exception ex)
@@ -285,11 +327,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
         }
 
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsExecutingProcedure = false;
+            }
+        }
+
         private bool CanExecuteStartCommand()
         {
             return !this.IsExecutingProcedure
                 && !this.IsWaitingForResponse
-                && string.IsNullOrWhiteSpace(this.Error);
+                && string.IsNullOrWhiteSpace(this.Error)
+                && this.machineLowerBound <= this.inputLowerBound
+                && this.machineUpperBound >= this.inputUpperBound;
         }
 
         private bool CanExecuteStopCommand()
@@ -314,7 +367,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.beltBurnishingService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
-                    this.InputRequiredCycles.Value);
+                    this.InputRequiredCycles.Value,
+                    this.InputDelay);
             }
             catch (Exception ex)
             {

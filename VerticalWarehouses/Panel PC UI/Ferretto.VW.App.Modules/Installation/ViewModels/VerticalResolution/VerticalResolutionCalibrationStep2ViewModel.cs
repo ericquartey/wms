@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputMeasuredInitialPosition;
 
-        private DelegateCommand moveToInitialPositionCommand;
-
         private DelegateCommand moveToPositionCommand;
 
         private VerticalResolutionCalibrationData procedureParameters;
@@ -35,8 +33,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep2ViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorService machineElevatorService,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
         {
         }
 
@@ -85,19 +84,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ICommand MoveToInitialPositionCommand =>
-            this.moveToInitialPositionCommand
-            ??
-            (this.moveToInitialPositionCommand = new DelegateCommand(
-                async () => await this.MoveToInitialPositionAsync(),
-                this.CanExecuteMoveToInitialPositionCommand));
-
         public ICommand MoveToPositionCommand =>
            this.moveToPositionCommand
            ??
            (this.moveToPositionCommand = new DelegateCommand(
                async () => await this.MoveToPositionAsync(),
-               this.CanExecuteMoveToPositionCommand));
+               this.CanMoveToPosition));
 
         #endregion
 
@@ -151,6 +143,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RetrieveInputData();
 
             this.ShowSteps();
+
+            this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
         }
 
         private void ShowSteps()
@@ -162,10 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.IsExecutingProcedure =
-                message.Status != MessageStatus.OperationEnd
-                &&
-                message.Status != MessageStatus.OperationStop;
+            base.OnAutomationMessageReceived(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {
@@ -176,41 +167,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.moveToInitialPositionCommand?.RaiseCanExecuteChanged();
+            base.RaiseCanExecuteChanged();
+
             this.moveToPositionCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanExecuteMoveToInitialPositionCommand()
+        private bool CanMoveToPosition()
         {
-            return !this.IsExecutingProcedure
-                && !this.IsWaitingForResponse;
-        }
-
-        private bool CanExecuteMoveToPositionCommand()
-        {
-            return !this.IsExecutingProcedure
-               && !this.IsWaitingForResponse
-               && string.IsNullOrWhiteSpace(this.Error);
-        }
-
-        private async Task MoveToInitialPositionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
-
-                await this.ResolutionCalibrationService.MoveToInitialPositionAsync(this.InitialPosition.Value);
-            }
-            catch (Exception ex)
-            {
-                this.IsExecutingProcedure = false;
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            return
+               !this.IsExecutingProcedure
+               &&
+               !this.IsWaitingForResponse
+               &&
+               string.IsNullOrWhiteSpace(this.Error);
         }
 
         private async Task MoveToPositionAsync()
@@ -218,9 +187,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
+                this.IsExecutingProcedure = false;
 
-                await this.ResolutionCalibrationService.MoveToPositionAsync(this.InputFinalPosition.Value);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                    this.InputFinalPosition.Value,
+                    FeedRateCategory.VerticalResolutionCalibration);
             }
             catch (Exception ex)
             {

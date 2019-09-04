@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The lower position is outside the minimum limit..
+        /// </summary>
+        public static string LowerBoundPositionOutOfRange {
+            get {
+                return ResourceManager.GetString("LowerBoundPositionOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of test cycles must be strictly positive..
         /// </summary>
         public static string TheNumberOfTestCyclesMustBeStrictlyPositive {
@@ -84,6 +93,15 @@ namespace Ferretto.VW.MAS.Resources {
         public static string UpperBoundPositionMustBeStrictlyPositive {
             get {
                 return ResourceManager.GetString("UpperBoundPositionMustBeStrictlyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The upper position is outside the maximum limit..
+        /// </summary>
+        public static string UpperBoundPositionOutOfRange {
+            get {
+                return ResourceManager.GetString("UpperBoundPositionOutOfRange", resourceCulture);
             }
         }
     }

@@ -365,7 +365,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                this.machineElevatorService.MoveToVerticalPositionAsync(this.CurrentCell.Position, FeedRateCategory.PanelControl);
+                this.machineElevatorService.MoveToVerticalPositionAsync(this.CurrentCell.Position, FeedRateCategory.PanelHeightCheck);
 
                 this.HasReachedCellPosition = true;
             }

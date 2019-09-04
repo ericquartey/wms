@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 
         Axis AxisToCalibrated { get; }
 
+        bool IsOneKMachine { get; }
+
         int MaximumSteps { get; }
 
         int NumberOfExecutedSteps { get; }
