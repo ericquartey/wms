@@ -9,6 +9,7 @@ using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
+        private readonly IMachineModeService machineModeService;
+
         private readonly BindingList<MainNavigationMenuItem> otherItems = new BindingList<MainNavigationMenuItem>();
 
         private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
@@ -38,6 +41,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public InstallatorMenuViewModel(
             IMachineSetupStatusService setupStatusService,
+            IMachineModeService machineModeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
@@ -46,12 +50,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(setupStatusService));
             }
 
+            if (machineModeService is null)
+            {
+                throw new ArgumentNullException(nameof(machineModeService));
+            }
+
             if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
             this.setupStatusService = setupStatusService;
+            this.machineModeService = machineModeService;
             this.bayNumber = bayManager.Bay.Number;
 
             this.InitializeData();
@@ -181,6 +191,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, trackCurrentView: true));
                 }
             }
+
+            this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
 
             this.RaisePropertyChanged(nameof(this.InstallatorItems));
             this.RaisePropertyChanged(nameof(this.SensorsItems));

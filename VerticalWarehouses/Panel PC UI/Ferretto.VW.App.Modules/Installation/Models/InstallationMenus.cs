@@ -60,7 +60,11 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Movimenti manuali a bassa velocità")]
-        VerticalEngineManualMovements,
+        ManualMovements,
+
+        [View(Utils.Modules.Installation.SEMIAUTOMOVEMENTS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Movimenti semi-automatici")]
+        SemiAutoMovements,
 
         [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Controllo quote celle")]

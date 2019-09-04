@@ -102,7 +102,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding GoToCellHeightCommand}"
-                            Content="{x:Static res:InstallationApp.GoToCellHeight}"
+                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
                             IsBusy="{Binding IsElevatorMovingToCell}" />
 
         <controls:PpcButton Grid.Row="3"

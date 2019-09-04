@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.DataLayerInitialize();
+            this.Initialize();
 
             await base.StartAsync(cancellationToken);
         }
@@ -121,11 +121,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return Task.CompletedTask;
         }
 
-        private void DataLayerInitialize()
+        private void ApplyMigrations()
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            try
             {
-                try
+                using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var redundancyService = scope.ServiceProvider
                         .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
@@ -154,29 +154,25 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     redundancyService.IsEnabled = true;
                 }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while migating databases.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
-                    return;
-                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Error while migating databases.");
+                this.SendErrorMessage(new DLExceptionMessageData(ex));
+            }
+        }
 
+        private void Initialize()
+        {
+            this.ApplyMigrations();
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
                 var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
                 try
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while loading configuration values.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
-                    return;
-                }
-
-                try
-                {
-                    this.Logger.LogInformation("Loading cells from configuration file ...");
 
                     scope.ServiceProvider
                         .GetRequiredService<ICellsProvider>()
@@ -184,26 +180,26 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while loading cells.");
+                    this.Logger.LogError(ex, "Error while loading configuration values.");
                     this.SendErrorMessage(new DLExceptionMessageData(ex));
                     return;
                 }
-
-                this.IsReady = true;
-
-                var message = new NotificationMessage(
-                    null,
-                    "DataLayer initialization complete.",
-                    MessageActor.Any,
-                    MessageActor.DataLayer,
-                    MessageType.DataLayerReady);
-
-                this.EventAggregator
-                    .GetEvent<NotificationEvent>()
-                    .Publish(message);
-
-                this.Logger.LogDebug("Data layer service initialized.");
             }
+
+            this.IsReady = true;
+
+            var message = new NotificationMessage(
+                null,
+                "DataLayer initialization complete.",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DataLayerReady);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
+
+            this.Logger.LogDebug("Data layer service initialized.");
         }
 
         private void SendErrorMessage(IMessageData data)

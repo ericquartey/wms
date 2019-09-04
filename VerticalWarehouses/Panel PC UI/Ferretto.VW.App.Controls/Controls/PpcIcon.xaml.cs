@@ -17,9 +17,15 @@ namespace Ferretto.VW.App.Controls.Controls
                 default(SolidColorBrush),
                 new PropertyChangedCallback(OnColorizeBrushChanged)));
 
-        private const int ColorAlphaByteIndex = 3;
+        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
+            nameof(ImageSource),
+            typeof(ImageSource),
+            typeof(PpcIcon),
+             new PropertyMetadata(
+                null,
+                new PropertyChangedCallback(OnSourceChanged)));
 
-        private bool sourcePropertyChanging;
+        private const int ColorAlphaByteIndex = 3;
 
         #endregion
 
@@ -40,43 +46,29 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(ColorizeBrushProperty, value);
         }
 
+        public ImageSource ImageSource
+        {
+            get => (ImageSource)this.GetValue(ImageSourceProperty);
+            set => this.SetValue(ImageSourceProperty, value);
+        }
+
         #endregion
 
         #region Methods
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        protected static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.Property == Image.SourceProperty)
+            if (d is PpcIcon ppcIcon)
             {
-                if (e.NewValue is ImageSource imageSource
-                    &&
-                    !this.sourcePropertyChanging)
-                {
-                    this.sourcePropertyChanging = true;
-
-                    var newSource = this.ColorizeImage(imageSource);
-                    this.Source = newSource;
-                    this.sourcePropertyChanging = false;
-                }
+                ppcIcon.Source = ppcIcon.ColorizeImage(ppcIcon.ImageSource);
             }
-
-            base.OnPropertyChanged(e);
         }
 
         private static void OnColorizeBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PpcIcon wmsIcon
-                &&
-                !wmsIcon.sourcePropertyChanging
-                &&
-                e.NewValue is SolidColorBrush brush)
+            if (d is PpcIcon ppcIcon)
             {
-                wmsIcon.sourcePropertyChanging = true;
-
-                var newSource = wmsIcon.ColorizeImage(wmsIcon.Source);
-
-                wmsIcon.Source = newSource;
-                wmsIcon.sourcePropertyChanging = false;
+                ppcIcon.Source = ppcIcon.ColorizeImage(ppcIcon.ImageSource);
             }
         }
 
@@ -104,6 +96,11 @@ namespace Ferretto.VW.App.Controls.Controls
             }
 
             return bitmap;
+        }
+
+        private void SetBaseSource(ImageSource imageSource)
+        {
+            base.Source = imageSource;
         }
 
         private byte[] TransformColor(byte[] currentPixel)

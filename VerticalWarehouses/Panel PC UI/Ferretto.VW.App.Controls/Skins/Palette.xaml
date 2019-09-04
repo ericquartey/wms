@@ -16,7 +16,8 @@
     <Color x:Key="ColorFerrettoLightGray">#C5C7C4</Color>
     <Color x:Key="ColorFerrettoMediumGray">#707173</Color>
     <Color x:Key="ColorFerrettoDarkGray">#293133</Color>
-    <Color x:Key="ColorFerrettoRed">#EE0011</Color>
+    <Color x:Key="ColorFerrettoRed">#DA0010</Color>
+    <Color x:Key="ColorFerrettoBlue">#3366FF</Color>
     <Color x:Key="ColorFerrettoOrange">#FF8800</Color>
     <Color x:Key="ColorFerrettoBlack">#0A0A0A</Color>
     <Color x:Key="ColorFerrettoGreen">#009933</Color>
@@ -38,6 +39,8 @@
                      Color="{StaticResource ColorFerrettoBlack}" />
     <SolidColorBrush x:Key="FerrettoGreen"
                      Color="{StaticResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="FerrettoBlue"
+                     Color="{StaticResource ColorFerrettoBlue}" />
     <SolidColorBrush x:Key="FerrettoPureWhite"
                      Color="{StaticResource ColorFerrettoPureWhite}" />
 

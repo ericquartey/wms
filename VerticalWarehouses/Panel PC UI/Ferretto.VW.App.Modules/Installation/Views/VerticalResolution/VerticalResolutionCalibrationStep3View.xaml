@@ -23,7 +23,6 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
-
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="3"
@@ -41,6 +40,14 @@
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentResolution, StringFormat={}{0:F6}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
@@ -67,6 +74,7 @@
                              VerticalAlignment="Top"
                              InputScope="Number"
                              InputText="{Binding InputMeasuredFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                             IsEnabled="{Binding CanInputFinalPosition}"
                              LabelText="{x:Static res:InstallationApp.MeasuredFinalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="4"
@@ -80,16 +88,30 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 ContentText="{Binding NewResolution, StringFormat={}{0:F6}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  IsEnabled="{Binding IsRetrievingNewResolution, Converter={StaticResource BNC}}"
-                                 ContentText="{Binding NewResolution, StringFormat={}{0:F6},TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.NewResolution}" />
+
+        <controls:PpcButton Grid.Row="6"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding AcceptCommand}"
+                            Command="{Binding ApplyCorrectionCommand}"
                             Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding MoveToInitialPositionCommand}"
+                            Content="{x:Static res:InstallationApp.MoveToInitialPosition}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
 
     </Grid>
 </ctrls:View>

@@ -32,7 +32,7 @@
         <controls:PpcLabeledText  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,140,0,0"
                                                Width="180"
                                                ContentText="1235,2"
-                                               LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
+                                               LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}"  />
 
         <controls:PpcButton      x:Name="VerticalEngineUp"
                     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,140,0,0"

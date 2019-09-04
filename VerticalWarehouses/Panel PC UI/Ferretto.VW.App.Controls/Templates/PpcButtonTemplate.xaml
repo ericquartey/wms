@@ -1,57 +1,140 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls">
+                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
+                    xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters"
+                    xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
-    <ControlTemplate x:Key="PpcButtonControlTemplate"
-                     TargetType="{x:Type controls:PpcButton}">
+    <Style x:Key="PpcButtonStyle"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:PpcButton">
+                    <ControlTemplate.Resources>
+                        <BooleanToVisibilityConverter x:Key="BTVC" />
+                        <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
+                        <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
+                        <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                                                   Invert="True" />
+                    </ControlTemplate.Resources>
 
-        <ControlTemplate.Resources>
-            <BooleanToVisibilityConverter x:Key="BTVC" />
-        </ControlTemplate.Resources>
-        <Border Name="Root_ActionButtonBorder"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
-                BorderThickness="0"
-                Cursor="Hand">
-            <Grid>
+                    <Border Name="PpcButton_Border"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Cursor="Hand"
+                            FlowDirection="LeftToRight">
+                        <Grid>
+                            <ProgressBar Height="{TemplateBinding Height}"
+                                         VerticalAlignment="Bottom"
+                                         Background="Transparent"
+                                         BorderBrush="Transparent"
+                                         Foreground="{DynamicResource PpcButtonForeground}"
+                                         IsIndeterminate="True"
+                                         Opacity="0.2"
+                                         Visibility="{TemplateBinding IsBusy,
+                                                                      Converter={StaticResource BTVC}}" />
 
-                <ProgressBar Height="{TemplateBinding Height}"
-                             VerticalAlignment="Bottom"
-                             Background="Transparent"
-                             BorderBrush="Transparent"
-                             Foreground="{DynamicResource PpcButtonForeground}"
-                             IsIndeterminate="True"
-                             Opacity="0.1"
-                             Visibility="{TemplateBinding IsBusy,
-                                                          Converter={StaticResource BTVC}}" />
-                <ContentPresenter Name="Root_ContentPresenter"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                  TextBlock.FontSize="{DynamicResource PpcButtonFontSize}"
-                                  TextBlock.Foreground="{DynamicResource PpcButtonForeground}"
-                                  TextBlock.TextAlignment="Center" />
-            </Grid>
-        </Border>
+                            <TextBlock Grid.Column="1"
+                                       Margin="10,5,10,5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap" />
 
-        <ControlTemplate.Triggers>
+                            <controls:PpcIcon Height="24"
+                                              Margin="20,5,20,5"
+                                              HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                              ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                              ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                              Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+        <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+        <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+        <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+        <Style.Triggers>
             <DataTrigger Binding="{Binding IsActive}"
                          Value="True">
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
             </DataTrigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
-                <Setter TargetName="Root_ContentPresenter" Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                <Setter Property="Cursor" Value="Hand" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                <Setter TargetName="Root_ContentPresenter" Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
             </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="PpcHeaderButtonStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="0,0,0,10" />
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Height" Value="60" />
+    </Style>
+
+    <Style x:Key="PpcButtonMachinePowerHeaderStyle"
+           BasedOn="{StaticResource PpcHeaderButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Content" Value="{x:Static res:InstallationApp.Off}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.On}" />
+
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PpcButtonDebugHeaderStyle"
+           BasedOn="{StaticResource PpcHeaderButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+    </Style>
+
+    <Style x:Key="PpcButtonMachineErrorHeaderStyle"
+           BasedOn="{StaticResource PpcHeaderButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+    </Style>
+
+    <Style x:Key="PpcButtonMachineModeHeaderStyle"
+           BasedOn="{StaticResource PpcHeaderButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+    </Style>
+
+    <Style x:Key="PpcButtonHelpHeaderStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Width" Value="60" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
+
+    </Style>
+
 </ResourceDictionary>
