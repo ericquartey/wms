@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -16,9 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IHomingMachineData machineData;
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingStateData stateData;
 
         private bool disposed;
 
@@ -26,15 +25,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingErrorState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public HomingErrorState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.homingOperation = homingOperation;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
         }
 
         #endregion
@@ -52,21 +47,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -78,13 +58,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
+                    this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -116,7 +97,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Reset Inverter Axis {this.homingOperation.AxisToCalibrate}",
+                $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
@@ -126,13 +107,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Homing,
+                                this.RequestingBay,
                                 MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -141,6 +123,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

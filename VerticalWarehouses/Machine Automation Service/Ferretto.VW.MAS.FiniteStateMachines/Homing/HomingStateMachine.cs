@@ -1,11 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
@@ -17,7 +20,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly Axis axisToCalibrate;
 
-        private readonly HomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
 
         private bool disposed;
 
@@ -26,15 +29,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         #region Constructors
 
         public HomingStateMachine(
-            Axis axixToCalibrate,
-            HomingOperation homingOperation)
-            : base(homingOperation.EventAggregator, homingOperation.Logger, homingOperation.ServiceScopeFactory)
+            Axis axisToCalibrate,
+            bool isOneKMachine,
+            BayIndex requestingBay,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
-            this.axisToCalibrate = axixToCalibrate;
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.homingOperation = homingOperation;
+            this.axisToCalibrate = axisToCalibrate;
 
-            this.CurrentState = new EmptyState(homingOperation.Logger);
+            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -71,14 +78,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 if (message.Status == MessageStatus.OperationExecuting)
                 {
-                    var notificationMessageData = new CalibrateAxisMessageData(this.homingOperation.AxisToCalibrate, this.homingOperation.NumberOfExecutedSteps + 1, this.homingOperation.MaximumSteps, MessageVerbosity.Info);
+                    var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps + 1, this.machineData.MaximumSteps, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
-                        $"{this.homingOperation.AxisToCalibrate} axis calibration executing",
+                        $"{this.machineData.AxisToCalibrate} axis calibration executing",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
-                        this.homingOperation.RequestingBay,
+                        this.RequestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -88,9 +95,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
                 if (message.Status == MessageStatus.OperationEnd)
                 {
-                    this.homingOperation.NumberOfExecutedSteps++;
-                    this.homingOperation.AxisToCalibrate =
-                        (this.homingOperation.AxisToCalibrate == Axis.Vertical) ?
+                    this.machineData.NumberOfExecutedSteps++;
+                    this.machineData.AxisToCalibrate =
+                        (this.machineData.AxisToCalibrate == Axis.Vertical) ?
                             Axis.Horizontal :
                             Axis.Vertical;
                 }
@@ -108,7 +115,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
-                        this.homingOperation.RequestingBay,
+                        this.RequestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.PublishNotificationMessage(notificationMessage);
@@ -146,28 +153,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.Logger.LogTrace("1:Method Start");
             switch (this.axisToCalibrate)
             {
-                case Axis.Both:
-                    this.homingOperation.AxisToCalibrate = Axis.Horizontal;
-                    this.homingOperation.NumberOfExecutedSteps = 0;
-                    this.homingOperation.MaximumSteps = 3;
+                case Axis.HorizontalAndVertical:
+                    this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 3;
                     break;
 
                 case Axis.Horizontal:
-                    this.homingOperation.AxisToCalibrate = Axis.Horizontal;
-                    this.homingOperation.NumberOfExecutedSteps = 0;
-                    this.homingOperation.MaximumSteps = 1;
+                    this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:
-                    this.homingOperation.AxisToCalibrate = Axis.Vertical;
-                    this.homingOperation.NumberOfExecutedSteps = 0;
-                    this.homingOperation.MaximumSteps = 1;
+                    this.machineData.AxisToCalibrate = Axis.Vertical;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
             }
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new HomingStartState(this, this.homingOperation);
+                var stateData = new HomingStateData(this, this.machineData);
+                this.CurrentState = new HomingStartState(stateData);
 
                 this.CurrentState.Start();
             }

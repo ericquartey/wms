@@ -12,12 +12,12 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App
 {
     public partial class App
     {
+
         #region Fields
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -34,6 +34,8 @@ namespace Ferretto.VW.App
         }
 
         #endregion
+
+
 
         #region Methods
 

@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 {
-    public class HomingOperation : IHomingOperation
+    public class HomingMachineData : IHomingMachineData
     {
 
         #region Fields
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         #region Constructors
 
-        public HomingOperation(
+        public HomingMachineData(
             bool isOneKMachine,
             BayIndex requestingBay,
             IEventAggregator eventAggregator,

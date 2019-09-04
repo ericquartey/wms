@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                         break;
 
-                    case Axis.Both:
+                    case Axis.HorizontalAndVertical:
                         if (receivedMessage.Destination == FieldMessageActor.IoDriver)
                         {
                             var errorNotification = new FieldNotificationMessage(

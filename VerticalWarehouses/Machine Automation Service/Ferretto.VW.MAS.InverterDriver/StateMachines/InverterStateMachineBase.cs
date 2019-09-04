@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -70,35 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #region Methods
 
-        protected virtual void Dispose(bool disposing)
-        {
-            this.Logger.LogDebug($"Disposing {this.GetType()}");
-
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"Inverter current status null",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.MachineStatusActive,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
-
-            this.disposed = true;
-        }
-
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
@@ -109,6 +79,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 MessageActor.Any,
                 MessageActor.InverterDriver,
                 MessageType.MachineStateActive,
+                BayIndex.None,
                 MessageStatus.OperationStart);
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -160,6 +131,36 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         public bool ValidateCommandResponse(InverterMessage message)
         {
             return this.CurrentState?.ValidateCommandResponse(message) ?? false;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            this.Logger.LogDebug($"Disposing {this.GetType()}");
+
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current status null",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStatusActive,
+                    BayIndex.None,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            this.disposed = true;
         }
 
         #endregion

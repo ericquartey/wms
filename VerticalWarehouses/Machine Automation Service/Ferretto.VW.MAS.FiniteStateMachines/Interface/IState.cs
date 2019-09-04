@@ -1,12 +1,20 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
     public interface IState : IDisposable
     {
+
+
         #region Properties
+
+        ILogger<FiniteStateMachines> Logger { get; }
+
+        BayIndex RequestingBay { get; }
 
         /// <summary>
         /// Get the type of state (string description).
@@ -14,6 +22,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
         string Type { get; }
 
         #endregion
+
+
 
         #region Methods
 

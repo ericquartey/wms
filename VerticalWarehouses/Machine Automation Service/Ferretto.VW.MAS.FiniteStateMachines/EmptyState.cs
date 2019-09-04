@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -11,8 +12,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Constructors
 
-        public EmptyState(ILogger logger)
-            : base(null, logger)
+        public EmptyState(ILogger<FiniteStateMachines> logger)
+            : base(null, BayIndex.None, logger)
         {
             logger.LogTrace("1:Method Start");
         }

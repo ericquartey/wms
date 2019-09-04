@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
     {
+
         #region Fields
 
         public bool[] angInverterInputs;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         //public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
 
         //public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+
+
 
         #region Properties
 
@@ -164,6 +167,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #endregion
 
+
+
         #region Methods
 
         public bool UpdateANGInverterCurrentPosition(Axis axisToMove, int position)
@@ -172,7 +177,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
             switch (axisToMove)
             {
-                case Axis.Both:
+                case Axis.HorizontalAndVertical:
                 case Axis.Vertical:
                     if (this.currentPositionAxisVertical != position)
                     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
@@ -39,6 +40,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         BayIndex GetByIoIndex(IoIndex ioIndex);
 
         Bay GetByIpAddress(IPAddress remoteIpAddress);
+
+        BayIndex GetByMovementType(IPositioningMessageData data);
+
+        InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayIndex bayIndex);
 
         List<InverterIndex> GetInverterList(BayIndex bayIndex);
 

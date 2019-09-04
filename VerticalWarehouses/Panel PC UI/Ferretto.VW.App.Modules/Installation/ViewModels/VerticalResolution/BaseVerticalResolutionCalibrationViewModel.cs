@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -14,6 +13,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public abstract class BaseVerticalResolutionCalibrationViewModel : BaseMainViewModel
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -98,6 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public IMachineResolutionCalibrationProcedureService ResolutionCalibrationService => this.resolutionCalibrationService;
 
         #endregion
+
+
 
         #region Methods
 

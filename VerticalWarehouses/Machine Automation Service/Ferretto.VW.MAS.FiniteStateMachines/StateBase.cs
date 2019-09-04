@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public abstract class StateBase : IState
     {
+
         #region Fields
 
         private bool disposed;
@@ -17,18 +19,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Constructors
 
-        public StateBase(
+        protected StateBase(
             IStateMachine parentStateMachine,
-            ILogger logger)
+            BayIndex requestingBay,
+            ILogger<FiniteStateMachines> logger)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
             this.ParentStateMachine = parentStateMachine;
-            this.Logger = logger;
-            this.Logger.LogTrace($"State '{this.GetType().Name}' initialised.");
+            this.RequestingBay = requestingBay;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.Logger.LogTrace($"State '{this.GetType().Name}' initialized.");
         }
 
         #endregion
@@ -42,15 +41,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
+
+
         #region Properties
 
-        public virtual string Type => this.GetType().ToString();
+        public ILogger<FiniteStateMachines> Logger { get; }
 
-        protected ILogger Logger { get; }
+        public BayIndex RequestingBay { get; }
+
+        public virtual string Type => this.GetType().ToString();
 
         protected IStateMachine ParentStateMachine { get; }
 
         #endregion
+
+
 
         #region Methods
 

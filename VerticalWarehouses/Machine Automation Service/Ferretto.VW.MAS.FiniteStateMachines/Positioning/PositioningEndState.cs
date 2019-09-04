@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -12,15 +11,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningEndState : StateBase
     {
+
         #region Fields
 
-        private readonly IMachineSensorsStatus machineSensorsStatus;
+        private readonly IPositioningMachineData machineData;
 
-        private readonly int numberExecutedSteps;
-
-        private readonly IPositioningMessageData positioningMessageData;
-
-        private readonly bool stopRequested;
+        private readonly IPositioningStateData stateData;
 
         private bool disposed;
 
@@ -28,19 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningEndState(
-            IStateMachine parentMachine,
-            IMachineSensorsStatus machineSensorsStatus,
-            IPositioningMessageData positioningMessageData,
-            ILogger logger,
-            int numberExecutedSteps,
-            bool stopRequested = false)
-            : base(parentMachine, logger)
+        public PositioningEndState(IPositioningStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.positioningMessageData = positioningMessageData;
-            this.machineSensorsStatus = machineSensorsStatus;
-            this.numberExecutedSteps = numberExecutedSteps;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPositioningMachineData;
         }
 
         #endregion
@@ -53,6 +41,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -84,18 +74,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
                             var notificationMessage = new NotificationMessage(
-                               this.positioningMessageData,
-                               this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                               this.machineData.MessageData,
+                               $"{this.machineData.MessageData.MovementMode} Positioning Ended",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
                                MessageType.Positioning,
+                               this.RequestingBay,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                             break;
                     }
                     break;
@@ -111,32 +102,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger?.LogTrace("1:Method Start");
 
-            lock (this.machineSensorsStatus)
+            lock (this.machineData.MachineSensorStatus)
             {
-                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+                this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
             }
 
-            if (this.stopRequested)
+            if (this.stateData.StopRequested)
             {
-                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData();
-
                 var stopMessage = new FieldCommandMessage(
-                    data,
-                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    null,
+                    $"{this.machineData.MessageData.MovementMode} Positioning Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)this.machineData.CurrentInverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
                 var notificationMessage = new NotificationMessage(
-                    this.positioningMessageData,
-                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    this.machineData.MessageData,
+                    $"{this.machineData.MessageData.MovementMode} Positioning Stopped",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
+                    this.RequestingBay,
                     MessageStatus.OperationStop);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -144,11 +133,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             else
             {
                 var notificationMessage = new NotificationMessage(
-                    this.positioningMessageData,
-                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    this.machineData.MessageData,
+                    $"{this.machineData.MessageData.MovementMode} Positioning Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
+                    this.RequestingBay,
                     MessageStatus.OperationEnd);
 
                 this.Logger.LogDebug("FSM Positioning End");

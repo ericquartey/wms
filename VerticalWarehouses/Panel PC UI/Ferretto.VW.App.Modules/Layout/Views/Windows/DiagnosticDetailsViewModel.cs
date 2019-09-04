@@ -5,12 +5,12 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class DiagnosticDetailsViewModel : BaseViewModel//, IDiagnosticDetailsViewModel
     {
+
         #region Fields
 
         private const int INVERTER_INPUTS = 64;
@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #endregion
 
+
+
         #region Properties
 
         public string CurrentMachineStatusFSM { get => this.currentMachineStatusFSM; set => this.SetProperty(ref this.currentMachineStatusFSM, value); }
@@ -75,6 +77,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public bool IsOpen { get; set; }
 
         #endregion
+
+
 
         #region Methods
 

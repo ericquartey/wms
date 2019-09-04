@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,11 +14,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingEndState : StateBase
     {
+
         #region Fields
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
 
-        private readonly bool stopRequested;
+        private readonly IHomingStateData stateData;
 
         private bool disposed;
 
@@ -27,15 +27,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingEndState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            ILogger logger,
-            bool stopRequested = false)
-            : base(parentMachine, logger)
+        public HomingEndState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.homingOperation = homingOperation;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
         }
 
         #endregion
@@ -48,6 +44,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -71,7 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                             break;
                     }
                     break;
@@ -100,36 +98,50 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.stopRequested)
+            if (this.stateData.StopRequested)
             {
-                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData();
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal)
+                {
+                    var stopMessage = new FieldCommandMessage(
+                        null,
+                        "Homing Stopped",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.InverterStop,
+                        (byte)InverterIndex.MainInverter);
 
-                var stopMessage = new FieldCommandMessage(
-                    data,
-                    "Homing Stopped",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop,
-                    (byte)InverterIndex.MainInverter);
+                    this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+                }
 
-                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+                if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+                {
+                    var stopMessage = new FieldCommandMessage(
+                        null,
+                        "Homing Stopped",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.InverterStop,
+                        (byte)InverterIndex.Slave1);
+
+                    this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+                }
             }
 
-            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.RequestingBay,
+                this.stateData.StopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (!this.stopRequested)
+            if (!this.stateData.StopRequested)
             {
                 using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                 {

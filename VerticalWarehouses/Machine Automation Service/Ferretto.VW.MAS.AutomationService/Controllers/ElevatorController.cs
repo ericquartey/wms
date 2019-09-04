@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.CommonUtils.DTOs;
-using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -15,6 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ElevatorController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
@@ -82,6 +82,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

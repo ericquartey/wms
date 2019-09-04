@@ -130,6 +130,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
+                    BayIndex.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -141,22 +142,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
 
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.pollIoTimer?.Dispose();
-                this.writeEnableEvent?.Dispose();
-            }
-
-            this.disposed = true;
-        }
 
         public void DestroyStateMachine()
         {
@@ -554,6 +539,22 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.pollIoTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         #endregion

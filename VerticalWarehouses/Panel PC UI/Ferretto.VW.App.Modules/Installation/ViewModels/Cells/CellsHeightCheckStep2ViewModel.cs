@@ -11,7 +11,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
     {
+
         #region Fields
+
+        private readonly bool isWaitingForResponse;
 
         private DelegateCommand applyCorrectionCommand;
 
@@ -24,8 +27,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isElevatorMovingDown;
 
         private bool isElevatorMovingUp;
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand moveDownCommand;
 
@@ -43,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
+
+
 
         #region Properties
 

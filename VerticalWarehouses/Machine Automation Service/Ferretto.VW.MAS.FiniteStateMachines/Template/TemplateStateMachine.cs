@@ -1,6 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Template.Models;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
@@ -19,12 +24,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(
-            ITemplateData machineData)
-            : base(machineData.EventAggregator, machineData.Logger, machineData.ServiceScopeFactory)
+            BayIndex requestingBay,
+            EventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(machineData.Logger);
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = machineData;
+            this.machineData = new TemplateData(requestingBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -41,21 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -75,12 +68,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         /// <inheritdoc/>
-        /// <inheritdoc/>
         public override void Start()
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new TemplateStartState(this, this.machineData);
+                var stateData = new TemplateStateData(this, this.machineData);
+                this.CurrentState = new TemplateStartState(stateData);
                 this.CurrentState?.Start();
             }
         }
@@ -91,6 +84,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             {
                 this.CurrentState.Stop();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -9,6 +9,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisStateMachine : InverterStateMachineBase
     {
+
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -48,6 +49,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
+
+
         #region Methods
 
         /// <inheritdoc />
@@ -57,7 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             switch (this.axisToCalibrate)
             {
-                case Axis.Both:
+                case Axis.HorizontalAndVertical:
                 case Axis.Horizontal:
                     this.currentAxis = Axis.Horizontal;
                     break;

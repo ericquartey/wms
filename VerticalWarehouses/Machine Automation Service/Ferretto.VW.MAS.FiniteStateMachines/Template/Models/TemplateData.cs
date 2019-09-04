@@ -3,6 +3,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
@@ -13,15 +14,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
 
         #region Constructors
 
-        public TemplateData(BayIndex requestingBay,
-            IEventAggregator eventAggregator,
-            ILogger<FiniteStateMachines> logger,
-            IServiceScopeFactory serviceScopeFactory)
+        public TemplateData(BayIndex requestingBay, IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IServiceScopeFactory serviceScopeFactory)
         {
             this.RequestingBay = requestingBay;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
+
+            this.Message = "Template Data";
         }
 
         #endregion
@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
         public IEventAggregator EventAggregator { get; }
 
         public ILogger<FiniteStateMachines> Logger { get; }
+
+        public string Message { get; }
 
         public BayIndex RequestingBay { get; }
 

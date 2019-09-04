@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
@@ -14,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         private readonly ITemplateData machineData;
 
-        private readonly bool stopRequested;
+        private readonly ITemplateStateData stateData;
 
         private bool disposed;
 
@@ -22,14 +21,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Constructors
 
-        public TemplateEndState(
-            IStateMachine parentMachine,
-            ITemplateData machineData,
-            bool stopRequested = false)
-            : base(parentMachine, machineData.Logger)
+        public TemplateEndState(ITemplateStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateData;
         }
 
         #endregion
@@ -46,21 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -79,17 +60,33 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Homing Completed",
+                $"Template End State Notification with {this.machineData.Message} and {this.stateData.Message}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.RequestingBay,
+                this.stateData.StopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

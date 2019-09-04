@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using Ferretto.VW.Simulator.Services;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Prism.Modularity;
@@ -11,6 +10,8 @@ namespace Ferretto.VW.Simulator
 {
     internal class Bootstrapper : UnityBootstrapper
     {
+
+
         #region Methods
 
         public void BindViewModelToView<TViewModel, TView>()

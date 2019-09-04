@@ -38,6 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver : BackgroundService
     {
+
         #region Fields
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 100;
@@ -194,6 +195,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
+
+
         #region Properties
 
         public InverterDiagnosticsData AxisIntervalTimeData { get; }
@@ -211,6 +214,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         public InverterDiagnosticsData WriteRoundtripTimeData { get; }
 
         #endregion
+
+
 
         #region Methods
 
@@ -378,6 +383,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageActor.Any,
                     MessageActor.InverterDriver,
                     MessageType.MachineStatusActive,
+                    BayIndex.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -1044,19 +1050,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterStop:
-                    if (messageData is IInverterStopFieldMessageData stopData)
-                    {
-                        var inverterStopErrorNotification = new FieldNotificationMessage(
-                       stopData,
-                       $"Inverter status not configured for requested inverter {inverterIndex}",
-                       FieldMessageActor.Any,
-                       FieldMessageActor.InverterDriver,
-                       FieldMessageType.InverterStop,
-                       MessageStatus.OperationError,
-                       (byte)inverterIndex,
-                       ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
-                    }
+                    var inverterStopErrorNotification = new FieldNotificationMessage(
+                   null,
+                   $"Inverter status not configured for requested inverter {inverterIndex}",
+                   FieldMessageActor.Any,
+                   FieldMessageActor.InverterDriver,
+                   FieldMessageType.InverterStop,
+                   MessageStatus.OperationError,
+                   (byte)inverterIndex,
+                   ErrorLevel.Critical);
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
                     break;
 
                 case FieldMessageType.InverterStatusUpdate:

@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -16,7 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Fields
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
+
+        private readonly IHomingStateData stateData;
 
         private bool disposed;
 
@@ -28,13 +29,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingCalibrateAxisDoneState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public HomingCalibrateAxisDoneState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.homingOperation = homingOperation;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
         }
 
         #endregion
@@ -51,22 +50,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -86,7 +69,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                         break;
                 }
             }
@@ -100,20 +84,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                if (this.homingOperation.NumberOfExecutedSteps == this.homingOperation.MaximumSteps)
+                if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps)
                 {
-                    this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger));
+                    this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
                 }
                 else
                 {
-                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.homingOperation, this.Logger));
+                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.stateData));
                 }
             }
         }
@@ -127,40 +112,60 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.homingOperation.AxisToCalibrate);
-            var ioCommandMessage = new FieldCommandMessage(
-                ioCommandMessageData,
-                $"Switch Axis {this.homingOperation.AxisToCalibrate}",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis,
-                (byte)IoIndex.IoDevice1);
+            if (this.machineData.IsOneKMachine)
+            {
+                this.ioSwitched = true;
+                var slaveInverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
+                var slaveInverterCommandMessage = new FieldCommandMessage(
+                    slaveInverterCommandMessageData,
+                    $"Switch Axis {this.machineData.AxisToCalibrate}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterSwitchOn,
+                    (byte)(this.machineData.AxisToCalibrate == Axis.Horizontal ? InverterIndex.Slave1 : InverterIndex.MainInverter));
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+                this.Logger.LogTrace($"5:Publishing Field Command Message {slaveInverterCommandMessage.Type} Destination {slaveInverterCommandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(slaveInverterCommandMessage);
+            }
+            else
+            {
+                var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
+                var ioCommandMessage = new FieldCommandMessage(
+                    ioCommandMessageData,
+                    $"Switch Axis {this.machineData.AxisToCalibrate}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.SwitchAxis,
+                    (byte)IoIndex.IoDevice1);
 
-            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.homingOperation.AxisToCalibrate);
-            var inverterCommandMessage = new FieldCommandMessage(
-                inverterCommandMessageData,
-                $"Switch Axis {this.homingOperation.AxisToCalibrate}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSwitchOn,
-                (byte)InverterIndex.MainInverter);
+                this.Logger.LogTrace(
+                    $"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+                var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
+                var inverterCommandMessage = new FieldCommandMessage(
+                    inverterCommandMessageData,
+                    $"Switch Axis {this.machineData.AxisToCalibrate}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterSwitchOn,
+                    (byte)InverterIndex.MainInverter);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.homingOperation.AxisToCalibrated, this.homingOperation.NumberOfExecutedSteps, this.homingOperation.MaximumSteps, MessageVerbosity.Info);
+                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+            }
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrated, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{this.homingOperation.AxisToCalibrated} axis calibration completed",
+                $"{this.machineData.AxisToCalibrated} axis calibration completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
+                this.RequestingBay,
                 MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -172,7 +177,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger, true));
+            this.stateData.StopRequested = true;
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

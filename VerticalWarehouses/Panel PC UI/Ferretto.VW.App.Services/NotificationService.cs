@@ -14,6 +14,7 @@ namespace Ferretto.VW.App.Services
 {
     internal class NotificationService : INotificationService
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -40,6 +41,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Methods
 
         private void HandlePositioningMessageData(NotificationMessageUI<PositioningMessageData> vp)
@@ -53,7 +56,7 @@ namespace Ferretto.VW.App.Services
                 var actionType = ActionType.None;
                 switch (positioningData.AxisMovement)
                 {
-                    case Axis.Both:
+                    case Axis.HorizontalAndVertical:
                         actionType = ActionType.Homing;
                         break;
 

@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
-using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
@@ -206,13 +205,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (receivedMessage.Data is IHomingMessageData data)
                 {
-                    var homingData = new HomingOperation(
+                    currentStateMachine = new HomingStateMachine(
+                        data.AxisToCalibrate,
                         this.machineConfigurationProvider.IsOneKMachine(),
                         receivedMessage.BayIndex,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
-                    currentStateMachine = new HomingStateMachine(data.AxisToCalibrate, homingData);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
                     this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
@@ -247,20 +246,28 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void ProcessPositioningMessage(CommandMessage message)
         {
-            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+            if (message.Data is IPositioningMessageData data)
             {
-                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
-            }
-            else
-            {
-                if (message.Data is IPositioningMessageData data)
+                var targetBay = this.baysProvider.GetByMovementType(data);
+                if (targetBay == BayIndex.None)
+                {
+                    targetBay = message.BayIndex;
+                }
+
+                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+                {
+                    this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                }
+                else
                 {
                     currentStateMachine = new PositioningStateMachine(
+                        message.BayIndex,
+                        targetBay,
+                        data,
                         this.machineSensorsStatus,
                         this.eventAggregator,
-                        data,
                         this.logger,
+                        this.baysProvider,
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
@@ -278,6 +285,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
                 }
+            }
+            else
+            {
+                this.SendMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
@@ -363,7 +374,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 else if (data.BayNumber > 0)
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
+                    var inverterStatus = new AglInverterStatus((byte)this.baysProvider.GetInverterList(message.BayIndex).ToArray()[this.baysProvider.BayInverterPosition]);
                     int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;

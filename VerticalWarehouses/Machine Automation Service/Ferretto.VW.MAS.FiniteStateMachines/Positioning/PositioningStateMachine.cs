@@ -1,7 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,13 +15,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStateMachine : StateMachineBase
     {
+
         #region Fields
 
-        private readonly ILogger logger;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IPositioningMachineData machineData;
 
         private bool disposed;
 
@@ -27,24 +27,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStateMachine(
+            BayIndex requestingBay,
+            BayIndex targetBay,
+            IPositioningMessageData messageData,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
-            IPositioningMessageData positioningMessageData,
-            ILogger logger,
+            ILogger<FiniteStateMachines> logger,
+            IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
-            this.logger = logger;
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.logger.LogTrace($"TargetPosition = {positioningMessageData.TargetPosition} - CurrentPosition = {positioningMessageData.CurrentPosition} - MovementType = {positioningMessageData.MovementType}");
+            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
 
-            this.CurrentState = new EmptyState(logger);
-
-            this.positioningMessageData = positioningMessageData;
-
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.machineData = new PositioningMachineData(
+                requestingBay,
+                targetBay,
+                messageData,
+                machineSensorsStatus,
+                baysProvider.GetInverterIndexByMovementType(messageData, targetBay),
+                eventAggregator,
+                logger,
+                baysProvider,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -58,11 +66,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
@@ -72,7 +82,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -82,7 +92,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -92,40 +102,40 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            bool checkConditions;
-
             //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions();
+                var checkConditions = this.CheckConditions();
+
+                var stateData = new PositioningStateData(this, this.machineData);
 
                 if (checkConditions)
                 {
-                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero && this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    if (this.machineData.MessageData.MovementMode == MovementMode.FindZero && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     {
-                        this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
+                        this.CurrentState = new PositioningEndState(stateData);
                     }
                     else
                     {
-                        this.CurrentState = new PositioningStartState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger);
+                        this.CurrentState = new PositioningStartState(stateData);
                     }
                 }
                 else
                 {
-                    this.CurrentState = new PositioningErrorState(this, this.machineSensorsStatus, this.positioningMessageData, null, this.Logger);
+                    this.CurrentState = new PositioningErrorState(stateData);
                 }
 
                 this.CurrentState?.Start();
             }
             //INFO End check the pre conditions to start the positioning
 
-            this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
@@ -152,10 +162,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && this.positioningMessageData.MovementMode == MovementMode.Position) ||
-                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
-                                    this.positioningMessageData.AxisMovement == Axis.Vertical ||
-                                    this.positioningMessageData.AxisMovement == Axis.Horizontal;
+            var checkConditions = ((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && this.machineData.MessageData.MovementMode == MovementMode.Position) ||
+                                    this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
+                                    this.machineData.MessageData.AxisMovement == Axis.Vertical ||
+                                    this.machineData.MessageData.AxisMovement == Axis.Horizontal;
 
             return checkConditions;
         }

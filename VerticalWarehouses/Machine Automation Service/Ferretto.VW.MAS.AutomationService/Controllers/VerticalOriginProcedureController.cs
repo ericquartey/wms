@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class VerticalOriginProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -62,7 +65,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.Both);
+            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical);
 
             this.PublishCommand(
                 homingData,

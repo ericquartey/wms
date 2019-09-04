@@ -374,20 +374,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                BayIndex messageByaBayIndex = BayIndex.None;
+                BayIndex messageBayBayIndex = BayIndex.None;
                 if (receivedMessage.Source is FieldMessageActor.IoDriver)
                 {
                     var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                    messageByaBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex);
+                    messageBayBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex);
                 }
 
                 if (receivedMessage.Source is FieldMessageActor.InverterDriver)
                 {
                     var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-                    messageByaBayIndex = this.baysProvider.GetByInverterIndex(messageInverterIndex);
+                    messageBayBayIndex = this.baysProvider.GetByInverterIndex(messageInverterIndex);
                 }
 
-                this.currentStateMachines.TryGetValue(messageByaBayIndex, out var messageCurrentStateMachine);
+                this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
 
                 switch (receivedMessage.Type)
                 {
@@ -414,7 +414,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
-                                    messageByaBayIndex,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
 
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -469,7 +469,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
-                                    messageByaBayIndex,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
@@ -500,7 +500,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterStatusWord,
-                            messageByaBayIndex,
+                            messageBayBayIndex,
                             MessageStatus.OperationExecuting);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                         }
@@ -520,6 +520,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.ShutterPositioning,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                             }
@@ -537,7 +538,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterException,
-                            messageByaBayIndex,
+                            messageBayBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -554,7 +555,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,
-                            messageByaBayIndex,
+                            messageBayBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);

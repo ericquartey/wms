@@ -17,9 +17,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #region Fields
 
-        private bool disposed;
-
         protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue;
+
+        private bool disposed;
 
         #endregion
 
@@ -60,31 +60,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #region Methods
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"IoDriver current state null",
-                MessageActor.Any,
-                MessageActor.IoDriver,
-                MessageType.MachineStateActive,
-                MessageStatus.OperationStart);
-
-            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
-            this.disposed = true;
-        }
-
         public void ChangeState(IIoState newState)
         {
             var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, newState.GetType().Name, MessageVerbosity.Info);
@@ -94,6 +69,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
                 MessageActor.Any,
                 MessageActor.IoDriver,
                 MessageType.MachineStateActive,
+                BayIndex.None,
                 MessageStatus.OperationStart);
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -133,6 +109,32 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         }
 
         public abstract void Start();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"IoDriver current state null",
+                MessageActor.Any,
+                MessageActor.IoDriver,
+                MessageType.MachineStateActive,
+                BayIndex.None,
+                MessageStatus.OperationStart);
+
+            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+            this.disposed = true;
+        }
 
         #endregion
     }

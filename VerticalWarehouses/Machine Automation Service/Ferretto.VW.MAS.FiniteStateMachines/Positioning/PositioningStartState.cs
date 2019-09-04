@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,9 +14,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Fields
 
-        private readonly IMachineSensorsStatus machineSensorsStatus;
+        private readonly IPositioningMachineData machineData;
 
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IPositioningStateData stateData;
 
         private bool disposed;
 
@@ -29,15 +28,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStartState(
-            IStateMachine parentMachine,
-            IMachineSensorsStatus machineSensorsStatus,
-            IPositioningMessageData positioningMessageData,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public PositioningStartState(IPositioningStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.positioningMessageData = positioningMessageData;
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPositioningMachineData;
         }
 
         #endregion
@@ -54,22 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -90,7 +69,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                         break;
                 }
             }
@@ -105,14 +85,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
+                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.stateData));
             }
         }
 
@@ -123,60 +104,73 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
-            var ioCommandMessage = new FieldCommandMessage(
-                ioCommandMessageData,
-                $"Switch Axis {this.positioningMessageData.AxisMovement}",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis,
-                (byte)IoIndex.IoDevice1);
-
-            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-
+            switch (this.machineData.MessageData.MovementMode)
             {
-                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-                var inverterMessage = new FieldCommandMessage(
-                    inverterDataMessage,
-                    "Update Inverter status word status",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer,
-                    (byte)InverterIndex.MainInverter);
-                this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+                case MovementMode.FindZero:
+                case MovementMode.Profile:
+                case MovementMode.Position:
+                    switch (this.machineData.CurrentInverterIndex)
+                    {
+                        case InverterIndex.MainInverter:
+                            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.MessageData.AxisMovement);
+                            var ioCommandMessage = new FieldCommandMessage(
+                                ioCommandMessageData,
+                                $"Switch Axis {this.machineData.MessageData.AxisMovement}",
+                                FieldMessageActor.IoDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.SwitchAxis,
+                                (byte)IoIndex.IoDevice1);
 
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+                            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+                            break;
+
+                        case InverterIndex.Slave1:
+                            this.ioSwitched = true;
+                            break;
+                    }
+                    break;
             }
 
-            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.positioningMessageData.AxisMovement);
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.MessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
-                $"Switch Axis {this.positioningMessageData.AxisMovement}",
+                $"Switch Axis {this.machineData.MessageData.AxisMovement}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn,
-                (byte)InverterIndex.MainInverter);
+                (byte)this.machineData.CurrentInverterIndex);
 
             this.Logger.LogDebug($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            lock (this.machineSensorsStatus)
-            {
-                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
-            }
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
 
-            this.positioningMessageData.ExecutedCycles = 0;
+            this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
+
+            this.machineData.MessageData.ExecutedCycles = 0;
 
             var notificationMessage = new NotificationMessage(
-                this.positioningMessageData,
-                this.positioningMessageData.NumberCycles == 0 ? $"{this.positioningMessageData.AxisMovement} Positioning Started" : "Burnishing Started",
+                this.machineData.MessageData,
+                $"{this.machineData.MessageData.MovementMode} Positioning Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
+                this.machineData.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -188,7 +182,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, 0, true));
+            this.stateData.StopRequested = true;
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

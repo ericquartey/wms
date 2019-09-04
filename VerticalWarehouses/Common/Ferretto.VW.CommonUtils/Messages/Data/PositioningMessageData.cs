@@ -6,6 +6,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData
     {
+
+
         #region Constructors
 
         public PositioningMessageData()
@@ -42,7 +44,23 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.UpperBound = upperBound;
         }
 
+        public PositioningMessageData(IPositioningMessageData other)
+        {
+            this.AxisMovement = other.AxisMovement;
+            this.MovementType = other.MovementType;
+            this.MovementMode = other.MovementMode;
+            this.TargetPosition = other.TargetPosition;
+            this.TargetSpeed = other.TargetSpeed;
+            this.TargetAcceleration = other.TargetAcceleration;
+            this.TargetDeceleration = other.TargetDeceleration;
+            this.NumberCycles = other.NumberCycles;
+            this.LowerBound = other.LowerBound;
+            this.UpperBound = other.UpperBound;
+        }
+
         #endregion
+
+
 
         #region Properties
 
@@ -75,6 +93,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         #endregion
+
+
 
         #region Methods
 

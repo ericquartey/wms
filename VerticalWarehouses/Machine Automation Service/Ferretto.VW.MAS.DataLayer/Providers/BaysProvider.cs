@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
@@ -179,6 +181,100 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             return this.dataContext.Bays
                 .SingleOrDefault(b => b.IpAddress == remoteIpAddress.ToString());
+        }
+
+        public BayIndex GetByMovementType(IPositioningMessageData data)
+        {
+            BayIndex targetBay;
+            switch (data.MovementMode)
+            {
+                case MovementMode.BeltBurnishing:
+                case MovementMode.FindZero:
+                    targetBay = BayIndex.ElevatorBay;
+                    break;
+
+                case MovementMode.Position:
+                    switch (data.AxisMovement)
+                    {
+                        case Axis.Horizontal:
+                        case Axis.Vertical:
+                        case Axis.HorizontalAndVertical:
+                            targetBay = BayIndex.ElevatorBay;
+                            break;
+
+                        default:
+                            targetBay = BayIndex.None;
+                            break;
+                    }
+
+                    break;
+
+                default:
+                    targetBay = BayIndex.None;
+                    break;
+            }
+
+            return targetBay;
+        }
+
+        public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayIndex bayIndex)
+        {
+            InverterIndex returnValue = InverterIndex.None;
+
+            switch (bayIndex)
+            {
+                case BayIndex.ElevatorBay:
+                    switch (data.MovementMode)
+                    {
+                        case MovementMode.Position:
+                            switch (data.AxisMovement)
+                            {
+                                case Axis.Horizontal:
+                                    returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                                    break;
+
+                                case Axis.Vertical:
+                                    returnValue = InverterIndex.MainInverter;
+                                    break;
+
+                                default:
+                                    throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
+                            }
+                            break;
+
+                        case MovementMode.BeltBurnishing:
+                            returnValue = InverterIndex.MainInverter;
+                            break;
+
+                        case MovementMode.FindZero:
+                        case MovementMode.Profile:
+                            returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                            break;
+
+                        default:
+                            returnValue = InverterIndex.None;
+                            break;
+                    }
+                    break;
+
+                case BayIndex.BayOne:
+                case BayIndex.BayTwo:
+                case BayIndex.BayThree:
+                    switch (data.MovementMode)
+                    {
+                        case MovementMode.TestLoop:
+                        case MovementMode.Position:
+                            returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
+                            break;
+                    }
+                    break;
+
+                default:
+                    returnValue = InverterIndex.None;
+                    break;
+            }
+
+            return returnValue;
         }
 
         public List<InverterIndex> GetInverterList(BayIndex bayIndex)
