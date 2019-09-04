@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isElevatorMovingToHeight)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ClearNotifications();
                     }
 
                     this.UpdateChanged();

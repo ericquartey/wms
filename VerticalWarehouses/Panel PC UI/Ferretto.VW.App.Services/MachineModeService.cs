@@ -214,8 +214,8 @@ namespace Ferretto.VW.App.Services
         private void ShowError(Exception ex)
         {
             this.eventAggregator
-             .GetEvent<PresentationChangedPubSubEvent>()
-             .Publish(new PresentationChangedMessage(ex));
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(ex));
         }
 
         #endregion

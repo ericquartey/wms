@@ -165,6 +165,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Cell = cell;
             }
+
+            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -295,6 +297,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP1);
+            this.ShowNextStep(true, false);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion

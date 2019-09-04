@@ -21,6 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private decimal? inputInitialPosition;
 
         private DelegateCommand startCommand;
+        private bool isOperationCompleted;
 
         #endregion
 
@@ -112,6 +113,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnNavigatedAsync();
 
             await this.GetParametersAsync();
+
+            this.ShowSteps();
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -123,8 +126,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Status == MessageStatus.OperationEnd)
             {
+                this.isOperationCompleted = true;
                 this.NavigateToNextStep();
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowAbortStep(true, true);
         }
 
         protected override void RaiseCanExecuteChanged()

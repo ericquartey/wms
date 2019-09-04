@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -84,7 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isWaitingForResponse)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ClearNotifications();
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -126,6 +127,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message => this.OnAutomationMessageReceived(message),
                     ThreadOption.UIThread,
                     false);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
         }
 
         protected abstract void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message);

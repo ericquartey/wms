@@ -6,7 +6,7 @@ using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationBack : BasePresentation
+    public class PresentationAbort : BasePresentation
     {
         #region Fields
 
@@ -16,8 +16,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Constructors
 
-        public PresentationBack(INavigationService navigationService)
-            : base(PresentationTypes.Back)
+        public PresentationAbort(INavigationService navigationService)
+            : base(PresentationTypes.Abort)
         {
             if (navigationService is null)
             {
@@ -46,22 +46,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             if (message.States != null
                 &&
-                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back
+                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation abort
                 &&
-                back.IsVisible.HasValue)
+                abort.IsVisible.HasValue)
             {
-                this.IsVisible = back.IsVisible;
-            }
-
-            if (message.States != null
-               &&
-               message.States.FirstOrDefault(s => s.Type == PresentationTypes.Abort) is Services.Presentation abort
-               &&
-               abort.IsVisible.HasValue
-               &&
-               abort.IsVisible.Value)
-            {
-                this.IsVisible = false;
+                this.IsVisible = abort.IsVisible;
             }
         }
 

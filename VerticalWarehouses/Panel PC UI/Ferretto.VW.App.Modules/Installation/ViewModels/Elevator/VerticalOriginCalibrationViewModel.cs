@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isWaitingForResponse)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ClearNotifications();
                     }
 
                     this.RaiseCanExecuteChanged();

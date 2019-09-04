@@ -188,6 +188,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnNavigatedAsync();
 
             this.RetrieveInputData();
+
+            this.ShowSteps();
+        }
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowNextStep(true, false);
+            this.ShowAbortStep(true, true);
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)

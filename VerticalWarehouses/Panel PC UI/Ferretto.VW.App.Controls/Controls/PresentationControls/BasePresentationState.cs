@@ -18,6 +18,7 @@ namespace Ferretto.VW.App.Controls
         private DelegateCommand executeCommand;
 
         private bool? isVisible;
+        private bool? isEnabled;
 
         private PresentationStates state;
 
@@ -47,6 +48,11 @@ namespace Ferretto.VW.App.Controls
         {
             get => this.isVisible;
             set => this.SetProperty(ref this.isVisible, value);
+        }
+        public bool? IsEnabled
+        {
+            get => this.isEnabled;
+            set => this.SetProperty(ref this.isEnabled, value);
         }
 
         public PresentationStates State

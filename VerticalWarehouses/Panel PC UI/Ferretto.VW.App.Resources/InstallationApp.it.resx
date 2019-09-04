@@ -932,4 +932,13 @@
   <data name="Side" xml:space="preserve">
     <value>Lato</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Succ</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Prec</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abortisci</value>
+  </data>
 </root>
