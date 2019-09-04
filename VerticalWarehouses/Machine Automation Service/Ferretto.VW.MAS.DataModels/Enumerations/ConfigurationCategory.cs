@@ -30,7 +30,7 @@
 
         PanelControl = 14L,
 
-        ShutterHeightControl = 15L,
+        ProfileHeightCheck = 15L,
 
         WeightControl = 16L,
 

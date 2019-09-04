@@ -12,7 +12,7 @@
 
         public bool Bay1Laser { get; set; }
 
-        public bool Bay1Shape { get; set; }
+        public bool Bay1Profile { get; set; }
 
         public bool Bay1Shutter { get; set; }
 
@@ -22,7 +22,7 @@
 
         public bool Bay2Laser { get; set; }
 
-        public bool Bay2Shape { get; set; }
+        public bool Bay2Profile { get; set; }
 
         public bool Bay2Shutter { get; set; }
 
@@ -32,7 +32,7 @@
 
         public bool Bay3Laser { get; set; }
 
-        public bool Bay3Shape { get; set; }
+        public bool Bay3Profile { get; set; }
 
         public bool Bay3Shutter { get; set; }
 

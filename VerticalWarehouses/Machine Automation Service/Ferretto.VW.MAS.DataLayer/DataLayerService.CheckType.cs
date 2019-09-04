@@ -395,7 +395,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        public ConfigurationDataType CheckConfigurationValueType(ShutterHeightControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(ProfileHeightCheck configurationValueEnum)
         {
             return ConfigurationDataType.Float;
         }
@@ -494,9 +494,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
                         break;
                     }
-                case ConfigurationCategory.ShutterHeightControl:
+                case ConfigurationCategory.ProfileHeightCheck:
                     {
-                        actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
+                        actualParameterType = this.CheckConfigurationValueType((ProfileHeightCheck)parameter);
                         break;
                     }
                 case ConfigurationCategory.WeightControl:

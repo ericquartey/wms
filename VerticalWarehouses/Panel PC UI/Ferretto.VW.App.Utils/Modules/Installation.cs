@@ -10,9 +10,9 @@
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
-        public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
+        public const string PROFILEHEIGHTCHECK = "ProfileHeightCheckViewModel";
 
-        public const string SHUTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
+        public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 

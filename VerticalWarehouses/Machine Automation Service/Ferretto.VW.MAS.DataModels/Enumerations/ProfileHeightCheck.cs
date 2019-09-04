@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels.Enumerations
 {
-    public enum ShutterHeightControl : long
+    public enum ProfileHeightCheck : long
     {
         Undefined = 0L,
 

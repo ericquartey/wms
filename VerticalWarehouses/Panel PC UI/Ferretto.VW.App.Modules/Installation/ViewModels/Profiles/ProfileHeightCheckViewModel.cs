@@ -18,7 +18,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterHeightControlViewModel : BaseMainViewModel, IDataErrorInfo
+    public class ProfileHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public ShutterHeightControlViewModel(
+        public ProfileHeightCheckViewModel(
             IEventAggregator eventAggregator)
             : base(PresentationMode.Installer)
         {

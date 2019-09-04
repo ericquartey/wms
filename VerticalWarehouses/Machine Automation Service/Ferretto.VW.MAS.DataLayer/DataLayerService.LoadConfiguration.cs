@@ -168,8 +168,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                                 break;
 
-                            case ConfigurationCategory.ShutterHeightControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
+                            case ConfigurationCategory.ProfileHeightCheck:
+                                if (!Enum.TryParse(jsonData.Key, false, out ProfileHeightCheck shutterHeightControlData))
                                 {
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }

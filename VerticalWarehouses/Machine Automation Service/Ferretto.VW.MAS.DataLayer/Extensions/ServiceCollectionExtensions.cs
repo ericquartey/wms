@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupNetworkDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IProfileHeightCheckDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)

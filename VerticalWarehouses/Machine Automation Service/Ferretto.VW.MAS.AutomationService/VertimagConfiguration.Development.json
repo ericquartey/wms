@@ -160,7 +160,7 @@
   "PanelControl": {
     "FeedRate": 0.20
   },
-  "ShutterHeightControl": {
+  "ProfileHeightCheck": {
     "FeedRate": 0.10
   },
   "WeightControl": {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190902122658_initial")]
+    [Migration("20190904102050_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -213,10 +213,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 1,
                             Code = "01001",
-                            GrossWeight = 364m,
-                            Height = 249m,
+                            GrossWeight = 319m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 7,
+                            MissionsCount = 27,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -224,10 +224,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 2,
                             Code = "01002",
-                            GrossWeight = 307m,
-                            Height = 50m,
+                            GrossWeight = 377m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 46,
+                            MissionsCount = 39,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -235,10 +235,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 3,
                             Code = "01003",
-                            GrossWeight = 310m,
-                            Height = 293m,
+                            GrossWeight = 254m,
+                            Height = 150m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 21,
+                            MissionsCount = 32,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -246,10 +246,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 4,
                             Code = "01004",
-                            GrossWeight = 315m,
-                            Height = 272m,
+                            GrossWeight = 209m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 28,
+                            MissionsCount = 27,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -257,10 +257,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 5,
                             Code = "01005",
-                            GrossWeight = 265m,
+                            GrossWeight = 233m,
                             Height = 150m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 45,
+                            MissionsCount = 12,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -268,10 +268,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 6,
                             Code = "01006",
-                            GrossWeight = 345m,
-                            Height = 56m,
+                            GrossWeight = 303m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 2,
+                            MissionsCount = 17,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -279,85 +279,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 7,
                             Code = "01007",
-                            GrossWeight = 329m,
-                            Height = 242m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 44,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = "01008",
-                            GrossWeight = 248m,
-                            Height = 290m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 7,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Code = "01009",
-                            GrossWeight = 236m,
-                            Height = 182m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 16,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Code = "01010",
-                            GrossWeight = 221m,
-                            Height = 261m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 33,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Code = "01011",
-                            GrossWeight = 376m,
-                            Height = 217m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 46,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Code = "01012",
-                            GrossWeight = 334m,
-                            Height = 137m,
-                            MaxNetWeight = 750m,
-                            MissionsCount = 6,
-                            Status = 3L,
-                            Tare = 65m
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Code = "01013",
-                            GrossWeight = 293m,
-                            Height = 218m,
-                            MaxNetWeight = 750m,
-                            MissionsCount = 17,
-                            Status = 3L,
-                            Tare = 65m
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Code = "01014",
-                            GrossWeight = 246m,
-                            Height = 138m,
+                            GrossWeight = 281m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
                             MissionsCount = 43,
                             Status = 3L,
@@ -365,12 +288,89 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 15,
-                            Code = "01015",
-                            GrossWeight = 360m,
-                            Height = 201m,
+                            Id = 8,
+                            Code = "01008",
+                            GrossWeight = 358m,
+                            Height = 150m,
+                            MaxNetWeight = 500m,
+                            MissionsCount = 47,
+                            Status = 3L,
+                            Tare = 50m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Code = "01009",
+                            GrossWeight = 232m,
+                            Height = 150m,
                             MaxNetWeight = 500m,
                             MissionsCount = 21,
+                            Status = 3L,
+                            Tare = 50m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Code = "01010",
+                            GrossWeight = 263m,
+                            Height = 150m,
+                            MaxNetWeight = 500m,
+                            MissionsCount = 49,
+                            Status = 3L,
+                            Tare = 50m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Code = "01011",
+                            GrossWeight = 273m,
+                            Height = 150m,
+                            MaxNetWeight = 500m,
+                            MissionsCount = 8,
+                            Status = 3L,
+                            Tare = 50m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Code = "01012",
+                            GrossWeight = 254m,
+                            Height = 150m,
+                            MaxNetWeight = 750m,
+                            MissionsCount = 20,
+                            Status = 3L,
+                            Tare = 65m
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Code = "01013",
+                            GrossWeight = 241m,
+                            Height = 150m,
+                            MaxNetWeight = 750m,
+                            MissionsCount = 28,
+                            Status = 3L,
+                            Tare = 65m
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Code = "01014",
+                            GrossWeight = 240m,
+                            Height = 150m,
+                            MaxNetWeight = 500m,
+                            MissionsCount = 12,
+                            Status = 3L,
+                            Tare = 50m
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Code = "01015",
+                            GrossWeight = 366m,
+                            Height = 150m,
+                            MaxNetWeight = 500m,
+                            MissionsCount = 30,
                             Status = 3L,
                             Tare = 50m
                         });
@@ -489,7 +489,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 2, 14, 26, 57, 777, DateTimeKind.Local).AddTicks(5244),
+                            InstallationDate = new DateTime(2016, 11, 4, 12, 20, 50, 86, DateTimeKind.Local).AddTicks(8248),
                             ServiceStatus = 86
                         });
                 });
@@ -507,7 +507,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Laser");
 
-                    b.Property<bool>("Bay1Shape");
+                    b.Property<bool>("Bay1Profile");
 
                     b.Property<bool>("Bay1Shutter");
 
@@ -517,7 +517,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay2Laser");
 
-                    b.Property<bool>("Bay2Shape");
+                    b.Property<bool>("Bay2Profile");
 
                     b.Property<bool>("Bay2Shutter");
 
@@ -527,7 +527,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay3Laser");
 
-                    b.Property<bool>("Bay3Shape");
+                    b.Property<bool>("Bay3Profile");
 
                     b.Property<bool>("Bay3Shutter");
 
@@ -559,17 +559,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1Check = false,
                             Bay1FirstLoadingUnit = false,
                             Bay1Laser = false,
-                            Bay1Shape = false,
+                            Bay1Profile = false,
                             Bay1Shutter = false,
                             Bay2Check = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2Laser = false,
-                            Bay2Shape = false,
+                            Bay2Profile = false,
                             Bay2Shutter = false,
                             Bay3Check = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3Laser = false,
-                            Bay3Shape = false,
+                            Bay3Profile = false,
                             Bay3Shutter = false,
                             BeltBurnishing = false,
                             CellsHeightCheck = false,
