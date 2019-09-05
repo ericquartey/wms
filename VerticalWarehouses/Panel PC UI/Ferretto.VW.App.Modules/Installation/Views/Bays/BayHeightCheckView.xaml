@@ -29,7 +29,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BayControlHeader}" />
+                   Text="{x:Static res:InstallationApp.BayHeightCheck}" />
 
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BayControlPosition1}"
+                   Text="{x:Static res:InstallationApp.BayHeightCheckPosition1}"
                    Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVIC}}" />
 
         <StackPanel Grid.Row="1"
@@ -47,11 +47,11 @@
                     Orientation="Horizontal"
                     Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVC}}">
             <ctrls:PpcButton Command="{Binding ChangeBayPosition1Command}"
-                             Content="{x:Static res:InstallationApp.BayControlPosition1}" />
+                             Content="{x:Static res:InstallationApp.BayHeightCheckPosition1}" />
 
             <ctrls:PpcButton Margin="50,0,0,0"
                              Command="{Binding ChangeBayPosition2Command}"
-                             Content="{x:Static res:InstallationApp.BayControlPosition2}" />
+                             Content="{x:Static res:InstallationApp.BayHeightCheckPosition2}" />
 
         </StackPanel>
 
@@ -64,12 +64,12 @@
             </Grid.ColumnDefinitions>
             <ctrls:PpcLabeledText VerticalAlignment="Center"
                                   ContentText="{Binding PositionHeight}"
-                                  LabelText="{x:Static res:InstallationApp.BayControlPositionHeight}" />
+                                  LabelText="{x:Static res:InstallationApp.BayHeight}" />
 
             <ctrls:PpcButton Grid.Column="1"
                              Margin="0,20,0,0"
                              Command="{Binding MoveToBayHeightCommand}"
-                             Content="{x:Static res:InstallationApp.BayControlMoveToPosition}"
+                             Content="{x:Static res:InstallationApp.MoveToPosition}"
                              IsBusy="{Binding IsElevatorMovingToHeight}" />
 
         </Grid>
@@ -83,18 +83,18 @@
             </Grid.ColumnDefinitions>
             <ctrls:PpcTextBox VerticalAlignment="Center"
                               InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
-                              LabelText="{x:Static res:InstallationApp.BayControlStepValue}" />
+                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
             <StackPanel Grid.Column="1"
                         Orientation="Vertical">
                 <ctrls:PpcButton Margin="0,20,0,0"
                                  Command="{Binding MoveUpCommand}"
-                                 Content="{x:Static res:InstallationApp.BayControlStepPiu}"
+                                 Content="{x:Static res:InstallationApp.Up}"
                                  IsBusy="{Binding IsElevatorMovingUp}" />
 
                 <ctrls:PpcButton Margin="0,20,0,0"
                                  Command="{Binding MoveDownCommand}"
-                                 Content="{x:Static res:InstallationApp.BayControlStepMeno}"
+                                 Content="{x:Static res:InstallationApp.Down}"
                                  IsBusy="{Binding IsElevatorMovingDown}" />
             </StackPanel>
 
@@ -109,14 +109,14 @@
             </Grid.ColumnDefinitions>
             <ctrls:PpcLabeledText VerticalAlignment="Center"
                                   ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  LabelText="{x:Static res:InstallationApp.BayControlActualHeight}" />
+                                  LabelText="{x:Static res:InstallationApp.BayHeightCheckActualHeight}" />
 
             <ctrls:PpcButton Name="SaveHeight"
                              Grid.Column="1"
                              Margin="0,0,0,0"
                              VerticalAlignment="Center"
                              Command="{Binding SaveHeightCorrectionCommand}"
-                             Content="{x:Static res:InstallationApp.BayControlAdjust}" />
+                             Content="{x:Static res:InstallationApp.ApplyCorrection}" />
         </Grid>
 
     </Grid>

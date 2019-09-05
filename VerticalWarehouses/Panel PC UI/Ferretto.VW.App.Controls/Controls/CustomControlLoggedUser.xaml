@@ -12,22 +12,11 @@
     <Grid Name="LayoutRoot">
         <controls:PpcButton x:Name="ButtonRoot"
                             Height="60"
-                            VerticalContentAlignment="Center"
                             Background="Transparent"
                             Command="{Binding ExecuteCommand}"
-                            FontSize="{DynamicResource PpcButtonFontSize}"
-                            Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
-                            IsActive="{Binding IsPopupOpen}">
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="10,0,10,0"
-                           Text="{Binding UserName}" />
-                <controls:PpcIcon Height="24"
-                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                  Source="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png" />
-            </StackPanel>
-
-        </controls:PpcButton>
+                            Content="{Binding UserName}"
+                            ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"
+                            IsActive="{Binding IsPopupOpen}" />
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                Margin="0,20"
@@ -35,21 +24,15 @@
                AllowsTransparency="True"
                IsOpen="{Binding IsPopupOpen}"
                PlacementTarget="{Binding ElementName=ButtonRoot}">
-            <StackPanel Background="{DynamicResource VWAPP_BACKGROUND}">
+            <StackPanel>
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-                                    Height="60"
                                     Command="{Binding ToggleThemeCommand}"
-                                    Content="Theme"
-                                    FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
-                                    Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}" />
+                                    Content="Cambia Tema" />
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-                                    Height="60"
                                     Command="{Binding LogOutCommand}"
-                                    Content="{x:Static res:InstallationApp.LogOff}"
-                                    FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
-                                    Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}" />
+                                    Content="{x:Static res:InstallationApp.LogOff}" />
             </StackPanel>
         </Popup>
     </Grid>

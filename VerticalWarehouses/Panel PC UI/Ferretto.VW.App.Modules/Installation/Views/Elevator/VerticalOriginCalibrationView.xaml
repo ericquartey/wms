@@ -44,7 +44,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPosition, FallbackValue='999,99'}"
-                                 LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"

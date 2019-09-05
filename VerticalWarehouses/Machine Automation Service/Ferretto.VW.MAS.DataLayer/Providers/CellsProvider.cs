@@ -4,6 +4,7 @@ using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
 
@@ -15,18 +16,26 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<CellsProvider> logger;
+
         #endregion
 
         #region Constructors
 
-        public CellsProvider(DataLayerContext dataContext)
+        public CellsProvider(DataLayerContext dataContext, ILogger<CellsProvider> logger)
         {
             if (dataContext is null)
             {
                 throw new ArgumentNullException(nameof(dataContext));
             }
 
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.dataContext = dataContext;
+            this.logger = logger;
         }
 
         #endregion
@@ -80,9 +89,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return;
             }
 
+            this.logger.LogInformation("Importing cell definitions from configuration file ...");
+
             using (var jsonFile = new JSchemaValidatingReader(new JsonTextReader(new System.IO.StreamReader(fileNamePath))))
             {
-                jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("cells-configuration.schema.json")));
+                jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("configuration/schemas/cells-schema.json")));
                 while (jsonFile.Read())
                 {
                     if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)

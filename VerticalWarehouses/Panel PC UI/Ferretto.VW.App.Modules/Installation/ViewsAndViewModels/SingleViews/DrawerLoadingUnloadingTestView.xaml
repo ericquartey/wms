@@ -46,7 +46,7 @@
         <controls:PpcButton Margin="640,120,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.BayControlMoveToPosition}" />
+                            Content="{x:Static res:InstallationApp.MoveToPosition}" />
 
         <controls:PpcButton Margin="420,510,0,0"
                             HorizontalAlignment="Left"
@@ -58,17 +58,11 @@
                             VerticalAlignment="Top"
                             Content="{x:Static res:InstallationApp.DLUTestStart}" />
 
-        <controls:PpcTextBox Margin="200,120,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}" />
-
         <controls:PpcTextBox Margin="420,120,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}" />
+                             LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
 
     </Grid>
 </UserControl>

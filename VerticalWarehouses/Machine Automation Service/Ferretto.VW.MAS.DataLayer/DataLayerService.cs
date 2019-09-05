@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.DataLayerInitialize();
+            await this.InitializeAsync();
 
             await base.StartAsync(cancellationToken);
         }
@@ -121,11 +121,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return Task.CompletedTask;
         }
 
-        private void DataLayerInitialize()
+        private async Task ApplyMigrationsAsync()
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            try
             {
-                try
+                using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var redundancyService = scope.ServiceProvider
                         .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
@@ -134,38 +134,53 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
-                        var pendingMigrationsCount = activeDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to active database ...");
-                            activeDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
+                            await activeDbContext.Database.MigrateAsync();
                         }
                     }
 
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
-                        var pendingMigrationsCount = standbyDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to standby database ...");
-                            standbyDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
+                            await standbyDbContext.Database.MigrateAsync();
                         }
                     }
 
                     redundancyService.IsEnabled = true;
                 }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while migating databases.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
-                    return;
-                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Error while migating databases.");
+                this.SendErrorMessage(new DLExceptionMessageData(ex));
+            }
+        }
 
+        private async Task InitializeAsync()
+        {
+            await this.ApplyMigrationsAsync();
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
                 var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
                 try
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
+
+                    scope.ServiceProvider
+                        .GetRequiredService<ICellsProvider>()
+                        .LoadFrom(configuration.GetCellsConfigurationFile());
+
+                    await scope.ServiceProvider
+                       .GetRequiredService<ILoadingUnitsProvider>()
+                       .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
                 }
                 catch (Exception ex)
                 {
@@ -173,37 +188,22 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.SendErrorMessage(new DLExceptionMessageData(ex));
                     return;
                 }
-
-                try
-                {
-                    this.Logger.LogInformation("Loading cells from configuration file ...");
-
-                    scope.ServiceProvider
-                        .GetRequiredService<ICellsProvider>()
-                        .LoadFrom(configuration.GetCellsConfigurationFile());
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while loading cells.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
-                    return;
-                }
-
-                this.IsReady = true;
-
-                var message = new NotificationMessage(
-                    null,
-                    "DataLayer initialization complete.",
-                    MessageActor.Any,
-                    MessageActor.DataLayer,
-                    MessageType.DataLayerReady);
-
-                this.EventAggregator
-                    .GetEvent<NotificationEvent>()
-                    .Publish(message);
-
-                this.Logger.LogDebug("Data layer service initialized.");
             }
+
+            this.IsReady = true;
+
+            var message = new NotificationMessage(
+                null,
+                "DataLayer initialization complete.",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DataLayerReady);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
+
+            this.Logger.LogDebug("Data layer service initialized.");
         }
 
         private void SendErrorMessage(IMessageData data)

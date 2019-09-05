@@ -61,7 +61,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 case GeneralInfo.Shutter1Type:
                 case GeneralInfo.Shutter2Type:
                 case GeneralInfo.Shutter3Type:
-                case GeneralInfo.DrawersQuantity:
                 case GeneralInfo.BaysQuantity:
                 case GeneralInfo.Barrier1Height:
                 case GeneralInfo.Barrier2Height:

@@ -10,6 +10,8 @@
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
+        public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
+
         public const string PROFILEHEIGHTCHECK = "ProfileHeightCheckViewModel";
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";

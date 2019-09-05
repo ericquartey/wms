@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
 
+            containerRegistry.RegisterForNavigation<SemiAutoMovementsView>();
+
             containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
             containerRegistry.RegisterForNavigation<HorizontalEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<ManualMovementsNavigationView>();
