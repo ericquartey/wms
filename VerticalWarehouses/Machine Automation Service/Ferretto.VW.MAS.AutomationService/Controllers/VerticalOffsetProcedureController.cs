@@ -135,7 +135,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var maxSpeed = this.verticalAxis.MaxEmptySpeed;
             var feedRate = this.offsetCalibration.FeedRateOC;
 
-            var speed = maxSpeed * feedRate;
+            decimal[] speed = { maxSpeed * feedRate };
+            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -143,12 +146,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MovementMode.Position,
                 displacement,
                 speed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                 messageData,

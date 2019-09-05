@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             Axis axisMovement,
             MovementType movementType,
             decimal target,
-            decimal speed,
-            decimal acceleration,
-            decimal deceleration,
+            decimal[] speed,
+            decimal[] acceleration,
+            decimal[] deceleration,
             int numberCycles,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = messageData.TargetSpeed;
             this.TargetAcceleration = messageData.TargetAcceleration;
             this.TargetDeceleration = messageData.TargetDeceleration;
+            this.Direction = messageData.Direction;
         }
 
         #endregion
@@ -52,17 +53,21 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis AxisMovement { get; set; }
 
+        public int Direction { get; set; }
+
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
 
-        public decimal TargetAcceleration { get; set; }
+        public decimal[] SwitchPosition { get; set; }
 
-        public decimal TargetDeceleration { get; set; }
+        public decimal[] TargetAcceleration { get; set; }
+
+        public decimal[] TargetDeceleration { get; set; }
 
         public decimal TargetPosition { get; set; }
 
-        public decimal TargetSpeed { get; set; }
+        public decimal[] TargetSpeed { get; set; }
 
         #endregion
 

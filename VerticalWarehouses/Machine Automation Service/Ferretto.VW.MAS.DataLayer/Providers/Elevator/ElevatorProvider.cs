@@ -183,7 +183,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var speed = this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM;
+            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM };
+            decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -191,12 +194,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MovementMode.Position,
                 targetPosition,
                 speed,
-                this.horizontalAxisDataLayer.MaxEmptyAccelerationHA,
-                this.horizontalAxisDataLayer.MaxEmptyDecelerationHA,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                 messageData,
@@ -226,7 +230,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             var feedRate = this.GetFeedRate(feedRateCategory);
 
-            var speed = this.verticalAxisDataLayer.MaxEmptySpeed * feedRate;
+            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * feedRate };
+            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -234,12 +241,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MovementMode.Position,
                 targetPosition,
                 speed,
-                this.verticalAxisDataLayer.MaxEmptyAcceleration,
-                this.verticalAxisDataLayer.MaxEmptyDeceleration,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                 messageData,
@@ -275,7 +283,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     : -this.verticalManualMovementsDataLayer.NegativeTargetDirection;
             }
 
-            var speed = this.verticalAxisDataLayer.MaxEmptySpeed * feedRate;
+            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * feedRate };
+            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -283,12 +294,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MovementMode.Position,
                 targetPosition,
                 speed,
-                this.verticalAxisDataLayer.MaxEmptyAcceleration,
-                this.verticalAxisDataLayer.MaxEmptyDeceleration,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                 messageData,
@@ -312,7 +324,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            var speed = this.verticalAxisDataLayer.MaxEmptySpeed * this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * this.verticalManualMovementsDataLayer.FeedRateAfterZero };
+            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -320,12 +335,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MovementMode.Position,
                 distance,
                 speed,
-                this.verticalAxisDataLayer.MaxEmptyAcceleration,
-                this.verticalAxisDataLayer.MaxEmptyDeceleration,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                 messageData,

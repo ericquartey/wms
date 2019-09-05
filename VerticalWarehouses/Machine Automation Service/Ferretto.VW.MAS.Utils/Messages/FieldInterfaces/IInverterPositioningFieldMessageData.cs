@@ -8,17 +8,23 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         Axis AxisMovement { get; set; }
 
+        int Direction { get; set; }
+
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }
 
-        int TargetAcceleration { get; set; }
+        bool RefreshAll { get; }
 
-        int TargetDeceleration { get; set; }
+        int[] SwitchPosition { get; set; }
+
+        int[] TargetAcceleration { get; set; }
+
+        int[] TargetDeceleration { get; set; }
 
         int TargetPosition { get; set; }
 
-        int TargetSpeed { get; set; }
+        int[] TargetSpeed { get; set; }
 
         #endregion
     }

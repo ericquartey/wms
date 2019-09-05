@@ -796,17 +796,20 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
 
-                        var targetAcceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
-                        var targetDeceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
+                        int[] targetAcceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[0], configurationCategory) };
+                        int[] targetDeceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[0], configurationCategory) };
                         var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-                        var targetSpeed = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
+                        int[] targetSpeed = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[0], configurationCategory) };
+                        int[] switchPosition = { 0 };
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
                             positioningData,
                             targetAcceleration,
                             targetDeceleration,
                             targetPosition,
-                            targetSpeed);
+                            targetSpeed,
+                            switchPosition,
+                            false);
 
                         if (inverterStatus is AngInverterStatus currentStatus)
                         {
