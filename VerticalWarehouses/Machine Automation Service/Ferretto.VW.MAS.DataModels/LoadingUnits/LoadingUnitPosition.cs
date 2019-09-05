@@ -6,7 +6,7 @@
 
         public decimal LoadingUnitCoord { get; set; }
 
-        public CellSide LoadingUnitSide { get; set; }
+        public WarehouseSide LoadingUnitSide { get; set; }
 
         #endregion
     }

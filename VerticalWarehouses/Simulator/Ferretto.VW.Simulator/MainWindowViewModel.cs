@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using Prism.Commands;
-using Prism.Events;
-using Prism.Modularity;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.Simulator
 {
@@ -17,8 +12,6 @@ namespace Ferretto.VW.Simulator
         #region Fields
 
         private readonly IThemeService themeService;
-
-        private IUnityContainer container;
 
         private string errorMessage;
 
@@ -93,12 +86,6 @@ namespace Ferretto.VW.Simulator
 
         #region Methods
 
-        public Task InitializeViewModelAsync(IUnityContainer container)
-        {
-            this.container = container;
-
-            return Task.CompletedTask;
-        }
 
         private void ToggleTheme()
         {

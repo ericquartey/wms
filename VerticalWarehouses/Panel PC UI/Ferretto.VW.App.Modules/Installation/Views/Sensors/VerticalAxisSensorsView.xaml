@@ -1,0 +1,68 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.VerticalAxisSensorsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="0,30,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:SensorsNavigationView />
+
+        <Grid Grid.Column="1"
+              Margin="130,0,130,10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.VerticalAxis}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ExtraRunElevator}"
+                                           Text="{x:Static res:InstallationApp.EmergencyEndRun}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroVerticalSensor}"
+                                           Text="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ElevatorEngineSelectedBay1}"
+                                           Text="{x:Static res:InstallationApp.ElevatorEngineSelected}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.CradleEngineSelectedBay1}"
+                                           Text="{x:Static res:InstallationApp.CradleEngineSelected}" />
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Cradle}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensor}"
+                                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInMachineSideBay1}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInOperatorSideBay1}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ctrls:View>

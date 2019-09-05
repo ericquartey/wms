@@ -36,8 +36,6 @@
 
         MaxGrossWeight = 16L,
 
-        DrawersQuantity = 17L,
-
         BaysQuantity = 18L,
 
         Bay1Type = 19L,
@@ -99,5 +97,7 @@
         MaxAcceptedBai2Height = 47L,
 
         MaxAcceptedBai3Height = 48L,
+
+        MaxDrawerGrossWeight = 49L,
     }
 }

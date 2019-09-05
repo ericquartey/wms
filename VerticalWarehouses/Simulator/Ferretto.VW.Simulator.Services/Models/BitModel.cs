@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
@@ -12,9 +7,11 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         #region Fields
 
-        private string description;
+        private string name;
 
         private bool value;
+
+        private string description;
 
         #endregion
 
@@ -29,8 +26,9 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.Value = value;
         }
 
-        public BitModel(string description, bool value) : this(value)
+        public BitModel(string name, bool value, string description = "") : this(value)
         {
+            this.Name = name;
             this.Description = description;
         }
 
@@ -38,16 +36,23 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
+        public string Name
+        {
+            get => this.name;
+            set => this.SetProperty(ref this.name, value);
+        }
+
         public string Description
         {
             get => this.description;
-            set => this.SetProperty(ref this.description, value, () => this.RaisePropertyChanged(nameof(this.Description)));
+            set => this.SetProperty(ref this.description, value);
         }
+
 
         public bool Value
         {
             get => this.value;
-            set => this.SetProperty(ref this.value, value, () => this.RaisePropertyChanged(nameof(this.Value)));
+            set => this.SetProperty(ref this.value, value);
         }
 
         #endregion

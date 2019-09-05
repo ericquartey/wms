@@ -1,55 +1,51 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panel PC UI", "Panel PC UI", "{F1C06ED8-17DC-48AE-9D64-B18455CA3231}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.FiniteStateMachines", "Machine Automation Service\MAS_FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.FiniteStateMachines", "Machine Automation Service\Ferretto.VW.MAS.FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver", "Machine Automation Service\MAS_InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.IODriver", "Machine Automation Service\MAS_IODriver\Ferretto.VW.MAS.IODriver.csproj", "{AD15351E-AF2E-414A-9A70-96A943FEA55F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.IODriver", "Machine Automation Service\Ferretto.VW.MAS.IODriver\Ferretto.VW.MAS.IODriver.csproj", "{AD15351E-AF2E-414A-9A70-96A943FEA55F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DataLayer", "Machine Automation Service\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj", "{EA441495-D8F4-48B0-84CB-A5250DE7AB92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DataLayer", "Machine Automation Service\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj", "{EA441495-D8F4-48B0-84CB-A5250DE7AB92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService", "Machine Automation Service\MAS_AutomationService\Ferretto.VW.MAS.AutomationService.csproj", "{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService", "Machine Automation Service\Ferretto.VW.MAS.AutomationService\Ferretto.VW.MAS.AutomationService.csproj", "{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Resources", "Common\Resources\Ferretto.VW.App.Resources.csproj", "{8231F83A-40F0-49A8-A4CF-2F582D957350}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Resources", "Panel PC UI\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj", "{8231F83A-40F0-49A8-A4CF-2F582D957350}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.CommonUtils", "Common\Common_Utils\Ferretto.VW.CommonUtils.csproj", "{A0095F7D-7CC6-4E7F-9695-8645EAD02E37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.CommonUtils", "Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj", "{A0095F7D-7CC6-4E7F-9695-8645EAD02E37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionsManager", "Machine Automation Service\MAS_MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionsManager", "Machine Automation Service\Ferretto.VW.MAS.MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", "Panel PC UI\CustomControls\Ferretto.VW.App.Controls.csproj", "{2F45ED0E-31CB-4115-8F27-6EC0B17876B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", "Panel PC UI\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj", "{2F45ED0E-31CB-4115-8F27-6EC0B17876B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Installation", "Panel PC UI\InstallationApp\Ferretto.VW.App.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\VWApp\Ferretto.VW.App.csproj", "{BBB70951-5692-44F2-BD04-C1E150D970FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Installation", "Panel PC UI\Ferretto.VW.App.Modules\Installation\Ferretto.VW.App.Modules.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
 	ProjectSection(ProjectDependencies) = postProject
-		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275} = {DF20E4C3-CFC8-4517-9ECE-788EA86A2275}
+		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {D81C6B47-11EC-4B7D-B087-F580639106C3}
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Utils", "Panel PC UI\Utils\Ferretto.VW.Utils.csproj", "{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Utils", "Panel PC UI\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj", "{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Operator", "Panel PC UI\Ferretto.VW.OperatorApp\Ferretto.VW.App.Operator.csproj", "{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Logging.SQLiteTarget", "Common\Ferretto.VW.Common.Logging.SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Logging.SQLiteTarget", "Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Contracts", "Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj", "{6A1B4468-5DF1-48ED-8887-E1A5A1814056}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Contracts", "Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj", "{6A1B4468-5DF1-48ED-8887-E1A5A1814056}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Services", "Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj", "{592A747E-A69F-440A-BE35-19995FB06DCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Services", "Panel PC UI\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj", "{592A747E-A69F-440A-BE35-19995FB06DCF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DataModels", "Machine Automation Service\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj", "{164C8A20-CBA3-418F-A314-2DA98CB88447}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Hubs", "Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj", "{0F6CE2F7-5020-4B04-A627-1A206EE59192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Hubs", "Machine Automation Service\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj", "{0F6CE2F7-5020-4B04-A627-1A206EE59192}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulator", "Simulator", "{ACF72AC0-729C-4322-8CD1-53CF4D1F9853}"
 EndProject
@@ -62,6 +58,28 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Simulator.Controls", "Simulator\Ferretto.VW.Simulator.Controls\Ferretto.VW.Simulator.Controls.csproj", "{6685DA9B-F355-4BCB-8A45-22C95BE7F0C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Simulator", "Simulator\Ferretto.VW.Simulator\Ferretto.VW.Simulator.csproj", "{382DAD4F-C470-474E-9C0A-8FA9AA3131A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\Ferretto.VW.App\Ferretto.VW.App.csproj", "{14C716B7-67C9-40B1-8BC2-139B8CE16F02}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {ED8D9E03-C5C4-4319-8207-122DA6C2D043}
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
+		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{A938B514-3F27-4483-AF63-2F13A3ACBBA0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Layout", "Panel PC UI\Ferretto.VW.App.Modules\Layout\Ferretto.VW.App.Modules.Layout.csproj", "{68CFD192-D446-42A8-B8C8-44EDD7F357CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Login", "Panel PC UI\Ferretto.VW.App.Modules\Login\Ferretto.VW.App.Modules.Login.csproj", "{ED8D9E03-C5C4-4319-8207-122DA6C2D043}"
+	ProjectSection(ProjectDependencies) = postProject
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Themes", "Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj", "{E9153A64-A20D-4AA8-B2CC-49CADE123412}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Errors", "Panel PC UI\Ferretto.VW.App.Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj", "{D81C6B47-11EC-4B7D-B087-F580639106C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.MAS.Resources", "Machine Automation Service\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj", "{96D3417B-1043-4F63-85D1-073561F098E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,24 +274,6 @@ Global
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56}.Release|x64.Build.0 = Release|Any CPU
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56}.Release|x86.ActiveCfg = Release|Any CPU
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56}.Release|x86.Build.0 = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|x64.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Debug|x86.Build.0 = Debug|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|x64.ActiveCfg = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|x64.Build.0 = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|x86.ActiveCfg = Release|Any CPU
-		{BBB70951-5692-44F2-BD04-C1E150D970FD}.Release|x86.Build.0 = Release|Any CPU
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
@@ -310,24 +310,6 @@ Global
 		{73086AC9-1316-4FFC-AA5D-0A50C132456A}.Release|x64.Build.0 = Release|Any CPU
 		{73086AC9-1316-4FFC-AA5D-0A50C132456A}.Release|x86.ActiveCfg = Release|Any CPU
 		{73086AC9-1316-4FFC-AA5D-0A50C132456A}.Release|x86.Build.0 = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|x64.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Debug|x86.Build.0 = Debug|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|x64.ActiveCfg = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|x64.Build.0 = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|x86.ActiveCfg = Release|Any CPU
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}.Release|x86.Build.0 = Release|Any CPU
 		{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
 		{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
@@ -508,6 +490,114 @@ Global
 		{382DAD4F-C470-474E-9C0A-8FA9AA3131A6}.Release|x64.Build.0 = Release|Any CPU
 		{382DAD4F-C470-474E-9C0A-8FA9AA3131A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{382DAD4F-C470-474E-9C0A-8FA9AA3131A6}.Release|x86.Build.0 = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|x64.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Debug|x86.Build.0 = Debug|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|x64.ActiveCfg = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|x64.Build.0 = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|x86.ActiveCfg = Release|Any CPU
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02}.Release|x86.Build.0 = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|x64.Build.0 = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF}.Release|x86.Build.0 = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|x64.Build.0 = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043}.Release|x86.Build.0 = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|x64.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Debug|x86.Build.0 = Debug|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x64.ActiveCfg = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x64.Build.0 = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x86.ActiveCfg = Release|Any CPU
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x86.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x64.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x64.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Debug|x86.Build.0 = Debug|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x64.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x64.Build.0 = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{96D3417B-1043-4F63-85D1-073561F098E2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -522,11 +612,9 @@ Global
 		{A0095F7D-7CC6-4E7F-9695-8645EAD02E37} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{E1FA8AB5-803C-4467-8EA3-6E16C85232AE} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{2F45ED0E-31CB-4115-8F27-6EC0B17876B3} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
-		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
-		{BBB70951-5692-44F2-BD04-C1E150D970FD} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{73086AC9-1316-4FFC-AA5D-0A50C132456A} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
-		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{8B0B44AB-011D-4279-BF77-D189CAF6BF3A} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{6A1B4468-5DF1-48ED-8887-E1A5A1814056} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{592A747E-A69F-440A-BE35-19995FB06DCF} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
@@ -537,6 +625,13 @@ Global
 		{8CA79A2E-9A6C-45C6-82E0-40DC30719DFD} = {ACF72AC0-729C-4322-8CD1-53CF4D1F9853}
 		{6685DA9B-F355-4BCB-8A45-22C95BE7F0C8} = {ACF72AC0-729C-4322-8CD1-53CF4D1F9853}
 		{382DAD4F-C470-474E-9C0A-8FA9AA3131A6} = {ACF72AC0-729C-4322-8CD1-53CF4D1F9853}
+		{14C716B7-67C9-40B1-8BC2-139B8CE16F02} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{A938B514-3F27-4483-AF63-2F13A3ACBBA0} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
+		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
+		{E9153A64-A20D-4AA8-B2CC-49CADE123412} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
+		{96D3417B-1043-4F63-85D1-073561F098E2} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

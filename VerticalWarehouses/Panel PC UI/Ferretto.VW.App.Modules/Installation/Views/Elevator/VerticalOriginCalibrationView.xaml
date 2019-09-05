@@ -1,0 +1,84 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.VerticalOriginCalibrationView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="130,30,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 LabelText="{x:Static res:InstallationApp.Offset}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition, FallbackValue='999,99'}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 LabelText="{x:Static res:InstallationApp.Resolution}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='Operation in progress...'}"
+                                 LabelText="{x:Static res:InstallationApp.Output}" />
+
+
+        <controls:PpcButton Grid.Row="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StartCommand}"
+                            IsBusy="{Binding IsExecutingProcedure}"
+                            Content="{x:Static res:InstallationApp.Start}" />
+    </Grid>
+</ctrls:View>

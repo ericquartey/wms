@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
+using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -53,7 +58,7 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         Main = 0,
 
-        Chain = 1,
+        ElevatorChain = 1,
 
         Shutter1 = 2,
 
@@ -258,66 +263,148 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         #region Fields
 
+        public BitModel[] controlWordArray;
+
+        private const int LOWER_SPEED_Y_AXIS = 17928;
+
+        private readonly Dictionary<Axis, int> axisPosition;
+
         private readonly Timer homingTimer;
+
+        private readonly Timer shutterTimer;
 
         private readonly Timer targetTimer;
 
-        private int axisPosition;
-
         private int controlWord;
+
+        private Axis currentAxis;
 
         private ObservableCollection<BitModel> digitalIO = new ObservableCollection<BitModel>();
 
         private bool enabled;
 
+        private bool homingTimerActive;
+
+        private ICommand inverterInFaultCommand;
+
         private InverterType inverterType;
 
-        private bool positionReached;
+        private InverterOperationMode operationMode;
+
+        private bool shutterTimerActive;
 
         private int statusWord;
+
+        private bool targetTimerActive;
 
         #endregion
 
         #region Constructors
 
-        public InverterModel()
+        public InverterModel(InverterType inverterType)
         {
+            this.InverterType = inverterType;
+
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
-
             this.homingTimerActive = false;
-            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
 
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.targetTimerActive = false;
 
-            this.OperationMode = InverterOperationMode.Velocity;
+            this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
+            this.shutterTimerActive = false;
 
-            this.digitalIO.Add(new BitModel("Bit 00", false));
-            this.digitalIO.Add(new BitModel("Bit 01", false));
-            this.digitalIO.Add(new BitModel("Bit 02", false));
-            this.digitalIO.Add(new BitModel("Bit 03", false));
-            this.digitalIO.Add(new BitModel("Bit 04", false));
-            this.digitalIO.Add(new BitModel("Bit 05", false));
-            this.digitalIO.Add(new BitModel("Bit 06", false));
-            this.digitalIO.Add(new BitModel("Bit 07", false));
+            this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
+            this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
+            this.digitalIO.Add(new BitModel("02", false, GetInverterSignalDescription(inverterType, 2)));
+            this.digitalIO.Add(new BitModel("03", false, GetInverterSignalDescription(inverterType, 3)));
+            this.digitalIO.Add(new BitModel("04", false, GetInverterSignalDescription(inverterType, 4)));
+            this.digitalIO.Add(new BitModel("05", false, GetInverterSignalDescription(inverterType, 5)));
+            this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
+            this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
+
+            this.OperationMode = InverterOperationMode.Velocity;
+            switch (inverterType)
+            {
+                case InverterType.Ang:
+                    // Remove overrun signal
+                    this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                    break;
+
+                case InverterType.Agl:
+                    break;
+
+                case InverterType.Acu:
+                    this.OperationMode = InverterOperationMode.Position;
+                    break;
+
+                default:
+                    break;
+            }
+
+            this.currentAxis = Axis.Horizontal;
+
+            this.axisPosition = new Dictionary<Axis, int>();
+            this.axisPosition.Add(Axis.Horizontal, 0);
+            this.axisPosition.Add(Axis.Vertical, 300);
+
+            this.TargetPosition = new Dictionary<Axis, int>();
+            this.TargetPosition.Add(Axis.Horizontal, 0);
+            this.TargetPosition.Add(Axis.Vertical, 0);
+
+            this.StartPosition = new Dictionary<Axis, int>();
+            this.StartPosition.Add(Axis.Horizontal, 0);
+            this.StartPosition.Add(Axis.Vertical, 0);
+
+            this.TargetAcceleration = new Dictionary<Axis, int>();
+            this.TargetAcceleration.Add(Axis.Horizontal, 0);
+            this.TargetAcceleration.Add(Axis.Vertical, 0);
+
+            this.TargetDeceleration = new Dictionary<Axis, int>();
+            this.TargetDeceleration.Add(Axis.Horizontal, 0);
+            this.TargetDeceleration.Add(Axis.Vertical, 0);
+
+            this.TargetSpeed = new Dictionary<Axis, int>();
+            this.TargetSpeed.Add(Axis.Horizontal, 0);
+            this.TargetSpeed.Add(Axis.Vertical, 0);
         }
 
         #endregion
 
         #region Properties
 
-        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value, () => this.RaisePropertyChanged(nameof(this.AxisPosition))); }
+        public int AxisPosition
+        {
+            get => this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical];
+            set
+            {
+                this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical] = value;
+                this.RaisePropertyChanged(nameof(this.AxisPosition));
+
+                if (this.IsHorizontalAxis)
+                {
+                    this.RaisePropertyChanged(nameof(this.AxisPositionX));
+                }
+                else
+                {
+                    this.RaisePropertyChanged(nameof(this.AxisPositionY));
+                }
+            }
+        }
+
+        public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
+
+        public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
 
         public int ControlWord
         {
             get => this.controlWord;
-            set => this.SetProperty(ref this.controlWord, value, () =>
-            {
-                this.RaisePropertyChanged(nameof(this.ControlWord));
-                this.RaisePropertyChanged(nameof(this.ControlWordBinary));
-            });
+            set => this.SetProperty(ref this.controlWord, value);
         }
 
-        public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
+        public BitModel[] ControlWordArray => this.controlWordArray ?? (this.controlWordArray = this.RefreshControlWordArray());
+
+        public Axis CurrentAxis { get => this.currentAxis; set => this.SetProperty(ref this.currentAxis, value); }
 
         public ObservableCollection<BitModel> DigitalIO
         {
@@ -325,10 +412,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.digitalIO, value);
         }
 
-        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
-        //public bool[] DigitalIO { get; set; }
         public int Id { get; set; }
+
+        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.InverterInFault()));
 
         public InverterRole InverterRole => (InverterRole)this.Id;
 
@@ -340,10 +428,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsFault
         {
-            get
-            {
-                return (this.statusWord & 0x0008) > 0;
-            }
+            get => (this.statusWord & 0x0008) > 0;
             set
             {
                 if (value)
@@ -354,52 +439,160 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.statusWord &= ~0x0008;
                 }
+                this.RaisePropertyChanged(nameof(this.IsFault));
+                this.RaisePropertyChanged(nameof(this.StatusWord));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             }
         }
 
-        public bool IsOperationEnabled => (this.statusWord & 0x0004) > 0;
+        public bool IsHorizontalAxis => (this.ControlWord & 0x8000) > 0;
 
-        public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
+        public bool IsOperationEnabled
+        {
+            get => (this.StatusWord & 0x0004) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0004;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0004;
+                }
+            }
+        }
 
-        public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
+        public bool IsQuickStopTrue
+        {
+            get => (this.StatusWord & 0x0020) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0020;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0020;
+                }
+            }
+        }
+
+        public bool IsReadyToSwitchOn
+        {
+            get => (this.StatusWord & 0x0001) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0001;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0001;
+                }
+            }
+        }
+
+        public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
+
+        public bool IsShutterClosed => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterHalf => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
-            set => this.statusWord |= 0x0002;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0002;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0002;
+                }
+            }
         }
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
-        public bool IsVoltageEnabled => (this.statusWord & 0x0010) > 0;
+        public bool IsTargetReached
+        {
+            get => (this.StatusWord & 0x0400) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0400;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0400;
+                }
+            }
+        }
+
+        public bool IsVoltageEnabled
+        {
+            get => (this.StatusWord & 0x0010) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0010;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0010;
+                }
+            }
+        }
 
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
-        public InverterOperationMode OperationMode { get; set; }
+        public InverterOperationMode OperationMode
+        {
+            get => this.operationMode;
+            set => this.SetProperty(ref this.operationMode, value);
+        }
+
+        public int SpeedRate { get; set; }
+
+        public Dictionary<Axis, int> StartPosition { get; set; }
 
         public int StatusWord
         {
             get => this.statusWord;
             set => this.SetProperty(ref this.statusWord, value, () =>
             {
-                this.RaisePropertyChanged(nameof(this.StatusWord));
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+                this.RaisePropertyChanged(nameof(this.IsFault));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             });
         }
 
-        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
+        public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
+                                              let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
+                                              select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
-        private int homingTickCount { get; set; }
+        public Dictionary<Axis, int> TargetAcceleration { get; set; }
 
-        private bool homingTimerActive { get; set; }
+        public Dictionary<Axis, int> TargetDeceleration { get; set; }
 
-        private int targetTickCount { get; set; }
+        public Dictionary<Axis, int> TargetPosition { get; set; }
 
-        private bool targetTimerActive { get; set; }
+        public int TargetShutterPosition { get; set; }
+
+        public Dictionary<Axis, int> TargetSpeed { get; set; }
 
         #endregion
 
@@ -407,208 +600,70 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildHomingStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFB;
-            }
-
-            //StartHoming
-            if ((this.ControlWord & 0x0010) > 0)
+            //StartHoming && EnableOperation
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 500);
+                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(-5, 15);
+
                     this.homingTimerActive = true;
-                    this.AxisPosition = 0;
+                    this.homingTimer.Change(0, 500);
                 }
             }
             else
             {
+                if (this.homingTimerActive)
+                {
+                    this.homingTimer.Change(-1, Timeout.Infinite);
+                    this.homingTimerActive = false;
+                }
+                // Reset HomingAttained
                 this.StatusWord &= 0xEFFF;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
             }
         }
 
         public void BuildPositionStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFB;
-                this.positionReached = false;
-            }
-
             //New SetPoint
-            if ((this.ControlWord & 0x0010) > 0)
+            if ((this.ControlWord & 0x0010) > 0 && (this.ControlWord & 0x0008) > 0)
             {
-                if (!this.targetTimerActive && !this.positionReached)
+                if (!this.targetTimerActive && (this.StatusWord & 0x1000) == 0)
                 {
-                    this.StatusWord &= 0xFBFF;
-
-                    this.targetTimer.Change(0, 500);
+                    this.targetTimer.Change(0, 50);
                     this.targetTimerActive = true;
-                    this.AxisPosition = 0;
                 }
             }
             else
             {
-                this.StatusWord &= 0xEFFF;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
+                if (this.targetTimerActive)
+                {
+                    this.targetTimer.Change(-1, Timeout.Infinite);
+                    this.targetTimerActive = false;
+                }
             }
         }
 
         public void BuildVelocityStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
             //EnableOperation
             if ((this.ControlWord & 0x0008) > 0)
             {
                 this.StatusWord |= 0x0004;
-                if (!this.targetTimerActive)
+                if (!this.shutterTimerActive && !this.IsTargetReached)
                 {
-                    this.targetTimer.Change(0, 500);
-                    this.targetTimerActive = true;
-                    this.AxisPosition = 0;
+                    this.shutterTimer.Change(0, 500);
+                    this.shutterTimerActive = true;
                 }
             }
             else
             {
-                this.StatusWord &= 0xFFFB;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
+                if (this.shutterTimerActive)
+                {
+                    this.shutterTimer.Change(-1, Timeout.Infinite);
+                    this.shutterTimerActive = false;
+                }
             }
         }
 
@@ -627,34 +682,295 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void HomingTick(object state)
         {
-            this.homingTickCount++;
-            this.AxisPosition++;
-
-            if (this.homingTickCount > 5)
+            if (this.AxisPosition < this.TargetPosition[this.currentAxis])
             {
-                this.StatusWord |= 0x1000;
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            {
+                this.StatusWord |= 0x1000;          // Set TargetReached
                 this.homingTimerActive = false;
-                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
+            }
+            else
+            {
+                this.StatusWord &= 0xEFFF;          // Reset TargetReached
+            }
+        }
+
+        public BitModel[] RefreshControlWordArray()
+        {
+            var cw = (from x in Enumerable.Range(0, 16)
+                      let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                      select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                     .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
+
+            if (this.controlWordArray != null)
+            {
+                for (var i = 0; i < cw.Length; i++)
+                {
+                    this.controlWordArray[i].Value = cw[i].Value;
+                }
+            }
+
+            return cw;
+        }
+
+        internal static string GetControlWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Switch On";
+
+                case 1:
+                    return "Enable Voltage";
+
+                case 2:
+                    return "Quick Stop (Low Active)";
+
+                case 3:
+                    return "Enable Operation";
+
+                case 4:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
+
+                case 5:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
+
+                case 6:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
+
+                case 7:
+                    return "Reset Fault";
+
+                case 8:
+                    return "Halt";
+
+                case 9:
+                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
+
+                case 10:
+                    return "Free";
+
+                case 11:
+                case 12:
+                case 13:
+                    return "Manufacturer specific";
+
+                case 14:
+                    return "HeartBeat";
+
+                case 15:
+                    return "Horizontal Axis";
+            }
+
+            return "Free";
+        }
+
+        internal static string GetInverterSignalDescription(InverterType inverterType, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Potenza ON";
+
+                case 1:
+                    return "Funzionamento normale";
+
+                case 2:
+                    return inverterType == InverterType.Ang ? "Posizione di zero elevatore" : inverterType == InverterType.Agl ? "Sensore serranda (A)" : "Posizione di zero";
+
+                case 3:
+                    return inverterType == InverterType.Ang ? "Encoder canale B --- culla" : inverterType == InverterType.Agl ? "Sensore serranda (B)" : "Encoder canale B";
+
+                case 4:
+                    return inverterType == InverterType.Ang ? "Encoder canale A --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale A";
+
+                case 5:
+                    return inverterType == InverterType.Ang ? "Encoder canale Z --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale Z";
+
+                case 6:
+                    return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                case 7:
+                    return inverterType == InverterType.Ang ? "Sensore zero culla" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                default:
+                    return string.Empty;
+            }
+        }
+
+        internal static string GetStatusWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Ready to switch on";
+
+                case 1:
+                    return "Switched on";
+
+                case 2:
+                    return "Operation Enabled";
+
+                case 3:
+                    return "Fault";
+
+                case 4:
+                    return "Voltage Enabled";
+
+                case 5:
+                    return "Quick Stop (Low active)";
+
+                case 6:
+                    return "Switch on disabled";
+
+                case 7:
+                    return "Warning";
+
+                case 8:
+                    return "Manufacturer specific";
+
+                case 9:
+                    return "Remote";
+
+                case 10:
+                    return "Target reached";
+
+                case 11:
+                    return "Internal limit active";
+
+                case 12:
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : "Operation mode specific";
+
+                case 13:
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : operationMode == InverterOperationMode.Position ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
+
+                case 14:
+                    return "Manufacturer specific";
+
+                case 15:
+                    return "Manufacturer specific Warning 2";
+            }
+
+            return "Free";
+        }
+
+        private void InverterInFault()
+        {
+            this.IsFault = !this.IsFault;
+        }
+
+        private void ShutterTick(object state)
+        {
+            if (!this.shutterTimerActive)
+            {
+                return;
+            }
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 304)
+                )
+            {
+                this.AxisPosition++;
+            }
+            else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 306)
+                )
+            {
+                this.AxisPosition--;
+            }
+
+            // Shutter position
+            if (this.AxisPosition <= 300)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
+            }
+            else if (this.AxisPosition >= 310)
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
+            }
+            else
+            {
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
+            }
+
+            if ((this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened) ||
+                (this.TargetShutterPosition == (int)ShutterPosition.Half && this.IsShutterHalf)
+                )
+            {
+                this.ControlWord &= 0xFFEF; // Reset Rfg Enable Signal
+                this.IsTargetReached = true;
+
+                this.shutterTimer.Change(-1, Timeout.Infinite);
+
+                this.shutterTimerActive = false;
+            }
+            else
+            {
+                this.IsTargetReached = false;
             }
         }
 
         private void TargetTick(object state)
         {
-            this.targetTickCount++;
-            this.AxisPosition++;
-
-            if (this.targetTickCount > 10)
+            if (!this.targetTimerActive)
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
-
+                return;
+            }
+            int target = this.TargetPosition[this.currentAxis];
+            if (this.IsRelativeMovement)
+            {
+                target += this.StartPosition[this.currentAxis];
+            }
+            int increment = 1;
+            if (this.TargetSpeed[Axis.Vertical] >= LOWER_SPEED_Y_AXIS &&
+                Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10)
+            {
+                increment = (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10;
+            }
+            if (target > this.AxisPosition)
+            {
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition += increment;
+                }
+                else { this.AxisPosition++; }
+            }
+            else
+            {
+                if (this.CurrentAxis == Axis.Vertical)
+                {
+                    this.AxisPosition -= increment;
+                }
+                else { this.AxisPosition--; }
+            }
+            if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
+            {
+                this.AxisPosition = target;
+                this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
+                this.StatusWord |= 0x1000;      // Set Point Ack
+                this.IsTargetReached = true;
                 this.targetTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.targetTickCount = 0;
-
                 this.targetTimerActive = false;
-                this.positionReached = true;
+            }
+            else
+            {
+                this.IsTargetReached = false;
             }
         }
 

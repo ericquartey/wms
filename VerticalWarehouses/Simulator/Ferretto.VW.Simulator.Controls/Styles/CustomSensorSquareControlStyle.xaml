@@ -5,10 +5,10 @@
            TargetType="{x:Type custom:CustomSensorSquareControl}">
         <Style.Triggers>
             <Trigger Property="SensorState" Value="true">
-                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Up}" />
+                <Setter Property="BulletColor" Value="{DynamicResource PpcSensorControlActiveStateBrush}" />
             </Trigger>
             <Trigger Property="SensorState" Value="false">
-                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Down}" />
+                <Setter Property="BulletColor" Value="{DynamicResource PpcSensorControlInactiveStateBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>

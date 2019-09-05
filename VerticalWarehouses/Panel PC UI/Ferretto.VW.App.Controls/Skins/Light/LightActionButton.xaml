@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <SolidColorBrush x:Key="PpcButtonBackground"
+                     Color="{DynamicResource EDBGrayH}" />
+    <SolidColorBrush x:Key="PpcButtonBorderBrush"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="PpcButtonForeground"
+                     Color="{DynamicResource EDBGrayA}" />
+    <sys:Double x:Key="PpcButtonWidth">160</sys:Double>
+    <sys:Double x:Key="PpcButtonHeight">60</sys:Double>
+    <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
+    <sys:Double x:Key="PpcButtonFontSize">14</sys:Double>
+
+    <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
+                     Color="{DynamicResource EDBGrayD}" />
+    <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
+                     Color="{DynamicResource EDBGrayA}" />
+    <SolidColorBrush x:Key="PpcButtonForegroundPressed"
+                     Color="{DynamicResource EDBGrayI}" />
+
+    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
+                     Color="{DynamicResource EDBGrayF}" />
+
+</ResourceDictionary>

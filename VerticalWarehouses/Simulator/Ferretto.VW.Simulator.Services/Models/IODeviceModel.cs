@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -46,7 +44,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         LoadingUnitInLowerBay = 6,
 
-        FreeSensor = 7,
+        InverterInFault = 7,
 
         ElevatorMotorFeedback = 8,
 
@@ -84,25 +82,25 @@ namespace Ferretto.VW.Simulator.Services.Models
         public IODeviceModel()
         {
             // Initialize inputs
-            this.inputs.Add(new BitModel("Bit 00", false));
-            this.inputs.Add(new BitModel("Bit 01", false));
-            this.inputs.Add(new BitModel("Bit 02", false));
-            this.inputs.Add(new BitModel("Bit 03", false));
-            this.inputs.Add(new BitModel("Bit 04", false));
-            this.inputs.Add(new BitModel("Bit 05", false));
-            this.inputs.Add(new BitModel("Bit 06", false));
-            this.inputs.Add(new BitModel("Bit 07", false));
-            this.inputs.Add(new BitModel("Bit 08", false));
-            this.inputs.Add(new BitModel("Bit 09", false));
-            this.inputs.Add(new BitModel("Bit 10", false));
-            this.inputs.Add(new BitModel("Bit 11", false));
-            this.inputs.Add(new BitModel("Bit 12", false));
-            this.inputs.Add(new BitModel("Bit 13", false));
-            this.inputs.Add(new BitModel("Bit 14", false));
-            this.inputs.Add(new BitModel("Bit 15", false));
+            this.inputs.Add(new BitModel("00", false, "Stato funzione sicurezza"));
+            this.inputs.Add(new BitModel("01", false, "Fungo di emergenza"));
+            this.inputs.Add(new BitModel("02", false, "Sensore carter protezione SX"));
+            this.inputs.Add(new BitModel("03", false, "Sensore carter protezione DX"));
+            this.inputs.Add(new BitModel("04", false, "Barriera ottica anti-intrusione"));
+            this.inputs.Add(new BitModel("05", false, "Sensore presenza cassetto in baia"));
+            this.inputs.Add(new BitModel("06", false, "Sensore presenza cassetto inferiore / baia intermedia"));
+            this.inputs.Add(new BitModel("07", false, "Cumulativo Inverter In Fault"));
+            this.inputs.Add(new BitModel("08", false, "Selezione motore elevatore (feedback)"));
+            this.inputs.Add(new BitModel("09", false, "Selezione motore culla (feedback)"));
+            this.inputs.Add(new BitModel("10", false, "Presenza cassetto su culla lato macchina"));
+            this.inputs.Add(new BitModel("11", false, "Presenza cassetto su culla lato operatore"));
+            this.inputs.Add(new BitModel("12", false, "Taratura barriera"));
+            this.inputs.Add(new BitModel("13", false, "Libero"));
+            this.inputs.Add(new BitModel("14", false, "Opzione trolley - Aggancio trolley"));
+            this.inputs.Add(new BitModel("15", false, "Opzione robot - Tasto fine picking (oppure fine picking robot)"));
 
             // Initialize ouputs
-            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false)).ToList();
+            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, GetRemoteIOSignalDescription(x))).ToList();
 
             // Remove emergency button
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
@@ -116,7 +114,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
         public byte FirmwareVersion { get; set; } = 0x11;
 
@@ -148,6 +146,43 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.outputs;
             set => this.SetProperty(ref this.outputs, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        internal static string GetRemoteIOSignalDescription(int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Reset funzione sicurezza (impulso 300ms)";
+
+                case 1:
+                    return "Selezione motore elevatore";
+
+                case 2:
+                    return "Selezione motore culla";
+
+                case 3:
+                    return "Attivazione lettura altezza (barriera di misura)";
+
+                case 4:
+                    return "Attivazione illuminazione baia";
+
+                case 5:
+                    return "Abilitazione al marcia dalla console";
+
+                case 6:
+                    return "Opzione robot - Missione terminata magazzino";
+
+                case 7:
+                    return "Opzione robot - Magazzino pronto/guasto";
+
+                default:
+                    return string.Empty;
+            }
         }
 
         #endregion

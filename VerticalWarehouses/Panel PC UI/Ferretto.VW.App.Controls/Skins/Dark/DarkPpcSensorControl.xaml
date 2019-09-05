@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="VWAPP_CustomControlSensor_TextBlock_FontSize">16</sys:Double>
+
+    <SolidColorBrush x:Key="PpcSensorControlActiveStateBrush"
+                     Color="{DynamicResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="PpcSensorControlInactiveStateBrush"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_TextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBackground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+</ResourceDictionary>

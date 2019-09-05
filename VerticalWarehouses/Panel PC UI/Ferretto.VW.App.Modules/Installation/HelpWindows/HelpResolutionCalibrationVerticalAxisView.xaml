@@ -1,0 +1,247 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.ResolutionCalibrationVerticalAxisHelpView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             mc:Ignorable="d">
+    <Grid Width="1024"
+          Height="688"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+
+        <Image Width="200"
+               Height="60"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
+
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,155,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialPositionHelp}" />
+
+        <controls:PpcTextBox Width="180"
+                             Margin="20,155,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="1025,5"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
+
+        <controls:PpcButton Margin="20,295,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
+                            IsEnabled="True" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,295,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialStartHelp}" />
+
+        <controls:PpcTextBox Width="180"
+                             Margin="20,450,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="5150.0"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.FinalPosition}" />
+
+        <controls:PpcButton Margin="20,590,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Move}"
+                            IsEnabled="True" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,450,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalPositionHelp}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,590,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalPosizionStartHelp}" />
+
+        <controls:PpcTextBox Width="180"
+                             Margin="530,155,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="4250,5"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.MeasuredMovement}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,155,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationMeasuredeValueHelp}" />
+
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,225,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="125,36"
+                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,295,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="127,12"
+                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />
+
+        <controls:PpcButton Margin="530,365,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+
+        <controls:PpcButton Margin="530,526,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                            IsEnabled="True" />
+
+        <controls:PpcButton Margin="530,599,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.CloseProcedure}"
+                            IsEnabled="True" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,225,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,295,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationNewResolutionHelp}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,365,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationAcceptNewResolution}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,526,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationGoToInitialPosizion}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,599,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationCloseProcedure}" />
+
+        <TextBlock Width="300"
+                   Margin="220,115,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
+
+        <TextBlock Width="300"
+                   Margin="220,410,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep2}" />
+
+        <TextBlock Width="300"
+                   Margin="530,115,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep3}" />
+
+        <TextBlock Width="300"
+                   Margin="530,480,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep4}" />
+
+        <controls:PpcTextBox Width="180"
+                             Margin="20,225,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="875,5"
+                             LabelText="{x:Static res:InstallationApp.MeasuredInitialPosition}" />
+
+        <controls:PpcTextBox Width="180"
+                             Margin="20,520,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="5045,5"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.ReadFinalPosition}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,225,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialReadValueHelp}" />
+
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,520,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalReadValueHelp}" />
+
+    </Grid>
+</UserControl>

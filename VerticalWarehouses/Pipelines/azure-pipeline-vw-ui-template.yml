@@ -13,9 +13,9 @@ steps:
 
 
 - task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
+  displayName: 'Build PanelPC.sln'
   inputs:
-    solution: 'VerticalWarehouses/VerticalWarehouses.sln'
+    solution: 'VerticalWarehouses/PanelPC.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
@@ -40,7 +40,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Panel PC App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/${{ parameters.BuildConfiguration }}/net471'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/Ferretto.VW.App/bin/${{ parameters.BuildConfiguration }}/net471'
     ArtifactName: 'panelpc_app'
 
 
