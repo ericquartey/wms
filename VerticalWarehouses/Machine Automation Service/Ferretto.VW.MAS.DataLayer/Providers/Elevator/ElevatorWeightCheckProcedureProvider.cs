@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class ElevatorWeightCheckProvider : IElevatorProvider
+    public class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
     {
         #region Fields
 
@@ -17,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public ElevatorWeightCheckProvider(DataLayerContext dataContext)
+        public ElevatorWeightCheckProcedureProvider(DataLayerContext dataContext)
         {
             if (dataContext == null)
             {
@@ -56,6 +59,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             // TO DO execute operations.
             Task.Delay(5000);
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.Initialize();
+            await this.InitializeAsync();
 
             await base.StartAsync(cancellationToken);
         }
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return Task.CompletedTask;
         }
 
-        private void ApplyMigrations()
+        private async Task ApplyMigrationsAsync()
         {
             try
             {
@@ -134,21 +134,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
-                        var pendingMigrationsCount = activeDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to active database ...");
-                            activeDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
+                            await activeDbContext.Database.MigrateAsync();
                         }
                     }
 
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
-                        var pendingMigrationsCount = standbyDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to standby database ...");
-                            standbyDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
+                            await standbyDbContext.Database.MigrateAsync();
                         }
                     }
 
@@ -162,9 +162,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void Initialize()
+        private async Task InitializeAsync()
         {
-            this.ApplyMigrations();
+            await this.ApplyMigrationsAsync();
 
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
@@ -177,6 +177,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     scope.ServiceProvider
                         .GetRequiredService<ICellsProvider>()
                         .LoadFrom(configuration.GetCellsConfigurationFile());
+
+                    await scope.ServiceProvider
+                       .GetRequiredService<ILoadingUnitsProvider>()
+                       .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
                 }
                 catch (Exception ex)
                 {

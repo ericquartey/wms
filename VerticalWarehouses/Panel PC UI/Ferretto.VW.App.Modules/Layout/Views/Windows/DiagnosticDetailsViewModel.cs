@@ -7,13 +7,9 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class DiagnosticDetailsViewModel : BaseViewModel//, IDiagnosticDetailsViewModel
+    public class DiagnosticDetailsViewModel : BaseViewModel
     {
         #region Fields
-
-        private const int INVERTER_INPUTS = 64;
-
-        private const int REMOTEIO_INPUTS = 16;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -51,7 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
-            //this.OnEnterViewAsync();
         }
 
         #endregion

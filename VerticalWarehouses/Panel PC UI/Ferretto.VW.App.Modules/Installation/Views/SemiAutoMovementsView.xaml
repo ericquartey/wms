@@ -75,7 +75,6 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Cells}" />
 
-
         <controls:PpcTextBox Grid.Row="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
@@ -87,15 +86,15 @@
                              Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             InputText="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding CanInputCellId}"
+                             InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding CanInputLoadingUnitCode}"
                              LabelText="{x:Static res:InstallationApp.TrayInCell}" />
 
         <controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="7354"
+                                 ContentText="{Binding SelectedCell.Position}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
 
@@ -114,14 +113,14 @@
         <controls:PpcLabeledText Grid.Row="6"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="382"
+                                 ContentText="{Binding ElevatorVerticalPosition}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="6"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="01033"
+                                 ContentText="{Binding EmbarkedLoadingUnit.Id, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
 
         <controls:PpcButton Grid.Row="6"
@@ -131,7 +130,7 @@
                             Command="{Binding DisembarkCommand}"
                             Content="{x:Static res:InstallationApp.Disembark}"
                             IsActive="{Binding IsElevatorDisembarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter=RTVC}" />
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
@@ -140,16 +139,14 @@
                             Command="{Binding EmbarkCommand}"
                             Content="{x:Static res:InstallationApp.Embark}"
                             IsActive="{Binding IsElevatorEmbarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter=RTVIC}" />
-
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
 
         <controls:PpcLabeledText Grid.Row="7"
                                  Margin="0,10,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="23"
+                                 ContentText="{Binding ElevatorHorizontalPosition}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
-
 
         <controls:PpcLabeledText Grid.Row="7"
                                  Grid.Column="2"

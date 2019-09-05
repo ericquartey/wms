@@ -6,12 +6,11 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.AutomationService.Controllers
+namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class BaseAutomationController : ControllerBase
+    public class BaseProvider
     {
         #region Fields
 
@@ -21,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        protected BaseAutomationController(IEventAggregator eventAggregator)
+        protected BaseProvider(IEventAggregator eventAggregator)
         {
             if (eventAggregator is null)
             {
@@ -34,47 +33,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
-
-        protected IActionResult NegativeResponse(Exception exception)
-        {
-            return this.NegativeResponse<ProblemDetails>(exception).Result;
-        }
-
-        protected ActionResult<T> NegativeResponse<T>(Exception exception)
-        {
-            if (exception is DataLayer.Exceptions.EntityNotFoundException)
-            {
-                return this.NotFound(new ProblemDetails
-                {
-                    Title = Resources.General.NotFoundTitle,
-                    Detail = exception.Message
-                });
-            }
-            else if (exception is ArgumentOutOfRangeException)
-            {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Title = Resources.General.BadRequestTitle,
-                    Detail = exception.Message
-                });
-            }
-            else if (exception is InvalidOperationException)
-            {
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Title = Resources.General.UnprocessableEntityTitle,
-                    Detail = exception.Message
-                });
-            }
-            else
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
-                {
-                    Title = Resources.General.InternalServerErrorTitle,
-                    Detail = exception.Message
-                });
-            }
-        }
 
         protected void PublishCommand(
             IMessageData messageData,
@@ -91,27 +49,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         MessageActor.WebApi,
                         messageType));
-        }
-
-        protected void PublishNotification(
-            IMessageData data,
-            string description,
-            MessageActor receiver,
-            MessageType type,
-            MessageStatus status,
-            ErrorLevel level = ErrorLevel.NoError)
-        {
-            this.eventAggregator
-                .GetEvent<NotificationEvent>()
-                .Publish(
-                    new NotificationMessage(
-                        data,
-                        description,
-                        receiver,
-                        MessageActor.WebApi,
-                        type,
-                        status,
-                        level));
         }
 
         protected TData WaitForResponseEventAsync<TData>(

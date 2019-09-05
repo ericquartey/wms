@@ -64,8 +64,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public string Country => this.GetStringConfigurationValue((long)GeneralInfo.Country, ConfigurationCategory.GeneralInfo);
 
-        public int DrawersQuantity => this.GetIntegerConfigurationValue((long)GeneralInfo.DrawersQuantity, ConfigurationCategory.GeneralInfo);
-
         public decimal Height => this.GetDecimalConfigurationValue((long)GeneralInfo.Height, ConfigurationCategory.GeneralInfo);
 
         public DateTime InstallationDate => this.GetDateTimeConfigurationValue((long)GeneralInfo.InstallationDate, ConfigurationCategory.GeneralInfo);
