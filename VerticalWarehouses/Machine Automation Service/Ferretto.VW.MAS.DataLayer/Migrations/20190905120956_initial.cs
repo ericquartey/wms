@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -125,17 +125,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Bay1Check = table.Column<bool>(nullable: false),
                     Bay1FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay1Laser = table.Column<bool>(nullable: false),
-                    Bay1Shape = table.Column<bool>(nullable: false),
+                    Bay1Profile = table.Column<bool>(nullable: false),
                     Bay1Shutter = table.Column<bool>(nullable: false),
                     Bay2Check = table.Column<bool>(nullable: false),
                     Bay2FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay2Laser = table.Column<bool>(nullable: false),
-                    Bay2Shape = table.Column<bool>(nullable: false),
+                    Bay2Profile = table.Column<bool>(nullable: false),
                     Bay2Shutter = table.Column<bool>(nullable: false),
                     Bay3Check = table.Column<bool>(nullable: false),
                     Bay3FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay3Laser = table.Column<bool>(nullable: false),
-                    Bay3Shape = table.Column<bool>(nullable: false),
+                    Bay3Profile = table.Column<bool>(nullable: false),
                     Bay3Shutter = table.Column<bool>(nullable: false),
                     BeltBurnishing = table.Column<bool>(nullable: false),
                     CellsHeightCheck = table.Column<bool>(nullable: false),
@@ -317,11 +317,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 4, 17, 40, 28, 709, DateTimeKind.Local).AddTicks(8760), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 5, 14, 9, 56, 100, DateTimeKind.Local).AddTicks(1507), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
-                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "BeltBurnishing", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
+                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Profile", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Profile", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Profile", "Bay3Shutter", "BeltBurnishing", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
                 values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false, false, false, false });
 
             migrationBuilder.InsertData(

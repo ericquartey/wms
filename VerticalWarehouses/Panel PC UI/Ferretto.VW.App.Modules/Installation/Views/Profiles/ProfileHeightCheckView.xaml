@@ -59,19 +59,21 @@
                                  ContentText="{Binding SystemError}"
                                  LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
-        <controls:PpcSensorControl Grid.Row="2"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   SensorState="{Binding LuPresentInBay}"
-                                   Text="{x:Static res:InstallationApp.Gate1HeightReaced}" />
-
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Tolerance}" />
+
+        <controls:PpcSensorControl Grid.Row="2"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="{Binding LuPresentInBay}"
+                                   Text="Gate1HeightReaced" />
+
+        <!--  {x:Static res:InstallationApp.Gate1HeightReaced}  -->
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
@@ -93,5 +95,5 @@
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
     </Grid>
-    
+
 </ctrls:View>
