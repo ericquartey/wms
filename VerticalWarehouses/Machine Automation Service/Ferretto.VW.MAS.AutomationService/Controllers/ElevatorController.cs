@@ -95,6 +95,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             try
             {
                 this.elevatorProvider.MoveHorizontal(direction);
+                //this.elevatorProvider.MoveHorizontalTableTravel(direction);
                 return this.Accepted();
             }
             catch (Exception ex)

@@ -783,37 +783,40 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
-                        var position = positioningData.TargetPosition;
-                        if (positioningData.MovementType == MovementType.Absolute)
-                        {
-                            var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
-
-                            position -= offset;
-
-                            if (position < 0)
-                            {
-                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
-                            }
-                        }
-
-                        int[] targetAcceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[0], configurationCategory) };
-                        int[] targetDeceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[0], configurationCategory) };
-                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-                        int[] targetSpeed = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[0], configurationCategory) };
-                        int[] switchPosition = { 0 };
-
-                        var positioningFieldData = new InverterPositioningFieldMessageData(
-                            positioningData,
-                            targetAcceleration,
-                            targetDeceleration,
-                            targetPosition,
-                            targetSpeed,
-                            switchPosition,
-                            false);
-
                         if (inverterStatus is AngInverterStatus currentStatus)
                         {
                             var currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
+                            var position = positioningData.TargetPosition;
+                            if (positioningData.MovementType == MovementType.Absolute)
+                            {
+                                var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+
+                                position -= offset;
+
+                                if (position < 0)
+                                {
+                                    throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
+                                }
+                            }
+                            else
+                            {
+                                position += currentPosition;
+                            }
+
+                            int[] targetAcceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[0], configurationCategory) };
+                            int[] targetDeceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[0], configurationCategory) };
+                            var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
+                            int[] targetSpeed = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[0], configurationCategory) };
+                            int[] switchPosition = { 0 };
+
+                            var positioningFieldData = new InverterPositioningFieldMessageData(
+                                positioningData,
+                                targetAcceleration,
+                                targetDeceleration,
+                                targetPosition,
+                                targetSpeed,
+                                switchPosition,
+                                false);
 
                             this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                             this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
@@ -862,9 +865,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     else
                                     {
                                         this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                        var currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                                        this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                                        currentStateMachine.Start();
+                                        if (positioningData.SwitchPosition.Length > 1)
+                                        {
+                                            var currentStateMachine = new PositioningTableStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                            this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                            currentStateMachine.Start();
+                                        }
+                                        else
+                                        {
+                                            var currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                            this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                            currentStateMachine.Start();
+                                        }
                                     }
                                     break;
                             }

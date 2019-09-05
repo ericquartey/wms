@@ -23,6 +23,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
+        private readonly IHorizontalMovementBackwardProfileDataLayer horizontalMovementBackwardProfileDataLayer;
+
+        private readonly IHorizontalMovementForwardProfileDataLayer horizontalMovementForwardProfileDataLayer;
+
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
         private readonly IPanelControlDataLayer panelControlDataLayer;
@@ -46,6 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IEventAggregator eventAggregator,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            IHorizontalMovementBackwardProfileDataLayer horizontalMovementBackwardProfileDataLayer,
+            IHorizontalMovementForwardProfileDataLayer horizontalMovementForwardProfileDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
@@ -70,6 +76,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             if (horizontalManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            }
+
+            if (horizontalMovementBackwardProfileDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(horizontalMovementBackwardProfileDataLayer));
+            }
+
+            if (horizontalMovementForwardProfileDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(horizontalMovementForwardProfileDataLayer));
             }
 
             if (horizontalAxisDataLayer is null)
@@ -120,6 +136,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext = dataContext;
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
+            this.horizontalMovementBackwardProfileDataLayer = horizontalMovementBackwardProfileDataLayer;
+            this.horizontalMovementForwardProfileDataLayer = horizontalMovementForwardProfileDataLayer;
             this.horizontalAxisDataLayer = horizontalAxisDataLayer;
             this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
             this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
@@ -209,6 +227,66 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
+        public void MoveHorizontalTableTravel(HorizontalMovementDirection direction)
+        {
+            var setupStatus = this.setupStatusProvider.Get();
+
+            var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
+                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
+                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
+
+            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+
+            decimal[] speed = {
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0SpeedV1 : this.horizontalMovementBackwardProfileDataLayer.P0SpeedV1,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1SpeedV2 : this.horizontalMovementBackwardProfileDataLayer.P1SpeedV2,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2SpeedV3 : this.horizontalMovementBackwardProfileDataLayer.P2SpeedV3,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3SpeedV4 : this.horizontalMovementBackwardProfileDataLayer.P3SpeedV4,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4SpeedV5 : this.horizontalMovementBackwardProfileDataLayer.P4SpeedV5
+            };
+            decimal[] acceleration = {
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Acceleration : this.horizontalMovementBackwardProfileDataLayer.P0Acceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Acceleration : this.horizontalMovementBackwardProfileDataLayer.P1Acceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Acceleration : this.horizontalMovementBackwardProfileDataLayer.P2Acceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Acceleration : this.horizontalMovementBackwardProfileDataLayer.P3Acceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Acceleration : this.horizontalMovementBackwardProfileDataLayer.P4Acceleration
+            };
+            decimal[] deceleration = {
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Deceleration : this.horizontalMovementBackwardProfileDataLayer.P0Deceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Deceleration : this.horizontalMovementBackwardProfileDataLayer.P1Deceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Deceleration : this.horizontalMovementBackwardProfileDataLayer.P2Deceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Deceleration : this.horizontalMovementBackwardProfileDataLayer.P3Deceleration,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Deceleration : this.horizontalMovementBackwardProfileDataLayer.P4Deceleration
+            };
+            decimal[] switchPosition = {
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Quote : this.horizontalMovementBackwardProfileDataLayer.P0Quote,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Quote : this.horizontalMovementBackwardProfileDataLayer.P1Quote,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Quote : this.horizontalMovementBackwardProfileDataLayer.P2Quote,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Quote : this.horizontalMovementBackwardProfileDataLayer.P3Quote,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote
+            };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.Position,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+        }
+
         public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
         {
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
@@ -251,7 +329,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
+                $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
         }
@@ -304,7 +382,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
+                $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
         }
@@ -345,7 +423,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
+                $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
         }
