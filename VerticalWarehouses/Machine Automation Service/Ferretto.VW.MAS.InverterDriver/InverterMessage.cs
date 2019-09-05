@@ -95,16 +95,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        public InverterMessage(byte systemIndex, short parameterId)
-        {
-            this.responseMessage = false;
-            this.SystemIndex = systemIndex;
-            this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
-            this.parameterId = parameterId;
-            this.IsWriteMessage = false;
-            this.heartbeatMessage = false;
-        }
-
         public InverterMessage(InverterIndex systemIndex, short parameterId)
         {
             this.responseMessage = false;
@@ -115,14 +105,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.heartbeatMessage = false;
         }
 
-        public InverterMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
+        public InverterMessage(byte systemIndex, short parameterId, object payload, InverterDataset dataSetIndex = InverterDataset.ActualDataset, int sendDelay = 0)
         {
-            this.BuildWriteMessage(systemIndex, parameterId, payload, sendDelay);
+            this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
 
-        public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, int sendDelay = 0)
+        public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, InverterDataset dataSetIndex = InverterDataset.ActualDataset, int sendDelay = 0)
         {
-            this.BuildWriteMessage((byte)systemIndex, parameterId, payload, sendDelay);
+            this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
 
         #endregion
@@ -178,14 +168,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.heartbeatMessage = true;
 
-            //VALUE 14th byte of control word value represents Heartbeat flag
+            //VALUE 10th byte of control word value represents Heartbeat flag
             if (setBit)
             {
-                this.payload[1] |= 0x40;
+                this.payload[1] |= 0x04;
             }
             else
             {
-                this.payload[1] &= 0xBF;
+                this.payload[1] &= 0xFB;
             }
 
             return this.GetWriteMessage();
@@ -276,6 +266,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             returnString.Append($"parameterId={this.parameterId}:");
 
+            returnString.Append($"DataSetIndex={this.DataSetIndex}:");
+
             returnString.Append($"payloadLength={this.payloadLength:X}:");
 
             returnString.Append($"payload=");
@@ -304,11 +296,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             return returnString.ToString();
         }
 
-        private void BuildWriteMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
+        private void BuildWriteMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
         {
             this.responseMessage = false;
             this.SystemIndex = systemIndex;
-            this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
+            this.DataSetIndex = dataSetIndex;
             this.parameterId = parameterId;
             this.IsWriteMessage = true;
             this.heartbeatMessage = false;

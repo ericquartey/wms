@@ -142,7 +142,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             }
         }
 
-        // not valid for TableTravel control word
         public bool HorizontalAxis
         {
             get
