@@ -1201,6 +1201,13 @@
     <value>Select waiting time</value>
     <comment>Label text</comment>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Total completed cycles</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
     <comment>Button text</comment>

@@ -2,12 +2,15 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Threading;
 // ReSharper disable ArrangeThisQualifier
 
@@ -258,6 +261,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageStatus.OperationExecuting);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            if (this.numberExecutedSteps > 0 &&
+                this.numberExecutedSteps % 2 == 0)
+            {
+                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                {
+                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+
+                    setupStatusProvider.IncreaseBeltBurnishingCycle();
+                }
+
+                Debug.Write("Belt completed cycle.");
+            }
+
+            Debug.Write("Belt current position " + beltBurnishingPosition);
         }
 
         private void ProcessEndPositioning()

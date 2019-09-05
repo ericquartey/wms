@@ -967,6 +967,12 @@
   <data name="TimeDelay" xml:space="preserve">
     <value>Seleziona tempo di attesa</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reimposta</value>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Totale cicli completati</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Succ</value>
   </data>

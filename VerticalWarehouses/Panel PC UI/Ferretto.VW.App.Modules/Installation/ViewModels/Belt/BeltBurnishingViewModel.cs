@@ -10,7 +10,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-
 using Prism.Commands;
 using Prism.Events;
 
@@ -24,9 +23,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineSetupStatusService machineSetupStatusService;
+
         private int? completedCycles;
 
         private decimal? currentPosition;
+
+        private int initialCycles;
 
         private int inputDelay;
 
@@ -46,9 +49,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receivedActionUpdateToken;
 
+        private DelegateCommand resetCommand;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
+
+        private int? totalCompletedCycles;
 
         #endregion
 
@@ -56,6 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
+            IMachineSetupStatusService machineSetupStatusService,
             IMachineBeltBurnishingProcedureService beltBurnishingService)
             : base(Services.PresentationMode.Installer)
         {
@@ -70,6 +78,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.eventAggregator = eventAggregator;
+            this.machineSetupStatusService = machineSetupStatusService;
             this.beltBurnishingService = beltBurnishingService;
             this.inputDelay = 0;
         }
@@ -174,6 +183,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand ResetCommand =>
+                        this.resetCommand
+                        ??
+                        (this.resetCommand = new DelegateCommand(
+                            async () => await this.ResetAsync(),
+                            this.CanExecuteResetCommand));
+
         public ICommand StartCommand =>
             this.startCommand
             ??
@@ -187,6 +203,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
+
+        public int? TotalCompletedCycles
+        {
+            get => this.totalCompletedCycles;
+            private set => this.SetProperty(ref this.totalCompletedCycles, value);
+        }
 
         #endregion
 
@@ -304,6 +326,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.machineLowerBound = procedureParameters.LowerBound;
 
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
+
+                var setupStatus = await this.machineSetupStatusService.GetAsync();
+                this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
+                this.TotalCompletedCycles = this.initialCycles;
             }
             catch (Exception ex)
             {
@@ -313,6 +339,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.CompletedCycles = 0;
+
             await base.OnNavigatedAsync();
 
             this.IsBackNavigationAllowed = true;
@@ -336,6 +364,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private bool CanExecuteResetCommand()
+        {
+            return !this.IsExecutingProcedure
+                   &&
+                   !this.IsWaitingForResponse;
+        }
+
         private bool CanExecuteStartCommand()
         {
             return !this.IsExecutingProcedure
@@ -355,19 +390,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
+            this.resetCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task ResetAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.beltBurnishingService.ResetAsync();
+
+                await this.GetParameterValuesAsync();
+
+                this.CompletedCycles = 0;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsExecutingProcedure = false;
+            }
         }
 
         private async Task StartAsync()
         {
             try
             {
+                if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
+                {
+                    this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
                 await this.beltBurnishingService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
-                    this.InputRequiredCycles.Value,
+                    this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value,
                     this.InputDelay);
             }
             catch (Exception ex)
@@ -406,6 +471,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
+            this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
             this.CompletedCycles = message.Data.ExecutedCycles;
             this.CurrentPosition = message.Data.CurrentPosition;
 
