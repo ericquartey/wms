@@ -17,6 +17,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
+        public LoadingUnit LoadingUnit { get; set; }
+
+        public int? LoadingUnitId { get; set; }
+
         public int Number { get; set; }
 
         public IEnumerable<decimal> Positions { get; set; }

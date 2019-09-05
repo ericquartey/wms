@@ -279,14 +279,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                             )
                         {
                             ConfigurationCategory configurationCategory;
+                            long configurationValue = 0;
                             switch (axis)
                             {
                                 case Axis.Horizontal:
                                     configurationCategory = ConfigurationCategory.HorizontalAxis;
+                                    configurationValue = (long)HorizontalAxis.Offset;
                                     break;
 
                                 case Axis.Vertical:
                                     configurationCategory = ConfigurationCategory.VerticalAxis;
+                                    configurationValue = (long)VerticalAxis.Offset;
                                     break;
 
                                 default:
@@ -299,6 +302,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
                             }
+
+                            var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+                            currentAxisPosition += offset;
 
                             var notificationData = new InverterStatusUpdateFieldMessageData(axis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
                             var msgNotification = new FieldNotificationMessage(
@@ -777,12 +783,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
-                        var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
-
                         var position = positioningData.TargetPosition;
                         if (positioningData.MovementType == MovementType.Absolute)
                         {
-                            position = position - offset;
+                            var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+
+                            position -= offset;
+
+                            if (position < 0)
+                            {
+                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
+                            }
                         }
 
                         var targetAcceleration = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);

@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for my JSON file format",
+
+  "type": "object",
+
+  "required": [
+    "width",
+    "depth",
+    "loading-unit-classes",
+    "loading-units"
+  ],
+  "properties": {
+    "width": {
+      "$id": "#/properties/width",
+      "type": "integer",
+      "title": "The Width Schema",
+      "default": 0
+    },
+    "depth": {
+      "$id": "#/properties/depth",
+      "type": "integer",
+      "title": "The Depth Schema",
+      "default": 0
+    },
+    "loading-unit-classes": {
+      "$id": "#/properties/loading-unit-classes",
+      "type": "array",
+      "title": "The Loading-unit-classes Schema",
+      "items": {
+        "$id": "#/properties/loading-unit-classes/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "max-load-capacity",
+          "tare"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#/properties/loading-unit-classes/items/properties/id",
+            "type": "string",
+            "title": "The Id Schema",
+            "default": ""
+          },
+          "max-load-capacity": {
+            "$id": "#/properties/loading-unit-classes/items/properties/max-load-capacity",
+            "type": "number",
+            "description": "The maximum load capacity of the loading unit, in kilograms.",
+            "title": "The Max-load-capacity Schema",
+            "default": 0
+          },
+          "tare": {
+            "$id": "#/properties/loading-unit-classes/items/properties/tare",
+            "type": "integer",
+            "title": "The tare Schema",
+            "default": 0
+          }
+        }
+      }
+    },
+    "loading-units": {
+      "$id": "#/properties/loading-units",
+      "type": "array",
+      "title": "The Loading-units Schema",
+      "items": {
+        "$id": "#/properties/loading-units/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "code",
+          "class"
+        ],
+        "properties": {
+          "code": {
+            "$id": "#/properties/loading-units/items/properties/code",
+            "type": "integer",
+            "title": "The Code Schema",
+            "default": 0
+          },
+          "class": {
+            "$id": "#/properties/loading-units/items/properties/class",
+            "type": "string",
+            "title": "The Class Schema",
+            "default": ""
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "$schema": "./cells-configuration.schema.json",
+  "$schema": "./schemas/cells-schema.json",
   "panels": [
     {
       "side": "front",

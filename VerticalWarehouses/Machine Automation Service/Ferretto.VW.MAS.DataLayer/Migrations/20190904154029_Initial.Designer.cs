@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190902122658_initial")]
-    partial class initial
+    [Migration("20190904154029_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,12 +33,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<int?>("LoadingUnitId");
+
                     b.Property<int>("Type");
 
                     b.HasKey("Number");
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
+
+                    b.HasIndex("LoadingUnitId");
 
                     b.ToTable("Bays");
                 });
@@ -193,6 +197,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<decimal>("Height");
 
+                    b.Property<bool>("IsIntoMachine");
+
                     b.Property<decimal>("MaxNetWeight");
 
                     b.Property<int>("MissionsCount");
@@ -207,173 +213,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("LoadingUnits");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "01001",
-                            GrossWeight = 364m,
-                            Height = 249m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 7,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "01002",
-                            GrossWeight = 307m,
-                            Height = 50m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 46,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "01003",
-                            GrossWeight = 310m,
-                            Height = 293m,
-                            MaxNetWeight = 750m,
-                            MissionsCount = 21,
-                            Status = 3L,
-                            Tare = 65m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "01004",
-                            GrossWeight = 315m,
-                            Height = 272m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 28,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = "01005",
-                            GrossWeight = 265m,
-                            Height = 150m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 45,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Code = "01006",
-                            GrossWeight = 345m,
-                            Height = 56m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 2,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Code = "01007",
-                            GrossWeight = 329m,
-                            Height = 242m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 44,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = "01008",
-                            GrossWeight = 248m,
-                            Height = 290m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 7,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Code = "01009",
-                            GrossWeight = 236m,
-                            Height = 182m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 16,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Code = "01010",
-                            GrossWeight = 221m,
-                            Height = 261m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 33,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Code = "01011",
-                            GrossWeight = 376m,
-                            Height = 217m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 46,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Code = "01012",
-                            GrossWeight = 334m,
-                            Height = 137m,
-                            MaxNetWeight = 750m,
-                            MissionsCount = 6,
-                            Status = 3L,
-                            Tare = 65m
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Code = "01013",
-                            GrossWeight = 293m,
-                            Height = 218m,
-                            MaxNetWeight = 750m,
-                            MissionsCount = 17,
-                            Status = 3L,
-                            Tare = 65m
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Code = "01014",
-                            GrossWeight = 246m,
-                            Height = 138m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 43,
-                            Status = 3L,
-                            Tare = 50m
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Code = "01015",
-                            GrossWeight = 360m,
-                            Height = 201m,
-                            MaxNetWeight = 500m,
-                            MissionsCount = 21,
-                            Status = 3L,
-                            Tare = 50m
-                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
@@ -489,7 +328,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 2, 14, 26, 57, 777, DateTimeKind.Local).AddTicks(5244),
+                            InstallationDate = new DateTime(2016, 11, 4, 17, 40, 28, 709, DateTimeKind.Local).AddTicks(8760),
                             ServiceStatus = 86
                         });
                 });
@@ -613,6 +452,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                             PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
                         });
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany()
+                        .HasForeignKey("LoadingUnitId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>

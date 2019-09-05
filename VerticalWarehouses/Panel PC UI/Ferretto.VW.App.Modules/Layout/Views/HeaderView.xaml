@@ -66,8 +66,7 @@
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
-                                    Content="Tema"
-                                    ImageSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_dark.png" />
+                                    Style="{DynamicResource PpcButtonThemeStyle}" />
             </ctrls:PpcControl>
 
             <!--  SwitchOffCommand  -->

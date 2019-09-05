@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
@@ -8,7 +7,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        void Start(int loadingUnitId, decimal runToTest, decimal weight);
+        decimal GetHorizontalPosition();
+
+        decimal GetVerticalPosition();
+
+        void MoveHorizontal(HorizontalMovementDirection direction);
+
+        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory);
+
+        void MoveVertical(VerticalMovementDirection direction);
+
+        void MoveVerticalOfDistance(decimal distance);
+
+        void Stop();
+
+        void UpdateResolution(decimal newResolution);
 
         #endregion
     }
