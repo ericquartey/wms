@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isExecutingProcedure)
                     {
-                        this.ShowNotification(null, Services.Models.NotificationSeverity.Clear);
+                        this.ClearNotifications();
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -166,6 +166,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
         }
 
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
+        }
+
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
@@ -190,16 +199,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
-        }
-
 
         protected virtual void RaiseCanExecuteChanged()
         {

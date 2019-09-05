@@ -234,6 +234,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RetrieveInputData();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
+
+            this.ShowSteps();
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -383,7 +385,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsRetrievingNewResolution = true;
 
-                this.ShowNotification(null, Services.Models.NotificationSeverity.Clear);
+                this.ClearNotifications();
 
                 this.NewResolution = await this.ResolutionCalibrationService
                     .GetAdjustedResolutionAsync(
@@ -398,6 +400,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(ex);
                 this.NewResolution = null;
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowNextStep(true, false);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion
