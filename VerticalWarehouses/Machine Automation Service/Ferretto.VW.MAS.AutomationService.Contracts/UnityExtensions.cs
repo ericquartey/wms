@@ -100,6 +100,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineVerticalOffsetProcedureService>(
                 new InjectionFactory(c => new MachineVerticalOffsetProcedureService(urlString, resolveFunction(c))));
 
+            container.GetContainer().RegisterType<IMachineProfileProcedureService>(
+              new InjectionFactory(c => new MachineProfileProcedureService(urlString, resolveFunction(c))));
+
             return container;
         }
 

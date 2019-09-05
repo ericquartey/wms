@@ -22,7 +22,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineProfileProcedureService profileProcedureService;
 
         private int activeRaysQuantity;
 
@@ -53,7 +57,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ProfileHeightCheckViewModel(
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IMachineProfileProcedureService profileProcedureService,
+            IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
             if (eventAggregator is null)
@@ -61,7 +67,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
+            if (profileProcedureService is null)
+            {
+                throw new ArgumentNullException(nameof(profileProcedureService));
+            }
+
+            if (bayManager is null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.profileProcedureService = profileProcedureService;
+            this.bayManager = bayManager;
         }
 
         #endregion
@@ -144,6 +162,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "Speed must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -227,11 +246,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                // await this.beltBurnishingService.StartAsync(
-                //    this.InputUpperBound.Value,
-                //    this.InputLowerBound.Value,
-                //    this.InputRequiredCycles.Value);
-                await Task.Delay(1);
+                var currentBay = this.bayManager.Bay.Number;
+                await this.profileProcedureService.RunAsync(currentBay);
             }
             catch (Exception ex)
             {
@@ -249,8 +265,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                // await this.beltBurnishingService.StopAsync();
-                await Task.Delay(1);
+                await this.profileProcedureService.StopAsync();
             }
             catch (Exception ex)
             {
