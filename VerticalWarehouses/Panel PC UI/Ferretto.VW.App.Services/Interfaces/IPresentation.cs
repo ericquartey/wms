@@ -9,10 +9,11 @@ namespace Ferretto.VW.App.Services.Interfaces
         ICommand ExecuteCommand { get; }
 
         bool? IsVisible { get; set; }
+        bool? IsEnabled { get; set; }
 
         PresentationStates State { get; set; }
 
-        PresentationTypes Type { get; }
+        PresentationTypes Type { get; set; }
 
         #endregion
     }
