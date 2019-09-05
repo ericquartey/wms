@@ -86,6 +86,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("reset")]
+        [HttpPost]
+        public IActionResult Reset()
+        {
+            this.setupStatusProvider.ResetBeltBurnishing();
+
+            return this.Ok();
+        }
+
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

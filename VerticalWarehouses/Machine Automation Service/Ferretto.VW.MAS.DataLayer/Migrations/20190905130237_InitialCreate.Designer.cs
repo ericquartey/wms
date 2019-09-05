@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190904154029_Initial")]
-    partial class Initial
+    [Migration("20190905130237_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 4, 17, 40, 28, 709, DateTimeKind.Local).AddTicks(8760),
+                            InstallationDate = new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220),
                             ServiceStatus = 86
                         });
                 });
@@ -370,7 +370,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay3Shutter");
 
-                    b.Property<bool>("BeltBurnishing");
+                    b.Property<bool>("BeltBurnishingCompleted");
+
+                    b.Property<int>("BeltBurnishingCompletedCycles");
+
+                    b.Property<int>("BeltBurnishingRequiredCycles");
 
                     b.Property<bool>("CellsHeightCheck");
 
@@ -410,7 +414,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay3Laser = false,
                             Bay3Shape = false,
                             Bay3Shutter = false,
-                            BeltBurnishing = false,
+                            BeltBurnishingCompleted = false,
+                            BeltBurnishingCompletedCycles = 0,
+                            BeltBurnishingRequiredCycles = 0,
                             CellsHeightCheck = false,
                             HorizontalHoming = false,
                             PanelsCheck = false,

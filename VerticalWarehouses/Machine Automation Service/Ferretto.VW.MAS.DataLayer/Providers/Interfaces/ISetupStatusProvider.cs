@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         SetupStatusCapabilities Get();
 
+        void IncreaseBeltBurnishingCycle();
+
+        void ResetBeltBurnishing();
+
         #endregion
     }
 }

@@ -36,7 +36,11 @@
 
         public bool Bay3Shutter { get; set; }
 
-        public bool BeltBurnishing { get; set; }
+        public bool BeltBurnishingCompleted { get; set; }
+
+        public int BeltBurnishingCompletedCycles { get; set; }
+
+        public int BeltBurnishingRequiredCycles { get; set; }
 
         public bool CellsHeightCheck { get; set; }
 

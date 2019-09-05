@@ -240,6 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
 
             this.RaiseCanExecuteChanged();
+            this.ShowSteps();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -281,6 +282,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.MeasuredWeight = message?.Data?.Weight;
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.Elevator.WeightCheck.STEP1);
+            this.ShowNextStep(true, false);
+            this.ShowAbortStep(true, true);
         }
 
         private async Task StartWeightCheckAsync()
