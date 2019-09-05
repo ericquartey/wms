@@ -9,6 +9,8 @@ namespace Ferretto.VW.App.Services
 
         public ICommand ExecuteCommand { get; }
 
+        public bool? IsEnabled { get; set; }
+
         public bool? IsVisible { get; set; }
 
         public PresentationStates State { get; set; }

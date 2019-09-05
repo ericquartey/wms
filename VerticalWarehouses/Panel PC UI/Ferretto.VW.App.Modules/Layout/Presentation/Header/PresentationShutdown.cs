@@ -38,8 +38,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             if (requestAccepted)
             {
                 this.EventAggregator
-                    .GetEvent<PresentationChangedPubSubEvent>()
-                    .Publish(new PresentationChangedMessage("Shutting down ...", Services.Models.NotificationSeverity.Info)); // TODO localize string
+                    .GetEvent<PresentationNotificationPubSubEvent>()
+                    .Publish(new PresentationNotificationMessage("Shutting down ...", Services.Models.NotificationSeverity.Info)); // TODO localize string
             }
             else
             {
