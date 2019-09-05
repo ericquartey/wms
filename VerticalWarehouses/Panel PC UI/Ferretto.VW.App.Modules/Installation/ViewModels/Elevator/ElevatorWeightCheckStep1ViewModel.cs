@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanCheckLoadingUnit));
 
         public string Error => string.Join(
-                      System.Environment.NewLine,
+                      Environment.NewLine,
                       this[nameof(this.InputLoadingUnitId)]);
 
         public int? InputLoadingUnitId

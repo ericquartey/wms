@@ -46,6 +46,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
                     {
                         return Resources.Errors.UserLogin_PasswordIsTooShort;
                     }
+
                     break;
 
                 case nameof(this.UserName):

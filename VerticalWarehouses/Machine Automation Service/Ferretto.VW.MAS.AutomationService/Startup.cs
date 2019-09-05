@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.AutomationService
             services
                 .AddHealthChecks()
                 .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
-                .AddCheck<ReadinessHealthCheck>("readyness-check", null, tags: new[] { ReadyHealthCheckTag });
+                .AddCheck<ReadinessHealthCheck>("readiness-check", null, tags: new[] { ReadyHealthCheckTag });
 
             this.InitialiseWmsInterfaces(services);
 
