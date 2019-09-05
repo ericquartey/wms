@@ -96,7 +96,7 @@
     "HomingExitAcceleration": 750.0,
     "HomingExitDeceleration": 750.0,
     "Resolution": 77.61182,
-    "Offset": 350.0,
+    "Offset": 300.0,
     "UpperBound": 4000.0,
     "LowerBound": 300.0,
     "TakingOffset": 0.0,
