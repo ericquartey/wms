@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -137,7 +137,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Bay3Laser = table.Column<bool>(nullable: false),
                     Bay3Shape = table.Column<bool>(nullable: false),
                     Bay3Shutter = table.Column<bool>(nullable: false),
-                    BeltBurnishing = table.Column<bool>(nullable: false),
+                    BeltBurnishingCompleted = table.Column<bool>(nullable: false),
+                    BeltBurnishingCompletedCycles = table.Column<int>(nullable: false),
+                    BeltBurnishingRequiredCycles = table.Column<int>(nullable: false),
                     CellsHeightCheck = table.Column<bool>(nullable: false),
                     CompletedDate = table.Column<DateTime>(nullable: true),
                     HorizontalHoming = table.Column<bool>(nullable: false),
@@ -317,12 +319,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 4, 17, 40, 28, 709, DateTimeKind.Local).AddTicks(8760), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
-                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "BeltBurnishing", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
-                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false, false, false, false });
+                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "BeltBurnishingCompleted", "BeltBurnishingCompletedCycles", "BeltBurnishingRequiredCycles", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
+                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 0, 0, false, null, false, false, false, false, false });
 
             migrationBuilder.InsertData(
                 table: "Users",
