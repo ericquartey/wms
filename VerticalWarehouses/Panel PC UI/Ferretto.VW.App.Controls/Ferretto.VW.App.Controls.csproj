@@ -51,6 +51,7 @@
     <None Remove="Skins\DXStyle.xaml" />
     <None Remove="Skins\Light\LightDialogPopup.xaml" />
     <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
+    <None Remove="Styles\PpcButtonStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>

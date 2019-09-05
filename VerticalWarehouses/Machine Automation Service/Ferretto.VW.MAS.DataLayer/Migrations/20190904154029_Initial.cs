@@ -3,28 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Bays",
-                columns: table => new
-                {
-                    Number = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CurrentMissionId = table.Column<int>(nullable: true),
-                    CurrentMissionOperationId = table.Column<int>(nullable: true),
-                    ExternalId = table.Column<int>(nullable: false),
-                    IpAddress = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false),
-                    Type = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bays", x => x.Number);
-                });
-
             migrationBuilder.CreateTable(
                 name: "CellPanels",
                 columns: table => new
@@ -255,6 +237,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Description = table.Column<string>(nullable: true),
                     GrossWeight = table.Column<decimal>(nullable: false),
                     Height = table.Column<decimal>(nullable: false),
+                    IsIntoMachine = table.Column<bool>(nullable: false),
                     MaxNetWeight = table.Column<decimal>(nullable: false),
                     MissionsCount = table.Column<int>(nullable: false),
                     Status = table.Column<long>(nullable: false),
@@ -267,6 +250,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         name: "FK_LoadingUnits_Cells_CellId",
                         column: x => x.CellId,
                         principalTable: "Cells",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bays",
+                columns: table => new
+                {
+                    Number = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CurrentMissionId = table.Column<int>(nullable: true),
+                    CurrentMissionOperationId = table.Column<int>(nullable: true),
+                    ExternalId = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    LoadingUnitId = table.Column<int>(nullable: true),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bays", x => x.Number);
+                    table.ForeignKey(
+                        name: "FK_Bays_LoadingUnits_LoadingUnitId",
+                        column: x => x.LoadingUnitId,
+                        principalTable: "LoadingUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -302,81 +310,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 values: new object[] { 100032, "Cassetto non caricato completamente", "Il cassetto potrebbe essersi incastrato.", 0 });
 
             migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 15, null, "01015", null, 360m, 201m, 500m, 21, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 14, null, "01014", null, 246m, 138m, 500m, 43, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 13, null, "01013", null, 293m, 218m, 750m, 17, 3L, 65m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 12, null, "01012", null, 334m, 137m, 750m, 6, 3L, 65m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 11, null, "01011", null, 376m, 217m, 500m, 46, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 9, null, "01009", null, 236m, 182m, 500m, 16, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 8, null, "01008", null, 248m, 290m, 500m, 7, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 10, null, "01010", null, 221m, 261m, 500m, 33, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 6, null, "01006", null, 345m, 56m, 500m, 2, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 5, null, "01005", null, 265m, 150m, 500m, 45, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 4, null, "01004", null, 315m, 272m, 500m, 28, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 3, null, "01003", null, 310m, 293m, 750m, 21, 3L, 65m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 2, null, "01002", null, 307m, 50m, 500m, 46, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 1, null, "01001", null, 364m, 249m, 500m, 7, 3L, 50m });
-
-            migrationBuilder.InsertData(
-                table: "LoadingUnits",
-                columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 7, null, "01007", null, 329m, 242m, 500m, 44, 3L, 50m });
-
-            migrationBuilder.InsertData(
                 table: "MachineStatistics",
                 columns: new[] { "Id", "TotalAutomaticTime", "TotalBeltCycles", "TotalMissionTime", "TotalMovedTrays", "TotalMovedTraysInBay1", "TotalMovedTraysInBay2", "TotalMovedTraysInBay3", "TotalPowerOnTime", "TotalShutter1Cycles", "TotalShutter2Cycles", "TotalShutter3Cycles", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers", "WeightCapacityPercentage" },
                 values: new object[] { 1, new TimeSpan(130, 0, 0, 0, 0), 12352, new TimeSpan(30, 0, 0, 0, 0), 534, 123, 456, 789, new TimeSpan(190, 0, 0, 0, 0), 321, 654, 987, 5232, 34.0, 60.0 });
@@ -384,7 +317,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 2, 14, 26, 57, 777, DateTimeKind.Local).AddTicks(5244), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 4, 17, 40, 28, 709, DateTimeKind.Local).AddTicks(8760), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -411,6 +344,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "Bays",
                 column: "IpAddress",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bays_LoadingUnitId",
+                table: "Bays",
+                column: "LoadingUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cells_PanelId",

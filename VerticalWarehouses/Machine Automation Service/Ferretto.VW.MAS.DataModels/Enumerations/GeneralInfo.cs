@@ -36,8 +36,6 @@
 
         MaxGrossWeight = 16L,
 
-        DrawersQuantity = 17L,
-
         BaysQuantity = 18L,
 
         Bay1Type = 19L,

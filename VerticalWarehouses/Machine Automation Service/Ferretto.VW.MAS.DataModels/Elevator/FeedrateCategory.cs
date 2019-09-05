@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Models
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public enum FeedRateCategory
     {

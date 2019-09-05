@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();
+
+        Task LoadFromAsync(string fileNamePath);
 
         #endregion
     }
