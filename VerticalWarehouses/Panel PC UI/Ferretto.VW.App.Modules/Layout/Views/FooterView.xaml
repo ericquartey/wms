@@ -15,6 +15,186 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <Style x:Key="PpcPrev"
+               TargetType="controls:PpcButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:PpcButton">
+                        <Border Name="PpcButton_Border"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <Grid>
+                                <Canvas Width="100"
+                                        Height="60"
+                                        Margin="-5,0,0,0"
+                                        Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                                    <Path Canvas.Top="16.3542"
+                                          Width="25.3333"
+                                          Height="28.5"
+                                          Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "
+                                          Fill="{DynamicResource PpcButtonForeground}"
+                                          Stretch="Fill" />
+                                </Canvas>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+            <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+            <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="Padding" Value="5,0,5,0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}"
+                             Value="True">
+                    <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                </DataTrigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PpcNext"
+               TargetType="controls:PpcButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:PpcButton">
+                        <Border Name="PpcButton_Border"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <Grid>
+                                <Canvas Width="100"
+                                        Height="60"
+                                        Margin="10,0,0,0"
+                                        Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                                    <Path Canvas.Top="16.3542"
+                                          Width="25.3333"
+                                          Height="28.5"
+                                          Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "
+                                          Fill="{DynamicResource PpcButtonForeground}"
+                                          Stretch="Fill" />
+                                </Canvas>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+            <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+            <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="Padding" Value="5,0,5,0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}"
+                             Value="True">
+                    <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                </DataTrigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PpcAbort"
+               TargetType="controls:PpcButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:PpcButton">
+                        <Border Name="PpcButton_Border"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <Grid>
+                                <Canvas Width="100"
+                                        Height="60"
+                                        Margin="-5,0,0,0"
+                                        Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                                    <Path Canvas.Top="16.3542"
+                                          Width="32.75"
+                                          Height="28.5"
+                                          Data="F1 M 44.3333,31.6667L 30.0833,31.6667L 38,39.5833L 28.7309,39.5833L 17.4167,28.6649L 28.7309,17.4167L 38,17.4167L 30.0833,25.3333L 44.3333,25.3333C 53.0778,25.3333 60.1667,32.4222 60.1667,41.1667C 60.1667,49.9112 53.0778,57 44.3333,57L 39.5833,57L 39.5833,50.6667L 44.3333,50.6667C 49.58,50.6667 53.8333,46.4134 53.8333,41.1667C 53.8333,35.92 49.58,31.6667 44.3333,31.6667 Z M 34.8333,50.6667L 34.8333,57L 28.5,57L 28.5,50.6667L 34.8333,50.6667 Z "
+                                          Fill="{DynamicResource PpcButtonForeground}"
+                                          Stretch="Fill" />
+                                </Canvas>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+            <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+            <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="Padding" Value="5,0,5,0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}"
+                             Value="True">
+                    <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                </DataTrigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
     <Grid Height="60"
           Margin="15">
         <Grid.ColumnDefinitions>
@@ -48,10 +228,40 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Column="1"
+        <StackPanel Name="StackPanelButtons"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
                     DataContext="{Binding States}"
-                    FlowDirection="RightToLeft"
                     Orientation="Horizontal">
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.Prev}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <controls:PpcButton Margin="0,0,15,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcPrev}" />
+            </ctrls:PpcControl>
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.Next}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <ctrls:PpcControl.Resources />
+                <controls:PpcButton Margin="0,0,15,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcNext}" />
+            </ctrls:PpcControl>
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.Abort}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <controls:PpcButton Margin="0,0,15,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcAbort}" />
+
+            </ctrls:PpcControl>
 
             <ctrls:PpcControl PresentationType="{x:Static enums:PresentationTypes.Back}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">

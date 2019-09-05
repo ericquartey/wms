@@ -24,6 +24,12 @@
 
         Back,
 
-        Debug
+        Debug,
+
+        Prev,
+
+        Next,
+
+        Abort
     }
 }
