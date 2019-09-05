@@ -38,7 +38,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BayHeightCheckPosition1}"
+                   Text="{x:Static res:InstallationApp.BayPosition1}"
                    Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVIC}}" />
 
         <StackPanel Grid.Row="1"
@@ -47,11 +47,11 @@
                     Orientation="Horizontal"
                     Visibility="{Binding IsBayPositionsVisible, Converter={StaticResource BTVC}}">
             <ctrls:PpcButton Command="{Binding ChangeBayPosition1Command}"
-                             Content="{x:Static res:InstallationApp.BayHeightCheckPosition1}" />
+                             Content="{x:Static res:InstallationApp.BayPosition1}" />
 
             <ctrls:PpcButton Margin="50,0,0,0"
                              Command="{Binding ChangeBayPosition2Command}"
-                             Content="{x:Static res:InstallationApp.BayHeightCheckPosition2}" />
+                             Content="{x:Static res:InstallationApp.BayPosition2}" />
 
         </StackPanel>
 
