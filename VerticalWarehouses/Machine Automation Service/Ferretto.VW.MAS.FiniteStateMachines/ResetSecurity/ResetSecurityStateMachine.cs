@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     public class ResetSecurityStateMachine : StateMachineBase
     {
+
         #region Fields
+
+        private readonly IResetSecurityMachineData machineData;
 
         private bool disposed;
 
@@ -20,13 +24,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         #region Constructors
 
         public ResetSecurityStateMachine(
+            BayIndex requestingBay,
             IEventAggregator eventAggregator,
-            IResetSecurityMessageData calibrateMessageData,
-            ILogger logger,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(this.Logger);
+
+            this.machineData = new ResetSecurityMachineData(requestingBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -39,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -68,7 +76,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new ResetSecurityStartState(this, this.Logger);
+                var stateData = new ResetSecurityStateData(this, this.machineData);
+                this.CurrentState = new ResetSecurityStartState(stateData);
                 this.CurrentState?.Start();
             }
 
@@ -81,7 +90,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 

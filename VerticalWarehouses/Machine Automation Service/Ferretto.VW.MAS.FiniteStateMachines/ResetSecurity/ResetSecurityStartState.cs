@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -14,17 +14,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Fields
 
+        private readonly IResetSecurityMachineData machineData;
+
+        private readonly IResetSecurityStateData stateData;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ResetSecurityStartState(
-            IStateMachine parentMachine,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public ResetSecurityStartState(IResetSecurityStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IResetSecurityMachineData;
         }
 
         #endregion
@@ -56,17 +60,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.Logger));
+                        this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.ParentStateMachine, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData));
                         break;
                 }
             }
             else if (message.Type == FieldMessageType.IoDriverException)
             {
-                this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.ParentStateMachine, message, this.Logger));
+                this.stateData.FieldMessage = message;
+                this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData));
             }
         }
 
@@ -96,6 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ResetSecurity,
+                this.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -103,11 +110,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.Logger, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)

@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IResetSecurityMachineData machineData;
+
+        private readonly IResetSecurityStateData stateData;
 
         private bool disposed;
 
@@ -21,13 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityErrorState(
-            IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public ResetSecurityErrorState(IResetSecurityStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IResetSecurityMachineData;
         }
 
         #endregion
@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.ResetSecurity,
+                    this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -90,7 +91,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }
