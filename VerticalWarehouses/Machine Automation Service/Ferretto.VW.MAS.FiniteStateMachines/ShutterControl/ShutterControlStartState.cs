@@ -46,22 +46,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -157,12 +141,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
+        /// <param name="reason"></param>
         /// <inheritdoc/>
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ShutterControlEndState(this.ParentStateMachine, this.shutterControlMessageData, this.Logger, true));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

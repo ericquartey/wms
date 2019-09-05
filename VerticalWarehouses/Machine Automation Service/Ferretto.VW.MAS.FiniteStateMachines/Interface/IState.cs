@@ -53,7 +53,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
         /// <summary>
         /// Executes stop action in the current state to stop running Finite State Machine
         /// </summary>
-        void Stop();
+        /// <param name="reason"></param>
+        void Stop(StopRequestReason reason);
 
         #endregion
     }

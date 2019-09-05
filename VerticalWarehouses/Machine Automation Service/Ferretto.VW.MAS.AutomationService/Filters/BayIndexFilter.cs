@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Index"];
+            var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];
 
             if (bayIndexHeaders.Count == 0)
             {

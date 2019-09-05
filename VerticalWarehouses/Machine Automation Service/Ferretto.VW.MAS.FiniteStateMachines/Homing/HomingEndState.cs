@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -98,7 +99,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.stateData.StopRequested)
+            if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 if (this.machineData.AxisToCalibrate == Axis.Horizontal)
                 {
@@ -128,6 +129,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             }
 
             var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
+
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
@@ -135,13 +137,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
                 this.RequestingBay,
-                this.stateData.StopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (!this.stateData.StopRequested)
+            if (this.stateData.StopRequestReason == StopRequestReason.NoReason)
             {
                 using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                 {
@@ -152,7 +154,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

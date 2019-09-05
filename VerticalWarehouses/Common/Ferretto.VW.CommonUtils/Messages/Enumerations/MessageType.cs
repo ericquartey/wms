@@ -73,5 +73,9 @@
         InverterStatusWord,
 
         RequestPosition,
+
+        RunningStateChanged,
+
+        FaultStateChanged
     }
 }

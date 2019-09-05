@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
 

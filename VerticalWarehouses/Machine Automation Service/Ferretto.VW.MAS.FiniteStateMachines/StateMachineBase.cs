@@ -141,7 +141,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <inheritdoc />
         public abstract void Start();
 
-        public abstract void Stop();
+        public abstract void Stop(StopRequestReason reason);
 
         protected virtual void Dispose(bool disposing)
         {

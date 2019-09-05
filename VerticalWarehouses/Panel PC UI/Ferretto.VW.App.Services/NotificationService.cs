@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Services
 
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(message);
 
-            if (!dataSensors[(int)IOMachineSensors.NormalState])
+            if (!dataSensors[(int)IOMachineSensors.RunningState])
             {
                 this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
                     new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));

@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             lock (this.CurrentState)
             {
-                if (!this.shutterPositioningStateMachineData.MachineSensorsStatus.IsMachineInNormalState ||
+                if (!this.shutterPositioningStateMachineData.MachineSensorsStatus.IsMachineInRunningState ||
                     this.shutterPositioningStateMachineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
                     !(this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.TestLoop)
                     )
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 

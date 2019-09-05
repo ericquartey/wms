@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
         }

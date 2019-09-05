@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
     public interface IMachineSensorsStatus
     {
+
+
         #region Properties
 
         decimal AxisXPosition { get; set; }
@@ -22,13 +24,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         bool IsMachineInEmergencyStateBay1 { get; }
 
-        bool IsMachineInNormalState { get; }
+        bool IsMachineInFaultState { get; }
+
+        bool IsMachineInRunningState { get; }
 
         bool IsSensorZeroOnCradle { get; }
 
         bool IsSensorZeroOnElevator { get; }
 
         #endregion
+
+
 
         #region Methods
 

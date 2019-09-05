@@ -178,11 +178,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.stateData.StopRequested = true;
+            this.stateData.StopRequestReason = true;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 

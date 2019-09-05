@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             lock (this.CurrentState)
             {

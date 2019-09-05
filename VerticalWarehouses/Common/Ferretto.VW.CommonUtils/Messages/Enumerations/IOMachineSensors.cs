@@ -4,7 +4,7 @@
     {
         //INFO Remote IO 1 sensors
 
-        NormalState = 0,
+        RunningState = 0,
 
         MushroomEmergencyButtonBay1 = 1,
 
@@ -18,7 +18,7 @@
 
         LUPresentMiddleBottomBay1 = 6,
 
-        Free1Bay1 = 7,
+        InverterFault = 7,
 
         ElevatorEngineSelectedBay1 = 8,
 

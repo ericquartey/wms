@@ -10,6 +10,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerEndState : StateBase
     {
+
         #region Fields
 
         private readonly IDrawerOperationMessageData drawerOperationData;
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -78,7 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.Logger.LogDebug($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
         }

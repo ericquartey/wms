@@ -127,8 +127,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <param name="reason"></param>
         /// <inheritdoc/>
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
         }

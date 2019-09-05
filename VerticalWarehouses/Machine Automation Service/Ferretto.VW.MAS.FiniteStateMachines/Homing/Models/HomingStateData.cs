@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
         {
             this.ParentMachine = parentMachine;
             this.MachineData = machineData;
+
+            this.StopRequestReason = StopRequestReason.NoReason;
         }
 
         #endregion
@@ -29,7 +32,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public IStateMachine ParentMachine { get; }
 
-        public bool StopRequested { get; set; }
+        public StopRequestReason StopRequestReason { get; set; }
 
         #endregion
     }

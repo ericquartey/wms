@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.Utils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         IStateMachine ParentMachine { get; }
 
-        bool StopRequested { get; set; }
+        StopRequestReason StopRequestReason { get; set; }
 
         #endregion
     }

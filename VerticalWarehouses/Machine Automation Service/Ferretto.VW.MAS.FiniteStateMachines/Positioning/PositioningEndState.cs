@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
             }
 
-            if (this.stateData.StopRequested)
+            if (this.stateData.StopRequestReason)
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
             this.Logger.LogTrace("1:Method Start");
         }

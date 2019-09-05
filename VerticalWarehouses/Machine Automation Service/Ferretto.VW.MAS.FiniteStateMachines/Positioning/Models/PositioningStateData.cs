@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
@@ -29,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 
         public IStateMachine ParentMachine { get; }
 
-        public bool StopRequested { get; set; }
+        public StopRequestReason StopRequestReason { get; set; }
 
         #endregion
     }

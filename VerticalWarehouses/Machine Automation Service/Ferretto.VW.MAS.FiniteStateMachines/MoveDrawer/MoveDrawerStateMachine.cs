@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             lock (this.CurrentState)
             {

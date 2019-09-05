@@ -65,12 +65,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.RequestingBay,
-                this.stateData.StopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.stateData.StopRequestReason ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
         }
 
