@@ -12,13 +12,19 @@ namespace Ferretto.VW.Simulator.Services.Models
 {
     public enum InverterOperationMode : ushort
     {
-        Position = 0x0001,
+        Position = 1,
 
-        Homing = 0x0006,
+        Homing = 6,
 
-        Velocity = 0x0002,
+        Velocity = 2,
 
-        ProfileVelocity = 0x0003
+        ProfileVelocity = 3,
+
+        SlaveGear = 253,
+
+        LeaveLimitSwitch = 254,
+
+        TableTravel = 255,
     }
 
     public enum InverterParameterId : short
@@ -51,7 +57,19 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414 // 19E
+        ShutterTargetPosition = 414, // 19E
+
+        TableTravelTargetPosition = 1202,
+
+        TableTravelTargetSpeeds = 1203,
+
+        TableTravelTargetAccelerations = 1204,
+
+        TableTravelTargetDecelerations = 1206,
+
+        TableTravelSwitchPositions = 1209,
+
+        TableTravelDirection = 1261,
     }
 
     public enum InverterRole
@@ -738,13 +756,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Enable Operation";
 
                 case 4:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : operationMode == InverterOperationMode.TableTravel ? "Sequence Mode" : "Operation mode specific";
 
                 case 5:
                     return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
 
                 case 6:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : operationMode == InverterOperationMode.TableTravel ? "Resume" : "Operation mode specific";
 
                 case 7:
                     return "Reset Fault";
@@ -753,18 +771,22 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Halt";
 
                 case 9:
-                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : operationMode == InverterOperationMode.TableTravel ? "Start Motion Block" : "Operation mode specific";
 
                 case 10:
-                    return "Free";
+                    return "HeartBeat";
 
                 case 11:
+                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect0" : "Free";
+
                 case 12:
+                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect1" : "Free";
+
                 case 13:
-                    return "Manufacturer specific";
+                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect2" : "Free";
 
                 case 14:
-                    return "HeartBeat";
+                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect3" : "Free";
 
                 case 15:
                     return "Horizontal Axis";

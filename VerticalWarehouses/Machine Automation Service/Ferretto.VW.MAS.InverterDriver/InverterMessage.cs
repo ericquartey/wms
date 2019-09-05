@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public float FloatPayload => this.ConvertPayloadToFloat();
 
-        public bool HeartbeatValue => (this.ConvertPayloadToUShort() & 0x4000) > 0;
+        public bool HeartbeatValue => (this.ConvertPayloadToUShort() & 0x0400) > 0;
 
         public int IntPayload => this.ConvertPayloadToInt();
 

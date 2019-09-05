@@ -86,6 +86,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             }
         }
 
+        // do not use: it overlaps the horizontal axis
         public bool MotionBlockSelect4
         {
             set
