@@ -248,10 +248,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
-                    case MessageType.ShutterTestStatusChanged:
-                        this.ProcessShutterControlMessage(receivedMessage);
-                        break;
-
                     case MessageType.Positioning:
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
@@ -367,7 +363,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
 
-                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceRemoteIoStatusPublish = false;
                             }
@@ -412,7 +408,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageType.SensorsChanged,
                                     messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
-                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceInverterIoStatusPublish = false;
                             }
@@ -731,37 +727,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"13:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
-                                    this.SendCleanDebug();
-
-                                    //TODO: According to the type of error we can try to resolve here
-                                    break;
-                            }
-                        }
-                        break;
-
-                    case MessageType.ShutterTestStatusChanged:
-                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
-                        {
-                            switch (receivedMessage.Status)
-                            {
-                                case MessageStatus.OperationEnd:
-
-                                    this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
-                                    this.SendCleanDebug();
-                                    break;
-
-                                case MessageStatus.OperationStop:
-
-                                    this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayIndex);
-                                    this.SendCleanDebug();
-                                    break;
-
-                                case MessageStatus.OperationError:
-
-                                    this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
                                     this.currentStateMachines.Remove(receivedMessage.BayIndex);
                                     this.SendCleanDebug();
 

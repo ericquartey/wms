@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.FiniteStateMachines,
                                 FieldMessageType.InverterSetTimer,
-                                (byte)InverterIndex.MainInverter);
+                                (byte)this.machineData.CurrentInverterIndex);
                             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
                             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
@@ -107,7 +108,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
             }
 
-            if (this.stateData.StopRequestReason)
+            if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
@@ -118,33 +119,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     (byte)this.machineData.CurrentInverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-
-                var notificationMessage = new NotificationMessage(
-                    this.machineData.MessageData,
-                    $"{this.machineData.MessageData.MovementMode} Positioning Stopped",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning,
-                    this.RequestingBay,
-                    MessageStatus.OperationStop);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
-            else
-            {
-                var notificationMessage = new NotificationMessage(
-                    this.machineData.MessageData,
-                    $"{this.machineData.MessageData.MovementMode} Positioning Completed",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning,
-                    this.RequestingBay,
-                    MessageStatus.OperationEnd);
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"{this.machineData.MessageData.MovementMode} Positioning Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                this.RequestingBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-                this.Logger.LogDebug("FSM Positioning End");
+            this.Logger.LogDebug("FSM Positioning End");
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            }
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 500);
             var inverterMessage = new FieldCommandMessage(
@@ -160,7 +147,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

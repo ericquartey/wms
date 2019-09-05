@@ -1,10 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -15,9 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableMachineData machineData;
 
-        private readonly bool stopRequested;
+        private readonly IPowerEnableStateData stateData;
 
         private bool disposed;
 
@@ -25,14 +25,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableEndState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData,
-            bool stopRequested = false)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableEndState(IPowerEnableStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-            this.stopRequested = stopRequested;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
@@ -87,15 +84,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
-                BayIndex.ElevatorBay,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.RequestingBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

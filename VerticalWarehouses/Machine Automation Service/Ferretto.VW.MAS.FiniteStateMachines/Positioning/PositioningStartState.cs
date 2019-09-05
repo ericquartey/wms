@@ -147,19 +147,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter status word status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-            this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
             this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
 
             this.machineData.MessageData.ExecutedCycles = 0;
@@ -178,11 +165,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.stateData.StopRequestReason = true;
+            this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 

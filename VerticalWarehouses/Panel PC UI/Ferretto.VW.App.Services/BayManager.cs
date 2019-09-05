@@ -8,6 +8,7 @@ namespace Ferretto.VW.App.Services
 {
     internal class BayManager : IBayManager
     {
+
         #region Fields
 
         private readonly IMachineIdentityService identityService;
@@ -81,11 +82,15 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Events
 
         public event EventHandler NewMissionOperationAvailable;
 
         #endregion
+
+
 
         #region Properties
 
@@ -116,6 +121,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Methods
 
         public void CompleteCurrentMission()
@@ -140,7 +147,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Number == e.Index)
+            if (this.Bay?.Index == e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);

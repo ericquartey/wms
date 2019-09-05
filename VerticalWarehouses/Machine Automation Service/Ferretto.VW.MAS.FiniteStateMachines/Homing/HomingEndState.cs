@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal)
+                if (this.machineData.AxisToCalibrate == Axis.Vertical)
                 {
                     var stopMessage = new FieldCommandMessage(
                         null,

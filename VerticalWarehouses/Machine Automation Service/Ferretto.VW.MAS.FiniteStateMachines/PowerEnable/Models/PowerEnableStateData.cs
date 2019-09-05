@@ -1,25 +1,22 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
-// ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
+namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 {
-    public class TemplateStateData : ITemplateStateData
+    public class PowerEnableStateData : IPowerEnableStateData
     {
 
 
         #region Constructors
 
-        public TemplateStateData(IStateMachine parentMachine, IMachineData machineData)
+        public PowerEnableStateData(IStateMachine parentMachine, IMachineData machineData)
         {
             this.ParentMachine = parentMachine;
             this.MachineData = machineData;
-            this.StopRequestReason = StopRequestReason.NoReason;
 
-            this.Message = "Template State Data";
+            this.StopRequestReason = StopRequestReason.NoReason;
         }
 
         #endregion
@@ -31,8 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
         public FieldNotificationMessage FieldMessage { get; set; }
 
         public IMachineData MachineData { get; }
-
-        public string Message { get; }
 
         public IStateMachine ParentMachine { get; }
 

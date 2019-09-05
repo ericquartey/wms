@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)this.machineData.CurrentInverterIndex);
             }
 
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)this.machineData.CurrentInverterIndex);
             }
 
             if (this.machineData.MessageData.MovementMode == MovementMode.FindZero)
@@ -147,17 +147,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
+                    (byte)this.machineData.CurrentInverterIndex);
             }
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.stateData.StopRequestReason = true;
+            this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.numberExecutedSteps;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                            FieldMessageActor.InverterDriver,
                            FieldMessageActor.FiniteStateMachines,
                            FieldMessageType.Positioning,
-                           (byte)InverterIndex.MainInverter);
+                           (byte)this.machineData.CurrentInverterIndex);
 
                         this.Logger.LogTrace(
                             $"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
@@ -280,7 +280,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         FieldMessageActor.InverterDriver,
                         FieldMessageActor.FiniteStateMachines,
                         FieldMessageType.InverterStop,
-                        (byte)InverterIndex.MainInverter);
+                        (byte)this.machineData.CurrentInverterIndex);
 
                     this.Logger.LogTrace(
                         $"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");

@@ -94,9 +94,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
-            this.stateData.StopRequestReason = true;
+            this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
         }
 

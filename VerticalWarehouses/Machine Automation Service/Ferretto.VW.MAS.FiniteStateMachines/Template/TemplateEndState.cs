@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
@@ -65,7 +66,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.RequestingBay,
-                this.stateData.StopRequestReason ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

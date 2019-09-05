@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
         {
             this.ParentMachine = parentMachine;
             this.MachineData = machineData;
+
+            this.StopRequestReason = StopRequestReason.NoReason;
         }
 
         #endregion

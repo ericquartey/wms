@@ -95,13 +95,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
+            InverterIndex currentInverterIndex;
+            if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+            {
+                currentInverterIndex = InverterIndex.Slave1;
+            }
+            else
+            {
+                currentInverterIndex = InverterIndex.MainInverter;
+            }
+
             var stopMessage = new FieldCommandMessage(
                 null,
                 $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
-                (byte)InverterIndex.MainInverter);
+                (byte)currentInverterIndex);
 
             this.Logger.LogTrace($"3:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
@@ -120,7 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

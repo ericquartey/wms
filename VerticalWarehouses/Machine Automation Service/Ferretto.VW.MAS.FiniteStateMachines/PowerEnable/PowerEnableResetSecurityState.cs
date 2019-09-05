@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,7 +14,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableMachineData machineData;
+
+        private readonly IPowerEnableStateData stateData;
 
         private bool disposed;
 
@@ -23,12 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableResetSecurityState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableResetSecurityState(IPowerEnableStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
@@ -60,17 +60,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData));
+                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
                         break;
                 }
             }
             else if (message.Type == FieldMessageType.IoDriverException)
             {
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
+                this.stateData.FieldMessage = message;
+                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
             }
         }
 
@@ -94,11 +96,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)

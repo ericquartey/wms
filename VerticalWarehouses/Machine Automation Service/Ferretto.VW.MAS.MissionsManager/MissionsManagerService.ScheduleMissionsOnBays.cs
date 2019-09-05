@@ -138,6 +138,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 MessageActor.AutomationService,
                 MessageActor.MissionsManager,
                 MessageType.NewMissionOperationAvailable,
+                bay.Index,
                 MessageStatus.NoStatus);
 
             this.EventAggregator

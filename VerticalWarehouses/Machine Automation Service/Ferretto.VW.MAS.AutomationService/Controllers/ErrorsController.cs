@@ -1,3 +1,4 @@
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost]
         public ActionResult<Error> Create(MachineErrors code)
         {
-            var newError = this.errorsProvider.RecordNew(code, TODO);
+            var newError = this.errorsProvider.RecordNew(code, BayIndex.None);
 
             return this.Ok(newError);
         }

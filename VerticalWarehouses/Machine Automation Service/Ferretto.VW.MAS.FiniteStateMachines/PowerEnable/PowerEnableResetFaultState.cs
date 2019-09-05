@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,7 +14,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableMachineData machineData;
+
+        private readonly IPowerEnableStateData stateData;
 
         private int currentInverterIndex;
 
@@ -25,12 +26,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableResetFaultState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableResetFaultState(IPowerEnableStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
+
             this.currentInverterIndex = 0;
         }
 
@@ -81,12 +82,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.ParentStateMachine, this.machineData));
+                            this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.stateData));
                         }
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
                         break;
                 }
             }
@@ -99,18 +101,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter status word status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
             var inverterCommandMessageData = new InverterFaultFieldMessageData();
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
@@ -124,11 +114,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)

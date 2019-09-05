@@ -32,8 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     null,
                     "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
-                    MessageType.SensorsChanged,
-                    BayIndex.None);
+                    MessageType.SensorsChanged);
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,

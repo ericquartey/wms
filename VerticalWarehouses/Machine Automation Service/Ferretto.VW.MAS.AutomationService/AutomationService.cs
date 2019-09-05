@@ -142,6 +142,30 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #region Methods
 
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            await base.StartAsync(cancellationToken);
+
+            await this.dataHubClient.ConnectAsync();
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
+            }
+
+            return Task.CompletedTask;
+        }
+
         private void CommandReceiveTaskFunction()
         {
             do
@@ -238,10 +262,6 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.CurrentPositionMethod(receivedMessage);
                         break;
 
-                    case MessageType.ShutterTestStatusChanged:
-                        this.ShutterControlMethod(receivedMessage);
-                        break;
-
                     case MessageType.Positioning:
                         this.OnPositioningChanged(receivedMessage);
                         break;
@@ -297,30 +317,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 baysConfigurationProvider.LoadFromConfiguration();
             }
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public override async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await base.StartAsync(cancellationToken);
-
-            await this.dataHubClient.ConnectAsync();
         }
 
         #endregion

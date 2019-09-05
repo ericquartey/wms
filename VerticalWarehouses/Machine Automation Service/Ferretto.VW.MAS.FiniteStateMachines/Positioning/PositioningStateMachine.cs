@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 

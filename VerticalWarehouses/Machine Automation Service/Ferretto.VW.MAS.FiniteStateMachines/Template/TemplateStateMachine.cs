@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 

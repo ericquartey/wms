@@ -17,10 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         private Axis axisToCalibrated;
 
-        private int maximumSteps;
-
-        private int numberOfExecutedSteps;
-
         #endregion
 
         #region Constructors
@@ -67,9 +63,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public int MaximumSteps { get => this.maximumSteps; set => this.maximumSteps = value; }
+        public int MaximumSteps { get; set; }
 
-        public int NumberOfExecutedSteps { get => this.numberOfExecutedSteps; set => this.numberOfExecutedSteps = value; }
+        public int NumberOfExecutedSteps { get; set; }
 
         public BayIndex RequestingBay { get; set; }
 

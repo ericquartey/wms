@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ShuttersController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -47,6 +48,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -133,7 +136,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 destination,
                 data.ShutterPositionMovement,
                 ShutterType.Shutter3Type,
-                data.BayNumber,
                 speedRate,
                 MovementMode.Position,
                 0,
@@ -189,7 +191,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
                 ShutterType.Shutter3Type,
-                bayNumber,
                 speedRate,
                 MovementMode.TestLoop,
                 numberCycles,

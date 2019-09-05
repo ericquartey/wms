@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -13,9 +12,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IPowerEnableMachineData machineData;
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableStateData stateData;
 
         private bool disposed;
 
@@ -23,14 +22,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableErrorState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData,
-            FieldNotificationMessage errorMessage)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableErrorState(IPowerEnableStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
@@ -72,14 +68,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
-                BayIndex.ElevatorBay,
+                this.RequestingBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }
