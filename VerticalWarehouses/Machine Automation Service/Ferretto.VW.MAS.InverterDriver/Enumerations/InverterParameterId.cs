@@ -30,6 +30,18 @@
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414 // 19E
+        ShutterTargetPosition = 414, // 19E
+
+        TableTravelTargetPosition = 1202,
+
+        TableTravelTargetSpeeds = 1203,
+
+        TableTravelTargetAccelerations = 1204,
+
+        TableTravelTargetDecelerations = 1206,
+
+        TableTravelSwitchPositions = 1209,
+
+        TableTravelDirection = 1261,
     }
 }
