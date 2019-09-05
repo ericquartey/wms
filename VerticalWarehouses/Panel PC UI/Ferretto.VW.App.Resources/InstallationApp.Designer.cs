@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -241,24 +241,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
-        /// </summary>
-        public static string BayHeightCheckPosition1 {
-            get {
-                return ResourceManager.GetString("BayHeightCheckPosition1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Position 2.
-        /// </summary>
-        public static string BayHeightCheckPosition2 {
-            get {
-                return ResourceManager.GetString("BayHeightCheckPosition2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Position in bay.
         /// </summary>
         public static string BayHeightCheckSelectedPosition {
@@ -273,6 +255,24 @@ namespace Ferretto.VW.App.Resources {
         public static string BayPosition {
             get {
                 return ResourceManager.GetString("BayPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 1.
+        /// </summary>
+        public static string BayPosition1 {
+            get {
+                return ResourceManager.GetString("BayPosition1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 2.
+        /// </summary>
+        public static string BayPosition2 {
+            get {
+                return ResourceManager.GetString("BayPosition2", resourceCulture);
             }
         }
         
@@ -741,6 +741,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ElevatorHorizontalPosition {
             get {
                 return ResourceManager.GetString("ElevatorHorizontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator is in cell position..
+        /// </summary>
+        public static string ElevatorIsCellPosition {
+            get {
+                return ResourceManager.GetString("ElevatorIsCellPosition", resourceCulture);
             }
         }
         
@@ -2172,6 +2181,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Side {
             get {
                 return ResourceManager.GetString("Side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Single.
+        /// </summary>
+        public static string SingleBay {
+            get {
+                return ResourceManager.GetString("SingleBay", resourceCulture);
             }
         }
         

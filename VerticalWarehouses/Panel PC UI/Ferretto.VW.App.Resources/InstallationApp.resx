@@ -1107,11 +1107,11 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Move to Cell Height</value>
   </data>
-  <data name="BayHeightCheckPosition1" xml:space="preserve">
+  <data name="BayPosition1" xml:space="preserve">
     <value>Position 1</value>
 
   </data>
-  <data name="BayHeightCheckPosition2" xml:space="preserve">
+  <data name="BayPosition2" xml:space="preserve">
     <value>Position 2</value>
 
   </data>
@@ -1200,5 +1200,11 @@
   <data name="TimeDelay" xml:space="preserve">
     <value>Select waiting time</value>
     <comment>Label text</comment>
+  </data>
+  <data name="ElevatorIsCellPosition" xml:space="preserve">
+    <value>Elevator is in cell position.</value>
+  </data>
+  <data name="SingleBay" xml:space="preserve">
+    <value>Single</value>
   </data>
 </root>
