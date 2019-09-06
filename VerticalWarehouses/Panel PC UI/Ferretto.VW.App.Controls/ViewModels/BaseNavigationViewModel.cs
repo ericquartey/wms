@@ -62,10 +62,6 @@ namespace Ferretto.VW.App.Controls
             {
                 this.Data = navigationContext.Parameters[parametersStorageKey];
             }
-
-            this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()?
-                .Publish(new PresentationChangedMessage(this.journal));
         }
 
         #endregion

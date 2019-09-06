@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Layout.Views;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Ioc;
@@ -50,6 +51,8 @@ namespace Ferretto.VW.App.Modules.Layout
             containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationTheme));
             containerRegistry.Register<IPresentation, PresentationShutdown>(nameof(PresentationShutdown));
 
+            containerRegistry.Register<IPresentation, PresentationNavigationStep>(nameof(PresentationNavigationStep));
+            containerRegistry.Register<IPresentation, PresentationAbort>(nameof(PresentationAbort));
             containerRegistry.Register<IPresentation, PresentationBack>(nameof(PresentationBack));
             containerRegistry.Register<IPresentation, PresentationDebug>(nameof(PresentationDebug));
         }

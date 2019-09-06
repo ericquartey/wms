@@ -1201,4 +1201,16 @@
     <value>Select waiting time</value>
     <comment>Label text</comment>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Prev</value>
+    <comment>Button Text</comment>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abort</value>
+    <comment>Button text</comment>
+  </data>
 </root>

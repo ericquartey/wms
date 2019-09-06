@@ -52,6 +52,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 this.IsVisible = back.IsVisible;
             }
+
+            if (message.States != null
+               &&
+               message.States.FirstOrDefault(s => s.Type == PresentationTypes.Abort) is Services.Presentation abort
+               &&
+               abort.IsVisible.HasValue
+               &&
+               abort.IsVisible.Value)
+            {
+                this.IsVisible = false;
+            }
         }
 
         #endregion

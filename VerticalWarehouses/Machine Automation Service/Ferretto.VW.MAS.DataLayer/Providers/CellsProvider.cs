@@ -89,11 +89,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return;
             }
 
-            this.logger.LogInformation("Loading cells from configuration file ...");
+            this.logger.LogInformation("Importing cell definitions from configuration file ...");
 
             using (var jsonFile = new JSchemaValidatingReader(new JsonTextReader(new System.IO.StreamReader(fileNamePath))))
             {
-                jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("cells-configuration.schema.json")));
+                jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("configuration/schemas/cells-schema.json")));
                 while (jsonFile.Read())
                 {
                     if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)

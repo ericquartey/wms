@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? inputLoadingUnitId;
 
+        private bool isloadingUnitVerified;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         #endregion
@@ -45,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanCheckLoadingUnit));
 
         public string Error => string.Join(
-                      System.Environment.NewLine,
+                      Environment.NewLine,
                       this[nameof(this.InputLoadingUnitId)]);
 
         public int? InputLoadingUnitId
@@ -107,12 +109,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.InputLoadingUnitId = null;
+            this.isloadingUnitVerified = false;
 
             await base.OnNavigatedAsync();
 
             await this.GetLoadingUnitsAsync();
 
             this.RaiseCanExecuteChanged();
+
+            this.ShowSteps();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -137,6 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.loadingUnits.SingleOrDefault(l => l.Id == this.inputLoadingUnitId.Value) is LoadingUnit loadingUnitFound)
                 {
+                    this.isloadingUnitVerified = true;
                     this.NavigateToNextStep();
                 }
             }
@@ -153,6 +159,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Utils.Modules.Installation.Elevator.WeightCheck.STEP2,
                 this.inputLoadingUnitId.Value,
                 trackCurrentView: false);
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, this.isloadingUnitVerified, nameof(Utils.Modules.Installation), Utils.Modules.Installation.Elevator.WeightCheck.STEP2);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion

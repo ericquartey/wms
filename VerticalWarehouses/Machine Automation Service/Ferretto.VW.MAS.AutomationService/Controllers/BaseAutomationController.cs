@@ -35,6 +35,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        protected IActionResult NegativeResponse(Exception exception)
+        {
+            return this.NegativeResponse<ProblemDetails>(exception).Result;
+        }
+
         protected ActionResult<T> NegativeResponse<T>(Exception exception)
         {
             if (exception is DataLayer.Exceptions.EntityNotFoundException)

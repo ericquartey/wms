@@ -69,7 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
                 .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
-                .AddTransient<IElevatorProvider, ElevatorWeightCheckProvider>()
+                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddTransient<IElevatorProvider, ElevatorProvider>()
                 .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
             services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();

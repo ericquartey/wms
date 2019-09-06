@@ -155,6 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 throw new EntityNotFoundException(bayNumber);
             }
+
             bay.IpAddress = ipAddress;
             bay.Type = bayType;
 

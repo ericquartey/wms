@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -18,9 +19,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private decimal? currentPosition;
+        private readonly IMachineCellsService machineCellsService;
 
-        private DelegateCommand stopMovementCommand;
+        private readonly IMachineElevatorService machineElevatorService;
+
+        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+
+        private readonly DelegateCommand stopMovementCommand;
+
+        private bool canInputCellId;
+
+        private IEnumerable<Cell> cells;
+
+        private decimal? elevatorHorizontalPosition;
+
+        private decimal? elevatorVerticalPosition;
+
+        private LoadingUnit embarkedLoadingUnit;
+
+        private int? inputCellId;
+
+        private int? inputLoadingUnitCode;
+
+        private bool isElevatorMoving;
+
+        private bool isWaitingForResponse;
+
+        private LoadingUnit loadingUnitInBay;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
+
+        private Cell selectedCell;
 
         private SubscriptionToken subscriptionToken;
 
@@ -30,20 +59,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public SemiAutoMovementsViewModel(
             IMachineElevatorService machineElevatorService,
+            IMachineCellsService machineCellsService,
+            IMachineLoadingUnitsService machineLoadingUnitsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
             if (machineElevatorService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
+            if (machineCellsService is null)
+            {
+                throw new ArgumentNullException(nameof(machineCellsService));
+            }
+
+            if (machineLoadingUnitsService is null)
+            {
+                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
             }
 
             if (bayManagerService is null)
             {
-                throw new System.ArgumentNullException(nameof(bayManagerService));
+                throw new ArgumentNullException(nameof(bayManagerService));
             }
 
-            this.MachineElevatorService = machineElevatorService;
+            this.machineElevatorService = machineElevatorService;
+            this.machineCellsService = machineCellsService;
+            this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
         }
 
@@ -53,13 +96,122 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public int BayNumber => this.bayManagerService.Bay.Number;
 
-        public decimal? CurrentPosition
+        public bool CanInputCellId
         {
-            get => this.currentPosition;
-            protected set => this.SetProperty(ref this.currentPosition, value);
+            get => this.canInputCellId;
+            private set => this.SetProperty(ref this.canInputCellId, value);
         }
 
-        protected IMachineElevatorService MachineElevatorService { get; }
+        public decimal? ElevatorHorizontalPosition
+        {
+            get => this.elevatorHorizontalPosition;
+            protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+        }
+
+        public decimal? ElevatorVerticalPosition
+        {
+            get => this.elevatorVerticalPosition;
+            protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+        }
+
+        public LoadingUnit EmbarkedLoadingUnit
+        {
+            get => this.embarkedLoadingUnit;
+            protected set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+        }
+
+        public int? InputCellId
+        {
+            get => this.inputCellId;
+            set
+            {
+                if (this.SetProperty(ref this.inputCellId, value)
+                    &&
+                    this.Cells != null)
+                {
+                    this.SelectedCell = value == null
+                        ? null
+                        : this.Cells.SingleOrDefault(c => c.Id == value);
+                }
+            }
+        }
+
+        public int? InputLoadingUnitCode
+        {
+            get => this.inputLoadingUnitCode;
+            set
+            {
+                if (this.SetProperty(ref this.inputLoadingUnitCode, value)
+                    &&
+                    this.LoadingUnits != null)
+                {
+                    this.LoadingUnitInBay = value == null
+                        ? null
+                        : this.LoadingUnits.SingleOrDefault(l => l.Id == value);
+                }
+            }
+        }
+
+        public bool IsElevatorMoving
+        {
+            get => this.isElevatorMoving;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMoving, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public LoadingUnit LoadingUnitInBay
+        {
+            get => this.loadingUnitInBay;
+            protected set => this.SetProperty(ref this.loadingUnitInBay, value);
+        }
+
+        public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
+
+        public Cell SelectedCell
+        {
+            get => this.selectedCell;
+            protected set
+            {
+                if (this.SetProperty(ref this.selectedCell, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        protected IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -86,11 +238,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
               .Subscribe(
-                  message => this.CurrentPosition = message?.Data?.CurrentPosition,
+                  message => this.OnElevatorPositionChanged(message),
                   ThreadOption.UIThread,
                   false);
 
-            await this.RetrieveCurrentPositionAsync();
+            await this.RetrieveElevatorPositionAsync();
+
+            await this.RetrieveCellsAsync();
+
+            await this.RetrieveLoadingUnitsAsync();
 
             await base.OnNavigatedAsync();
         }
@@ -99,36 +255,87 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
 
-            this.RetrieveCurrentPositionAsync();
+            this.RetrieveElevatorPositionAsync();
         }
 
-        private bool HasCarousel(Bay bay)
-        {
-            return
-                bay.Type == BayType.Carousel
-                ||
-                bay.Type == BayType.ExternalCarousel;
-        }
-
-        private bool IsExternal(Bay bay)
-        {
-            return
-                bay.Type == BayType.ExternalCarousel
-                ||
-                bay.Type == BayType.ExternalDouble
-                ||
-                bay.Type == BayType.ExternalSingle;
-        }
-
-        private async Task RetrieveCurrentPositionAsync()
+        public async Task RetrieveLoadingUnitsAsync()
         {
             try
             {
-                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.IsWaitingForResponse = true;
+                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnElevatorPositionChanged(CommonUtils.Messages.NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting)
+            {
+                if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                {
+                    this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                }
+                else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                {
+                    this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                }
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.CanInputCellId = this.Cells != null
+               &&
+               !this.IsElevatorMoving
+               &&
+               !this.IsWaitingForResponse;
+        }
+
+        private async Task RetrieveCellsAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.Cells = await this.machineCellsService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveElevatorPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.ElevatorVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
