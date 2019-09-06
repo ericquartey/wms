@@ -798,10 +798,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
                                 }
                             }
-                            else
-                            {
-                                position += currentPosition;
-                            }
 
                             int[] targetAcceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[0], configurationCategory) };
                             int[] targetDeceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[0], configurationCategory) };

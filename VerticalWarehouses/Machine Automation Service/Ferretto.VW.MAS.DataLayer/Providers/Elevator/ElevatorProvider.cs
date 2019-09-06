@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM };
+            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
             decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
             decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
             decimal[] switchPosition = { 0 };
