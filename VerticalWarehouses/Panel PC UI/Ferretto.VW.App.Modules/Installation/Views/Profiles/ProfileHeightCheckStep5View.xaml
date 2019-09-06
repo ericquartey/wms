@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ProfileHeightCheckView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ProfileHeightCheckStep5View"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
@@ -7,14 +7,16 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="130,30,0,0">
+    <Grid Margin="130,30">
         <Grid.RowDefinitions>
             <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -27,46 +29,49 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
+        <views:ProfileHeightCheckNavigationView Grid.ColumnSpan="3"
+                                                VerticalAlignment="Top" />
 
-        <controls:PpcTextBox Grid.Row="1"
+        <controls:PpcLabeledText Grid.Row="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 LabelText="Operazione 1 di 4" />
+
+        <controls:PpcTextBox Grid.Row="2"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight}"
                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
 
-        <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="4"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding NoteText}"
                                  LabelText="{x:Static res:InstallationApp.Output}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
+        <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding SystemError}"
                                  LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
+        <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Tolerance}" />
 
-        <controls:PpcSensorControl Grid.Row="2"
+        <controls:PpcSensorControl Grid.Row="3"
                                    Grid.Column="1"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
@@ -75,25 +80,26 @@
 
         <!--  {x:Static res:InstallationApp.Gate1HeightReaced}  -->
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.GateCorrection}" />
 
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="1"
+        <controls:PpcButton Grid.Row="5"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            VerticalAlignment="Bottom"
+                            Command="{Binding Step4Command}"
+                            Content="{x:Static res:InstallationApp.Previous}" />
 
-        <controls:PpcButton Grid.Row="4"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+        <controls:PpcButton Grid.Row="5"
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding Step6Command}"
+                            Content="{x:Static res:InstallationApp.Next}" />
+
     </Grid>
 
 </ctrls:View>

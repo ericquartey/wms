@@ -617,7 +617,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="ShutterSensorA" xml:space="preserve">
-    <value>Shutter  Sensor A</value>
+    <value>Shutter Sensor A</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="ShutterSensorB" xml:space="preserve">
@@ -1026,7 +1026,74 @@
     <comment>Label text</comment>
   </data>
   <data name="TimeDelay" xml:space="preserve">
-    <value>Select waiting time</value>
+    <value>Select waiting time [s]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SaveConfig" xml:space="preserve">
+    <value>Configuration Saving</value>
+  </data>
+  <data name="MachineNotManualModeWarning" xml:space="preserve">
+    <value>Attention!!! The machine must be manual mode</value>
+  </data>
+  <data name="MachineNotRunWarning" xml:space="preserve">
+    <value>Attention!!! The machine must be runed</value>
+  </data>
+  <data name="PHC4ComandNote" xml:space="preserve">
+    <value>Posizionare la sagoma sul lato corto del cassetto e posizionata in modo tale che la sua base sia allineata con il piano di riferimento verticale (vedi immagine), successivamente quando si è pronti premere il tasto avanti</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC4NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="PHC2ComandNote" xml:space="preserve">
+    <value>Verificare il posizionamento dell'elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni.
+Una volta verificato proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC2NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PHC1ComandNote" xml:space="preserve">
+    <value>Controllare i livelli dell'elevatore che coincidano con quella della baia e che la protella sia "Aperta".
+A controllo effettuato permere il tasto "Successivo".</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC1NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ShutterState" xml:space="preserve">
+    <value>Shutter state</value>
+  </data>
+  <data name="Drawer" xml:space="preserve">
+    <value>Drawer</value>
+  </data>
+  <data name="PHC3ComandNote" xml:space="preserve">
+    <value>Posizionare una cassetto in baia per la regolazione dell'altezza.
+Una volta fatto proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC3NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="PHC6ComandNote" xml:space="preserve">
+    <value>Operazione terminata, rimuovere la sagoma dal cassetto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC6NoteHeader" xml:space="preserve">
+    <value>Warning</value>
     <comment>Label text</comment>
   </data>
 </root>

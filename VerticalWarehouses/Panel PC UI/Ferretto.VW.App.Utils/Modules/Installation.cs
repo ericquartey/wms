@@ -12,8 +12,6 @@
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
 
-        public const string PROFILEHEIGHTCHECK = "ProfileHeightCheckViewModel";
-
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
@@ -75,6 +73,25 @@
             public const string SHUTTER = "ShutterEngineManualMovementsViewModel";
 
             public const string VERTICALENGINE = "VerticalEngineManualMovementsViewModel";
+
+            #endregion
+        }
+
+        public static class ProfileHeightCheck
+        {
+            #region Fields
+
+            public const string STEP1 = "ProfileHeightCheckStep1ViewModel";
+
+            public const string STEP2 = "ProfileHeightCheckStep2ViewModel";
+
+            public const string STEP3 = "ProfileHeightCheckStep3ViewModel";
+
+            public const string STEP4 = "ProfileHeightCheckStep4ViewModel";
+
+            public const string STEP5 = "ProfileHeightCheckStep5ViewModel";
+
+            public const string STEP6 = "ProfileHeightCheckStep6ViewModel";
 
             #endregion
         }

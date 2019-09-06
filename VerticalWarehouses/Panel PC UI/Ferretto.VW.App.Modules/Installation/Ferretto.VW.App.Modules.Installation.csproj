@@ -53,10 +53,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Profiles\ProfileHeightCheckStep1View.xaml" />
+    <None Remove="Views\Profiles\ProfileHeightCheckStep2View.xaml" />
+    <None Remove="Views\Profiles\ProfileHeightCheckStep3View.xaml" />
+    <None Remove="Views\Profiles\ProfileHeightCheckStep4View.xaml" />
+    <None Remove="Views\Profiles\ProfileHeightCheckStep5View.xaml" />
+    <None Remove="Views\Profiles\ProfileHeightCheckStep6View.xaml" />
     <None Remove="Views\SemiAutoMovementsView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep6View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep5View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep4View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep3View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep2View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Profiles\ProfileHeightCheckStep1View.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\SemiAutoMovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -73,12 +97,6 @@
 
   <ItemGroup>
     <None Remove="Views\Shutter\ShutterHeightControlView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Views\Profiles\ProfileHeightCheckView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

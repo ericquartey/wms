@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.App.Installation.Views
 {
     /// <summary>
-    /// Interaction logic for ProfileHeightCheckView.xaml.
+    /// Interaction logic for ProfileHeightCheckStep6View.xaml.
     /// </summary>
-    public partial class ProfileHeightCheckView
+    public partial class ProfileHeightCheckStep6View
     {
         #region Constructors
 
-        public ProfileHeightCheckView()
+        public ProfileHeightCheckStep6View()
         {
             this.InitializeComponent();
         }

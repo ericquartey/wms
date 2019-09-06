@@ -64,7 +64,12 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckView>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep1View>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep2View>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep3View>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep4View>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep5View>();
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep6View>();
 
             containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep2View>();

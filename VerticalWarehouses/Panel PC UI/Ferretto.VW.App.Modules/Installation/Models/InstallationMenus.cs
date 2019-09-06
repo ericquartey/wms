@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Pannelli Mensola")]
         PanelsCheck,
 
-        [View(Utils.Modules.Installation.PROFILEHEIGHTCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.ProfileHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
         BayProfile,
 
