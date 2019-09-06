@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder.HasKey(l => l.Id);
+
+            builder.HasIndex(l => l.Code).IsUnique();
         }
 
         #endregion

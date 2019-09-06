@@ -12,29 +12,22 @@
     "Longitude": "11.498999179729909",
     "ProductionDate": "2011-04-01T19:43:37+0100",
     "InstallationDate": "2011-05-01T19:43:37+0100",
-    "Model": "VRT EF 84 L 990-BID H4563",
-    "Serial": "VM_190001",
+    "Model": "Simulated VertiMAG",
+    "Serial": "Not applicable",
     "Height": 4.563,
     "MaxGrossWeight": 50000,
+    "MaxDrawerGrossWeight": 990,
     "BaysQuantity": 2,
     "Bay1Type": 4,
     "Bay2Type": 2,
     "Bay3Type": 0,
-    "Bay1Position1": 744.00,
-    //"Bay1Height1":,
-    //"Bay1Position2":,
-    //"Bay1Height2":,
+    "Bay1Position1": 500.00,
     "Bay2Position1": 743.00,
     "Bay2Height1": 1080.0,
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
-    //"Bay3Position1": ,
-    //"Bay3Height1": ,
-    //"Bay3Position2": ,
-    //"Bay3Height2": ,
     "Shutter1Type": 1,
     "Shutter2Type": 1,
-    //"Shutter3Type": ,
     "LaserBay1": false,
     "LaserBay2": false,
     "LaserBay3": false,
@@ -43,43 +36,46 @@
     "AlfaNumBay3": false,
     "Barrier1Height": 30,
     "Barrier2Height": 30
-    //"Barrier3Height":
-    //"MaxAcceptedBai1Height": ,
-    //"MaxAcceptedBai2Height": ,
-    //"MaxAcceptedBai3Height":
   },
 
+  // socket simulator with toxy proxy
   //"SetupNetwork": {
-  //  "Inverter1": "192.168.0.100",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "192.168.0.1",
-  //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2,
-  //  "InverterIndexBay1": 3,
-  //  "InverterIndexShutter2": 4,
-  //  "PPC1MasterIPAddress": "::1",
-  //  "PPC2SlaveIPAddress": "::2",
-  //  "PPC3SlaveIPAddress": "::3"
+  //    "MachineNumber": 1,
+  //    "WMS_ON": true,
+  //    "Inverter1": "127.0.0.1",
+  //    "Inverter1Port": 27221,
+  //    "InverterIndexMaster": 0,
+  //    "InverterIndexShutter1": 2,
+  //    "InverterIndexBay1": 3,
+  //    "InverterIndexShutter2": 4,
+  //    "IOExpansion1": "127.0.0.1",
+  //    "IOExpansion1Port": 29550,
+  //    "IOExpansion2": "127.0.0.1",
+  //    "IOExpansion2Port": 29551,
+  //    "SQLServerIPAddress": "172.16.199.100",
+  //    "SQLServerPort": 6000,
+  //    "PPC1MasterIPAddress": "::1",
+  //    "PPC2SlaveIPAddress": "198.168.0.2",
+  //    "PPC3SlaveIPAddress": "198.168.0.3"
   //},
 
-  //production in Vicenza
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
-    "Inverter1": "198.168.0.100",
+    "Inverter1": "127.0.0.1",
     "Inverter1Port": 17221,
     "InverterIndexMaster": 0,
+    "InverterIndexChain": 1,
     "InverterIndexShutter1": 2,
     "InverterIndexBay1": 3,
     "InverterIndexShutter2": 4,
     "IOExpansion1Installed": true,
     "IOExpansion2Installed": true,
     "IOExpansion3Installed": false,
-    "IOExpansion1IPAddress": "198.168.0.1",
+    "IOExpansion1IPAddress": "127.0.0.1",
     "IOExpansion1Port": 19550,
-    "IOExpansion2IPAddress": "198.168.0.2",
-    "IOExpansion2Port": 19550,
+    "IOExpansion2IPAddress": "127.0.0.1",
+    "IOExpansion2Port": 19551,
     "PPC1MasterIPAddress": "::1",
     "PPC2SlaveIPAddress": "198.168.0.2",
     "PPC3SlaveIPAddress": "198.168.0.3"
@@ -100,9 +96,9 @@
     "HomingExitAcceleration": 750.0,
     "HomingExitDeceleration": 750.0,
     "Resolution": 77.61182,
-    "Offset": 350.0,
-    "UpperBound": 1000.0, //TEMP temporary commented for test on belt-burnishing 4000.0 is too much //"UpperBound": 4000.0,
-    "LowerBound": 300.0,
+    "Offset": 300.0,
+    "UpperBound": 4000.0,
+    "LowerBound": 350.0,
     "TakingOffset": 0.0,
     "DepositOffset": 0.0
   },
@@ -195,8 +191,7 @@
     "Deceleration": 500.0
   },
   "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
+    "CycleQuantity": 200
   },
   "ResolutionCalibration": {
     "InitialPosition": 1000.0, //TEMP Temporary value for software test

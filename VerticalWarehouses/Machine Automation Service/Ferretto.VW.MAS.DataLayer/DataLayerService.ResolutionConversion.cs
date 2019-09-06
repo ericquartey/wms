@@ -22,13 +22,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory)
         {
-            //if (milliMeters == 0)
-            //{
-            //    var errorMessage = "Displacement to convert zero";
-            //    this.Logger.LogDebug(errorMessage);
-            //    throw new ArgumentException(errorMessage);
-            //}
-
             decimal resolution;
             int pulses;
 

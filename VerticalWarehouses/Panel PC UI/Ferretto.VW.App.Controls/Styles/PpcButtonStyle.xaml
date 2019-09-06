@@ -54,6 +54,12 @@
 
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="True">
+
+                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
 
             </Setter.Value>
