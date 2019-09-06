@@ -12,6 +12,6 @@
 
         FindZero = 4,
 
-        TestLoop = 5,
+        ShutterTest = 5,
     }
 }

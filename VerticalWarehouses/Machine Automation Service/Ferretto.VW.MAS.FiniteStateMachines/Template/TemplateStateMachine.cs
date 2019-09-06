@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
 
         private bool disposed;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new TemplateData(requestingBay, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new TemplateMachineData(requestingBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion

@@ -1,10 +1,16 @@
 ﻿using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
@@ -14,7 +20,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #region Fields
 
-        private readonly IShutterPositioningStateMachineData shutterPositioningStateMachineData;
+        private readonly IShutterPositioningMachineData machineData;
 
         private bool disposed;
 
@@ -23,12 +29,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(
-            IShutterPositioningStateMachineData shutterPositioningStateMachineData)
-            : base(shutterPositioningStateMachineData.EventAggregator, shutterPositioningStateMachineData.Logger, shutterPositioningStateMachineData.ServiceScopeFactory)
-        {
-            this.CurrentState = new EmptyState(shutterPositioningStateMachineData.Logger);
+            IShutterPositioningMessageData positioningMessageData,
+            BayIndex requestingBay,
+            InverterIndex inverterIndex,
+            IMachineSensorsStatus machineSensorsStatus,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
 
-            this.shutterPositioningStateMachineData = shutterPositioningStateMachineData;
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+        {
+            this.CurrentState = new EmptyState(this.Logger);
+
+            this.machineData = new ShutterPositioningMachineData(positioningMessageData, requestingBay, inverterIndex, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -89,21 +102,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void Start()
         {
-            this.shutterPositioningStateMachineData.DelayTimer?.Dispose();
-            this.shutterPositioningStateMachineData.DelayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
+            this.machineData.DelayTimer?.Dispose();
+            this.machineData.DelayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
 
             lock (this.CurrentState)
             {
-                if (!this.shutterPositioningStateMachineData.MachineSensorsStatus.IsMachineInRunningState ||
-                    this.shutterPositioningStateMachineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                    !(this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningStateMachineData.PositioningMessageData.MovementMode == MovementMode.TestLoop)
+                var stateData = new ShutterPositioningStateData(this, this.machineData);
+                if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState ||
+                    this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+                    !(this.machineData.PositioningMessageData.MovementMode == MovementMode.Position || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                     )
                 {
-                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningStateMachineData, null);
+                    this.CurrentState = new ShutterPositioningErrorState(stateData);
                 }
                 else
                 {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningStateMachineData);
+                    this.CurrentState = new ShutterPositioningStartState(stateData);
                 }
 
                 this.CurrentState?.Start();
@@ -118,7 +132,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 
@@ -130,7 +144,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             }
             if (disposing)
             {
-                this.shutterPositioningStateMachineData.DelayTimer?.Dispose();
+                this.machineData.DelayTimer?.Dispose();
             }
 
             this.disposed = true;
@@ -140,7 +154,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         private void DelayTimerMethod(object state)
         {
             // stop timer
-            this.shutterPositioningStateMachineData.DelayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            this.machineData.DelayTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // send a notification to wake up the state machine waiting for the delay
             var notificationMessage = new NotificationMessage(
@@ -149,7 +163,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.CheckCondition,
-                this.shutterPositioningStateMachineData.RequestingBay,
+                this.machineData.RequestingBay,
                 MessageStatus.OperationExecuting);
 
             this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

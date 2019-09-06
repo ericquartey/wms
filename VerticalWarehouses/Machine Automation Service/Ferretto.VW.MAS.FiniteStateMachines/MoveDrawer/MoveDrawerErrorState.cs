@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -14,11 +13,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #region Fields
 
-        private readonly Axis axis;
+        private readonly IMoveDrawerMachineData machineData;
 
-        private readonly IDrawerOperationMessageData drawerOperationData;
-
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IMoveDrawerStateData stateData;
 
         private bool disposed;
 
@@ -26,17 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #region Constructors
 
-        public MoveDrawerErrorState(
-            IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            IDrawerOperationMessageData drawerOperationData,
-            Axis axis,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public MoveDrawerErrorState(IMoveDrawerStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
-            this.errorMessage = errorMessage;
-            this.drawerOperationData = drawerOperationData;
-            this.axis = axis;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IMoveDrawerMachineData;
         }
 
         #endregion
@@ -66,11 +57,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
                 var notificationMessage = new NotificationMessage(
-                    this.drawerOperationData,
+                    this.machineData.DrawerOperationData,
                     $"{FieldMessageType.InverterStop} Error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -88,7 +80,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Reset Inverter Axis {this.axis}",
+                $"Reset Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
@@ -99,17 +91,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
             var notificationMessage = new NotificationMessage(
-                this.drawerOperationData,
+                this.machineData.DrawerOperationData,
                 $"{MessageType.DrawerOperation} Error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
+                this.RequestingBay,
                 MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

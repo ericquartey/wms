@@ -141,13 +141,14 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.bay = await this.machineBaysService.GetByNumberAsync(bayNumber);
+            var bayIndex = ConfigurationManager.AppSettings.GetBayNumber();
+
+            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayIndex)bayIndex);
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Index == e.Index)
+            if (this.Bay?.Index == (Ferretto.VW.MAS.AutomationService.Contracts.BayIndex)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -156,7 +157,24 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            //TODO Review Implementation avoid using numbers to identify bays
+            BayIndex bayIndex = BayIndex.None;
+            switch (e.BayNumber)
+            {
+                case 1:
+                    bayIndex = BayIndex.BayOne;
+                    break;
+
+                case 2:
+                    bayIndex = BayIndex.BayTwo;
+                    break;
+
+                case 3:
+                    bayIndex = BayIndex.BayThree;
+                    break;
+            }
+
+            if (this.Bay?.Index == bayIndex)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

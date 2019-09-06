@@ -17,6 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
+
         #region Fields
 
         private readonly ShutterSensors sensors;
@@ -64,18 +65,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.shuttersService = shuttersService;
 
-            this.BayNumber = bayManager.Bay.Number;
+            this.BayNumber = (int)bayManager.Bay.Index;
 
             this.sensors = new ShutterSensors(this.BayNumber);
         }
 
         #endregion
 
+
+
         #region Delegates
 
         public delegate void CheckAccuracyOnPropertyChangedEventHandler();
 
         #endregion
+
+
 
         #region Properties
 

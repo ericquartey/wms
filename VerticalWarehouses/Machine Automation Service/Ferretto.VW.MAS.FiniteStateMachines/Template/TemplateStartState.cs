@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
-            this.machineData = stateData.MachineData as ITemplateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion

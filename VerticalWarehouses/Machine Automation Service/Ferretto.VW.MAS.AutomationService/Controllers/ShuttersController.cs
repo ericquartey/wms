@@ -9,6 +9,7 @@ using Prism.Events;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -57,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<ShutterPosition> GetShutterPosition(int bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
-            void publishAction() => this.PublishCommand(
+            void PublishAction() => this.PublishCommand(
                 messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
@@ -67,14 +68,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.ShutterPositioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             if (notifyData?.ShutterPosition == null)
             {
                 throw new Exception("Cannot get current shutter position.");
             }
 
-            return this.Ok(notifyData?.ShutterPosition);
+            return this.Ok(notifyData.ShutterPosition);
         }
 
         [HttpGet]
@@ -111,11 +112,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                             ConfigurationCategory.GeneralInfo);
                     break;
             }
-
-            var maxSpeed = this.configurationProvider
-                .GetDecimalConfigurationValue(
-                    (long)ShutterHeightControl.FeedRate,
-                    ConfigurationCategory.ShutterHeightControl);
 
             // TODO what is this?
 
@@ -165,9 +161,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             // TODO Retrieve the max speed rate from the database
-            var maxSpeed = this.configurationProvider.GetDecimalConfigurationValue(
-                (long)ShutterHeightControl.FeedRate,
-                ConfigurationCategory.ShutterHeightControl);
 
             // TODO what is this?
 
@@ -192,7 +185,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 ShutterMovementDirection.None,
                 ShutterType.Shutter3Type,
                 speedRate,
-                MovementMode.TestLoop,
+                MovementMode.ShutterTest,
                 numberCycles,
                 delay * 1000);  // milliseconds
 

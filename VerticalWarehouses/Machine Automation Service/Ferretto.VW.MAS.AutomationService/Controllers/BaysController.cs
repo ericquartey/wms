@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("{bayNumber}/activate")]
+        [HttpPost("{bayIndex}/activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
-        [HttpPost("{bayNumber}/deactivate")]
+        [HttpPost("{bayIndex}/deactivate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
-        [HttpGet("{bayNumber}")]
+        [HttpGet("{bayIndex}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]

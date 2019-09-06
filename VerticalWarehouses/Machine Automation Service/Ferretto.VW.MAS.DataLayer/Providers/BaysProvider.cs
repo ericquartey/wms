@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
@@ -262,7 +261,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 case BayIndex.BayThree:
                     switch (data.MovementMode)
                     {
-                        case MovementMode.TestLoop:
+                        case MovementMode.ShutterTest:
                         case MovementMode.Position:
                             returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
                             break;

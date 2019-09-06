@@ -45,7 +45,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterInstance<IMachineSensorsService>(new MachineSensorsService(urlString));
             container.RegisterInstance<IMachineShuttersService>(new MachineShuttersService(urlString));
             container.RegisterInstance<IMachineStatisticsService>(new MachineStatisticsService(urlString));
-            container.RegisterInstance<IMachineTestService>(new MachineTestService(urlString));
             container.RegisterInstance<IMachineUsersService>(new MachineUsersService(urlString));
             container.RegisterInstance<IMachineVerticalOriginProcedureService>(new MachineVerticalOriginProcedureService(urlString));
             container.RegisterInstance<IMachineVerticalOffsetProcedureService>(new MachineVerticalOffsetProcedureService(urlString));

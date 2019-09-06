@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
-using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -152,13 +151,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogTrace("2: Starting Drawer Operation FSM");
 
                     currentStateMachine = new MoveDrawerStateMachine(
-                        this.eventAggregator,
+                        this.machineConfigurationProvider.IsOneKMachine(),
+                        receivedMessage.BayIndex,
                         this.setupStatusProvider,
                         this.machineSensorsStatus,
                         this.generalInfoDataLayer,
                         this.verticalAxis,
                         this.horizontalAxis,
                         data,
+                        this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
 
@@ -400,8 +401,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
 
                 currentStateMachine = new ResetSecurityStateMachine(
+                    BayIndex.ElevatorBay,
                     this.eventAggregator,
-                    null,
                     this.logger,
                     this.serviceScopeFactory);
 
@@ -473,15 +474,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (message.Data is IShutterPositioningMessageData data)
                 {
 
-                    var positioningMachineData = new ShutterPositioningStateMachineData(data,
+                    currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.BayIndex,
                         this.baysProvider.GetInverterList(message.BayIndex)[this.baysProvider.ShutterInverterPosition],
-                        this.eventAggregator,
                         this.machineSensorsStatus,
+                        this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
-
-                    currentStateMachine = new ShutterPositioningStateMachine(positioningMachineData);
 
                     this.logger.LogDebug($"2:Starting FSM {currentStateMachine.GetType()}");
                     this.currentStateMachines.Add(message.BayIndex, currentStateMachine);

@@ -11,17 +11,18 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 {
-    public class ShutterPositioningStateMachineData : IShutterPositioningStateMachineData
+    public class ShutterPositioningMachineData : IShutterPositioningMachineData
     {
 
 
         #region Constructors
 
-        public ShutterPositioningStateMachineData(IShutterPositioningMessageData positioningMessageData,
+        public ShutterPositioningMachineData(
+            IShutterPositioningMessageData positioningMessageData,
             BayIndex requestingBay,
             InverterIndex inverterIndex,
-            IEventAggregator eventAggregator,
             IMachineSensorsStatus machineSensorsStatus,
+            IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
         {

@@ -14,6 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public abstract class BaseManualMovementsViewModel : BaseMainViewModel
     {
+
         #region Fields
 
         private readonly IBayManager bayManagerService;
@@ -55,9 +56,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
+
+
         #region Properties
 
-        public int BayNumber => this.bayManagerService.Bay.Number;
+        public int BayNumber => (int)this.bayManagerService.Bay.Index;
 
         public decimal? CurrentPosition
         {
@@ -73,6 +76,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
         #endregion
+
+
 
         #region Methods
 

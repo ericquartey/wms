@@ -1,8 +1,8 @@
 ﻿using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 
-namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces
+namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces
 {
-    public interface ITemplateData : IMachineData
+    public interface IMoveDrawerStateData : IStateData
     {
 
 

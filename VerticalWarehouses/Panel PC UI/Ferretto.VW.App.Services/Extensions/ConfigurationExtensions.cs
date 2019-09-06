@@ -1,15 +1,19 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.App.Services
 {
     public static class ConfigurationExtensions
     {
+
+
         #region Methods
 
-        public static int GetBayNumber(this NameValueCollection appSettings)
+        public static BayIndex GetBayNumber(this NameValueCollection appSettings)
         {
             var bayNumberString = appSettings.Get("BayNumber");
-            return int.Parse(bayNumberString);
+            return (BayIndex)Enum.Parse(typeof(BayIndex), bayNumberString);
         }
 
         #endregion
