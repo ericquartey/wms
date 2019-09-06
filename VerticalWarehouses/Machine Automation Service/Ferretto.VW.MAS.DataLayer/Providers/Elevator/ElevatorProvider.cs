@@ -191,43 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public void MoveHorizontal(HorizontalMovementDirection direction)
-        {
-            var setupStatus = this.setupStatusProvider.Get();
-
-            var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
-                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
-
-            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
-
-            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
-            decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
-
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.Position,
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition);
-
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
-        }
-
-        public void MoveHorizontalTableTravel(HorizontalMovementDirection direction)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction)
         {
             var setupStatus = this.setupStatusProvider.Get();
 
@@ -259,12 +223,48 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Deceleration : this.horizontalMovementBackwardProfileDataLayer.P4Deceleration
             };
             decimal[] switchPosition = {
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Quote : this.horizontalMovementBackwardProfileDataLayer.P0Quote,
                 direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Quote : this.horizontalMovementBackwardProfileDataLayer.P1Quote,
                 direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Quote : this.horizontalMovementBackwardProfileDataLayer.P2Quote,
                 direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Quote : this.horizontalMovementBackwardProfileDataLayer.P3Quote,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote,
+                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P5Quote : this.horizontalMovementBackwardProfileDataLayer.P5Quote
             };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.Position,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+        }
+
+        public void MoveHorizontalManual(HorizontalMovementDirection direction)
+        {
+            var setupStatus = this.setupStatusProvider.Get();
+
+            var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
+                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
+                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
+
+            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+
+            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

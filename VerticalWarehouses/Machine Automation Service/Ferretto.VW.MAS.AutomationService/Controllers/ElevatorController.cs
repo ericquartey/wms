@@ -87,15 +87,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpPost("horizontal/move")]
+        [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontal(HorizontalMovementDirection direction)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontal(direction);
-                //this.elevatorProvider.MoveHorizontalTableTravel(direction);
+                this.elevatorProvider.MoveHorizontalAuto(direction);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
+        }
+
+        [HttpPost("horizontal/move-manual")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                this.elevatorProvider.MoveHorizontalManual(direction);
                 return this.Accepted();
             }
             catch (Exception ex)

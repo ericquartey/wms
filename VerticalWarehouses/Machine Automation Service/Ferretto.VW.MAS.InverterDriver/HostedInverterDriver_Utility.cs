@@ -42,6 +42,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly object syncStatusTimer = new object();
 
+        private bool refreshTargetTable = true;
+
         #endregion
 
         #region Methods
@@ -799,11 +801,22 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                             }
 
-                            int[] targetAcceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[0], configurationCategory) };
-                            int[] targetDeceleration = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[0], configurationCategory) };
                             var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-                            int[] targetSpeed = { this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[0], configurationCategory) };
-                            int[] switchPosition = { 0 };
+                            int[] targetAcceleration;
+                            int[] targetDeceleration;
+                            int[] targetSpeed;
+                            int[] switchPosition;
+                            targetAcceleration = new int[positioningData.SwitchPosition.Length];
+                            targetDeceleration = new int[positioningData.SwitchPosition.Length];
+                            targetSpeed = new int[positioningData.SwitchPosition.Length];
+                            switchPosition = new int[positioningData.SwitchPosition.Length];
+                            for (int i = 0; i < positioningData.SwitchPosition.Length; i++)
+                            {
+                                targetAcceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[i], configurationCategory);
+                                targetDeceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[i], configurationCategory);
+                                targetSpeed[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[i], configurationCategory);
+                                switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
+                            }
 
                             var positioningFieldData = new InverterPositioningFieldMessageData(
                                 positioningData,
@@ -812,7 +825,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 targetPosition,
                                 targetSpeed,
                                 switchPosition,
-                                false);
+                                this.refreshTargetTable);
+
+                            this.refreshTargetTable = false;
 
                             this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                             this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
@@ -861,7 +876,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     else
                                     {
                                         this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                        if (positioningData.SwitchPosition.Length > 1)
+                                        if (positioningFieldData.SwitchPosition.Length > 1)
                                         {
                                             var currentStateMachine = new PositioningTableStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                             this.currentStateMachines.Add(currentInverter, currentStateMachine);

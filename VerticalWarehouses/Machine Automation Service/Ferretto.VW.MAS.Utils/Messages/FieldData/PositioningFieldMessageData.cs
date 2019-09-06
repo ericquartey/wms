@@ -45,6 +45,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetAcceleration = messageData.TargetAcceleration;
             this.TargetDeceleration = messageData.TargetDeceleration;
             this.Direction = messageData.Direction;
+            this.SwitchPosition = messageData.SwitchPosition;
         }
 
         #endregion

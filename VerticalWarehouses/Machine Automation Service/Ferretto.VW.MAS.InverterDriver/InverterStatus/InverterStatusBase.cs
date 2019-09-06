@@ -69,6 +69,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                         this.controlWord = new ProfileVelocityControlWord(this.controlWord);
                         this.statusWord = new ProfileVelocityStatusWord(this.statusWord);
                         break;
+
+                    case (ushort)InverterOperationMode.TableTravel:
+                        this.controlWord = new TableTravelControlWord(this.controlWord);
+                        this.statusWord = new TableTravelStatusWord(this.statusWord);
+                        break;
                 }
                 this.operatingMode = value;
             }

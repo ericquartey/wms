@@ -663,6 +663,29 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public void BuildTableTravelStatusWord()
+        {
+            //StartMotionBlock
+            if ((this.ControlWord & 0x0200) > 0 && (this.ControlWord & 0x0008) > 0)
+            {
+                this.statusWord |= 0x0100;  // motion block in progress on
+                if (!this.targetTimerActive)
+                {
+                    this.targetTimer.Change(0, 50);
+                    this.targetTimerActive = true;
+                }
+            }
+            else
+            {
+                if (this.targetTimerActive)
+                {
+                    this.targetTimer.Change(-1, Timeout.Infinite);
+                    this.targetTimerActive = false;
+                }
+                this.statusWord &= ~0x0100;  // motion block in progress off
+            }
+        }
+
         public void BuildVelocityStatusWord()
         {
             //EnableOperation
@@ -857,7 +880,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Warning";
 
                 case 8:
-                    return "Manufacturer specific";
+                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockInProgress" : "Manufacturer specific";
 
                 case 9:
                     return "Remote";
@@ -866,13 +889,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Target reached";
 
                 case 11:
-                    return "Internal limit active";
+                    return operationMode == InverterOperationMode.TableTravel ? "InternalLimitActive" : "Internal limit active";
 
                 case 12:
-                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : operationMode == InverterOperationMode.TableTravel ? "InGear" : "Operation mode specific";
 
                 case 13:
-                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : operationMode == InverterOperationMode.Position ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : (operationMode == InverterOperationMode.Position || operationMode == InverterOperationMode.TableTravel) ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
 
                 case 14:
                     return "Manufacturer specific";
@@ -955,33 +978,25 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return;
             }
             int target = this.TargetPosition[this.currentAxis];
-            if (this.IsRelativeMovement)
+            if (this.IsRelativeMovement || this.OperationMode == InverterOperationMode.TableTravel)
             {
                 target += this.StartPosition[this.currentAxis];
             }
             int increment = 1;
-            if (this.TargetSpeed[Axis.Vertical] >= LOWER_SPEED_Y_AXIS &&
-                Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10)
+            if (this.TargetSpeed[this.currentAxis] >= LOWER_SPEED_Y_AXIS &&
+                Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10)
             {
-                increment = (this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS) * 10;
+                increment = (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10;
             }
             if (target > this.AxisPosition)
             {
-                if (this.CurrentAxis == Axis.Vertical)
-                {
-                    this.AxisPosition += increment;
-                }
-                else { this.AxisPosition++; }
+                this.AxisPosition += increment;
             }
             else
             {
-                if (this.CurrentAxis == Axis.Vertical)
-                {
-                    this.AxisPosition -= increment;
-                }
-                else { this.AxisPosition--; }
+                this.AxisPosition -= increment;
             }
-            if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[Axis.Vertical] / LOWER_SPEED_Y_AXIS)
+            if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS)
             {
                 this.AxisPosition = target;
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal

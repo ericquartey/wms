@@ -374,6 +374,10 @@ namespace Ferretto.VW.Simulator.Services
                                     inverter.BuildVelocityStatusWord();
                                     break;
 
+                                case InverterOperationMode.TableTravel:
+                                    inverter.BuildTableTravelStatusWord();
+                                    break;
+
                                 default:
                                     if (System.Diagnostics.Debugger.IsAttached)
                                     {
@@ -397,6 +401,33 @@ namespace Ferretto.VW.Simulator.Services
 
                         case InverterParameterId.ShutterTargetPosition:
                             inverter.TargetShutterPosition = (int)ushortPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelTargetPosition:
+                            inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
+                            inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelTargetSpeeds:
+                            inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)uintPayload, inverter.TargetSpeed[inverter.CurrentAxis]);
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelTargetAccelerations:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelTargetDecelerations:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelSwitchPositions:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
+                        case InverterParameterId.TableTravelDirection:
                             result = client.Client.Send(extractedMessage);
                             break;
 

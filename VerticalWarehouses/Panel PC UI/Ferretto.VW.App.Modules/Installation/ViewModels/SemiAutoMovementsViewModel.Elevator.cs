@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand DisembarkCommand =>
             this.disembarkCommand
             ??
-            (this.disembarkCommand = new DelegateCommand(this.Disembark, this.CanDisembark));
+            (this.disembarkCommand = new DelegateCommand(async () => await this.Disembark(), this.CanDisembark));
 
         public decimal? ElevatorHorizontalPosition
         {
@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand EmbarkCommand =>
             this.embarkCommand
             ??
-            (this.embarkCommand = new DelegateCommand(this.Embark, this.CanEmbark));
+            (this.embarkCommand = new DelegateCommand(async () => await this.Embark(), this.CanEmbark));
 
         public LoadingUnit EmbarkedLoadingUnit
         {
@@ -105,14 +105,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
-        private void Disembark()
+        private async Task Disembark()
         {
-            this.ShowNotification("Non ancora implementata :P", Services.Models.NotificationSeverity.Warning);
+            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
-        private void Embark()
+        private async Task Embark()
         {
-            this.ShowNotification("Non ancora implementata :P", Services.Models.NotificationSeverity.Warning);
+            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         private async Task RetrieveElevatorPositionAsync()
@@ -131,6 +131,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                await this.machineElevatorService.MoveHorizontalAutoAsync(direction);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 
