@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
         {
             var setupStatus = this.setupStatusProvider.Get();
 
@@ -199,35 +199,39 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
                 : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
 
+            // if direction is Forwards quote increments, else is decremented
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
+            // the total length is splitted in two unequal distances
+            bool isLongerDistance = (isOnBoard && direction == HorizontalMovementDirection.Forwards);
+
             decimal[] speed = {
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0SpeedV1 : this.horizontalMovementBackwardProfileDataLayer.P0SpeedV1,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1SpeedV2 : this.horizontalMovementBackwardProfileDataLayer.P1SpeedV2,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2SpeedV3 : this.horizontalMovementBackwardProfileDataLayer.P2SpeedV3,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3SpeedV4 : this.horizontalMovementBackwardProfileDataLayer.P3SpeedV4,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4SpeedV5 : this.horizontalMovementBackwardProfileDataLayer.P4SpeedV5
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0SpeedV1 : this.horizontalMovementBackwardProfileDataLayer.P0SpeedV1,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1SpeedV2 : this.horizontalMovementBackwardProfileDataLayer.P1SpeedV2,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2SpeedV3 : this.horizontalMovementBackwardProfileDataLayer.P2SpeedV3,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3SpeedV4 : this.horizontalMovementBackwardProfileDataLayer.P3SpeedV4,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4SpeedV5 : this.horizontalMovementBackwardProfileDataLayer.P4SpeedV5
             };
             decimal[] acceleration = {
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Acceleration : this.horizontalMovementBackwardProfileDataLayer.P0Acceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Acceleration : this.horizontalMovementBackwardProfileDataLayer.P1Acceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Acceleration : this.horizontalMovementBackwardProfileDataLayer.P2Acceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Acceleration : this.horizontalMovementBackwardProfileDataLayer.P3Acceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Acceleration : this.horizontalMovementBackwardProfileDataLayer.P4Acceleration
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0Acceleration : this.horizontalMovementBackwardProfileDataLayer.P0Acceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Acceleration : this.horizontalMovementBackwardProfileDataLayer.P1Acceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Acceleration : this.horizontalMovementBackwardProfileDataLayer.P2Acceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Acceleration : this.horizontalMovementBackwardProfileDataLayer.P3Acceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Acceleration : this.horizontalMovementBackwardProfileDataLayer.P4Acceleration
             };
             decimal[] deceleration = {
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P0Deceleration : this.horizontalMovementBackwardProfileDataLayer.P0Deceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Deceleration : this.horizontalMovementBackwardProfileDataLayer.P1Deceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Deceleration : this.horizontalMovementBackwardProfileDataLayer.P2Deceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Deceleration : this.horizontalMovementBackwardProfileDataLayer.P3Deceleration,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Deceleration : this.horizontalMovementBackwardProfileDataLayer.P4Deceleration
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0Deceleration : this.horizontalMovementBackwardProfileDataLayer.P0Deceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Deceleration : this.horizontalMovementBackwardProfileDataLayer.P1Deceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Deceleration : this.horizontalMovementBackwardProfileDataLayer.P2Deceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Deceleration : this.horizontalMovementBackwardProfileDataLayer.P3Deceleration,
+                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Deceleration : this.horizontalMovementBackwardProfileDataLayer.P4Deceleration
             };
             decimal[] switchPosition = {
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P1Quote : this.horizontalMovementBackwardProfileDataLayer.P1Quote,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P2Quote : this.horizontalMovementBackwardProfileDataLayer.P2Quote,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P3Quote : this.horizontalMovementBackwardProfileDataLayer.P3Quote,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote,
-                direction == HorizontalMovementDirection.Forwards ? this.horizontalMovementForwardProfileDataLayer.P5Quote : this.horizontalMovementBackwardProfileDataLayer.P5Quote
+                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Quote : this.horizontalMovementBackwardProfileDataLayer.P1Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Quote : this.horizontalMovementBackwardProfileDataLayer.P2Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Quote : this.horizontalMovementBackwardProfileDataLayer.P3Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P5Quote : this.horizontalMovementBackwardProfileDataLayer.P5Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1)
             };
 
             var messageData = new PositioningMessageData(

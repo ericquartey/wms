@@ -1,6 +1,8 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -94,7 +96,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction);
+                void publishAction() => this.PublishCommand(
+                    null,
+                    "Sensors changed Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.SensorsChanged);
+
+                var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                    MessageType.SensorsChanged,
+                    MessageActor.FiniteStateMachines,
+                    MessageStatus.OperationExecuting,
+                    publishAction);
+
+                this.elevatorProvider.MoveHorizontalAuto(direction, messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]);
                 return this.Accepted();
             }
             catch (Exception ex)
