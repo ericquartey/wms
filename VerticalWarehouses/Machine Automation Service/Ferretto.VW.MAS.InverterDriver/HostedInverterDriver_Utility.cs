@@ -827,7 +827,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 switchPosition,
                                 this.refreshTargetTable);
 
-                            this.refreshTargetTable = false;
+                            //this.refreshTargetTable = false;
 
                             this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                             this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");

@@ -30,6 +30,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="6"
@@ -170,8 +171,8 @@
                             Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding DisembarkCommand}"
-                            Content="{x:Static res:InstallationApp.Disembark}"
+                            Command="{Binding DisembarkBackwardsCommand}"
+                            Content="{x:Static res:InstallationApp.DisembarkBackwards}"
                             IsBusy="{Binding IsElevatorDisembarking}"
                             Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
 
@@ -179,8 +180,26 @@
                             Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding EmbarkCommand}"
-                            Content="{x:Static res:InstallationApp.Embark}"
+                            Command="{Binding EmbarkBackwardsCommand}"
+                            Content="{x:Static res:InstallationApp.EmbarkBackwards}"
+                            IsBusy="{Binding IsElevatorEmbarking}"
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding DisembarkForwardsCommand}"
+                            Content="{x:Static res:InstallationApp.DisembarkForwards}"
+                            IsBusy="{Binding IsElevatorDisembarking}"
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding EmbarkForwardsCommand}"
+                            Content="{x:Static res:InstallationApp.EmbarkForwards}"
                             IsBusy="{Binding IsElevatorEmbarking}"
                             Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
 

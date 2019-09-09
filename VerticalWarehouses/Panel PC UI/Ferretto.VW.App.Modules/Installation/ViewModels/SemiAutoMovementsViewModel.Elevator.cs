@@ -13,15 +13,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
-        private DelegateCommand disembarkCommand;
+        private DelegateCommand disembarkBackwardsCommand;
+
+        private DelegateCommand disembarkForwardsCommand;
 
         private decimal? elevatorHorizontalPosition;
 
         private decimal? elevatorVerticalPosition;
 
-        private DelegateCommand embarkCommand;
+        private DelegateCommand embarkBackwardsCommand;
 
         private LoadingUnit embarkedLoadingUnit;
+
+        private DelegateCommand embarkForwardsCommand;
 
         private bool isElevatorDisembarking;
 
@@ -31,10 +35,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand DisembarkCommand =>
-            this.disembarkCommand
+        public ICommand DisembarkBackwardsCommand =>
+            this.disembarkBackwardsCommand
             ??
-            (this.disembarkCommand = new DelegateCommand(async () => await this.Disembark(), this.CanDisembark));
+            (this.disembarkBackwardsCommand = new DelegateCommand(async () => await this.Disembark(HorizontalMovementDirection.Backwards), this.CanDisembark));
+
+        public ICommand DisembarkForwardsCommand =>
+            this.disembarkForwardsCommand
+            ??
+            (this.disembarkForwardsCommand = new DelegateCommand(async () => await this.Disembark(HorizontalMovementDirection.Forwards), this.CanDisembark));
 
         public decimal? ElevatorHorizontalPosition
         {
@@ -48,16 +57,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
-        public ICommand EmbarkCommand =>
-            this.embarkCommand
+        public ICommand EmbarkBackwardsCommand =>
+            this.embarkBackwardsCommand
             ??
-            (this.embarkCommand = new DelegateCommand(async () => await this.Embark(), this.CanEmbark));
+            (this.embarkBackwardsCommand = new DelegateCommand(async () => await this.Embark(HorizontalMovementDirection.Backwards), this.CanEmbark));
 
         public LoadingUnit EmbarkedLoadingUnit
         {
-            get => this.embarkedLoadingUnit;
+            //get => this.embarkedLoadingUnit;
+            get
+            {
+                if (this.CanEmbark())
+                {
+                    this.embarkedLoadingUnit = new LoadingUnit();
+                }
+                else
+                {
+                    this.embarkedLoadingUnit = null;
+                }
+                return this.embarkedLoadingUnit;
+            }
+
             protected set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
+
+        public ICommand EmbarkForwardsCommand =>
+                    this.embarkForwardsCommand
+            ??
+            (this.embarkForwardsCommand = new DelegateCommand(async () => await this.Embark(HorizontalMovementDirection.Forwards), this.CanEmbark));
 
         public bool IsElevatorDisembarking
         {
@@ -92,27 +119,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
-                !this.IsWaitingForResponse
+                //!this.IsWaitingForResponse
+                //&&
+                !this.IsElevatorMoving
                 &&
-                !this.IsElevatorMoving;
+                this.Sensors.LuPresentInMachineSideBay1
+                &&
+                this.Sensors.LuPresentInOperatorSideBay1;
         }
 
         private bool CanEmbark()
         {
             return
-                !this.IsWaitingForResponse
+                //!this.IsWaitingForResponse
+                //&&
+                !this.IsElevatorMoving
                 &&
-                !this.IsElevatorMoving;
+                !this.Sensors.LuPresentInMachineSideBay1
+                &&
+                !this.Sensors.LuPresentInOperatorSideBay1;
         }
 
-        private async Task Disembark()
+        private async Task Disembark(HorizontalMovementDirection direction)
         {
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
+            await this.StartMovementAsync(direction, true);
         }
 
-        private async Task Embark()
+        private async Task Embark(HorizontalMovementDirection direction)
         {
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+            await this.StartMovementAsync(direction, false);
         }
 
         private async Task RetrieveElevatorPositionAsync()
@@ -134,11 +169,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        private async Task StartMovementAsync(HorizontalMovementDirection direction, bool isOnBoard)
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction);
+                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard);
             }
             catch (System.Exception ex)
             {

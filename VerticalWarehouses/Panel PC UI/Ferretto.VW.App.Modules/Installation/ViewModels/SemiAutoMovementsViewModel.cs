@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -20,11 +21,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
 
+        private readonly IMachineSensorsService machineSensorsService;
+
+        private readonly Sensors sensors = new Sensors();
+
         private int? inputLoadingUnitCode;
 
         private bool isWaitingForResponse;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken sensorsToken;
 
         private SubscriptionToken subscriptionToken;
 
@@ -36,6 +43,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorService machineElevatorService,
             IMachineCellsService machineCellsService,
             IMachineLoadingUnitsService machineLoadingUnitsService,
+            IMachineSensorsService machineSensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -58,7 +66,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
+            if (machineSensorsService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
 
+            this.machineSensorsService = machineSensorsService;
             this.machineElevatorService = machineElevatorService;
             this.machineCellsService = machineCellsService;
             this.machineLoadingUnitsService = machineLoadingUnitsService;
@@ -111,6 +124,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
+        public Sensors Sensors => this.sensors;
+
         #endregion
 
         #region Methods
@@ -127,6 +142,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.subscriptionToken = null;
             }
+            if (this.sensorsToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.sensorsToken);
+
+                this.sensorsToken = null;
+            }
         }
 
         public override async Task OnNavigatedAsync()
@@ -139,6 +162,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   message => this.OnElevatorPositionChanged(message),
                   ThreadOption.UIThread,
                   false);
+
+            this.sensorsToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message => this.sensors.Update(message?.Data?.SensorsStates),
+                    ThreadOption.UIThread,
+                    false);
+            try
+            {
+                var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
 
             await this.RetrieveElevatorPositionAsync();
 
@@ -231,8 +271,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                !this.IsWaitingForResponse;
 
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.embarkCommand?.RaiseCanExecuteChanged();
-            this.disembarkCommand?.RaiseCanExecuteChanged();
+            this.embarkForwardsCommand?.RaiseCanExecuteChanged();
+            this.embarkBackwardsCommand?.RaiseCanExecuteChanged();
+            this.disembarkForwardsCommand?.RaiseCanExecuteChanged();
+            this.disembarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
         }
 

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -619,6 +619,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disembark backwards.
+        /// </summary>
+        public static string DisembarkBackwards {
+            get {
+                return ResourceManager.GetString("DisembarkBackwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disembark forwards.
+        /// </summary>
+        public static string DisembarkForwards {
+            get {
+                return ResourceManager.GetString("DisembarkForwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Displacement [mm].
         /// </summary>
         public static string Displacement {
@@ -799,11 +817,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Embark backwards.
+        /// </summary>
+        public static string EmbarkBackwards {
+            get {
+                return ResourceManager.GetString("EmbarkBackwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Embarked Tray.
         /// </summary>
         public static string EmbarkedTray {
             get {
                 return ResourceManager.GetString("EmbarkedTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embark forwards.
+        /// </summary>
+        public static string EmbarkForwards {
+            get {
+                return ResourceManager.GetString("EmbarkForwards", resourceCulture);
             }
         }
         

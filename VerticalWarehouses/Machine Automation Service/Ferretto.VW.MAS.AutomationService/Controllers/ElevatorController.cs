@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
         {
             try
             {
@@ -108,7 +108,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageStatus.OperationExecuting,
                     publishAction);
 
-                this.elevatorProvider.MoveHorizontalAuto(direction, messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]);
+                // check feasibility
+                if (isOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
+                {
+                    throw new InvalidOperationException("Invalid " + (isOnBoard ? "Deposit" : "Pickup") + " command for " + (isOnBoard ? "empty" : "full") + " elevator");
+                }
+                if (!isOnBoard && !messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                {
+                    throw new InvalidOperationException("Invalid Zero Chain position");
+                }
+
+                // execute command
+                this.elevatorProvider.MoveHorizontalAuto(direction, isOnBoard);
                 return this.Accepted();
             }
             catch (Exception ex)

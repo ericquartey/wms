@@ -115,7 +115,7 @@
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementForwardProfile": {
+  "HorizontalMovementShorterProfile": {
     "TotalSteps": 5,
     "TotalMovement": 1235.9,
     "MovementCorrection": 20.0,
@@ -144,7 +144,7 @@
     //"P5Deceleration":
     //"P5Speed":
   },
-  "HorizontalMovementBackwardProfile": {
+  "HorizontalMovementLongerProfile": {
     "TotalSteps": 5,
     "TotalMovement": 1241.0,
     "MovementCorrection": 20.0,

@@ -23,9 +23,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
-        private readonly IHorizontalMovementBackwardProfileDataLayer horizontalMovementBackwardProfileDataLayer;
+        private readonly IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer;
 
-        private readonly IHorizontalMovementForwardProfileDataLayer horizontalMovementForwardProfileDataLayer;
+        private readonly IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer;
 
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
@@ -50,8 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IEventAggregator eventAggregator,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            IHorizontalMovementBackwardProfileDataLayer horizontalMovementBackwardProfileDataLayer,
-            IHorizontalMovementForwardProfileDataLayer horizontalMovementForwardProfileDataLayer,
+            IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer,
+            IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
@@ -78,14 +78,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (horizontalMovementBackwardProfileDataLayer is null)
+            if (horizontalMovementShorterProfileDataLayer is null)
             {
-                throw new ArgumentNullException(nameof(horizontalMovementBackwardProfileDataLayer));
+                throw new ArgumentNullException(nameof(horizontalMovementShorterProfileDataLayer));
             }
 
-            if (horizontalMovementForwardProfileDataLayer is null)
+            if (horizontalMovementLongerProfileDataLayer is null)
             {
-                throw new ArgumentNullException(nameof(horizontalMovementForwardProfileDataLayer));
+                throw new ArgumentNullException(nameof(horizontalMovementLongerProfileDataLayer));
             }
 
             if (horizontalAxisDataLayer is null)
@@ -136,8 +136,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext = dataContext;
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
-            this.horizontalMovementBackwardProfileDataLayer = horizontalMovementBackwardProfileDataLayer;
-            this.horizontalMovementForwardProfileDataLayer = horizontalMovementForwardProfileDataLayer;
+            this.horizontalMovementShorterProfileDataLayer = horizontalMovementShorterProfileDataLayer;
+            this.horizontalMovementLongerProfileDataLayer = horizontalMovementLongerProfileDataLayer;
             this.horizontalAxisDataLayer = horizontalAxisDataLayer;
             this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
             this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
@@ -193,46 +193,40 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
         {
-            var setupStatus = this.setupStatusProvider.Get();
-
-            var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
-                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
-
             // if direction is Forwards quote increments, else is decremented
-            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             // the total length is splitted in two unequal distances
-            bool isLongerDistance = (isOnBoard && direction == HorizontalMovementDirection.Forwards);
+            bool isLongerDistance = (isOnBoard && direction == HorizontalMovementDirection.Forwards) || (!isOnBoard && direction == HorizontalMovementDirection.Backwards);
 
             decimal[] speed = {
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0SpeedV1 : this.horizontalMovementBackwardProfileDataLayer.P0SpeedV1,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1SpeedV2 : this.horizontalMovementBackwardProfileDataLayer.P1SpeedV2,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2SpeedV3 : this.horizontalMovementBackwardProfileDataLayer.P2SpeedV3,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3SpeedV4 : this.horizontalMovementBackwardProfileDataLayer.P3SpeedV4,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4SpeedV5 : this.horizontalMovementBackwardProfileDataLayer.P4SpeedV5
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0SpeedV1Longer : this.horizontalMovementShorterProfileDataLayer.P0SpeedV1Shorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1SpeedV2Longer : this.horizontalMovementShorterProfileDataLayer.P1SpeedV2Shorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2SpeedV3Longer : this.horizontalMovementShorterProfileDataLayer.P2SpeedV3Shorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3SpeedV4Longer : this.horizontalMovementShorterProfileDataLayer.P3SpeedV4Shorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4SpeedV5Longer : this.horizontalMovementShorterProfileDataLayer.P4SpeedV5Shorter
             };
             decimal[] acceleration = {
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0Acceleration : this.horizontalMovementBackwardProfileDataLayer.P0Acceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Acceleration : this.horizontalMovementBackwardProfileDataLayer.P1Acceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Acceleration : this.horizontalMovementBackwardProfileDataLayer.P2Acceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Acceleration : this.horizontalMovementBackwardProfileDataLayer.P3Acceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Acceleration : this.horizontalMovementBackwardProfileDataLayer.P4Acceleration
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0AccelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1AccelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2AccelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3AccelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4AccelerationShorter
             };
             decimal[] deceleration = {
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P0Deceleration : this.horizontalMovementBackwardProfileDataLayer.P0Deceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Deceleration : this.horizontalMovementBackwardProfileDataLayer.P1Deceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Deceleration : this.horizontalMovementBackwardProfileDataLayer.P2Deceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Deceleration : this.horizontalMovementBackwardProfileDataLayer.P3Deceleration,
-                isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Deceleration : this.horizontalMovementBackwardProfileDataLayer.P4Deceleration
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0DecelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1DecelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2DecelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3DecelerationShorter,
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter
             };
             decimal[] switchPosition = {
-                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P1Quote : this.horizontalMovementBackwardProfileDataLayer.P1Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P2Quote : this.horizontalMovementBackwardProfileDataLayer.P2Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P3Quote : this.horizontalMovementBackwardProfileDataLayer.P3Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P4Quote : this.horizontalMovementBackwardProfileDataLayer.P4Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementForwardProfileDataLayer.P5Quote : this.horizontalMovementBackwardProfileDataLayer.P5Quote) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1)
+                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P1QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1)
             };
+            var targetPosition = switchPosition[4];
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
