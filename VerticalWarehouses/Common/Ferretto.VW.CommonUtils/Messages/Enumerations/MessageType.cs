@@ -26,8 +26,6 @@
 
         MachineStatusActive,
 
-        ShutterControl,
-
         NewMissionAvailable,
 
         CreateMission,
@@ -74,6 +72,8 @@
 
         RunningStateChanged,
 
-        FaultStateChanged
-    }
+        FaultStateChanged,
+
+        ElevatorWeightCheck
+	}
 }

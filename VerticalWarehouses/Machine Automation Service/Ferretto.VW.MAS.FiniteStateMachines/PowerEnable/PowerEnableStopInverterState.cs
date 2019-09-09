@@ -64,7 +64,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 {
                     case MessageStatus.OperationEnd:
                         this.currentInverterIndex++;
-
                         if (this.currentInverterIndex < this.machineData.ConfiguredInverters.Count)
                         {
                             var inverterCommandMessage = new FieldCommandMessage(

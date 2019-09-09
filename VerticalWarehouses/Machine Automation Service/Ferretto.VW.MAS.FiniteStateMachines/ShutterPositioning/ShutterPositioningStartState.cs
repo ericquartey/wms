@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                 }
                                 else
                                 {
-                                    // TestLoop: close shutter
+                                    // first step: close shutter
                                     ShutterPosition shutterPositionTarget;
                                     shutterPositionTarget = ShutterPosition.Closed;
                                     if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type)

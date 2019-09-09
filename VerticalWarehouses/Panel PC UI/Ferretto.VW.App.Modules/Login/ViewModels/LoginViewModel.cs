@@ -21,13 +21,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
+        private MachineIdentity machineIdentity;
+
         private DelegateCommand loginCommand;
 
         private HealthStatus serviceHealthStatus;
 
         #endregion
-
-        public override EnableMask EnableMask => EnableMask.None;
 
         #region Constructors
 
@@ -74,43 +74,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #endif
         }
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            this.UserLogin.IsValidationEnabled = false;
-            this.UserLogin.Password = null;
-            this.UserLogin.UserName = null;
-
-            if (this.subscriptionToken != null)
-            {
-                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-        }
-
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.None;
 
         public ICommand LoginCommand =>
             this.loginCommand
             ??
             (this.loginCommand = new DelegateCommand(
-                async () => await this.ExecuteLoginCommandAsync(),
+                async () => await this.LoginAsync(),
                 this.CanExecuteLogin));
 
-        private bool CanExecuteLogin()
-        {
-            return this.machineIdentity != null
-                &&
-                string.IsNullOrEmpty(this.UserLogin.Error)
-                &&
-                (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
-        }
-
         public UserLogin UserLogin { get; }
+
+        public int BayNumber { get; }
 
         public MachineIdentity MachineIdentity
         {
@@ -124,13 +103,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private void RaiseCanExecuteChanged()
-        {
-            this.loginCommand?.RaiseCanExecuteChanged();
-        }
-
-        public int BayNumber { get; }
-
         public HealthStatus ServiceHealthStatus
         {
             get => this.serviceHealthStatus;
@@ -140,6 +112,23 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                 }
+            }
+        }
+
+        #endregion
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.UserLogin.IsValidationEnabled = true;
+            this.UserLogin.Password = null;
+
+            if (this.subscriptionToken != null)
+            {
+                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
             }
         }
 
@@ -155,10 +144,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private MachineIdentity machineIdentity;
-
-        #endregion
-
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
@@ -169,7 +154,21 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private async Task ExecuteLoginCommandAsync()
+        private bool CanExecuteLogin()
+        {
+            return this.machineIdentity != null
+                &&
+                string.IsNullOrEmpty(this.UserLogin.Error)
+                &&
+                (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.loginCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task LoginAsync()
         {
             this.ShowNotification(string.Empty);
 
@@ -218,7 +217,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-               "TODO",/// Utils.Modules.Operator,
+                "TODO", // Utils.Modules.Operator,
                 data: null,
                 trackCurrentView: true);
         }

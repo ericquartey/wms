@@ -36,17 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalAxisDataLayer verticalAxisDataLayer)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement == null)
+            if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
@@ -89,36 +89,78 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("reset")]
+        [HttpPost]
+        public IActionResult Reset()
+        {
+            this.setupStatusProvider.ResetBeltBurnishing();
+
+            return this.Ok();
+        }
+
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
-            if (upperBound <= 0)
+            var parameters = new BeltBurnishingParameters
+            {
+                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.UpperBound,
+                        ConfigurationCategory.VerticalAxis),
+                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
+                        (long)VerticalAxis.LowerBound,
+                        ConfigurationCategory.VerticalAxis)
+            };
+
+            if (upperBoundPosition <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Upper bound cannot be negative or zero."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive
                     });
             }
 
-            if (upperBound <= lowerBound)
+            if (upperBoundPosition > parameters.UpperBound)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Upper bound must be strictly greater than lower bound."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange
                     });
             }
 
-            if (requiredCycles <= 0)
+            if (upperBoundPosition <= lowerBoundPosition)
             {
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Detail = "Required cycles count must be strictly positive."
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition
+                    });
+            }
+
+            if (lowerBoundPosition < parameters.LowerBound)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange
+                    });
+            }
+
+            if (totalTestCycleCount <= 0)
+            {
+                return this.BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive
                     });
             }
 
@@ -126,13 +168,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.BeltBurnishing,
-                upperBound,
+                upperBoundPosition,
                 this.verticalAxis.MaxEmptySpeed,
                 this.verticalAxis.MaxEmptyAcceleration,
                 this.verticalAxis.MaxEmptyDeceleration,
-                requiredCycles,
-                lowerBound,
-                upperBound);
+                totalTestCycleCount,
+                lowerBoundPosition,
+                upperBoundPosition,
+                delayStart);
 
             this.PublishCommand(
                 data,

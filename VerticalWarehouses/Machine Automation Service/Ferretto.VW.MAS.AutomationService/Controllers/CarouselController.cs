@@ -41,32 +41,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<CarouselController> logger)
             : base(eventAggregator)
         {
-            if (verticalAxisDataLayer == null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if (verticalManualMovementsDataLayer == null)
+            if (verticalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
-            if (horizontalAxisDataLayer == null)
+            if (horizontalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
-            if (horizontalManualMovementsDataLayer == null)
+            if (horizontalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (setupStatusProvider == null)
+            if (setupStatusProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (logger == null)
+            if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
             }

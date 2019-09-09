@@ -29,10 +29,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool[]> Get()
         {
             void publishAction() => this.PublishCommand(
-                    null,
-                    "Sensors changed Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.SensorsChanged);
+                null,
+                "Sensors changed Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.SensorsChanged);
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,

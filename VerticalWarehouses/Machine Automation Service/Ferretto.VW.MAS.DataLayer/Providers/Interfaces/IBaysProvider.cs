@@ -51,6 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void Update(BayIndex bayIndex, string ipAddress, BayType bayType);
 
+        Bay UpdatePosition(int bayNumber, int position, decimal height);
+
         #endregion
     }
 }

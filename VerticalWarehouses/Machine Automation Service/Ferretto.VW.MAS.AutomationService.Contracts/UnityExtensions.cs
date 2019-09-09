@@ -1,6 +1,8 @@
 ﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
+using Prism.Unity;
 using Unity;
+using Unity.Injection;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
@@ -22,32 +24,78 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return container;
         }
 
+        private static readonly System.Func<IUnityContainer, RetryHttpClient> defaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
+
         public static IContainerRegistry RegisterMachineAutomationServices(
             this IContainerRegistry container,
-            System.Uri serviceUrl)
+            System.Uri serviceUrl,
+            System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
         {
             var urlString = serviceUrl.ToString();
 
-            container.RegisterInstance<IMachineBaysService>(new MachineBaysService(urlString));
-            container.RegisterInstance<IMachineBeltBurnishingProcedureService>(new MachineBeltBurnishingProcedureService(urlString));
-            container.RegisterInstance<IMachineCarouselService>(new MachineCarouselService(urlString));
-            container.RegisterInstance<IMachineCellsService>(new MachineCellsService(urlString));
-            container.RegisterInstance<IMachineElevatorService>(new MachineElevatorService(urlString));
-            container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
-            container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
-            container.RegisterInstance<IMachineIdentityService>(new MachineIdentityService(urlString));
-            container.RegisterInstance<IMachineSetupStatusService>(new MachineSetupStatusService(urlString));
-            container.RegisterInstance<IMachineLoadingUnitsService>(new MachineLoadingUnitsService(urlString));
-            container.RegisterInstance<IMachineMachineStatusService>(new MachineMachineStatusService(urlString));
-            container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
-            container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
-            container.RegisterInstance<IMachineResolutionCalibrationProcedureService>(new MachineResolutionCalibrationProcedureService(urlString));
-            container.RegisterInstance<IMachineSensorsService>(new MachineSensorsService(urlString));
-            container.RegisterInstance<IMachineShuttersService>(new MachineShuttersService(urlString));
-            container.RegisterInstance<IMachineStatisticsService>(new MachineStatisticsService(urlString));
-            container.RegisterInstance<IMachineUsersService>(new MachineUsersService(urlString));
-            container.RegisterInstance<IMachineVerticalOriginProcedureService>(new MachineVerticalOriginProcedureService(urlString));
-            container.RegisterInstance<IMachineVerticalOffsetProcedureService>(new MachineVerticalOffsetProcedureService(urlString));
+            var resolveFunction = resolveHttpClientFunction ?? defaultResolveHttpClientFunction;
+
+            container.Register<RetryHttpClient, RetryHttpClient>();
+
+            container.GetContainer().RegisterType<IMachineBaysService>(
+                new InjectionFactory(c => new MachineBaysService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineBeltBurnishingProcedureService>(
+                new InjectionFactory(c => new MachineBeltBurnishingProcedureService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineCellsService>(
+                new InjectionFactory(c => new MachineCellsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineCellPanelsService>(
+               new InjectionFactory(c => new MachineCellPanelsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineElevatorService>(
+                new InjectionFactory(c => new MachineElevatorService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineErrorsService>(
+                new InjectionFactory(c => new MachineErrorsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineErrorsService>(
+                new InjectionFactory(c => new MachineErrorsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineIdentityService>(
+                new InjectionFactory(c => new MachineIdentityService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineSetupStatusService>(
+                new InjectionFactory(c => new MachineSetupStatusService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineLoadingUnitsService>(
+                new InjectionFactory(c => new MachineLoadingUnitsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineMachineStatusService>(
+                new InjectionFactory(c => new MachineMachineStatusService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineMissionOperationsService>(
+                new InjectionFactory(c => new MachineMissionOperationsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineMissionOperationsService>(
+                new InjectionFactory(c => new MachineMissionOperationsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineResolutionCalibrationProcedureService>(
+                new InjectionFactory(c => new MachineResolutionCalibrationProcedureService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineSensorsService>(
+                new InjectionFactory(c => new MachineSensorsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineShuttersService>(
+                new InjectionFactory(c => new MachineShuttersService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineStatisticsService>(
+                new InjectionFactory(c => new MachineStatisticsService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineUsersService>(
+                new InjectionFactory(c => new MachineUsersService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineVerticalOriginProcedureService>(
+                new InjectionFactory(c => new MachineVerticalOriginProcedureService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineVerticalOffsetProcedureService>(
+                new InjectionFactory(c => new MachineVerticalOffsetProcedureService(urlString, resolveFunction(c))));
 
             return container;
         }

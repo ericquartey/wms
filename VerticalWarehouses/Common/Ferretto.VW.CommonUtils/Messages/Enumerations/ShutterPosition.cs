@@ -8,7 +8,7 @@
         "Design",
         "CA1028:Enum Storage should be Int32",
         Justification = "Review the code to understand if the ushort type specification is really necessary.")]
-    public enum ShutterPosition : ushort
+    public enum ShutterPosition
     {
         None = 0,
 

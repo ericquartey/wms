@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -19,6 +20,14 @@ namespace Ferretto.VW.MAS.DataModels
         public string IpAddress { get; set; }
 
         public bool IsActive { get; set; }
+
+        public LoadingUnit LoadingUnit { get; set; }
+
+        public int? LoadingUnitId { get; set; }
+
+        public int Number { get; set; }
+
+        public IEnumerable<decimal> Positions { get; set; }
 
         public BayStatus Status
         {

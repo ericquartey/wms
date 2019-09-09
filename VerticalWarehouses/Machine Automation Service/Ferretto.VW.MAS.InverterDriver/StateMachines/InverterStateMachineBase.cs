@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -14,7 +15,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {
-
         #region Fields
 
         private bool disposed;
@@ -51,8 +51,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
-
-
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
@@ -64,8 +62,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         protected ILogger Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -99,8 +95,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:Enqueue message {message}");
-            this.InverterCommandQueue.Enqueue(message);
+            if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
+            {
+                this.Logger.LogTrace($"1:Enqueue message {message}");
+                this.InverterCommandQueue.Enqueue(message);
+            }
         }
 
         /// <inheritdoc />

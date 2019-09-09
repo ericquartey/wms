@@ -18,7 +18,7 @@
 
         SwitchEngine = 7,
 
-        ShutterControl = 8,
+        //ShutterControl = 8,
 
         BeltBurnishing = 9,
 

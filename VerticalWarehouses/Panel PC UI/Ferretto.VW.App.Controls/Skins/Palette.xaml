@@ -16,7 +16,8 @@
     <Color x:Key="ColorFerrettoLightGray">#C5C7C4</Color>
     <Color x:Key="ColorFerrettoMediumGray">#707173</Color>
     <Color x:Key="ColorFerrettoDarkGray">#293133</Color>
-    <Color x:Key="ColorFerrettoRed">#EE0011</Color>
+    <Color x:Key="ColorFerrettoRed">#DA0010</Color>
+    <Color x:Key="ColorFerrettoBlue">#3366FF</Color>
     <Color x:Key="ColorFerrettoOrange">#FF8800</Color>
     <Color x:Key="ColorFerrettoBlack">#0A0A0A</Color>
     <Color x:Key="ColorFerrettoGreen">#009933</Color>
@@ -24,14 +25,23 @@
 
     <SolidColorBrush x:Key="FerrettoWhiteGray"
                      Color="{StaticResource ColorFerrettoWhiteGray}" />
-    <SolidColorBrush x:Key="FerrettoLightGray">#C5C7C4</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoDarkGray">#293133</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoRed">#EE0011</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoLightGray"
+                     Color="{StaticResource ColorFerrettoLightGray}" />
+    <SolidColorBrush x:Key="FerrettoMediumGray"
+                     Color="{StaticResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="FerrettoDarkGray"
+                     Color="{StaticResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="FerrettoRed"
+                     Color="{StaticResource ColorFerrettoRed}" />
     <SolidColorBrush x:Key="FerrettoOrange"
                      Color="{StaticResource ColorFerrettoOrange}" />
-    <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoGreen">#009933</SolidColorBrush>
-    <SolidColorBrush x:Key="FerrettoPureWhite">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoBlack"
+                     Color="{StaticResource ColorFerrettoBlack}" />
+    <SolidColorBrush x:Key="FerrettoGreen"
+                     Color="{StaticResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="FerrettoBlue"
+                     Color="{StaticResource ColorFerrettoBlue}" />
+    <SolidColorBrush x:Key="FerrettoPureWhite"
+                     Color="{StaticResource ColorFerrettoPureWhite}" />
 
 </ResourceDictionary>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 // ReSharper disable ArrangeThisQualifier

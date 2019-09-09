@@ -28,27 +28,12 @@
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Help}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Width="60"
-                                    Height="60"
-                                    BorderThickness="0"
-                                    Command="{Binding OpenHelpWindow}">
-
-                    <controls:PpcIcon Height="24"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
-
-
-
-
-                </controls:PpcButton>
+                <controls:PpcButton Command="{Binding OpenHelpWindow}"
+                                    Style="{DynamicResource PpcButtonHelpHeaderStyle}" />
             </ctrls:PpcControl>
 
             <controls:CustomControlLoggedUser Margin="15,0,15,0"
-                                              IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
                                               Items="{Binding States}"
-                                              LogOffCommand="{Binding LogOffCommand}"
-                                              OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                              UserText="{Binding UserName}"
                                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <controls:CustomMachineModeToggleButton Margin="15,0,0,0"
@@ -80,39 +65,8 @@
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Command="{Binding ExecuteCommand}">
-                    <Button.Content>
-                        <StackPanel Height="60"
-                                    Orientation="Horizontal">
-                            <controls:PpcIcon Height="36"
-                                              Margin="15,0"
-                                              ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                              Source="{DynamicResource ThemeImageSource}" />
-
-                            <TextBlock Margin="0,0,10,0"
-                                       VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                         Value="True">
-                                                <Setter Property="TextBlock.Text" Value="Tema Scuro" />
-                                                <Setter Property="TextBlock.Foreground" Value="White" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                         Value="False">
-                                                <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
-                                                <Setter Property="TextBlock.Foreground" Value="Black" />
-                                            </DataTrigger>
-
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                    </Button.Content>
-
-                </controls:PpcButton>
+                <controls:PpcButton Command="{Binding ExecuteCommand}"
+                                    Style="{DynamicResource PpcButtonThemeStyle}" />
             </ctrls:PpcControl>
 
             <!--  SwitchOffCommand  -->

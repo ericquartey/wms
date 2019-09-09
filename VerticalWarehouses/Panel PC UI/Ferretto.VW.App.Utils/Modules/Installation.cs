@@ -6,17 +6,28 @@
 
         public const string BELTBURNISHING = "BeltBurnishingViewModel";
 
+        public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
-        public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
+        public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
 
-        public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
+        public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         #endregion
 
         #region Classes
+
+        public static class Bays
+        {
+            #region Fields
+
+            public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+
+            #endregion
+        }
 
         public static class CellsHeightCheck
         {
@@ -29,13 +40,33 @@
             #endregion
         }
 
+        public static class Elevator
+        {
+            #region Classes
+
+            public static class WeightCheck
+            {
+                #region Fields
+
+                public const string STEP1 = "ElevatorWeightCheckStep1ViewModel";
+
+                public const string STEP2 = "ElevatorWeightCheckStep2ViewModel";
+
+                #endregion
+            }
+
+            #endregion
+        }
+
         public static class ManualMovements
         {
             #region Fields
 
             public const string CAROUSEL = "CarouselManualMovementsViewModel";
 
-            public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
+            public const string EXTERNALBAY = "ExternalBayManualMovementsViewModel";
+
+            public const string HORIZONTALENGINE = "HorizontalEngineManualMovementsViewModel";
 
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
 
@@ -56,9 +87,18 @@
 
             public const string OTHERS = "OtherSensorsViewModel";
 
-            public const string SHUTTER = "ShutterSensorsViewModel";
-
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
+
+            #endregion
+        }
+
+        public static class VerticalOffsetCalibration
+        {
+            #region Fields
+
+            public const string STEP1 = "VerticalOffsetCalibrationStep1ViewModel";
+
+            public const string STEP2 = "VerticalOffsetCalibrationStep2ViewModel";
 
             #endregion
         }

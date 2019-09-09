@@ -34,12 +34,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (shutterTestParametersProvider == null)
+            if (shutterTestParametersProvider is null)
             {
                 throw new ArgumentNullException(nameof(shutterTestParametersProvider));
             }
 
-            if (configurationProvider == null)
+            if (configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
@@ -57,10 +57,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("shutters/position")]
         public ActionResult<ShutterPosition> GetShutterPosition(int bayNumber)
         {
+            // TODO add check on bay number
+
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
             void PublishAction() => this.PublishCommand(
                 messageData,
-                "Request vertical position",
+                "Request shutter position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition);
 
@@ -69,11 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
                 PublishAction);
-
-            if (notifyData?.ShutterPosition == null)
-            {
-                throw new Exception("Cannot get current shutter position.");
-            }
 
             return this.Ok(notifyData.ShutterPosition);
         }
@@ -87,51 +84,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{bayNumber}/move")]
-        public void Move(int bayNumber, [FromBody]ShutterPositioningMovementMessageDataDto data)
+        public void Move(int bayNumber, ShutterMovementDirection direction)
         {
-            switch (data.ShutterType)
-            {
-                case ShutterType.NoType:
-                    this.configurationProvider
-                        .GetIntegerConfigurationValue(
-                            (long)GeneralInfo.Shutter1Type,
-                            ConfigurationCategory.GeneralInfo);
-                    break;
+            var speedRate = 100m; // TODO HACK remove this hardcoded value
 
-                case ShutterType.Shutter2Type:
-                    this.configurationProvider
-                        .GetIntegerConfigurationValue(
-                            (long)GeneralInfo.Shutter2Type,
-                            ConfigurationCategory.GeneralInfo);
-                    break;
-
-                case ShutterType.Shutter3Type:
-                    this.configurationProvider
-                        .GetIntegerConfigurationValue(
-                            (long)GeneralInfo.Shutter3Type,
-                            ConfigurationCategory.GeneralInfo);
-                    break;
-            }
-
-            // TODO what is this?
-
-            //TEMP Speed rate parameter need to be multiply by 100
-            //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
-            var speedRate = 100m;
-            ShutterPosition destination;
-            if (data.ShutterPositionMovement == ShutterMovementDirection.Up)
-            {
-                destination = ShutterPosition.Opened;
-            }
-            else
-            {
-                destination = ShutterPosition.Closed;
-            }
+            var targetPosition = direction == ShutterMovementDirection.Up
+                ? ShutterPosition.Opened
+                : ShutterPosition.Closed;
 
             var messageData = new ShutterPositioningMessageData(
-                destination,
-                data.ShutterPositionMovement,
-                ShutterType.Shutter3Type,
+                targetPosition,
+                direction,
+                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                bayNumber,
                 speedRate,
                 MovementMode.Position,
                 0,
@@ -148,52 +113,38 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult RunTest(int bayNumber, int delay, int numberCycles)
+        public IActionResult RunTest(int bayNumber, int delayInSeconds, int testCycleCount)
         {
-            if (delay <= 0)
+            if (delayInSeconds <= 0)
             {
-                return this.BadRequest("Delay must be strictly positive.");
+                return this.BadRequest(Resources.Shutters.TheDelayBetweenTestCyclesMustBeStrictlyPositive);
             }
 
-            if (numberCycles <= 0)
+            if (testCycleCount <= 0)
             {
-                return this.BadRequest("NumberCycles must be strictly positive.");
+                return this.BadRequest(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
-            // TODO Retrieve the max speed rate from the database
+            var speedRate = 100; // TODO HACK remove this hardcoded value
 
-            // TODO what is this?
-
-            //TEMP Speed rate parameter need to be multiply by 100
-            //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
-            var speedRate = 100m;
-
-            //var shutterControlMessageData = new ShutterTestStatusChangedMessageData(
-            //    bayNumber,
-            //    delay,
-            //    numberCycles,
-            //    (int)maxSpeed);
-
-            //this.PublishCommand(
-            //    shutterControlMessageData,
-            //    "Shutter Started",
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.ShutterTestStatusChanged);
+            var delayInMilliseconds = delayInSeconds * 1000;
 
             var messageData = new ShutterPositioningMessageData(
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
-                ShutterType.Shutter3Type,
+                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                bayNumber,
                 speedRate,
                 MovementMode.ShutterTest,
-                numberCycles,
-                delay * 1000);  // milliseconds
+                testCycleCount,
+                delayInMilliseconds);
 
             this.PublishCommand(
                 messageData,
                 "Execute Shutter Test Loop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning);
+
             return this.Accepted();
         }
 

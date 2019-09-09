@@ -1,7 +1,10 @@
-﻿using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using System.Linq;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -15,7 +18,23 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #endregion
 
+        #region Constructors
+
+        public FooterViewModel() : base()
+        {
+            var notificationEvent = this.EventAggregator.GetEvent<PresentationNotificationPubSubEvent>();
+
+            notificationEvent.Subscribe(
+                                notificationMessage => this.NotificationChanged(notificationMessage),
+                                ThreadOption.UIThread,
+                                true);
+        }
+
+        #endregion
+
         #region Properties
+
+        public bool IsEnabled => true;
 
         public string NotificationMessage
         {
@@ -37,21 +56,31 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.InitializeData();
 
+            var prev = this.GetInstance(nameof(PresentationNavigationStep));
+            prev.Type = PresentationTypes.Prev;
+            this.States.Add(prev);
+            var next = this.GetInstance(nameof(PresentationNavigationStep));
+            next.Type = PresentationTypes.Next;
+            this.States.Add(next);
+            this.States.Add(this.GetInstance(nameof(PresentationAbort)));
             this.States.Add(this.GetInstance(nameof(PresentationBack)));
         }
 
-        public override void UpdateChanges(PresentationChangedMessage message)
+        public void NotificationChanged(PresentationNotificationMessage message)
         {
-            base.UpdateChanges(message);
-
-            if (message.NotificationSeverity == NotificationSeverity.NotSpecified)
+            if (message is null)
             {
                 return;
             }
 
-            if (message.NotificationSeverity == NotificationSeverity.Clear)
+            if (message.ClearMessage)
             {
                 this.NotificationMessage = null;
+                return;
+            }
+
+            if (message.NotificationSeverity == NotificationSeverity.NotSpecified)
+            {
                 return;
             }
 
@@ -64,11 +93,26 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.NotificationMessage =
                         swaggerException.Result.Title +
                         System.Environment.NewLine +
-                        swaggerException.Result.Detail;
+                        swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
                 }
                 else if (message.Exception is SwaggerException)
                 {
-                    this.NotificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+                    var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+
+                    if (message.Exception.InnerException != null)
+                    {
+                        notificationMessage +=
+                            System.Environment.NewLine +
+                            message.Exception.InnerException.Message;
+                    }
+                    else
+                    {
+                        notificationMessage +=
+                           System.Environment.NewLine +
+                           message.Exception.Message.Split('\n', '\r').FirstOrDefault();
+                    }
+
+                    this.NotificationMessage = notificationMessage;
                 }
                 else
                 {
@@ -77,8 +121,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             }
             else
             {
-                this.NotificationMessage = message.NotificationMessage;
+                this.NotificationMessage = message.Msg;
             }
+        }
+
+        public override void UpdateChanges(PresentationChangedMessage message)
+        {
+            base.UpdateChanges(message);
         }
 
         public override void UpdatePresentation(PresentationMode mode)

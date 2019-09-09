@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStartState : StateBase
     {
-
         #region Fields
 
         private readonly IPositioningMachineData machineData;
@@ -45,8 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -171,6 +168,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         protected override void Dispose(bool disposing)

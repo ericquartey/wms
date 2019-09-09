@@ -6,57 +6,33 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+                  PresentationType="Logged"
                   mc:Ignorable="d">
 
     <Grid Name="LayoutRoot">
         <controls:PpcButton x:Name="ButtonRoot"
                             Height="60"
-                            VerticalContentAlignment="Center"
                             Background="Transparent"
-                            BorderBrush="Transparent"
-                            Command="{Binding OpenClosePopupCommand}"
-                            FontSize="{DynamicResource PpcButtonFontSize}"
-                            Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="10,0,10,0"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource PpcButtonForeground}"
-                           Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <controls:PpcIcon Height="24"
-                                  HorizontalAlignment="Center"
-                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                  Source="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png" />
-            </StackPanel>
-
-        </controls:PpcButton>
+                            Command="{Binding ExecuteCommand}"
+                            Content="{Binding UserName}"
+                            ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"
+                            IsActive="{Binding IsPopupOpen}" />
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-               Height="60"
                Margin="0,20"
                VerticalAlignment="Top"
                AllowsTransparency="True"
-               IsOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               IsOpen="{Binding IsPopupOpen}"
                PlacementTarget="{Binding ElementName=ButtonRoot}">
-            <StackPanel Height="60"
-                        VerticalAlignment="Top"
-                        Background="Transparent">
+            <StackPanel>
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-                                    Height="60"
-                                    Background="{DynamicResource VWAPP_BACKGROUND}"
-                                    BorderBrush="Transparent"
-                                    Command="{Binding LogOffCommand}"
-                                    FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
-                                    Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
-                    <Button.Content>
-                        <TextBlock HorizontalAlignment="Center"
-                                   Background="Transparent"
-                                   FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
-                                   Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
-                                   Text="{x:Static res:InstallationApp.LogOff}" />
-                    </Button.Content>
-                </controls:PpcButton>
+                                    Command="{Binding ToggleThemeCommand}"
+                                    Content="Cambia Tema" />
+
+                <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
+                                    Command="{Binding LogOutCommand}"
+                                    Content="{x:Static res:InstallationApp.LogOff}" />
             </StackPanel>
         </Popup>
     </Grid>

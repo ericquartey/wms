@@ -9,6 +9,7 @@ using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
@@ -25,11 +26,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
+        private readonly IMachineModeService machineModeService;
+
         private readonly BindingList<MainNavigationMenuItem> otherItems = new BindingList<MainNavigationMenuItem>();
 
         private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
 
         private readonly IMachineSetupStatusService setupStatusService;
+
+        private bool areItemsEnabled;
 
         #endregion
 
@@ -37,12 +42,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public InstallatorMenuViewModel(
             IMachineSetupStatusService setupStatusService,
+            IMachineModeService machineModeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
             if (setupStatusService is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusService));
+            }
+
+            if (machineModeService is null)
+            {
+                throw new ArgumentNullException(nameof(machineModeService));
             }
 
             if (bayManager is null)
@@ -63,6 +74,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
 
         #region Properties
+
+        public bool AreItemsEnabled
+        {
+            get => this.areItemsEnabled;
+            private set => this.SetProperty(ref this.areItemsEnabled, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.None;
 
@@ -92,6 +109,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             await this.UpdateMenuItemsStatus();
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            this.AreItemsEnabled = e.MachinePower != Services.Models.MachinePowerState.Unpowered;
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
@@ -140,7 +164,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var baySetupStatus = dictionary[bayName] as BaySetupStatus;
                     var bayDictionary = baySetupStatus.ToDictionary();
 
-                    var bayPropertyName = propertyName.Replace("Bay", "");
+                    var bayPropertyName = propertyName.Replace("Bay", string.Empty);
 
                     if (bayDictionary.ContainsKey(bayPropertyName))
                     {
@@ -173,6 +197,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, trackCurrentView: true));
                 }
             }
+
+            this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
 
             this.RaisePropertyChanged(nameof(this.InstallatorItems));
             this.RaisePropertyChanged(nameof(this.SensorsItems));

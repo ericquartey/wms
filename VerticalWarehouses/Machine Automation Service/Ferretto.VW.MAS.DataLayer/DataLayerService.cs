@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -66,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.DataLayerInitialize();
+            await this.InitializeAsync();
 
             await base.StartAsync(cancellationToken);
         }
@@ -127,51 +128,66 @@ namespace Ferretto.VW.MAS.DataLayer
             return Task.CompletedTask;
         }
 
-        private void DataLayerInitialize()
+        private async Task ApplyMigrationsAsync()
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            try
             {
-                var redundancyService = scope.ServiceProvider
-                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-                redundancyService.IsEnabled = false;
-
-                try
+                using (var scope = this.serviceScopeFactory.CreateScope())
                 {
+                    var redundancyService = scope.ServiceProvider
+                        .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+                    redundancyService.IsEnabled = false;
+
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
-                        var pendingMigrationsCount = activeDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to active database ...");
-                            activeDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
+                            await activeDbContext.Database.MigrateAsync();
                         }
                     }
 
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
-                        var pendingMigrationsCount = standbyDbContext.Database.GetPendingMigrations().Count();
-                        if (pendingMigrationsCount > 0)
+                        var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
                         {
-                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to standby database ...");
-                            standbyDbContext.Database.Migrate();
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
+                            await standbyDbContext.Database.MigrateAsync();
                         }
                     }
 
                     redundancyService.IsEnabled = true;
                 }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while migating databases.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
-                    return;
-                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Error while migating databases.");
+                this.SendErrorMessage(new DLExceptionMessageData(ex));
+            }
+        }
 
+        private async Task InitializeAsync()
+        {
+            await this.ApplyMigrationsAsync();
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
                 var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
                 try
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
-                    //this.EnsureMachinestatusInitialization();
+
+                    scope.ServiceProvider
+                        .GetRequiredService<ICellsProvider>()
+                        .LoadFrom(configuration.GetCellsConfigurationFile());
+
+                    await scope.ServiceProvider
+                       .GetRequiredService<ILoadingUnitsProvider>()
+                       .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
                 }
                 catch (Exception ex)
                 {
@@ -181,6 +197,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
 
+            this.IsReady = true;
+
             var message = new NotificationMessage(
                 null,
                 "DataLayer initialization complete.",
@@ -188,8 +206,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.DataLayer,
                 MessageType.DataLayerReady,
                 BayIndex.None);
-
-            this.IsReady = true;
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()

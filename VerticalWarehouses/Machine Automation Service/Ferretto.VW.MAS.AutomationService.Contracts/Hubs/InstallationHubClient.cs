@@ -39,9 +39,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>(
                  nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
-            connection.On<NotificationMessageUI<ShutterTestStatusChangedMessageData>>(
-                 nameof(IInstallationHub.ShutterControlNotify), this.OnShutterControlNotify);
-
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                  nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
@@ -65,6 +62,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<PowerEnableMessageData>>(
                  nameof(IInstallationHub.PowerEnableNotify), this.OnPowerEnableNotify);
+
+            connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
+                 nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
@@ -73,6 +73,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnCurrentPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnElavtorWeightCheck(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -113,11 +118,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnSensorsChanged(NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        private void OnShutterControlNotify(NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

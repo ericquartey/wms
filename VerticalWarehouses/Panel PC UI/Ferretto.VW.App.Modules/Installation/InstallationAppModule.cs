@@ -48,53 +48,37 @@ namespace Ferretto.VW.App.Modules.Installation
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
-            #region Sensors Views
+            containerRegistry.RegisterForNavigation<BayHeightCheckView>();
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
-            containerRegistry.RegisterForNavigation<ShutterSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
 
-            #endregion
-
-            #region Manual Movements Views
+            containerRegistry.RegisterForNavigation<SemiAutoMovementsView>();
 
             containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
-            containerRegistry.RegisterForNavigation<HorizontalAxisManualMovementsView>();
+            containerRegistry.RegisterForNavigation<HorizontalEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<ManualMovementsNavigationView>();
             containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
+            containerRegistry.RegisterForNavigation<ExternalBayManualMovementsView>();
 
-            #endregion
-
-            #region Elevator Views
-
-            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
+            containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep1View>();
+            containerRegistry.RegisterForNavigation<ElevatorWeightCheckStep2View>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep1View>();
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep1View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep3View>();
 
-            #endregion
-
-            #region Shutter Views
-
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
-
-            #endregion
-
-            #region Belt Views
 
             containerRegistry.RegisterForNavigation<BeltBurnishingView>();
 
-            #endregion
-
-            #region Cell Views
-
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
-
-            #endregion
+            containerRegistry.RegisterForNavigation<CellPanelsCheckView>();
         }
 
         #endregion

@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            await base.OnNavigatedAsync();
+
             this.IsBackNavigationAllowed = true;
 
             this.subscriptionToken = this.EventAggregator
@@ -89,8 +91,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-
-            await base.OnNavigatedAsync();
         }
 
         private void InitializeNavigationMenu()
@@ -107,13 +107,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Bays,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.Sensors.SHUTTER,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Shutter,
                     trackCurrentView: false));
 
             this.menuItems.Add(

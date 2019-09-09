@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     public class PowerOnStartState : InverterStateBase
     {
-
-
         #region Constructors
 
         public PowerOnStartState(
@@ -35,8 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -56,7 +56,7 @@
                                                     LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}" />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
-                    Content="{x:Static res:InstallationApp.BayControlMoveToPosition}"
+                    Content="{x:Static res:InstallationApp.MoveToPosition}"
                      />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,280,0,0"
@@ -96,17 +96,12 @@
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.HelpDLUTStop}" />
 
-        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
-                                                    Highlighted="True" IsEnabled="True"
-                                                    InputText="1"
 
-                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}" />
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="1"
-
-                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}" />
+                                                    LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
 
     </Grid>
 </UserControl>

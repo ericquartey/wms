@@ -56,6 +56,13 @@ namespace Ferretto.VW.App.Controls
             base.Appear();
         }
 
+        public void ClearNotifications()
+        {
+            this.EventAggregator
+              .GetEvent<PresentationNotificationPubSubEvent>()
+              .Publish(new PresentationNotificationMessage(true));
+        }
+
         public override void Disappear()
         {
             base.Disappear();
@@ -81,6 +88,8 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
 
+            this.ClearNotifications();
+
             await base.OnNavigatedAsync();
         }
 
@@ -90,11 +99,21 @@ namespace Ferretto.VW.App.Controls
             this.UpdatePresentation();
         }
 
+        public void ShowAbortStep(bool isEnabled, bool isVisible)
+        {
+            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
+        }
+
+        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
+        }
+
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(new PresentationChangedMessage(message, severity));
+                 .GetEvent<PresentationNotificationPubSubEvent>()
+                 .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         public void ShowNotification(Exception exception)
@@ -105,11 +124,38 @@ namespace Ferretto.VW.App.Controls
             }
 
             this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(new PresentationChangedMessage(exception));
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
-        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            var presentationStep = new PresentationStep()
+            {
+                Type = presentationType,
+                IsEnabled = isEnabled,
+                IsVisible = isVisible,
+                ModuleName = moduleName,
+                ViewName = viewName
+            };
+
+            var presentationMessage = new PresentationChangedMessage(presentationStep);
+
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(presentationMessage);
+        }
+
+        public void ShowSteps(bool isPrevEnabled, string prevModuleName = null, string prevViewName = null)
+        {
+        }
+
+        protected virtual void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             this.UpdateIsEnabled(e.MachineMode, e.MachinePower);
         }

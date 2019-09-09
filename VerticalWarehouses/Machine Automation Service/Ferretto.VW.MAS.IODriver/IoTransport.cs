@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class IoTransport : IIoTransport, IDisposable
     {
-
         #region Fields
 
         private readonly byte[] receiveBuffer = new byte[1024];
@@ -19,6 +18,8 @@ namespace Ferretto.VW.MAS.IODriver
         private bool disposed;
 
         private IPAddress ioAddress;
+
+        private int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 
@@ -28,7 +29,14 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
+        #region Constructors
 
+        public IoTransport(int readTimeoutMilliseconds)
+        {
+            this.readTimeoutMilliseconds = readTimeoutMilliseconds;
+        }
+
+        #endregion
 
         #region Destructors
 
@@ -39,36 +47,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
         #endregion
 
-
-
         #region Methods
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
-            }
-        }
 
         /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int sendPort)
@@ -198,17 +183,25 @@ namespace Ferretto.VW.MAS.IODriver
             byte[] receivedData;
             try
             {
-                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                if (readBytes > 0)
+                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
                 {
-                    receivedData = new byte[readBytes];
+                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                    if (readBytes > 0)
+                    {
+                        receivedData = new byte[readBytes];
 
-                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                        Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    }
+                    else
+                    {
+                        this.Disconnect();
+                        throw new IoDriverException("Error reading data from Transport Stream");
+                    }
                 }
                 else
                 {
                     this.Disconnect();
-                    throw new IoDriverException("Error reading data from Transport Stream");
+                    throw new IoDriverException("Timeout reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
@@ -226,35 +219,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] message, CancellationToken stoppingToken)
         {
-            if (this.transportStream == null)
-            {
-                throw new IoDriverException(
-                    "Transport Stream is null",
-                    IoDriverExceptionCode.UninitializedNetworkStream);
-            }
-
-            if (!this.transportStream.CanWrite)
-            {
-                throw new IoDriverException(
-                    "Transport Stream not configured for sending data",
-                    IoDriverExceptionCode.MisconfiguredNetworkStream);
-            }
-
-            if (!this.IsConnected)
-            {
-                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
-            }
-            try
-            {
-                await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                this.Disconnect();
-                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
-            }
-
-            return 0;
+            return await this.WriteAsync(message, 0, stoppingToken);
         }
 
         /// <inheritdoc />
@@ -285,14 +250,32 @@ namespace Ferretto.VW.MAS.IODriver
                     await Task.Delay(delay, stoppingToken);
                 }
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
+                return message.Length;
             }
             catch (Exception ex)
             {
                 this.Disconnect();
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
+        }
 
-            return 0;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.transportStream?.Close();
+                    this.transportStream?.Dispose();
+                    this.transportStream = null;
+
+                    this.transportClient?.Close();
+                    this.transportClient?.Dispose();
+                    this.transportClient = null;
+                }
+
+                this.disposed = true;
+            }
         }
 
         #endregion

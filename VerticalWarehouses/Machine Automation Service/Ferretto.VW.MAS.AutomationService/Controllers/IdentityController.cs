@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IGeneralInfoConfigurationDataLayer generalInfo;
 
-        private readonly ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -24,20 +24,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public IdentityController(
             IGeneralInfoConfigurationDataLayer generalInfo,
-            ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider)
         {
-            if (generalInfo == null)
+            if (generalInfo is null)
             {
                 throw new System.ArgumentNullException(nameof(generalInfo));
             }
 
-            if (loadingUnitStatisticsProvider == null)
+            if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
-            if (servicingProvider == null)
+            if (servicingProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(servicingProvider));
             }
@@ -58,13 +58,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
-            // TO DO implement general info
             var machineInfo = new MachineIdentity
             {
                 Id = 1,
-                AreaId = 2, // TODO
-                Width = 3080, // TODO
-                Depth = 500, // TODO
+                AreaId = 2, // TODO remove this hardcoded value
+                Width = 3080, // TODO remove this hardcoded value
+                Depth = 500, // TODO remove this hardcoded value
                 ModelName = this.generalInfo.Model,
                 SerialNumber = this.generalInfo.Serial,
                 TrayCount = loadingUnits.Count(),

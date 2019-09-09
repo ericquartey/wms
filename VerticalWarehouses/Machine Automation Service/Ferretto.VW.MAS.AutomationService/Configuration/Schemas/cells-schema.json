@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for my JSON file format",
+
+  "type": "object",
+  "required": [
+    "panels"
+  ],
+  "properties": {
+    "panels": {
+      "$id": "#/properties/panels",
+      "type": "array",
+      "title": "The Panels Schema",
+      "items": {
+        "$id": "#/properties/panels/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "side",
+          "cells"
+        ],
+        "properties": {
+          "side": {
+            "$id": "#/properties/panels/items/properties/side",
+            "type": "string",
+            "title": "The Side Schema",
+            "enum": [ "front", "back" ],
+            "default": "front"
+          },
+          "cells": {
+            "$id": "#/properties/panels/items/properties/cells",
+            "type": "array",
+            "uniqueItems": true,
+            "title": "The Cells Schema",
+            "items": {
+              "$id": "#/properties/panels/items/properties/cells/items",
+              "type": "object",
+              "title": "The Items Schema",
+              "required": [
+                "id",
+                "position"
+              ],
+              "properties": {
+                "id": {
+                  "$id": "#/properties/panels/items/properties/cells/items/properties/id",
+                  "type": "integer",
+                  "title": "The Id Schema"
+                },
+                "priority": {
+                  "$id": "#/properties/panels/items/properties/cells/items/properties/priority",
+                  "type": "integer",
+                  "description": "The cell priority.",
+                  "title": "The Priority Schema",
+                  "default": 0
+                },
+                "status": {
+                  "$id": "#/properties/panels/items/properties/cells/items/properties/status",
+                  "type": "string",
+                  "description": "The cell status.",
+                  "title": "The Priority Schema",
+                  "enum": [ "disabled", "full", "free", "unusable" ],
+                  "default": "free"
+                },
+                "position": {
+                  "$id": "#/properties/panels/items/properties/cells/items/properties/position",
+                  "type": "number",
+                  "description": "The absolute vertical cell position.",
+                  "title": "The Position Schema",
+                  "default": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

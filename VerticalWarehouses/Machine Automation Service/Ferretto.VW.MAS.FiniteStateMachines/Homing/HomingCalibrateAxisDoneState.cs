@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingCalibrateAxisDoneState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
@@ -46,8 +45,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -179,6 +176,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,16 +1,18 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaysController : ControllerBase
+    public class BaysController : BaseAutomationController
     {
 
         #region Fields
@@ -21,7 +23,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public BaysController(IBaysProvider baysProvider)
+        public BaysController(
+            IEventAggregator eventAggregator,
+            IBaysProvider baysProvider)
+            : base(eventAggregator)
         {
             if (baysProvider is null)
             {
@@ -43,13 +48,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.Activate(bayIndex);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.Activate(bayIndex);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         [HttpPost("{bayIndex}/deactivate")]
@@ -58,13 +66,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.Deactivate(bayIndex);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.Deactivate(bayIndex);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         [HttpGet("{bayIndex}")]
@@ -73,13 +84,44 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> GetByNumber(BayIndex bayIndex)
         {
-            var bay = this.baysProvider.GetByIndex(bayIndex);
-            if (bay is null)
+            try
             {
-                return this.NotFound();
-            }
+                var bay = this.baysProvider.GetByNumber(bayIndex);
 
-            return this.Ok(bay);
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
+        }
+
+        [HttpPost("move")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public IActionResult Move(int bayNumber, HorizontalMovementDirection direction)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost("{bayNumber}/height")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+        {
+            try
+            {
+                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+
+                return this.Ok(bay);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<Bay>(ex);
+            }
         }
 
         #endregion

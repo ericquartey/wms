@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
                         (currentStatus.ProfileVelocityStatusWord.TargetReached
-                            || currentStatus.CurrentShutterPosition == this.shutterDestination
+                            && currentStatus.CurrentShutterPosition == this.shutterDestination
                             )
                         )
                     {

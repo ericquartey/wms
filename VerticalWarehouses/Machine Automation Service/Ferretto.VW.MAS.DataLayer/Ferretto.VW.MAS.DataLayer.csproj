@@ -26,12 +26,14 @@
     <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
   </ItemGroup>
   

@@ -13,6 +13,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Fields
 
+        public const int SENSOR_UPDATE_FAST = 50;
+
+        public const int SENSOR_UPDATE_SLOW = 500;
+
         private bool disposed;
 
         #endregion

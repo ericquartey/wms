@@ -39,7 +39,7 @@
             <TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.VariousInputs}" />
+                       Text="{x:Static res:InstallationApp.OtherSensors}" />
 
             <controls:PpcSensorControl Grid.Row="1"
                                        Grid.ColumnSpan="2"

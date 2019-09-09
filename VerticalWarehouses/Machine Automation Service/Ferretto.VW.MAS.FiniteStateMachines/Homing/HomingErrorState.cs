@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
@@ -42,8 +41,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -7,7 +7,7 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid Margin="140,30,0,0">
+    <Grid Margin="130,30,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="90" />
@@ -16,7 +16,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
@@ -30,6 +37,13 @@
                                  ContentText="{Binding CurrentResolution, StringFormat={}{0:F6}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
 
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
         <controls:PpcTextBox Grid.Row="3"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
@@ -41,7 +55,16 @@
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.StartResolutionProcedure}" />
+                            Content="{x:Static res:InstallationApp.Start}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
+
     </Grid>
 </ctrls:View>

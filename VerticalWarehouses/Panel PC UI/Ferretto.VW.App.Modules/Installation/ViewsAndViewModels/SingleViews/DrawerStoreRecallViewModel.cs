@@ -6,7 +6,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class DrawerStoreRecallViewModel : BindableBase
     {
@@ -67,9 +67,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
-        public ICommand StartRecallButtonCommand => this.startRecallButtonCommand ?? (this.startRecallButtonCommand = new DelegateCommand(async () => await this.ExecuteStartRecallButtonCommandAsync()));
+        public ICommand StartRecallButtonCommand => this.startRecallButtonCommand ?? (this.startRecallButtonCommand = new DelegateCommand(async () => await this.StartRecallButtonAsync()));
 
-        public ICommand StartStoreButtonCommand => this.startStoreButtonCommand ?? (this.startStoreButtonCommand = new DelegateCommand(async () => await this.ExecuteStartStoreButtonCommandAsync()));
+        public ICommand StartStoreButtonCommand => this.startStoreButtonCommand ?? (this.startStoreButtonCommand = new DelegateCommand(async () => await this.StartStoreButtonAsync()));
 
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopButtonMethodAsync()));
 
@@ -77,23 +77,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            //TODO Add your implementation code here
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            //TODO Add your implementation code here
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            //TODO Add your implementation code here
-        }
-
-        private async Task ExecuteStartRecallButtonCommandAsync()
+        private async Task StartRecallButtonAsync()
         {
             try
             {
@@ -112,7 +96,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             }
         }
 
-        private async Task ExecuteStartStoreButtonCommandAsync()
+        private async Task StartStoreButtonAsync()
         {
             try
             {

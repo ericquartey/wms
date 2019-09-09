@@ -266,8 +266,8 @@ namespace Ferretto.VW.App.Services
         private void ClearNotifications()
         {
             this.eventAggregator
-              .GetEvent<PresentationChangedPubSubEvent>()
-              .Publish(new PresentationChangedMessage(null, Models.NotificationSeverity.Clear));
+              .GetEvent<PresentationNotificationPubSubEvent>()
+              .Publish(new PresentationNotificationMessage(true));
         }
 
         private void DisappearActiveView()

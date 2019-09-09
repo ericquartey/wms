@@ -1,57 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls">
+                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
+                    xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters"
+                   >
 
-    <ControlTemplate x:Key="PpcButtonControlTemplate"
-                     TargetType="{x:Type controls:PpcButton}">
+    
 
-        <ControlTemplate.Resources>
-            <BooleanToVisibilityConverter x:Key="BTVC" />
-        </ControlTemplate.Resources>
-        <Border Name="Root_ActionButtonBorder"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
-                BorderThickness="0"
-                Cursor="Hand">
-            <Grid>
-
-                <ProgressBar Height="{TemplateBinding Height}"
-                             VerticalAlignment="Bottom"
-                             Background="Transparent"
-                             BorderBrush="Transparent"
-                             Foreground="{DynamicResource PpcButtonForeground}"
-                             IsIndeterminate="True"
-                             Opacity="0.1"
-                             Visibility="{TemplateBinding IsBusy,
-                                                          Converter={StaticResource BTVC}}" />
-                <ContentPresenter Name="Root_ContentPresenter"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                  TextBlock.FontSize="{DynamicResource PpcButtonFontSize}"
-                                  TextBlock.Foreground="{DynamicResource PpcButtonForeground}"
-                                  TextBlock.TextAlignment="Center" />
-            </Grid>
-        </Border>
-
-        <ControlTemplate.Triggers>
-            <DataTrigger Binding="{Binding IsActive}"
-                         Value="True">
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-            </DataTrigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
-                <Setter TargetName="Root_ContentPresenter" Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                <Setter TargetName="Root_ContentPresenter" Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
 </ResourceDictionary>

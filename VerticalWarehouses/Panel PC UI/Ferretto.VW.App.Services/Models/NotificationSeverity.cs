@@ -2,16 +2,14 @@
 {
     public enum NotificationSeverity
     {
-        NotSpecified,
+        NotSpecified = 0,
 
-        Info,
+        Info = 1,
 
-        Error,
+        Error = 2,
 
-        Warning,
+        Warning = 3,
 
-        Success,
-
-        Clear
+        Success = 4,
     }
 }

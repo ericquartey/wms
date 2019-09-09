@@ -7,8 +7,11 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -21,11 +24,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Fields
 
+        private readonly IConfigurationValueManagmentDataLayer configurationValueManagment;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IMachineConfigurationProvider machineConfigurationProvider;
 
         private readonly NotificationEvent notificationEvent;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
 
@@ -33,7 +40,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public BaysProvider(DataLayerContext dataContext, IMachineConfigurationProvider machineConfigurationProvider, IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
@@ -42,6 +49,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.machineConfigurationProvider = machineConfigurationProvider ?? throw new ArgumentNullException(nameof(machineConfigurationProvider));
 
+            this.verticalAxis = verticalAxis;
+            this.configurationValueManagment = configurationValueManagment;
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
 
@@ -72,10 +81,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
-                bay.IsActive = true;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.IsActive = true;
+
+            this.Update(bay);
 
             return bay;
         }
@@ -85,17 +96,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
-                bay.CurrentMissionId = missionId;
-                bay.CurrentMissionOperationId = missionOperationId;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.CurrentMissionId = missionId;
+            bay.CurrentMissionOperationId = missionOperationId;
+
+            this.Update(bay);
 
             return bay;
         }
 
         public void Create(Bay bay)
         {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+
             this.dataContext.Bays.Add(bay);
 
             this.dataContext.SaveChanges();
@@ -106,10 +124,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
-                bay.IsActive = false;
-
-                this.Update(bay);
+                throw new EntityNotFoundException(bayNumber);
             }
+
+            bay.IsActive = false;
+
+            this.Update(bay);
 
             return bay;
         }
@@ -341,15 +361,51 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByIndex(bayIndex);
             if (bay != null)
             {
-                bay.IpAddress = ipAddress;
-                bay.Type = bayType;
+                throw new EntityNotFoundException(bayNumber);
+            }
 
-                this.Update(bay);
+            bay.IpAddress = ipAddress;
+            bay.Type = bayType;
+
+            this.Update(bay);
+        }
+
+        public Bay UpdatePosition(int bayNumber, int position, decimal height)
+        {
+            var bay = this.GetByNumber(bayNumber);
+            if (bay.Positions.Count() < position)
+            {
+                throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
+            }
+
+            var lowerBound = this.verticalAxis.LowerBound;
+            var upperBound = this.verticalAxis.UpperBound;
+            if (height < lowerBound || height > upperBound)
+            {
+                throw new ArgumentOutOfRangeException(
+                    string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, lowerBound, upperBound));
+            }
+
+            var bayPosition = $"Bay{bayNumber}Position{position}";
+            if (Enum.TryParse<GeneralInfo>(bayPosition, out var positionValue))
+            {
+                this.configurationValueManagment.SetDecimalConfigurationValue((long)positionValue, ConfigurationCategory.GeneralInfo, height);
+
+                return this.GetByNumber(bayNumber);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }
         }
 
         private Bay Update(Bay bay)
         {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+
             var entry = this.dataContext.Bays.Update(bay);
 
             this.dataContext.SaveChanges();
@@ -367,6 +423,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     bay.Index));
 
             return entry.Entity;
+        }
+
+        private void UpdateBayWithPositions(Bay bay)
+        {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+
+            var positions = new List<decimal>();
+
+            for (var position = 1; position <= 2; position++)
+            {
+                var bayPosition = $"Bay{bay.Number}Position{position}";
+                if (Enum.TryParse<GeneralInfo>(bayPosition, out var positionFound))
+                {
+                    try
+                    {
+                        positions.Add(
+                            this.configurationValueManagment
+                                .GetDecimalConfigurationValue((long)positionFound, ConfigurationCategory.GeneralInfo));
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            bay.Positions = positions;
         }
 
         #endregion

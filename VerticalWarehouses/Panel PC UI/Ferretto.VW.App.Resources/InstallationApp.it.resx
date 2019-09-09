@@ -132,7 +132,7 @@
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>
   </data>
-  <data name="Backward" xml:space="preserve">
+  <data name="Backwards" xml:space="preserve">
     <value>Indietro</value>
   </data>
   <data name="BeltBurnishing" xml:space="preserve">
@@ -144,11 +144,8 @@
   <data name="Error" xml:space="preserve">
     <value>Errore</value>
   </data>
-  <data name="Forward" xml:space="preserve">
+  <data name="Forwards" xml:space="preserve">
     <value>Avanti</value>
-  </data>
-  <data name="GateSetUp" xml:space="preserve">
-    <value>Set Up Barriera</value>
   </data>
   <data name="Installer" xml:space="preserve">
     <value>Installatore</value>
@@ -180,17 +177,14 @@
   <data name="Manual" xml:space="preserve">
     <value>Manuale</value>
   </data>
-  <data name="NextButton" xml:space="preserve">
-    <value>Prossimo &gt;</value>
-  </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Spenta</value>
   </data>
   <data name="OffsetCalibration" xml:space="preserve">
     <value>Calibrazione offset</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Accesa</value>
   </data>
   <data name="Up" xml:space="preserve">
     <value>Su</value>
@@ -240,8 +234,8 @@
   <data name="Gate" xml:space="preserve">
     <value>Barriera</value>
   </data>
-  <data name="VariousInputs" xml:space="preserve">
-    <value>Input vari</value>
+  <data name="OtherSensors" xml:space="preserve">
+    <value>Altri sensori</value>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
     <value>Barriera anti intrusione</value>
@@ -472,20 +466,14 @@
   <data name="ReferenceCellHeight" xml:space="preserve">
     <value>Quota cella selezionata [mm]</value>
   </data>
-  <data name="ReferenceCellNumber" xml:space="preserve">
-    <value>Numero cella di riferimento</value>
-  </data>
-  <data name="StepDown" xml:space="preserve">
-    <value>Step -</value>
-  </data>
-  <data name="StepUp" xml:space="preserve">
-    <value>Step +</value>
+  <data name="CellNumber" xml:space="preserve">
+    <value>Numero Cella</value>
   </data>
   <data name="StepValue" xml:space="preserve">
     <value>Valore step [mm]</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Quota cella [mm]</value>
+    <value>Quota Cella [mm]</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
     <value>Controllo pannelli mensola</value>
@@ -538,9 +526,6 @@
   <data name="Laser3Done" xml:space="preserve">
     <value>Puntatore laser 3</value>
   </data>
-  <data name="MachineDone" xml:space="preserve">
-    <value>Installazione completata</value>
-  </data>
   <data name="Shape1Done" xml:space="preserve">
     <value>Controllo altezza baia 1</value>
   </data>
@@ -560,19 +545,19 @@
     <value>Controllo quote celle</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
-    <value>Nuova quota cella [mm]</value>
+    <value>Correzione Quota Cella [mm]</value>
   </data>
   <data name="MeasuredInitialPosition" xml:space="preserve">
     <value>Quota iniziale misurata [mm]</value>
   </data>
   <data name="MoveToInitialPosition" xml:space="preserve">
-    <value>Sposta nella posizione iniziale.</value>
+    <value>Sposta nella posizione iniziale</value>
   </data>
   <data name="InsertMeasuredInitialPosition" xml:space="preserve">
     <value>Inserisci posizione iniziale misurata.</value>
   </data>
   <data name="MoveToPosition" xml:space="preserve">
-    <value>Sposta nella posizione.</value>
+    <value>Sposta nella posizione</value>
   </data>
   <data name="ConfirmResolution" xml:space="preserve">
     <value>Conferma nuova risoluzione o cancella l'operazione.</value>
@@ -616,7 +601,7 @@
   <data name="ReadFinalPosition" xml:space="preserve">
     <value>Quota finale letta [mm]</value>
   </data>
-  <data name="Gate1HeightReaced" xml:space="preserve">
+  <data name="Gate1HeightReached" xml:space="preserve">
     <value>Altezza raggiunta</value>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
@@ -691,43 +676,22 @@
   <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
     <value>Richiama cassetto</value>
   </data>
-  <data name="BayControl" xml:space="preserve">
-    <value>Controllo baie</value>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Controllo quote baia</value>
   </data>
-  <data name="BayControlHeader" xml:space="preserve">
-    <value>Controllo quote baie.</value>
-  </data>
-  <data name="BayControlSelectedBay" xml:space="preserve">
-    <value>Baia selezionata</value>
-  </data>
-  <data name="BayControlSelectedPosition" xml:space="preserve">
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
     <value>Posizione nella baia</value>
   </data>
-  <data name="BayControlPositionHeight" xml:space="preserve">
-    <value>Quota posizione baia [mm]</value>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Quota baia [mm]</value>
   </data>
-  <data name="BayControlStepValue" xml:space="preserve">
-    <value>Valore di step [mm]</value>
-  </data>
-  <data name="BayControlActualHeight" xml:space="preserve">
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
     <value>Posizione attuale [mm]</value>
   </data>
-  <data name="BayControlCorrectionValue" xml:space="preserve">
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
     <value>Valore della correzione [mm]</value>
   </data>
-  <data name="BayControlMoveToPosition" xml:space="preserve">
-    <value>Muovi a posizione</value>
-  </data>
-  <data name="BayControlStepPiu" xml:space="preserve">
-    <value>Step +</value>
-  </data>
-  <data name="BayControlStepMeno" xml:space="preserve">
-    <value>Step -</value>
-  </data>
-  <data name="BayControlAdjust" xml:space="preserve">
-    <value>Correggi quota</value>
-  </data>
-  <data name="BayControlNextPosition" xml:space="preserve">
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
     <value>Prossima posizione</value>
   </data>
   <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
@@ -905,13 +869,123 @@
   <data name="MeasuredDistance" xml:space="preserve">
     <value>Corsa misurata [mm]</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Accetta</value>
-  </data>
   <data name="CellSide" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Porta a Quota Cella</value>
+  </data>
+  <data name="BayPosition1" xml:space="preserve">
+    <value>Posizione 1</value>
+  </data>
+  <data name="BayPosition2" xml:space="preserve">
+    <value>Posizione 2</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Spostamento [mm]</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Baia Esterna</value>
+  </data>
+  <data name="ExternalBayManualMovements" xml:space="preserve">
+    <value>Movimenti Manuali Baia Esterna</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Applica Correzione</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Inserisci l'id del cassetto</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verifica</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Lato</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Posizione Verticale [mm]</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Posizione Baia</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Cassetto in Baia</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Vai a Baia</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Celle</value>
+  </data>
+  <data name="TrayInCell" xml:space="preserve">
+    <value>Cassetto in Cella</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Sensore B serranda</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevatore</value>
+  </data>
+  <data name="EmbarkedTray" xml:space="preserve">
+    <value>Cassetto Imbarcato</value>
+  </data>
+  <data name="Disembark" xml:space="preserve">
+    <value>Sbarca</value>
+  </data>
+  <data name="Embark" xml:space="preserve">
+    <value>Imbarca</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Peso Cassetto [kg]</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Posizione Orizzontale [mm]</value>
+  </data>
+  <data name="ElevatorIsInInitialPosition" xml:space="preserve">
+    <value>L'elevatore si trova nella posizione iniziale.</value>
+  </data>
+  <data name="ElevatorIsInFinalPosition" xml:space="preserve">
+    <value>L'elevatore si trova nella posizione finale.</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>La procedura è stata interrotta.</value>
+  </data>
+  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
+    <value>Risoluzione dell'asse verticale aggiornata.</value>
+  </data>
+  <data name="SelectLowerBound" xml:space="preserve">
+    <value>Seleziona limite inferiore [mm]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SelectUpperBound" xml:space="preserve">
+    <value>Seleziona limite superiore [mm]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TimeDelay" xml:space="preserve">
+    <value>Seleziona tempo di attesa</value>
+  </data>
+  <data name="ElevatorIsCellPosition" xml:space="preserve">
+    <value>L'elevatore è a quota cella.</value>
+  </data>
+  <data name="SingleBay" xml:space="preserve">
+    <value>Singola</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reimposta</value>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Totale cicli completati</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Succ</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Prec</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abortisci</value>
   </data>
 </root>

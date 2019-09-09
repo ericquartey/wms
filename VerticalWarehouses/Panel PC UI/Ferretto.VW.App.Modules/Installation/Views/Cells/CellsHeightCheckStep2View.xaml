@@ -11,7 +11,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="200,30,0,0">
+    <Grid Margin="130,30,0,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -48,7 +48,7 @@
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Cell.Coord}"
+                                 ContentText="{Binding Cell.Position}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
         <controls:PpcLabeledText Grid.Row="4"

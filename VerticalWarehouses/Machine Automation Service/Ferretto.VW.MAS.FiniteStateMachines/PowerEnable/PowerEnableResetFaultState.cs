@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     public class PowerEnableResetFaultState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -45,8 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -120,6 +117,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         protected override void Dispose(bool disposing)

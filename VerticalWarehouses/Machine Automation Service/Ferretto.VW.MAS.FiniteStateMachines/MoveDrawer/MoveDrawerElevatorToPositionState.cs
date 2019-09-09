@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerElevatorToPositionState : StateBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;

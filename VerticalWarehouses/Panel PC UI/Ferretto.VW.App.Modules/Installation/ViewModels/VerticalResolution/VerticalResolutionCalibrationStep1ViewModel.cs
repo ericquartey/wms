@@ -21,6 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private decimal? inputInitialPosition;
 
         private DelegateCommand startCommand;
+        private bool isOperationCompleted;
 
         #endregion
 
@@ -28,8 +29,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep1ViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorService machineElevatorService,
             IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
         {
         }
 
@@ -38,8 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public string Error => string.Join(
-              System.Environment.NewLine,
-              this[nameof(this.InputInitialPosition)]);
+            Environment.NewLine,
+            this[nameof(this.InputInitialPosition)]);
 
         public decimal? InputInitialPosition
         {
@@ -57,8 +59,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync(),
-                this.CanExecuteStartCommand));
+                async () => await this.StartAsync(),
+                this.CanStart));
 
         #endregion
 
@@ -80,6 +82,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return "InputInitialPosition must be strictly positive.";
                         }
+
                         break;
                 }
 
@@ -111,40 +114,71 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnNavigatedAsync();
 
             await this.GetParametersAsync();
+
+            this.ShowSteps();
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                ||
-                message.Status == MessageStatus.OperationStop) // TODO why OperationStop as well and not only OperationEnd?
-            {
-                this.IsExecutingProcedure = false;
+            base.OnAutomationMessageReceived(message);
 
+            if (message.Status == MessageStatus.OperationEnd)
+            {
+                this.isOperationCompleted = true;
                 this.NavigateToNextStep();
             }
         }
 
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowAbortStep(true, true);
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.startCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanExecuteStartCommand()
+        private bool CanStart()
         {
-            return !this.IsExecutingProcedure
-              && !this.IsWaitingForResponse
-              && string.IsNullOrWhiteSpace(this.Error);
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private async Task ExecuteStartCommandAsync()
+        private void NavigateToNextStep()
+        {
+            var procedureParameters = new VerticalResolutionCalibrationData
+            {
+                CurrentResolution = this.CurrentResolution.Value,
+                FinalPosition = this.defaultParameters.FinalPosition,
+                InitialPosition = this.InputInitialPosition.Value,
+            };
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
+                procedureParameters,
+                trackCurrentView: false);
+        }
+
+        private async Task StartAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.ResolutionCalibrationService.StartAsync(this.InputInitialPosition.Value);
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                    this.InputInitialPosition.Value,
+                    FeedRateCategory.VerticalResolutionCalibration);
             }
             catch (Exception ex)
             {
@@ -155,22 +189,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            var procedureParameters = new VerticalResolutionCalibrationData
-            {
-                CurrentResolution = this.CurrentResolution.Value,
-                FinalPosition = this.defaultParameters.FinalPosition,
-                InitialPosition = this.InputInitialPosition.Value
-            };
-
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
-                procedureParameters,
-                trackCurrentView: false);
         }
 
         #endregion

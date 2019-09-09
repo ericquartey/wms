@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : StateBase
     {
-
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
@@ -45,8 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -137,7 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
 
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 500);
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",

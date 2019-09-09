@@ -8,7 +8,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="140,30,0,0">
+    <Grid Margin="130,30,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="90" />
@@ -41,6 +41,13 @@
                                  ContentText="{Binding CurrentResolution, StringFormat={}{0:F6}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
 
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -52,6 +59,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              InputText="{Binding InputFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.FinalPosition}" />
 
@@ -59,6 +67,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              InputText="{Binding InputMeasuredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.MeasuredInitialPosition}" />
 
@@ -67,13 +76,14 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding MoveToPositionCommand}"
-                            Content="{x:Static res:InstallationApp.Move}" />
+                            Content="{x:Static res:InstallationApp.Move}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
 
         <controls:PpcButton Grid.Row="5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding MoveToInitialPositionCommand}"
-                            Content="{x:Static res:InstallationApp.MoveToInitialPosition}" />
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
     </Grid>
 </ctrls:View>

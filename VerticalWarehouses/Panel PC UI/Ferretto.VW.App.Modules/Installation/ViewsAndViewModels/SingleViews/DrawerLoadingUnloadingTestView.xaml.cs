@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+﻿namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Logica di interazione per DrawerLoadingUnloadingTestView.xaml
-    /// </summary>
-    public partial class DrawerLoadingUnloadingTestView : UserControl
+    public partial class DrawerLoadingUnloadingTestView
     {
+        #region Constructors
+
         public DrawerLoadingUnloadingTestView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

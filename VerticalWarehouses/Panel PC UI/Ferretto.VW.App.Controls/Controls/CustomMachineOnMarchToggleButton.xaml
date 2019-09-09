@@ -5,61 +5,12 @@
                   xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
                   d:DesignHeight="60"
                   d:DesignWidth="100"
                   PresentationType="MachineMarch"
                   mc:Ignorable="d">
 
     <controls:PpcButton x:Name="LayoutRoot"
-                        Width="100"
-                        Height="60"
-                        Command="{Binding ExecuteCommand}">
-
-        <Grid Width="100" Height="60">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBlock VerticalAlignment="Center"
-                       FontSize="{DynamicResource PpcButtonFontSize}"
-                       Foreground="{DynamicResource PpcButtonForeground}"
-
-                       TextAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
-                                         Value="True">
-                                <Setter Property="Text" Value="{x:Static res:General.MachineOn}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
-                                         Value="False">
-                                <Setter Property="Text" Value="{x:Static res:General.MachineOff}" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            <Rectangle Grid.Row="1"
-                       Height="12">
-                <Rectangle.Style>
-                    <Style TargetType="Rectangle">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
-                                         Value="True">
-                                <Setter Property="Fill" Value="Green" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
-                                         Value="False">
-                                <Setter Property="Fill" Value="Gray" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Rectangle.Style>
-            </Rectangle>
-        </Grid>
-
-    </controls:PpcButton>
+                        Command="{Binding ExecuteCommand}"
+                        Style="{DynamicResource PpcButtonMachinePowerHeaderStyle}" />
 </ctrls:PpcControl>

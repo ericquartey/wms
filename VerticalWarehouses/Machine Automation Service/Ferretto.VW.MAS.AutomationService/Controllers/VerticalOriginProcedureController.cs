@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (configurationProvider == null)
+            if (configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("parameters")]
-        public ActionResult<HomingProcedureParameters> GetProcedureParameters()
+        public ActionResult<HomingProcedureParameters> GetParameters()
         {
             var category = ConfigurationCategory.VerticalAxis;
 

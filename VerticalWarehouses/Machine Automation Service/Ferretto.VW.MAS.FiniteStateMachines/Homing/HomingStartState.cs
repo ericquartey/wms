@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
+                (byte)inverterIndex);
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 this.RequestingBay,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

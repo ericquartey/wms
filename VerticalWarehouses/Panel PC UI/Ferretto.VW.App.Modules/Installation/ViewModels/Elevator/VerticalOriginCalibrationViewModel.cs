@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.isWaitingForResponse)
                     {
-                        this.ShowNotification(string.Empty, Services.Models.NotificationSeverity.Clear);
+                        this.ClearNotifications();
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -142,14 +142,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync(),
+                async () => await this.StartAsync(),
                 this.CanExecuteStartCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
+                async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
         public decimal UpperBound
@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.verticalOriginProcedureService.GetProcedureParametersAsync();
+                var procedureParameters = await this.verticalOriginProcedureService.GetParametersAsync();
 
                 this.UpperBound = procedureParameters.UpperBound;
                 this.LowerBound = procedureParameters.LowerBound;
@@ -223,51 +223,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private async Task ExecuteStartCommandAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.verticalOriginProcedureService.StartAsync();
-
-                this.IsExecutingProcedure = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task ExecuteStopCommandAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.verticalOriginProcedureService.StopAsync();
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
-                    Services.Models.NotificationSeverity.Warning);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
-                this.IsExecutingProcedure = false;
-            }
-        }
-
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
         {
             var res = string.Empty;
@@ -285,6 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         VW.App.Resources.InstallationApp.VerticalHomingError;
                     break;
             }
+
             return res;
         }
 
@@ -332,6 +288,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnElevatorPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            this.CurrentPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+        }
+
         private void OnHomingProcedureStatusChanged(MessageNotifiedEventArgs message)
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
@@ -372,6 +338,51 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand.RaiseCanExecuteChanged();
         }
 
+        private async Task StartAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureService.StartAsync();
+
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureService.StopAsync();
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
+                this.IsExecutingProcedure = false;
+            }
+        }
+
         private void SubscribeToEvents()
         {
             this.receivedSwitchAxisUpdateToken = this.EventAggregator
@@ -405,7 +416,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.updateCurrentPositionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
-                message => this.CurrentPosition = message?.Data?.CurrentPosition,
+                message => this.OnElevatorPositionChanged(message),
                 ThreadOption.UIThread,
                 false);
         }

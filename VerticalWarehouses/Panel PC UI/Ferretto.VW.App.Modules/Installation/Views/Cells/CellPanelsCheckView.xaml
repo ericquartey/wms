@@ -1,0 +1,132 @@
+﻿<controls1:View x:Class="Ferretto.VW.App.Installation.Views.CellPanelsCheckView"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+                xmlns:controls1="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:prism="http://prismlibrary.com/"
+                xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+                prism:ViewModelLocator.AutoWireViewModel="True"
+                mc:Ignorable="d">
+    <Grid Margin="130,30,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
+
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 LabelText="{x:Static res:InstallationApp.CurrentPanel}">
+            <controls:PpcLabeledText.ContentText>
+                <MultiBinding StringFormat="{x:Static res:General.NumberOnTotal}">
+                    <Binding Path="CurrentPanel.Id"
+                             TargetNullValue="{x:Static res:General.TargetNullValue}" />
+                    <Binding Path="Panels.Count"
+                             TargetNullValue="{x:Static res:General.TargetNullValue}" />
+                </MultiBinding>
+            </controls:PpcLabeledText.ContentText>
+        </controls:PpcLabeledText>
+
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPanel.Side}"
+                                 LabelText="{x:Static res:InstallationApp.Side}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentCell.Id}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentCell.Position}"
+                                 LabelText="{x:Static res:InstallationApp.CellHeight}" />
+
+        <controls:PpcTextBox Grid.Row="3"
+                             Grid.RowSpan="2"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.StepValue}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 ContentText="{Binding CurrentHeight}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding PanelCorrection}"
+                                 LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
+
+        <controls:PpcButton Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding GoToNextPanelCommand}"
+                            Content="{x:Static res:InstallationApp.NextPanel}" />
+
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding GoToCellHeightCommand}"
+                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
+                            IsBusy="{Binding IsElevatorMovingToCell}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding MoveUpCommand}"
+                            Content="{x:Static res:InstallationApp.Up}"
+                            IsBusy="{Binding IsElevatorMovingUp}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding MoveDownCommand}"
+                            Content="{x:Static res:InstallationApp.Down}"
+                            IsBusy="{Binding IsElevatorMovingDown}" />
+
+        <controls:PpcButton Grid.Row="5"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding ApplyCorrectionCommand}"
+                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+
+    </Grid>
+</controls1:View>

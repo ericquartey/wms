@@ -59,6 +59,29 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private void ElevatorWeightCheckMethod(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                this.logger.LogTrace($"29:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.ElevatorWeightCheck(message);
+
+                this.logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.logger.LogTrace($"31:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"32:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
         private void HomingMethod(NotificationMessage receivedMessage)
         {
             try

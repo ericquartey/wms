@@ -62,8 +62,6 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         string Country { get; }
 
-        int DrawersQuantity { get; }
-
         decimal Height { get; }
 
         DateTime InstallationDate { get; }

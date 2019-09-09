@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         CellStatisticsSummary GetStatistics();
 
+        void LoadFrom(string fileNamePath);
+
         Cell UpdateHeight(int cellId, decimal height);
 
         #endregion

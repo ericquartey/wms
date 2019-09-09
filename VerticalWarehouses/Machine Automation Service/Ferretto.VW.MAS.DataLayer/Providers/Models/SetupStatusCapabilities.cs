@@ -10,7 +10,7 @@
             Bay1 = BaySetupStatus.Complete,
             Bay2 = BaySetupStatus.Complete,
             Bay3 = BaySetupStatus.Complete,
-            BeltBurnishing = SetupStepStatus.Complete,
+            BeltBurnishing = BeltBurnishingSetupStepStatus.Complete,
             CellsHeightCheck = SetupStepStatus.Complete,
             HorizontalHoming = SetupStepStatus.Complete,
             IsComplete = true,
@@ -33,7 +33,7 @@
 
         public BaySetupStatus Bay3 { get; set; }
 
-        public SetupStepStatus BeltBurnishing { get; set; }
+        public BeltBurnishingSetupStepStatus BeltBurnishing { get; set; }
 
         public SetupStepStatus CellsHeightCheck { get; set; }
 

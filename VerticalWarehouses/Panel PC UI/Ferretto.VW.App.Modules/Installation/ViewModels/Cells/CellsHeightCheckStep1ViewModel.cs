@@ -2,10 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+
 using Prism.Commands;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -18,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? inputCellId;
 
         private bool isElevatorMoving;
+
+        private bool isElevatorOperationCompleted;
 
         private DelegateCommand moveToCellHeightCommand;
 
@@ -76,19 +81,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand
             ??
             (this.moveToCellHeightCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveToCellHeightCommandAsync(),
-                this.CanExecuteMoveToCellHeightCommand));
+                async () => await this.MoveToCellHeightAsync(),
+                this.CanMoveToCellHeight));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync(),
-                this.CanExecuteStopCommand));
+                async () => await this.StopAsync(),
+                this.CanStop));
 
         #endregion
 
         #region Methods
+
+        public override async Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            this.ShowSteps();
+        }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
@@ -100,13 +112,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.IsElevatorMoving = false;
 
+                        this.isElevatorOperationCompleted = true;
+
+                        this.ShowSteps();
+
                         this.NavigateToNextStep();
 
                         break;
                     }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorMoving = false;
+
+                        this.isElevatorOperationCompleted = false;
+
+                        this.ShowSteps();
 
                         this.ShowNotification(
                             "Procedura di posizionamento interrotta.",
@@ -129,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private bool CanExecuteMoveToCellHeightCommand()
+        private bool CanMoveToCellHeight()
         {
             return this.SelectedCell != null
                 &&
@@ -138,17 +159,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
-        private bool CanExecuteStopCommand()
+        private bool CanStop()
         {
             return !this.IsWaitingForResponse && this.IsElevatorMoving;
         }
 
-        private async Task ExecuteMoveToCellHeightCommandAsync()
+        private async Task MoveToCellHeightAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(this.SelectedCell.Coord);
+
+                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                    this.SelectedCell.Position,
+                    FeedRateCategory.CellHeightCheck);
 
                 this.IsElevatorMoving = true;
             }
@@ -164,7 +188,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStopCommandAsync()
+        private void NavigateToNextStep()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.CellsHeightCheck.STEP2,
+                this.SelectedCell,
+                trackCurrentView: false);
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, this.isElevatorOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP2);
+            this.ShowAbortStep(true, true);
+        }
+
+        private async Task StopAsync()
         {
             try
             {
@@ -174,15 +214,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
         }
 
         #endregion

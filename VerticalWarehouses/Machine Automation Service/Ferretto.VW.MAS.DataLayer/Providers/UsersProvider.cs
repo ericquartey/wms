@@ -33,6 +33,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public int? Authenticate(string userName, string password)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(userName));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
+            }
+
             var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
 
             if (user != null
@@ -42,11 +52,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return user.AccessLevel;
             }
 
-            return null;
+            throw new Exceptions.EntityNotFoundException(userName);
         }
 
         public User Create(string userName, string password, int accessLevel)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(userName));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
+            }
+
             var existingUser = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
             if (existingUser != null)
             {
