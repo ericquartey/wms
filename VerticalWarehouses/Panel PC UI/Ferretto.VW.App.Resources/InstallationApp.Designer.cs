@@ -1762,6 +1762,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string NextLarge {
+            get {
+                return ResourceManager.GetString("NextLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nex panel.
         /// </summary>
         public static string NextPanel {
@@ -1888,7 +1897,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controllare i livelli dell&apos;elevatore che coincidano con quella della baia e che la protella sia &quot;Aperta&quot;.
+        ///   Looks up a localized string similar to Controllare i livelli dell&apos;elevatore che coincidano con quella della baia e che la portella sia &quot;Aperta&quot;.
         ///A controllo effettuato permere il tasto &quot;Successivo&quot;..
         /// </summary>
         public static string PHC1ComandNote {
@@ -1907,7 +1916,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verificare il posizionamento dell&apos;elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni.
+        ///   Looks up a localized string similar to Verificare il posizionamento dell&apos;elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni, se necessario chiudere o aprire la serranda.
         ///Una volta verificato proseguire premendo il tasto &quot;Successivo&quot;.
         /// </summary>
         public static string PHC2ComandNote {
@@ -1977,6 +1986,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PHC6NoteHeader {
             get {
                 return ResourceManager.GetString("PHC6NoteHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prev.
+        /// </summary>
+        public static string Prev {
+            get {
+                return ResourceManager.GetString("Prev", resourceCulture);
             }
         }
         

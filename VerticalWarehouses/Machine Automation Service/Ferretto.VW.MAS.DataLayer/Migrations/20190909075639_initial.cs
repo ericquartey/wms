@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -125,17 +125,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Bay1Check = table.Column<bool>(nullable: false),
                     Bay1FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay1Laser = table.Column<bool>(nullable: false),
-                    Bay1Shape = table.Column<bool>(nullable: false),
+                    Bay1Profile = table.Column<bool>(nullable: false),
                     Bay1Shutter = table.Column<bool>(nullable: false),
                     Bay2Check = table.Column<bool>(nullable: false),
                     Bay2FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay2Laser = table.Column<bool>(nullable: false),
-                    Bay2Shape = table.Column<bool>(nullable: false),
+                    Bay2Profile = table.Column<bool>(nullable: false),
                     Bay2Shutter = table.Column<bool>(nullable: false),
                     Bay3Check = table.Column<bool>(nullable: false),
                     Bay3FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay3Laser = table.Column<bool>(nullable: false),
-                    Bay3Shape = table.Column<bool>(nullable: false),
+                    Bay3Profile = table.Column<bool>(nullable: false),
                     Bay3Shutter = table.Column<bool>(nullable: false),
                     BeltBurnishingCompleted = table.Column<bool>(nullable: false),
                     BeltBurnishingCompletedCycles = table.Column<int>(nullable: false),
@@ -319,11 +319,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 9, 9, 56, 39, 226, DateTimeKind.Local).AddTicks(7618), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
-                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "BeltBurnishingCompleted", "BeltBurnishingCompletedCycles", "BeltBurnishingRequiredCycles", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
+                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Profile", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Profile", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Profile", "Bay3Shutter", "BeltBurnishingCompleted", "BeltBurnishingCompletedCycles", "BeltBurnishingRequiredCycles", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
                 values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 0, 0, false, null, false, false, false, false, false });
 
             migrationBuilder.InsertData(
@@ -371,6 +371,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoadingUnits_Code",
+                table: "LoadingUnits",
+                column: "Code",
                 unique: true);
         }
 

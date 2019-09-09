@@ -98,7 +98,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding Step6Command}"
-                            Content="{x:Static res:InstallationApp.Next}" />
+                            Content="{x:Static res:InstallationApp.NextLarge}" />
 
     </Grid>
 

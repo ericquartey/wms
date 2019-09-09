@@ -62,7 +62,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding Step5Command}"
-                            Content="{x:Static res:InstallationApp.Next}" />
+                            Content="{x:Static res:InstallationApp.NextLarge}" />
 
     </Grid>
 

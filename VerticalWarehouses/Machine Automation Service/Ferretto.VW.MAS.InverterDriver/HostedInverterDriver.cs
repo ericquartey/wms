@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Stopwatch axisIntervalStopwatch;
 
+        private readonly Timer[] axisPositionUpdateTimer;
+
         private readonly Stopwatch axisStopwatch;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
@@ -94,11 +96,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ISocketTransport socketTransport;
 
+        private readonly Timer[] statusWordUpdateTimer;
+
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private readonly ManualResetEventSlim writeEnableEvent;
-
-        private Timer[] axisPositionUpdateTimer;
 
         private Axis currentAxis;
 
@@ -111,8 +113,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private byte[] receiveBuffer;
 
         private Timer sensorStatusUpdateTimer;
-
-        private Timer[] statusWordUpdateTimer;
 
         private CancellationToken stoppingToken;
 

@@ -1048,12 +1048,13 @@
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
+    <comment>Button text</comment>
   </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
   <data name="PHC2ComandNote" xml:space="preserve">
-    <value>Verificare il posizionamento dell'elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni.
+    <value>Verificare il posizionamento dell'elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni, se necessario chiudere o aprire la serranda.
 Una volta verificato proseguire premendo il tasto "Successivo"</value>
     <comment>Note text</comment>
   </data>
@@ -1062,7 +1063,7 @@ Una volta verificato proseguire premendo il tasto "Successivo"</value>
     <comment>Label text</comment>
   </data>
   <data name="PHC1ComandNote" xml:space="preserve">
-    <value>Controllare i livelli dell'elevatore che coincidano con quella della baia e che la protella sia "Aperta".
+    <value>Controllare i livelli dell'elevatore che coincidano con quella della baia e che la portella sia "Aperta".
 A controllo effettuato permere il tasto "Successivo".</value>
     <comment>Note text</comment>
   </data>
@@ -1109,10 +1110,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="TotalCompletedCycles" xml:space="preserve">
     <value>Total completed cycles</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
-    <comment>Button text</comment>
-  </data>
   <data name="Prev" xml:space="preserve">
     <value>Prev</value>
     <comment>Button Text</comment>
@@ -1120,5 +1117,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Abort" xml:space="preserve">
     <value>Abort</value>
     <comment>Button text</comment>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Next</value>
   </data>
 </root>
