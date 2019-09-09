@@ -14,6 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementMode MovementMode { get; set; }
 
+        MovementType MovementType { get; }
+
         int RequestedCycles { get; set; }
 
         ShutterMovementDirection ShutterMovementDirection { get; }

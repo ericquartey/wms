@@ -10,6 +10,10 @@
 
         Acceleration = 3L,
 
-        Deceleration = 4L
+        Deceleration = 4L,
+
+        HigherDistance = 5L,
+
+        LowerDistance = 6L,
     }
 }

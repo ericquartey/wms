@@ -18,6 +18,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int bayNumber,
             decimal speedRate,
             MovementMode movementMode,
+            MovementType movementType,
             int requestedCycles,
             int delay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -28,6 +29,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.BayNumber = bayNumber;
             this.SpeedRate = speedRate;
             this.MovementMode = movementMode;
+            this.MovementType = movementType;
             this.RequestedCycles = requestedCycles;
             this.Delay = delay;
             this.Verbosity = verbosity;
@@ -45,6 +47,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShutterType = shutterpositioningMessageData.ShutterType;
             this.SpeedRate = shutterpositioningMessageData.SpeedRate;
             this.MovementMode = shutterpositioningMessageData.MovementMode;
+            this.MovementType = shutterpositioningMessageData.MovementType;
             this.RequestedCycles = shutterpositioningMessageData.RequestedCycles;
             this.Delay = shutterpositioningMessageData.Delay;
             this.Verbosity = shutterpositioningMessageData.Verbosity;
@@ -61,6 +64,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int ExecutedCycles { get; set; }
 
         public MovementMode MovementMode { get; set; }
+
+        public MovementType MovementType { get; }
 
         public int RequestedCycles { get; set; }
 

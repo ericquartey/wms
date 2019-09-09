@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
+        public MovementType MovementType { get; }
+
         public ShutterMovementDirection ShutterMovementDirection { get; }
 
         public ShutterPosition ShutterPosition { get; set; }

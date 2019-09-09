@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
+        private readonly IShutterManualMovementsDataLayer shutterManualMovementsDataLayer;
+
         private readonly IShutterTestParametersProvider shutterTestParametersProvider;
 
         #endregion
@@ -29,6 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ShuttersController(
             IEventAggregator eventAggregator,
             IShutterTestParametersProvider shutterTestParametersProvider,
+            IShutterManualMovementsDataLayer shutterManualMovementsDataLayer,
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
@@ -42,7 +45,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
 
+            if (shutterManualMovementsDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(shutterManualMovementsDataLayer));
+            }
+
             this.shutterTestParametersProvider = shutterTestParametersProvider;
+            this.shutterManualMovementsDataLayer = shutterManualMovementsDataLayer;
             this.configurationProvider = configurationProvider;
         }
 
@@ -96,6 +105,34 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 bayNumber,
                 speedRate,
                 MovementMode.Position,
+                MovementType.Relative,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                "Execute Shutter Positioning Movement Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterPositioning);
+        }
+
+        [HttpPost("{bayNumber}/moveTo")]
+        public void MoveTo(int bayNumber, ShutterMovementDirection direction)
+        {
+            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM;
+
+            var targetPosition = direction == ShutterMovementDirection.Up
+                ? ShutterPosition.Opened
+                : ShutterPosition.Closed;
+
+            var messageData = new ShutterPositioningMessageData(
+                targetPosition,
+                direction,
+                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                bayNumber,
+                speedRate,
+                MovementMode.Position,
+                MovementType.Absolute,
                 0,
                 0);
 
@@ -133,6 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 bayNumber,
                 speedRate,
                 MovementMode.TestLoop,
+                MovementType.Absolute,
                 testCycleCount,
                 delayInMilliseconds);
 

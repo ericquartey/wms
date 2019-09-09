@@ -193,7 +193,9 @@
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
     "Acceleration": 500.0,
-    "Deceleration": 500.0
+    "Deceleration": 500.0,
+    "HigherDistance": 200.0,
+    "LowerDistance": 210.0
   },
   "BeltBurnishing": {
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much

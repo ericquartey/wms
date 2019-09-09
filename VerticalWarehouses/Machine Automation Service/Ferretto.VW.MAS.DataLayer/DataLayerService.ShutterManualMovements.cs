@@ -13,6 +13,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public decimal FeedRateSM => this.GetDecimalConfigurationValue((long)ShutterManualMovements.FeedRate, ConfigurationCategory.ShutterManualMovements);
 
+        public decimal HigherDistance => this.GetDecimalConfigurationValue((long)ShutterManualMovements.HigherDistance, ConfigurationCategory.ShutterManualMovements);
+
+        public decimal LowerDistance => this.GetDecimalConfigurationValue((long)ShutterManualMovements.LowerDistance, ConfigurationCategory.ShutterManualMovements);
+
         public decimal MaxSpeed => this.GetDecimalConfigurationValue((long)ShutterManualMovements.MaxSpeed, ConfigurationCategory.ShutterManualMovements);
 
         #endregion
