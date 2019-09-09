@@ -322,6 +322,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration.
+        /// </summary>
+        public static string Calibration {
+            get {
+                return ResourceManager.GetString("Calibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
@@ -1083,6 +1092,15 @@ namespace Ferretto.VW.App.Resources {
         public static string HeightControlCheck {
             get {
                 return ResourceManager.GetString("HeightControlCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height reaced.
+        /// </summary>
+        public static string HeightReaced {
+            get {
+                return ResourceManager.GetString("HeightReaced", resourceCulture);
             }
         }
         
@@ -2094,6 +2112,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ResolutionModified {
             get {
                 return ResourceManager.GetString("ResolutionModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Risultato.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
             }
         }
         

@@ -68,27 +68,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineProfileProcedureService profileProcedureService;
 
-        private int activeRaysQuantity;
-
         private int bayNumber;
 
-        private decimal currentHeight;
-
         private ProfileHeightCheckStep currentStep;
-
-        private decimal gateCorrection;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
-        private string noteText;
-
         private DelegateCommand saveCommand;
-
-        private int speed;
-
-        private DelegateCommand startCommand;
 
         private DelegateCommand step1Command;
 
@@ -102,11 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand step6Command;
 
-        private DelegateCommand stopCommand;
-
         private decimal systemError;
-
-        private decimal tolerance;
 
         #endregion
 
@@ -152,21 +136,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public int ActiveRaysQuantity { get => this.activeRaysQuantity; set => this.SetProperty(ref this.activeRaysQuantity, value); }
-
         public int BayNumber
         {
             get => this.bayNumber;
             private set => this.SetProperty(ref this.bayNumber, value);
         }
 
-        public decimal CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
-
-        public string Error => string.Join(
-                System.Environment.NewLine,
-                this[nameof(this.Speed)]);
-
-        public decimal GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
+        public virtual string Error => string.Join(Environment.NewLine, Environment.NewLine);
 
         public bool IsExecutingProcedure
         {
@@ -199,22 +175,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
-        public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
-
         public ICommand SaveCommand =>
-            this.saveCommand
+                    this.saveCommand
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync()));
-
-        public int Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
-
-        public ICommand StartCommand =>
-            this.startCommand
-            ??
-            (this.startCommand = new DelegateCommand(
-                async () => await this.StartAsync(),
-                this.CanExecuteStartCommand));
 
         public ICommand Step1Command =>
             this.step1Command
@@ -258,13 +223,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.NavigateToStep6(),
                 this.CanExecuteStepCommand));
 
-        public ICommand StopCommand =>
-                                    this.stopCommand
-            ??
-            (this.stopCommand = new DelegateCommand(
-                async () => await this.StopAsync(),
-                this.CanExecuteStopCommand));
-
         public decimal SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
 
         public string Title
@@ -285,27 +243,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
+        protected IMachineProfileProcedureService ProfileProcedureService => this.profileProcedureService;
 
         #endregion
 
         #region Indexers
 
-        public string this[string columnName]
+        public virtual string this[string columnName]
         {
             get
             {
-                switch (columnName)
-                {
-                    case nameof(this.Speed):
-                        if (this.Speed < 0)
-                        {
-                            return "Speed must be strictly positive.";
-                        }
-
-                        break;
-                }
-
                 return null;
             }
         }
@@ -429,26 +376,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.step5Command?.RaiseCanExecuteChanged();
             this.step6Command?.RaiseCanExecuteChanged();
             this.saveCommand?.RaiseCanExecuteChanged();
-            this.startCommand?.RaiseCanExecuteChanged();
-            this.stopCommand?.RaiseCanExecuteChanged();
         }
 
         protected void UpdateError()
         {
             this.IsExecutingProcedure = false;
-        }
-
-        private bool CanExecuteStartCommand()
-        {
-            return !this.IsExecutingProcedure
-                && !this.IsWaitingForResponse
-                && string.IsNullOrWhiteSpace(this.Error);
-        }
-
-        private bool CanExecuteStopCommand()
-        {
-            return this.IsExecutingProcedure
-                && !this.IsWaitingForResponse;
         }
 
         private void CheckMachinePowerAndMode()
@@ -501,14 +433,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ProfileHeightCheck.STEP5,
                     nameof(Utils.Modules.Installation),
-                    nameof(ProfileHeightCheckStep.TaraturaCatena),
+                    InstallationApp.Calibration,
                     trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ProfileHeightCheck.STEP6,
                     nameof(Utils.Modules.Installation),
-                    nameof(ProfileHeightCheckStep.ResultCheck),
+                    InstallationApp.Result,
                     trackCurrentView: false));
         }
 
@@ -529,45 +461,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task StartAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
-
-                var currentBay = this.bayManager.Bay.Number;
-                await this.profileProcedureService.RunAsync(currentBay);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task StopAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.profileProcedureService.StopAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-                this.IsExecutingProcedure = false;
             }
         }
 

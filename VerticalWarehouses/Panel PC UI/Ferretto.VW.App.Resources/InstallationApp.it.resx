@@ -1056,4 +1056,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="NextLarge" xml:space="preserve">
     <value>Successivo</value>
   </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Taratura</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Altezza raggiunta</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
 </root>

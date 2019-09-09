@@ -15,8 +15,9 @@
 
     <Grid Margin="130,30">
         <Grid.RowDefinitions>
+            <RowDefinition Height="95" />
+            <RowDefinition Height="30" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -35,21 +36,42 @@
         <controls:PpcLabeledText Grid.Row="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 FontWeight="Bold"
                                  LabelText="Operazione 1 di 4" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
-
-        <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight}"
                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.Tolerance}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding SystemError}"
+                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
+
+        <controls:PpcSensorControl Grid.Row="3"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="{Binding LuPresentInBay}"
+                                   Text="{x:Static res:InstallationApp.HeightReaced}" />
 
         <controls:PpcLabeledText Grid.Row="4"
                                  HorizontalAlignment="Left"
@@ -57,43 +79,31 @@
                                  ContentText="{Binding NoteText}"
                                  LabelText="{x:Static res:InstallationApp.Output}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding SystemError}"
-                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
+        <StackPanel Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Tolerance}" />
+            <controls:PpcButton Margin="0,0,30,0"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsEnabled="{Binding CanExecuteStartCommand}" />
 
-        <controls:PpcSensorControl Grid.Row="3"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   SensorState="{Binding LuPresentInBay}"
-                                   Text="Gate1HeightReaced" />
+            <controls:PpcButton Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}"
+                                IsEnabled="{Binding CanExecuteStopCommand}" />
 
-        <!--  {x:Static res:InstallationApp.Gate1HeightReaced}  -->
+        </StackPanel>
 
-        <controls:PpcLabeledText Grid.Row="4"
-                                 Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.GateCorrection}" />
-
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="6"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Command="{Binding Step4Command}"
                             Content="{x:Static res:InstallationApp.Previous}" />
 
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"

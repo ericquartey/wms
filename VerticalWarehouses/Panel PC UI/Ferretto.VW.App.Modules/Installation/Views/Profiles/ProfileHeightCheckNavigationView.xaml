@@ -9,11 +9,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
+                   Margin="0,0,0,10"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding Title}" />
 
         <ctrls:PpcStepsMenu Grid.Row="1"
+                            Padding="5,5"
+                            Background="{DynamicResource PpcButtonBackground}"
                             ItemsSource="{Binding MenuItems}" />
     </Grid>
 </UserControl>
