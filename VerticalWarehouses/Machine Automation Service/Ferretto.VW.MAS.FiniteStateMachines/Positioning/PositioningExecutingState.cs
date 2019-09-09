@@ -319,7 +319,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private void ProcessEndStop()
         {
-            if (this.machineSensorsStatus.IsSensorZeroOnCradle)
+            if (this.machineSensorsStatus.IsSensorZeroOnCradle || this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
             {
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
             }
