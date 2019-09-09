@@ -16,30 +16,42 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];
+           
 
-            if (bayIndexHeaders.Count == 0)
+            // provo a scrivere??
+            if (context.Controller is BaseAutomationController baseController)
             {
-                context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
-            }
-            else
-            {
-                if (context.Controller is BaseAutomationController baseController)
+                var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];
+
+                if (bayIndexHeaders.Count == 0)
                 {
-                    try
-                    {
-                        baseController.BayIndex = Enum.Parse<BayNumber>(bayIndexHeaders[0]);
-                        await next();
-                    }
-                    catch
-                    {
-                        context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
-                    }
+                    context.Result = new BadRequestObjectResult(new ProblemDetails 
+                    { 
+                        Title = MAS.Resources.General.BadRequestTitle, 
+                        Detail = "The Bay-Number request header was not found." 
+                    });
                 }
                 else
                 {
-                    context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
+                    if (Enum.TryParse<BayNumber>(bayIndexHeaders[0], out var bayIndex))
+                    {
+                        baseController.BayIndex = bayIndex;
+                    }
+                    else
+                    {
+                        context.Result = new BadRequestObjectResult(new ProblemDetails
+                        {
+                            Title = MAS.Resources.General.BadRequestTitle,
+                            Detail = "Cannot parse bay number."
+                        });
+                    }
+
                 }
+            }
+
+            if (context.Result is null)
+            {
+                await next();
             }
         }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BayIndex = table.Column<string>(nullable: true),
                     Data = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Destination = table.Column<string>(nullable: true),
@@ -195,6 +196,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BayIndex = table.Column<int>(nullable: false),
                     Code = table.Column<int>(nullable: false),
                     OccurrenceDate = table.Column<DateTime>(nullable: false),
                     ResolutionDate = table.Column<DateTime>(nullable: true)
@@ -260,19 +262,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Bays",
                 columns: table => new
                 {
-                    Number = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Index = table.Column<int>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
                     CurrentMissionOperationId = table.Column<int>(nullable: true),
                     ExternalId = table.Column<int>(nullable: false),
                     IpAddress = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: true),
+                    Number = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bays", x => x.Number);
+                    table.PrimaryKey("PK_Bays", x => x.Index);
                     table.ForeignKey(
                         name: "FK_Bays_LoadingUnits_LoadingUnitId",
                         column: x => x.LoadingUnitId,
@@ -319,7 +321,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 9, 15, 9, 57, 752, DateTimeKind.Local).AddTicks(3177), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -371,6 +373,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoadingUnits_Code",
+                table: "LoadingUnits",
+                column: "Code",
                 unique: true);
         }
 
