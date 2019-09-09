@@ -8,17 +8,21 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         Axis AxisMovement { get; set; }
 
+        int Direction { get; set; }
+
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }
 
-        decimal TargetAcceleration { get; set; }
+        decimal[] SwitchPosition { get; set; }
 
-        decimal TargetDeceleration { get; set; }
+        decimal[] TargetAcceleration { get; set; }
+
+        decimal[] TargetDeceleration { get; set; }
 
         decimal TargetPosition { get; set; }
 
-        decimal TargetSpeed { get; set; }
+        decimal[] TargetSpeed { get; set; }
 
         #endregion
     }

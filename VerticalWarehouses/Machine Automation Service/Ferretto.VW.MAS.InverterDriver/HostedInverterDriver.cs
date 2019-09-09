@@ -449,6 +449,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     this.currentStateMachines.Remove(messageDeviceIndex);
                                 }
+                                else if (messageCurrentStateMachine is PositioningTableStateMachine)
+                                {
+                                    this.currentStateMachines.Remove(messageDeviceIndex);
+                                }
                                 else
                                 {
                                     this.logger.LogDebug($"Try to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
@@ -463,6 +467,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.logger.LogTrace($"5:Deallocation SM {messageCurrentStateMachine?.GetType()}");
 
                                 if (messageCurrentStateMachine is PositioningStateMachine)
+                                {
+                                    this.currentStateMachines.Remove(messageDeviceIndex);
+                                }
+                                else if (messageCurrentStateMachine is PositioningTableStateMachine)
                                 {
                                     this.currentStateMachines.Remove(messageDeviceIndex);
                                 }
@@ -879,7 +887,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
 
-                if (this.inverterCommandQueue.Count > 20 && Debugger.IsAttached)
+                if (this.inverterCommandQueue.Count > 2000 && Debugger.IsAttached)
                 {
                     Debugger.Break();
                 }

@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             {
                 lock (this.controlWordLockObject)
                 {
-                    return (this.controlWord & 0x4000) > 0;
+                    return (this.controlWord & 0x0400) > 0;
                 }
             }
             set
@@ -132,11 +132,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
                 {
                     if (value)
                     {
-                        this.controlWord |= 0x4000;
+                        this.controlWord |= 0x0400;
                     }
                     else
                     {
-                        this.controlWord &= 0xBFFF;
+                        this.controlWord &= 0xFBFF;
                     }
                 }
             }
@@ -146,23 +146,17 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
         {
             get
             {
-                lock (this.controlWordLockObject)
-                {
-                    return (this.controlWord & 0x8000) > 0;
-                }
+                return (this.Value & 0x8000) > 0;
             }
             set
             {
-                lock (this.controlWordLockObject)
+                if (value)
                 {
-                    if (value)
-                    {
-                        this.controlWord |= 0x8000;
-                    }
-                    else
-                    {
-                        this.controlWord &= 0x7FFF;
-                    }
+                    this.Value |= 0x8000;
+                }
+                else
+                {
+                    this.Value &= 0x7FFF;
                 }
             }
         }

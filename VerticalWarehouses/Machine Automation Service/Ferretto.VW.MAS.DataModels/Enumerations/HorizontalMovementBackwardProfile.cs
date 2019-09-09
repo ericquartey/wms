@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels.Enumerations
 {
-    public enum HorizontalMovementBackwardProfile : long
+    public enum HorizontalMovementShorterProfile : long
     {
         Undefined = 0L,
 

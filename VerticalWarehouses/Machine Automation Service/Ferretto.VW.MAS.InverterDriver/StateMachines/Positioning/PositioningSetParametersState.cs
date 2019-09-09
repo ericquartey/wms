@@ -80,17 +80,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             switch (message.ParameterId)
             {
                 case InverterParameterId.PositionTargetPositionParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed[0]));
                     this.Logger.LogDebug($"Set target Speed: {this.data.TargetSpeed}");
                     break;
 
                 case InverterParameterId.PositionTargetSpeedParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration[0]));
                     this.Logger.LogDebug($"Set Acceleration: {this.data.TargetAcceleration}");
                     break;
 
                 case InverterParameterId.PositionAccelerationParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration[0]));
                     this.Logger.LogDebug($"Set Deceleration: {this.data.TargetDeceleration}");
                     break;
 

@@ -67,18 +67,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
+            decimal[] speed = { actualSpeed };
+            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.Relative,
                 MovementMode.FindZero,
                 ChainLength,
-                actualSpeed,
-                this.horizontalAxis.MaxEmptyAccelerationHA,
-                this.horizontalAxis.MaxEmptyDecelerationHA,
+                speed,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
 
             this.PublishCommand(
                     messageData,

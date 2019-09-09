@@ -12,9 +12,9 @@
 
         HorizontalAxis = 5L,
 
-        HorizontalMovementForwardProfile = 6L,
+        HorizontalMovementLongerProfile = 6L,
 
-        HorizontalMovementBackwardProfile = 7L,
+        HorizontalMovementShorterProfile = 7L,
 
         VerticalManualMovements = 8L,
 

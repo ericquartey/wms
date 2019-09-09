@@ -78,23 +78,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
                                 break;
 
-                            case ConfigurationCategory.HorizontalMovementForwardProfile:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementForwardProfile horizontalMovementForwardProfileData))
+                            case ConfigurationCategory.HorizontalMovementLongerProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerProfileData))
                                 {
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
+                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerProfileData, jsonData.Value);
 
                                 break;
 
-                            case ConfigurationCategory.HorizontalMovementBackwardProfile:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementBackwardProfile horizontalMovementBackwardProfileData))
+                            case ConfigurationCategory.HorizontalMovementShorterProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterProfileData))
                                 {
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
+                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterProfileData, jsonData.Value);
 
                                 break;
 

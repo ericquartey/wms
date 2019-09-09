@@ -21,13 +21,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             MovementMode movementMode,
             decimal target,
-            decimal speed,
-            decimal acceleration,
-            decimal deceleration,
+            decimal[] speed,
+            decimal[] acceleration,
+            decimal[] deceleration,
             int numberCycles,
             decimal lowerBound,
             decimal upperBound,
             int delay,
+            decimal[] switchPosition,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -41,6 +42,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
+            this.SwitchPosition = switchPosition;
             this.Delay = delay;
         }
 
@@ -56,6 +58,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int Delay { get; set; }
 
+        public int Direction { get; set; }
+
         public int ExecutedCycles { get; set; }
 
         public bool IsOneKMachine { get; set; }
@@ -68,13 +72,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int NumberCycles { get; set; }
 
-        public decimal TargetAcceleration { get; set; }
+        public decimal[] SwitchPosition { get; set; }
 
-        public decimal TargetDeceleration { get; set; }
+        public decimal[] TargetAcceleration { get; set; }
+
+        public decimal[] TargetDeceleration { get; set; }
 
         public decimal TargetPosition { get; set; }
 
-        public decimal TargetSpeed { get; set; }
+        public decimal[] TargetSpeed { get; set; }
 
         public decimal UpperBound { get; set; }
 

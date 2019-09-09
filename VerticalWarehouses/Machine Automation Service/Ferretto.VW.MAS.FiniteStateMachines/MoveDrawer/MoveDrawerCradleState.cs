@@ -248,11 +248,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
             var maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-            var maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
-            var maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
+            decimal[] maxAcceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] maxDeceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
             var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 
-            var speed = maxSpeed * (decimal)feedRate;
+            decimal[] speed = { maxSpeed * (decimal)feedRate };
 
             this.positioningMessageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -265,7 +266,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition);
         }
 
         #endregion
