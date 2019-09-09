@@ -939,10 +939,10 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Move to Cell Height</value>
   </data>
-  <data name="BayHeightCheckPosition1" xml:space="preserve">
+  <data name="BayPosition1" xml:space="preserve">
     <value>Position 1</value>
   </data>
-  <data name="BayHeightCheckPosition2" xml:space="preserve">
+  <data name="BayPosition2" xml:space="preserve">
     <value>Position 2</value>
   </data>
   <data name="Displacement" xml:space="preserve">
@@ -1095,5 +1095,30 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="PHC6NoteHeader" xml:space="preserve">
     <value>Warning</value>
     <comment>Label text</comment>
+  </data>
+  <data name="ElevatorIsCellPosition" xml:space="preserve">
+    <value>Elevator is in cell position.</value>
+  </data>
+  <data name="SingleBay" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Total completed cycles</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Prev</value>
+    <comment>Button Text</comment>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abort</value>
+    <comment>Button text</comment>
   </data>
 </root>

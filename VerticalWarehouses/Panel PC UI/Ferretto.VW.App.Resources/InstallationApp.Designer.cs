@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abort.
+        /// </summary>
+        public static string Abort {
+            get {
+                return ResourceManager.GetString("Abort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance [%].
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -241,24 +250,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
-        /// </summary>
-        public static string BayHeightCheckPosition1 {
-            get {
-                return ResourceManager.GetString("BayHeightCheckPosition1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Position 2.
-        /// </summary>
-        public static string BayHeightCheckPosition2 {
-            get {
-                return ResourceManager.GetString("BayHeightCheckPosition2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Position in bay.
         /// </summary>
         public static string BayHeightCheckSelectedPosition {
@@ -273,6 +264,24 @@ namespace Ferretto.VW.App.Resources {
         public static string BayPosition {
             get {
                 return ResourceManager.GetString("BayPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 1.
+        /// </summary>
+        public static string BayPosition1 {
+            get {
+                return ResourceManager.GetString("BayPosition1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 2.
+        /// </summary>
+        public static string BayPosition2 {
+            get {
+                return ResourceManager.GetString("BayPosition2", resourceCulture);
             }
         }
         
@@ -750,6 +759,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ElevatorHorizontalPosition {
             get {
                 return ResourceManager.GetString("ElevatorHorizontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator is in cell position..
+        /// </summary>
+        public static string ElevatorIsCellPosition {
+            get {
+                return ResourceManager.GetString("ElevatorIsCellPosition", resourceCulture);
             }
         }
         
@@ -2017,6 +2035,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Security Function.
         /// </summary>
         public static string ResetSecurityFunction {
@@ -2341,6 +2368,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Single.
+        /// </summary>
+        public static string SingleBay {
+            get {
+                return ResourceManager.GetString("SingleBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speed [mm/s].
         /// </summary>
         public static string SpeedMMSec {
@@ -2490,6 +2526,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Tolerance {
             get {
                 return ResourceManager.GetString("Tolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total completed cycles.
+        /// </summary>
+        public static string TotalCompletedCycles {
+            get {
+                return ResourceManager.GetString("TotalCompletedCycles", resourceCulture);
             }
         }
         

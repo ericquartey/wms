@@ -10,7 +10,7 @@
             xmlns:system="clr-namespace:System;assembly=mscorlib"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="130,30,40,0">
+    <Grid Margin="130,30,90,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -43,38 +43,75 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Bay}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="1"
-                             LabelText="{x:Static res:InstallationApp.BayPosition}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{x:Static res:InstallationApp.SingleBay}"
+                                 LabelText="{x:Static res:InstallationApp.BayPosition}"
+                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+
+        <Border Grid.Row="2"
+                Margin="0,0,30,0"
+                Padding="3"
+                VerticalAlignment="Top"
+                BorderBrush="{DynamicResource PpcButtonBackground}"
+                BorderThickness="3"
+                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <controls:PpcButton Width="100"
+                                    Margin="0,0,3,0"
+                                    Command="{Binding SelectBayPosition1Command}"
+                                    Content="{x:Static res:InstallationApp.BayPosition1}"
+                                    IsActive="{Binding IsPosition1Selected}" />
+
+                <controls:PpcButton Grid.Column="1"
+                                    Width="100"
+                                    Command="{Binding SelectBayPosition2Command}"
+                                    Content="{x:Static res:InstallationApp.BayPosition2}"
+                                    IsActive="{Binding IsPosition2Selected}" />
+            </Grid>
+
+
+        </Border>
+
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="435"
+                                 ContentText="{Binding BayPositionHeight}"
                                  LabelText="{x:Static res:InstallationApp.BayHeight}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="01043"
+                                 ContentText="{Binding LoadingUnitInBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.TrayInBay}" />
 
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.GoToBay}" />
+                            Command="{Binding MoveToBayHeightCommand}"
+                            Content="{x:Static res:InstallationApp.GoToBay}"
+                            IsBusy="{Binding IsElevatorMovingToBay}" />
 
-        <TextBlock Grid.Row="3"
-                   Grid.ColumnSpan="6"
-                   FontSize="18"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Cells}" />
-
+        <Border Grid.Row="3"
+                Grid.ColumnSpan="6"
+                Padding="0,5,0,0"
+                BorderBrush="{DynamicResource PpcButtonBackground}"
+                BorderThickness="0,2,0,0">
+            <TextBlock Margin="0,0,0,20"
+                       FontSize="18"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.Cells}" />
+        </Border>
         <controls:PpcTextBox Grid.Row="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
@@ -82,16 +119,15 @@
                              IsEnabled="{Binding CanInputCellId}"
                              LabelText="{x:Static res:InstallationApp.CellNumber}" />
 
-        <controls:PpcTextBox Grid.Row="4"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding CanInputLoadingUnitCode}"
-                             LabelText="{x:Static res:InstallationApp.TrayInCell}" />
-
         <controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding LoadingUnitInCell.Code}"
+                                 LabelText="{x:Static res:InstallationApp.TrayInCell}" />
+
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding SelectedCell.Position}"
@@ -102,13 +138,20 @@
                             Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.MoveToCellHeight}" />
+                            Command="{Binding MoveToCellHeightCommand}"
+                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
+                            IsBusy="{Binding IsElevatorMovingToCell}" />
 
-        <TextBlock Grid.Row="5"
-                   Grid.ColumnSpan="6"
-                   FontSize="18"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Elevator}" />
+        <Border Grid.Row="5"
+                Grid.ColumnSpan="5"
+                Padding="0,5,0,0"
+                BorderBrush="{DynamicResource PpcButtonBackground}"
+                BorderThickness="0,2,0,0">
+            <TextBlock Margin="0,0,0,20"
+                       FontSize="18"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.Elevator}" />
+        </Border>
 
         <controls:PpcLabeledText Grid.Row="6"
                                  HorizontalAlignment="Left"
@@ -129,7 +172,7 @@
                             VerticalAlignment="Top"
                             Command="{Binding DisembarkCommand}"
                             Content="{x:Static res:InstallationApp.Disembark}"
-                            IsActive="{Binding IsElevatorDisembarking}"
+                            IsBusy="{Binding IsElevatorDisembarking}"
                             Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
@@ -138,7 +181,7 @@
                             VerticalAlignment="Top"
                             Command="{Binding EmbarkCommand}"
                             Content="{x:Static res:InstallationApp.Embark}"
-                            IsActive="{Binding IsElevatorEmbarking}"
+                            IsBusy="{Binding IsElevatorEmbarking}"
                             Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
 
         <controls:PpcLabeledText Grid.Row="7"
@@ -153,7 +196,7 @@
                                  Margin="0,5,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="1000"
+                                 ContentText="{Binding EmbarkedLoadingUnit.Weight}"
                                  LabelText="{x:Static res:InstallationApp.TrayWeight}" />
 
     </Grid>

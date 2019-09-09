@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -83,6 +82,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MarkAsCompleted()
         {
             this.setupStatusProvider.CompleteBeltBurnishing();
+
+            return this.Ok();
+        }
+
+        [HttpPost("reset")]
+        [HttpPost]
+        public IActionResult Reset()
+        {
+            this.setupStatusProvider.ResetBeltBurnishing();
 
             return this.Ok();
         }

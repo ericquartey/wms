@@ -326,7 +326,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 5, 14, 9, 56, 100, DateTimeKind.Local).AddTicks(1507),
+                            InstallationDate = new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220),
                             ServiceStatus = 86
                         });
                 });
@@ -344,7 +344,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Laser");
 
-                    b.Property<bool>("Bay1Profile");
+                    b.Property<bool>("Bay1Shape");
 
                     b.Property<bool>("Bay1Shutter");
 
@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay2Laser");
 
-                    b.Property<bool>("Bay2Profile");
+                    b.Property<bool>("Bay2Shape");
 
                     b.Property<bool>("Bay2Shutter");
 
@@ -364,11 +364,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay3Laser");
 
-                    b.Property<bool>("Bay3Profile");
+                    b.Property<bool>("Bay3Shape");
 
                     b.Property<bool>("Bay3Shutter");
 
-                    b.Property<bool>("BeltBurnishing");
+                    b.Property<bool>("BeltBurnishingCompleted");
+
+                    b.Property<int>("BeltBurnishingCompletedCycles");
+
+                    b.Property<int>("BeltBurnishingRequiredCycles");
 
                     b.Property<bool>("CellsHeightCheck");
 
@@ -396,19 +400,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1Check = false,
                             Bay1FirstLoadingUnit = false,
                             Bay1Laser = false,
-                            Bay1Profile = false,
+                            Bay1Shape = false,
                             Bay1Shutter = false,
                             Bay2Check = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2Laser = false,
-                            Bay2Profile = false,
+                            Bay2Shape = false,
                             Bay2Shutter = false,
                             Bay3Check = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3Laser = false,
-                            Bay3Profile = false,
+                            Bay3Shape = false,
                             Bay3Shutter = false,
-                            BeltBurnishing = false,
+                            BeltBurnishingCompleted = false,
+                            BeltBurnishingCompletedCycles = 0,
+                            BeltBurnishingRequiredCycles = 0,
                             CellsHeightCheck = false,
                             HorizontalHoming = false,
                             PanelsCheck = false,

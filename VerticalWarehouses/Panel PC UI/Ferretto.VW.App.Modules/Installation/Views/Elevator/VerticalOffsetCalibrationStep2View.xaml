@@ -72,8 +72,10 @@
                             IsBusy="{Binding IsElevatorMovingUp}" />
 
         <controls:PpcTextBox Grid.Row="4"
+                             Grid.RowSpan="2"
                              Grid.Column="1"
                              HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
@@ -91,12 +93,12 @@
                                  ContentText="{Binding CurrentVerticalOffset, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
-        <controls:PpcTextBox Grid.Row="6"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.Displacement}" />
+        <controls:PpcLabeledText Grid.Row="6"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Displacement}"
+                                 LabelText="{x:Static res:InstallationApp.Displacement}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"

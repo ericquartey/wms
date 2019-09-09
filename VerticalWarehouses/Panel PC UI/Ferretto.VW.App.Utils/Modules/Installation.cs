@@ -106,8 +106,6 @@
 
             public const string OTHERS = "OtherSensorsViewModel";
 
-            public const string SHUTTER = "ShutterSensorsViewModel";
-
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
 
             #endregion

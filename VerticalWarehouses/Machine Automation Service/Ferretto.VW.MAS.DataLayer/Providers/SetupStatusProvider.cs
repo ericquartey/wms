@@ -52,9 +52,23 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
+        public void IncreaseBeltBurnishingCycle()
+        {
+            this.Update(s => s.BeltBurnishingCompletedCycles++);
+        }
+
         public void CompleteBeltBurnishing()
         {
-            this.Update(s => s.BeltBurnishing = true);
+            this.Update(s => s.BeltBurnishingCompleted = true);
+        }
+
+        public void ResetBeltBurnishing()
+        {
+            this.Update(s =>
+            {
+                s.BeltBurnishingCompletedCycles = 0;
+                s.BeltBurnishingCompleted = true;
+            });
         }
 
         public void CompleteVerticalOffset()
@@ -182,9 +196,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     },
                 },
 
-                BeltBurnishing = new SetupStepStatus
+                BeltBurnishing = new BeltBurnishingSetupStepStatus
                 {
-                    IsCompleted = status.BeltBurnishing,
+                    CompletedCycles = status.BeltBurnishingCompletedCycles,
+                    IsCompleted = status.BeltBurnishingCompleted,
                     CanBePerformed = verticalOrigin.IsCompleted
                 },
                 CellsHeightCheck = new SetupStepStatus
@@ -216,7 +231,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 VerticalResolution = new SetupStepStatus
                 {
                     IsCompleted = status.VerticalResolution,
-                    CanBePerformed = status.BeltBurnishing && verticalOrigin.IsCompleted
+                    CanBePerformed = status.BeltBurnishingCompleted && verticalOrigin.IsCompleted
                 },
                 WeightMeasurement = new SetupStepStatus
                 {
@@ -232,7 +247,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             if (this.configuration.IsSetupStatusOverridden())
             {
-                return SetupStatusCapabilities.Complete;
+                var debugStatus = SetupStatusCapabilities.Complete;
+                debugStatus.BeltBurnishing.CompletedCycles = status.BeltBurnishingCompletedCycles;
+                return debugStatus;
             }
 #endif
 

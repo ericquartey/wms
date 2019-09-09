@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? currentVerticalOffset;
 
-        private decimal? inputDisplacement;
+        private decimal? displacement;
 
         private decimal inputStepValue;
 
@@ -73,21 +73,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.currentVerticalOffset, value);
         }
 
-        public string Error => string.Join(
-              Environment.NewLine,
-              this[nameof(this.InputDisplacement)]);
-
-        public decimal? InputDisplacement
+        public decimal? Displacement
         {
-            get => this.inputDisplacement;
+            get => this.displacement;
             set
             {
-                if (this.SetProperty(ref this.inputDisplacement, value))
+                if (this.SetProperty(ref this.displacement, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public string Error => string.Join(
+                      Environment.NewLine,
+              this[nameof(this.Displacement)]);
 
         public decimal InputStepValue
         {
@@ -149,10 +149,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
-                    case nameof(this.InputDisplacement):
-                        if (!this.InputDisplacement.HasValue)
+                    case nameof(this.Displacement):
+                        if (!this.Displacement.HasValue)
                         {
-                            return $"InputOffset is required.";
+                            return $"Displacement is required.";
                         }
 
                         break;
@@ -170,6 +170,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnNavigatedAsync();
 
+            this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
+
             if (this.Data is Cell cell)
             {
                 this.Cell = cell;
@@ -186,6 +188,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+
+            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -229,11 +233,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var newOffset = this.CurrentVerticalOffset.Value - this.InputDisplacement.Value;
+                var newOffset = this.CurrentVerticalOffset.Value - this.Displacement.Value;
                 await this.verticalOffsetService.CompleteAsync(newOffset);
 
                 this.CurrentVerticalOffset = newOffset;
-                this.InputDisplacement = null;
+                this.Displacement = null;
 
                 this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
             }
@@ -256,7 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMovingDown
                 &&
-                string.IsNullOrWhiteSpace(this[nameof(this.InputDisplacement)])
+                string.IsNullOrWhiteSpace(this[nameof(this.Displacement)])
                 &&
                 this.CurrentVerticalOffset.HasValue;
         }
@@ -294,7 +298,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
 
-                this.InputDisplacement = (this.InputDisplacement ?? 0) - this.InputStepValue;
+                this.Displacement = (this.Displacement ?? 0) - this.InputStepValue;
             }
             catch (Exception ex)
             {
@@ -316,7 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue);
 
-                this.InputDisplacement = (this.InputDisplacement ?? 0) + this.InputStepValue;
+                this.Displacement = (this.Displacement ?? 0) + this.InputStepValue;
             }
             catch (Exception ex)
             {
@@ -327,6 +331,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalOffsetCalibration.STEP1);
+            this.ShowNextStep(true, false);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion
