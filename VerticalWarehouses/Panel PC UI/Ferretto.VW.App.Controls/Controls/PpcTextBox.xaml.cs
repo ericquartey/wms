@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class PpcTextBox : UserControl, INotifyPropertyChanged
+    public partial class PpcTextBox : UserControl
     {
         #region Fields
 
@@ -20,13 +20,13 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(bool),
             typeof(PpcTextBox));
 
-        public static readonly DependencyProperty InputProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty InputTextProperty = DependencyProperty.Register(
             nameof(InputText),
             typeof(string),
             typeof(PpcTextBox),
             new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
             nameof(LabelText),
             typeof(string),
             typeof(PpcTextBox),
@@ -45,52 +45,30 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #endregion
 
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
         #region Properties
 
         public SolidColorBrush BorderColor
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
-            set
-            {
-                this.SetValue(BorderColorProperty, value);
-                this.RaisePropertyChanged(nameof(this.BorderColor));
-            }
+            set => this.SetValue(BorderColorProperty, value);
         }
 
         public bool Highlighted
         {
             get => (bool)this.GetValue(HighlightedProperty);
-            set
-            {
-                this.SetValue(HighlightedProperty, value);
-                this.RaisePropertyChanged(nameof(this.Highlighted));
-            }
+            set => this.SetValue(HighlightedProperty, value);
         }
 
         public string InputText
         {
-            get => (string)this.GetValue(InputProperty);
-            set
-            {
-                this.SetValue(InputProperty, value);
-                this.RaisePropertyChanged(nameof(this.InputText));
-            }
+            get => (string)this.GetValue(InputTextProperty);
+            set => this.SetValue(InputTextProperty, value);
         }
 
         public string LabelText
         {
-            get => (string)this.GetValue(LabelProperty);
-            set
-            {
-                this.SetValue(LabelProperty, value);
-                this.RaisePropertyChanged(nameof(this.LabelText));
-            }
+            get => (string)this.GetValue(LabelTextProperty);
+            set => this.SetValue(LabelTextProperty, value);
         }
 
         #endregion
@@ -101,16 +79,8 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (e.Key == Key.Return)
             {
-                var b = this.GetBindingExpression(InputProperty);
+                var b = this.GetBindingExpression(InputTextProperty);
                 b?.UpdateSource();
-            }
-        }
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
