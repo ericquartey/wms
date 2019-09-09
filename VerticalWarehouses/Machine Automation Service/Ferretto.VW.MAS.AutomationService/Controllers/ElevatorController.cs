@@ -113,7 +113,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     throw new InvalidOperationException("Invalid " + (isOnBoard ? "Deposit" : "Pickup") + " command for " + (isOnBoard ? "empty" : "full") + " elevator");
                 }
-                if (!isOnBoard && !messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                if ((!isOnBoard && !messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                    || (isOnBoard && messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                    )
                 {
                     throw new InvalidOperationException("Invalid Zero Chain position");
                 }

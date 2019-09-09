@@ -174,7 +174,7 @@
                             Command="{Binding DisembarkBackwardsCommand}"
                             Content="{x:Static res:InstallationApp.DisembarkBackwards}"
                             IsBusy="{Binding IsElevatorDisembarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
@@ -183,7 +183,7 @@
                             Command="{Binding EmbarkBackwardsCommand}"
                             Content="{x:Static res:InstallationApp.EmbarkBackwards}"
                             IsBusy="{Binding IsElevatorEmbarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="4"
@@ -192,7 +192,7 @@
                             Command="{Binding DisembarkForwardsCommand}"
                             Content="{x:Static res:InstallationApp.DisembarkForwards}"
                             IsBusy="{Binding IsElevatorDisembarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="4"
@@ -201,7 +201,7 @@
                             Command="{Binding EmbarkForwardsCommand}"
                             Content="{x:Static res:InstallationApp.EmbarkForwards}"
                             IsBusy="{Binding IsElevatorEmbarking}"
-                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
+                            Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
 
         <controls:PpcLabeledText Grid.Row="7"
                                  Margin="0,10,0,0"

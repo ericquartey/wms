@@ -64,6 +64,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LoadingUnit EmbarkedLoadingUnit
         {
+            // TODO  for the moment we use only presence sensors
             //get => this.embarkedLoadingUnit;
             get
             {
@@ -173,6 +174,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.ShowNotification(string.Empty);
                 await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard);
             }
             catch (System.Exception ex)

@@ -166,7 +166,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sensorsToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                    message => this.sensors.Update(message?.Data?.SensorsStates),
+                    message =>
+                        {
+                            this.sensors.Update(message?.Data?.SensorsStates);
+                            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+                            this.RaiseCanExecuteChanged();
+                        },
                     ThreadOption.UIThread,
                     false);
             try
@@ -179,6 +184,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
 
             await this.RetrieveElevatorPositionAsync();
 
