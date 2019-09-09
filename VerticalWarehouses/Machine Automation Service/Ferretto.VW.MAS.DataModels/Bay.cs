@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int ExternalId { get; set; }
 
-        public BayIndex Index { get; set; }
+        public BayNumber Index { get; set; }
 
         public string IpAddress { get; set; }
 

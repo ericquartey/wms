@@ -98,16 +98,7 @@ namespace Ferretto.VW.App
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            containerRegistry.RegisterMachineAutomationServices(serviceUrl, c =>
-            {
-                var client = c.Resolve<RetryHttpClient>();
-
-                var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-                client.DefaultRequestHeaders.Add("Bay-Number", bayNumber.ToString());
-                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
-
-                return client;
-            });
+            containerRegistry.RegisterMachineAutomationServices(serviceUrl);
             containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             // WMS Web API services

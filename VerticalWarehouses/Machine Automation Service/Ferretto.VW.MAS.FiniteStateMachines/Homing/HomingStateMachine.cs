@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public HomingStateMachine(
             Axis axisToCalibrate,
             bool isOneKMachine,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)

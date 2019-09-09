@@ -23,35 +23,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         #region Methods
 
-        Bay Activate(BayIndex bayIndex);
+        Bay Activate(BayNumber bayIndex);
 
-        Bay AssignMissionOperation(BayIndex bayIndex, int? missionId, int? missionOperationId);
+        Bay AssignMissionOperation(BayNumber bayIndex, int? missionId, int? missionOperationId);
 
         void Create(Bay bay);
 
-        Bay Deactivate(BayIndex bayIndex);
+        Bay Deactivate(BayNumber bayIndex);
 
         IEnumerable<Bay> GetAll();
 
-        Bay GetByIndex(BayIndex bayIndex);
+        Bay GetByIndex(BayNumber bayIndex);
 
-        BayIndex GetByInverterIndex(InverterIndex inverterIndex);
+        BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
-        BayIndex GetByIoIndex(IoIndex ioIndex);
+        BayNumber GetByIoIndex(IoIndex ioIndex);
 
         Bay GetByIpAddress(IPAddress remoteIpAddress);
 
-        BayIndex GetByMovementType(IPositioningMessageData data);
+        BayNumber GetByMovementType(IPositioningMessageData data);
 
-        InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayIndex bayIndex);
+        InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayIndex);
 
-        List<InverterIndex> GetInverterList(BayIndex bayIndex);
+        List<InverterIndex> GetInverterList(BayNumber bayIndex);
 
-        IoIndex GetIoDevice(BayIndex bayIndex);
+        IoIndex GetIoDevice(BayNumber bayIndex);
 
-        void Update(BayIndex bayIndex, string ipAddress, BayType bayType);
+        void Update(BayNumber bayIndex, string ipAddress, BayType bayType);
 
-        Bay UpdatePosition(int bayNumber, int position, decimal height);
+        Bay UpdatePosition(BayNumber bayIndex, int position, decimal height);
 
         #endregion
     }

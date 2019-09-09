@@ -27,8 +27,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStateMachine(
-            BayIndex requestingBay,
-            BayIndex targetBay,
+            BayNumber requestingBay,
+            BayNumber targetBay,
             IPositioningMessageData messageData,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,

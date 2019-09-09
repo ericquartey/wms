@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 MessageActor.Any,
                 MessageActor.InverterDriver,
                 MessageType.MachineStateActive,
-                BayIndex.None,
+                BayNumber.None,
                 MessageStatus.OperationStart);
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                     MessageActor.Any,
                     MessageActor.InverterDriver,
                     MessageType.MachineStatusActive,
-                    BayIndex.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);

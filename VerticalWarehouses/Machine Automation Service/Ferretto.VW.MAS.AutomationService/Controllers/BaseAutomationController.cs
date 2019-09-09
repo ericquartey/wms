@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Properties
 
-        public BayIndex BayIndex { get; set; }
+        public BayNumber BayIndex { get; set; }
 
         #endregion
 

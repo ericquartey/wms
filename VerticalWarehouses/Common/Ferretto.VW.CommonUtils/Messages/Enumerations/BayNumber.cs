@@ -1,6 +1,6 @@
 namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
-    public enum BayIndex
+    public enum BayNumber
     {
         None = 0,
 

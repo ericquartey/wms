@@ -30,21 +30,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
         {
-            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+            if (this.currentStateMachines.TryGetValue(BayNumber.ElevatorBay, out var currentStateMachine))
             {
                 this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                this.currentStateMachines.Remove(BayIndex.ElevatorBay);
+                this.currentStateMachines.Remove(BayNumber.ElevatorBay);
             }
 
             currentStateMachine = new PowerEnableStateMachine(
                 data.Enable,
                 this.vertimagConfiguration.GetInstalledIoList().ToList(),
                 this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                BayIndex.None,
+                BayNumber.None,
                 this.eventAggregator,
                 this.logger,
                 this.serviceScopeFactory);
-            this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+            this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
 
             this.logger.LogTrace($"3:Starting FSM PowerEnableSTateMachine: Enable {data.Enable}");
 
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+            if (this.currentStateMachines.TryGetValue(BayNumber.ElevatorBay, out var currentStateMachine))
             {
                 this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
                 this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+                    this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
 
                     try
                     {
@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             if (message.Data is IPositioningMessageData data)
             {
                 var targetBay = this.baysProvider.GetByMovementType(data);
-                if (targetBay == BayIndex.None)
+                if (targetBay == BayNumber.None)
                 {
                     targetBay = message.BayIndex;
                 }
@@ -270,7 +270,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+                    this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
 
                     try
                     {
@@ -302,21 +302,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     (!this.machineSensorsStatus.IsMachineInRunningState && data.Enable)
                     )
                 {
-                    if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+                    if (this.currentStateMachines.TryGetValue(BayNumber.ElevatorBay, out var currentStateMachine))
                     {
                         this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                        this.currentStateMachines.Remove(BayIndex.ElevatorBay);
+                        this.currentStateMachines.Remove(BayNumber.ElevatorBay);
                     }
 
                     currentStateMachine = new PowerEnableStateMachine(
                         data.Enable,
                         this.vertimagConfiguration.GetInstalledIoList().ToList(),
                         this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                        BayIndex.None,
+                        BayNumber.None,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
-                    this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+                    this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
 
                     try
                     {
@@ -394,20 +394,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             //if (message.Data is IResetSecurityMessageData data)
             {
-                if (this.currentStateMachines.TryGetValue(BayIndex.ElevatorBay, out var currentStateMachine))
+                if (this.currentStateMachines.TryGetValue(BayNumber.ElevatorBay, out var currentStateMachine))
                 {
                     this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                    this.currentStateMachines.Remove(BayIndex.ElevatorBay);
+                    this.currentStateMachines.Remove(BayNumber.ElevatorBay);
                 }
 
                 currentStateMachine = new ResetSecurityStateMachine(
-                    BayIndex.ElevatorBay,
+                    BayNumber.ElevatorBay,
                     this.eventAggregator,
                     this.logger,
                     this.serviceScopeFactory);
 
                 this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                this.currentStateMachines.Add(BayIndex.ElevatorBay, currentStateMachine);
+                this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
 
                 try
                 {

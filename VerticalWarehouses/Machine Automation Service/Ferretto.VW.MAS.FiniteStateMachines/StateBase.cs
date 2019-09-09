@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         protected StateBase(
             IStateMachine parentStateMachine,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             ILogger<FiniteStateMachines> logger)
         {
             this.ParentStateMachine = parentStateMachine;
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public virtual string Type => this.GetType().ToString();
 

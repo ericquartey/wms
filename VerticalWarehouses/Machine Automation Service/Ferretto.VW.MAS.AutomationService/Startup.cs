@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService
               .AddMvc(options =>
               {
                   options.Filters.Add(typeof(ReadinessFilter));
-                  options.Filters.Add(typeof(BayIndexFilter));
+                  options.Filters.Add(typeof(BayNumberFilter));
                   options.Conventions.Add(
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));

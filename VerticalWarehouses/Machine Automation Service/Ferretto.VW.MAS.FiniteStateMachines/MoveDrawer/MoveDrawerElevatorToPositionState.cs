@@ -243,6 +243,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 maxDeceleration,
                 0,
                 0,
+                0,
                 0);
         }
 

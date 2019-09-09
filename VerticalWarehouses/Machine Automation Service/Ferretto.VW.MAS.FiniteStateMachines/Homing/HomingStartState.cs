@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)inverterIndex);
+                (byte)InverterIndex.MainInverter);
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 

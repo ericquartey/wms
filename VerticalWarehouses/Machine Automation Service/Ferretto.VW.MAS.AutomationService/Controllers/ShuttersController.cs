@@ -96,7 +96,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetPosition,
                 direction,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 MovementMode.Position,
                 0,
@@ -133,7 +132,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 MovementMode.ShutterTest,
                 testCycleCount,

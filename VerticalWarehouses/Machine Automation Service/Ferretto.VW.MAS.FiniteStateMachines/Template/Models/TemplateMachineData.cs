@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
 
         #region Constructors
 
-        public TemplateMachineData(BayIndex requestingBay, IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IServiceScopeFactory serviceScopeFactory)
+        public TemplateMachineData(BayNumber requestingBay, IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IServiceScopeFactory serviceScopeFactory)
         {
             this.RequestingBay = requestingBay;
             this.EventAggregator = eventAggregator;
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
 
         public string Message { get; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

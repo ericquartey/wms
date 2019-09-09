@@ -320,7 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnShutterTestStatusChanged(
             NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            if (message?.Data is null || message.Data.BayNumber == 0)
+            if (message?.Data is null)
             {
                 return;
             }

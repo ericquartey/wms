@@ -186,22 +186,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             base.Dispose(disposing);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         #endregion
     }
 }

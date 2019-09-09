@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public MoveDrawerStateMachine(
             bool isOneKMachine,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             ISetupStatusProvider setupStatusProvider,
             IMachineSensorsStatus machineSensorsStatus,
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,

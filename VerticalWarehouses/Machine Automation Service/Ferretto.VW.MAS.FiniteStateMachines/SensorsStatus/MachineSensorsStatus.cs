@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.RunningState];
 
-        public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterFault];
+        public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
         public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
@@ -123,11 +123,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                                 this.OnRunningStateChanged(args);
                             }
 
-                            if (this.sensorStatus[(int)IOMachineSensors.InverterFault] !=
-                                newSensorStatus[(int)IOMachineSensors.InverterFault])
+                            if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
+                                newSensorStatus[(int)IOMachineSensors.InverterInFault1])
                             {
                                 StatusUpdateEventArgs args = new StatusUpdateEventArgs();
-                                args.NewState = newSensorStatus[(int)IOMachineSensors.InverterFault];
+                                args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
                                 this.OnFaultStateChanged(args);
                             }
                         }

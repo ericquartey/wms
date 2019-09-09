@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             EventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)

@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public ShutterPositioningStateMachine(
             IShutterPositioningMessageData positioningMessageData,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             InverterIndex inverterIndex,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,

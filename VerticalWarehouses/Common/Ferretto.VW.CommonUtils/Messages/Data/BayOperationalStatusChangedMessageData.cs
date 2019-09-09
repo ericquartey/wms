@@ -15,7 +15,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? CurrentMissionOperationId { get; set; }
 
-        public BayIndex Index { get; }
+        public BayNumber Index { get; }
 
         public int PendingMissionsCount { get; set; }
 

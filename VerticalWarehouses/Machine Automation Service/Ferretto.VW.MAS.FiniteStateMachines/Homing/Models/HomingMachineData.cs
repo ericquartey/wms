@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public HomingMachineData(
             bool isOneKMachine,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public int NumberOfExecutedSteps { get; set; }
 
-        public BayIndex RequestingBay { get; set; }
+        public BayNumber RequestingBay { get; set; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

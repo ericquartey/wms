@@ -18,8 +18,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 
         #region Constructors
 
-        public PositioningMachineData(BayIndex requestingBay,
-            BayIndex targetBay,
+        public PositioningMachineData(BayNumber requestingBay,
+            BayNumber targetBay,
             IPositioningMessageData messageData,
             IMachineSensorsStatus machineSensorsStatus,
             InverterIndex currentInverterIndex,
@@ -59,11 +59,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 
         public IPositioningMessageData MessageData { get; set; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
-        public BayIndex TargetBay { get; }
+        public BayNumber TargetBay { get; }
 
         #endregion
     }

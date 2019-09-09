@@ -258,7 +258,7 @@ namespace Ferretto.VW.MAS.AutomationService
                                 MessageActor.MissionsManager,
                                 MessageActor.AutomationService,
                                 MessageType.NewMissionAvailable,
-                                BayIndex.None);
+                                BayNumber.None);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
                         }
                         break;

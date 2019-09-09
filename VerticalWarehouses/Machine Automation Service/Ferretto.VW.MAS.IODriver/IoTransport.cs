@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private IPAddress ioAddress;
 
-        private int readTimeoutMilliseconds;    // -1 is no timeout
+        private readonly int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 

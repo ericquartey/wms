@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost]
         public ActionResult<Error> Create(MachineErrors code)
         {
-            var newError = this.errorsProvider.RecordNew(code, BayIndex.None);
+            var newError = this.errorsProvider.RecordNew(code, BayNumber.None);
 
             return this.Ok(newError);
         }

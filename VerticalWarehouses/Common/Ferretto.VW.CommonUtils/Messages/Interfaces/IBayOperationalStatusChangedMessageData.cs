@@ -14,7 +14,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int? CurrentMissionOperationId { get; }
 
-        BayIndex Index { get; }
+        BayNumber Index { get; }
 
         int PendingMissionsCount { get; }
 

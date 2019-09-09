@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         #region Constructors
 
         public ResetSecurityStateMachine(
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)

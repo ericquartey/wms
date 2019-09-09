@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private IPAddress inverterAddress;
 
-        private int readTimeoutMilliseconds;        // -1 is no timeout
+        private readonly int readTimeoutMilliseconds;        // -1 is no timeout
 
         private int sendPort;
 

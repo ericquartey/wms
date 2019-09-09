@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             for (var i = 0; i < baysCount; i++)
             {
                 var bayNumber = i + 1;
-                var bayIndex = Enum.Parse<BayIndex>(bayNumber.ToString());
+                var bayIndex = Enum.Parse<BayNumber>(bayNumber.ToString());
 
                 var bay = this.baysProvider.GetByIndex(bayIndex);
                 if (bay == null)

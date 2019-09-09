@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ManualResetEventSlim writeEnableEvent;
 
-        private Timer[] axisPositionUpdateTimer;
+        private readonly Timer[] axisPositionUpdateTimer;
 
         private Axis currentAxis;
 
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Timer sensorStatusUpdateTimer;
 
-        private Timer[] statusWordUpdateTimer;
+        private readonly Timer[] statusWordUpdateTimer;
 
         private CancellationToken stoppingToken;
 
@@ -393,7 +393,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageActor.Any,
                     MessageActor.InverterDriver,
                     MessageType.MachineStatusActive,
-                    BayIndex.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);

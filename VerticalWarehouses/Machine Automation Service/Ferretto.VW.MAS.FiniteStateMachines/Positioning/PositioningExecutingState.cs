@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Threading;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         private readonly IPositioningMachineData machineData;
 
         private readonly IPositioningStateData stateData;
-
-        private Timer delayTimer;
 
         private bool disposed;
 
@@ -264,6 +260,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.machineData.MessageData.TargetDeceleration,
                     0,
                     0,
+                    0,
                     0);
                 this.machineData.MessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
@@ -302,174 +299,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     this.RequestingBay,
-                    MessageStatus.OperationExecuting);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.delayTimer?.Dispose();
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
-        private void DelayElapsed(object state)
-        {
-            // INFO Even to go Up and Odd for Down
-            this.commandMessage = new FieldCommandMessage(
-                this.numberExecutedSteps % 2 == 0
-                    ? this.positioningUpFieldMessageData
-                    : this.positioningDownFieldMessageData,
-                $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.Positioning,
-                (byte)InverterIndex.MainInverter);
-
-            this.Logger.LogTrace(
-                $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
-
-            var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0
-                ? BeltBurnishingPosition.LowerBound
-                : BeltBurnishingPosition.UpperBound;
-
-            this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
-
-            // Notification message
-            var notificationMessage = new NotificationMessage(
-                this.positioningMessageData,
-                $"Current position {beltBurnishingPosition}",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationExecuting);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            if (this.numberExecutedSteps > 0 &&
-                this.numberExecutedSteps % 2 == 0)
-            {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
-
-                    setupStatusProvider.IncreaseBeltBurnishingCycle();
-                }
-
-                Debug.Write("Belt completed cycle.");
-            }
-
-            Debug.Write("Belt current position " + beltBurnishingPosition);
-        }
-
-        private void ProcessEndPositioning()
-        {
-            switch (this.positioningMessageData.MovementMode)
-            {
-                case MovementMode.Position:
-                    this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
-                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
-                    break;
-
-                case MovementMode.BeltBurnishing:
-                    this.numberExecutedSteps++;
-                    this.positioningMessageData.ExecutedCycles = this.numberExecutedSteps / 2;
-
-                    if (this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
-                    {
-                        this.Logger.LogDebug("FSM Finished Executing State");
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
-                    }
-                    else
-                    {
-                        if (this.positioningMessageData.Delay > 0)
-                        {
-                            this.delayTimer = new Timer(this.DelayElapsed, null, this.positioningMessageData.Delay * 1000, Timeout.Infinite);
-                        }
-                        else
-                        {
-                            this.DelayElapsed(null);
-                        }
-                    }
-                    break;
-
-                case MovementMode.FindZero:
-                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
-                    break;
-            }
-        }
-
-        private void ProcessEndStop()
-        {
-            if (this.machineSensorsStatus.IsSensorZeroOnCradle)
-            {
-                this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
-            }
-            else
-            {
-                var newPositioningMessageData = new PositioningMessageData(
-                    Axis.Horizontal,
-                    MovementType.Relative,
-                    MovementMode.FindZero,
-                    -this.positioningMessageData.TargetPosition / 2,
-                    this.positioningMessageData.TargetSpeed / 2,
-                    this.positioningMessageData.TargetAcceleration,
-                    this.positioningMessageData.TargetDeceleration,
-                    0,
-                    0,
-                    0,
-                    0);
-                this.positioningMessageData = newPositioningMessageData;
-                this.ParentStateMachine.ChangeState(new PositioningStartState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
-            }
-        }
-
-        private void ProcessExecutingStatusUpdate(FieldNotificationMessage message)
-        {
-            if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
-            {
-                if (this.machineSensorsStatus.IsSensorZeroOnCradle)
-                {
-                    var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                    this.commandMessage = new FieldCommandMessage(
-                        null,
-                        $"Stop Operation due to zero position reached",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop,
-                        (byte)inverterIndex);
-
-                    this.Logger.LogTrace(
-                        $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-                    this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
-                }
-            }
-
-            if (message.Data is InverterStatusUpdateFieldMessageData data)
-            {
-                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
-
-                var notificationMessage = new NotificationMessage(
-                    this.positioningMessageData,
-                    $"Current Encoder position: {data.CurrentPosition}",
-                    MessageActor.AutomationService,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning,
                     MessageStatus.OperationExecuting);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

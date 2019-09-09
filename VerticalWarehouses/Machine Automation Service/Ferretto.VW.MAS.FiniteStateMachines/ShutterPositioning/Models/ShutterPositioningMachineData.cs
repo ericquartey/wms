@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 
         public ShutterPositioningMachineData(
             IShutterPositioningMessageData positioningMessageData,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             InverterIndex inverterIndex,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 
         public IShutterPositioningMessageData PositioningMessageData { get; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

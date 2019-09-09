@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
                     MessageType.MissionOperationCompleted,
-                    BayIndex.None);
+                    BayNumber.None);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 this.logger.LogDebug($"AS-OC Operator marked mission operation id={id} as completed, with quantity {quantity}.");

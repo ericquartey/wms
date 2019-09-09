@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         ILogger<FiniteStateMachines> Logger { get; }
 
-        BayIndex RequestingBay { get; }
+        BayNumber RequestingBay { get; }
 
         /// <summary>
         /// Get the type of state (string description).

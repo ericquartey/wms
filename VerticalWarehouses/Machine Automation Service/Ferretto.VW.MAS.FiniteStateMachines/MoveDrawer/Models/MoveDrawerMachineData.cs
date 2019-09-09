@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
             IVerticalAxisDataLayer verticalAxis,
             IHorizontalAxisDataLayer horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 
         public IMachineSensorsStatus MachineSensorsStatus { get; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

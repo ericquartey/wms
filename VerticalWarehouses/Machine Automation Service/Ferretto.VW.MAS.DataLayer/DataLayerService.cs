@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.Any,
                 MessageActor.DataLayer,
                 MessageType.DataLayerReady,
-                BayIndex.None);
+                BayNumber.None);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.Any,
                 MessageActor.DataLayer,
                 MessageType.DlException,
-                BayIndex.None,
+                BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
 

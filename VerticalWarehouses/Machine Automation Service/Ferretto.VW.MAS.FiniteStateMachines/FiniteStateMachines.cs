@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task commandReceiveTask;
 
-        private readonly Dictionary<BayIndex, IStateMachine> currentStateMachines;
+        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -116,8 +116,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
             this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
 
-            this.currentStateMachines = new Dictionary<BayIndex, IStateMachine>();
-            this.currentStateMachines.Add(BayIndex.ElevatorBay, null);
+            this.currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
+            this.currentStateMachines.Add(BayNumber.ElevatorBay, null);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -321,7 +321,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                BayIndex messageBayBayIndex = BayIndex.None;
+                BayNumber messageBayBayIndex = BayNumber.None;
                 if (receivedMessage.Source is FieldMessageActor.IoDriver)
                 {
                     var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
@@ -549,7 +549,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.FaultStateChanged,
-                BayIndex.None);
+                BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
@@ -562,7 +562,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.RunningStateChanged,
-                BayIndex.None);
+                BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
@@ -811,7 +811,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
-                    BayIndex.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -825,7 +825,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStateActive,
-                    BayIndex.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -840,7 +840,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.FsmException,
-                BayIndex.None,
+                BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);

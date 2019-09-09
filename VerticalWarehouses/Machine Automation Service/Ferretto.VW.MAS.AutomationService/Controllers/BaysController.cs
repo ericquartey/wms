@@ -1,6 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(BayIndex bayIndex)
+        public ActionResult<Bay> ActivateAsync(BayNumber bayIndex)
         {
             try
             {
@@ -64,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(BayIndex bayIndex)
+        public ActionResult<Bay> DeactivateAsync(BayNumber bayIndex)
         {
             try
             {
@@ -82,11 +81,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber(BayIndex bayIndex)
+        public ActionResult<Bay> GetByNumber(BayNumber bayIndex)
         {
             try
             {
-                var bay = this.baysProvider.GetByNumber(bayIndex);
+                var bay = this.baysProvider.GetByIndex(bayIndex);
 
                 return this.Ok(bay);
             }
@@ -105,16 +104,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("{bayNumber}/height")]
+        [HttpPost("{bayIndex}/height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+        public ActionResult<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height)
         {
             try
             {
-                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+                var bay = this.baysProvider.UpdatePosition(bayIndex, position, height);
 
                 return this.Ok(bay);
             }

@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return summary;
         }
 
-        public Error RecordNew(MachineErrors code, BayIndex bayIndex)
+        public Error RecordNew(MachineErrors code, BayNumber bayIndex)
         {
             var newError = new Error
             {
@@ -143,12 +143,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorResolution(error);
+            this.NotifyErrorResolution(error, BayNumber.None);
 
             return error;
         }
 
-        private void NotifyErrorCreation(Error error, BayIndex bayIndex)
+        private void NotifyErrorCreation(Error error, BayNumber bayIndex)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error, BayIndex bayIndex)
+        private void NotifyErrorResolution(Error error, BayNumber bayIndex)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),

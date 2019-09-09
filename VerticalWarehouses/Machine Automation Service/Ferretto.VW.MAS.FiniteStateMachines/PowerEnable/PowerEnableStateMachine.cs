@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             bool enable,
             List<IoIndex> ioList,
             List<InverterIndex> inverterList,
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory

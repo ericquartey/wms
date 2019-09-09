@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         #region Constructors
 
         protected StateMachineBase(
-            BayIndex requestingBay,
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public BayIndex RequestingBay { get; }
+        public BayNumber RequestingBay { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

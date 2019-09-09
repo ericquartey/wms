@@ -31,7 +31,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
-            BayIndex bayIndex,
+            BayNumber bayIndex,
             MessageStatus status = MessageStatus.NoStatus,
             ErrorLevel level = ErrorLevel.NoError,
             MessageVerbosity verbosity = MessageVerbosity.Info)
@@ -62,7 +62,7 @@ namespace Ferretto.VW.CommonUtils.Messages
 
         #region Properties
 
-        public BayIndex BayIndex { get; set; }
+        public BayNumber BayIndex { get; set; }
 
         public IMessageData Data { get; set; }
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Ferretto.VW.MAS.AutomationService.Filters
 {
-    public class BayIndexFilter : IAsyncActionFilter
+    public class BayNumberFilter : IAsyncActionFilter
     {
 
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     try
                     {
-                        baseController.BayIndex = Enum.Parse<BayIndex>(bayIndexHeaders[0]);
+                        baseController.BayIndex = Enum.Parse<BayNumber>(bayIndexHeaders[0]);
                         await next();
                     }
                     catch
