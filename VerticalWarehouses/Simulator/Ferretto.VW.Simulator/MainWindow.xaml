@@ -254,7 +254,7 @@
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                                        Text="{Binding AxisPositionX, StringFormat='/ {0} '}"
                                        ToolTip="Horizontal Position" />
-                            
+
                             <TextBlock Grid.Row="1"
                                        Grid.Column="3"
                                        VerticalAlignment="Top"
@@ -491,18 +491,16 @@
                                        Margin="10"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                     Text="{x:Static res:General.SimulatorStarted}"
                                        SensorState="{Binding InverterService.IsStartedSimulator}"
-
+                                       Text="{x:Static res:General.SimulatorStarted}"
                                        Visibility="Collapsed" />
 
             <controls:PpcSensorControl Grid.Column="2"
                                        Margin="10"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                     Text="Sicurezza"
                                        SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      />
+                                       Text="Sicurezza" />
 
         </Grid>
 
@@ -675,7 +673,8 @@
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                    Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   TextWrapping="WrapWithOverflow" />
+                   TextWrapping="WrapWithOverflow"
+                   Visibility="Collapsed" />
 
     </Grid>
 </Window>
