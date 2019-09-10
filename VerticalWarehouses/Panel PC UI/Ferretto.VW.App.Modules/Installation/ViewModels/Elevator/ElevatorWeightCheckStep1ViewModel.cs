@@ -111,13 +111,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InputLoadingUnitId = null;
             this.isloadingUnitVerified = false;
 
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             await this.GetLoadingUnitsAsync();
 
             this.RaiseCanExecuteChanged();
-
-            this.ShowSteps();
         }
 
         protected override void RaiseCanExecuteChanged()

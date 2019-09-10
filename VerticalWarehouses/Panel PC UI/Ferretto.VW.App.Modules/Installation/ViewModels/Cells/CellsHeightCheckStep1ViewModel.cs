@@ -97,9 +97,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
-            await base.OnNavigatedAsync();
-
             this.ShowSteps();
+
+            await base.OnNavigatedAsync();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

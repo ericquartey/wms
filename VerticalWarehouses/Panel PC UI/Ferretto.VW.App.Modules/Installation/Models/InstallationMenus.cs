@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Stato sensori")]
         SensorsState,
 
-        [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.ManualMovements.MANUALMOVEMENTS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Movimenti manuali a bassa velocità")]
         ManualMovements,
 

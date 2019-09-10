@@ -60,18 +60,18 @@
             </StackPanel>
 
             <local:PpcLabeledText Grid.Row="1"
-                                               Grid.Column="1"
-                                               MinHeight="100"
-                                               HorizontalAlignment="Left"
-                                               ContentText="{Binding Error.Definition.Description}"
-                                               LabelText="{x:Static res:VWApp.ErrorDescription}" />
+                                  Grid.Column="1"
+                                  MinHeight="100"
+                                  HorizontalAlignment="Left"
+                                  ContentText="{Binding Error.Definition.Description}"
+                                  LabelText="{x:Static res:VWApp.ErrorDescription}" />
 
             <local:PpcLabeledText Grid.Row="2"
-                                               Grid.ColumnSpan="2"
-                                               MinHeight="100"
-                                               HorizontalAlignment="Left"
-                                               ContentText="{Binding Error.Definition.Reason}"
-                                               LabelText="{x:Static res:VWApp.ErrorReason}" />
+                                  Grid.ColumnSpan="2"
+                                  MinHeight="100"
+                                  HorizontalAlignment="Left"
+                                  ContentText="{Binding Error.Definition.Reason}"
+                                  LabelText="{x:Static res:VWApp.ErrorReason}" />
 
 
             <local:PpcButton Grid.Row="3"

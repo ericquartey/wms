@@ -229,13 +229,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             this.RetrieveInputData();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
-
-            this.ShowSteps();
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)

@@ -112,6 +112,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsClosing = true;
             this.IsOpening = false;
 
+            this.DisableAllExceptThis();
+
             await this.StartMovementAsync(-100);
         }
 
@@ -119,6 +121,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsOpening = true;
             this.IsClosing = false;
+
+            this.DisableAllExceptThis();
 
             await this.StartMovementAsync(100);
         }
@@ -161,6 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsOpening = false;
                 this.IsClosing = false;
                 this.IsStopping = false;
+                this.EnableAll();
             }
         }
 

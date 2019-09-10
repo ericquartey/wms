@@ -1,6 +1,8 @@
-﻿namespace Ferretto.VW.App.Installation.Views
+﻿using Ferretto.VW.App.Controls;
+
+namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class ExternalBayManualMovementsView
+    public partial class ExternalBayManualMovementsView : View
     {
         #region Constructors
 
