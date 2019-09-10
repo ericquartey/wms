@@ -17,6 +17,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public partial class SemiAutoMovementsViewModel : BaseMainViewModel
     {
+        //private readonly IMachineShuttersService shuttersService;
+
+        //private SubscriptionToken receivedActionUpdateErrorToken;
+
+        //private SubscriptionToken receivedSensorsToken;
+
         #region Fields
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
@@ -24,6 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineSensorsService machineSensorsService;
 
         private readonly Sensors sensors = new Sensors();
+
+        private readonly IMachineShuttersService shuttersService;
 
         private int? inputLoadingUnitCode;
 
@@ -44,6 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCellsService machineCellsService,
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
+            IMachineShuttersService shuttersService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -66,9 +75,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
+
             if (machineSensorsService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
+
+            if (shuttersService is null)
+            {
+                throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
             this.machineSensorsService = machineSensorsService;
@@ -76,6 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCellsService = machineCellsService;
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
+            this.shuttersService = shuttersService;
 
             this.SelectBayPosition1();
         }
