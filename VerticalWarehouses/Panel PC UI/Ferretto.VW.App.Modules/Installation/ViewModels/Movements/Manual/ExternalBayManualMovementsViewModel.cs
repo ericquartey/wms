@@ -112,20 +112,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            try
-            {
-                this.CurrentPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         protected override async Task StopMovementAsync()
         {
             this.IsStopping = true;
@@ -143,6 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMovingForwards = false;
                 this.IsMovingBackwards = false;
                 this.IsStopping = false;
+                this.EnableAll();
             }
         }
 
@@ -151,6 +138,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingBackwards = true;
             this.IsMovingForwards = false;
 
+            this.DisableAllExceptThis();
+
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
@@ -158,6 +147,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsMovingForwards = true;
             this.IsMovingBackwards = false;
+
+            this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }

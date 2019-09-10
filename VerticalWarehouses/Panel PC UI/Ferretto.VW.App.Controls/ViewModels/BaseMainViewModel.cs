@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
 
-            this.ClearNotifications();
+            this.UpdateNotifications();
 
             await base.OnNavigatedAsync();
         }
@@ -153,6 +153,11 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowSteps(bool isPrevEnabled, string prevModuleName = null, string prevViewName = null)
         {
+        }
+
+        public virtual void UpdateNotifications()
+        {
+            this.ClearNotifications();
         }
 
         protected virtual void OnMachineModeChanged(MachineModeChangedEventArgs e)

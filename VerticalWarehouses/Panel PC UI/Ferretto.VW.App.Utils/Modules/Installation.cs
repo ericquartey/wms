@@ -68,6 +68,8 @@
 
             public const string HORIZONTALENGINE = "HorizontalEngineManualMovementsViewModel";
 
+            public const string MANUALMOVEMENTS = "ManualMovementsViewModel";
+
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
 
             public const string SHUTTER = "ShutterEngineManualMovementsViewModel";

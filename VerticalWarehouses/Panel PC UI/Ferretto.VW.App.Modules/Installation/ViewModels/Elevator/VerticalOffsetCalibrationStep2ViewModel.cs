@@ -168,6 +168,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
@@ -188,8 +190,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-
-            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

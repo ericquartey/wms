@@ -52,6 +52,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineElevatorService>(
                 new InjectionFactory(c => new MachineElevatorService(urlString, resolveFunction(c))));
 
+            container.GetContainer().RegisterType<IMachineCarouselService>(
+                new InjectionFactory(c => new MachineCarouselService(urlString, resolveFunction(c))));
+
             container.GetContainer().RegisterType<IMachineErrorsService>(
                 new InjectionFactory(c => new MachineErrorsService(urlString, resolveFunction(c))));
 
