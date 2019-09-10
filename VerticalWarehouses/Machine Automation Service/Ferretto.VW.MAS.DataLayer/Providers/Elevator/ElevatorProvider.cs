@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
-                MovementType.Relative,
+                MovementType.TableTarget,
                 MovementMode.Position,
                 targetPosition,
                 speed,
