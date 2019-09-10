@@ -94,6 +94,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
 
+            // speed is negative to go up
+            speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
+
             var targetPosition = direction == ShutterMovementDirection.Up
                 ? ShutterPosition.Opened
                 : ShutterPosition.Closed;
@@ -170,6 +173,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MaxSpeed;
+
+            // speed is negative to go up
+            speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
 
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,

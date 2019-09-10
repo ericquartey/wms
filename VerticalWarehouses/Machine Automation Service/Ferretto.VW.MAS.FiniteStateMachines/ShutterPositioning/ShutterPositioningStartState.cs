@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         shutterPositionTarget,
                                         ShutterMovementDirection.Up,
                                         this.shutterPositioningMessageData.ShutterType,
-                                        this.shutterPositioningMessageData.SpeedRate,
+                                        -this.shutterPositioningMessageData.SpeedRate,
                                         this.shutterPositioningMessageData.HigherDistance,
                                         this.shutterPositioningMessageData.LowerDistance,
                                         this.shutterPositioningMessageData.MovementType);
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     destination,
                     ShutterMovementDirection.Up,
                     this.shutterPositioningMessageData.ShutterType,
-                    this.shutterPositioningMessageData.SpeedRate,
+                    -this.shutterPositioningMessageData.SpeedRate,
                     this.shutterPositioningMessageData.HigherDistance,
                     this.shutterPositioningMessageData.LowerDistance,
                     this.shutterPositioningMessageData.MovementType);
