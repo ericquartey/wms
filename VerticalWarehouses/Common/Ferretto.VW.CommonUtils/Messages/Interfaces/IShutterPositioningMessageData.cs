@@ -12,6 +12,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
+        decimal HigherDistance { get; }
+
+        decimal LowerDistance { get; }
+
         MovementMode MovementMode { get; set; }
 
         MovementType MovementType { get; }

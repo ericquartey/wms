@@ -17,6 +17,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             ShutterType shutterType,
             int bayNumber,
             decimal speedRate,
+            decimal higherDistance,
+            decimal lowerDistance,
             MovementMode movementMode,
             MovementType movementType,
             int requestedCycles,
@@ -28,6 +30,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShutterType = shutterType;
             this.BayNumber = bayNumber;
             this.SpeedRate = speedRate;
+            this.HigherDistance = higherDistance;
+            this.LowerDistance = lowerDistance;
             this.MovementMode = movementMode;
             this.MovementType = movementType;
             this.RequestedCycles = requestedCycles;
@@ -46,6 +50,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
             this.ShutterType = shutterpositioningMessageData.ShutterType;
             this.SpeedRate = shutterpositioningMessageData.SpeedRate;
+            this.HigherDistance = shutterpositioningMessageData.HigherDistance;
+            this.LowerDistance = shutterpositioningMessageData.LowerDistance;
             this.MovementMode = shutterpositioningMessageData.MovementMode;
             this.MovementType = shutterpositioningMessageData.MovementType;
             this.RequestedCycles = shutterpositioningMessageData.RequestedCycles;
@@ -62,6 +68,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int Delay { get; set; }
 
         public int ExecutedCycles { get; set; }
+
+        public decimal HigherDistance { get; }
+
+        public decimal LowerDistance { get; }
 
         public MovementMode MovementMode { get; set; }
 

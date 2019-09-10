@@ -187,6 +187,7 @@
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
+    "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
     "HigherDistance": 200.0,

@@ -16,11 +16,18 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.ShutterType = shutterPositioningFieldMessageData.ShutterType;
             this.ShutterMovementDirection = shutterPositioningFieldMessageData.ShutterMovementDirection;
             this.SpeedRate = decimal.ToInt32(shutterPositioningFieldMessageData.SpeedRate);
+            this.HigherDistance = decimal.ToInt32(shutterPositioningFieldMessageData.HigherDistance);
+            this.LowerDistance = decimal.ToInt32(shutterPositioningFieldMessageData.LowerDistance);
+            this.MovementType = shutterPositioningFieldMessageData.MovementType;
         }
 
         #endregion
 
         #region Properties
+
+        public int HigherDistance { get; set; }
+
+        public int LowerDistance { get; set; }
 
         public MovementType MovementType { get; }
 

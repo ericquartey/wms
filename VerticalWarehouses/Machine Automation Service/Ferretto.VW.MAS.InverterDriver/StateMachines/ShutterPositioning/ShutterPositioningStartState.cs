@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
+        private ShutterPosition currentShutterPosition;
+
         #endregion
 
         #region Constructors
@@ -69,6 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                     return;
                 }
+                this.currentShutterPosition = aglStatus.CurrentShutterPosition;
             }
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
 
@@ -115,19 +118,111 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             switch (message.ParameterId)
             {
                 case InverterParameterId.ShutterTargetPosition:
-                    var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate);
-                    var byteData = data.GetWriteMessage();
+                    {
+                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate);
+                        var byteData = data.GetWriteMessage();
 
-                    this.Logger.LogTrace($"5:inverterMessage={data}");
-                    this.ParentStateMachine.EnqueueMessage(data);
+                        this.Logger.LogTrace($"5:inverterMessage={data}");
+                        this.ParentStateMachine.EnqueueMessage(data);
+                    }
                     break;
 
                 case InverterParameterId.ShutterTargetVelocityParam:
+                    {
+                        var byteDataReceived = message.GetWriteMessage();
+                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteEnable, (this.shutterPositionData.MovementType == MovementType.Absolute) ? 1 : 0);
+                        var byteData = data.GetWriteMessage();
 
-                    var byteDataReceived = message.GetWriteMessage();
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        this.Logger.LogTrace($"6:inverterMessage={data}");
+                        this.ParentStateMachine.EnqueueMessage(data);
 
-                    returnValue = true;
+                        returnValue = true;
+                    }
+                    break;
+
+                case InverterParameterId.ShutterAbsoluteEnable:
+                    {
+                        var byteDataReceived = message.GetWriteMessage();
+                        if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
+                        else
+                        {
+                            // Absolute positioning
+                            // calculate revs for complete opening
+                            int revs = 0;
+                            if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up &&
+                                this.shutterPositionData.ShutterPosition == ShutterPosition.Opened)
+                            {
+                                revs = this.shutterPositionData.HigherDistance;
+                                if (this.currentShutterPosition == ShutterPosition.Closed)
+                                {
+                                    revs += this.shutterPositionData.LowerDistance;
+                                }
+                            }
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteRevs, revs, InverterDataset.ShutterAbsoluteOpen);
+                            var byteData = data.GetWriteMessage();
+
+                            this.Logger.LogTrace($"7:inverterMessage={data}");
+                            this.ParentStateMachine.EnqueueMessage(data);
+
+                            returnValue = true;
+                        }
+                    }
+                    break;
+
+                case InverterParameterId.ShutterAbsoluteRevs:
+                    {
+                        var byteDataReceived = message.GetWriteMessage();
+                        if (byteDataReceived[3] == (byte)InverterDataset.ShutterAbsoluteOpen)
+                        {
+                            // calculate revs for half positioning
+                            int revs = 0;
+                            if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down &&
+                                this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
+                            {
+                                revs = this.shutterPositionData.HigherDistance;
+                            }
+                            else if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up &&
+                                this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
+                            {
+                                revs = this.shutterPositionData.LowerDistance;
+                            }
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteRevs, revs, InverterDataset.ShutterAbsoluteHalf);
+                            var byteData = data.GetWriteMessage();
+
+                            this.Logger.LogTrace($"8:inverterMessage={data}");
+                            this.ParentStateMachine.EnqueueMessage(data);
+
+                            returnValue = true;
+                        }
+                        else if (byteDataReceived[3] == (byte)InverterDataset.ShutterAbsoluteHalf)
+                        {
+                            // calculate revs for close positioning
+                            int revs = 0;
+                            if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down &&
+                                this.shutterPositionData.ShutterPosition == ShutterPosition.Closed)
+                            {
+                                revs = this.shutterPositionData.LowerDistance;
+                                if (this.currentShutterPosition == ShutterPosition.Opened)
+                                {
+                                    revs += this.shutterPositionData.HigherDistance;
+                                }
+                            }
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteRevs, revs, InverterDataset.ShutterAbsoluteClose);
+                            var byteData = data.GetWriteMessage();
+
+                            this.Logger.LogTrace($"9:inverterMessage={data}");
+                            this.ParentStateMachine.EnqueueMessage(data);
+
+                            returnValue = true;
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
+                    }
                     break;
 
                 default:

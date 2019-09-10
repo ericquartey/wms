@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal MaxSpeed { get; }
 
+        decimal MinSpeed { get; }
+
         #endregion
     }
 }

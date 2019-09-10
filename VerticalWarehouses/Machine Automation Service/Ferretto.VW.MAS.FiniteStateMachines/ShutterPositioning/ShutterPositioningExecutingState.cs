@@ -209,7 +209,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 shutterPositionTarget,
                 direction,
                 this.shutterPositioningMessageData.ShutterType,
-                this.shutterPositioningMessageData.SpeedRate);
+                this.shutterPositioningMessageData.SpeedRate,
+                this.shutterPositioningMessageData.HigherDistance,
+                this.shutterPositioningMessageData.LowerDistance,
+                this.shutterPositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,

@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var speedRate = 1.2m;
             var dto = new ShutterPositioningMovementMessageDataDto(ShutterMovementDirection.Up, 1);
             dto.ShutterType = ShutterType.NoType;
-            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate, MovementMode.Position, MovementType.Relative, 0, 0);
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate, 0, 0, MovementMode.Position, MovementType.Relative, 0, 0);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
                 dataInterface,

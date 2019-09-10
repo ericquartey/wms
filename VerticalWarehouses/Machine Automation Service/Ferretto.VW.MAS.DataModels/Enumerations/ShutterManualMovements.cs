@@ -8,12 +8,14 @@
 
         MaxSpeed = 2L,
 
-        Acceleration = 3L,
+        MinSpeed = 4L,
 
-        Deceleration = 4L,
+        Acceleration = 5L,
 
-        HigherDistance = 5L,
+        Deceleration = 6L,
 
-        LowerDistance = 6L,
+        HigherDistance = 7L,
+
+        LowerDistance = 8L,
     }
 }

@@ -431,6 +431,11 @@ namespace Ferretto.VW.Simulator.Services
                             result = client.Client.Send(extractedMessage);
                             break;
 
+                        case InverterParameterId.ShutterAbsoluteEnable:
+                        case InverterParameterId.ShutterAbsoluteRevs:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         default:
                             if (System.Diagnostics.Debugger.IsAttached)
                             {
