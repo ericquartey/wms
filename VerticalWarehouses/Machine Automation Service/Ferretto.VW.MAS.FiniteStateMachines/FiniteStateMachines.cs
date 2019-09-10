@@ -607,7 +607,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                                 foreach (var stateMachine in this.currentStateMachines.Values)
                                 {
-                                    stateMachine.Stop(reason);
+                                    stateMachine?.Stop(reason);
                                 }
                                 continue;
                             }
