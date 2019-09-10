@@ -57,7 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\SemiAutoMovementsView.xaml.cs">
+    <Compile Update="Views\SemiAutoMovements\SemiAutoMovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -67,6 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\ManualMovements\Console\ShutterConsoleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\SemiAutoMovements\SemiAutoMovementsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
