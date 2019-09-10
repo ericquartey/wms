@@ -63,21 +63,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteClosedCommand()
         {
-            return !this.IsWaitingForResponse
+            return !this.IsElevatorMoving
                 //&& this.Sensors.Open
                 ;
         }
 
         private bool CanExecuteIntermediateCommand()
         {
-            return !this.IsWaitingForResponse
+            return !this.IsElevatorMoving
                 //&& this.Sensors.Open
                 ;
         }
 
         private bool CanExecuteOpenCommand()
         {
-            return !this.IsWaitingForResponse
+            return !this.IsElevatorMoving
                 //&& this.Sensors.Closed
                 ;
         }
@@ -134,12 +134,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void UpdateLayout(System.Collections.Generic.IEnumerable<bool> sensorsStates)
-        {
-            this.sensors.Update(sensorsStates.ToArray());
-            this.RaiseCanExecuteChanged();
         }
 
         #endregion

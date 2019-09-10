@@ -17,12 +17,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public partial class SemiAutoMovementsViewModel : BaseMainViewModel
     {
-        //private readonly IMachineShuttersService shuttersService;
-
-        //private SubscriptionToken receivedActionUpdateErrorToken;
-
-        //private SubscriptionToken receivedSensorsToken;
-
         #region Fields
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
@@ -117,6 +111,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsElevatorMoving => this.IsElevatorMovingToCell
+                || this.IsElevatorMovingToQuote
+                || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking;
@@ -265,6 +261,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
+                        this.IsElevatorMovingToQuote = false;
+                        this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
 
                         break;
@@ -275,6 +273,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
+                        this.IsElevatorMovingToQuote = false;
+                        this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
 
                         this.ShowNotification(
@@ -294,12 +294,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
                &&
                !this.IsWaitingForResponse;
 
+            this.CanInputQuote = !this.IsElevatorMoving
+               &&
+               !this.IsWaitingForResponse;
+
+            this.CanInputLoadingUnitId = this.LoadingUnits != null
+               &&
+               this.Cells != null
+               &&
+               !this.IsElevatorMoving
+               &&
+               !this.IsWaitingForResponse;
+
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToQuoteHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+
             this.embarkForwardsCommand?.RaiseCanExecuteChanged();
             this.embarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.disembarkForwardsCommand?.RaiseCanExecuteChanged();
             this.disembarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
