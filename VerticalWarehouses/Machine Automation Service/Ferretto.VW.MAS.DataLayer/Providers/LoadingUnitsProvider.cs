@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
     {
+
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -35,11 +36,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
+
+
         #region Methods
 
         public IEnumerable<LoadingUnit> GetAll()
         {
             return this.dataContext.LoadingUnits.ToArray();
+        }
+
+        public LoadingUnit GetById(int id)
+        {
+            var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
+            if (loadingUnit is null)
+            {
+                throw new Exceptions.EntityNotFoundException(id);
+            }
+
+            return loadingUnit;
         }
 
         public IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics()

@@ -74,6 +74,8 @@
 
         FaultStateChanged,
 
-        ElevatorWeightCheck
-	}
+        ElevatorWeightCheck,
+
+        WeightAcquisitionCommand
+    }
 }

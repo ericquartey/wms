@@ -7,6 +7,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class WeightCheckMissionProvider : BaseProvider, IWeightCheckMissionProvider
     {
+
         #region Fields
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
@@ -30,6 +31,8 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
         #endregion
 
+
+
         #region Methods
 
         public void Start(int loadingUnitId, double runToTest, double weight)
@@ -48,7 +51,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
             var loadingUnit = this.loadingUnitsProvider.GetById(loadingUnitId);
 
-            if (loadingUnit.MaxNetWeight < loadingUnit.Tare + weight)
+            if (loadingUnit.MaxNetWeight < loadingUnit.Tare + (decimal)weight)
             {
                 throw new ArgumentOutOfRangeException(// TODO localize string
                     $"LoadingUnit {loadingUnitId}, weight ({weight}) must be less than ({loadingUnit.MaxNetWeight - loadingUnit.Tare}).");

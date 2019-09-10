@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS.Utils;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 {
