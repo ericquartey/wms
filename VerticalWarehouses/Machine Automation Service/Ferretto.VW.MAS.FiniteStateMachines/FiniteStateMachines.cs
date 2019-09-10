@@ -749,6 +749,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             }
                         }
                         break;
+
+                    // TODO temporary message to show error on UI
+                    case MessageType.InverterException:
+                        var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
+
+                        var msg = new NotificationMessage(
+                            exceptionMessage,
+                            "Inverter Exception",
+                            MessageActor.WebApi,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.InverterException,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
