@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BayIndex = table.Column<string>(nullable: true),
+                    BayNumber = table.Column<string>(nullable: true),
                     Data = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Destination = table.Column<string>(nullable: true),
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BayIndex = table.Column<int>(nullable: false),
+                    BayNumber = table.Column<int>(nullable: false),
                     Code = table.Column<int>(nullable: false),
                     OccurrenceDate = table.Column<DateTime>(nullable: false),
                     ResolutionDate = table.Column<DateTime>(nullable: true)
@@ -321,7 +321,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 9, 15, 9, 57, 752, DateTimeKind.Local).AddTicks(3177), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 10, 10, 48, 56, 338, DateTimeKind.Local).AddTicks(1317), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
