@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class ShutterEngineManualMovementsView
+    public partial class SemiAutoMovementsView
     {
         #region Constructors
 
-        public ShutterEngineManualMovementsView()
+        public SemiAutoMovementsView()
         {
             this.InitializeComponent();
         }

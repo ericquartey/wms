@@ -139,9 +139,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
-            await base.OnNavigatedAsync();
-
-            this.IsBackNavigationAllowed = true;
+            await base.OnNavigatedAsync();            
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()

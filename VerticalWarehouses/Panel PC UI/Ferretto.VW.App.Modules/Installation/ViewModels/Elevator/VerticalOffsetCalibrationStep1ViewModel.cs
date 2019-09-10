@@ -95,6 +95,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             try
@@ -108,7 +110,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(ex);
             }
 
-            this.ShowSteps();
         }
 
         private void ShowSteps()

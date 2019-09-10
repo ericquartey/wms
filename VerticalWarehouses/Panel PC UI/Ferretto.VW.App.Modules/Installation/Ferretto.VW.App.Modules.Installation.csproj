@@ -53,20 +53,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Movements\Manual\ManualMovementsView.xaml" />
     <None Remove="Views\SemiAutoMovementsView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\SemiAutoMovements\SemiAutoMovementsView.xaml.cs">
+    <Compile Update="Views\Movements\Manual\ManualMovementsView.xaml.cs">
+      <DependentUpon>ManualMovementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Movements\Manual\EngineManualMovementsView.xaml.cs">
+      <DependentUpon>EngineManualMovementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Movements\SemiAuto\SemiAutoMovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Views\ManualMovements\Console\CarouselConsoleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ManualMovements\Console\ShutterConsoleView.xaml">
+    <None Update="Views\Movements\SemiAuto\SemiAutoMovementsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\SemiAutoMovements\SemiAutoMovementsView.xaml">

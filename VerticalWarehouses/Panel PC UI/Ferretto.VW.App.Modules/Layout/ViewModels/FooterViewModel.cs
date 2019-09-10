@@ -90,10 +90,17 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 if (message.Exception is SwaggerException<ProblemDetails> swaggerException)
                 {
-                    this.NotificationMessage =
-                        swaggerException.Result.Title +
-                        System.Environment.NewLine +
-                        swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
+                    if (swaggerException.Result is null)
+                    {
+                        this.NotificationMessage = swaggerException.Message;
+                    }
+                    else
+                    {
+                        this.NotificationMessage =
+                            swaggerException.Result.Title +
+                            System.Environment.NewLine +
+                            swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
+                    }
                 }
                 else if (message.Exception is SwaggerException)
                 {

@@ -52,7 +52,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.shuttersService = shuttersService;
-
             this.RefreshCanExecuteCommands();
         }
 
@@ -149,6 +148,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingDown = true;
             this.IsMovingUp = false;
 
+            this.DisableAllExceptThis();
+
             await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Down);
         }
 
@@ -156,6 +157,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsMovingUp = true;
             this.IsMovingDown = false;
+
+            this.DisableAllExceptThis();
 
             await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Up);
         }
@@ -197,6 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMovingDown = false;
                 this.IsMovingUp = false;
                 this.IsStopping = false;
+                this.EnableAll();
             }
         }
 
