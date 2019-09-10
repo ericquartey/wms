@@ -114,6 +114,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         /// </summary>
         ANG_ZeroElevatorSensor = 2,
 
+        OneKMachineZeroCradle = 2,
+
         /// <summary>
         /// S4IND-Encoder canale B
         /// </summary>
@@ -739,6 +741,17 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
             {
                 this.StatusWord |= 0x1000;          // Set TargetReached
+                if (this.currentAxis == Axis.Horizontal)
+                {
+                    if (this.Id == 0)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                    }
+                    else
+                    {
+                        this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
+                    }
+                }
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }

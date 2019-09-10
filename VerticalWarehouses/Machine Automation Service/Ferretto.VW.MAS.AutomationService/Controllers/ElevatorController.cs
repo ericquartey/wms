@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+
         #endregion
 
         #region Constructors
@@ -34,6 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
+            IMachineConfigurationProvider machineConfigurationProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
@@ -51,10 +54,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
+            if (machineConfigurationProvider is null)
+            {
+                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+            }
 
             this.elevatorProvider = elevatorProvider;
             this.installationHub = installationHub;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
+            this.machineConfigurationProvider = machineConfigurationProvider;
         }
 
         #endregion
@@ -113,8 +121,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     throw new InvalidOperationException("Invalid " + (isOnBoard ? "Deposit" : "Pickup") + " command for " + (isOnBoard ? "empty" : "full") + " elevator");
                 }
-                if ((!isOnBoard && !messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
-                    || (isOnBoard && messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                var zeroSensor = (this.machineConfigurationProvider.IsOneKMachine() ? IOMachineSensors.ZeroPawlSensorOneK : IOMachineSensors.ZeroPawlSensor);
+                if ((!isOnBoard && !messageData.SensorsStates[(int)zeroSensor])
+                    || (isOnBoard && messageData.SensorsStates[(int)zeroSensor])
                     )
                 {
                     throw new InvalidOperationException("Invalid Zero Chain position");
