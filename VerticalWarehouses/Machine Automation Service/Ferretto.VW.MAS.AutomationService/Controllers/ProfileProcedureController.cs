@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -13,12 +14,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ProfileProcedureController : BaseAutomationController
     {
+        #region Fields
+
+        private readonly IElevatorProvider elevatorProvider;
+
+        #endregion
+
         #region Constructors
 
         public ProfileProcedureController(
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IElevatorProvider elevatorProvider)
             : base(eventAggregator)
         {
+            if (elevatorProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorProvider));
+            }
+
+            this.elevatorProvider = elevatorProvider;
         }
 
         #endregion

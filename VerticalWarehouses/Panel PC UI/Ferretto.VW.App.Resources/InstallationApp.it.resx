@@ -1065,4 +1065,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Result" xml:space="preserve">
     <value>Result</value>
   </data>
+  <data name="Bay4" xml:space="preserve">
+    <value>Baia</value>
+  </data>
 </root>

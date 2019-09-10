@@ -200,7 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.step3Command = new DelegateCommand(
                 () => this.NavigateToStep3(),
-                this.CanExecuteStepCommand));
+                this.CanExecuteStep3Command));
 
         public ICommand Step4Command =>
             this.step4Command
@@ -242,6 +242,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return $"{title}";
             }
         }
+
+        protected IBayManager BayManager => this.bayManager;
 
         protected IMachineProfileProcedureService ProfileProcedureService => this.profileProcedureService;
 
@@ -286,6 +288,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CheckMachinePowerAndMode();
 
             this.RaisePropertyChanged(nameof(this.Title));
+        }
+
+        protected virtual bool CanExecuteStep3Command()
+        {
+            return this.CanExecuteStepCommand();
         }
 
         protected virtual bool CanExecuteStepCommand()

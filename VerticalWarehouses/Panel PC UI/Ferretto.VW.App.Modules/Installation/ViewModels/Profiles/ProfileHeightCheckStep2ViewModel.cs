@@ -26,23 +26,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
-        private bool canExecuteMoveDownCommand;
-
-        private bool canExecuteMoveUpCommand;
-
         private decimal? currentPosition;
 
-        private bool isMovingDown;
+        private DelegateCommand goToBayCommand;
 
-        private bool isMovingUp;
-
-        private bool isStopping;
-
-        private DelegateCommand moveDownCommand;
-
-        private DelegateCommand moveUpCommand;
-
-        private DelegateCommand stopMovementCommand;
+        private decimal positionBay;
 
         private SubscriptionToken subscriptionToken;
 
@@ -65,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.machineElevatorService = machineElevatorService;
 
+            this.ChangeDataFromBayPosition();
+
             this.RefreshCanExecuteCommands();
         }
 
@@ -72,74 +62,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool CanExecuteMoveDownCommand
-        {
-            get => this.canExecuteMoveDownCommand;
-            private set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
-        }
-
-        public bool CanExecuteMoveUpCommand
-        {
-            get => this.canExecuteMoveUpCommand;
-            private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
-        }
-
         public decimal? CurrentPosition
         {
             get => this.currentPosition;
             protected set => this.SetProperty(ref this.currentPosition, value);
         }
 
-        public bool IsMovingDown
+        public ICommand GoToBayCommand =>
+            this.goToBayCommand
+            ??
+            (this.goToBayCommand = new DelegateCommand(
+                async () => await this.GoToBayCommandAsync(),
+                this.CanExecuteGoToBayCommand));
+
+        public decimal PositionBay
         {
-            get => this.isMovingDown;
-            private set
+            get => this.positionBay;
+            set
             {
-                if (this.SetProperty(ref this.isMovingDown, value))
+                if (this.SetProperty(ref this.positionBay, value))
                 {
                     this.RefreshCanExecuteCommands();
                 }
             }
         }
-
-        public bool IsMovingUp
-        {
-            get => this.isMovingUp;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingUp, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public ICommand MoveDownCommand =>
-            this.moveDownCommand
-            ??
-            (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDownAsync()));
-
-        public ICommand MoveUpCommand =>
-            this.moveUpCommand
-            ??
-            (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUpAsync()));
-
-        public DelegateCommand StopMovementCommand =>
-            this.stopMovementCommand
-            ??
-            (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
         #endregion
 
@@ -159,20 +105,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public async Task MoveDownAsync()
+        public async Task GoToBayCommandAsync()
         {
-            this.IsMovingDown = true;
-            this.IsMovingUp = false;
-
-            await this.StartMovementAsync(VerticalMovementDirection.Down);
-        }
-
-        public async Task MoveUpAsync()
-        {
-            this.IsMovingUp = true;
-            this.IsMovingDown = false;
-
-            await this.StartMovementAsync(VerticalMovementDirection.Up);
+            try
+            {
+                await this.machineElevatorService.MoveToVerticalPositionAsync(this.PositionBay, FeedRateCategory.BayHeight);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public override async Task OnNavigatedAsync()
@@ -189,6 +131,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                       {
                           this.CurrentPosition = c;
                       }
+
+                      this.RefreshCanExecuteCommands();
                   },
                   ThreadOption.UIThread,
                   false);
@@ -196,30 +140,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
         }
 
-        protected async Task StopMovementAsync()
+        protected bool CanExecuteGoToBayCommand()
         {
-            try
-            {
-                this.IsStopping = true;
+            return //!this.IsExecutingProcedure &&
+                    this.CurrentPosition != this.PositionBay;
+        }
 
-                await this.machineElevatorService.StopAsync();
-            }
-            catch (System.Exception ex)
+        protected override bool CanExecuteStep3Command()
+        {
+            return base.CanExecuteStepCommand(); //&& this.CurrentPosition == this.PositionBay;
+        }
+
+        private void ChangeDataFromBayPosition()
+        {
+            if (this.BayManager.Bay.Number == 1)
             {
-                this.ShowNotification(ex);
+                this.PositionBay = this.BayManager.Bay.Positions.First();
             }
-            finally
+            else
             {
-                this.IsMovingDown = false;
-                this.IsMovingUp = false;
-                this.IsStopping = false;
+                this.PositionBay = this.BayManager.Bay.Positions.Last();
             }
         }
 
         private void RefreshCanExecuteCommands()
         {
-            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
-            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
+            base.RaiseCanExecuteChanged();
+            this.goToBayCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task RetrieveCurrentPositionAsync()
@@ -227,24 +174,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.RefreshCanExecuteCommands();
             }
             catch (System.Exception ex)
             {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task StartMovementAsync(VerticalMovementDirection direction)
-        {
-            try
-            {
-                await this.machineElevatorService.MoveVerticalAsync(direction);
-            }
-            catch (System.Exception ex)
-            {
-                this.IsMovingUp = false;
-                this.IsMovingDown = false;
-
                 this.ShowNotification(ex);
             }
         }

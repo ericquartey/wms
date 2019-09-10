@@ -139,6 +139,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
+                this.IsBackNavigationAllowed = false;
+
                 var currentBay = this.BayNumber;
                 await this.ProfileProcedureService.RunAsync(currentBay);
             }
@@ -157,6 +159,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.IsBackNavigationAllowed = true;
 
                 await this.ProfileProcedureService.StopAsync();
             }
