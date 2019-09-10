@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IElevatorProvider
     {
+
+
         #region Methods
 
         decimal GetHorizontalPosition();
@@ -13,11 +15,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void MoveHorizontal(HorizontalMovementDirection direction);
 
-        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory);
+        void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory);
 
         void MoveVertical(VerticalMovementDirection direction);
 
-        void MoveVerticalOfDistance(decimal distance);
+        void MoveVerticalOfDistance(double distance);
+
+        void RunInMotionCurrentSampling(double displacement, double netWeight);
+
+        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, double netWeight);
 
         void Stop();
 

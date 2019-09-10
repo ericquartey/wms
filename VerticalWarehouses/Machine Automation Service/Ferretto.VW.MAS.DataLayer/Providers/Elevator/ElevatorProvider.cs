@@ -6,11 +6,13 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class ElevatorProvider : BaseProvider, IElevatorProvider
     {
+
         #region Fields
 
         private readonly IBayPositionControlDataLayer bayPositionControl;
@@ -133,6 +135,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
+
+
         #region Methods
 
         public decimal GetHorizontalPosition()
@@ -205,12 +209,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
-        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
+        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
         {
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
             var upperBound = this.verticalAxisDataLayer.UpperBound;
 
-            if (targetPosition < lowerBound || targetPosition > upperBound)
+            if ((decimal)targetPosition < lowerBound || (decimal)targetPosition > upperBound)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(targetPosition),
@@ -232,7 +236,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.Position,
-                targetPosition,
+                (decimal)targetPosition,
                 speed,
                 this.verticalAxisDataLayer.MaxEmptyAcceleration,
                 this.verticalAxisDataLayer.MaxEmptyDeceleration,
@@ -297,7 +301,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
-        public void MoveVerticalOfDistance(decimal distance)
+        public void MoveVerticalOfDistance(double distance)
         {
             if (distance == 0)
             {
@@ -318,7 +322,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Axis.Vertical,
                 MovementType.Relative,
                 MovementMode.Position,
-                distance,
+                (decimal)distance,
                 speed,
                 this.verticalAxisDataLayer.MaxEmptyAcceleration,
                 this.verticalAxisDataLayer.MaxEmptyDeceleration,
@@ -332,6 +336,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
+        }
+
+        public void RunInMotionCurrentSampling(double displacement, double netWeight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, double netWeight)
+        {
+            throw new NotImplementedException();
         }
 
         public void Stop()
