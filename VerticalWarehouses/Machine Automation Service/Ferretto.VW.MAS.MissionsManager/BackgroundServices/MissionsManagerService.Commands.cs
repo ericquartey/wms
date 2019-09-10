@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManagerService
     {
+
+
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)

@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -15,13 +16,13 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
+
         #region Fields
 
         private const string LiveHealthCheckTag = "live";
@@ -39,11 +40,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
+
+
         #region Properties
 
         public IConfiguration Configuration { get; }
 
         #endregion
+
+
 
         #region Methods
 

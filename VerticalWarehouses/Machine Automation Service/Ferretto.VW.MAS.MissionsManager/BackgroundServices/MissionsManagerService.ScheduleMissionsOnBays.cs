@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager

@@ -6,11 +6,13 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManagerService : AutomationBackgroundService
     {
+
         #region Fields
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);

@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
@@ -23,6 +24,38 @@ namespace Ferretto.VW.MAS.MissionsManager
 
 
         #region Methods
+
+        protected override bool FilterNotification(NotificationMessage notification)
+        {
+            return
+                notification.Destination == MessageActor.MissionsManager
+                ||
+                notification.Destination == MessageActor.Any;
+        }
+
+        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
+        {
+            switch (message.Type)
+            {
+                case MessageType.MissionOperationCompleted:
+                    this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
+                    break;
+
+                case MessageType.BayOperationalStatusChanged:
+                    this.OnBayOperationalStatusChanged();
+                    break;
+
+                case MessageType.NewMissionAvailable:
+                    this.OnNewMissionAvailable();
+                    break;
+
+                case MessageType.DataLayerReady:
+                    this.OnDataLayerReady();
+                    break;
+            }
+
+            return Task.CompletedTask;
+        }
 
         private void OnBayOperationalStatusChanged()
         {
@@ -66,38 +99,6 @@ namespace Ferretto.VW.MAS.MissionsManager
         private void OnNewMissionAvailable()
         {
             this.newMissionArrivedResetEvent.Set();
-        }
-
-        protected override bool FilterNotification(NotificationMessage notification)
-        {
-            return
-                notification.Destination == MessageActor.MissionsManager
-                ||
-                notification.Destination == MessageActor.Any;
-        }
-
-        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
-        {
-            switch (message.Type)
-            {
-                case MessageType.MissionOperationCompleted:
-                    this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
-                    break;
-
-                case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged();
-                    break;
-
-                case MessageType.NewMissionAvailable:
-                    this.OnNewMissionAvailable();
-                    break;
-
-                case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
-                    break;
-            }
-
-            return Task.CompletedTask;
         }
 
         #endregion
