@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public partial class MachineStatusController : BaseAutomationController
     {
+
+
         #region Constructors
 
         public MachineStatusController(IEventAggregator eventAggregator)
@@ -17,6 +19,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -27,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.PublishCommand(
                 powerEnableMessageData,
-                "Power Enable Command",
+                "Power Disable Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable);
         }

@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
-        public BayNumber BayIndex { get; set; }
+        public BayNumber BayNumber { get; set; }
 
         public int Code { get; set; }
 

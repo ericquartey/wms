@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
-            BayNumber bayIndex,
+            BayNumber bayNumber,
             MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Data = data;
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
-            this.BayIndex = bayIndex;
+            this.BayNumber = bayNumber;
             this.Verbosity = verbosity;
         }
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
 
         #region Properties
 
-        public BayNumber BayIndex { get; }
+        public BayNumber BayNumber { get; }
 
         public IMessageData Data { get; }
 

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Properties
 
-        public BayNumber BayIndex { get; set; }
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         MessageActor.WebApi,
                         messageType,
-                        this.BayIndex));
+                        this.BayNumber));
         }
 
         protected void PublishNotification(
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         MessageActor.WebApi,
                         type,
-                        this.BayIndex,
+                        this.BayNumber,
                         status,
                         level));
         }

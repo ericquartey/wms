@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-           
 
             // provo a scrivere??
             if (context.Controller is BaseAutomationController baseController)
@@ -25,17 +24,17 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
                 if (bayIndexHeaders.Count == 0)
                 {
-                    context.Result = new BadRequestObjectResult(new ProblemDetails 
-                    { 
-                        Title = MAS.Resources.General.BadRequestTitle, 
-                        Detail = "The Bay-Number request header was not found." 
+                    context.Result = new BadRequestObjectResult(new ProblemDetails
+                    {
+                        Title = MAS.Resources.General.BadRequestTitle,
+                        Detail = "The Bay-Number request header was not found."
                     });
                 }
                 else
                 {
-                    if (Enum.TryParse<BayNumber>(bayIndexHeaders[0], out var bayIndex))
+                    if (Enum.TryParse<BayNumber>(bayIndexHeaders[0], out var bayNumber))
                     {
-                        baseController.BayIndex = bayIndex;
+                        baseController.BayNumber = bayNumber;
                     }
                     else
                     {
@@ -45,7 +44,6 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                             Detail = "Cannot parse bay number."
                         });
                     }
-
                 }
             }
 
