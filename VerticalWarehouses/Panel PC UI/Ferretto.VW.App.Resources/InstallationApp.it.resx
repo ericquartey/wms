@@ -982,4 +982,10 @@
   <data name="Abort" xml:space="preserve">
     <value>Abortisci</value>
   </data>
+  <data name="LSMTEngineTitle" xml:space="preserve">
+    <value>Movimenti Assi</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Movimenti manuali</value>
+  </data>
 </root>

@@ -1220,4 +1220,11 @@
     <value>Abort</value>
     <comment>Button text</comment>
   </data>
+  <data name="LSMTEngineTitle" xml:space="preserve">
+    <value>Axis movements</value>
+    <comment>Title</comment>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Manual Movements</value>
+  </data>
 </root>

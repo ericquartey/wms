@@ -6,9 +6,11 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class HorizontalEngineManualMovementsViewModel : BaseManualMovementsViewModel
+    public class ExternalBayManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
+
+        private readonly IMachineBaysService machineBaysService;
 
         private bool canExecuteMoveBackwardsCommand;
 
@@ -28,11 +30,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public HorizontalEngineManualMovementsViewModel(
+        public ExternalBayManualMovementsViewModel(
             IMachineElevatorService elevatorService,
+            IMachineBaysService machineBaysService,
             IBayManager bayManager)
             : base(elevatorService, bayManager)
         {
+            if (machineBaysService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineBaysService));
+            }
+
+            this.machineBaysService = machineBaysService;
+
             this.RefreshCanExecuteCommands();
         }
 
@@ -102,36 +112,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async Task MoveBackwardsAsync()
-        {
-            this.IsMovingBackwards = true;
-            this.IsMovingForwards = false;
-
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
-        }
-
-        public async Task MoveForwardsAsync()
-        {
-            this.IsMovingForwards = true;
-            this.IsMovingBackwards = false;
-
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
-        }
-
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            try
-            {
-                this.CurrentPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         protected override async Task StopMovementAsync()
         {
             this.IsStopping = true;
@@ -149,7 +129,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMovingForwards = false;
                 this.IsMovingBackwards = false;
                 this.IsStopping = false;
+                this.EnableAll();
             }
+        }
+
+        private async Task MoveBackwardsAsync()
+        {
+            this.IsMovingBackwards = true;
+            this.IsMovingForwards = false;
+
+            this.DisableAllExceptThis();
+
+            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
+        }
+
+        private async Task MoveForwardsAsync()
+        {
+            this.IsMovingForwards = true;
+            this.IsMovingBackwards = false;
+
+            this.DisableAllExceptThis();
+
+            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         private void RefreshCanExecuteCommands()
@@ -162,7 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.MachineElevatorService.MoveHorizontalAsync(direction);
+                await this.machineBaysService.MoveAsync(this.BayNumber, direction);
             }
             catch (System.Exception ex)
             {

@@ -232,6 +232,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            this.ShowSteps();
+
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
                 .Subscribe(
@@ -240,7 +242,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
 
             this.RaiseCanExecuteChanged();
-            this.ShowSteps();
         }
 
         protected override void RaiseCanExecuteChanged()
