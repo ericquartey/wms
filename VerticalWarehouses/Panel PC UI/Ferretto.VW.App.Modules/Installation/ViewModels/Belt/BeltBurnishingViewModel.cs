@@ -327,9 +327,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
 
-                var setupStatus = await this.machineSetupStatusService.GetAsync();
-                this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
-                this.TotalCompletedCycles = this.initialCycles;
+                await this.InitializeTotalCycles();
             }
             catch (Exception ex)
             {
@@ -386,6 +384,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && !this.IsWaitingForResponse;
         }
 
+        private async Task InitializeTotalCycles()
+        {
+            var setupStatus = await this.machineSetupStatusService.GetAsync();
+            this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
+            this.TotalCompletedCycles = this.initialCycles;
+        }
+
         private void RaiseCanExecuteChanged()
         {
             this.startCommand.RaiseCanExecuteChanged();
@@ -434,6 +439,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.InputLowerBound.Value,
                     this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value,
                     this.InputDelay);
+
+                await this.InitializeTotalCycles();
             }
             catch (Exception ex)
             {

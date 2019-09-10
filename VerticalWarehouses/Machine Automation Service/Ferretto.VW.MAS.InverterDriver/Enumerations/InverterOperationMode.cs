@@ -2,12 +2,18 @@
 {
     public enum InverterOperationMode : ushort
     {
-        Position = 0x0001,
+        Position = 1,
 
-        Homing = 0x0006,
+        Homing = 6,
 
-        Velocity = 0x0002,
+        Velocity = 2,
 
-        ProfileVelocity = 0x0003
+        ProfileVelocity = 3,
+
+        SlaveGear = 253,
+
+        LeaveLimitSwitch = 254,
+
+        TableTravel = 255,
     }
 }

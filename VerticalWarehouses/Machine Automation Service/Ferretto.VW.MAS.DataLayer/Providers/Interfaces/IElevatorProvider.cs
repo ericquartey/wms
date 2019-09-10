@@ -11,7 +11,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         decimal GetVerticalPosition();
 
-        void MoveHorizontal(HorizontalMovementDirection direction);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard);
+
+        void MoveHorizontalManual(HorizontalMovementDirection direction);
 
         void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory);
 

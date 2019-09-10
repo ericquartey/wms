@@ -142,7 +142,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.positioningMessageData.NumberCycles,
                     this.positioningMessageData.LowerBound,
                     this.positioningMessageData.UpperBound,
-                    this.positioningMessageData.Delay);
+                    this.positioningMessageData.Delay,
+                    this.positioningMessageData.SwitchPosition);
 
                 // Build message for DOWN
                 this.positioningDownMessageData = new PositioningMessageData(
@@ -156,7 +157,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.positioningMessageData.NumberCycles,
                     this.positioningMessageData.LowerBound,
                     this.positioningMessageData.UpperBound,
-                    this.positioningMessageData.Delay);
+                    this.positioningMessageData.Delay,
+                    this.positioningMessageData.SwitchPosition);
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
@@ -317,24 +319,27 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private void ProcessEndStop()
         {
-            if (this.machineSensorsStatus.IsSensorZeroOnCradle)
+            if (this.machineSensorsStatus.IsSensorZeroOnCradle || this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
             {
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
             }
             else
             {
+                decimal[] switchPosition = { 0 };
+                decimal[] speed = { this.positioningMessageData.TargetSpeed[0] / 2 };
                 var newPositioningMessageData = new PositioningMessageData(
                     Axis.Horizontal,
                     MovementType.Relative,
                     MovementMode.FindZero,
                     -this.positioningMessageData.TargetPosition / 2,
-                    this.positioningMessageData.TargetSpeed / 2,
+                    speed,
                     this.positioningMessageData.TargetAcceleration,
                     this.positioningMessageData.TargetDeceleration,
                     0,
                     0,
                     0,
-                    0);
+                    0,
+                    switchPosition);
                 this.positioningMessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
             }

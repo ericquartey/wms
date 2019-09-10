@@ -71,5 +71,7 @@
         RequestPosition,
 
         ElevatorWeightCheck,
+
+        PositioningTable
     }
 }

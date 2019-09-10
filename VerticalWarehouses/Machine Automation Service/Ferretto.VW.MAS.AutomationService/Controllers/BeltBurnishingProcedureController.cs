@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -162,18 +161,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
+            decimal[] speed = { this.verticalAxis.MaxEmptySpeed };
+            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
+
             var data = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.BeltBurnishing,
                 upperBoundPosition,
-                this.verticalAxis.MaxEmptySpeed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
+                speed,
+                acceleration,
+                deceleration,
                 totalTestCycleCount,
                 lowerBoundPosition,
                 upperBoundPosition,
-                delayStart);
+                delayStart,
+                switchPosition);
 
             this.PublishCommand(
                 data,

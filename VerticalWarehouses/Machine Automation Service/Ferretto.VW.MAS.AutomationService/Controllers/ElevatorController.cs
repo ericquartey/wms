@@ -1,6 +1,8 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -87,14 +89,55 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpPost("horizontal/move")]
+        [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontal(HorizontalMovementDirection direction)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontal(direction);
+                void publishAction() => this.PublishCommand(
+                    null,
+                    "Sensors changed Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.SensorsChanged);
+
+                var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                    MessageType.SensorsChanged,
+                    MessageActor.FiniteStateMachines,
+                    MessageStatus.OperationExecuting,
+                    publishAction);
+
+                // check feasibility
+                if (isOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
+                {
+                    throw new InvalidOperationException("Invalid " + (isOnBoard ? "Deposit" : "Pickup") + " command for " + (isOnBoard ? "empty" : "full") + " elevator");
+                }
+                if ((!isOnBoard && !messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                    || (isOnBoard && messageData.SensorsStates[(int)IOMachineSensors.ZeroPawlSensor])
+                    )
+                {
+                    throw new InvalidOperationException("Invalid Zero Chain position");
+                }
+
+                // execute command
+                this.elevatorProvider.MoveHorizontalAuto(direction, isOnBoard);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
+        }
+
+        [HttpPost("horizontal/move-manual")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                this.elevatorProvider.MoveHorizontalManual(direction);
                 return this.Accepted();
             }
             catch (Exception ex)

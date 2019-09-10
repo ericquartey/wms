@@ -14,6 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int Delay { get; set; }
 
+        int Direction { get; set; }
+
         int ExecutedCycles { get; set; }
 
         bool IsOneKMachine { get; set; }
@@ -26,13 +28,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int NumberCycles { get; }
 
-        decimal TargetAcceleration { get; }
+        decimal[] SwitchPosition { get; set; }
 
-        decimal TargetDeceleration { get; }
+        decimal[] TargetAcceleration { get; }
+
+        decimal[] TargetDeceleration { get; }
 
         decimal TargetPosition { get; }
 
-        decimal TargetSpeed { get; }
+        decimal[] TargetSpeed { get; }
 
         decimal UpperBound { get; }
 

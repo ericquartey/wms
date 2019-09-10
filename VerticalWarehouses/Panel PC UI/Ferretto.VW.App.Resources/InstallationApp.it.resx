@@ -875,10 +875,10 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Porta a Quota Cella</value>
   </data>
-  <data name="BayHeightCheckPosition1" xml:space="preserve">
+  <data name="BayPosition1" xml:space="preserve">
     <value>Posizione 1</value>
   </data>
-  <data name="BayHeightCheckPosition2" xml:space="preserve">
+  <data name="BayPosition2" xml:space="preserve">
     <value>Posizione 2</value>
   </data>
   <data name="Displacement" xml:space="preserve">
@@ -936,7 +936,7 @@
     <value>Sbarca</value>
   </data>
   <data name="Embark" xml:space="preserve">
-    <value>Sbarca</value>
+    <value>Imbarca</value>
   </data>
   <data name="TrayWeight" xml:space="preserve">
     <value>Peso Cassetto [kg]</value>
@@ -967,6 +967,12 @@
   <data name="TimeDelay" xml:space="preserve">
     <value>Seleziona tempo di attesa</value>
   </data>
+  <data name="ElevatorIsCellPosition" xml:space="preserve">
+    <value>L'elevatore è a quota cella.</value>
+  </data>
+  <data name="SingleBay" xml:space="preserve">
+    <value>Singola</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reimposta</value>
   </data>
@@ -981,6 +987,18 @@
   </data>
   <data name="Abort" xml:space="preserve">
     <value>Abortisci</value>
+  </data>
+  <data name="DisembarkBackwards" xml:space="preserve">
+    <value>Scarica Indietro</value>
+  </data>
+  <data name="DisembarkForwards" xml:space="preserve">
+    <value>Scarica Avanti</value>
+  </data>
+  <data name="EmbarkBackwards" xml:space="preserve">
+    <value>Carica Indietro</value>
+  </data>
+  <data name="EmbarkForwards" xml:space="preserve">
+    <value>Carica Avanti</value>
   </data>
   <data name="LSMTEngineTitle" xml:space="preserve">
     <value>Movimenti Assi</value>

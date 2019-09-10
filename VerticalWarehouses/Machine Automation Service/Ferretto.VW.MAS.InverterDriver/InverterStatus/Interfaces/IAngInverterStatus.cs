@@ -44,6 +44,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         IPositionStatusWord PositionStatusWord { get; }
 
+        ITableTravelControlWord TableTravelControlWord { get; }
+
+        ITableTravelStatusWord TableTravelStatusWord { get; }
+
         #endregion
     }
 }
