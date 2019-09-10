@@ -272,7 +272,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalAsync(direction);
+                await this.machineElevatorService.MoveHorizontalManualAsync(direction);
             }
             catch (System.Exception ex)
             {
