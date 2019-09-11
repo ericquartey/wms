@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Regions;
 
-namespace Ferretto.VW.App.Installation.ViewModels
+namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class Shutter1HeightControlViewModel : BindableBase
+    public class Shutter1HeightControlViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator)
+        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator) : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
@@ -66,6 +68,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public Task OnEnterViewAsync()
         {
             return Task.CompletedTask;
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            this.IsBackNavigationAllowed = true;
         }
 
         public void UnSubscribeMethodFromEvent()

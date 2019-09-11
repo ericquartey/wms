@@ -10,7 +10,8 @@
              mc:Ignorable="d">
 
     <Grid Width="1024"
-          Height="608">
+          Height="608"
+          IsEnabled="False">
 
         <TextBlock Grid.Row="0"
                    Margin="250,30,0,0"
