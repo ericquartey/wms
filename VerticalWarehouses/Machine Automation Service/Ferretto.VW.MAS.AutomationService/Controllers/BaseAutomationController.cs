@@ -124,33 +124,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             TData messageData = null;
 
-            using (var semaphore = new Semaphore(0, 100))
+            var semaphore = new Semaphore(0, 100);
+
+            var notificationEvent = this.eventAggregator
+                .GetEvent<NotificationEvent>();
+
+            var subscriptionToken = notificationEvent.Subscribe(
+                    m => { messageData = m.Data as TData; semaphore.Release(); },
+                    ThreadOption.PublisherThread,
+                    false,
+                    message =>
+                        message.Type == messageType
+                        &&
+                        message.Data is TData
+                        &&
+                        (!messageStatus.HasValue || message.Status == messageStatus.Value)
+                        &&
+                        (messageSource == MessageActor.Any || message.Source == messageSource));
+
+            action?.Invoke();
+
+            var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
+
+            notificationEvent.Unsubscribe(subscriptionToken);
+            if (signalReceived == false)
             {
-                var notificationEvent = this.eventAggregator
-                    .GetEvent<NotificationEvent>();
-
-                var subscriptionToken = notificationEvent.Subscribe(
-                        m => { messageData = m.Data as TData; semaphore.Release(); },
-                        ThreadOption.PublisherThread,
-                        false,
-                        message =>
-                            message.Type == messageType
-                            &&
-                            message.Data is TData
-                            &&
-                            (!messageStatus.HasValue || message.Status == messageStatus.Value)
-                            &&
-                            (messageSource == MessageActor.Any || message.Source == messageSource));
-
-                action?.Invoke();
-
-                var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
-
-                notificationEvent.Unsubscribe(subscriptionToken);
-                if (signalReceived == false)
-                {
-                    throw new InvalidOperationException("Waiting for the specified event timed out.");
-                }
+                throw new InvalidOperationException("Waiting for the specified event timed out.");
             }
 
             return messageData;
