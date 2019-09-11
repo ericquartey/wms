@@ -289,10 +289,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
             }
 
-            var returnValue = this.dataLayerConfigurationValueManagment
-                .GetIntegerConfigurationValue(longParameter, category);
-
-            return this.Ok(returnValue);
+            return this.Ok(0);
         }
 
         private void HomingMethod()

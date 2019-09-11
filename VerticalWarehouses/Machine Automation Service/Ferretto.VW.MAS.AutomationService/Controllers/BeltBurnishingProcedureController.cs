@@ -65,13 +65,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.UpperBound,
+                        VerticalAxis.UpperBound,
                         ConfigurationCategory.VerticalAxis),
                 LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.LowerBound,
+                        VerticalAxis.LowerBound,
                         ConfigurationCategory.VerticalAxis),
                 RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
-                        (long)BeltBurnishing.CycleQuantity,
+                        BeltBurnishing.CycleQuantity,
                          ConfigurationCategory.BeltBurnishing),
             };
 
@@ -104,10 +104,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.UpperBound,
+                        VerticalAxis.UpperBound,
                         ConfigurationCategory.VerticalAxis),
                 LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.LowerBound,
+                        VerticalAxis.LowerBound,
                         ConfigurationCategory.VerticalAxis)
             };
 
