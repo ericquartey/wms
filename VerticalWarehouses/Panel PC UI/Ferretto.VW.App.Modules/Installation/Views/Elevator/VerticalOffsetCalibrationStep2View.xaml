@@ -71,7 +71,7 @@
                             Content="{x:Static res:InstallationApp.Up}"
                             IsBusy="{Binding IsElevatorMovingUp}" />
 
-        <controls:PpcTextBox Grid.Row="4"
+        <ctrls:PpcSpinEdit   Grid.Row="4"
                              Grid.RowSpan="2"
                              Grid.Column="1"
                              HorizontalAlignment="Left"

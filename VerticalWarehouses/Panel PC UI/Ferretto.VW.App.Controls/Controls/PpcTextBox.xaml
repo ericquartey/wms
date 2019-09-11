@@ -14,7 +14,6 @@
                  Margin="0,3,5,5"
                  Background="{Binding Background}"
                  BorderBrush="{Binding BorderColor}"
-
                  KeyDown="OnKeyDownHandler"
                  Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

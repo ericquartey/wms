@@ -1,0 +1,259 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
+                    xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <conv:BoolToVisibilityConverter x:Key="BTVC" />
+
+    <SolidColorBrush x:Key="{dxet:TextEditThemeKey ResourceKey=CaretBrush,
+                                                   IsThemeIndependent=true}"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <Style x:Key="PpcSpinEditStyle"
+           TargetType="{x:Type ctrls:PpcSpinEdit}">
+        <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+
+        <Style.Triggers>
+            <Trigger Property="Highlighted" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Disabled}" />
+            </Trigger>
+            <Trigger Property="Highlighted" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Highlighted}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="VWAPP_PpcSpinEdit_TextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_FontSize}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SpinEditBaseStyle"
+           TargetType="dxe:SpinEdit">
+        <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
+        <Setter Property="AllowNullInput" Value="True" />
+        <Setter Property="ValidateOnTextInput" Value="False" />
+        <Setter Property="MinValue" Value="0" />
+        <Setter Property="ShowError" Value="False" />
+        <Setter Property="ValidationErrorTemplate" Value="{x:Null}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="true">
+                <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="SpinEditIntegerStyle"
+           BasedOn="{StaticResource SpinEditBaseStyle}"
+           TargetType="{x:Type dxe:SpinEdit}">
+        <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
+        <Setter Property="MaskType" Value="Numeric" />
+        <Setter Property="Mask" Value="N0" />
+        <Setter Property="Increment" Value="5" />
+    </Style>
+
+    <Style x:Key="VWAPP_PpcTextBox_SpinEditDecimalStyle"
+           BasedOn="{StaticResource SpinEditBaseStyle}"
+           TargetType="dxe:SpinEdit">
+        <Setter Property="EditValueType" Value="{x:Type sys:Decimal}" />
+        <Setter Property="MaskUseAsDisplayFormat" Value="True" />
+        <Setter Property="Increment" Value="0.5" />
+        <Setter Property="MaskType" Value="Numeric" />
+        <Setter Property="Mask" Value="N1" />
+    </Style>
+
+    <!--  SpinEdit  -->
+    <ControlTemplate x:Key="{dxet:ButtonEditThemeKey ResourceKey=Template,
+                                                     IsThemeIndependent=true}"
+                     TargetType="{x:Type dxe:ButtonEdit}">
+        <ContentControl x:Name="PART_Root"
+                        Background="Transparent">
+            <Grid x:Name="ButtonEditGrid"
+                  Background="{DynamicResource PpcButtonBackground}"
+                  SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <dxe:ButtonsControl x:Name="PART_LeftButtons"
+                                    Grid.Column="1"
+                                    Background="Transparent"
+                                    ItemsSource="{TemplateBinding LeftButtons}"
+                                    Visibility="{Binding ShowEditorButtons, Converter={StaticResource BTVC}, RelativeSource={RelativeSource TemplatedParent}}" />
+                <dxe:EditorControl x:Name="PART_Content"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Stretch"
+                                   Template="{TemplateBinding ActualEditorControlTemplate}" />
+                <dxe:ButtonsControl x:Name="PART_RightButtons"
+                                    Grid.Column="3"
+                                    Background="Transparent"
+                                    ItemsSource="{TemplateBinding RightButtons}"
+                                    Visibility="{Binding ShowEditorButtons, Converter={StaticResource BTVC}, RelativeSource={RelativeSource TemplatedParent}}" />
+            </Grid>
+        </ContentControl>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsTextEditable" Value="true" />
+                    <Condition Property="EditMode" Value="Standalone" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter TargetName="PART_Content" Property="Template" Value="{Binding Path=EditTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsTextEditable" Value="false" />
+                    <Condition Property="EditMode" Value="Standalone" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter TargetName="PART_Content" Property="Template" Value="{Binding Path=EditNonEditableTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--  ButtonInfo  left - right +  -->
+    <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=ButtonTemplate,
+                                                  IsThemeIndependent=true}"
+                     TargetType="{x:Type ButtonBase}">
+        <Grid x:Name="Root">
+            <Grid.Resources>
+                <Style x:Key="PressedElementStyle"
+                       TargetType="{x:Type ContentControl}">
+                    <Setter Property="dx:FocusHelper2.Focusable" Value="False" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ContentControl}">
+                                <Border x:Name="PressedState"
+                                        Background="{DynamicResource PpcButtonBackgroundPressed}" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto">
+                    <ColumnDefinition.SharedSizeGroup>
+                        <sys:String>ComboBoxButton</sys:String>
+                    </ColumnDefinition.SharedSizeGroup>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="HoverState"
+                    Background="{DynamicResource PpcButtonBackground}"
+                    Opacity="1">
+                <Border Margin="1"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource PpcButtonBackgroundPressed}"
+                        BorderThickness="1,1,1,1" />
+            </Border>
+            <ContentControl x:Name="PressedState"
+                            Opacity="0"
+                            Style="{StaticResource PressedElementStyle}" />
+            <ContentControl x:Name="CheckedState"
+                            Style="{StaticResource PressedElementStyle}"
+                            Visibility="Collapsed" />
+            <Grid x:Name="Arrow"
+                  Grid.ColumnSpan="1"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.7*" />
+                    <ColumnDefinition Width="0.3*" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter x:Name="Glyph"
+                                  Grid.ColumnSpan="2"
+                                  Style="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=ButtonInfoContentStyle}}" />
+            </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Root"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.5"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="CheckStates">
+                    <VisualState x:Name="Checked">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckedState"
+                                                           Storyboard.TargetProperty="Visibility"
+                                                           Duration="0">
+                                <ObjectAnimationUsingKeyFrames.KeyFrames>
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Visible</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames.KeyFrames>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unchecked" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=GlyphKind}"
+                         Value="User">
+                <Setter TargetName="Glyph" Property="Style" Value="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=UserButtonInfoContentStyle}}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=GlyphKind}"
+                         Value="None">
+                <Setter TargetName="Glyph" Property="Style" Value="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=NoneButtonInfoContentStyle}}" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>
