@@ -4,7 +4,7 @@
                     xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"                    
+                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <conv:BoolToVisibilityConverter x:Key="BTVC" />
@@ -49,10 +49,12 @@
 
     <Style x:Key="SpinEditBaseStyle"
            TargetType="dxe:SpinEdit">
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
         <Setter Property="AllowNullInput" Value="True" />
         <Setter Property="ValidateOnTextInput" Value="False" />
+        <Setter Property="MinValue" Value="0" />
+        <Setter Property="ShowError" Value="False" />
+        <Setter Property="ValidationErrorTemplate" Value="{x:Null}" />
         <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
         <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
@@ -77,9 +79,6 @@
         <Setter Property="Increment" Value="5" />
     </Style>
 
-    <Style BasedOn="{StaticResource SpinEditDecimalStyle}"
-           TargetType="{x:Type dxe:SpinEdit}" />
-
     <Style x:Key="VWAPP_PpcTextBox_SpinEditDecimalStyle"
            BasedOn="{StaticResource SpinEditBaseStyle}"
            TargetType="dxe:SpinEdit">
@@ -88,10 +87,9 @@
         <Setter Property="Increment" Value="0.5" />
         <Setter Property="MaskType" Value="Numeric" />
         <Setter Property="Mask" Value="N1" />
-        <Setter Property="IsFloatValue" Value="True" />
     </Style>
 
-    <!-- SpinEdit -->
+    <!--  SpinEdit  -->
     <ControlTemplate x:Key="{dxet:ButtonEditThemeKey ResourceKey=Template,
                                                      IsThemeIndependent=true}"
                      TargetType="{x:Type dxe:ButtonEdit}">
@@ -106,7 +104,6 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <dxe:ErrorControl x:Name="PART_ErrorPresenter" />
                 <dxe:ButtonsControl x:Name="PART_LeftButtons"
                                     Grid.Column="1"
                                     Background="Transparent"
@@ -145,7 +142,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  ButtonInfo  left - right +  -->    
+    <!--  ButtonInfo  left - right +  -->
     <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=ButtonTemplate,
                                                   IsThemeIndependent=true}"
                      TargetType="{x:Type ButtonBase}">
