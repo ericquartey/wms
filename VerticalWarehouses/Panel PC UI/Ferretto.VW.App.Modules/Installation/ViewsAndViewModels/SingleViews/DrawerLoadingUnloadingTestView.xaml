@@ -1,7 +1,8 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.DrawerLoadingUnloadingTestView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.DrawerLoadingUnloadingTestView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
@@ -65,4 +66,4 @@
                              LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
 
     </Grid>
-</UserControl>
+</ctrls:View>

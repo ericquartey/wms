@@ -8,11 +8,23 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
+        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
+
+        public const string DRAWERLOADINGUNLOADINGTEST = "DrawerLoadingUnloadingTestViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
+
+        public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
+
+        public const string LOADINGDRAWERS = "LoadingDrawersViewModel";
+
+        public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
+
+        public const string SHUTTTER1HEIGHTCONTROL = "Shutter1HeightControlViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
