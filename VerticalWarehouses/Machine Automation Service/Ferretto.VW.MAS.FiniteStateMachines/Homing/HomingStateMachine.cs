@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -19,19 +20,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly Axis calibrateAxis;
 
+        private readonly bool isOneKMachine;
+
         private readonly ILogger logger;
+
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private bool disposed;
 
         private HomingOperation homingOperation;
-
-        private bool isOneKMachine;
 
         #endregion
 
         #region Constructors
 
         public HomingStateMachine(
+            IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
             IHomingMessageData calibrateMessageData,
             bool isOneKMachine,
@@ -47,6 +51,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
 
             this.isOneKMachine = isOneKMachine;
+
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -151,6 +157,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            bool checkConditions;
+
             this.logger.LogTrace("1:Method Start");
             switch (this.calibrateAxis)
             {
@@ -169,10 +177,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new HomingStartState(
-                    this,
-                    this.homingOperation,
-                    this.logger);
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                checkConditions = this.CheckConditions();
+                if (!checkConditions)
+                {
+                    this.Logger.LogError($"Conditions not verified for homing");
+
+                    this.CurrentState = new HomingEndState(
+                        this,
+                        this.homingOperation,
+                        this.logger);
+                }
+                else
+                {
+                    this.CurrentState = new HomingStartState(
+                        this,
+                        this.homingOperation,
+                        this.logger);
+                }
 
                 this.CurrentState.Start();
             }
@@ -203,6 +225,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.disposed = true;
             base.Dispose(disposing);
+        }
+
+        private bool CheckConditions()
+        {
+            //HACK The condition must be handled by the Bug #3711
+            //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
+            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && !this.machineSensorsStatus.IsSensorZeroOnCradle) ||
+                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle);
+
+            return checkConditions;
         }
 
         #endregion
