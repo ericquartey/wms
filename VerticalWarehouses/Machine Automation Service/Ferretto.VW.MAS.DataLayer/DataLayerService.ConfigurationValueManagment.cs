@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(value, category, ConfigurationDataType.Boolean))
             {
-                this.Logger.LogCritical($"1:Exception: get Boolean for {value} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Boolean for '{category}.{value}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical(
+                this.Logger.LogTrace(
                     $"No value is available in database for '{category}.{value}'.");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Date))
             {
-                this.Logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get DateTime for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -81,14 +81,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
                 {
-                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for '{category}.{configurationValueEnum}' in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValueEnum}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                this.Logger.LogTrace(
+                    $"No value is available in database for '{configurationValueEnum}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Float))
             {
-                this.Logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Decimal for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -119,14 +119,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (!decimal.TryParse(configurationValue.VarValue, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out returnDecimalValue))
                 {
-                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for '{category}.{configurationValueEnum}' in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValueEnum}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                this.Logger.LogTrace(
+                    $"No value is available in database for '{configurationValueEnum}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Integer))
             {
-                this.Logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Integer for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -157,14 +157,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (!int.TryParse(configurationValue.VarValue, out returnIntegerValue))
                 {
-                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for '{category}.{configurationValueEnum}' in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValueEnum}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                this.Logger.LogTrace(
+                    $"No value is available in database for'{configurationValueEnum}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
-                this.Logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get IP Address for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -197,7 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical(
+                this.Logger.LogTrace(
                     $"No value is available in database for '{category}.{configurationValueEnum}'.");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.String))
             {
-                this.Logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get string for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"No value is available in database for '{category}.{configurationValueEnum}'.");
+                this.Logger.LogTrace($"No value is available in database for '{category}.{configurationValueEnum}'.");
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -398,7 +398,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             catch
             {
-                this.Logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
+                this.Logger.LogCritical($"2:Exception: Parse failed for '{category}.{configurationValueEnum}' in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
