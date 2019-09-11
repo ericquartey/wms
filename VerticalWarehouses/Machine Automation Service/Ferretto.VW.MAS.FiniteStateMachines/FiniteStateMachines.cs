@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.machineConfigurationProvider = machineConfigurationProvider;
 
             this.serviceScopeFactory = serviceScopeFactory;
-            this.machineSensorsStatus = new MachineSensorsStatus(machineConfigurationProvider.IsOneKMachine());
+            this.machineSensorsStatus = new MachineSensorsStatus(false); //machineConfigurationProvider.IsOneKMachine()
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
