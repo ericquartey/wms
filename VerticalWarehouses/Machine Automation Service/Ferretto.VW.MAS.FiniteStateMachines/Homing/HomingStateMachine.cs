@@ -181,11 +181,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 checkConditions = this.CheckConditions();
                 if (!checkConditions)
                 {
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        "Conditions not verified for positioning",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.InverterException,
+                        MessageStatus.OperationStart);
+
+                    this.PublishNotificationMessage(notificationMessage);
+
                     this.Logger.LogError($"Conditions not verified for homing");
 
-                    this.CurrentState = new HomingEndState(
+                    this.CurrentState = new HomingErrorState(
                         this,
                         this.homingOperation,
+                        null,
                         this.logger);
                 }
                 else

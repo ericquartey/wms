@@ -239,6 +239,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 //TEMP Instantiate the homing states machine
                 this.currentStateMachine = new HomingStateMachine(
+                    this.machineSensorsStatus,
                     this.eventAggregator,
                     data,
                     this.machineConfigurationProvider.IsOneKMachine(),
