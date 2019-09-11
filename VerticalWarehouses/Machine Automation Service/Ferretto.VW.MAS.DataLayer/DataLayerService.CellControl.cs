@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateCC => this.GetDecimalConfigurationValue((long)CellControl.FeedRate, ConfigurationCategory.CellControl);
+        public decimal FeedRateCC => this.GetDecimalConfigurationValue(CellControl.FeedRate, ConfigurationCategory.CellControl);
 
-        public decimal StepValueCC => this.GetDecimalConfigurationValue((long)CellControl.StepValue, ConfigurationCategory.CellControl);
+        public decimal StepValueCC => this.GetDecimalConfigurationValue(CellControl.StepValue, ConfigurationCategory.CellControl);
 
         #endregion
     }

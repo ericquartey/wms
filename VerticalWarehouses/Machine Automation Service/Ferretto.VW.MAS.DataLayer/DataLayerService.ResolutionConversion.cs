@@ -28,12 +28,12 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
+                    this.VerticalResolution = this.GetDecimalConfigurationValue(VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     resolution = this.VerticalResolution;
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
+                    this.HorizontalResolution = this.GetDecimalConfigurationValue(HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     resolution = this.HorizontalResolution;
                     break;
 
@@ -63,12 +63,12 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    this.VerticalResolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
+                    this.VerticalResolution = this.GetDecimalConfigurationValue(VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     resolution = this.VerticalResolution;
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    this.HorizontalResolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
+                    this.HorizontalResolution = this.GetDecimalConfigurationValue(HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     resolution = this.HorizontalResolution;
                     break;
 

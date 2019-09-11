@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateLFD => this.GetDecimalConfigurationValue((long)LoadFirstDrawer.FeedRate, ConfigurationCategory.LoadFirstDrawer);
+        public decimal FeedRateLFD => this.GetDecimalConfigurationValue(LoadFirstDrawer.FeedRate, ConfigurationCategory.LoadFirstDrawer);
 
         #endregion
     }

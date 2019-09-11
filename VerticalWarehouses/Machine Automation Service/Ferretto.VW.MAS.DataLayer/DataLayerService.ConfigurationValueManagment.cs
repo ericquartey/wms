@@ -19,7 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public bool GetBoolConfigurationValue(long value, ConfigurationCategory category)
+        public bool GetBoolConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -29,28 +30,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(value, category, ConfigurationDataType.Boolean))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Boolean))
             {
-                this.Logger.LogCritical($"1:Exception: get Boolean for '{category}.{value}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Boolean for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             bool returnBoolValue;
 
-            var configurationValue = this.RetrieveConfigurationValue(value, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
                 {
                     this.Logger.LogCritical(
-                        $"Unable to parse value '{configurationValue.VarValue}' as boolean for field '{category}.{value}'.", DataLayerPersistentExceptionCode.ParseValue);
+                        $"Unable to parse value '{configurationValue.VarValue}' as boolean for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
                 this.Logger.LogTrace(
-                    $"No value is available in database for '{category}.{value}'.");
+                    $"No value is available in database for '{category}.{configurationValueEnum}'.");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -59,7 +60,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        public DateTime GetDateTimeConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -69,14 +71,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Date))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Date))
             {
                 this.Logger.LogCritical($"1:Exception: get DateTime for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             DateTime returnDateTimeValue;
-            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
@@ -97,7 +99,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public decimal GetDecimalConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        public decimal GetDecimalConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -107,14 +110,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Float))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Float))
             {
                 this.Logger.LogCritical($"1:Exception: get Decimal for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             decimal returnDecimalValue;
-            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 if (!decimal.TryParse(configurationValue.VarValue, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out returnDecimalValue))
@@ -134,7 +137,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public int GetIntegerConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        public int GetIntegerConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -144,7 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Integer))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Integer))
             {
                 this.Logger.LogCritical($"1:Exception: get Integer for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
@@ -152,7 +156,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             int returnIntegerValue;
 
-            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 if (!int.TryParse(configurationValue.VarValue, out returnIntegerValue))
@@ -172,7 +176,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public IPAddress GetIpAddressConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        public IPAddress GetIpAddressConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -182,7 +187,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.IPAddress))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
                 this.Logger.LogCritical($"1:Exception: get IP Address for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
@@ -190,7 +195,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             IPAddress returnIpAddressValue;
 
-            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 returnIpAddressValue = IPAddress.Parse(configurationValue.VarValue);
@@ -207,7 +212,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public string GetStringConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        public string GetStringConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum
         {
             if (!this.IsReady)
             {
@@ -217,7 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerException(message);
             }
 
-            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.String))
+            if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.String))
             {
                 this.Logger.LogCritical($"1:Exception: get string for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
@@ -225,7 +231,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             string returnStringValue;
 
-            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            var configurationValue = this.RetrieveConfigurationValue((long)(object)configurationValueEnum, category);
             if (configurationValue != null)
             {
                 returnStringValue = configurationValue.VarValue;
