@@ -21,6 +21,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public bool GetBoolConfigurationValue(long value, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(value, category, ConfigurationDataType.Boolean))
             {
                 this.Logger.LogCritical($"1:Exception: get Boolean for {value} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -53,6 +61,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Date))
             {
                 this.Logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -83,6 +99,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public decimal GetDecimalConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Float))
             {
                 this.Logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -112,6 +136,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public int GetIntegerConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Integer))
             {
                 this.Logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -142,6 +174,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public IPAddress GetIpAddressConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
                 this.Logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -169,6 +209,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <inheritdoc/>
         public string GetStringConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
+            if (!this.IsReady)
+            {
+                var message = "Data layer is not yet ready.";
+
+                this.Logger.LogError(message);
+                throw new DataLayerException(message);
+            }
+
             if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.String))
             {
                 this.Logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
