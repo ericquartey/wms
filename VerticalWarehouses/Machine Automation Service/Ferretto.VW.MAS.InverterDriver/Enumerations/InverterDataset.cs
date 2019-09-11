@@ -17,5 +17,11 @@
         TableTravelSet4 = 53,
 
         TableTravelSet5 = 54,
+
+        ShutterAbsoluteOpen = 6,
+
+        ShutterAbsoluteHalf = 7,
+
+        ShutterAbsoluteClose = 8,
     }
 }

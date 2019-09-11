@@ -10,7 +10,13 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal FeedRateSM { get; }
 
+        decimal HigherDistance { get; }
+
+        decimal LowerDistance { get; }
+
         decimal MaxSpeed { get; }
+
+        decimal MinSpeed { get; }
 
         #endregion
     }

@@ -207,6 +207,16 @@ namespace Ferretto.VW.MAS.DataLayer
                                 this.SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
 
                                 break;
+
+                            case ConfigurationCategory.ShutterManualMovements:
+                                if (!Enum.TryParse(jsonData.Key, false, out ShutterManualMovements shutterManualMovementsData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                this.SaveConfigurationData(jsonElementCategory, (long)shutterManualMovementsData, jsonData.Value);
+
+                                break;
                         }
                     }
                 }

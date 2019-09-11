@@ -20,8 +20,6 @@
 
         SetOperatingModeParam = 1454,
 
-        ShutterTargetVelocityParam = 480,
-
         StatusWordParam = 411, //19B INFO:Readonly
 
         ActualPositionShaft = 1108,
@@ -31,6 +29,12 @@
         DigitalInputsOutputs = 1411,
 
         ShutterTargetPosition = 414, // 19E
+
+        ShutterAbsoluteEnable = 458,
+
+        ShutterAbsoluteRevs = 460,
+
+        ShutterTargetVelocityParam = 480,
 
         TableTravelTargetPosition = 1202,
 

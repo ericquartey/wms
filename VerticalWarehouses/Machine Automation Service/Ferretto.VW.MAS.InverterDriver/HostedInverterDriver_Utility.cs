@@ -860,6 +860,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     break;
 
                                 case MovementType.Relative:
+                                case MovementType.TableTarget:
                                     if (positioningFieldData.TargetPosition == 0)
                                     {
                                         var msgNotification = new FieldNotificationMessage(
@@ -876,7 +877,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     else
                                     {
                                         this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                        if (positioningFieldData.SwitchPosition.Length > 1)
+                                        if (positioningData.MovementType == MovementType.TableTarget)
                                         {
                                             var currentStateMachine = new PositioningTableStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                             this.currentStateMachines.Add(currentInverter, currentStateMachine);

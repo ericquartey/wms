@@ -127,6 +127,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                         if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
                             this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
                         {
+                            if (this.drawerOperationData.Operation == DrawerOperation.Pickup)
+                            {
+                                this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                                        this.ParentStateMachine,
+                                        this.drawerOperationData,
+                                        this.Logger));
+                            }
+                            else
+                            {
                             this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
                                     this.ParentStateMachine,
                                     Axis.Vertical,
@@ -136,6 +145,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                                     this.horizontalAxis,
                                     this.machineSensorsStatus,
                                     this.Logger));
+                        }
                         }
 
                         break;
@@ -221,29 +231,38 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             decimal target = 0;
 
-            //TEMP: Remove the hardcoded value (used only for test)
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
-            {
-                target = +150;
-            }
+            ////TEMP: Remove the hardcoded value (used only for test)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
+            //{
+            //    target = +150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)   // (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
-            {
-                // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                // Use the side in order to get the correct sign of movement
-                target = -150;
-            }
+            //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)   // (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
+            //{
+            //    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //    // Use the side in order to get the correct sign of movement
+            //    target = -150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)  // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
-            {
-                target = -150;
-            }
+            //if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)  // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
+            //{
+            //    target = -150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell)   // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell)   // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell)
+            //{
+            //    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //    // Use the side in order to get the correct sign of movement
+            //    target = +150;
+            //}
+
+            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
             {
-                // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                // Use the side in order to get the correct sign of movement
-                target = +150;
+                target = this.drawerOperationData.SourceHorizontalPosition;
+            }
+            else
+            {
+                target = this.drawerOperationData.DestinationHorizontalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)

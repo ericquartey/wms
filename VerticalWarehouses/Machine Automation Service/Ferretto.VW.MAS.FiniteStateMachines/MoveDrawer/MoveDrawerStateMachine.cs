@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 return;
             }
 
-            if (!this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+            if (this.drawerOperationData.Operation != DrawerOperation.Deposit && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
             {
                 var notificationMessage = new NotificationMessage(
                     null,

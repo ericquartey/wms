@@ -10,6 +10,10 @@
 
         AutomaticStore,
 
-        AutomaticRecall
+        AutomaticRecall,
+
+        Pickup,
+
+        Deposit
     }
 }

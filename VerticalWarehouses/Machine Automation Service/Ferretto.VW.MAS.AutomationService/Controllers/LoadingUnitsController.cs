@@ -11,6 +11,7 @@ using Ferretto.VW.CommonUtils.DTOs;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using System;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class LoadingUnitsController : BaseAutomationController
     {
         #region Fields
+
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
@@ -31,6 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
+            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
@@ -44,13 +48,46 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }
 
+            if (horizontalManualMovementsDataLayer is null)
+            {
+                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            }
+
             this.loadingUnitsProvider = loadingUnitStatisticsProvider;
             this.machinesDataService = machinesDataService;
+            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
         }
 
         #endregion
 
         #region Methods
+
+        [HttpPost("deposit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Deposit(DrawerDestination destination, decimal targetPosition, bool isPositive)
+        {
+            var drawerOperationData = new DrawerOperationMessageData(
+               DrawerOperation.Deposit,
+               DrawerOperationStep.None);
+
+            drawerOperationData.Destination = destination;
+            drawerOperationData.DestinationVerticalPosition = targetPosition;
+            drawerOperationData.IsDestinationPositive = isPositive;
+            drawerOperationData.DestinationHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
+            if (!isPositive)
+            {
+                drawerOperationData.DestinationHorizontalPosition *= -1;
+            }
+
+            this.PublishCommand(
+                drawerOperationData,
+                "Execute Drawer Operation Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.DrawerOperation);
+
+            return this.Accepted();
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
@@ -111,6 +148,33 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(statistics);
+        }
+
+        [HttpPost("pickup")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Pickup(DrawerDestination source, decimal targetPosition, bool isPositive)
+        {
+            var drawerOperationData = new DrawerOperationMessageData(
+               DrawerOperation.Pickup,
+               DrawerOperationStep.None);
+
+            drawerOperationData.Source = source;
+            drawerOperationData.SourceVerticalPosition = targetPosition;
+            drawerOperationData.IsSourcePositive = isPositive;
+            drawerOperationData.SourceHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
+            if (!isPositive)
+            {
+                drawerOperationData.SourceHorizontalPosition *= -1;
+            }
+
+            this.PublishCommand(
+                drawerOperationData,
+                "Execute Drawer Operation Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.DrawerOperation);
+
+            return this.Accepted();
         }
 
         [HttpPost("start-moving")]

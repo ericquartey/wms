@@ -191,83 +191,92 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             decimal target = 0;
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.None) //(this.drawerOperationStep == DrawerOperationStep.None)
-            {
-                if (this.drawerOperationData.Source == DrawerDestination.Cell)
-                {
-                    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.None) //(this.drawerOperationStep == DrawerOperationStep.None)
+            //{
+            //    if (this.drawerOperationData.Source == DrawerDestination.Cell)
+            //    {
+            //        // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
 
-                    target = 100;
+            //        target = 100;
+            //    }
+            //    else
+            //    {
+            //        switch (this.drawerOperationData.Source)
+            //        {
+            //            case DrawerDestination.CarouselBay1Up:
+            //            case DrawerDestination.ExternalBay1Up:
+            //            case DrawerDestination.InternalBay1Up:
+            //                target = this.generalInfoDataLayer.Bay1Position1;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay1Down:
+            //            case DrawerDestination.ExternalBay1Down:
+            //            case DrawerDestination.InternalBay1Down:
+            //                target = this.generalInfoDataLayer.Bay1Position2;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay2Up:
+            //            case DrawerDestination.ExternalBay2Up:
+            //            case DrawerDestination.InternalBay2Up:
+            //                target = this.generalInfoDataLayer.Bay2Position1;
+            //                break;
+
+            //            // Add other destinations here
+
+            //            default:
+            //                break;
+            //        }
+
+            //        target /= 10; // TEMP: remove this code line (used only for test)
+            //    }
+            //}
+            //else
+            //{
+            //    if (this.drawerOperationData.Destination == DrawerDestination.Cell)
+            //    {
+            //        // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //        target = 100;
+            //    }
+            //    else
+            //    {
+            //        switch (this.drawerOperationData.Destination)
+            //        {
+            //            case DrawerDestination.CarouselBay1Up:
+            //            case DrawerDestination.ExternalBay1Up:
+            //            case DrawerDestination.InternalBay1Up:
+            //                target = this.generalInfoDataLayer.Bay1Position1;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay1Down:
+            //            case DrawerDestination.ExternalBay1Down:
+            //            case DrawerDestination.InternalBay1Down:
+            //                target = this.generalInfoDataLayer.Bay1Position2;
+            //                // TODO
+            //                break;
+
+            //            case DrawerDestination.CarouselBay2Up:
+            //            case DrawerDestination.ExternalBay2Up:
+            //            case DrawerDestination.InternalBay2Up:
+            //                target = this.generalInfoDataLayer.Bay2Position1;
+            //                break;
+
+            //            // Add other destinations here
+
+            //            default:
+            //                break;
+            //        }
+
+            //        target /= 10;  // TEMP: remove this code line (used only for test)
+            //    }
+            //}
+
+            if (this.drawerOperationData.Step == DrawerOperationStep.None)
+                {
+                target = this.drawerOperationData.SourceVerticalPosition;
                 }
                 else
                 {
-                    switch (this.drawerOperationData.Source)
-                    {
-                        case DrawerDestination.CarouselBay1Up:
-                        case DrawerDestination.ExternalBay1Up:
-                        case DrawerDestination.InternalBay1Up:
-                            target = this.generalInfoDataLayer.Bay1Position1;
-                            break;
-
-                        case DrawerDestination.CarouselBay1Down:
-                        case DrawerDestination.ExternalBay1Down:
-                        case DrawerDestination.InternalBay1Down:
-                            target = this.generalInfoDataLayer.Bay1Position2;
-                            break;
-
-                        case DrawerDestination.CarouselBay2Up:
-                        case DrawerDestination.ExternalBay2Up:
-                        case DrawerDestination.InternalBay2Up:
-                            target = this.generalInfoDataLayer.Bay2Position1;
-                            break;
-
-                        // Add other destinations here
-
-                        default:
-                            break;
-                    }
-
-                    target /= 10; // TEMP: remove this code line (used only for test)
-                }
-            }
-            else
-            {
-                if (this.drawerOperationData.Destination == DrawerDestination.Cell)
-                {
-                    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                    target = 100;
-                }
-                else
-                {
-                    switch (this.drawerOperationData.Destination)
-                    {
-                        case DrawerDestination.CarouselBay1Up:
-                        case DrawerDestination.ExternalBay1Up:
-                        case DrawerDestination.InternalBay1Up:
-                            target = this.generalInfoDataLayer.Bay1Position1;
-                            break;
-
-                        case DrawerDestination.CarouselBay1Down:
-                        case DrawerDestination.ExternalBay1Down:
-                        case DrawerDestination.InternalBay1Down:
-                            target = this.generalInfoDataLayer.Bay1Position2;
-                            // TODO
-                            break;
-
-                        case DrawerDestination.CarouselBay2Up:
-                        case DrawerDestination.ExternalBay2Up:
-                        case DrawerDestination.InternalBay2Up:
-                            target = this.generalInfoDataLayer.Bay2Position1;
-                            break;
-
-                        // Add other destinations here
-
-                        default:
-                            break;
-                    }
-
-                    target /= 10;  // TEMP: remove this code line (used only for test)
-                }
+                target = this.drawerOperationData.DestinationVerticalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)

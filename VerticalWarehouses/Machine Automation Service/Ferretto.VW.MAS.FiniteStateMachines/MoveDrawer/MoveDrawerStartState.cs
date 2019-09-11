@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private bool ioSwitched;
 
+        private PositioningMessageData positioningMessageData;
+
         #endregion
 
         #region Constructors
@@ -145,6 +147,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Start()
         {
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter);
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            if (this.drawerOperationData.Operation == DrawerOperation.Deposit)
+            {
+                this.drawerOperationData.Step = DrawerOperationStep.MovingElevatorDown;
+
+                this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                        this.ParentStateMachine,
+                        Axis.Vertical,
+                        this.drawerOperationData,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
+                        this.machineSensorsStatus,
+                        this.Logger));
+            }
+            else
+            {
             //TODO Send Switch Axis commands to IODriver and Inverter Driver
             var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Vertical);
             var ioCommandMessage = new FieldCommandMessage(
@@ -159,18 +189,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter status word status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(Axis.Vertical);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -184,7 +202,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.Logger.LogDebug($"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
-
+            }
             // Send a notification message about the start operation for MessageType.DrawerOperation
             var notificationMessageData = new DrawerOperationMessageData(
                 this.drawerOperationData.Operation,
