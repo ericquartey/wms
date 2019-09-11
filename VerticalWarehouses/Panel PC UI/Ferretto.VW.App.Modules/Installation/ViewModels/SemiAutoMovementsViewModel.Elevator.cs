@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
+        private readonly IMachineServiceService machineServiceService;
+
         private DelegateCommand disembarkBackwardsCommand;
 
         private DelegateCommand disembarkForwardsCommand;
@@ -30,6 +32,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isElevatorDisembarking;
 
         private bool isElevatorEmbarking;
+
+        private bool isTuningChain;
+
+        private DelegateCommand tuningBayCommand;
+
+        private DelegateCommand tuningChainCommand;
 
         #endregion
 
@@ -51,6 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
+        //Tuning
         public decimal? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
@@ -113,6 +122,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsTuningChain
+        {
+            get => this.isTuningChain;
+            private set
+            {
+                if (this.SetProperty(ref this.isTuningChain, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.isTuningChain));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand TuningBayCommand =>
+                    this.tuningBayCommand
+            ??
+            (this.tuningBayCommand = new DelegateCommand(
+                async () => await this.TuningBay(),
+                this.CanTuningBay));
+
+        public ICommand TuningChainCommand =>
+            this.tuningChainCommand
+            ??
+            (this.tuningChainCommand = new DelegateCommand(
+                async () => await this.TuningChain(),
+                this.CanTuningChain));
+
         #endregion
 
         #region Methods
@@ -139,6 +175,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
                 !this.Sensors.LuPresentInOperatorSideBay1;
+        }
+
+        private bool CanTuningBay()
+        {
+            return true;
+        }
+
+        private bool CanTuningChain()
+        {
+            return !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMoving
+                &&
+                !this.IsTuningChain;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)
@@ -180,6 +230,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (System.Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        private async Task TuningBay()
+        {
+            await Task.Delay(1);
+        }
+
+        private async Task TuningChain()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineServiceService.SearchHorizontalZeroAsync();
+
+                this.IsTuningChain = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningChain = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

@@ -47,6 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
             IMachineShuttersService shuttersService,
+            IMachineServiceService machineServiceService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -80,12 +81,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
+            if (machineServiceService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineServiceService));
+            }
+
             this.machineSensorsService = machineSensorsService;
             this.machineElevatorService = machineElevatorService;
             this.machineCellsService = machineCellsService;
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
             this.shuttersService = shuttersService;
+            this.machineServiceService = machineServiceService;
 
             this.SelectBayPosition1();
         }
@@ -264,6 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToQuote = false;
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
 
                         break;
                     }
@@ -276,6 +284,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToQuote = false;
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
 
                         this.ShowNotification(
                             VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -309,7 +318,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
             this.moveToQuoteHeightCommand?.RaiseCanExecuteChanged();
             this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
-
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+            this.tuningChainCommand?.RaiseCanExecuteChanged();
             this.embarkForwardsCommand?.RaiseCanExecuteChanged();
             this.embarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.disembarkForwardsCommand?.RaiseCanExecuteChanged();

@@ -325,15 +325,17 @@
                                 Grid.Column="0"
                                 Margin="5"
                                 HorizontalAlignment="Left"
-                                Command="{Binding SelectBayPosition2Command}"
-                                Content="tuning CATENA" />
+                                Command="{Binding TuningChainCommand}"
+                                Content="Tuning CATENA"
+                                IsBusy="{Binding IsTuningChain}" />
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="1"
                                 Margin="5"
                                 HorizontalAlignment="Left"
-                                Command="{Binding SelectBayPosition2Command}"
-                                Content="tuning BAIA" />
+                                Command="{Binding TuningBayCommand}"
+                                Content="Tuning BAIA"
+                                IsEnabled="False" />
 
 
             <controls:PpcButton Grid.Row="4"
