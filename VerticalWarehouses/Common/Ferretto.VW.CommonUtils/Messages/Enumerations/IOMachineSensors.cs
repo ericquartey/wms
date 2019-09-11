@@ -128,7 +128,7 @@
 
         ANGChainS2IND = 57,
 
-        ANGChainS3IND = 58,
+        ZeroPawlSensorOneK = 58,
 
         ANGChainS4IND = 59,
 

@@ -47,8 +47,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         SetOperatingModeParam = 1454,
 
-        ShutterTargetVelocityParam = 480,
-
         StatusWordParam = 411, //19B INFO:Readonly
 
         ActualPositionShaft = 1108,
@@ -58,6 +56,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         DigitalInputsOutputs = 1411,
 
         ShutterTargetPosition = 414, // 19E
+
+        ShutterAbsoluteEnable = 458,
+
+        ShutterAbsoluteRevs = 460,
+
+        ShutterTargetVelocityParam = 480,
 
         TableTravelTargetPosition = 1202,
 
@@ -109,6 +113,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         /// S3IND-Sensore zero elevatore
         /// </summary>
         ANG_ZeroElevatorSensor = 2,
+
+        OneKMachineZeroCradle = 2,
 
         /// <summary>
         /// S4IND-Encoder canale B
@@ -735,6 +741,17 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
             {
                 this.StatusWord |= 0x1000;          // Set TargetReached
+                if (this.currentAxis == Axis.Horizontal)
+                {
+                    if (this.Id == 0)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                    }
+                    else
+                    {
+                        this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
+                    }
+                }
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }

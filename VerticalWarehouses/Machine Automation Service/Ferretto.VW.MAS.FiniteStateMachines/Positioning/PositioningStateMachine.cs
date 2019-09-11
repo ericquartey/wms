@@ -113,6 +113,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 }
                 else
                 {
+                    var notificationMessage = new NotificationMessage(
+                        this.positioningMessageData,
+                        "Conditions not verified for positioning",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.InverterException,
+                        MessageStatus.OperationStart);
+
+                    this.Logger.LogError($"Conditions not verified for positioning");
+
+                    this.PublishNotificationMessage(notificationMessage);
                     this.CurrentState = new PositioningErrorState(this, this.machineSensorsStatus, this.positioningMessageData, null, this.Logger);
                 }
 
@@ -152,9 +163,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && this.positioningMessageData.MovementMode == MovementMode.Position) ||
-                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& !this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
-                                    this.positioningMessageData.AxisMovement == Axis.Vertical ||
+            var checkConditions = (((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && !this.machineSensorsStatus.IsSensorZeroOnCradle && this.positioningMessageData.MovementMode == MovementMode.Position) ||
+                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle
+                                    ) &&
+                                    this.positioningMessageData.AxisMovement == Axis.Vertical)
+                                    ||
                                     this.positioningMessageData.AxisMovement == Axis.Horizontal;
 
             return checkConditions;

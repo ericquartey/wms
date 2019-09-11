@@ -301,6 +301,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DepositAsync(DrawerDestination destination, decimal targetPosition, bool isPositive);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DepositAsync(DrawerDestination destination, decimal targetPosition, bool isPositive, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -320,6 +327,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PickupAsync(DrawerDestination source, decimal targetPosition, bool isPositive);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PickupAsync(DrawerDestination source, decimal targetPosition, bool isPositive, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingAsync(MoveDrawerMessageDataDTO data);
@@ -453,6 +467,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount);
@@ -971,13 +992,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     /// <summary>0 = Absolute
-    /// 1 = Relative</summary>
+    /// 1 = Relative
+    /// 2 = TableTarget</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementType
     {
         Absolute = 0,
     
         Relative = 1,
+    
+        TableTarget = 2,
     
     }
     
@@ -1342,6 +1366,71 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
+    /// <summary>0 = NoDestination
+    /// 1 = InternalBay1Up
+    /// 2 = InternalBay1Down
+    /// 3 = InternalBay2Up
+    /// 4 = InternalBay2Down
+    /// 5 = InternalBay3Up
+    /// 6 = InternalBay3Down
+    /// 7 = ExternalBay1Up
+    /// 8 = ExternalBay1Down
+    /// 9 = ExternalBay2Up
+    /// 10 = ExternalBay2Down
+    /// 11 = ExternalBay3Up
+    /// 12 = ExternalBay3Down
+    /// 13 = CarouselBay1Up
+    /// 14 = CarouselBay1Down
+    /// 15 = CarouselBay2Up
+    /// 16 = CarouselBay2Down
+    /// 17 = CarouselBay3Up
+    /// 18 = CarouselBay3Down
+    /// 19 = Cell</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum DrawerDestination
+    {
+        NoDestination = 0,
+    
+        InternalBay1Up = 1,
+    
+        InternalBay1Down = 2,
+    
+        InternalBay2Up = 3,
+    
+        InternalBay2Down = 4,
+    
+        InternalBay3Up = 5,
+    
+        InternalBay3Down = 6,
+    
+        ExternalBay1Up = 7,
+    
+        ExternalBay1Down = 8,
+    
+        ExternalBay2Up = 9,
+    
+        ExternalBay2Down = 10,
+    
+        ExternalBay3Up = 11,
+    
+        ExternalBay3Down = 12,
+    
+        CarouselBay1Up = 13,
+    
+        CarouselBay1Down = 14,
+    
+        CarouselBay2Up = 15,
+    
+        CarouselBay2Down = 16,
+    
+        CarouselBay3Up = 17,
+    
+        CarouselBay3Down = 18,
+    
+        Cell = 19,
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnitSpaceStatistics 
     {
@@ -1427,7 +1516,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 1 = ManualStore
     /// 2 = ManualRecall
     /// 3 = AutomaticStore
-    /// 4 = AutomaticRecall</summary>
+    /// 4 = AutomaticRecall
+    /// 5 = Pickup
+    /// 6 = Deposit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum DrawerOperation
     {
@@ -1440,6 +1531,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         AutomaticStore = 3,
     
         AutomaticRecall = 4,
+    
+        Pickup = 5,
+    
+        Deposit = 6,
     
     }
     

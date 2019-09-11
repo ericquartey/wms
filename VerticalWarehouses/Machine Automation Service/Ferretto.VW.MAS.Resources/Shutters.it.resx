@@ -123,4 +123,7 @@
   <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
     <value>Il numero di cicli di test deve essere strettamente positivo.</value>
   </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>La Posizione iniziale non è valida</value>
+  </data>
 </root>

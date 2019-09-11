@@ -205,11 +205,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     shutterPositionTarget = ShutterPosition.Half;
                 }
             }
+            // speed is negative to go up
+            var speedRate = this.shutterPositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
+
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
                 this.shutterPositioningMessageData.ShutterType,
-                this.shutterPositioningMessageData.SpeedRate);
+                speedRate,
+                this.shutterPositioningMessageData.HigherDistance,
+                this.shutterPositioningMessageData.LowerDistance,
+                this.shutterPositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,

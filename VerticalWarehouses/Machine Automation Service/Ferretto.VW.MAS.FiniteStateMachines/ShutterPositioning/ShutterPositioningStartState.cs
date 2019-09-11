@@ -91,7 +91,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         shutterPositionTarget,
                                         ShutterMovementDirection.Up,
                                         this.shutterPositioningMessageData.ShutterType,
-                                        this.shutterPositioningMessageData.SpeedRate);
+                                        -this.shutterPositioningMessageData.SpeedRate,
+                                        this.shutterPositioningMessageData.HigherDistance,
+                                        this.shutterPositioningMessageData.LowerDistance,
+                                        this.shutterPositioningMessageData.MovementType);
 
                                     var commandMessage = new FieldCommandMessage(
                                         commandData,
@@ -123,7 +126,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         shutterPositionTarget,
                                         ShutterMovementDirection.Down,
                                         this.shutterPositioningMessageData.ShutterType,
-                                        this.shutterPositioningMessageData.SpeedRate);
+                                        this.shutterPositioningMessageData.SpeedRate,
+                                        this.shutterPositioningMessageData.HigherDistance,
+                                        this.shutterPositioningMessageData.LowerDistance,
+                                        this.shutterPositioningMessageData.MovementType);
 
                                     var commandMessage = new FieldCommandMessage(
                                         commandData,
@@ -189,6 +195,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             ShutterPositioningFieldMessageData messageData;
             if (this.shutterPositioningMessageData.MovementMode == MovementMode.Position)
             {
+                // Absolute positioning: not all starting positions are allowed
+                if (this.shutterPositioningMessageData.MovementType == MovementType.Absolute &&
+                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
+                    )
+                {
+                    this.Logger.LogError($"Shutter in Intermediate position before absolute positioning");
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger));
+                    return;
+                }
                 messageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
             }
             else
@@ -213,7 +228,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     destination,
                     ShutterMovementDirection.Up,
                     this.shutterPositioningMessageData.ShutterType,
-                    this.shutterPositioningMessageData.SpeedRate);
+                    -this.shutterPositioningMessageData.SpeedRate,
+                    this.shutterPositioningMessageData.HigherDistance,
+                    this.shutterPositioningMessageData.LowerDistance,
+                    this.shutterPositioningMessageData.MovementType);
             }
 
             var commandMessage = new FieldCommandMessage(

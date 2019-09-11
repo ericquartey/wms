@@ -187,8 +187,11 @@
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
+    "MinSpeed": 50.0,
     "Acceleration": 500.0,
-    "Deceleration": 500.0
+    "Deceleration": 500.0,
+    "HigherDistance": 2000.0,
+    "LowerDistance": 2100.0
   },
   "BeltBurnishing": {
     "CycleQuantity": 200

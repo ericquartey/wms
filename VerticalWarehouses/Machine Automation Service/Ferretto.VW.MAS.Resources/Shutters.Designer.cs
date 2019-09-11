@@ -77,5 +77,14 @@ namespace Ferretto.VW.MAS.Resources {
                 return ResourceManager.GetString("TheNumberOfTestCyclesMustBeStrictlyPositive", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The starting position is not valid.
+        /// </summary>
+        public static string ThePositionIsNotValid {
+            get {
+                return ResourceManager.GetString("ThePositionIsNotValid", resourceCulture);
+            }
+        }
     }
 }
