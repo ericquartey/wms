@@ -10,7 +10,8 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
     <Grid Width="1024"
-          Height="608">
+          Height="608"
+          IsEnabled="False">
 
         <TextBlock Margin="160,30,0,0"
                    HorizontalAlignment="Left"
