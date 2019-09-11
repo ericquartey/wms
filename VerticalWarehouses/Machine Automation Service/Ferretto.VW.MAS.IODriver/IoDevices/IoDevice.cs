@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     }
                     catch (IoDriverException ex)
                     {
-                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException}");
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
                     }
@@ -185,6 +185,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
                     }
 
                     this.writeEnableEvent.Set();
@@ -484,7 +488,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public async Task StartHardwareCommunications()
         {
-            this.logger.LogTrace($"1:ioAddress={this.ipAddress}:ioPort={this.port}");
+            this.logger.LogInformation($"1:Configure ioAddress={this.ipAddress}:ioPort={this.port}");
 
             this.ioTransport.Configure(this.ipAddress, this.port);
 
@@ -494,7 +498,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             catch (IoDriverException ex)
             {
-                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
@@ -512,6 +516,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                 var ex = new Exception();
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
+            }
+            else
+            {
+                this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
             }
 
             try

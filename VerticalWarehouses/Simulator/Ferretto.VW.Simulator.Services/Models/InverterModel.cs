@@ -630,7 +630,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (!this.homingTimerActive)
                 {
                     this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(-5, 15);
-                    this.TargetPosition[Axis.Horizontal] = 0 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Horizontal] = this.AxisPosition; //0 + new Random().Next(-5, 15);
 
                     this.homingTimerActive = true;
                     this.homingTimer.Change(0, 500);
@@ -729,11 +729,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void HomingTick(object state)
         {
+            if (!this.homingTimerActive)
+            {
+                return;
+            }
             if (this.AxisPosition < this.TargetPosition[this.currentAxis])
             {
                 this.AxisPosition++;
             }
-            else
+            else if (this.AxisPosition > this.TargetPosition[this.currentAxis])
             {
                 this.AxisPosition--;
             }
@@ -743,6 +747,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x1000;          // Set TargetReached
                 if (this.currentAxis == Axis.Horizontal)
                 {
+                    this.AxisPosition = 0;
                     if (this.Id == 0)
                     {
                         this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;

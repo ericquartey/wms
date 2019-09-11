@@ -72,12 +72,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
-                    installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
+                    if (setupNetworkInverterIndex != (long)SetupNetwork.Undefined)
+                    {
+                    	setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
+                    	installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
+                	}
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogDebug($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
@@ -116,10 +119,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    var isInstalled = this.GetBoolConfigurationValue((long)isExpansionInstalledIndex, ConfigurationCategory.SetupNetwork);
-                    if (isInstalled)
+                    if (isExpansionInstalledIndex != SetupNetwork.Undefined)
                     {
-                        installedIoDevices.Add(ioIndex);
+                    	var isInstalled = this.GetBoolConfigurationValue((long)isExpansionInstalledIndex, ConfigurationCategory.SetupNetwork);
+                    	if (isInstalled)
+                    	{
+                        	installedIoDevices.Add(ioIndex);
+                        }
                     }
                 }
                 catch (DataLayerPersistentException ex)
