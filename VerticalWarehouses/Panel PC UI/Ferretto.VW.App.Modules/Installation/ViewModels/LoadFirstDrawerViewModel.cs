@@ -7,7 +7,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Constructors
 
-        public LoadFirstDrawerViewModel() : base(Services.PresentationMode.Installer)
+        public LoadFirstDrawerViewModel()
+            : base(Services.PresentationMode.Installer)
         {
         }
 

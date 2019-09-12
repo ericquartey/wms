@@ -38,8 +38,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCarouselService machineCarouselService,
             IMachineElevatorService machineElevatorService,
             IMachineBaysService machineBayService,
-            IBayManager bayManager
-            )
+            IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
             if (shutterService == null)

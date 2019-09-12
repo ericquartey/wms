@@ -64,21 +64,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteClosedCommand()
         {
             return !this.IsElevatorMoving
-                //&& this.Sensors.Open
+
+                // && this.Sensors.Open
                 ;
         }
 
         private bool CanExecuteIntermediateCommand()
         {
             return !this.IsElevatorMoving
-                //&& this.Sensors.Open
+
+                // && this.Sensors.Open
                 ;
         }
 
         private bool CanExecuteOpenCommand()
         {
             return !this.IsElevatorMoving
-                //&& this.Sensors.Closed
+
+                // && this.Sensors.Closed
                 ;
         }
 

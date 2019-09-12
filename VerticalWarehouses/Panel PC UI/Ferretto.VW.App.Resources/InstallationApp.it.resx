@@ -988,6 +988,15 @@
   <data name="Abort" xml:space="preserve">
     <value>Abortisci</value>
   </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Analisi Peso</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tara Cassetto [kg]</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Peso Netto [kg]</value>
+  </data>
   <data name="DisembarkBackwards" xml:space="preserve">
     <value>Scarica Indietro</value>
   </data>
@@ -1005,5 +1014,8 @@
   </data>
   <data name="ManualMovements" xml:space="preserve">
     <value>Movimenti manuali</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Il firewall risulta abilitato su questo terminale.</value>
   </data>
 </root>

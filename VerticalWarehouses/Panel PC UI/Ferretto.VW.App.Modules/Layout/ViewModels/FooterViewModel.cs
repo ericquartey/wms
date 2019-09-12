@@ -20,14 +20,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #region Constructors
 
-        public FooterViewModel() : base()
+        public FooterViewModel()
+            : base()
         {
             var notificationEvent = this.EventAggregator.GetEvent<PresentationNotificationPubSubEvent>();
 
             notificationEvent.Subscribe(
-                                notificationMessage => this.NotificationChanged(notificationMessage),
-                                ThreadOption.UIThread,
-                                true);
+                notificationMessage => this.NotificationChanged(notificationMessage),
+                ThreadOption.UIThread,
+                true);
         }
 
         #endregion

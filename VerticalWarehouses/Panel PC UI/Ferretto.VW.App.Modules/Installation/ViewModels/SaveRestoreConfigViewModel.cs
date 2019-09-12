@@ -7,7 +7,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Constructors
 
-        public SaveRestoreConfigViewModel() : base(Services.PresentationMode.Installer)
+        public SaveRestoreConfigViewModel()
+            : base(Services.PresentationMode.Installer)
         {
         }
 
