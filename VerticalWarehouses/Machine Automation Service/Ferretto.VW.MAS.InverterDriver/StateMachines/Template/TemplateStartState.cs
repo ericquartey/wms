@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 {
     public class TemplateStartState : InverterStateBase
     {
-
         #region Fields
 
         private readonly ITemplateData templateData;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -99,6 +96,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
                 this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
             }
 

@@ -69,12 +69,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
                 this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
@@ -127,7 +126,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.parameterId = 0;
                         dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
                         this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Deceleration: {this.data.TargetDeceleration}");
+                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetDeceleration[this.parameterId]}");
                     }
                     break;
 
@@ -136,7 +135,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     {
                         dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
                         this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Deceleration: {this.data.TargetDeceleration}");
+                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetDeceleration[this.parameterId]}");
                     }
                     else
                     {

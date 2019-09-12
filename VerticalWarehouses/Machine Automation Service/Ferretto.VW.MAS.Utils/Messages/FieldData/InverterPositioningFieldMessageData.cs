@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = targetSpeed;
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
+            this.Direction = (targetPosition > 0) ? 2 : 4;
         }
 
         #endregion

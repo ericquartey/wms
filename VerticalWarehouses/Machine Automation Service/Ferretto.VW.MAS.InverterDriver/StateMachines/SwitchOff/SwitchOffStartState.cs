@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     public class SwitchOffStartState : InverterStateBase
     {
-
-
         #region Constructors
 
         public SwitchOffStartState(
@@ -35,8 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -87,12 +83,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
                 this.ParentStateMachine.ChangeState(new SwitchOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 

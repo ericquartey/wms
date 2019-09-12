@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
     public class DisableOperationStartState : InverterStateBase
     {
-
-
         #region Constructors
 
         public DisableOperationStartState(
@@ -33,8 +31,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -91,6 +87,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
                 this.ParentStateMachine.ChangeState(new DisableOperationErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
