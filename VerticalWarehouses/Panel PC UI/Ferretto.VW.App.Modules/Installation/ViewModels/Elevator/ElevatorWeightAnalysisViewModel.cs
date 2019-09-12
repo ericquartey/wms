@@ -314,6 +314,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.ProcedureWasStopped,
                     Services.Models.NotificationSeverity.Warning);
             }
+            else if (message.Status == MessageStatus.OperationError)
+            {
+                this.IsExecutingProcedure = false;
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Error);
+            }
             else if (message.Status == MessageStatus.OperationEnd)
             {
                 this.IsExecutingProcedure = false;
