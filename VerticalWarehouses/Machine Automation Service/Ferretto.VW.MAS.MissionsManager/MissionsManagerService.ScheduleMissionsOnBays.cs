@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             {
                 MissionId = bay.CurrentMissionId.Value,
                 MissionOperationId = bay.CurrentMissionOperationId.Value,
-                PendingMissionsCount = pendingMissionsCount
+                PendingMissionsCount = pendingMissionsCount,
             };
 
             var notificationMessage = new NotificationMessage(
@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             {
                 this.bayStatusChangedEvent,
                 this.newMissionArrivedResetEvent,
-                this.StoppingToken.WaitHandle
+                this.StoppingToken.WaitHandle,
             };
 
             do

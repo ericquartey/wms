@@ -13,5 +13,7 @@
         FindZero = 4,
 
         TestLoop = 5,
+
+        TorqueSampling = 6,
     }
 }

@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer;
 
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
         private readonly IPanelControlDataLayer panelControlDataLayer;
@@ -60,7 +62,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             ICellControlDataLayer cellControlDataLayer,
             ISetupStatusProvider setupStatusProvider,
             IWeightControlDataLayer weightControl,
-            IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer)
+            IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
+            ILoadingUnitsProvider loadingUnitsProvider)
             : base(eventAggregator)
         {
             if (dataContext is null)
@@ -133,6 +136,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
+            if (loadingUnitsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            }
+
             this.dataContext = dataContext;
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
@@ -147,6 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.setupStatusProvider = setupStatusProvider;
             this.weightControl = weightControl;
             this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer;
+            this.loadingUnitsProvider = loadingUnitsProvider;
         }
 
         #endregion
@@ -424,6 +433,54 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning);
+        }
+
+        public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId)
+        {
+            if (displacement == 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(displacement),
+                    Resources.Elevator.MovementDistanceCannotBeZero);
+            }
+
+            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            if (!homingDone)
+            {
+                throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+            }
+
+            var loadingUnitTare = loadingUnitId.HasValue
+                ? this.loadingUnitsProvider.GetById(loadingUnitId.Value).Tare
+                : 0;
+
+            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * this.verticalManualMovementsDataLayer.FeedRateAfterZero };
+            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Relative,
+                MovementMode.TorqueSampling,
+                displacement,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition)
+            {
+                LoadedGrossWeight = netWeight + loadingUnitTare
+            };
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Vertical} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.TorqueCurrentSampling);
         }
 
         public void Stop()
