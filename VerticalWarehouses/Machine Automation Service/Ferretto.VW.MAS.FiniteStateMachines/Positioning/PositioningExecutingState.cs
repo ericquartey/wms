@@ -11,8 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     internal class PositioningExecutingState : StateBase
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     switch (message.Type)
                     {
                         case FieldMessageType.InverterStatusUpdate:
-                            this.ProcessExecutingStatusUpdate(message);
+                            this.OnInverterStatusUpdated(message);
                             break;
                     }
                     break;
@@ -113,77 +113,92 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-            if (this.positioningMessageData.MovementMode == MovementMode.Position)
+            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal)
+                ? InverterIndex.Slave1
+                : InverterIndex.MainInverter;
+
+            switch (this.positioningMessageData.MovementMode)
             {
-                this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+                case MovementMode.Position:
+                    this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
 
-                this.commandMessage = new FieldCommandMessage(
-                    this.positioningFieldMessageData,
-                    $"{this.positioningMessageData.AxisMovement} Positioning State Started",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning,
-                    (byte)inverterIndex);
-            }
+                    this.commandMessage = new FieldCommandMessage(
+                        this.positioningFieldMessageData,
+                        $"Start {this.positioningMessageData.AxisMovement} positioning",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.Positioning,
+                        (byte)inverterIndex);
+                    break;
 
-            if (this.positioningMessageData.MovementMode == MovementMode.BeltBurnishing)
-            {
-                // Build message for UP
-                this.positioningUpMessageData = new PositioningMessageData(
-                    this.positioningMessageData.AxisMovement,
-                    this.positioningMessageData.MovementType,
-                    this.positioningMessageData.MovementMode,
-                    this.positioningMessageData.UpperBound,
-                    this.positioningMessageData.TargetSpeed,
-                    this.positioningMessageData.TargetAcceleration,
-                    this.positioningMessageData.TargetDeceleration,
-                    this.positioningMessageData.NumberCycles,
-                    this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.UpperBound,
-                    this.positioningMessageData.Delay,
-                    this.positioningMessageData.SwitchPosition);
+                case MovementMode.TorqueCurrentSampling:
+                    this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
 
-                // Build message for DOWN
-                this.positioningDownMessageData = new PositioningMessageData(
-                    this.positioningMessageData.AxisMovement,
-                    this.positioningMessageData.MovementType,
-                    this.positioningMessageData.MovementMode,
-                    this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.TargetSpeed,
-                    this.positioningMessageData.TargetAcceleration,
-                    this.positioningMessageData.TargetDeceleration,
-                    this.positioningMessageData.NumberCycles,
-                    this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.UpperBound,
-                    this.positioningMessageData.Delay,
-                    this.positioningMessageData.SwitchPosition);
+                    this.commandMessage = new FieldCommandMessage(
+                        this.positioningFieldMessageData,
+                        $"Start torque current sampling",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.TorqueCurrentSampling,
+                        (byte)inverterIndex);
+                    break;
 
-                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
+                case MovementMode.BeltBurnishing:
+                    // Build message for UP
+                    this.positioningUpMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
+                        this.positioningMessageData.MovementType,
+                        this.positioningMessageData.MovementMode,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Delay,
+                        this.positioningMessageData.SwitchPosition);
 
-                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
+                    // Build message for DOWN
+                    this.positioningDownMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
+                        this.positioningMessageData.MovementType,
+                        this.positioningMessageData.MovementMode,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Delay,
+                        this.positioningMessageData.SwitchPosition);
 
-                // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
-                this.commandMessage = new FieldCommandMessage(
-                    this.positioningUpFieldMessageData,
-                    "Belt Burninshing Started",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning,
-                    (byte)InverterIndex.MainInverter);
-            }
+                    this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
-            if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
-            {
-                this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+                    this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
 
-                this.commandMessage = new FieldCommandMessage(
-                    this.positioningFieldMessageData,
-                    $"{this.positioningMessageData.AxisMovement} Positioning Find Zero Started",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning,
-                    (byte)inverterIndex);
+                    // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
+                    this.commandMessage = new FieldCommandMessage(
+                        this.positioningUpFieldMessageData,
+                        "Belt Burninshing Started",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.Positioning,
+                        (byte)InverterIndex.MainInverter);
+                    break;
+
+                case MovementMode.FindZero:
+                    this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+
+                    this.commandMessage = new FieldCommandMessage(
+                        this.positioningFieldMessageData,
+                        $"{this.positioningMessageData.AxisMovement} Positioning Find Zero Started",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.Positioning,
+                        (byte)inverterIndex);
+                    break;
             }
 
             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
@@ -279,6 +294,44 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             Debug.Write("Belt current position " + beltBurnishingPosition);
         }
 
+        private void OnInverterStatusUpdated(FieldNotificationMessage message)
+        {
+            if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
+            {
+                if (this.machineSensorsStatus.IsSensorZeroOnCradle)
+                {
+                    var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                    this.commandMessage = new FieldCommandMessage(
+                        null,
+                        $"Stop Operation due to zero position reached",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.InverterStop,
+                        (byte)inverterIndex);
+
+                    this.Logger.LogTrace(
+                        $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+                    this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+                }
+            }
+
+            if (message.Data is InverterStatusUpdateFieldMessageData data)
+            {
+                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
+
+                var notificationMessage = new NotificationMessage(
+                    this.positioningMessageData,
+                    $"Current Encoder position: {data.CurrentPosition}",
+                    MessageActor.AutomationService,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning,
+                    MessageStatus.OperationExecuting);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
+        }
+
         private void ProcessEndPositioning()
         {
             switch (this.positioningMessageData.MovementMode)
@@ -341,44 +394,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     switchPosition);
                 this.positioningMessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
-            }
-        }
-
-        private void ProcessExecutingStatusUpdate(FieldNotificationMessage message)
-        {
-            if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
-            {
-                if (this.machineSensorsStatus.IsSensorZeroOnCradle)
-                {
-                    var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                    this.commandMessage = new FieldCommandMessage(
-                        null,
-                        $"Stop Operation due to zero position reached",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop,
-                        (byte)inverterIndex);
-
-                    this.Logger.LogTrace(
-                        $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-                    this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
-                }
-            }
-
-            if (message.Data is InverterStatusUpdateFieldMessageData data)
-            {
-                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
-
-                var notificationMessage = new NotificationMessage(
-                    this.positioningMessageData,
-                    $"Current Encoder position: {data.CurrentPosition}",
-                    MessageActor.AutomationService,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning,
-                    MessageStatus.OperationExecuting);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
         }
 

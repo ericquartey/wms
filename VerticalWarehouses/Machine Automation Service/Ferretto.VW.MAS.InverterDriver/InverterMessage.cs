@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public class InverterMessage
+    internal sealed class InverterMessage
     {
         #region Fields
 

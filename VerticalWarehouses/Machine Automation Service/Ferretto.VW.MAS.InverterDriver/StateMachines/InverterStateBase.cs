@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
-    public abstract class InverterStateBase : IInverterState
+    internal abstract class InverterStateBase : IInverterState
     {
         #region Fields
 

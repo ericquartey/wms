@@ -28,8 +28,6 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightAnalysis}" />
 
-
-
         <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="1"
                              HorizontalAlignment="Left"
@@ -123,7 +121,7 @@
                 </dxc:XYDiagram2D.AxisX>
                 <dxc:XYDiagram2D.Series>
 
-                    <dxc:PointSeries2D ArgumentDataMember="Time"
+                    <dxc:PointSeries2D ArgumentDataMember="TimeStamp"
                                        Brush="{DynamicResource FerrettoBlue}"
                                        DataSource="{Binding MeasuredSamples}"
                                        MarkerSize="5"

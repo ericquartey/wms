@@ -6,7 +6,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
-    public class StopStateMachine : InverterStateMachineBase
+    internal class StopStateMachine : InverterStateMachineBase
     {
         #region Fields
 

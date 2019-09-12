@@ -5,8 +5,8 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     internal class PositioningStartState : StateBase
@@ -36,15 +36,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.positioningMessageData = positioningMessageData;
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningStartState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -92,7 +83,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
+                this.ParentStateMachine.ChangeState(
+                    new PositioningExecutingState(
+                        this.ParentStateMachine,
+                        this.machineSensorsStatus,
+                        this.positioningMessageData,
+                        this.Logger));
             }
         }
 
@@ -139,7 +135,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
-            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal)
+                ? InverterIndex.Slave1
+                : InverterIndex.MainInverter;
 
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.positioningMessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -156,14 +154,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             lock (this.machineSensorsStatus)
             {
-                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical)
+                    ? this.machineSensorsStatus.AxisYPosition
+                    : this.machineSensorsStatus.AxisXPosition;
             }
 
             this.positioningMessageData.ExecutedCycles = 0;
 
             var notificationMessage = new NotificationMessage(
                 this.positioningMessageData,
-                this.positioningMessageData.NumberCycles == 0 ? $"{this.positioningMessageData.AxisMovement} Positioning Started" : "Burnishing Started",
+                this.positioningMessageData.NumberCycles == 0
+                    ? $"{this.positioningMessageData.AxisMovement} Positioning Started"
+                    : "Burnishing Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,

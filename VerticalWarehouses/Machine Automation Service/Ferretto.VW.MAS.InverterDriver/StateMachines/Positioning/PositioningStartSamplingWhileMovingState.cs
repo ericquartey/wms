@@ -7,25 +7,16 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningTableDisableOperationState : InverterStateBase
+    internal class PositioningStartSamplingWhileMovingState : InverterStateBase
     {
         #region Constructors
 
-        public PositioningTableDisableOperationState(
+        public PositioningStartSamplingWhileMovingState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningTableDisableOperationState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -41,12 +32,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                currentStatus.TableTravelControlWord.EnableOperation = false;
-                currentStatus.TableTravelControlWord.SequenceMode = false;
-                currentStatus.TableTravelControlWord.StartMotionBlock = false;
+                currentStatus.PositionControlWord.NewSetPoint = true;
             }
+            //TODO complete type failure check
+            this.Logger.LogDebug("Set New Setpoint");
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -58,13 +49,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+
+            if (message.ParameterId == InverterParameterId.ControlWordParam)
+            {
+                return false;
+            }
 
             return true;
         }
@@ -74,20 +70,30 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            var returnValue = false;
-
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
+                {
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.Logger.LogDebug("Position Reached !");
+                }
+                else
+                {
+                    this.Logger.LogDebug("Position Not Reached");
+                }
             }
 
-            return returnValue;
+            //INFO Next status word request handled by timer
+            return true;
+        }
+
+        protected override void OnDisposing()
+        {
         }
 
         #endregion
