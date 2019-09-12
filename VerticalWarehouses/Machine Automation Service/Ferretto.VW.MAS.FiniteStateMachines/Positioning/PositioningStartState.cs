@@ -61,7 +61,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
                         break;
                 }
             }
@@ -76,7 +77,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
                         break;
                 }
             }

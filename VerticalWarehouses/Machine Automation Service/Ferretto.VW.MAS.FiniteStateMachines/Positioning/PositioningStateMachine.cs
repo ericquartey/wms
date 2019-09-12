@@ -91,17 +91,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            bool checkConditions;
-
-            //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions();
-
-                if (checkConditions)
+                var canStartPositioning = this.CheckConditions();
+                if (canStartPositioning)
                 {
-                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero && this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero
+                        &&
+                        this.machineSensorsStatus.IsSensorZeroOnCradle)
                     {
                         this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
                     }

@@ -101,10 +101,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             return true;
         }
 
-        protected override void OnDisposing()
-        {
-        }
-
         #endregion
     }
 }
