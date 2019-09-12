@@ -1,42 +1,22 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningEnableOperationState : InverterStateBase
+    internal class PositioningStartSamplingWhileMovingState : InverterStateBase
     {
-        #region Fields
-
-        private readonly IInverterPositioningFieldMessageData data;
-
-        #endregion
-
         #region Constructors
 
-        public PositioningEnableOperationState(
+        public PositioningStartSamplingWhileMovingState(
             IInverterStateMachine parentStateMachine,
-            IInverterPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.data = data;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningEnableOperationState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -50,20 +30,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
-
             if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                //INFO Set the axis to move in the CW
-                currentStatus.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
-                currentStatus.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative || this.data.MovementType == MovementType.TableTarget);
-                currentStatus.PositionControlWord.EnableOperation = true;
+                currentStatus.PositionControlWord.NewSetPoint = true;
             }
-
-            this.Logger.LogDebug("Inverter Enable Operation");
+            //TODO complete type failure check
+            this.Logger.LogDebug("Set New Setpoint");
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
-            this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -79,7 +55,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+
+            if (message.ParameterId == InverterParameterId.ControlWordParam)
+            {
+                return false;
+            }
 
             return true;
         }
@@ -89,30 +70,30 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            var returnValue = false;
-
             if (message.IsError)
             {
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                if (this.data.IsTorqueCurrentSamplingEnabled)
+                if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningStartSamplingWhileMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.Logger.LogDebug("Position Reached !");
                 }
                 else
                 {
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.Logger.LogDebug("Position Not Reached");
                 }
-
-                returnValue = true;
             }
 
-            return returnValue;
+            //INFO Next status word request handled by timer
+            return true;
+        }
+
+        protected override void OnDisposing()
+        {
         }
 
         #endregion

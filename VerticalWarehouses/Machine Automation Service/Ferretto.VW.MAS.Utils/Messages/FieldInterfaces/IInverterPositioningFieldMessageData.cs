@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int Direction { get; set; }
 
+        bool IsTorqueCurrentSamplingEnabled { get; set; }
+
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }

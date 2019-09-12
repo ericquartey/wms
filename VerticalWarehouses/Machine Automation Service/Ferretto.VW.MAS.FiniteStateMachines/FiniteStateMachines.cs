@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
+                    case MessageType.TorqueCurrentSampling:
                         this.ProcessPositioningMessage(receivedMessage?.Data as IPositioningMessageData);
                         break;
 

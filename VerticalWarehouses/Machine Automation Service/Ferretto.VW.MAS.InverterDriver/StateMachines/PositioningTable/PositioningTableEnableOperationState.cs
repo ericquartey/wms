@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
-
         private readonly IInverterPositioningFieldMessageData data;
 
         #endregion
