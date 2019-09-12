@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<LoadingUnit> GetAll();
 
+        LoadingUnit GetById(int id);
+
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();

@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void MoveVerticalOfDistance(decimal distance);
 
+        void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId);
+
         void Stop();
 
         void UpdateResolution(decimal newResolution);

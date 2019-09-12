@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMoving;
 
+        private bool isOperationCompleted;
+
         private DelegateCommand moveToCellHeightCommand;
 
         private DelegateCommand stopCommand;
@@ -73,8 +75,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private bool isOperationCompleted;
-
         public ICommand MoveToCellHeightCommand =>
             this.moveToCellHeightCommand
             ??
@@ -109,14 +109,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-
-        }
-
-        private void ShowSteps()
-        {
-            this.ShowPrevStep(true, false);
-            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalOffsetCalibration.STEP2);
-            this.ShowAbortStep(true, true);
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -209,6 +201,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
                 this.SelectedCell,
                 trackCurrentView: false);
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, false);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalOffsetCalibration.STEP2);
+            this.ShowAbortStep(true, true);
         }
 
         private async Task StopAsync()

@@ -28,6 +28,8 @@
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
+        public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";
+
         #endregion
 
         #region Classes

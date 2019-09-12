@@ -59,7 +59,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
-        //Tuning
         public decimal? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
@@ -74,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit EmbarkedLoadingUnit
         {
             // TODO  for the moment we use only presence sensors
-            //get => this.embarkedLoadingUnit;
+            // get => this.embarkedLoadingUnit;
             get
             {
                 if (this.CanEmbark())
@@ -85,6 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.embarkedLoadingUnit = null;
                 }
+
                 return this.embarkedLoadingUnit;
             }
 
@@ -156,8 +156,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
-                //!this.IsWaitingForResponse
-                //&&
+
+                // !this.IsWaitingForResponse
+                // &&
                 !this.IsElevatorMoving
                 &&
                 this.Sensors.LuPresentInMachineSideBay1
@@ -168,8 +169,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
-                //!this.IsWaitingForResponse
-                //&&
+
+                // !this.IsWaitingForResponse
+                // &&
                 !this.IsElevatorMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1

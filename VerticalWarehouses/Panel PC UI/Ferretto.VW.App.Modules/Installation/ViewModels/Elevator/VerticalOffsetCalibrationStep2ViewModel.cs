@@ -86,8 +86,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-                      Environment.NewLine,
-              this[nameof(this.Displacement)]);
+            Environment.NewLine,
+            this[nameof(this.Displacement)]);
 
         public decimal InputStepValue
         {

@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
     {
         #region Fields
 
+        private const int FirewallCheckDelay = 5000;
+
         private readonly IBayManager bayManager;
 
         private readonly IHealthProbeService healthProbeService;
@@ -71,10 +73,40 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 async (e) => await this.OnHealthStatusChanged(e),
                 ThreadOption.UIThread,
                 false);
+
+            await this.CheckFirewallStatusAsync();
+        }
+
+        private async Task CheckFirewallStatusAsync()
+        {
+            await Task.Delay(FirewallCheckDelay);
+
+            if (this.healthProbeService.HealthStatus == HealthStatus.Unknown)
+            {
+                try
+                {
+                    var firewallManagerType = Type.GetTypeFromProgID("HNetCfg.FwMgr", false);
+                    var firewallManager = (dynamic)Activator.CreateInstance(firewallManagerType);
+                    bool isFirewallenabled = firewallManager.LocalPolicy.CurrentProfile.FirewallEnabled;
+
+                    if (isFirewallenabled)
+                    {
+                        this.ShowNotification(
+                            Resources.InstallationApp.FirewallIsEnabledOnThisTerminal,
+                            Services.Models.NotificationSeverity.Warning);
+                    }
+                }
+                catch
+                {
+                    // do nothing
+                }
+            }
         }
 
         private void NavigateToLoginPage(MAS.AutomationService.Contracts.MachineIdentity machineIdentity)
         {
+            this.ClearNotifications();
+
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Login),
                 Utils.Modules.Login.LOGIN,
@@ -93,8 +125,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             switch (this.healthProbeService.HealthStatus)
             {
+                case HealthStatus.Initialized:
+                case HealthStatus.Initializing:
+                    this.ShowNotification("I servizi sono in fase di inizializzazione.");
+
+                    break;
+
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
+
+                    this.ShowNotification("Connessione ai servizi stabilita.", Services.Models.NotificationSeverity.Success);
 
                     await this.bayManager.InitializeAsync();
                     var machineIdentity = this.bayManager.Identity;

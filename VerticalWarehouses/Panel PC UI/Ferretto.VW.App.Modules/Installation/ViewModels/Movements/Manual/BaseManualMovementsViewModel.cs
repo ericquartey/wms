@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? currentHorizontalPosition;
 
-        private decimal? currentPosition;
-
         private decimal? currentVerticalPosition;
 
         private SubscriptionToken movementsSubscriptionToken;
@@ -44,12 +42,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (machineElevatorService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorService));
             }
 
             if (bayManagerService is null)
             {
-                throw new System.ArgumentNullException(nameof(bayManagerService));
+                throw new ArgumentNullException(nameof(bayManagerService));
             }
 
             this.MachineElevatorService = machineElevatorService;
@@ -178,7 +176,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
                 this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

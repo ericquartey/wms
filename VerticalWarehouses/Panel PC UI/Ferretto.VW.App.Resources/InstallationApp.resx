@@ -1054,6 +1054,15 @@
     <value>Abort</value>
     <comment>Button text</comment>
   </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Weight Analysis</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tray Tare [kg]</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Net Weight [kg]</value>
+  </data>
   <data name="DisembarkBackwards" xml:space="preserve">
     <value>Disembark backwards</value>
   </data>
@@ -1072,5 +1081,8 @@
   </data>
   <data name="ManualMovements" xml:space="preserve">
     <value>Manual Movements</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Firewall is enabled on this terminal.</value>
   </data>
 </root>

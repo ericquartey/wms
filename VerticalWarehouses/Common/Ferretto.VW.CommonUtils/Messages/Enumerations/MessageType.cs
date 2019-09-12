@@ -72,6 +72,8 @@
 
         ElevatorWeightCheck,
 
-        PositioningTable
+        PositioningTable,
+
+        TorqueCurrentSampling
     }
 }
