@@ -48,13 +48,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            this.IsBackNavigationAllowed = true;
-        }
-
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
             base.OnNavigatedFrom(navigationContext);

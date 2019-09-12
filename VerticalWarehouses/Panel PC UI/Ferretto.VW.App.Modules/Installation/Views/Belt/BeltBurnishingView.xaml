@@ -59,7 +59,8 @@
                            VerticalAlignment="Top"
                            InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+                           LabelText="{x:Static res:InstallationApp.RequiredCycles}"
+                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
@@ -68,6 +69,7 @@
                            InputText="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
+
         <StackPanel Grid.Row="3"
                     Grid.Column="1"
                     Orientation="Horizontal">
