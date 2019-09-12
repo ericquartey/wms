@@ -31,9 +31,10 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
 
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
-            notificationMessage => this.PresentationChanged(notificationMessage),
-                                   ThreadOption.UIThread,
-                                   false);
+                notificationMessage => this.PresentationChanged(notificationMessage),
+                ThreadOption.UIThread,
+                false);
+
             this.InitializeData();
         }
 

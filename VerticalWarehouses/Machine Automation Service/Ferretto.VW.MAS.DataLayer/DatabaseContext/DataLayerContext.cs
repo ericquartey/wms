@@ -59,6 +59,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
+        public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         #endregion
@@ -103,6 +105,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new PanelsConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
+            modelBuilder.ApplyConfiguration(new TorqueCurrentSampleConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
@@ -110,6 +113,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
             modelBuilder.ApplyConfiguration(new SetupStatusConfiguration());
+            modelBuilder.ApplyConfiguration(new TorqueCurrentMeasurementSessionConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
 

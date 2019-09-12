@@ -66,6 +66,10 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Movimenti semi-automatici")]
         SemiAutoMovements,
 
+        [View(Utils.Modules.Installation.WEIGHTANALYSIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Analisi profilo peso")]
+        WeightAnalysis,
+
         [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Controllo quote celle")]
         CellsHeightCheck,

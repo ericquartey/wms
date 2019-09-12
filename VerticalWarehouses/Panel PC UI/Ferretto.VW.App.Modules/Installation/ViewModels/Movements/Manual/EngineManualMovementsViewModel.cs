@@ -40,8 +40,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveUpCommand;
 
-        private DelegateCommand stopMovementCommand;
-
         #endregion
 
         #region Constructors
@@ -174,11 +172,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveUpCommand
             ??
             (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUpAsync()));
-
-        public DelegateCommand StopMovementCommand =>
-            this.stopMovementCommand
-            ??
-            (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
         #endregion
 

@@ -161,6 +161,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.subscriptionToken = null;
             }
+
             if (this.sensorsToken != null)
             {
                 this.EventAggregator

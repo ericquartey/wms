@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
         }
 
-        public new ShutterPosition? CurrentPosition
+        public ShutterPosition? CurrentPosition
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);

@@ -30,7 +30,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator) : base(Services.PresentationMode.Installer)
+        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator)
+            : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;

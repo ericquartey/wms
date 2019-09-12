@@ -64,6 +64,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsOneKMachine { get; set; }
 
+        public decimal LoadedGrossWeight { get; set; }
+
         public decimal LowerBound { get; set; }
 
         public MovementMode MovementMode { get; set; }
