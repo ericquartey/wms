@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
     {
         #region Fields
 
+        private const int FirewallCheckDelay = 5000;
+
         private readonly IBayManager bayManager;
 
         private readonly IHealthProbeService healthProbeService;
@@ -77,7 +79,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task CheckFirewallStatusAsync()
         {
-            await Task.Delay(15000);
+            await Task.Delay(FirewallCheckDelay);
 
             if (this.healthProbeService.HealthStatus == HealthStatus.Unknown)
             {

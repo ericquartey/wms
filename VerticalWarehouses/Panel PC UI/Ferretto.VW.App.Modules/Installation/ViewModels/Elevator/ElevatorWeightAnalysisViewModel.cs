@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -22,21 +24,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
+        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+
         private readonly ObservableCollection<MeasuredSample> measuredSamples = new ObservableCollection<MeasuredSample>();
 
         private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
+
+        private bool canInputNetWeight;
 
         private double? currentPosition;
 
         private double? inputDisplacement;
 
-        private double? inputInitialPosition;
+        private string inputLoadingUnitCode;
 
         private double? inputNetWeight;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
+
+        private LoadingUnit loadingUnit;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
 
         private DelegateCommand startCommand;
 
@@ -51,12 +61,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ElevatorWeightAnalysisViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
+            IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineWeightAnalysisProcedureService weightAnalysisProcedureService)
             : base(Services.PresentationMode.Installer)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (machineLoadingUnitsService is null)
+            {
+                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
             }
 
             if (weightAnalysisProcedureService is null)
@@ -66,12 +82,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.eventAggregator = eventAggregator;
             this.machineElevatorService = machineElevatorService;
+            this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.weightAnalysisProcedureService = weightAnalysisProcedureService;
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanInputNetWeight
+        {
+            get => this.canInputNetWeight;
+            set => this.SetProperty(ref this.canInputNetWeight, value);
+        }
 
         public double? CurrentPosition
         {
@@ -81,7 +104,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string Error => string.Join(
           Environment.NewLine,
-          this[nameof(this.InputInitialPosition)],
           this[nameof(this.InputDisplacement)]);
 
         public double? InputDisplacement
@@ -96,13 +118,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public double? InputInitialPosition
+        public string InputLoadingUnitCode
         {
-            get => this.inputInitialPosition;
+            get => this.inputLoadingUnitCode;
             set
             {
-                if (this.SetProperty(ref this.inputInitialPosition, value))
+                if (this.SetProperty(ref this.inputLoadingUnitCode, value))
                 {
+                    if (value != null)
+                    {
+                        this.LoadingUnit = this.loadingUnits.SingleOrDefault(l => l.Code == value);
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -154,6 +181,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public LoadingUnit LoadingUnit
+        {
+            get => this.loadingUnit;
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnit, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ObservableCollection<MeasuredSample> MeasuredSamples => this.measuredSamples;
 
         public ICommand StartCommand =>
@@ -180,19 +219,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
-                    case nameof(this.InputInitialPosition):
-                        if (!this.InputInitialPosition.HasValue)
-                        {
-                            return $"InputInitialPosition is required.";
-                        }
-
-                        if (this.InputInitialPosition.Value <= 0)
-                        {
-                            return "InputInitialPosition must be strictly positive.";
-                        }
-
-                        break;
-
                     case nameof(this.InputDisplacement):
                         if (!this.InputDisplacement.HasValue)
                         {
@@ -255,6 +281,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  false);
 
             await this.RetrieveCurrentPositionAsync();
+
+            await this.RetrieveLoadingUnitsAsync();
         }
 
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -286,6 +314,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();
+
+            this.CanInputNetWeight = this.loadingUnit != null;
         }
 
         private bool CanStart()
@@ -322,6 +352,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private async Task RetrieveLoadingUnitsAsync()
+        {
+            this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
         }
 
         private async Task StartAsync()

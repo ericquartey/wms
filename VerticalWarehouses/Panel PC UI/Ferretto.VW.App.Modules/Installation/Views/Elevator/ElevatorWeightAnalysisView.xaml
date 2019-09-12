@@ -28,14 +28,9 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightAnalysis}" />
 
-        <controls:PpcTextBox Grid.Row="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputScope="Number"
-                             InputText="{Binding InputInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
-        <controls:PpcTextBox Grid.Row="1"
+
+        <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
@@ -43,32 +38,32 @@
                              InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.Displacement}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="3"
+        <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPosition}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding LoadingUnit.Code}"
-                                 LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="1"
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding LoadingUnit.Tare}"
                                  LabelText="{x:Static res:InstallationApp.TrayTare}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             Grid.Column="2"
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
                              InputText="{Binding InputNetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding CanInputNetWeight}"
                              LabelText="{x:Static res:InstallationApp.NetWeight}" />
 
         <controls:PpcButton Grid.Row="4"

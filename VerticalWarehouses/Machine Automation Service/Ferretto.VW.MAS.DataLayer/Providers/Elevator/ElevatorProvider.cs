@@ -462,7 +462,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Relative,
-                MovementMode.TorqueSampling,
+                MovementMode.TorqueCurrentSampling,
                 displacement,
                 speed,
                 acceleration,

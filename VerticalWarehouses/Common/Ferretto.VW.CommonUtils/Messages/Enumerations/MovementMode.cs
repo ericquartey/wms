@@ -14,6 +14,6 @@
 
         TestLoop = 5,
 
-        TorqueSampling = 6,
+        TorqueCurrentSampling = 6,
     }
 }
