@@ -54,6 +54,8 @@
 
   <ItemGroup>
     <None Remove="Views\Movements\Manual\ManualMovementsView.xaml" />
+    <None Remove="Views\Movements\SemiAuto\SemiAutoMovementsNavigationView.xaml" />
+    <None Remove="Views\Movements\SemiAuto\SemiAutoMovementsStep2View.xaml" />
     <None Remove="Views\SemiAutoMovementsView.xaml" />
   </ItemGroup>
 
@@ -64,8 +66,8 @@
     <Compile Update="Views\Movements\Manual\EngineManualMovementsView.xaml.cs">
       <DependentUpon>EngineManualMovementsView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Movements\SemiAuto\SemiAutoMovementsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Views\Movements\SemiAuto\SemiAutoMovementsStep1View.xaml.cs">
+      <DependentUpon>SemiAutoMovementsStep1View.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -89,6 +91,9 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\Movements\Manual\ShutterEngineManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\SemiAuto\SemiAutoMovementsStep1View.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\Movements\SemiAuto\SemiAutoMovementsView.xaml">

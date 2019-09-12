@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private readonly IMachineShuttersService shuttersService;
+
         private int? inputLoadingUnitCode;
 
         private bool isWaitingForResponse;
@@ -44,6 +46,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCellsService machineCellsService,
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
+            IMachineShuttersService shuttersService,
+            IMachineServiceService machineServiceService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -66,9 +70,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
+
             if (machineSensorsService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
+
+            if (shuttersService is null)
+            {
+                throw new System.ArgumentNullException(nameof(shuttersService));
+            }
+
+            if (machineServiceService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineServiceService));
             }
 
             this.machineSensorsService = machineSensorsService;
@@ -76,6 +91,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCellsService = machineCellsService;
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
+            this.shuttersService = shuttersService;
+            this.machineServiceService = machineServiceService;
 
             this.SelectBayPosition1();
         }
@@ -101,6 +118,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsElevatorMoving => this.IsElevatorMovingToCell
+                || this.IsElevatorMovingToHeight
+                || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking;
@@ -249,7 +268,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
+                        this.IsElevatorMovingToHeight = false;
+                        this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
 
                         break;
                     }
@@ -259,7 +281,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
+                        this.IsElevatorMovingToHeight = false;
+                        this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
 
                         this.ShowNotification(
                             VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -278,12 +303,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
                &&
                !this.IsWaitingForResponse;
 
+            this.CanInputQuote = !this.IsElevatorMoving
+               &&
+               !this.IsWaitingForResponse;
+
+            this.CanInputLoadingUnitId = this.LoadingUnits != null
+               &&
+               this.Cells != null
+               &&
+               !this.IsElevatorMoving
+               &&
+               !this.IsWaitingForResponse;
+
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+            this.tuningChainCommand?.RaiseCanExecuteChanged();
             this.embarkForwardsCommand?.RaiseCanExecuteChanged();
             this.embarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.disembarkForwardsCommand?.RaiseCanExecuteChanged();
             this.disembarkBackwardsCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
