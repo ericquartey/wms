@@ -16,31 +16,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canInputCellId;
 
-        private bool canInputLoadingUnitId;
+        private bool canInputHeight;
 
-        private bool canInputQuote;
+        private bool canInputLoadingUnitId;
 
         private IEnumerable<Cell> cells;
 
         private int? inputCellId;
 
-        private int? inputLoadingUnitId;
+        private decimal? inputHeight;
 
-        private decimal? inputQuote;
+        private int? inputLoadingUnitId;
 
         private bool isElevatorMovingToCell;
 
-        private bool isElevatorMovingToLoadingUnit;
+        private bool isElevatorMovingToHeight;
 
-        private bool isElevatorMovingToQuote;
+        private bool isElevatorMovingToLoadingUnit;
 
         private LoadingUnit loadingUnitInCell;
 
         private DelegateCommand moveToCellHeightCommand;
 
-        private DelegateCommand moveToLoadingUnitHeightCommand;
+        private DelegateCommand moveToHeightCommand;
 
-        private DelegateCommand moveToQuoteHeightCommand;
+        private DelegateCommand moveToLoadingUnitHeightCommand;
 
         private Cell selectedCell;
 
@@ -64,8 +64,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool CanInputQuote
         {
-            get => this.canInputQuote;
-            private set => this.SetProperty(ref this.canInputQuote, value);
+            get => this.canInputHeight;
+            private set => this.SetProperty(ref this.canInputHeight, value);
         }
 
         public int? InputCellId
@@ -80,6 +80,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell = value == null
                         ? null
                         : this.Cells.SingleOrDefault(c => c.Id == value);
+                }
+            }
+        }
+
+        public decimal? InputHeight
+        {
+            get => this.inputHeight;
+            set
+            {
+                if (this.SetProperty(ref this.inputHeight, value))
+                {
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -100,24 +112,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputQuote
-        {
-            get => this.inputQuote;
-            set
-            {
-                if (this.SetProperty(ref this.inputQuote, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public bool IsElevatorMovingToCell
         {
             get => this.isElevatorMovingToCell;
             private set
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsElevatorMovingToHeight
+        {
+            get => this.isElevatorMovingToHeight;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
                     this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
                     this.RaiseCanExecuteChanged();
@@ -138,19 +151,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsElevatorMovingToQuote
-        {
-            get => this.isElevatorMovingToQuote;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToQuote, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public LoadingUnit LoadingUnitInCell
         {
             get => this.loadingUnitInCell;
@@ -164,19 +164,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.MoveToCellHeightAsync(),
                this.CanMoveToCellHeight));
 
+        public ICommand MoveToHeightCommand =>
+                   this.moveToHeightCommand
+           ??
+           (this.moveToHeightCommand = new DelegateCommand(
+               async () => await this.MoveToHeightAsync(),
+               this.CanMoveToHeight));
+
         public ICommand MoveToLoadingUnitHeightCommand =>
-           this.moveToLoadingUnitHeightCommand
+                   this.moveToLoadingUnitHeightCommand
            ??
            (this.moveToLoadingUnitHeightCommand = new DelegateCommand(
                async () => await this.MoveToLoadingUnitHeightAsync(),
                this.CanMoveToLoadingUnitHeight));
-
-        public ICommand MoveToQuoteHeightCommand =>
-                   this.moveToQuoteHeightCommand
-           ??
-           (this.moveToQuoteHeightCommand = new DelegateCommand(
-               async () => await this.MoveToQuoteHeightAsync(),
-               this.CanMoveToQuoteHeight));
 
         public Cell SelectedCell
         {
@@ -234,7 +234,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMovingToCell
                 &&
-                !this.IsElevatorMovingToQuote
+                !this.IsElevatorMovingToHeight
+                &&
+                !this.IsElevatorMovingToLoadingUnit;
+        }
+
+        private bool CanMoveToHeight()
+        {
+            return this.InputHeight != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMoving
+                &&
+                !this.IsElevatorMovingToCell
+                &&
+                !this.IsElevatorMovingToHeight
                 &&
                 !this.IsElevatorMovingToLoadingUnit;
         }
@@ -249,22 +264,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMovingToCell
                 &&
-                !this.IsElevatorMovingToQuote
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
-        }
-
-        private bool CanMoveToQuoteHeight()
-        {
-            return this.InputQuote != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsElevatorMoving
-                &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToQuote
+                !this.IsElevatorMovingToHeight
                 &&
                 !this.IsElevatorMovingToLoadingUnit;
         }
@@ -293,6 +293,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task MoveToHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.InputHeight.Value,
+                    FeedRateCategory.VerticalManualMovementsAfterZero);
+
+                this.IsElevatorMovingToHeight = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToHeight = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private async Task MoveToLoadingUnitHeightAsync()
         {
             try
@@ -308,30 +332,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.IsElevatorMovingToLoadingUnit = false;
-
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task MoveToQuoteHeightAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
-                    this.InputQuote.Value,
-                    FeedRateCategory.VerticalManualMovementsAfterZero);
-
-                this.IsElevatorMovingToQuote = true;
-            }
-            catch (Exception ex)
-            {
-                this.IsElevatorMovingToQuote = false;
 
                 this.ShowNotification(ex);
             }

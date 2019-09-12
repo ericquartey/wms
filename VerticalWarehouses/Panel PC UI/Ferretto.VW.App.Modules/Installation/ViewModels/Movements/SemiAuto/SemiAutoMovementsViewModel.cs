@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsElevatorMoving => this.IsElevatorMovingToCell
-                || this.IsElevatorMovingToQuote
+                || this.IsElevatorMovingToHeight
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
@@ -268,7 +268,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
-                        this.IsElevatorMovingToQuote = false;
+                        this.IsElevatorMovingToHeight = false;
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
@@ -281,7 +281,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToCell = false;
-                        this.IsElevatorMovingToQuote = false;
+                        this.IsElevatorMovingToHeight = false;
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
@@ -316,7 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                !this.IsWaitingForResponse;
 
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.moveToQuoteHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToHeightCommand?.RaiseCanExecuteChanged();
             this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
             this.tuningBayCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
