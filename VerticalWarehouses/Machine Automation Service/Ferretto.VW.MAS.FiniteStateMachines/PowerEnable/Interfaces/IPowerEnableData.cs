@@ -6,10 +6,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
-    public interface IPowerEnableData
+    internal interface IPowerEnableData
     {
-
-
         #region Properties
 
         List<InverterIndex> ConfiguredInverters { get; }

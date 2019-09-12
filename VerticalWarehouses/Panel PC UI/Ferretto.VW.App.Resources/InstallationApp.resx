@@ -1085,4 +1085,7 @@
   <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
     <value>Firewall is enabled on this terminal.</value>
   </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Procedure completed.</value>
+  </data>
 </root>

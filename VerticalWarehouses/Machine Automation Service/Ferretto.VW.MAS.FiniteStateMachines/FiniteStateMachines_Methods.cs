@@ -22,9 +22,8 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
-
 {
-    public partial class FiniteStateMachines
+    internal partial class FiniteStateMachines
     {
         #region Methods
 
@@ -275,34 +274,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage(CommandMessage message)
+        private void ProcessPositioningMessage(IPositioningMessageData data)
         {
+            if (data is null)
+            {
+                return;
+            }
+
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IPositioningMessageData data)
+            data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+
+            this.currentStateMachine = new PositioningStateMachine(
+                this.machineSensorsStatus,
+                this.eventAggregator,
+                data,
+                this.logger,
+                this.serviceScopeFactory);
+
+            this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+            try
             {
-                data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+                this.logger.LogDebug("Starting Positioning FSM");
+                this.currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                this.currentStateMachine = new PositioningStateMachine(
-                    this.machineSensorsStatus,
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.logger.LogDebug("Starting Positioning FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

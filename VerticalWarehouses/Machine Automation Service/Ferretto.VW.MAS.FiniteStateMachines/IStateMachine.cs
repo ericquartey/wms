@@ -3,9 +3,9 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public interface IStateMachine : IDisposable
+    internal interface IStateMachine : IDisposable
     {
         #region Properties
 

@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.Utils.Enumerations;
 
-namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public interface IMachineSensorsStatus
     {

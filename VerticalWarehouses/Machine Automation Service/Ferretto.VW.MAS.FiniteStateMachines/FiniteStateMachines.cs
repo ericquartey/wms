@@ -9,7 +9,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -26,7 +25,7 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public partial class FiniteStateMachines : BackgroundService
+    internal partial class FiniteStateMachines : BackgroundService
     {
         #region Fields
 
@@ -261,7 +260,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
-                        this.ProcessPositioningMessage(receivedMessage);
+                        this.ProcessPositioningMessage(receivedMessage?.Data as IPositioningMessageData);
                         break;
 
                     case MessageType.SensorsChanged:
