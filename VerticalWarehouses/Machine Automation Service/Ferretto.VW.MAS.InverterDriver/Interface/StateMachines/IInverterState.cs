@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
 {
-    public interface IInverterState : IDisposable
+    internal interface IInverterState : IDisposable
     {
         #region Properties
 

@@ -38,7 +38,7 @@ using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public partial class HostedInverterDriver : BackgroundService
+    public partial class InverterDriverService : BackgroundService
     {
         #region Fields
 
@@ -120,13 +120,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(
+        public InverterDriverService(
             IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
             IResolutionConversionDataLayer dataLayerResolutionConversion,
-            ILogger<HostedInverterDriver> logger)
+            ILogger<InverterDriverService> logger)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Destructors
 
-        ~HostedInverterDriver()
+        ~InverterDriverService()
         {
             this.Dispose(false);
         }
@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
-                for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+                for (var id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
                 {
                     this.axisPositionUpdateTimer[(int)id]?.Dispose();
                     this.statusWordUpdateTimer[(int)id]?.Dispose();
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.sensorStatusUpdateTimer?.Dispose();
             this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
-            for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+            for (var id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
             {
                 this.axisPositionUpdateTimer[(int)id]?.Dispose();
                 this.axisPositionUpdateTimer[(int)id] = new Timer(this.RequestAxisPositionUpdate, id, -1, Timeout.Infinite);

@@ -7,13 +7,13 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
-    public class ResetFaultStateMachine : InverterStateMachineBase
+    internal class ResetFaultStateMachine : InverterStateMachineBase
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
-
         private readonly InverterIndex inverterIndex;
+
+        private readonly IInverterStatusBase inverterStatus;
 
         private bool disposed;
 
@@ -29,7 +29,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
             ILogger logger)
             : base(logger, eventAggregator, inverterCommandQueue)
         {
-
             this.inverterStatus = inverterStatus;
             this.inverterIndex = inverterIndex;
             this.Logger.LogDebug("1:Method Start");
@@ -51,7 +50,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         /// <inheritdoc />
         public override void Start()
         {
-
             this.CurrentState = new ResetFaultStartState(this, this.inverterStatus, this.inverterIndex, this.Logger);
             this.CurrentState?.Start();
         }

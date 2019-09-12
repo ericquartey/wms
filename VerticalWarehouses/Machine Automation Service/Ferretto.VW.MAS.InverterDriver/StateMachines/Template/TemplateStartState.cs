@@ -10,9 +10,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 {
-    public class TemplateStartState : InverterStateBase
+    internal class TemplateStartState : InverterStateBase
     {
-
         #region Fields
 
         private readonly ITemplateData templateData;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
         }
 
         #endregion
-
-
 
         #region Methods
 

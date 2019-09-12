@@ -10,10 +10,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
-    public class PowerOnErrorState : InverterStateBase
+    internal class PowerOnErrorState : InverterStateBase
     {
-
-
         #region Constructors
 
         public PowerOnErrorState(
@@ -34,8 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -10,10 +10,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
-    public class StopErrorState : InverterStateBase
+    internal class StopErrorState : InverterStateBase
     {
-
-
         #region Constructors
 
         public StopErrorState(
@@ -34,8 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         }
 
         #endregion
-
-
 
         #region Methods
 

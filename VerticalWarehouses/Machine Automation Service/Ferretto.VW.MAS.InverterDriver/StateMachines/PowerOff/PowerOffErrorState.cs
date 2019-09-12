@@ -10,10 +10,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    public class PowerOffErrorState : InverterStateBase
+    internal class PowerOffErrorState : InverterStateBase
     {
-
-
         #region Constructors
 
         public PowerOffErrorState(
@@ -35,8 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         #endregion
 
-
-
         #region Methods
 
         public override void Release()
@@ -45,7 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
-
             var notificationMessageData = new InverterPowerOffFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,

@@ -9,9 +9,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
-    public class ResetFaultEndState : InverterStateBase
+    internal class ResetFaultEndState : InverterStateBase
     {
-
         #region Fields
 
         private readonly InverterIndex inverterIndex;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #endregion
 
-
-
         #region Methods
 
         public override void Release()
@@ -51,7 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override void Start()
         {
-
             var notificationMessageData = new InverterFaultFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,

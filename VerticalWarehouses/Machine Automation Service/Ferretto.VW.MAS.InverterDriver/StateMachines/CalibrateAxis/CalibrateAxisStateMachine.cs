@@ -7,7 +7,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class CalibrateAxisStateMachine : InverterStateMachineBase
+    internal class CalibrateAxisStateMachine : InverterStateMachineBase
     {
         #region Fields
 

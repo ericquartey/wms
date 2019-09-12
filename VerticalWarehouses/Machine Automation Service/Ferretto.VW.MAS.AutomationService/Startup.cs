@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<HostedIoDriver>();
 
-            services.AddHostedService<HostedInverterDriver>();
+            services.AddHostedService<InverterDriverService>();
 
             services.AddFiniteStateMachines();
 
