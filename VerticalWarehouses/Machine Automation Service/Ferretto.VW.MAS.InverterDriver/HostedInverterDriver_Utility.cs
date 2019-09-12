@@ -1187,7 +1187,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (InverterDriverException ex)
             {
-                this.logger.LogError($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException}");
+                this.logger.LogError($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException.Message}");
             }
             catch (Exception ex)
             {
