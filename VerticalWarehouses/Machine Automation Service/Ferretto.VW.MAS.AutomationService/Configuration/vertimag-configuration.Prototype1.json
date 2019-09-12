@@ -25,7 +25,7 @@
     //"Bay1Height1":,
     //"Bay1Position2":,
     //"Bay1Height2":,
-    "Bay2Position1": 743.00,
+    "Bay2Position1": 648.00,
     "Bay2Height1": 1080.0,
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
@@ -120,7 +120,7 @@
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementLongerProfile": {
+  "HorizontalMovementShorterProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1235.9,
     "MovementCorrection": 20.0,
@@ -136,7 +136,7 @@
     //"P2Acceleration":
     //"P2Deceleration":
     //"P2SpeedV3":
-    //"P3Quote":
+    "P3Quote": 300.0,
     //"P3Acceleration":
     //"P3Deceleration":
     "P3SpeedV4": 100.0,
@@ -149,7 +149,7 @@
     //"P5Deceleration":
     //"P5Speed":
   },
-  "HorizontalMovementShorterProfile": {
+  "HorizontalMovementLongerProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1241.0,
     "MovementCorrection": 20.0,
@@ -165,7 +165,7 @@
     //"P2Acceleration":
     //"P2Deceleration":
     //"P2SpeedV3":
-    //"P3Quote":
+    "P3Quote": 300.0,
     //"P3Acceleration":
     //"P3Deceleration":
     "P3SpeedV4": 100.0,
@@ -182,7 +182,7 @@
     "FeedRate": 0.10,
     "PositiveTargetDirection": 30.0,
     "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.30
+    "FeedRateAfterZero": 0.15
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
