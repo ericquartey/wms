@@ -1018,4 +1018,7 @@
   <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
     <value>Il firewall risulta abilitato su questo terminale.</value>
   </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Procedura completata.</value>
+  </data>
 </root>
