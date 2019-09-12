@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             var resolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Resolution,
+                    VerticalAxis.Resolution,
                     ConfigurationCategory.VerticalAxis);
 
             return resolution * expectedDistance / measuredDistance;
@@ -105,15 +105,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new ResolutionCalibrationParameters
             {
                 CurrentResolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Resolution,
+                    VerticalAxis.Resolution,
                     ConfigurationCategory.VerticalAxis),
 
                 InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)ResolutionCalibration.InitialPosition,
+                    ResolutionCalibration.InitialPosition,
                     ConfigurationCategory.ResolutionCalibration),
 
                 FinalPosition = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)ResolutionCalibration.FinalPosition,
+                    ResolutionCalibration.FinalPosition,
                     ConfigurationCategory.ResolutionCalibration),
             };
 

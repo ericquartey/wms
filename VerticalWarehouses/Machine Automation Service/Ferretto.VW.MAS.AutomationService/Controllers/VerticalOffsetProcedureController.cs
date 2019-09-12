@@ -91,15 +91,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new VerticalOffsetProcedureParameters
             {
                 ReferenceCellId = this.configurationProvider.GetIntegerConfigurationValue(
-                    (long)OffsetCalibration.ReferenceCell,
+                    OffsetCalibration.ReferenceCell,
                     category),
 
                 StepValue = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)OffsetCalibration.StepValue,
+                    OffsetCalibration.StepValue,
                     category),
 
                 VerticalOffset = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Offset,
+                    VerticalAxis.Offset,
                     ConfigurationCategory.VerticalAxis)
             };
 

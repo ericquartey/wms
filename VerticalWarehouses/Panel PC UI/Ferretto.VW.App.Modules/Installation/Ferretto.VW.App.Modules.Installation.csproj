@@ -72,6 +72,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\Movements\Manual\CarouselManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\EngineManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\ExternalBayManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\HorizontalEngineManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\ManualMovementsConsoleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\ManualMovementsNavigationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Movements\Manual\ShutterEngineManualMovementsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Views\Movements\SemiAuto\SemiAutoMovementsStep1View.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

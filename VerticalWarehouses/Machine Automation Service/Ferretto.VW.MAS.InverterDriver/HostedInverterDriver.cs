@@ -724,7 +724,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (InverterDriverException ex)
                     {
-                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
+                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException}");
                     }
                     catch (Exception ex)
                     {
@@ -741,6 +741,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var ex = new Exception();
                         this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
                         continue;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"3:Connection OK ipAddress={this.inverterAddress}:Port={this.inverterPort}");
                     }
 
                     this.writeEnableEvent.Set();

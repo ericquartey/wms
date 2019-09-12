@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,6 +42,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         private readonly object syncSensorTimer = new object();
 
         private readonly object syncStatusTimer = new object();
+
+        private IPAddress inverterAddress;
+
+        private int inverterPort;
 
         private bool refreshTargetTable = true;
 
@@ -281,17 +286,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                             )
                         {
                             ConfigurationCategory configurationCategory;
-                            long configurationValue = 0;
                             switch (axis)
                             {
                                 case Axis.Horizontal:
                                     configurationCategory = ConfigurationCategory.HorizontalAxis;
-                                    configurationValue = (long)HorizontalAxis.Offset;
                                     break;
 
                                 case Axis.Vertical:
                                     configurationCategory = ConfigurationCategory.VerticalAxis;
-                                    configurationValue = (long)VerticalAxis.Offset;
                                     break;
 
                                 default:
@@ -305,7 +307,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
                             }
 
-                            var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+                            var offset = axis == Axis.Horizontal
+                                ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
+                                : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
                             currentAxisPosition += offset;
 
                             var notificationData = new InverterStatusUpdateFieldMessageData(axis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
@@ -764,34 +768,21 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
-                    ConfigurationCategory configurationCategory;
-                    var configurationValue = (long)HorizontalAxis.Offset;
-                    switch (positioningData.AxisMovement)
-                    {
-                        case Axis.Horizontal:
-                            configurationCategory = ConfigurationCategory.HorizontalAxis;
-                            configurationValue = (long)HorizontalAxis.Offset;
-                            break;
-
-                        case Axis.Vertical:
-                            configurationCategory = ConfigurationCategory.VerticalAxis;
-                            configurationValue = (long)VerticalAxis.Offset;
-                            break;
-
-                        default:
-                            configurationCategory = ConfigurationCategory.Undefined;
-                            break;
-                    }
-
                     try
                     {
+                        var configurationCategory = positioningData.AxisMovement == Axis.Horizontal
+                            ? ConfigurationCategory.HorizontalAxis
+                            : ConfigurationCategory.VerticalAxis;
+
                         if (inverterStatus is AngInverterStatus currentStatus)
                         {
                             var currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
                             var position = positioningData.TargetPosition;
                             if (positioningData.MovementType == MovementType.Absolute)
                             {
-                                var offset = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(configurationValue, configurationCategory);
+                                var offset = positioningData.AxisMovement == Axis.Horizontal
+                                    ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
+                                    : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
 
                                 position -= offset;
 
@@ -1184,10 +1175,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.logger.LogTrace("1:Method Start");
 
-            var inverterAddress = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.Inverter1, ConfigurationCategory.SetupNetwork);
-            var inverterPort = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, ConfigurationCategory.SetupNetwork);
+            this.inverterAddress = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.Inverter1, ConfigurationCategory.SetupNetwork);
+            this.inverterPort = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.Inverter1Port, ConfigurationCategory.SetupNetwork);
 
-            this.socketTransport.Configure(inverterAddress, inverterPort);
+            this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
+            this.logger.LogInformation($"1:Configure ipAddress={this.inverterAddress}:Port={this.inverterPort}");
 
             try
             {
@@ -1195,7 +1187,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (InverterDriverException ex)
             {
-                this.logger.LogError($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
+                this.logger.LogError($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException}");
             }
             catch (Exception ex)
             {
@@ -1211,6 +1203,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
+            }
+            else
+            {
+                this.logger.LogInformation($"3:Connection OK ipAddress={this.inverterAddress}:Port={this.inverterPort}");
             }
 
             try

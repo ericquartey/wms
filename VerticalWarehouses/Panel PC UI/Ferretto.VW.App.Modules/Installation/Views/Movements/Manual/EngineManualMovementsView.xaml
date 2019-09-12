@@ -57,6 +57,12 @@
                     <i:EventTrigger EventName="PreviewMouseUp">
                         <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchDown">
+                        <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </controls:PpcButton>
 
@@ -68,6 +74,12 @@
                         <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchDown">
+                        <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchUp">
                         <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -92,6 +104,12 @@
                     <i:EventTrigger EventName="PreviewMouseUp">
                         <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchDown">
+                        <i:InvokeCommandAction Command="{Binding MoveForwardsCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </controls:PpcButton>
 
@@ -103,6 +121,12 @@
                         <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchDown">
+                        <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchUp">
                         <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
