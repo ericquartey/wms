@@ -182,7 +182,7 @@
     "FeedRate": 0.10,
     "PositiveTargetDirection": 30.0,
     "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.30
+    "FeedRateAfterZero": 0.15
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
