@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         IServiceScopeFactory ServiceScopeFactory { get; }
 
+        BayNumber TargetBay { get; }
+
         #endregion
     }
 }

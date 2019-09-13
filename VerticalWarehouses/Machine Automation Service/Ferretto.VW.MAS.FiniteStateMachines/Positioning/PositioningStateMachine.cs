@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             ILogger<FiniteStateMachines> logger,
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 

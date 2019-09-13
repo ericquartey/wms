@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         #region Constructors
 
         public EmptyState(ILogger<FiniteStateMachines> logger)
-            : base(null, BayNumber.None, logger)
+            : base(null, logger)
         {
             logger.LogTrace("1:Method Start");
         }

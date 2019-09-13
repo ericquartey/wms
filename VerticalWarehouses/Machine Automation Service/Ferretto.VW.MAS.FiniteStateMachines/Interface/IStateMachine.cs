@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         ILogger<FiniteStateMachines> Logger { get; }
 
-        BayNumber RequestingBay { get; }
-
         IServiceScopeFactory ServiceScopeFactory { get; }
 
         #endregion

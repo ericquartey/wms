@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningEndState(IShutterPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
@@ -79,8 +79,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
                                MessageType.ShutterPositioning,
-                                this.RequestingBay,
-                                this.RequestingBay,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -132,8 +132,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationEnd);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

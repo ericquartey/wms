@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         #region Constructors
 
         public ResetSecurityErrorState(IResetSecurityStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IResetSecurityMachineData;
@@ -62,8 +62,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.NoType,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 

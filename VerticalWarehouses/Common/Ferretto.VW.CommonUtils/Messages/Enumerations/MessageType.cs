@@ -78,6 +78,8 @@
 
         CurrentSamplingInMotionNotification,
 
-        CurrentSamplingInPlaceNotification
+        CurrentSamplingInPlaceNotification,
+
+        InverterFaultReset
     }
 }

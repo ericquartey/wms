@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
@@ -109,8 +109,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -127,8 +127,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -145,8 +145,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -173,8 +173,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);

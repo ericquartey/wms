@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
+        public BayNumber TargetBay { get; }
+
         #endregion
     }
 }

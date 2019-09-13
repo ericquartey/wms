@@ -71,6 +71,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
+        public BayNumber TargetBay { get; }
+
         #endregion
     }
 }

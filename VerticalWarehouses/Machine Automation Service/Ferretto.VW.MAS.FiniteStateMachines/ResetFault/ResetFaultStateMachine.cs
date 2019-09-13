@@ -1,21 +1,23 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
+namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
-    public class ResetSecurityStateMachine : StateMachineBase
+    public class ResetFaultStateMachine : StateMachineBase
     {
 
         #region Fields
 
-        private readonly IResetSecurityMachineData machineData;
+        private readonly IResetFaultMachineData machineData;
 
         private bool disposed;
 
@@ -23,8 +25,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityStateMachine(
-            BayNumber requestingBay,
+        public ResetFaultStateMachine(
+            CommandMessage receivedMessage,
+            List<InverterIndex> bayInverters,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -32,14 +35,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new ResetSecurityMachineData(requestingBay, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new ResetFaultMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, bayInverters, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
 
         #region Destructors
 
-        ~ResetSecurityStateMachine()
+        ~ResetFaultStateMachine()
         {
             this.Dispose(false);
         }
@@ -53,12 +56,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
-
-            lock (this.CurrentState)
-            {
-                this.CurrentState.ProcessCommandMessage(message);
-            }
+            this.CurrentState.ProcessCommandMessage(message);
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -66,6 +64,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.CurrentState.ProcessFieldNotificationMessage(message);
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.CurrentState.ProcessNotificationMessage(message);
@@ -76,18 +75,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             lock (this.CurrentState)
             {
-                var stateData = new ResetSecurityStateData(this, this.machineData);
-                this.CurrentState = new ResetSecurityStartState(stateData);
+                var stateData = new ResetFaultStateData(this, this.machineData);
+                this.CurrentState = new ResetFaultStartState(stateData);
                 this.CurrentState?.Start();
             }
-
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
-
             lock (this.CurrentState)
             {
                 this.CurrentState.Stop(reason);

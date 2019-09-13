@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningExecutingState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
@@ -230,8 +230,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             MessageActor.AutomationService,
                             MessageActor.FiniteStateMachines,
                             MessageType.Positioning,
-                            this.RequestingBay,
-                            this.RequestingBay,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
                             MessageStatus.OperationExecuting);
 
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -302,8 +302,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageActor.AutomationService,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
-                    this.RequestingBay,
-                    this.RequestingBay,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationExecuting);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

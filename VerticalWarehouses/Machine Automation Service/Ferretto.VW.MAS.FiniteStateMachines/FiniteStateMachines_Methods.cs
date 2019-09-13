@@ -9,6 +9,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -226,6 +227,44 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
+                }
+            }
+        }
+
+        private void ProcessInverterFaultResetMessage(CommandMessage receivedMessage)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            {
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on {receivedMessage.TargetBay}",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var inverterList = this.baysProvider.GetInverterList(receivedMessage.TargetBay);
+
+                currentStateMachine = new ResetFaultStateMachine(
+                    receivedMessage,
+                    inverterList,
+                    this.eventAggregator,
+                    this.logger,
+                    this.serviceScopeFactory);
+
+                this.logger.LogDebug($"2:Starting FSM {currentStateMachine.GetType()}");
+                this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
+
+                try
+                {
+                    currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }

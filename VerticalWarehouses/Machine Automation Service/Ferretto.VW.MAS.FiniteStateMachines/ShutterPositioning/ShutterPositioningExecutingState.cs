@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningExecutingState(IShutterPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;

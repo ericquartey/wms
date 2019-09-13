@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
@@ -85,8 +85,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
-                        this.RequestingBay,
-                        this.RequestingBay,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationExecuting);
 
                     this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -116,8 +116,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
-                        this.RequestingBay,
-                        this.RequestingBay,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationExecuting);
 
                     this.PublishNotificationMessage(notificationMessage);

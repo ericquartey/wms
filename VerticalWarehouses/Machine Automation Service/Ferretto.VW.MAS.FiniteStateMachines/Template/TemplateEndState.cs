@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateEndState(ITemplateStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;
@@ -65,14 +65,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
-                this.RequestingBay,
-                this.RequestingBay,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
+        public override void Stop(StopRequestReason reason)
         {
         }
 

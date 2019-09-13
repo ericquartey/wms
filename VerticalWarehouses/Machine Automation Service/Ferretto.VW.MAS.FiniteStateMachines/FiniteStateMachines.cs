@@ -275,6 +275,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     case MessageType.RequestPosition:
                         this.ProcessRequestPositionMessage(receivedMessage);
                         break;
+
+                    case MessageType.InverterFaultReset:
+                        this.ProcessInverterFaultResetMessage(receivedMessage);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, receivedMessage.Type.ToString(), MessageVerbosity.Info);

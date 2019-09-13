@@ -9,7 +9,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
-    public class PowerEnableStartState : StateBase
+    public class PowerEnableResetFaultState : StateBase
     {
 
         #region Fields
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableStartState(IPowerEnableStateData stateData)
+        public PowerEnableResetFaultState(IPowerEnableStateData stateData)
             : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Destructors
 
-        ~PowerEnableStartState()
+        ~PowerEnableResetFaultState()
         {
             this.Dispose(false);
         }
@@ -87,14 +87,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                     switch (message.Status)
                     {
                         case MessageStatus.OperationEnd:
-                            if (this.machineData.RequestedPowerState)
-                            {
-                                this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.stateData));
-                            }
-                            else
-                            {
-                                this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
-                            }
+                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
                             break;
 
                         case MessageStatus.OperationError:
@@ -108,28 +101,14 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void Start()
         {
-            CommandMessage commandMessage;
             if (this.machineData.RequestedPowerState)
             {
-                var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState);
-                commandMessage = new CommandMessage(
-                    commandData,
-                    $"Setting Power enable state to {this.machineData.RequestedPowerState}",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.AutomationService,
-                    MessageType.PowerEnable,
-                    this.RequestingBay);
-
-                this.ParentStateMachine.PublishCommandMessage(commandMessage);
-            }
-            else
-            {
-                commandMessage = new CommandMessage(
+                var commandMessage = new CommandMessage(
                     null,
                     "Requesting to stop all Sate Machines currently active",
                     MessageActor.FiniteStateMachines,
                     MessageActor.AutomationService,
-                    MessageType.Stop,
+                    MessageType.InverterFaultReset,
                     this.RequestingBay);
 
                 foreach (var configuredBay in this.machineData.ConfiguredBays)
@@ -139,18 +118,22 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                     this.ParentStateMachine.PublishCommandMessage(commandMessage);
                 }
             }
+            else
+            {
+                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+            }
 
             var notificationData = new PowerEnableMessageData(this.machineData.RequestedPowerState);
 
             var notificationMessage = new NotificationMessage(
                 notificationData,
-                $"Starting State Machine to Set Power Enable to {this.machineData.RequestedPowerState}",
+                "Resetting inverters fault state",
                 MessageActor.AutomationService,
                 MessageActor.AutomationService,
                 MessageType.PowerEnable,
                 this.RequestingBay,
                 BayNumber.None,
-                MessageStatus.OperationStart);
+                MessageStatus.OperationExecuting);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

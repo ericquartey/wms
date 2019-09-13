@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         #region Constructors
 
         public MoveDrawerCradleState(IMoveDrawerStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IMoveDrawerMachineData;
@@ -76,8 +76,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.DrawerOperation,
-                                this.RequestingBay,
-                                this.RequestingBay,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
                                 MessageStatus.OperationError,
                                 ErrorLevel.Error,
                                 MessageVerbosity.Error);
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             {
                                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.RequestingBay);
+                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
                             }
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -156,8 +156,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
-                this.RequestingBay,
-                this.RequestingBay,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

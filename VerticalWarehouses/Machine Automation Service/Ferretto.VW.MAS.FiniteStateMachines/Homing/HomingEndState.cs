@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         #region Constructors
 
         public HomingEndState(IHomingStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
@@ -136,8 +136,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
-                this.RequestingBay,
-                this.RequestingBay,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

@@ -1,21 +1,20 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
+namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
-    public class ResetSecurityEndState : StateBase
+    public class ResetFaultEndState : StateBase
     {
 
         #region Fields
 
-        private readonly IResetSecurityMachineData machineData;
+        private readonly IResetFaultMachineData machineData;
 
-        private readonly IResetSecurityStateData stateData;
+        private readonly IResetFaultStateData stateData;
 
         private bool disposed;
 
@@ -23,18 +22,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityEndState(IResetSecurityStateData stateData)
+        public ResetFaultEndState(IResetFaultStateData stateData)
             : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
-            this.machineData = stateData.MachineData as IResetSecurityMachineData;
+            this.machineData = stateData.MachineData as IResetFaultMachineData;
         }
 
         #endregion
 
         #region Destructors
 
-        ~ResetSecurityEndState()
+        ~ResetFaultEndState()
         {
             this.Dispose(false);
         }
@@ -47,40 +46,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Reset Security Completed",
+                $"Inverter Fault reset completed for bay {this.machineData.TargetBay}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.NoType,
+                MessageType.InverterFaultReset,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
-
-            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

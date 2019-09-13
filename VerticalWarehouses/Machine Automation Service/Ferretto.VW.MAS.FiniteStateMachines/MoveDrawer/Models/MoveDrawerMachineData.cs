@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 
         public ISetupStatusProvider SetupStatusProvider { get; }
 
+        public BayNumber TargetBay { get; }
+
         public IVerticalAxisDataLayer VerticalAxis { get; }
 
         #endregion

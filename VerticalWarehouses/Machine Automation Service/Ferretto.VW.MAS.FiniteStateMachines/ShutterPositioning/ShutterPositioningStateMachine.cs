@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
 
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 

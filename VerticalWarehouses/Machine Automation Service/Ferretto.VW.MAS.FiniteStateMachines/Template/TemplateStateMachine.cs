@@ -24,15 +24,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(
-            BayNumber requestingBay,
-            EventAggregator eventAggregator,
+            CommandMessage receivedMessage,
+            IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new TemplateMachineData(requestingBay, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new TemplateMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion

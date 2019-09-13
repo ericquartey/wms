@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
+        public BayNumber TargetBay { get; }
+
         #endregion
     }
 }

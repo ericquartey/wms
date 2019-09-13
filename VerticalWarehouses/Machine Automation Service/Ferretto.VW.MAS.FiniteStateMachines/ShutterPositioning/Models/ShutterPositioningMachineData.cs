@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
+        public BayNumber TargetBay { get; }
+
         #endregion
     }
 }
