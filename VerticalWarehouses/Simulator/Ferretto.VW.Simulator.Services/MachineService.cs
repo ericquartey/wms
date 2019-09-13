@@ -201,14 +201,14 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues)
+        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues, bool isError = false)
         {
             int byteLength;
             byte[] byteMessage;
             byteLength = 0x04 + inputValues.Length;
             byteMessage = new byte[byteLength + 2];
-            byteMessage[0] = 0x00;
-            byteMessage[1] = (byte)(byteLength);
+            byteMessage[0] = (byte)(isError ? (message[0] | 0x40) : 0x00);
+            byteMessage[1] = (byte)byteLength;
             byteMessage[2] = (byte)systemIndex;
             byteMessage[3] = dataSetIndex;
             byteMessage[4] = message[4];
@@ -416,7 +416,15 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.TableTravelTargetAccelerations:
-                            result = client.Client.Send(extractedMessage);
+                            {
+                                var replyMessage = extractedMessage;
+                                if (uintPayload == 0)
+                                {
+                                    replyMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(1), true);
+                                }
+
+                                result = client.Client.Send(replyMessage);
+                            }
                             break;
 
                         case InverterParameterId.TableTravelTargetDecelerations:

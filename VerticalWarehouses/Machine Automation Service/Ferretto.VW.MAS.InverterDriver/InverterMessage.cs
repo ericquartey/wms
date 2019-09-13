@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -17,6 +18,28 @@ namespace Ferretto.VW.MAS.InverterDriver
         private const byte READ_HEADER = 0x00;
 
         private const byte WRITE_HEADER = 0x80;
+
+        private readonly Dictionary<int, string> telegramErrorText = new Dictionary<int, string>()
+        {
+            {0, "no error" },
+            {1, "Non-permissible parameter value"},
+            {2, "Non-permissible dataset"},
+            {3, "Parameter not readable (write-only)"},
+            {4, "Parameter not writable (read-only)"},
+            {5, "EEPROM read error"},
+            {6, "EEPROM write error"},
+            {7, "EEPROM checksum error"},
+            {8, "Parameter cannot be written while drive is running"},
+            {9, "Values of data sets are different"},
+            {10, "Not available"},
+            {11, "Unknown parameter"},
+            {12, "Not available"},
+            {13, "Syntax error in received telegram"},
+            {14, "Data type of parameter does not correspond to the number of bytes in the telegram"},
+            {15, "Unknown error"},
+            {20, "Selected System Bus node not available"},
+            {30, "Syntax error in received telegram"},
+        };
 
         private bool heartbeatMessage;
 
@@ -152,6 +175,15 @@ namespace Ferretto.VW.MAS.InverterDriver
         public string StringPayload => this.ConvertPayloadToString();
 
         public byte SystemIndex { get; private set; }
+
+        public string TelegramErrorText
+        {
+            get
+            {
+                var errorNumber = BitConverter.ToInt32(this.payload);
+                return this.telegramErrorText.ContainsKey(errorNumber) ? this.telegramErrorText[errorNumber] : string.Empty;
+            }
+        }
 
         public ushort UShortPayload => this.ConvertPayloadToUShort();
 
@@ -291,6 +323,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             else
             {
                 returnString.Append($" null");
+            }
+            if (this.IsError)
+            {
+                returnString.Append($":Error={this.TelegramErrorText}");
             }
 
             return returnString.ToString();

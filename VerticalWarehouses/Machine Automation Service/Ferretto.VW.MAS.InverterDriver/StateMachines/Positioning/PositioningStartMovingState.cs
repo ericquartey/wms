@@ -79,23 +79,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            else
             {
-                if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus is AngInverterStatus currentStatus)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    this.Logger.LogDebug("Position Reached !");
-                }
-                else
-                {
-                    this.Logger.LogDebug("Position Not Reached");
+                    if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
+                    {
+                        this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                        this.Logger.LogDebug("Position Reached !");
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug("Position Not Reached");
+                    }
                 }
             }
-
             //INFO Next status word request handled by timer
             return true;
         }

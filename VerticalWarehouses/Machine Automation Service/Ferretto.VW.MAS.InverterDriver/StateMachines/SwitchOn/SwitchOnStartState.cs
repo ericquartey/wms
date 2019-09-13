@@ -96,16 +96,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new SwitchOnErrorState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+            else
             {
-                this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                {
+                    this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

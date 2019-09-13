@@ -3,7 +3,7 @@
     "MAS (Development)": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Prototype1"
+        "ASPNETCORE_ENVIRONMENT": "Simulation"
       }
     },
     "MAS (Simulation)": {

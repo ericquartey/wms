@@ -98,20 +98,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
-
-            if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
-                this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
-                this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
-                )
+            else
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
+                    this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
+                    )
+                {
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
-                returnValue = true;
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

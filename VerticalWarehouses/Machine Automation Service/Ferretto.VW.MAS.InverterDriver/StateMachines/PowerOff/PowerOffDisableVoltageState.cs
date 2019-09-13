@@ -64,12 +64,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         {
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}:Is Error={message.IsError}");
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-
+            else
+            {
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+            }
             return true;
         }
 
