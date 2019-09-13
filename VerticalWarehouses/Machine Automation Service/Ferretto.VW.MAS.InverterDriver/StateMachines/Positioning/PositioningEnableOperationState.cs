@@ -10,11 +10,9 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningEnableOperationState : InverterStateBase
+    internal class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
         private readonly IInverterPositioningFieldMessageData data;
 
@@ -100,7 +98,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
-                this.ParentStateMachine.ChangeState(new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                if (this.data.IsTorqueCurrentSamplingEnabled)
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningStartSamplingWhileMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                }
+
                 returnValue = true;
             }
 

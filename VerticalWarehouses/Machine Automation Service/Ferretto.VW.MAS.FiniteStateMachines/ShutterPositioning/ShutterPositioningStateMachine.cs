@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +11,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
-    public class ShutterPositioningStateMachine : StateMachineBase
+    internal class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -63,17 +62,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #endregion
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -146,6 +134,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.Stop();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

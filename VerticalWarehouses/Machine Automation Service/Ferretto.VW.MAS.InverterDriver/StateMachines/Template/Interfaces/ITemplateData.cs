@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces {
-	public interface ITemplateData {
-	}
+﻿namespace Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces
+{
+    internal interface ITemplateData
+    {
+    }
 }

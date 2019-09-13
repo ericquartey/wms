@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -11,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningErrorState : StateBase
+    internal class PositioningErrorState : StateBase
     {
         #region Fields
 

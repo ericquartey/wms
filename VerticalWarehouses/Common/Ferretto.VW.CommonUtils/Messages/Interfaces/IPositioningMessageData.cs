@@ -20,6 +20,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsOneKMachine { get; set; }
 
+        decimal LoadedGrossWeight { get; }
+
         decimal LowerBound { get; }
 
         MovementMode MovementMode { get; set; }

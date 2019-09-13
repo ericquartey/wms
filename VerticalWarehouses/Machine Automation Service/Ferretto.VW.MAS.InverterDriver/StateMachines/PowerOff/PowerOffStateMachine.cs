@@ -9,7 +9,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    public class PowerOffStateMachine : InverterStateMachineBase
+    internal class PowerOffStateMachine : InverterStateMachineBase
     {
         #region Fields
 

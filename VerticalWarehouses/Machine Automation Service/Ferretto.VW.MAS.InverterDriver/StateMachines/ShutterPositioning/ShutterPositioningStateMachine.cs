@@ -6,7 +6,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
-    public class ShutterPositioningStateMachine : InverterStateMachineBase
+    internal class ShutterPositioningStateMachine : InverterStateMachineBase
     {
         #region Fields
 

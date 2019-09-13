@@ -26,19 +26,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
 
-        private readonly ObservableCollection<MeasuredSample> measuredSamples = new ObservableCollection<MeasuredSample>();
+        private readonly ObservableCollection<(decimal Value, DateTime TimeStamp)> measuredSamples = new ObservableCollection<(decimal Value, DateTime TimeStamp)>();
 
         private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
 
         private bool canInputNetWeight;
 
-        private double? currentPosition;
+        private decimal? currentPosition;
 
-        private double? inputDisplacement;
+        private decimal? inputDisplacement;
 
         private string inputLoadingUnitCode;
 
-        private double? inputNetWeight;
+        private decimal? inputNetWeight;
 
         private bool isExecutingProcedure;
 
@@ -96,7 +96,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.canInputNetWeight, value);
         }
 
-        public double? CurrentPosition
+        public decimal? CurrentPosition
         {
             get => this.currentPosition;
             protected set => this.SetProperty(ref this.currentPosition, value);
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
           Environment.NewLine,
           this[nameof(this.InputDisplacement)]);
 
-        public double? InputDisplacement
+        public decimal? InputDisplacement
         {
             get => this.inputDisplacement;
             set
@@ -135,7 +135,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public double? InputNetWeight
+        public decimal? InputNetWeight
         {
             get => this.inputNetWeight;
             set
@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ObservableCollection<MeasuredSample> MeasuredSamples => this.measuredSamples;
+        public ObservableCollection<(decimal Value, DateTime TimeStamp)> MeasuredSamples => this.measuredSamples;
 
         public ICommand StartCommand =>
           this.startCommand
@@ -287,26 +287,48 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null
+                || message.Data is null
+                || message.Data.AxisMovement != Axis.Vertical)
             {
                 return;
             }
 
-            if (message.Data.AxisMovement == Axis.Vertical)
+            if (message.Data.MovementMode == MovementMode.Position)
             {
-                this.CurrentPosition = (double)message.Data.CurrentPosition;
+                this.CurrentPosition = message.Data.CurrentPosition;
+            }
+            else if (
+                message.Data.MovementMode == MovementMode.TorqueCurrentSampling
+                &&
+                message.Status == MessageStatus.OperationExecuting)
+            {
+                this.measuredSamples.Add(message.Data.TorqueCurrentSample);
+            }
 
-                this.IsExecutingProcedure =
-                    message.Status != MessageStatus.OperationEnd
-                    &&
-                    message.Status != MessageStatus.OperationStop;
+            if (message.Status == MessageStatus.OperationStop)
+            {
+                this.IsExecutingProcedure = false;
 
-                if (message.Status == MessageStatus.OperationStop)
-                {
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                        Services.Models.NotificationSeverity.Warning);
-                }
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            else if (message.Status == MessageStatus.OperationError)
+            {
+                this.IsExecutingProcedure = false;
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Error);
+            }
+            else if (message.Status == MessageStatus.OperationEnd)
+            {
+                this.IsExecutingProcedure = false;
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureCompleted,
+                    Services.Models.NotificationSeverity.Success);
             }
         }
 
@@ -342,7 +364,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.CurrentPosition = (double)await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -366,19 +388,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                /*     await this.weightAnalysisProcedureService.StartAsync(
-                         this.InputInitialPosition.Value,
-                         this.InputDisplacement.Value,
-                         this.InputNetWeight.Value);
-                         */
-                var random = new Random();
-                for (var i = 0; i < 50; i++)
-                {
-                    await Task.Delay(100).ConfigureAwait(true);
-                    var sample = new MeasuredSample { Time = DateTime.Now, Value = (random.NextDouble() * 5) + 5 };
-
-                    this.measuredSamples.Add(sample);
-                }
+                await this.weightAnalysisProcedureService.StartAsync(
+                    this.InputDisplacement.Value,
+                    this.InputNetWeight.Value,
+                    this.loadingUnit?.Id);
             }
             catch (Exception ex)
             {

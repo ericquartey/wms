@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningTableStartMovingState : InverterStateBase
+    internal class PositioningTableStartMovingState : InverterStateBase
     {
         #region Constructors
 

@@ -7,7 +7,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 {
-    public class TemplateStateMachine : InverterStateMachineBase
+    internal class TemplateStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -26,13 +26,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
             IInverterStatusBase inverterStatus,
             BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
             IEventAggregator eventAggregator,
-            ILogger logger )
-            : base( logger, eventAggregator, inverterCommandQueue )
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
             this.templateData = templateData;
             this.inverterStatus = inverterStatus;
 
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         ~TemplateStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new TemplateStartState( this, this.templateData, this.inverterStatus, this.Logger );
+            this.CurrentState = new TemplateStartState(this, this.templateData, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 
@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
             this.CurrentState?.Stop();
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int Direction { get; set; }
 
+        decimal LoadedGrossWeight { get; set; }
+
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }
@@ -23,6 +25,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         decimal TargetPosition { get; set; }
 
         decimal[] TargetSpeed { get; set; }
+
+        (decimal Value, System.DateTime TimeStamp) TorqueCurrentSample { get; set; }
 
         #endregion
     }

@@ -84,6 +84,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal[] TargetSpeed { get; set; }
 
+        public (decimal Value, System.DateTime TimeStamp) TorqueCurrentSample { get; set; }
+
         public decimal UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
