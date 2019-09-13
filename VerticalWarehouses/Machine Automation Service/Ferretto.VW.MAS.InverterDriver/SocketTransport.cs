@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -53,15 +53,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.WriteRoundtripTimeData = new InverterDiagnosticsData();
 
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~SocketTransport()
-        {
-            this.Dispose(true);
         }
 
         #endregion
@@ -180,7 +171,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -298,15 +288,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this.disposed)
             {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
+                return;
+            }
+
+            if (disposing)
+            {
+                this.transportStream?.Close();
+                this.transportStream?.Dispose();
+                this.transportStream = null;
 
                     this.transportClient?.Close();
                     this.transportClient?.Dispose();

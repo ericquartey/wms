@@ -95,8 +95,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageType.CalibrateAxis,
                         MessageStatus.OperationExecuting);
 
-                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
                     this.PublishNotificationMessage(notificationMessage);
                 }
 
