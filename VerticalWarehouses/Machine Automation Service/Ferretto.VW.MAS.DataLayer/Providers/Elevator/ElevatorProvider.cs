@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard, decimal position)
         {
             // if direction is Forwards quote increments, else is decremented
 
@@ -229,11 +229,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter
             };
             decimal[] switchPosition = {
-                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P1QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
-                (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1)
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P1QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1),
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * ( direction == HorizontalMovementDirection.Forwards ? 1 : -1)
             };
             var targetPosition = switchPosition[4];
 

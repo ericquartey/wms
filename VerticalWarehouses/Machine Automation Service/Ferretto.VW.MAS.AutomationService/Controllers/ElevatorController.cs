@@ -130,7 +130,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
 
                 // execute command
-                this.elevatorProvider.MoveHorizontalAuto(direction, isOnBoard);
+                var position = this.elevatorProvider.GetHorizontalPosition();
+                this.elevatorProvider.MoveHorizontalAuto(direction, isOnBoard, position);
                 return this.Accepted();
             }
             catch (Exception ex)
