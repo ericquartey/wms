@@ -809,6 +809,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
                             }
 
+                            int direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+
                             var positioningFieldData = new InverterPositioningFieldMessageData(
                                 positioningData,
                                 targetAcceleration,
@@ -816,6 +818,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 targetPosition,
                                 targetSpeed,
                                 switchPosition,
+                                direction,
                                 this.refreshTargetTable);
 
                             //this.refreshTargetTable = false;

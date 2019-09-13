@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             int targetPosition,
             int[] targetSpeed,
             int[] switchPosition,
+            int direction,
             bool refreshAll,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -28,7 +29,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = targetSpeed;
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
-            this.Direction = (targetPosition > 0) ? 2 : 4;
+            this.Direction = direction;
         }
 
         #endregion

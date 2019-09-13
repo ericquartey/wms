@@ -249,7 +249,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                direction);
 
             this.PublishCommand(
                 messageData,
@@ -285,7 +286,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                direction);
 
             this.PublishCommand(
                 messageData,
@@ -332,7 +334,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                 messageData,
@@ -385,7 +388,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                 messageData,
@@ -426,7 +430,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                 messageData,
@@ -471,7 +476,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 0,
-                switchPosition)
+                switchPosition,
+                HorizontalMovementDirection.Forwards)
             {
                 LoadedGrossWeight = netWeight + loadingUnitTare
             };

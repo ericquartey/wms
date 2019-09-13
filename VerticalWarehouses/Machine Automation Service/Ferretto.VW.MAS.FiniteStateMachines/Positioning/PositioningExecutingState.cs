@@ -157,7 +157,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         this.positioningMessageData.LowerBound,
                         this.positioningMessageData.UpperBound,
                         this.positioningMessageData.Delay,
-                        this.positioningMessageData.SwitchPosition);
+                        this.positioningMessageData.SwitchPosition,
+                        this.positioningMessageData.Direction);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(
@@ -172,7 +173,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         this.positioningMessageData.LowerBound,
                         this.positioningMessageData.UpperBound,
                         this.positioningMessageData.Delay,
-                        this.positioningMessageData.SwitchPosition);
+                        this.positioningMessageData.SwitchPosition,
+                        this.positioningMessageData.Direction);
 
                     this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
@@ -294,6 +296,78 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             Debug.Write("Belt current position " + beltBurnishingPosition);
         }
 
+        private bool IsLoadingErrorDuringPickup()
+        {
+            if (!this.positioningMessageData.IsOnBoard)
+            {
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[0]
+                        && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[3]
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        return true;
+                    }
+                }
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Backwards
+                    && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[0]
+                    && this.machineSensorsStatus.AxisXPosition >= this.positioningMessageData.SwitchPosition[2]
+                    && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                    )
+                {
+                    return true;
+                }
+                if (this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[3]
+                    && !this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsUnloadingErrorDuringDeposit()
+        {
+            if (this.positioningMessageData.IsOnBoard)
+            {
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[0]
+                        && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[3]
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+                    {
+                        return true;
+                    }
+                }
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Backwards
+                    && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[0]
+                    && this.machineSensorsStatus.AxisXPosition >= this.positioningMessageData.SwitchPosition[2]
+                    && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                    )
+                {
+                    return true;
+                }
+                if (this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[3]
+                    && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void OnInverterStatusUpdated(FieldNotificationMessage message)
         {
             if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
@@ -313,6 +387,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
 
                     this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+                }
+            }
+            else if (this.positioningMessageData.MovementMode == MovementMode.Position && this.positioningMessageData.MovementType == MovementType.TableTarget)
+            {
+                if (this.IsLoadingErrorDuringPickup())
+                {
+                    this.Logger.LogError("Cradle not correctly loaded during pickup");
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                }
+                else if (this.IsUnloadingErrorDuringDeposit())
+                {
+                    this.Logger.LogError("Cradle not correctly unloaded during deposit");
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
                 }
             }
 
@@ -391,7 +478,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     0,
                     0,
                     0,
-                    switchPosition);
+                    switchPosition,
+                    HorizontalMovementDirection.Backwards);
                 this.positioningMessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger));
             }

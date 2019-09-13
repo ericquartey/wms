@@ -418,10 +418,10 @@ namespace Ferretto.VW.Simulator.Services
                         case InverterParameterId.TableTravelTargetAccelerations:
                             {
                                 var replyMessage = extractedMessage;
-                                if (uintPayload == 0)
-                                {
-                                    replyMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(1), true);
-                                }
+                                //if (uintPayload == 0)
+                                //{
+                                //    replyMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(1), true);
+                                //}
 
                                 result = client.Client.Send(replyMessage);
                             }

@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis AxisMovement { get; set; }
 
-        public int Direction { get; set; }
+        public HorizontalMovementDirection Direction { get; set; }
 
         public decimal LoadedGrossWeight { get; set; }
 

@@ -29,6 +29,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             decimal upperBound,
             int delay,
             decimal[] switchPosition,
+            HorizontalMovementDirection direction,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -44,6 +45,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.UpperBound = upperBound;
             this.SwitchPosition = switchPosition;
             this.Delay = delay;
+            this.Direction = direction;
         }
 
         #endregion
@@ -58,9 +60,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int Delay { get; set; }
 
-        public int Direction { get; set; }
+        public HorizontalMovementDirection Direction { get; set; }
 
         public int ExecutedCycles { get; set; }
+
+        public bool IsOnBoard { get; set; }
 
         public bool IsOneKMachine { get; set; }
 

@@ -178,7 +178,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 lowerBoundPosition,
                 upperBoundPosition,
                 delayStart,
-                switchPosition);
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                 data,
