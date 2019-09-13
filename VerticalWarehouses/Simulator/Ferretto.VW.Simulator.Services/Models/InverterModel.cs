@@ -10,6 +10,31 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
+    public enum InverterDataset : short
+    {
+        ActualDataset = 5,
+
+        TableTravelP7 = 33,
+
+        TableTravelDirection = 33,
+
+        TableTravelSet1 = 50,
+
+        TableTravelSet2 = 51,
+
+        TableTravelSet3 = 52,
+
+        TableTravelSet4 = 53,
+
+        TableTravelSet5 = 54,
+
+        ShutterAbsoluteOpen = 6,
+
+        ShutterAbsoluteHalf = 7,
+
+        ShutterAbsoluteClose = 8,
+    }
+
     public enum InverterOperationMode : ushort
     {
         Position = 1,
@@ -289,6 +314,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] controlWordArray;
 
+        public BitModel[] ioDevice;
+
         private const int LOWER_SPEED_Y_AXIS = 17928;
 
         private readonly Dictionary<Axis, int> axisPosition;
@@ -391,6 +418,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.TargetSpeed = new Dictionary<Axis, int>();
             this.TargetSpeed.Add(Axis.Horizontal, 0);
             this.TargetSpeed.Add(Axis.Vertical, 0);
+
+            this.SwitchPositions = new Dictionary<Axis, int[]>();
+            this.SwitchPositions.Add(Axis.Horizontal, new int[5]);
+            this.SwitchPositions.Add(Axis.Vertical, new int[5]);
         }
 
         #endregion
@@ -529,6 +560,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
+        public bool IsStartedOnBoard { get; set; }
+
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
@@ -607,6 +640,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                                               let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
+
+        public Dictionary<Axis, int[]> SwitchPositions { get; set; }
 
         public Dictionary<Axis, int> TargetAcceleration { get; set; }
 
@@ -1000,7 +1035,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return;
             }
             int target = this.TargetPosition[this.currentAxis];
-            if (this.IsRelativeMovement || this.OperationMode == InverterOperationMode.TableTravel)
+            if (this.IsRelativeMovement)
             {
                 target += this.StartPosition[this.currentAxis];
             }
@@ -1013,11 +1048,74 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (target > this.AxisPosition)
             {
                 this.AxisPosition += increment;
+                if (this.OperationMode == InverterOperationMode.TableTravel)
+                {
+                    if (!this.IsStartedOnBoard)
+                    {
+                        // simulate the loading process
+                        if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                        if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                    }
+                    else
+                    {
+                        // simulate the unloading process
+                        if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                        if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                        }
+                    }
+                }
             }
             else
             {
                 this.AxisPosition -= increment;
+                if (this.OperationMode == InverterOperationMode.TableTravel)
+                {
+                    if (!this.IsStartedOnBoard)
+                    {
+                        // simulate the loading process
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                    }
+                    else
+                    {
+                        // simulate the unloading process
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                        }
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
+                        {
+                            this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                        }
+                    }
+                }
             }
+
             if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS)
             {
                 this.AxisPosition = target;

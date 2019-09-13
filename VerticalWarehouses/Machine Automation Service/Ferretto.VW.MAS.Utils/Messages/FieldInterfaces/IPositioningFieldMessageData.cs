@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         Axis AxisMovement { get; set; }
 
-        int Direction { get; set; }
+        HorizontalMovementDirection Direction { get; set; }
 
         decimal LoadedGrossWeight { get; set; }
 

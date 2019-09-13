@@ -84,20 +84,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-
-            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+            else
             {
-                this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
-            }
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
+                if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                {
+                    this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                }
+            }
             return false;
         }
 

@@ -95,35 +95,37 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
             }
-            else if (this.InverterStatus == null)
+            else
             {
-                this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus == null)
+                {
+                    this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
+                }
+                else if (!this.InverterStatus.CommonStatusWord.IsFault)
+                {
+                    // reset command FaultReset bit before exiting the state machine
+
+                    this.InverterStatus.CommonControlWord.FaultReset = false;
+
+                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+
+                    this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+                    this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+                    this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
+
+                    returnValue = true;
+                }
             }
-            else if (!this.InverterStatus.CommonStatusWord.IsFault)
-            {
-                // reset command FaultReset bit before exiting the state machine
-
-                this.InverterStatus.CommonControlWord.FaultReset = false;
-
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
-
-                this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-                this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-                this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
-
-                returnValue = true;
-            }
-
             return returnValue;
         }
 

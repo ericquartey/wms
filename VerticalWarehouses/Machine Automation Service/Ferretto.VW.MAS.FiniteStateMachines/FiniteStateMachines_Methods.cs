@@ -284,6 +284,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace("1:Method Start");
 
             data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+            data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
 
             this.currentStateMachine = new PositioningStateMachine(
                 this.machineSensorsStatus,

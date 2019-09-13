@@ -86,49 +86,50 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
-
-            if (message.SystemIndex == this.InverterStatus.SystemIndex)
+            else
             {
-                if (this.InverterStatus is AglInverterStatus currentStatus)
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (message.SystemIndex == this.InverterStatus.SystemIndex)
                 {
-                    if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
-                        (currentStatus.ProfileVelocityStatusWord.TargetReached
-                            && currentStatus.CurrentShutterPosition == this.shutterDestination
+                    if (this.InverterStatus is AglInverterStatus currentStatus)
+                    {
+                        if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
+                            (currentStatus.ProfileVelocityStatusWord.TargetReached
+                                && currentStatus.CurrentShutterPosition == this.shutterDestination
+                                )
                             )
-                        )
-                    {
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                        returnValue = true;
-                    }
-                    else if (this.oldShutterPosition != currentStatus.CurrentShutterPosition)
-                    {
-                        this.oldShutterPosition = currentStatus.CurrentShutterPosition;
-                        var messageData = this.shutterPositionData;
-                        messageData.ShutterPosition = this.oldShutterPosition;
-                        var endNotification = new FieldNotificationMessage(
-                            messageData,
-                            "Shutter Positioning executing",
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageType.ShutterPositioning,
-                            MessageStatus.OperationExecuting,
-                            this.InverterStatus.SystemIndex);
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                            returnValue = true;
+                        }
+                        else if (this.oldShutterPosition != currentStatus.CurrentShutterPosition)
+                        {
+                            this.oldShutterPosition = currentStatus.CurrentShutterPosition;
+                            var messageData = this.shutterPositionData;
+                            messageData.ShutterPosition = this.oldShutterPosition;
+                            var endNotification = new FieldNotificationMessage(
+                                messageData,
+                                "Shutter Positioning executing",
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.ShutterPositioning,
+                                MessageStatus.OperationExecuting,
+                                this.InverterStatus.SystemIndex);
 
-                        this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+                            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                        this.ParentStateMachine.PublishNotificationEvent(endNotification);
+                            this.ParentStateMachine.PublishNotificationEvent(endNotification);
+                        }
                     }
                 }
             }
-
             return returnValue;
         }
 

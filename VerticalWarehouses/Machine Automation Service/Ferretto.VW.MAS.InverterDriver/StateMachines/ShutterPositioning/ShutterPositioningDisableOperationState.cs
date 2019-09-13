@@ -74,24 +74,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
-
-            if (this.InverterStatus is AglInverterStatus currentStatus)
+            else
             {
-                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus is AglInverterStatus currentStatus)
                 {
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                    returnValue = true;
+                    if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                    {
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        returnValue = true;
+                    }
                 }
             }
-
             return returnValue;
         }
 

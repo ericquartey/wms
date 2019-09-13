@@ -84,30 +84,32 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
             }
-
-            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+            else
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                {
+                    this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
 
-                var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-                var notificationMessage = new FieldNotificationMessage(
-                    messageData,
-                    $"{this.axisToCalibrate} calibrate axis executing",
-                    FieldMessageActor.Any,
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageType.CalibrateAxis,
-                    MessageStatus.OperationExecuting,
-                    this.InverterStatus.SystemIndex);
+                    var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+                    var notificationMessage = new FieldNotificationMessage(
+                        messageData,
+                        $"{this.axisToCalibrate} calibrate axis executing",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.CalibrateAxis,
+                        MessageStatus.OperationExecuting,
+                        this.InverterStatus.SystemIndex);
 
-                this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+                    this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-                this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                    this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                }
             }
 
             return false;   // EvaluateWriteMessage will not send a StatusWordParam

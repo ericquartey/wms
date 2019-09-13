@@ -152,7 +152,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                (displacement > 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
 
             this.PublishCommand(
                 messageData,
