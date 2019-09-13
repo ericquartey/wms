@@ -73,8 +73,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.Logger.LogDebug($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
         }
 
         public override void Stop()

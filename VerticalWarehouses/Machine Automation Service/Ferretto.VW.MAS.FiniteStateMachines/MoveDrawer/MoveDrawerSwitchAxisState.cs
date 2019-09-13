@@ -292,8 +292,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 

@@ -104,12 +104,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            base.PublishNotificationMessage(message);
-        }
-
-        /// <inheritdoc/>
         public override void Start()
         {
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;

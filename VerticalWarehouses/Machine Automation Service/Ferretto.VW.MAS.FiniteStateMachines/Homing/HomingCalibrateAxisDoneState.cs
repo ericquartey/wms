@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly IHomingOperation homingOperation;
 
-        private bool disposed;
-
         private bool inverterSwitched;
 
         private bool ioSwitched;
@@ -33,15 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             : base(parentMachine, logger)
         {
             this.homingOperation = homingOperation;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingCalibrateAxisDoneState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -120,8 +109,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-                this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
             else
@@ -137,8 +124,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn,
                 (byte)inverterIndex);
-
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
@@ -177,8 +162,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.CalibrateAxis,
                 MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -187,22 +170,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

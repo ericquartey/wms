@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -301,13 +301,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.transportStream?.Dispose();
                 this.transportStream = null;
 
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
+                this.transportClient?.Close();
+                this.transportClient?.Dispose();
+                this.transportClient = null;
             }
+
+            this.disposed = true;
         }
 
         #endregion

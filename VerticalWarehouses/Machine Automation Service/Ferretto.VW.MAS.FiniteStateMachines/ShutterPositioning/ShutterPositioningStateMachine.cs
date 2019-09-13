@@ -96,14 +96,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         }
 
         /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            base.PublishNotificationMessage(message);
-        }
-
-        /// <inheritdoc/>
         public override void Start()
         {
             lock (this.CurrentState)

@@ -85,8 +85,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageType.PowerEnable,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 

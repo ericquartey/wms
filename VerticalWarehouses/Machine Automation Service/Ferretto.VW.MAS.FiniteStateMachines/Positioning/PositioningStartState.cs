@@ -173,8 +173,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageType.Positioning,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
