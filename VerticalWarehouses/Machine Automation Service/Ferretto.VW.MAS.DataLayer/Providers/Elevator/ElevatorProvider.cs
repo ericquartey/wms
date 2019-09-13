@@ -200,12 +200,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard, decimal position)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position)
         {
             // if direction is Forwards quote increments, else is decremented
 
             // the total length is splitted in two unequal distances
-            bool isLongerDistance = (isOnBoard && direction == HorizontalMovementDirection.Forwards) || (!isOnBoard && direction == HorizontalMovementDirection.Backwards);
+            bool isLongerDistance = (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards) || (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
 
             decimal[] speed = {
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0SpeedV1Longer : this.horizontalMovementShorterProfileDataLayer.P0SpeedV1Shorter,

@@ -64,9 +64,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int ExecutedCycles { get; set; }
 
-        public bool IsOnBoard { get; set; }
-
         public bool IsOneKMachine { get; set; }
+
+        public bool IsStartedOnBoard { get; set; }
 
         public decimal LoadedGrossWeight { get; set; }
 

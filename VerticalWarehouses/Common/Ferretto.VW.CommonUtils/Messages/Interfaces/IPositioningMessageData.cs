@@ -18,9 +18,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
-        bool IsOnBoard { get; set; }
-
         bool IsOneKMachine { get; set; }
+
+        bool IsStartedOnBoard { get; set; }
 
         decimal LoadedGrossWeight { get; }
 
