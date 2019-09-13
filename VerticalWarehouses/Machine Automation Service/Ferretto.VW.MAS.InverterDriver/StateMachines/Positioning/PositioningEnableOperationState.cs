@@ -94,23 +94,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            else
             {
-                if (this.data.IsTorqueCurrentSamplingEnabled)
-                {
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningStartSamplingWhileMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                }
-                else
-                {
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                }
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-                returnValue = true;
+                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                {
+                    if (this.data.IsTorqueCurrentSamplingEnabled)
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningStartSamplingWhileMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    }
+
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 
