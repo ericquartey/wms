@@ -60,8 +60,6 @@
 
         ErrorStatusChanged,
 
-        ResetSecurity,
-
         InverterStop,
 
         PowerEnable,
@@ -76,6 +74,10 @@
 
         ElevatorWeightCheck,
 
-        WeightAcquisitionCommand
+        WeightAcquisitionCommand,
+
+        CurrentSamplingInMotionNotification,
+
+        CurrentSamplingInPlaceNotification
     }
 }

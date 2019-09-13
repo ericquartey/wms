@@ -112,6 +112,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             MessageActor receiver,
             MessageType type,
             MessageStatus status,
+            BayNumber targetBay = BayNumber.None,
             ErrorLevel level = ErrorLevel.NoError)
         {
             this.eventAggregator
@@ -124,6 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         MessageActor.WebApi,
                         type,
                         this.BayNumber,
+                        targetBay,
                         status,
                         level));
         }

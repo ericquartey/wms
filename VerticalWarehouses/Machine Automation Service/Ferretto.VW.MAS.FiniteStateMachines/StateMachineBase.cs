@@ -77,6 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.FiniteStateMachines,
                 MessageType.MachineStateActive,
                 this.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.PublishNotificationMessage(notificationMessage);
@@ -163,6 +164,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
                     this.RequestingBay,
+                    this.RequestingBay,
                     MessageStatus.OperationStart);
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -176,6 +178,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStateActive,
+                    this.RequestingBay,
                     this.RequestingBay,
                     MessageStatus.OperationStart);
 

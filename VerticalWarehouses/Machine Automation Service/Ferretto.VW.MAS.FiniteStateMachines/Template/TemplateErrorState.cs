@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

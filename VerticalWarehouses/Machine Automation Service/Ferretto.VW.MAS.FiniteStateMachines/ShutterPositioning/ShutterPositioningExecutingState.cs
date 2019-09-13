@@ -146,6 +146,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,
                 this.machineData.RequestingBay,
+                this.machineData.RequestingBay,
                 MessageStatus.OperationExecuting);
 
             this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -218,6 +219,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,
+                this.machineData.RequestingBay,
                 this.machineData.RequestingBay,
                 MessageStatus.OperationExecuting);
 

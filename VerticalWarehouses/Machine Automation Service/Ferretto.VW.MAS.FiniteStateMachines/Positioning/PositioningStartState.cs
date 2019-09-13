@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStartState : StateBase
     {
+
         #region Fields
 
         private readonly IPositioningMachineData machineData;
@@ -44,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -155,6 +158,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 this.machineData.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

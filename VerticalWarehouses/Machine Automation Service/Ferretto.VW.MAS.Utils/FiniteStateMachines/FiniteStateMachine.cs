@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils
 {
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS.Utils
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
+        private readonly BayNumber requestingBay;
+
         private readonly IServiceScope serviceScope;
 
         private IState activeState;
@@ -38,7 +41,7 @@ namespace Ferretto.VW.MAS.Utils
         /// <summary>
         /// To detect redundant calls.
         /// </summary>
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         private bool isStarted;
 
@@ -51,6 +54,7 @@ namespace Ferretto.VW.MAS.Utils
         #region Constructors
 
         protected FiniteStateMachine(
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -72,6 +76,7 @@ namespace Ferretto.VW.MAS.Utils
 
             this.Logger = logger;
 
+            this.requestingBay = requestingBay;
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.serviceScope = serviceScopeFactory.CreateScope();
@@ -143,7 +148,7 @@ namespace Ferretto.VW.MAS.Utils
             }
         }
 
-        public void Start(IMessageData data = default, CancellationToken cancellationToken = default)
+        public void Start(IMessageData data, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -291,6 +296,7 @@ namespace Ferretto.VW.MAS.Utils
                 MessageActor.Any,
                 MessageActor.MissionsManager,
                 MessageType.FsmException,
+                BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);

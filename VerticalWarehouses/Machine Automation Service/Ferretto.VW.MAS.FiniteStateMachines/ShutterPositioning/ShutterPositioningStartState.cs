@@ -187,6 +187,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,
                 this.machineData.RequestingBay,
+                this.machineData.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogTrace($"5:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

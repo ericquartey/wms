@@ -71,6 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 this.RequestingBay,
+                this.RequestingBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

@@ -347,13 +347,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOnAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResetSecurityAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResetSecurityAsync(System.Threading.CancellationToken cancellationToken);
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -576,6 +569,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
         public int Number { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
+        public BayOperation Operation { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<decimal> Positions { get; set; }
     
@@ -752,6 +748,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         OnMovementToBay = 2,
     
         InLocation = 3,
+    
+    }
+    
+    /// <summary>0 = Idle
+    /// 1 = ExecutingMission</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayOperation
+    {
+        Idle = 0,
+    
+        ExecutingMission = 1,
     
     }
     

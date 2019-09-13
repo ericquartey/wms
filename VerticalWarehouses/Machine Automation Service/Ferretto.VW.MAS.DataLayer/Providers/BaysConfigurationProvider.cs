@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -113,6 +114,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     this.baysProvider.Update(bayIndex,
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
+                }
+
+                bay = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
+                if (bay == null)
+                {
+                    this.baysProvider.Create(new Bay
+                    {
+                        Index = BayNumber.ElevatorBay,
+                        ExternalId = 4,
+                        IpAddress = IPAddress.Broadcast.ToString(),
+                        Type = BayType.Elevator
+                    });
                 }
             }
         }

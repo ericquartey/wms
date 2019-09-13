@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IHomingMachineData machineData;
@@ -42,6 +43,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -62,6 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
+                    this.RequestingBay,
                     this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
@@ -122,7 +126,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Homing,
                                 this.RequestingBay,
-                                MessageStatus.OperationError);
+                                this.RequestingBay,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

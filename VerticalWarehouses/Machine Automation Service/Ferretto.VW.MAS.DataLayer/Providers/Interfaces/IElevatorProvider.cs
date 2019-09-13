@@ -15,15 +15,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void MoveHorizontal(HorizontalMovementDirection direction);
 
-        void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory);
+        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory);
 
         void MoveVertical(VerticalMovementDirection direction);
 
-        void MoveVerticalOfDistance(double distance);
+        void MoveVerticalOfDistance(decimal distance);
 
-        void RunInMotionCurrentSampling(double displacement, double netWeight);
+        void RunInMotionCurrentSampling(decimal displacement, decimal netWeight);
 
-        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, double netWeight);
+        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight);
 
         void Stop();
 

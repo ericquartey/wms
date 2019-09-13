@@ -2,14 +2,15 @@ using System;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class WeightAnalysisMissionProvider : BaseProvider, IWeightAnalysisMissionProvider
     {
+
         #region Fields
 
         private readonly IVerticalAxisDataLayer verticalAxisDataLayer;
@@ -28,11 +29,13 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
         #endregion
 
+
+
         #region Methods
 
-        public void Start(double initialPosition, double displacement, double netWeight, TimeSpan inPlaceSamplingDuration)
+        public void Start(decimal initialPosition, decimal displacement, decimal netWeight, TimeSpan inPlaceSamplingDuration)
         {
-            if (initialPosition < (double)Math.Max(this.verticalAxisDataLayer.Offset, this.verticalAxisDataLayer.LowerBound))
+            if (initialPosition < Math.Max(this.verticalAxisDataLayer.Offset, this.verticalAxisDataLayer.LowerBound))
             {
                 throw new ArgumentOutOfRangeException(); // TODO add localized string message
             }

@@ -1,4 +1,6 @@
 ﻿using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus.States;
 using Ferretto.VW.MAS.MissionsManager.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +32,9 @@ namespace Ferretto.VW.MAS.MissionsManager
                 .AddTransient<IWeightAcquisitionInMotionSamplingState, WeightAcquisitionInMotionSamplingState>()
                 .AddTransient<IWeightAcquisitionMoveBackToStartPositionState, WeightAcquisitionMoveBackToStartPositionState>();
 
+            services
+                .AddTransient<IChangePowerStatusStateMachine, ChangePowerStatusStateMachine>()
+                .AddTransient<IChangePowerStatusStartState, ChangePowerStatusStartState>();
             return services;
         }
 

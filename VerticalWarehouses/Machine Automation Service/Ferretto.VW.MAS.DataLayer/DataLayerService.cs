@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
-                BayNumber = command.BayNumber.ToString(),
+                BayNumber = command.RequestingBay.ToString(),
                 Data = serializedData,
                 Description = command.Description,
                 Destination = command.Destination.ToString(),
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
-                BayNumber = message.BayNumber.ToString(),
+                BayNumber = message.RequestingBay.ToString(),
                 Data = serializedData,
                 Description = message.Description,
                 Destination = message.Destination.ToString(),
@@ -222,6 +222,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.Any,
                 MessageActor.DataLayer,
                 MessageType.DlException,
+                BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);

@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManagerService : AutomationBackgroundService
+    internal partial class MissionsManagerService : AutomationBackgroundService
     {
 
         #region Fields
@@ -25,7 +25,11 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
 
+        private readonly IServiceScope serviceScope;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -39,11 +43,6 @@ namespace Ferretto.VW.MAS.MissionsManager
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (machinesDataService == null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
@@ -59,13 +58,31 @@ namespace Ferretto.VW.MAS.MissionsManager
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            this.eventAggregator = eventAggregator;
             this.machinesDataService = machinesDataService;
             this.missionsDataService = missionsDataService;
             this.serviceScopeFactory = serviceScopeFactory;
+            this.serviceScope = serviceScopeFactory.CreateScope();
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 
             this.Logger.LogTrace("Mission manager initialised.");
+        }
+
+        #endregion
+
+
+
+        #region Methods
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (!this.isDisposed)
+            {
+                this.serviceScope.Dispose();
+
+                this.isDisposed = true;
+            }
         }
 
         #endregion

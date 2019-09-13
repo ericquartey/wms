@@ -117,7 +117,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
 
             this.currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
-            this.currentStateMachines.Add(BayNumber.ElevatorBay, null);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -209,7 +208,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                this.currentStateMachines.TryGetValue(receivedMessage.BayNumber, out var messageCurrentStateMachine);
+                this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var messageCurrentStateMachine);
 
                 if (messageCurrentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
@@ -220,11 +219,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     var errorNotification = new NotificationMessage(
                         receivedMessage.Data,
-                        $"Bay {receivedMessage.BayNumber} is already executing the machine {messageCurrentStateMachine.GetType()}",
+                        $"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         receivedMessage.Type,
-                        receivedMessage.BayNumber,
+                        receivedMessage.RequestingBay,
+                        receivedMessage.RequestingBay,
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
@@ -264,10 +264,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.ProcessDrawerOperation(receivedMessage);
                         break;
 
-                    case MessageType.ResetSecurity:
-                        this.ProcessResetSecurityMessage();
-                        break;
-
                     case MessageType.PowerEnable:
                         this.ProcessPowerEnableMessage(receivedMessage);
                         break;
@@ -288,7 +284,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
-                    receivedMessage.BayNumber,
+                    receivedMessage.RequestingBay,
+                    receivedMessage.RequestingBay,
                     MessageStatus.OperationStart);
 
                 messageCurrentStateMachine?.PublishNotificationMessage(notificationMessage);
@@ -361,6 +358,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
                                     messageBayBayIndex,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
 
                                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
@@ -407,6 +405,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.FiniteStateMachines,
                                     MessageType.SensorsChanged,
                                     messageBayBayIndex,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
@@ -438,6 +437,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterStatusWord,
                             messageBayBayIndex,
+                            messageBayBayIndex,
                             MessageStatus.OperationExecuting);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                         }
@@ -458,6 +458,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     MessageActor.FiniteStateMachines,
                                     MessageType.ShutterPositioning,
                                     messageBayBayIndex,
+                                    messageBayBayIndex,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                             }
@@ -476,6 +477,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterException,
                             messageBayBayIndex,
+                            messageBayBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -492,6 +494,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,
+                            messageBayBayIndex,
                             messageBayBayIndex,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
@@ -592,7 +595,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                this.currentStateMachines.TryGetValue(receivedMessage.BayNumber, out var messageCurrentStateMachine);
+                this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var messageCurrentStateMachine);
 
                 switch (receivedMessage.Type)
                 {
@@ -651,21 +654,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     }
 
                                     this.logger.LogTrace($"5:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationStop:
 
                                     this.logger.LogTrace($"6:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"7:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
 
                                     //TODO: According to the type of error we can try to resolve here
@@ -682,21 +685,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationEnd:
 
                                     this.logger.LogTrace($"8:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationStop:
 
                                     this.logger.LogTrace($"9:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"10:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
 
                                     //TODO: According to the type of error we can try to resolve here
@@ -713,21 +716,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationEnd:
 
                                     this.logger.LogTrace($"11:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationStop:
 
                                     this.logger.LogTrace($"12:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"13:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
 
                                     //TODO: According to the type of error we can try to resolve here
@@ -744,21 +747,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationEnd:
 
                                     this.logger.LogDebug($"17:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationStop:
 
                                     this.logger.LogTrace($"18:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
                             }
                         }
                         break;
 
-                    case MessageType.ResetSecurity:
                     case MessageType.PowerEnable:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
@@ -767,21 +769,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 case MessageStatus.OperationEnd:
 
                                     this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationStop:
 
                                     this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
                                     break;
 
                                 case MessageStatus.OperationError:
 
                                     this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                                    this.currentStateMachines.Remove(receivedMessage.BayNumber);
+                                    this.currentStateMachines.Remove(receivedMessage.RequestingBay);
                                     this.SendCleanDebug();
 
                                     //TODO: According to the type of error we can try to resolve here
@@ -812,6 +814,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
                     BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -825,6 +828,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStateActive,
+                    BayNumber.None,
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
@@ -840,6 +844,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.FsmException,
+                BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);

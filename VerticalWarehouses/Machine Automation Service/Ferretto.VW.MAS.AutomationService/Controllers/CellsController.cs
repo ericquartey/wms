@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -14,6 +13,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CellsController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly ICellsProvider cellsProvider;
@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

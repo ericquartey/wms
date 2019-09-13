@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Number { get; set; }
 
+        public BayOperation Operation { get; set; }
+
         public IEnumerable<decimal> Positions { get; set; }
 
         public BayStatus Status

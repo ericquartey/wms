@@ -137,6 +137,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
                 this.RequestingBay,
+                this.RequestingBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

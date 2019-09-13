@@ -19,7 +19,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class BaysProvider : IBaysProvider
+    internal class BaysProvider : BaseProvider, IBaysProvider
     {
 
         #region Fields
@@ -43,6 +43,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IVerticalAxisDataLayer verticalAxis,
             IMachineConfigurationProvider machineConfigurationProvider,
             IConfigurationValueManagmentDataLayer configurationValueManagement)
+            : base(eventAggregator)
         {
             if (eventAggregator is null)
             {
@@ -360,6 +361,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
+        public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
+        {
+            var bay = this.GetByIndex(targetBay);
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(targetBay);
+            }
+
+            bay.Operation = newOperation;
+
+            this.Update(bay);
+
+            return bay;
+        }
+
         public void Update(BayNumber bayIndex, string ipAddress, BayType bayType)
         {
             var bay = this.GetByIndex(bayIndex);
@@ -427,6 +443,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     bay.Index));
         }
 
+        #endregion
+
         //TODO check unused code below
         //private void UpdateBayWithPositions(Bay bay)
         //{
@@ -456,7 +474,5 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         //    bay.Positions = positions;
         //}
-
-        #endregion
     }
 }

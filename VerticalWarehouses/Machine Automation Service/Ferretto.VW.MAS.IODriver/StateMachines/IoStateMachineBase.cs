@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
                 MessageActor.IoDriver,
                 MessageType.MachineStateActive,
                 BayNumber.None,
+                BayNumber.None,
                 MessageStatus.OperationStart);
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -128,6 +129,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
                 MessageActor.Any,
                 MessageActor.IoDriver,
                 MessageType.MachineStateActive,
+                BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationStart);
 

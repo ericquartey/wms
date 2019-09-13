@@ -163,6 +163,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 this.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.Logger.LogDebug($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

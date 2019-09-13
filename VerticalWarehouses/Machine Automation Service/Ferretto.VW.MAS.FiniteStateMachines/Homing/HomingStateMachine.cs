@@ -86,6 +86,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
                         this.RequestingBay,
+                        this.RequestingBay,
                         MessageStatus.OperationExecuting);
 
                     this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -115,6 +116,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
+                        this.RequestingBay,
                         this.RequestingBay,
                         MessageStatus.OperationExecuting);
 

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -16,6 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using IStateMachine = Ferretto.VW.MAS.AutomationService.StateMachines.Interface.IStateMachine;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -27,6 +32,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IBaysDataService baysDataService;
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
@@ -37,7 +44,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
-        private readonly ILogger logger;
+        private readonly ILogger<AutomationService> logger;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -50,6 +57,10 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private List<DataModels.Bay> configuredBays;
+
+        private IStateMachine currentStateMachine;
 
         private CancellationToken stoppingToken;
 
@@ -66,7 +77,8 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IBaysProvider baysProvider)
         {
             if (logger == null)
             {
@@ -125,6 +137,8 @@ namespace Ferretto.VW.MAS.AutomationService
             this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
 
+            this.baysProvider = baysProvider;
+
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
@@ -170,9 +184,10 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             do
             {
+                CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                     this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
                 }
@@ -182,7 +197,17 @@ namespace Ferretto.VW.MAS.AutomationService
                     return;
                 }
 
-                // TODO add here a switch block on receivedMessage.Type
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.PowerEnable:
+                        this.currentStateMachine = new PowerEnableStateMachine(receivedMessage, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                        this.currentStateMachine.Start();
+                        break;
+
+                    case MessageType.Stop:
+                        this.currentStateMachine?.Stop(StopRequestReason.Stop);
+                        break;
+                }
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -315,6 +340,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataLayerReady()
         {
+            this.configuredBays = this.baysProvider.GetAll().ToList();
+
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var baysConfigurationProvider = scope.ServiceProvider.GetRequiredService<IBaysConfigurationProvider>();

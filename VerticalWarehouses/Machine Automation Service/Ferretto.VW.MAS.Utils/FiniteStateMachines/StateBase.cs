@@ -4,13 +4,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.Utils
 {
-    public abstract class StateBase : IState
+    public abstract class StateBase : IState, IDisposable
     {
+
         #region Fields
 
         private bool hasEntered;
 
         private bool hasExited;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -27,15 +30,28 @@ namespace Ferretto.VW.MAS.Utils
 
         #endregion
 
+
+
         #region Properties
 
         protected ILogger<StateBase> Logger { get; }
 
         #endregion
 
+
+
         #region Methods
 
-        public void Enter(IMessageData data = default)
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.OnDisposing();
+                this.isDisposed = true;
+            }
+        }
+
+        public void Enter(IMessageData data)
         {
             if (this.hasEntered)
             {
@@ -61,6 +77,12 @@ namespace Ferretto.VW.MAS.Utils
             this.Logger.LogDebug($"Exiting state {this.GetType()}.");
 
             this.OnExit();
+        }
+
+        protected virtual void OnDisposing()
+        {
+            // do nothing
+            // derived classes can customize the behaviour of this method
         }
 
         protected virtual void OnEnter(IMessageData data)

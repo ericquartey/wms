@@ -209,12 +209,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
+        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
         {
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
             var upperBound = this.verticalAxisDataLayer.UpperBound;
 
-            if ((decimal)targetPosition < lowerBound || (decimal)targetPosition > upperBound)
+            if (targetPosition < lowerBound || targetPosition > upperBound)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(targetPosition),
@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.Position,
-                (decimal)targetPosition,
+                targetPosition,
                 speed,
                 this.verticalAxisDataLayer.MaxEmptyAcceleration,
                 this.verticalAxisDataLayer.MaxEmptyDeceleration,
@@ -301,7 +301,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
-        public void MoveVerticalOfDistance(double distance)
+        public void MoveVerticalOfDistance(decimal distance)
         {
             if (distance == 0)
             {
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Axis.Vertical,
                 MovementType.Relative,
                 MovementMode.Position,
-                (decimal)distance,
+                distance,
                 speed,
                 this.verticalAxisDataLayer.MaxEmptyAcceleration,
                 this.verticalAxisDataLayer.MaxEmptyDeceleration,
@@ -338,12 +338,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning);
         }
 
-        public void RunInMotionCurrentSampling(double displacement, double netWeight)
+        public void RunInMotionCurrentSampling(decimal displacement, decimal netWeight)
         {
             throw new NotImplementedException();
         }
 
-        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, double netWeight)
+        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight)
         {
             throw new NotImplementedException();
         }

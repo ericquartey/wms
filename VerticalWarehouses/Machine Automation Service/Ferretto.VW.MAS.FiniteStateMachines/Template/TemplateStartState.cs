@@ -89,6 +89,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

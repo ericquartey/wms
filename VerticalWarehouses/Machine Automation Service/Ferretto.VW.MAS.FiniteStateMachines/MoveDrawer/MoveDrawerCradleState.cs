@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerCradleState : StateBase
     {
+
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -47,6 +48,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -73,6 +76,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.DrawerOperation,
+                                this.RequestingBay,
                                 this.RequestingBay,
                                 MessageStatus.OperationError,
                                 ErrorLevel.Error,
@@ -152,6 +156,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
+                this.RequestingBay,
                 this.RequestingBay,
                 MessageStatus.OperationStart);
 

@@ -6,12 +6,14 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 {
     internal class WeightAcquisitionStateMachine : FiniteStateMachine<IWeightAcquisitionMoveToStartPositionState>,
         IWeightAcquisitionStateMachine
     {
+
         #region Fields
 
         private bool abortRequested;
@@ -21,14 +23,17 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
         #region Constructors
 
         public WeightAcquisitionStateMachine(
+            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
         }
 
         #endregion
+
+
 
         #region Methods
 

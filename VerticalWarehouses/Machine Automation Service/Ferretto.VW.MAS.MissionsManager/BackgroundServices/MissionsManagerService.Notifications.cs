@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -12,15 +13,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManagerService
+    internal partial class MissionsManagerService
     {
-
-        #region Fields
-
-        private readonly IEventAggregator eventAggregator;
-
-        #endregion
-
 
 
         #region Methods
@@ -38,7 +32,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                    this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
+                    this.OnMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
@@ -67,7 +61,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             this.missionManagementTask.Start();
         }
 
-        private void OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
+        private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)
         {
             if (e == null)
             {
@@ -85,7 +79,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 if (bay != null)
                 {
                     bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
-                    this.Logger.LogDebug($"Bay#{bay.Index}: operation competed.");
+                    this.Logger.LogDebug($"Bay#{bay.Number}: operation competed.");
 
                     this.bayStatusChangedEvent.Set();
                 }

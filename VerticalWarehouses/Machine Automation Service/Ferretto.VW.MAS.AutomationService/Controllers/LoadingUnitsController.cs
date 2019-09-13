@@ -10,7 +10,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.DTOs;
 using Microsoft.AspNetCore.Http;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using System;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -18,6 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class LoadingUnitsController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

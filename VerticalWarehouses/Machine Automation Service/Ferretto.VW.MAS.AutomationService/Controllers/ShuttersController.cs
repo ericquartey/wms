@@ -1,9 +1,7 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.AspNetCore.Http;

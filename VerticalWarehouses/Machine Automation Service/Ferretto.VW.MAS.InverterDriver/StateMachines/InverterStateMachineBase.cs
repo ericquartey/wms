@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {
+
         #region Fields
 
         private bool disposed;
@@ -51,6 +52,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
+
+
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
@@ -62,6 +65,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         protected ILogger Logger { get; }
 
         #endregion
+
+
 
         #region Methods
 
@@ -75,6 +80,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 MessageActor.Any,
                 MessageActor.InverterDriver,
                 MessageType.MachineStateActive,
+                BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationStart);
 
@@ -153,6 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                     MessageActor.Any,
                     MessageActor.InverterDriver,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
                     BayNumber.None,
                     MessageStatus.OperationStart);
 

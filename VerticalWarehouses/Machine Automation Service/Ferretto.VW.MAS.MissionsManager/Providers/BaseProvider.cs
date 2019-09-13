@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class BaseProvider
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
         #endregion
 
+
+
         #region Methods
 
         protected void SendCommandToMissionManager(
@@ -47,7 +50,8 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                         description,
                         MessageActor.MissionsManager,
                         MessageActor.Any,
-                        messageType));
+                        messageType,
+                        BayNumber.None));
         }
 
         protected TData WaitForResponseEventAsync<TData>(

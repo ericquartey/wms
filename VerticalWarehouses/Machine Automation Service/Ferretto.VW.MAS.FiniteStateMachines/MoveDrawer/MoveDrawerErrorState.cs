@@ -63,6 +63,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
                     this.RequestingBay,
+                    this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -96,6 +97,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
+                this.RequestingBay,
                 this.RequestingBay,
                 MessageStatus.OperationError);
 

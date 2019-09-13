@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IPositioningMachineData machineData;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -60,6 +63,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
+                    this.RequestingBay,
                     this.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
@@ -118,6 +122,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
+                this.RequestingBay,
                 this.RequestingBay,
                 MessageStatus.OperationError);
 

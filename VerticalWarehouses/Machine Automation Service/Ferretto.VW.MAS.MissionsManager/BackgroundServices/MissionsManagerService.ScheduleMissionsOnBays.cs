@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManagerService
+    internal partial class MissionsManagerService
     {
 
 
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             Bay bay,
             IEnumerable<WMS.Data.WebAPI.Contracts.MissionInfo> pendingMissions)
         {
-            this.Logger.LogDebug($"Bay #{bay.Index}: there are {pendingMissions.Count()} pending missions.");
+            this.Logger.LogDebug($"Bay #{bay.Number}: there are {pendingMissions.Count()} pending missions.");
 
             if (!bay.CurrentMissionId.HasValue
                 &&
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                    "All the pending missions should be in the new state.");
                    */
 
-                this.Logger.LogDebug($"Bay #{bay.Index}: new mission id='{bay.CurrentMissionId}' assigned.");
+                this.Logger.LogDebug($"Bay #{bay.Number}: new mission id='{bay.CurrentMissionId}' assigned.");
             }
 
             if (bay.CurrentMissionId.HasValue)
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         {
                             bayProvider.AssignMissionOperation(bay.Index, mission.Id, missionOperation.Id);
 
-                            this.Logger.LogDebug($"Bay #{bay.Index}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Number}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
 
                             this.NotifyNewMissionOperationAvailable(bay, pendingMissions.Count());
                         }
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         {
                             bayProvider.AssignMissionOperation(bay.Index, null, null);
 
-                            this.Logger.LogDebug($"Bay #{bay.Index}: no more operations available for mission id='{mission.Id}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Number}: no more operations available for mission id='{mission.Id}'.");
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             {
                 MissionId = bay.CurrentMissionId.Value,
                 MissionOperationId = bay.CurrentMissionOperationId.Value,
-                PendingMissionsCount = pendingMissionsCount
+                PendingMissionsCount = pendingMissionsCount,
             };
 
             var notificationMessage = new NotificationMessage(
@@ -139,8 +139,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 MessageActor.AutomationService,
                 MessageActor.MissionsManager,
                 MessageType.NewMissionOperationAvailable,
-                bay.Index,
-                MessageStatus.NoStatus);
+                bay.Index);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
@@ -153,7 +152,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             {
                 this.bayStatusChangedEvent,
                 this.newMissionArrivedResetEvent,
-                this.StoppingToken.WaitHandle
+                this.CancellationToken.WaitHandle,
             };
 
             do
@@ -162,7 +161,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 WaitHandle.WaitAny(waitHandles);
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         #endregion

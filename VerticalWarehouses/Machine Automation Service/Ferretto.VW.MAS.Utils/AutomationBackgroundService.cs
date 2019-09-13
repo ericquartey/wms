@@ -11,11 +11,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService : BackgroundService
     {
+
         #region Fields
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -57,15 +59,19 @@ namespace Ferretto.VW.MAS.Utils
 
         #endregion
 
+
+
         #region Properties
+
+        protected CancellationToken CancellationToken { get; private set; }
 
         protected IEventAggregator EventAggregator { get; }
 
         protected ILogger Logger { get; }
 
-        protected CancellationToken StoppingToken { get; private set; }
-
         #endregion
+
+
 
         #region Methods
 
@@ -91,9 +97,9 @@ namespace Ferretto.VW.MAS.Utils
             await base.StopAsync(cancellationToken);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            this.StoppingToken = stoppingToken;
+            this.CancellationToken = cancellationToken;
 
             try
             {
@@ -123,7 +129,7 @@ namespace Ferretto.VW.MAS.Utils
                 CommandMessage command;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out command);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out command);
                     this.Logger.LogTrace(
                         $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
                 }
@@ -135,7 +141,7 @@ namespace Ferretto.VW.MAS.Utils
 
                 await this.OnCommandReceivedAsync(command);
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         private async Task DequeueNotificationsAsync()
@@ -144,7 +150,7 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out var notification);
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification);
                     this.Logger.LogTrace(
                         $"Dequeued notification '{notification.Type}', status {notification.Status} (from '{notification.Source}' to '{notification.Destination}').");
 
@@ -161,7 +167,7 @@ namespace Ferretto.VW.MAS.Utils
                     this.Logger.LogError(ex, "Error while processing the notification.");
                 }
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

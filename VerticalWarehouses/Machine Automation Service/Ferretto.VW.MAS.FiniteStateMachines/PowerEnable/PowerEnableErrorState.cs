@@ -69,6 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
                 this.RequestingBay,
+                this.RequestingBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

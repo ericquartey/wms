@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningExecutingState : StateBase
     {
+
         #region Fields
 
         private readonly IPositioningMachineData machineData;
@@ -49,6 +50,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -228,6 +231,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             MessageActor.FiniteStateMachines,
                             MessageType.Positioning,
                             this.RequestingBay,
+                            this.RequestingBay,
                             MessageStatus.OperationExecuting);
 
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -298,6 +302,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageActor.AutomationService,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
+                    this.RequestingBay,
                     this.RequestingBay,
                     MessageStatus.OperationExecuting);
 

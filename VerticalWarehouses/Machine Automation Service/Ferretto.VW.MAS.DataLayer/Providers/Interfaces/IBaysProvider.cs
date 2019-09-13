@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         Bay Activate(BayNumber bayIndex);
 
-        Bay AssignMissionOperation(BayNumber bayIndex, int? missionId, int? missionOperationId);
+        Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
         void Create(Bay bay);
 
@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         List<InverterIndex> GetInverterList(BayNumber bayIndex);
 
         IoIndex GetIoDevice(BayNumber bayIndex);
+
+        Bay SetCurrentOperation(BayNumber bayIndex, BayOperation newOperation);
 
         void Update(BayNumber bayIndex, string ipAddress, BayType bayType);
 

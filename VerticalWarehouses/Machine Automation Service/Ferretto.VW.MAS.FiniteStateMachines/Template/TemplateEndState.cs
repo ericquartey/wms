@@ -66,6 +66,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.RequestingBay,
+                this.RequestingBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

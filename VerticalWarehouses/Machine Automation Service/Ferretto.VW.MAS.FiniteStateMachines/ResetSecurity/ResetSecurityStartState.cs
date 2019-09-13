@@ -101,7 +101,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 "Reset Security Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.ResetSecurity,
+                MessageType.NoType,
+                this.RequestingBay,
                 this.RequestingBay,
                 MessageStatus.OperationStart);
 

@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
+                    this.machineData.RequestingBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 

@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                MessageActor.FiniteStateMachines,
                                MessageType.Positioning,
                                this.RequestingBay,
+                               this.RequestingBay,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -126,6 +127,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
+                this.RequestingBay,
                 this.RequestingBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
