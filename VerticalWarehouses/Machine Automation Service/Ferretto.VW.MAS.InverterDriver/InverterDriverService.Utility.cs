@@ -33,9 +33,11 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public partial class HostedInverterDriver
+    public partial class InverterDriverService
     {
         #region Fields
+
+        private readonly bool refreshTargetTable = true;
 
         private readonly object syncAxisTimer = new object();
 
@@ -46,8 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private IPAddress inverterAddress;
 
         private int inverterPort;
-
-        private bool refreshTargetTable = true;
 
         #endregion
 

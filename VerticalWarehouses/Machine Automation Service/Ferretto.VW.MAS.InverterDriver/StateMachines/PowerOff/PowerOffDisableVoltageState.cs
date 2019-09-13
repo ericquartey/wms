@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    public class PowerOffDisableVoltageState : InverterStateBase
+    internal class PowerOffDisableVoltageState : InverterStateBase
     {
         #region Constructors
 

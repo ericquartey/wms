@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerElevatorToPositionState : StateBase
+    internal class MoveDrawerElevatorToPositionState : StateBase
     {
         #region Fields
 
@@ -271,11 +270,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //}
 
             if (this.drawerOperationData.Step == DrawerOperationStep.None)
-                {
+            {
                 target = this.drawerOperationData.SourceVerticalPosition;
-                }
-                else
-                {
+            }
+            else
+            {
                 target = this.drawerOperationData.DestinationVerticalPosition;
             }
 

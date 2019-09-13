@@ -10,11 +10,9 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningEnableOperationState : InverterStateBase
+    internal class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
         private readonly IInverterPositioningFieldMessageData data;
 
@@ -96,15 +94,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-            else
+
+            if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                if (this.data.IsTorqueCurrentSamplingEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningStartSamplingWhileMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                }
+
+                returnValue = true;
             }
+
             return returnValue;
         }
 

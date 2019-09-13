@@ -1942,6 +1942,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Procedure completed..
+        /// </summary>
+        public static string ProcedureCompleted {
+            get {
+                return ResourceManager.GetString("ProcedureCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The procedure was stopped..
         /// </summary>
         public static string ProcedureWasStopped {

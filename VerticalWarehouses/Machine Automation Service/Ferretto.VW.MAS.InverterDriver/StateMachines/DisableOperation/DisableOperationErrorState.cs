@@ -8,10 +8,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    public class DisableOperationErrorState : InverterStateBase
+    internal class DisableOperationErrorState : InverterStateBase
     {
-
-
         #region Constructors
 
         public DisableOperationErrorState(
@@ -32,8 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         }
 
         #endregion
-
-
 
         #region Methods
 

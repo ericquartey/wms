@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
 {
-    public interface IInverterStateMachine : IDisposable
+    internal interface IInverterStateMachine : IDisposable
     {
         #region Methods
 

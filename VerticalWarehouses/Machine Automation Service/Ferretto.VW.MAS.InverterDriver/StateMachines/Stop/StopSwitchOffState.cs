@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
-    public class StopSwitchOffState : InverterStateBase
+    internal class StopSwitchOffState : InverterStateBase
     {
         #region Constructors
 

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
-    public class ShutterPositioningDisableVoltageState : InverterStateBase
+    internal class ShutterPositioningDisableVoltageState : InverterStateBase
     {
         #region Fields
 

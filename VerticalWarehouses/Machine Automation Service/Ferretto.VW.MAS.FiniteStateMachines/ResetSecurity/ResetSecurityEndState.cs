@@ -1,13 +1,12 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityEndState : StateBase
+    internal class ResetSecurityEndState : StateBase
     {
         #region Fields
 
@@ -22,8 +21,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         public ResetSecurityEndState(
             IStateMachine parentMachine,
             ILogger logger,
-            bool stopRequested = false )
-            : base( parentMachine, logger )
+            bool stopRequested = false)
+            : base(parentMachine, logger)
         {
             this.stopRequested = stopRequested;
         }
@@ -34,27 +33,27 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         ~ResetSecurityEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage( CommandMessage message )
+        public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
-        public override void ProcessNotificationMessage( NotificationMessage message )
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -65,19 +64,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ResetSecurity,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace( $"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -89,7 +88,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

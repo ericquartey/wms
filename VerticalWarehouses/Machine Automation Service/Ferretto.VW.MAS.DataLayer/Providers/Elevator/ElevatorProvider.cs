@@ -437,7 +437,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId)
         {
-            if (displacement == 0)
+            if (displacement <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(displacement),

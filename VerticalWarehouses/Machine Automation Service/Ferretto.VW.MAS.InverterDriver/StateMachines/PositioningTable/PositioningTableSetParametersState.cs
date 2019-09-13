@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningTableSetParametersState : InverterStateBase
+    internal class PositioningTableSetParametersState : InverterStateBase
     {
         #region Fields
 

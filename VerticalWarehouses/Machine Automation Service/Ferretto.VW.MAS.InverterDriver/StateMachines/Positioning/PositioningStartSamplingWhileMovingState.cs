@@ -7,25 +7,16 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningStartMovingState : InverterStateBase
+    internal class PositioningStartSamplingWhileMovingState : InverterStateBase
     {
         #region Constructors
 
-        public PositioningStartMovingState(
+        public PositioningStartSamplingWhileMovingState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningStartMovingState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -77,27 +68,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-            else
+
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
-                    {
-                        this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                        this.Logger.LogDebug("Position Reached !");
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug("Position Not Reached");
-                    }
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.Logger.LogDebug("Position Reached !");
+                }
+                else
+                {
+                    this.Logger.LogDebug("Position Not Reached");
                 }
             }
+
             //INFO Next status word request handled by timer
             return true;
         }

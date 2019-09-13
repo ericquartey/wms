@@ -2,9 +2,9 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public interface IState : IDisposable
+    internal interface IState : IDisposable
     {
         #region Properties
 

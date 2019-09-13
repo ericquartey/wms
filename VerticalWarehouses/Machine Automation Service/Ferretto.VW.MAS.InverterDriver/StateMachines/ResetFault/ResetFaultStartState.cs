@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
-    public class ResetFaultStartState : InverterStateBase
+    internal class ResetFaultStartState : InverterStateBase
     {
         #region Fields
 

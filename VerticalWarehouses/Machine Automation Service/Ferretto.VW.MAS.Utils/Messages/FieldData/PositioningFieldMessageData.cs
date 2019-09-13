@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetDeceleration = messageData.TargetDeceleration;
             this.Direction = messageData.Direction;
             this.SwitchPosition = messageData.SwitchPosition;
+            this.LoadedGrossWeight = messageData.LoadedGrossWeight;
         }
 
         #endregion
@@ -55,6 +56,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public Axis AxisMovement { get; set; }
 
         public int Direction { get; set; }
+
+        public decimal LoadedGrossWeight { get; set; }
 
         public MovementType MovementType { get; set; }
 
@@ -69,6 +72,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public decimal TargetPosition { get; set; }
 
         public decimal[] TargetSpeed { get; set; }
+
+        public (decimal Value, System.DateTime TimeStamp) TorqueCurrentSample { get; set; }
 
         #endregion
 

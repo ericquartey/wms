@@ -6,7 +6,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    public class DisableOperationStateMachine : InverterStateMachineBase
+    internal class DisableOperationStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -22,12 +22,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
             IInverterStatusBase inverterStatus,
             BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
             IEventAggregator eventAggregator,
-            ILogger logger )
-            : base( logger, eventAggregator, inverterCommandQueue )
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
             this.inverterStatus = inverterStatus;
 
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         ~DisableOperationStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new DisableOperationStartState( this, this.inverterStatus, this.Logger );
+            this.CurrentState = new DisableOperationStartState(this, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
             this.CurrentState?.Stop();
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -38,7 +38,7 @@ using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public partial class HostedInverterDriver : BackgroundService
+    public partial class InverterDriverService : BackgroundService
     {
         #region Fields
 
@@ -51,6 +51,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private const int STATUS_WORD_UPDATE_INTERVAL = 300;
 
         private readonly Stopwatch axisIntervalStopwatch;
+
+        private readonly Timer[] axisPositionUpdateTimer;
 
         private readonly Stopwatch axisStopwatch;
 
@@ -94,11 +96,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ISocketTransport socketTransport;
 
+        private readonly Timer[] statusWordUpdateTimer;
+
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private readonly ManualResetEventSlim writeEnableEvent;
-
-        private Timer[] axisPositionUpdateTimer;
 
         private Axis currentAxis;
 
@@ -112,21 +114,19 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Timer sensorStatusUpdateTimer;
 
-        private Timer[] statusWordUpdateTimer;
-
         private CancellationToken stoppingToken;
 
         #endregion
 
         #region Constructors
 
-        public HostedInverterDriver(
+        public InverterDriverService(
             IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
             IResolutionConversionDataLayer dataLayerResolutionConversion,
-            ILogger<HostedInverterDriver> logger)
+            ILogger<InverterDriverService> logger)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Destructors
 
-        ~HostedInverterDriver()
+        ~InverterDriverService()
         {
             this.Dispose(false);
         }
@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
-                for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+                for (var id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
                 {
                     this.axisPositionUpdateTimer[(int)id]?.Dispose();
                     this.statusWordUpdateTimer[(int)id]?.Dispose();
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.sensorStatusUpdateTimer?.Dispose();
             this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
-            for (InverterIndex id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
+            for (var id = InverterIndex.MainInverter; id <= InverterIndex.Slave7; id++)
             {
                 this.axisPositionUpdateTimer[(int)id]?.Dispose();
                 this.axisPositionUpdateTimer[(int)id] = new Timer(this.RequestAxisPositionUpdate, id, -1, Timeout.Infinite);
@@ -277,13 +277,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             do
             {
-                FieldCommandMessage receivedMessage;
-
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
 
-                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+                    this.OnCommandReceived(receivedMessage);
                 }
                 catch (OperationCanceledException)
                 {
@@ -299,102 +297,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     return;
                 }
-
-                var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-
-                if (this.inverterStatuses.Count == 0)
-                {
-                    this.logger.LogError("4:Invert Driver not configured for this message Type");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
-
-                    continue;
-                }
-
-                this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
-
-                if (messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
-                {
-                    this.logger.LogTrace("4: Stop the timer for update shaft position");
-                    this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
-
-                    messageCurrentStateMachine.Stop();
-
-                    continue;
-                }
-
-                if (messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
-                {
-                    this.logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
-                    this.logger.LogError($"5a: Message {receivedMessage.Type} will be discarded!");
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
-
-                    continue;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case FieldMessageType.CalibrateAxis:
-                        this.ProcessCalibrateAxisMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterPowerOff:
-                        this.ProcessPowerOffMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterPowerOn:
-                        this.ProcessPowerOnMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.Positioning:
-                        this.ProcessPositioningMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.ShutterPositioning:
-                        this.ProcessShutterPositioningMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterSetTimer:
-                        this.ProcessInverterSetTimerMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterSwitchOff:
-                        this.ProcessInverterSwitchOffMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterSwitchOn:
-                        this.ProcessInverterSwitchOnMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterStop:
-                        this.ProcessStopMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterFaultReset:
-                        this.ProcessFaultResetMessage(receivedMessage);
-                        break;
-
-                    case FieldMessageType.InverterDisable:
-                        this.ProcessDisableMessage(receivedMessage);
-                        break;
-                }
-
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"Inverter current machine status {receivedMessage.Type}",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.MachineStatusActive,
-                    MessageStatus.OperationStart);
-
-                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
-                this.logger.LogTrace($"Socket Timings: Read Wait Samples {this.ReadWaitTimeData.TotalSamples}, Max {this.ReadWaitTimeData.MaxValue}ms, Min {this.ReadWaitTimeData.MinValue}ms, Average {this.ReadWaitTimeData.AverageValue}ms, Deviation {this.ReadWaitTimeData.StandardDeviation}ms / Round Trip Samples {this.WriteRoundtripTimeData.TotalSamples}, Max {this.WriteRoundtripTimeData.MaxValue}ms, Min {this.WriteRoundtripTimeData.MinValue}ms, Average {this.WriteRoundtripTimeData.AverageValue}ms, Deviation {this.WriteRoundtripTimeData.StandardDeviation}ms");
-                this.logger.LogTrace($"Axis Timings: Request interval Samples {this.AxisTimeData.TotalSamples}, Max {this.AxisTimeData.MaxValue}ms, Min {this.AxisTimeData.MinValue}ms, Average {this.AxisTimeData.AverageValue}ms, Deviation {this.AxisTimeData.StandardDeviation}ms / Round Trip Samples {this.AxisIntervalTimeData.TotalSamples}, Max {this.AxisIntervalTimeData.MaxValue}ms, Min {this.AxisIntervalTimeData.MinValue}ms, Average {this.AxisIntervalTimeData.AverageValue}ms, Deviation {this.AxisIntervalTimeData.StandardDeviation}ms");
-                this.logger.LogTrace($"Sensor Timings: Request interval Samples {this.SensorTimeData.TotalSamples}, Max {this.SensorTimeData.MaxValue}ms, Min {this.SensorTimeData.MinValue}ms, Average {this.SensorTimeData.AverageValue}ms, Deviation {this.SensorTimeData.StandardDeviation}ms / Round Trip Samples {this.SensorIntervalTimeData.TotalSamples}, Max {this.SensorIntervalTimeData.MaxValue}ms, Min {this.SensorIntervalTimeData.MinValue}ms, Average {this.SensorIntervalTimeData.AverageValue}ms, Deviation {this.SensorIntervalTimeData.StandardDeviation}ms");
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -707,6 +609,107 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private void OnCommandReceived(FieldCommandMessage receivedMessage)
+        {
+            this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+
+            var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+
+            if (this.inverterStatuses.Count == 0)
+            {
+                this.logger.LogError("4:Invert Driver not configured for this message Type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
+
+                return;
+            }
+
+            this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
+
+            if (messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
+            {
+                this.logger.LogTrace("4: Stop the timer for update shaft position");
+                this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
+
+                messageCurrentStateMachine.Stop();
+
+                return;
+            }
+
+            if (messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
+            {
+                this.logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
+                this.logger.LogError($"5a: Message {receivedMessage.Type} will be discarded!");
+                var ex = new Exception();
+                this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
+
+                return;
+            }
+
+            switch (receivedMessage.Type)
+            {
+                case FieldMessageType.CalibrateAxis:
+                    this.ProcessCalibrateAxisMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterPowerOff:
+                    this.ProcessPowerOffMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterPowerOn:
+                    this.ProcessPowerOnMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.Positioning:
+                    this.ProcessPositioningMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.ShutterPositioning:
+                    this.ProcessShutterPositioningMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterSetTimer:
+                    this.ProcessInverterSetTimerMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterSwitchOff:
+                    this.ProcessInverterSwitchOffMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterSwitchOn:
+                    this.ProcessInverterSwitchOnMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterStop:
+                    this.ProcessStopMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterFaultReset:
+                    this.ProcessFaultResetMessage(receivedMessage);
+                    break;
+
+                case FieldMessageType.InverterDisable:
+                    this.ProcessDisableMessage(receivedMessage);
+                    break;
+            }
+
+            var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"Inverter current machine status {receivedMessage.Type}",
+                MessageActor.Any,
+                MessageActor.InverterDriver,
+                MessageType.MachineStatusActive,
+                MessageStatus.OperationStart);
+
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+            this.logger.LogTrace($"Socket Timings: Read Wait Samples {this.ReadWaitTimeData.TotalSamples}, Max {this.ReadWaitTimeData.MaxValue}ms, Min {this.ReadWaitTimeData.MinValue}ms, Average {this.ReadWaitTimeData.AverageValue}ms, Deviation {this.ReadWaitTimeData.StandardDeviation}ms / Round Trip Samples {this.WriteRoundtripTimeData.TotalSamples}, Max {this.WriteRoundtripTimeData.MaxValue}ms, Min {this.WriteRoundtripTimeData.MinValue}ms, Average {this.WriteRoundtripTimeData.AverageValue}ms, Deviation {this.WriteRoundtripTimeData.StandardDeviation}ms");
+            this.logger.LogTrace($"Axis Timings: Request interval Samples {this.AxisTimeData.TotalSamples}, Max {this.AxisTimeData.MaxValue}ms, Min {this.AxisTimeData.MinValue}ms, Average {this.AxisTimeData.AverageValue}ms, Deviation {this.AxisTimeData.StandardDeviation}ms / Round Trip Samples {this.AxisIntervalTimeData.TotalSamples}, Max {this.AxisIntervalTimeData.MaxValue}ms, Min {this.AxisIntervalTimeData.MinValue}ms, Average {this.AxisIntervalTimeData.AverageValue}ms, Deviation {this.AxisIntervalTimeData.StandardDeviation}ms");
+            this.logger.LogTrace($"Sensor Timings: Request interval Samples {this.SensorTimeData.TotalSamples}, Max {this.SensorTimeData.MaxValue}ms, Min {this.SensorTimeData.MinValue}ms, Average {this.SensorTimeData.AverageValue}ms, Deviation {this.SensorTimeData.StandardDeviation}ms / Round Trip Samples {this.SensorIntervalTimeData.TotalSamples}, Max {this.SensorIntervalTimeData.MaxValue}ms, Min {this.SensorIntervalTimeData.MinValue}ms, Average {this.SensorIntervalTimeData.AverageValue}ms, Deviation {this.SensorIntervalTimeData.StandardDeviation}ms");
         }
 
         private async Task ReceiveInverterData()

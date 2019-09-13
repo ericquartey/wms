@@ -5,7 +5,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,7 +14,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerCradleState : StateBase
+    internal class MoveDrawerCradleState : StateBase
     {
         #region Fields
 
@@ -136,16 +135,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             }
                             else
                             {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
-                                    this.ParentStateMachine,
-                                    Axis.Vertical,
-                                    this.drawerOperationData,
-                                    this.generalInfoDataLayer,
-                                    this.verticalAxis,
-                                    this.horizontalAxis,
-                                    this.machineSensorsStatus,
-                                    this.Logger));
-                        }
+                                this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                                        this.ParentStateMachine,
+                                        Axis.Vertical,
+                                        this.drawerOperationData,
+                                        this.generalInfoDataLayer,
+                                        this.verticalAxis,
+                                        this.horizontalAxis,
+                                        this.machineSensorsStatus,
+                                        this.Logger));
+                            }
                         }
 
                         break;
