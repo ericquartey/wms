@@ -75,6 +75,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private bool isDataLayerReady;
 
+        private bool isDisposed;
+
         private MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
@@ -148,9 +150,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose()
         {
-            if (this.disposed)
+            base.Dispose();
+
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
             {
                 return;
             }
@@ -160,7 +169,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.delayTimer?.Dispose();
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
