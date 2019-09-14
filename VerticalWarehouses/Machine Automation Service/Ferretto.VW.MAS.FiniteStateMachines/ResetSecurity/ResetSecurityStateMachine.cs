@@ -10,12 +10,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     internal class ResetSecurityStateMachine : StateMachineBase
     {
-        #region Fields
-
-        private bool disposed;
-
-        #endregion
-
         #region Constructors
 
         public ResetSecurityStateMachine(
@@ -26,15 +20,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetSecurityStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -82,21 +67,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

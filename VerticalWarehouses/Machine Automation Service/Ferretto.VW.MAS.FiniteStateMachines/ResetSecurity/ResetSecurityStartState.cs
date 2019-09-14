@@ -10,11 +10,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     internal class ResetSecurityStartState : StateBase
     {
-        #region Fields
-
-        private bool disposed;
-
-        #endregion
 
         #region Constructors
 
@@ -23,15 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             ILogger logger)
             : base(parentMachine, logger)
         {
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetSecurityStartState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -104,22 +90,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

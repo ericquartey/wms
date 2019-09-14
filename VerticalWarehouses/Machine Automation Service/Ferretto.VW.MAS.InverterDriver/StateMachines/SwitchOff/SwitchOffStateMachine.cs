@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         private readonly FieldCommandMessage nextCommandMessage;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -59,22 +57,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

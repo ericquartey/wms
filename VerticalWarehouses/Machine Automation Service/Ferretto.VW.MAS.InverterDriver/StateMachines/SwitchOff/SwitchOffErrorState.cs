@@ -24,15 +24,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         #endregion
 
-        #region Destructors
-
-        ~SwitchOffErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

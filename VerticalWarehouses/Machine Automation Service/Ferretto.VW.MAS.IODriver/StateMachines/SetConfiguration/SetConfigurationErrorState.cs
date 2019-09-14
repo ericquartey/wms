@@ -5,12 +5,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationErrorState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoStatus status;
-
-        private bool disposed;
 
         #endregion
 
@@ -29,34 +26,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #endregion
 
-        #region Destructors
-
-        ~SetConfigurationErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {

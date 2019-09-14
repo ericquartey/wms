@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors

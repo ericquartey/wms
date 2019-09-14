@@ -32,15 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

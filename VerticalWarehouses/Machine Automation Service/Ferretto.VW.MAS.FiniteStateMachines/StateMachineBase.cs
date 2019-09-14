@@ -44,15 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~StateMachineBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public IServiceScopeFactory ServiceScopeFactory { get; }

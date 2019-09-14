@@ -31,15 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
-        #region Destructors
-
-        ~HomingSwitchAxisDoneState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)

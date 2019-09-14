@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly IPositioningMessageData positioningMessageData;
 
-        private bool disposed;
-
         private bool inverterSwitched;
 
         private bool ioSwitched;
@@ -181,22 +179,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, 0, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

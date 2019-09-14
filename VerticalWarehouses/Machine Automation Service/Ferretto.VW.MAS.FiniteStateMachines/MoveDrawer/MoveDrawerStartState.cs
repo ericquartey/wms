@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IVerticalAxisDataLayer verticalAxis;
 
-        private bool disposed;
-
         private bool inverterSwitched;
 
         private bool ioSwitched;
@@ -50,15 +48,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.verticalAxis = verticalAxis;
             this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerStartState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -204,22 +193,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.drawerOperationData,
                 this.Logger,
                 true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

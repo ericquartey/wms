@@ -67,8 +67,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private Timer delayTimer;
 
-        private bool disposed;
-
         private bool forceInverterIoStatusPublish;
 
         private bool forceRemoteIoStatusPublish;
@@ -148,18 +146,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~FiniteStateMachines()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
-        protected void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {

@@ -30,15 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
-        #region Destructors
-
-        ~CalibrateAxisDisableOperationState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -37,15 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc />
@@ -59,22 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

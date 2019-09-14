@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -48,15 +46,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.machineSensorsStatus = machineSensorsStatus;
 
             this.delayTimer = delayTimer;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -126,17 +115,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

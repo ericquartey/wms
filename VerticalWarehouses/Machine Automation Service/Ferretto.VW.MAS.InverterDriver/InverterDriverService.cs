@@ -190,15 +190,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Destructors
-
-        ~InverterDriverService()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public InverterDiagnosticsData AxisIntervalTimeData { get; }

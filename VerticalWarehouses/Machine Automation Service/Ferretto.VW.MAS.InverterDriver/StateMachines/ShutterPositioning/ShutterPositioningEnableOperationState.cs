@@ -38,15 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
-        #region Destructors
-
-        ~ShutterPositioningEnableOperationState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

@@ -31,15 +31,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #endregion
 
-        #region Destructors
-
-        ~ResetFaultErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

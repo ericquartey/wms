@@ -9,7 +9,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
     public class TemplateStateMachine : IoStateMachineBase
     {
-
         #region Fields
 
         private readonly IoIndex index;
@@ -18,7 +17,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         private readonly ITemplateData templateData;
 
-        private bool disposed;
+        private bool isDisposed;
 
         #endregion
 
@@ -40,41 +39,33 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.CurrentState.Dispose();
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void Start()
         {
             this.CurrentState = new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this);
 
             this.CurrentState?.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                if (this.CurrentState is System.IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
+            }
+
+            this.isDisposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

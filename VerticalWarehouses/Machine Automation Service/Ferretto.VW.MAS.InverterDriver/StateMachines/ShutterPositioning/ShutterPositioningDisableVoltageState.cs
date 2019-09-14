@@ -29,15 +29,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
-        #region Destructors
-
-        ~ShutterPositioningDisableVoltageState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

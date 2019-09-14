@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         private readonly IoStatus status;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -32,15 +30,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             this.index = index;
 
             logger.LogTrace("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -105,22 +94,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
             }
             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

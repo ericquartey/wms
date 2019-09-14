@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         public const int SENSOR_UPDATE_SLOW = 500;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -36,15 +34,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~StateBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public virtual string Type => this.GetType().ToString();
@@ -56,12 +45,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         #endregion
 
         #region Methods
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         /// <inheritdoc />
         public abstract void ProcessCommandMessage(CommandMessage message);
@@ -77,20 +60,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         /// <inheritdoc />
         public abstract void Stop();
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-        }
 
         #endregion
     }
