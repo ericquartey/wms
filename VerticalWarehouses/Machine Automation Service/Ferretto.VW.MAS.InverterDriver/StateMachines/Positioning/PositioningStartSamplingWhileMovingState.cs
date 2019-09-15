@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS.DataLayer.Providers;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -9,6 +10,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStartSamplingWhileMovingState : PositioningStartMovingState
     {
+        #region Fields
+
+        private readonly TorqueCurrentMeasurementsDataProvider measurementsProvider;
+
+        #endregion
+
         #region Constructors
 
         public PositioningStartSamplingWhileMovingState(
@@ -17,6 +24,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.measurementsProvider = this.ParentStateMachine
+                .GetRequiredService<TorqueCurrentMeasurementsDataProvider>();
         }
 
         #endregion

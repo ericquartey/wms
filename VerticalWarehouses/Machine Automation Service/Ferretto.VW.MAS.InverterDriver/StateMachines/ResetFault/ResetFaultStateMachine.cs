@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -22,14 +23,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         public ResetFaultStateMachine(
             IInverterStatusBase inverterStatus,
             InverterIndex inverterIndex,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
+            if (inverterStatus is null)
+            {
+                throw new System.ArgumentNullException(nameof(inverterStatus));
+            }
+
             this.inverterStatus = inverterStatus;
             this.inverterIndex = inverterIndex;
-            this.Logger.LogDebug("1:Method Start");
         }
 
         #endregion

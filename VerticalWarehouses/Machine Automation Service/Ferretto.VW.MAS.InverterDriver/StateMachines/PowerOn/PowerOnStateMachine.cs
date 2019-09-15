@@ -3,6 +3,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -23,16 +24,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public PowerOnStateMachine(
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
-            IEventAggregator eventAggregator,
             ILogger logger,
+            IEventAggregator eventAggregator,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory,
             FieldCommandMessage nextCommandMessage = null)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.nextCommandMessage = nextCommandMessage;
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

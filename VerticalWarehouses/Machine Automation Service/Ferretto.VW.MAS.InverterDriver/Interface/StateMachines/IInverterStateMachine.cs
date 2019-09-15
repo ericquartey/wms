@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
         #region Methods
 
         /// <summary>
-        /// Change state.
+        /// Performs a transition to a new FSM state.
         /// </summary>
         /// <param name="newState">A new <see cref="IInverterState"/> state.</param>
         void ChangeState(IInverterState newState);

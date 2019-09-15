@@ -29,6 +29,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -94,6 +95,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Stopwatch sensorStopwatch;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly ISocketTransport socketTransport;
 
         private readonly Timer[] statusWordUpdateTimer;
@@ -121,20 +124,36 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Constructors
 
         public InverterDriverService(
+            ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
+            IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
-            IResolutionConversionDataLayer dataLayerResolutionConversion,
-            ILogger<InverterDriverService> logger)
+            IResolutionConversionDataLayer dataLayerResolutionConversion)
         {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
-
+            this.serviceScopeFactory = serviceScopeFactory;
             this.readWaitStopwatch = new Stopwatch();
 
             this.readSpeedStopwatch = new Stopwatch();

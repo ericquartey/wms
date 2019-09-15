@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
     {
         #region Fields
 
+        private readonly IServiceScope serviceScope;
+
         private bool disposed;
 
         #endregion
@@ -27,18 +30,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         protected InverterStateMachineBase(
             ILogger logger,
             IEventAggregator eventAggregator,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             this.Logger = logger;
             this.EventAggregator = eventAggregator;
             this.InverterCommandQueue = inverterCommandQueue;
+            this.serviceScope = serviceScopeFactory.CreateScope();
 
-            this.Logger.LogTrace($"Inverter FSM '{this.GetType().Name}' initialized.");
+            this.Logger.LogTrace($"Inverter '{this.GetType().Name}' FSM initialized.");
         }
 
         #endregion
@@ -92,6 +102,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             }
         }
 
+        public TService GetRequiredService<TService>()
+            where TService : class
+        {
+            return this.serviceScope.ServiceProvider.GetRequiredService<TService>();
+        }
+
         /// <inheritdoc />
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
@@ -125,6 +141,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
             if (disposing)
             {
+                this.serviceScope.Dispose();
+
+                if (this.CurrentState is IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
             }
 
             {
