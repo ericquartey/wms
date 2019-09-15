@@ -34,10 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.EnableOperation = false;

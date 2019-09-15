@@ -26,10 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             var notificationMessageData = new InverterPowerOffFieldMessageData();

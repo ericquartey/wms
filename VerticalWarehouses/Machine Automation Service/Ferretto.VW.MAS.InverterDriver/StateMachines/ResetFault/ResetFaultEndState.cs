@@ -33,10 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             var notificationMessageData = new InverterFaultFieldMessageData();

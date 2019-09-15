@@ -35,10 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.SwitchOn = true;

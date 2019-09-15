@@ -13,12 +13,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
         #region Methods
 
         /// <summary>
-        /// Release all resources
-        /// </summary>
-        void Release();
-
-        /// <summary>
-        /// Starts executing the current state logic
+        /// Starts executing the current state.
         /// </summary>
         void Start();
 

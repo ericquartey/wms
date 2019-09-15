@@ -33,10 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         /// <inheritdoc />
         public override void Start()
         {

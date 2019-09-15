@@ -34,10 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             //INFO Set Control Word Value or define parameter to be sent to Inverter and build the InverterMessage to be placed in inverter command queue

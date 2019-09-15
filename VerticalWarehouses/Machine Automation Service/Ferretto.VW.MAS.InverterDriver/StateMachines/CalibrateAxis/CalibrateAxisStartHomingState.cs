@@ -34,11 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
-        public override void Release()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Start()
         {
             if (this.InverterStatus is AngInverterStatus currentStatus)

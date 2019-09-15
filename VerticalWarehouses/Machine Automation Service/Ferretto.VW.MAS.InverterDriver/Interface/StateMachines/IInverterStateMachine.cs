@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
@@ -19,16 +19,14 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
         /// <param name="message">A <see cref="InverterMessage"/> message to enqueue.</param>
         void EnqueueMessage(InverterMessage message);
 
+        TService GetRequiredService<TService>()
+            where TService : class;
+
         /// <summary>
         /// On publishing a given notification message.
         /// </summary>
         /// <param name="notificationMessage">THe <see cref="FieldNotificationMessage"/> message to be published.</param>
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
-
-        /// <summary>
-        /// Release all resources.
-        /// </summary>
-        void Release();
 
         /// <summary>
         /// Start states machine.

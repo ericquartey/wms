@@ -26,10 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             var notificationMessageData = new InverterPowerOnFieldMessageData();

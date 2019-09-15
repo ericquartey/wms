@@ -24,11 +24,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         }
 
         #endregion
-        #region Methods
 
-        public override void Release()
-        {
-        }
+        #region Methods
 
         public override void Start()
         {
