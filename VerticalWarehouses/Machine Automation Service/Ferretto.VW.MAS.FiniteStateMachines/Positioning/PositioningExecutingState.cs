@@ -1,4 +1,7 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -9,9 +12,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
-using System.Threading;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool isDisposed;
 
-        private decimal fullPosition;
+        private readonly decimal fullPosition;
 
         private int numberExecutedSteps;
 

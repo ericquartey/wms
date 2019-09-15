@@ -400,7 +400,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.ShutterTargetPosition:
-                            inverter.TargetShutterPosition = (int)ushortPayload;
+                            inverter.TargetShutterPosition = ushortPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -434,7 +434,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.TableTravelSwitchPositions:
-                            int switchId = (int)(dataSetIndex - InverterDataset.TableTravelSet1);
+                            var switchId = (int)(dataSetIndex - InverterDataset.TableTravelSet1);
                             inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)uintPayload);
                             result = client.Client.Send(extractedMessage);
                             break;

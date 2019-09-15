@@ -144,10 +144,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool HorizontalAxis
         {
-            get
-            {
-                return (this.Value & 0x8000) > 0;
-            }
+            get => (this.Value & 0x8000) > 0;
             set
             {
                 if (value)

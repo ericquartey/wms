@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using Ferretto.VW.Simulator.Services;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Prism.Modularity;

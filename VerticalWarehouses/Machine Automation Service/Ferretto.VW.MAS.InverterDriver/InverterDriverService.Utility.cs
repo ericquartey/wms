@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -849,7 +849,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             targetDeceleration = new int[positioningData.SwitchPosition.Length];
                             targetSpeed = new int[positioningData.SwitchPosition.Length];
                             switchPosition = new int[positioningData.SwitchPosition.Length];
-                            for (int i = 0; i < positioningData.SwitchPosition.Length; i++)
+                            for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
                             {
                                 targetAcceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[i], configurationCategory);
                                 targetDeceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[i], configurationCategory);
@@ -857,7 +857,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
                             }
 
-                            int direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+                            var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
 
                             var positioningFieldData = new InverterPositioningFieldMessageData(
                                 positioningData,

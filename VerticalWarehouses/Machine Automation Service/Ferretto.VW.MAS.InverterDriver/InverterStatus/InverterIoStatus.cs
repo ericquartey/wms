@@ -43,8 +43,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 throw new InverterDriverException($"Input states length mismatch while updating I/O driver status");
             }
 
-            bool updateRequired = false;
-            for (int index = 0; index < TOTAL_INPUTS; index++)
+            var updateRequired = false;
+            for (var index = 0; index < TOTAL_INPUTS; index++)
             {
                 if (this.inputs[index] != newInputStates[index])
                 {
@@ -73,11 +73,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             {
                 throw new InverterDriverException($"Input states length mismatch while updating I/O driver status");
             }
-            bool updateRequired = false;
+            var updateRequired = false;
 
-            for (int index = 0; index < TOTAL_INPUTS; index++)
+            for (var index = 0; index < TOTAL_INPUTS; index++)
             {
-                bool newValue = (newInputStates & 0x0001 << index) > 0;
+                var newValue = (newInputStates & 0x0001 << index) > 0;
 
                 if (this.inputs[index] != newValue)
                 {

@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private decimal axisYPosition;
 
-        private bool isOneKMachine;
+        private readonly bool isOneKMachine;
 
         #endregion
 

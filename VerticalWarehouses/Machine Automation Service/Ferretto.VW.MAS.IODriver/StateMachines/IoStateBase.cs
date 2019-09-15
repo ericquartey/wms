@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.MAS.IODriver.Interface;
+﻿using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -388,7 +388,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
                     var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
-                    int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
+                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
                     var msg = new NotificationMessage(

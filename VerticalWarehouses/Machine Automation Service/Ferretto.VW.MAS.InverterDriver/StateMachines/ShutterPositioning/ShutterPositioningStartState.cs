@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         {
                             // Absolute positioning
                             // calculate revs and dataset
-                            int revs = 0;
+                            var revs = 0;
                             var dataset = InverterDataset.ActualDataset;
                             switch (this.shutterPositionData.ShutterPosition)
                             {

@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
                     MessageStatus.OperationEnd,
-                    (byte)index);
+                    (byte)this.index);
 
                 this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

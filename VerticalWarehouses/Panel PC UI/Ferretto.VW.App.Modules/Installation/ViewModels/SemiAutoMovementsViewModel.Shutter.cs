@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

@@ -1034,12 +1034,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            int target = this.TargetPosition[this.currentAxis];
+            var target = this.TargetPosition[this.currentAxis];
             if (this.IsRelativeMovement)
             {
                 target += this.StartPosition[this.currentAxis];
             }
-            int increment = 1;
+            var increment = 1;
             if (this.TargetSpeed[this.currentAxis] >= LOWER_SPEED_Y_AXIS &&
                 Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10)
             {

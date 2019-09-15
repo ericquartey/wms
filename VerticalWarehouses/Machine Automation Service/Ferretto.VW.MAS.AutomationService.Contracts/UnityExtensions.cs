@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Unity;
 using Unity;
@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.GetContainer().RegisterType<IMachineWeightAnalysisProcedureService>(
                 new InjectionFactory(c => new MachineWeightAnalysisProcedureService(urlString, resolveFunction(c))));
-           
+
             return container;
         }
 

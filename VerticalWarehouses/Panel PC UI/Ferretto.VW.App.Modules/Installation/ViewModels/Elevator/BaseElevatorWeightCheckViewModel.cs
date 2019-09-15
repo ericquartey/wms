@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Prism.Events;
 using Prism.Regions;
