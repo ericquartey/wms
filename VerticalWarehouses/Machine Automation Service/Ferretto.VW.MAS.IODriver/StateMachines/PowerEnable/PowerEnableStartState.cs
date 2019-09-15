@@ -7,7 +7,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
     public class PowerEnableStartState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoIndex deviceIndex;
@@ -15,8 +14,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
         private readonly bool enable;
 
         private readonly IoStatus status;
-
-        private bool disposed;
 
         #endregion
 
@@ -41,34 +38,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         #endregion
 
-        #region Destructors
-
-        ~PowerEnableStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {

@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly IHomingOperation homingOperation;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -33,15 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.homingOperation = homingOperation;
             this.errorMessage = errorMessage;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -91,8 +80,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             if (this.homingOperation.IsOneKMachine)
@@ -105,8 +92,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageType.InverterSetTimer,
                     (byte)InverterIndex.Slave1);
 
-                this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
@@ -118,8 +103,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
                 (byte)inverterIndex);
-
-            this.Logger.LogTrace($"3:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -138,21 +121,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

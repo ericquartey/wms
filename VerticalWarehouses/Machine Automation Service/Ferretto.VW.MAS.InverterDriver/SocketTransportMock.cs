@@ -63,15 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Destructors
-
-        ~SocketTransportMock()
-        {
-            this.Dispose(true);
-        }
-
-        #endregion
-
         #region Properties
 
         public bool IsConnected => true;

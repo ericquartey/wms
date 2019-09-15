@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly FieldNotificationMessage errorMessage;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -35,15 +33,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.errorMessage = errorMessage;
             this.drawerOperationData = drawerOperationData;
             this.axis = axis;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -108,21 +97,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

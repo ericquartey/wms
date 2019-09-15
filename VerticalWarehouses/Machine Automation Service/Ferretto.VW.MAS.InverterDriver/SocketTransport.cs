@@ -57,15 +57,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Destructors
-
-        ~SocketTransport()
-        {
-            this.Dispose(true);
-        }
-
-        #endregion
-
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
@@ -180,7 +171,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -298,23 +288,25 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this.disposed)
             {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.transportStream?.Close();
+                this.transportStream?.Dispose();
+                this.transportStream = null;
+
+                this.transportClient?.Close();
+                this.transportClient?.Dispose();
+                this.transportClient = null;
+            }
+
+            this.disposed = true;
         }
 
         #endregion

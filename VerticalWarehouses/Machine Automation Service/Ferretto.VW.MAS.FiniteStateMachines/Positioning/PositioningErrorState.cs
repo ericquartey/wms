@@ -20,8 +20,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly IPositioningMessageData positioningMessageData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -37,15 +35,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.positioningMessageData = positioningMessageData;
             this.machineSensorsStatus = machineSensorsStatus;
             this.errorMessage = errorMessage;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -180,21 +169,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         private readonly IoStatus status;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -30,15 +28,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             this.index = index;
 
             logger.LogTrace("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerUpClearOutputsState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -84,22 +73,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

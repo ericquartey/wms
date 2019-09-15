@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         private readonly ITemplateData templateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -37,15 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc />
@@ -58,22 +47,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

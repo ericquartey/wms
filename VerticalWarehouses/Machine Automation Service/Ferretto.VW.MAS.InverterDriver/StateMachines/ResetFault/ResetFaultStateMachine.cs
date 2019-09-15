@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -36,15 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #endregion
 
-        #region Destructors
-
-        ~ResetFaultStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc />
@@ -57,22 +46,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

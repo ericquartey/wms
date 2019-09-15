@@ -25,15 +25,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         #endregion
 
-        #region Destructors
-
-        ~StopStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()

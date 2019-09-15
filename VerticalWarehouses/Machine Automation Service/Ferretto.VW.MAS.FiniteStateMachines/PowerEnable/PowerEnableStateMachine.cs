@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         private readonly IPowerEnableData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -25,15 +23,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.machineData = machineData;
 
             this.CurrentState = new EmptyState(machineData.Logger);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerEnableStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -81,21 +70,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         private readonly ITemplateData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -25,15 +23,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             : base(parentMachine, machineData.Logger)
         {
             this.machineData = machineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -91,22 +80,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         public override void Stop()
         {
             this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

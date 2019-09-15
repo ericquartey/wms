@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         private int currentInverterIndex;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -30,15 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.machineData = machineData;
             this.currentInverterIndex = 0;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerEnableStopInverterState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -125,22 +114,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

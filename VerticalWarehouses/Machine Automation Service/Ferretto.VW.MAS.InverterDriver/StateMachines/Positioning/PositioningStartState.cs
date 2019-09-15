@@ -32,15 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()
@@ -67,7 +58,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 MessageStatus.OperationStart,
                 this.InverterStatus.SystemIndex);
 
-            //this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
             this.Logger.LogDebug("Inverter Positioning Start State Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);

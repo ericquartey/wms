@@ -94,15 +94,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #endregion
 
-        #region Destructors
-
-        ~IoDevice()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         private IIoStateMachine CurrentStateMachine

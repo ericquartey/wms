@@ -67,8 +67,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private Timer delayTimer;
 
-        private bool disposed;
-
         private bool forceInverterIoStatusPublish;
 
         private bool forceRemoteIoStatusPublish;
@@ -76,6 +74,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private List<IoIndex> ioIndexDeviceList;
 
         private bool isDataLayerReady;
+
+        private bool isDisposed;
 
         private MachineSensorsStatus machineSensorsStatus;
 
@@ -148,20 +148,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~FiniteStateMachines()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
-        protected void Dispose(bool disposing)
+        public override void Dispose()
         {
-            if (this.disposed)
+            base.Dispose();
+
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
             {
                 return;
             }
@@ -171,7 +169,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.delayTimer?.Dispose();
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

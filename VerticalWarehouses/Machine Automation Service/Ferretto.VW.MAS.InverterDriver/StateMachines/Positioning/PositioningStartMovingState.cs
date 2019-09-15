@@ -21,15 +21,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningStartMovingState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()
@@ -100,10 +91,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             //INFO Next status word request handled by timer
             return true;
-        }
-
-        protected override void OnDisposing()
-        {
         }
 
         #endregion

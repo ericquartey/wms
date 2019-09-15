@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
-        private bool disposed;
-
         private HomingOperation homingOperation;
 
         #endregion
@@ -52,15 +50,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.isOneKMachine = isOneKMachine;
 
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -94,8 +83,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
                         MessageStatus.OperationExecuting);
-
-                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                     this.PublishNotificationMessage(notificationMessage);
                 }
@@ -220,21 +207,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         private bool CheckConditions()

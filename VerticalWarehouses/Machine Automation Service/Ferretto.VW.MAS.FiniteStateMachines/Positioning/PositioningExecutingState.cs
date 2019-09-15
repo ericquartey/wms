@@ -16,7 +16,7 @@ using System.Threading;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    internal class PositioningExecutingState : StateBase
+    internal class PositioningExecutingState : StateBase, IDisposable
     {
         #region Fields
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private Timer delayTimer;
 
-        private bool disposed;
+        private bool isDisposed;
 
         private decimal fullPosition;
 
@@ -66,16 +66,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningExecutingState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -236,9 +232,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps, true));
         }
 
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -248,9 +244,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.delayTimer?.Dispose();
             }
 
-            this.disposed = true;
-
-            base.Dispose(disposing);
+            this.isDisposed = true;
         }
 
         private void DelayElapsed(object state)

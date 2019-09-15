@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly bool stopRequested;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -30,15 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             this.stopRequested = stopRequested;
             this.drawerOperationData = drawerOperationData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -73,28 +62,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.Logger.LogDebug($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
         }
 
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion
