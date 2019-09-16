@@ -493,6 +493,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation operation?.
+        /// </summary>
+        public static string ConfirmationOperation {
+            get {
+                return ResourceManager.GetString("ConfirmationOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
