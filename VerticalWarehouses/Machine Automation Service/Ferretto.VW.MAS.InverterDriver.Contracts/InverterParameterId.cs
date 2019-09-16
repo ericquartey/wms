@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.InverterDriver.Enumerations
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public enum InverterParameterId : short
     {
@@ -47,5 +47,7 @@
         TableTravelSwitchPositions = 1209,
 
         TableTravelDirection = 1261,
+
+        TorqueCurrent = 211,
     }
 }

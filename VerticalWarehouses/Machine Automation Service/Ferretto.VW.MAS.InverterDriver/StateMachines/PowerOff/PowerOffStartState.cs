@@ -1,7 +1,6 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -27,10 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.QuickStop = false;
@@ -39,7 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessageData = new InverterPowerOffFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(

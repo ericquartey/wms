@@ -61,6 +61,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }
 
+        public DbSet<TorqueCurrentSample> TorqueCurrentSamples { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         #endregion

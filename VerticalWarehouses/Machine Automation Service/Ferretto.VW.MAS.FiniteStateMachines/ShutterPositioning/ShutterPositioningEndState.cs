@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -65,7 +66,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     {
                         case MessageStatus.OperationEnd:
                             var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-                            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+                            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
                             Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                             this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
@@ -115,7 +116,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             else
             {
                 var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-                int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
+                var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
                 Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                 this.shutterPositioningMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 

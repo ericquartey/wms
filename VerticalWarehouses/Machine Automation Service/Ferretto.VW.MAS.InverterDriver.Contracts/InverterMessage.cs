@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
-    internal sealed class InverterMessage
+    public sealed class InverterMessage
     {
         #region Fields
 
@@ -69,6 +66,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.payload = new byte[message.payload.Length];
             this.payloadLength = message.payloadLength;
             this.sendDelay = message.sendDelay;
+
             try
             {
                 Array.Copy(message.payload, this.payload, message.payload.Length);
@@ -118,12 +116,17 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        public InverterMessage(InverterIndex systemIndex, short parameterId)
+        public InverterMessage(InverterIndex systemIndex, InverterParameterId parameterId)
+            : this((short)systemIndex, parameterId)
+        {
+        }
+
+        public InverterMessage(short systemIndex, InverterParameterId parameterId)
         {
             this.responseMessage = false;
             this.SystemIndex = (byte)systemIndex;
             this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
-            this.parameterId = parameterId;
+            this.parameterId = (short)parameterId;
             this.IsWriteMessage = false;
             this.heartbeatMessage = false;
         }
@@ -142,13 +145,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Properties
 
-        public byte BytePayload => this.ConvertPayloadToByte();
-
         public byte DataSetIndex { get; private set; }
-
-        public double DoublePayload => this.ConvertPayloadToDouble();
-
-        public float FloatPayload => this.ConvertPayloadToFloat();
 
         public bool HeartbeatValue => (this.ConvertPayloadToUShort() & 0x0400) > 0;
 
@@ -166,7 +163,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public InverterParameterId ParameterId => (InverterParameterId)this.parameterId;
 
-        public object Payload => this.ConvertPayload();
+        public object Payload
+        {
+            get => this.ConvertPayload();
+            set => this.SetPayload(value);
+        }
 
         public int SendDelay => this.sendDelay;
 
@@ -180,16 +181,23 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             get
             {
-                var errorNumber = BitConverter.ToInt32(this.payload);
+                var errorNumber = BitConverter.ToInt32(this.payload, 0);
                 return this.telegramErrorText.ContainsKey(errorNumber) ? this.telegramErrorText[errorNumber] : string.Empty;
             }
         }
+
+        public uint UIntPayload => this.ConvertPayloadToUInt();
 
         public ushort UShortPayload => this.ConvertPayloadToUShort();
 
         #endregion
 
         #region Methods
+
+        public static InverterMessage FromBytes(byte[] messageBytes)
+        {
+            return new InverterMessage(messageBytes);
+        }
 
         public byte[] GetHeartbeatMessage(bool setBit)
         {
@@ -210,7 +218,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.payload[1] &= 0xFB;
             }
 
-            return this.GetWriteMessage();
+            return this.ToBytes();
         }
 
         /// <summary>
@@ -246,13 +254,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             return readMessage;
         }
 
-        public byte[] GetWriteMessage()
+        public byte[] ToBytes()
         {
-            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !this.IsWriteMessage)
-            {
-                throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestWriteOnReadOnlyParameter);
-            }
-
             var messageLength = this.payload.Length + 6;
             var writeMessage = new byte[messageLength];
 
@@ -342,40 +345,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.heartbeatMessage = false;
             this.sendDelay = sendDelay;
 
-            var payloadType = payload.GetType();
-
-            switch (payloadType.Name)
-            {
-                case "Byte":
-                    this.payload = new[] { (byte)payload };
-                    break;
-
-                case "Int16":
-                    this.payload = BitConverter.GetBytes((short)payload);
-                    break;
-
-                case "UInt16":
-                    this.payload = BitConverter.GetBytes((ushort)payload);
-                    break;
-
-                case "Int32":
-                    this.payload = BitConverter.GetBytes((int)payload);
-                    break;
-
-                case "Single":
-                    this.payload = BitConverter.GetBytes((float)payload);
-                    break;
-
-                case "Double":
-                    this.payload = BitConverter.GetBytes((double)payload);
-                    break;
-
-                case "String":
-                    this.payload = Encoding.ASCII.GetBytes((string)payload);
-                    break;
-            }
-
-            this.payloadLength = this.payload.Length;
+            this.SetPayload(payload);
         }
 
         private object ConvertPayload()
@@ -390,7 +360,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterParameterId.StatusDigitalSignals:
                     if (this.payloadLength == 2)
                     {
-                        returnValue = BitConverter.ToUInt16(this.payload);
+                        returnValue = BitConverter.ToUInt16(this.payload, 0);
                     }
 
                     break;
@@ -405,7 +375,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterParameterId.ActualPositionShaft:
                     if (this.payloadLength == 4)
                     {
-                        returnValue = BitConverter.ToInt32(this.payload);
+                        returnValue = BitConverter.ToInt32(this.payload, 0);
                     }
 
                     break;
@@ -416,21 +386,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return returnValue;
-        }
-
-        private byte ConvertPayloadToByte()
-        {
-            return default(byte);
-        }
-
-        private double ConvertPayloadToDouble()
-        {
-            return default(double);
-        }
-
-        private float ConvertPayloadToFloat()
-        {
-            return default(float);
         }
 
         private int ConvertPayloadToInt()
@@ -449,7 +404,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterParameterId.ActualPositionShaft:
                     if (this.payloadLength == 4)
                     {
-                        returnValue = BitConverter.ToInt32(this.payload);
+                        returnValue = BitConverter.ToInt32(this.payload, 0);
                     }
 
                     break;
@@ -485,6 +440,16 @@ namespace Ferretto.VW.MAS.InverterDriver
             ;
         }
 
+        private uint ConvertPayloadToUInt()
+        {
+            if (this.payloadLength != 4)
+            {
+                throw new Exception();
+            }
+
+            return BitConverter.ToUInt32(this.payload, 0);
+        }
+
         private ushort ConvertPayloadToUShort()
         {
             var returnValue = default(ushort);
@@ -497,7 +462,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterParameterId.StatusDigitalSignals:
                     if (this.payloadLength == 2)
                     {
-                        returnValue = BitConverter.ToUInt16(this.payload);
+                        returnValue = BitConverter.ToUInt16(this.payload, 0);
                     }
                     break;
 
@@ -507,6 +472,51 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return returnValue;
+        }
+
+        private void SetPayload(object payload)
+        {
+            if (payload is null)
+            {
+                this.payload = new byte[0];
+                this.payloadLength = 0;
+                return;
+            }
+
+            var payloadType = payload.GetType();
+
+            switch (payloadType.Name)
+            {
+                case "Byte":
+                    this.payload = new[] { (byte)payload };
+                    break;
+
+                case "Int16":
+                    this.payload = BitConverter.GetBytes((short)payload);
+                    break;
+
+                case "UInt16":
+                    this.payload = BitConverter.GetBytes((ushort)payload);
+                    break;
+
+                case "Int32":
+                    this.payload = BitConverter.GetBytes((int)payload);
+                    break;
+
+                case "Single":
+                    this.payload = BitConverter.GetBytes((float)payload);
+                    break;
+
+                case "Double":
+                    this.payload = BitConverter.GetBytes((double)payload);
+                    break;
+
+                case "String":
+                    this.payload = Encoding.ASCII.GetBytes((string)payload);
+                    break;
+            }
+
+            this.payloadLength = this.payload.Length;
         }
 
         #endregion

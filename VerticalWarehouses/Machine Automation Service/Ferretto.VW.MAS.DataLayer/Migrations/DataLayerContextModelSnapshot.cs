@@ -329,7 +329,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 12, 12, 34, 1, 367, DateTimeKind.Local).AddTicks(1787),
+                            InstallationDate = new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823),
                             ServiceStatus = 86
                         });
                 });
@@ -432,7 +432,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("LoadedNetWeight");
+                    b.Property<decimal>("LoadedNetWeight");
 
                     b.Property<int?>("LoadingUnitId");
 
@@ -448,6 +448,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("MeasurementSessionId");
 
+                    b.Property<DateTime>("RequestTimeStamp");
+
                     b.Property<DateTime>("TimeStamp");
 
                     b.Property<decimal>("Value");
@@ -456,7 +458,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("MeasurementSessionId");
 
-                    b.ToTable("TorqueCurrentSample");
+                    b.ToTable("TorqueCurrentSamples");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.User", b =>

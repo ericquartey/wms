@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
-using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {

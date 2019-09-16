@@ -1,10 +1,10 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -14,13 +14,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
     {
         #region Fields
 
+        public bool[] aglInverterInputs;
+
         private const int TOTAL_SENSOR_INPUTS = 8;
 
         private readonly ShutterType shutterType;
 
         private ShutterPosition currentShutterPosition;
-
-        public bool[] aglInverterInputs;
 
         #endregion
 
@@ -109,36 +109,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Methods
 
-        private ShutterPosition GetCurrentPosition()
-        {
-            var value = ShutterPosition.None;
-            if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorA])
-            {
-                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
-                {
-                    value = ShutterPosition.Opened;
-                }
-                else
-                {
-                    value = ShutterPosition.Half;
-                }
-            }
-            else
-            {
-                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
-                {
-                    value = ShutterPosition.Intermediate;
-                }
-                else
-                {
-                    value = ShutterPosition.Closed;
-                }
-            }
-
-            this.currentShutterPosition = value;
-            return value;
-        }
-
         public bool UpdateAGLInverterInputsStates(bool[] newInputStates)
         {
             if (newInputStates == null)
@@ -174,6 +144,36 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
 
             return updateRequired;
+        }
+
+        private ShutterPosition GetCurrentPosition()
+        {
+            var value = ShutterPosition.None;
+            if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorA])
+            {
+                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
+                {
+                    value = ShutterPosition.Opened;
+                }
+                else
+                {
+                    value = ShutterPosition.Half;
+                }
+            }
+            else
+            {
+                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
+                {
+                    value = ShutterPosition.Intermediate;
+                }
+                else
+                {
+                    value = ShutterPosition.Closed;
+                }
+            }
+
+            this.currentShutterPosition = value;
+            return value;
         }
 
         #endregion

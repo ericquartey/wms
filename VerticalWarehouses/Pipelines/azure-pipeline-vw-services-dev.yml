@@ -1,22 +1,8 @@
-resources:
-- repo: self
-  fetchDepth: 15
-
-queue:
-  name: Hosted VS2017
-  demands:
-    - msbuild
-    - visualstudio
-    - vstest
-
 trigger:
-  branches:
-    include:
-    - develop
-  paths:
-    include:
-    - VerticalWarehouses\Common
-    - VerticalWarehouses\Machine Automation Service
+- develop
+
+pool:
+  vmImage: 'windows-latest'
 
 steps:
 

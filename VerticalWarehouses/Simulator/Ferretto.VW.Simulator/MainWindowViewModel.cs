@@ -55,8 +55,8 @@ namespace Ferretto.VW.Simulator
 
         public IMachineService InverterService
         {
-            get { return this.inverterService; }
-            set { this.SetProperty(ref this.inverterService, value); }
+            get => this.inverterService;
+            set => this.SetProperty(ref this.inverterService, value);
         }
 
         public bool IsBusy

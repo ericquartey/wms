@@ -1,11 +1,7 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -27,11 +23,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<bool[]> Get()
         {
-            void publishAction() => this.PublishCommand(
-                null,
-                "Sensors changed Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.SensorsChanged);
+            void publishAction()
+            {
+                this.PublishCommand(
+null,
+"Sensors changed Command",
+MessageActor.FiniteStateMachines,
+MessageType.SensorsChanged);
+            }
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
                 MessageType.SensorsChanged,

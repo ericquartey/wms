@@ -2,9 +2,9 @@
 {
     public interface IBayPositionControlDataLayer
     {
-		#region Properties
-		decimal FeedRateBP { get; }
-		decimal StepValueBP { get; }
+        #region Properties
+        decimal FeedRateBP { get; }
+        decimal StepValueBP { get; }
 
         #endregion
     }

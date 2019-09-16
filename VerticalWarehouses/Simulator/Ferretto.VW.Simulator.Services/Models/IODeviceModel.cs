@@ -131,7 +131,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             get
             {
                 ushort result = 0;
-                for (int i = 0; i < this.Inputs.Count; i++)
+                for (var i = 0; i < this.Inputs.Count; i++)
                 {
                     if (this.Inputs[i].Value)
                     {
