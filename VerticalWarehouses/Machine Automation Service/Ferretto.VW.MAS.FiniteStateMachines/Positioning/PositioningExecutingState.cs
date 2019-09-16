@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private Timer delayTimer;
 
-        private decimal fullPosition;
-
         private bool isDisposed;
 
         private int numberExecutedSteps;
