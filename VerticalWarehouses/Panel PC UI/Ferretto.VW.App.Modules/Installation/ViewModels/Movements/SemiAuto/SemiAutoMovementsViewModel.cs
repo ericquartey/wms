@@ -198,6 +198,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         },
                     ThreadOption.UIThread,
                     false);
+
             try
             {
                 var sensorsStates = await this.machineSensorsService.GetAsync();
@@ -320,6 +321,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed;
+
             this.CanInputCellId = this.Cells != null
                &&
                !this.IsElevatorMoving

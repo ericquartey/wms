@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -20,6 +22,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand intermediateShutterCommand;
 
+        private bool isShutterMoving;
+
         private DelegateCommand openShutterCommand;
 
         #endregion
@@ -27,14 +31,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public ICommand ClosedShutterCommand =>
-                    this.closedShutterCommand
+            this.closedShutterCommand
             ??
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanExecuteClosedCommand));
 
         public ICommand IntermediateShutterCommand =>
-                            this.intermediateShutterCommand
+            this.intermediateShutterCommand
             ??
             (this.intermediateShutterCommand = new DelegateCommand(
                 async () => await this.IntermediateShutterAsync(),
@@ -44,10 +48,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsIntermediateShutterCommand => false;
 
-        public bool IsOpenShutterCommand => false;
+        public bool IsShutterMoving
+        {
+            get => this.isShutterMoving;
+            private set
+            {
+                if (this.SetProperty(ref this.isShutterMoving, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsShutterMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public ICommand OpenShutterCommand =>
-                                    this.openShutterCommand
+            this.openShutterCommand
             ??
             (this.openShutterCommand = new DelegateCommand(
                 async () => await this.OpenShutterAsync(),
@@ -68,20 +83,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteClosedCommand()
         {
             return !this.IsElevatorMoving
-                   &&
-                   this.ShutterSensors.Open;
+                &&
+                !this.IsShutterMoving
+                &&
+                this.ShutterSensors.Open;
         }
 
         private bool CanExecuteIntermediateCommand()
         {
             return !this.IsElevatorMoving
-                && !this.ShutterSensors.MidWay;
+                &&
+                !this.IsShutterMoving
+                &&
+                !this.ShutterSensors.MidWay;
         }
 
         private bool CanExecuteOpenCommand()
         {
             return !this.IsElevatorMoving
-            && this.ShutterSensors.Closed;
+                &&
+                !this.IsShutterMoving
+                &&
+                this.ShutterSensors.Closed;
         }
 
         private async Task ClosedShutterAsync()
