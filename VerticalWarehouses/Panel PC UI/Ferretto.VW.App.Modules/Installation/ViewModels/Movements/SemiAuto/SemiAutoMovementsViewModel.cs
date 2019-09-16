@@ -241,6 +241,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            // reset all status if stop machine
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsElevatorMovingToCell = false;
+                this.IsElevatorMovingToHeight = false;
+                this.IsElevatorMovingToLoadingUnit = false;
+                this.IsElevatorMovingToBay = false;
+                this.IsElevatorDisembarking = false;
+                this.IsElevatorEmbarking = false;
+                this.IsTuningChain = false;
+            }
+        }
+
         private void OnElevatorPositionChanged(CommonUtils.Messages.NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
