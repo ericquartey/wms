@@ -874,15 +874,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (currentMessage.IsWriteMessage)
                     {
-                        this.logger.LogTrace("9:Evaluate Write Message");
-
                         this.EvaluateWriteMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
                     }
-
-                    if (currentMessage.IsReadMessage)
+                    else
                     {
-                        this.logger.LogTrace("10:Evaluate Read Message");
-
                         this.EvaluateReadMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -22,14 +23,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public ICommand ClosedShutterCommand =>
-                    this.closedShutterCommand
+            this.closedShutterCommand
             ??
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanExecuteClosedCommand));
 
         public ICommand IntermediateShutterCommand =>
-                            this.intermediateShutterCommand
+            this.intermediateShutterCommand
             ??
             (this.intermediateShutterCommand = new DelegateCommand(
                 async () => await this.IntermediateShutterAsync(),
@@ -42,7 +43,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsOpenShutterCommand => false;
 
         public ICommand OpenShutterCommand =>
-                                    this.openShutterCommand
+            this.openShutterCommand
             ??
             (this.openShutterCommand = new DelegateCommand(
                 async () => await this.OpenShutterAsync(),
