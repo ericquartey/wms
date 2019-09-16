@@ -17,6 +17,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Prototype1"
       }
+    },
+    "MAS (Prototype #2)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Prototype2"
+      }
     }
   }
 }
