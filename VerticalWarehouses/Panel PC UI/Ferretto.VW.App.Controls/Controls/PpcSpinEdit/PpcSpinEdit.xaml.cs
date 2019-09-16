@@ -1,9 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -22,13 +24,13 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit));
 
         public static readonly DependencyProperty IncrementProperty = DependencyProperty.Register(
-    nameof(Increment),
-    typeof(decimal),
-    typeof(PpcSpinEdit),
-    new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
+            nameof(Increment),
+            typeof(decimal),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
 
         public static readonly DependencyProperty InputTextProperty = DependencyProperty.Register(
-                    nameof(InputText),
+            nameof(InputText),
             typeof(string),
             typeof(PpcSpinEdit),
             new PropertyMetadata(string.Empty));
@@ -39,11 +41,23 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
+                                            nameof(Mask),
+            typeof(string),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(string.Empty));
+
         public static readonly DependencyProperty SpinEditStyleProperty = DependencyProperty.Register(
-         nameof(SpinEditStyle),
-         typeof(Style),
-         typeof(PpcSpinEdit),
-         new PropertyMetadata(null, new PropertyChangedCallback(OnSpinEditStyleChanged)));
+            nameof(SpinEditStyle),
+            typeof(Style),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null, new PropertyChangedCallback(OnSpinEditStyleChanged)));
+
+        public static readonly DependencyProperty WidthNumberProperty = DependencyProperty.Register(
+            nameof(WidthNumber),
+            typeof(decimal),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(new decimal(250)));
 
         #endregion
 
@@ -96,10 +110,22 @@ namespace Ferretto.VW.App.Controls
             set => this.SetValue(LabelTextProperty, value);
         }
 
+        public string Mask
+        {
+            get => (string)this.GetValue(MaskProperty);
+            set => this.SetValue(MaskProperty, value);
+        }
+
         public Style SpinEditStyle
         {
             get => (Style)this.GetValue(BorderColorProperty);
             set => this.SetValue(BorderColorProperty, value);
+        }
+
+        public decimal WidthNumber
+        {
+            get => (decimal)this.GetValue(WidthNumberProperty);
+            set => this.SetValue(WidthNumberProperty, value);
         }
 
         #endregion
@@ -132,6 +158,15 @@ namespace Ferretto.VW.App.Controls
             {
                 var b = this.GetBindingExpression(InputTextProperty);
                 b?.UpdateSource();
+            }
+        }
+
+        private void OnPreviewEventDown(object sender, InputEventArgs e)
+        {
+            var spinEdit = (SpinEdit)sender;
+            if (LayoutTreeHelper.GetVisualParents((DependencyObject)e.OriginalSource, spinEdit).Any(x => x is TextBox))
+            {
+                this.Dispatcher.BeginInvoke((Action)spinEdit.SelectAll);
             }
         }
 

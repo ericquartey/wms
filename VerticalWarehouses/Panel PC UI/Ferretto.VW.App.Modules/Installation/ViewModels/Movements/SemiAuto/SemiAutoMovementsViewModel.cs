@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
 
+            this.shutterSensors = new ShutterSensors(this.BayNumber);
+
             this.SelectBayPosition1();
         }
 
@@ -122,7 +124,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+                || this.IsElevatorEmbarking
+                || this.IsTuningChain;
 
         public bool IsWaitingForResponse
         {
@@ -189,6 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
                         },
@@ -199,6 +203,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {

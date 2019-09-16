@@ -234,13 +234,10 @@
                     DataContext="{Binding States}"
                     Orientation="Horizontal">
 
-            <StackPanel Margin="10,0,0,0"
-                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
-
             <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Prev}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Margin="0,0,15,0"
+                <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Style="{StaticResource PpcPrev}" />
@@ -250,7 +247,7 @@
                               PresentationType="{x:Static enums:PresentationTypes.Next}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <ctrls:PpcControl.Resources />
-                <controls:PpcButton Margin="0,0,15,0"
+                <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Style="{StaticResource PpcNext}" />
@@ -259,7 +256,7 @@
             <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Abort}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Margin="0,0,15,0"
+                <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Style="{StaticResource PpcAbort}" />
@@ -268,7 +265,7 @@
 
             <ctrls:PpcControl PresentationType="{x:Static enums:PresentationTypes.Back}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <controls:PpcButton Margin="0,0,15,0"
+                <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Content="{x:Static res:InstallationApp.Back}" />

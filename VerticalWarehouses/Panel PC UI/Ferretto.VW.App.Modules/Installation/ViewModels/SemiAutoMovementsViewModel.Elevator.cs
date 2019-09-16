@@ -190,7 +190,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMoving
                 &&
-                !this.IsTuningChain;
+                !this.IsTuningChain
+                &&
+                !this.Sensors.ZeroPawlSensor;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)
