@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.currentStateMachine = value;
                 }
 
-                string objectName = string.Empty;
+                var objectName = string.Empty;
                 if (this.currentStateMachine != null)
                 {
                     objectName = this.currentStateMachine.GetType().Name;

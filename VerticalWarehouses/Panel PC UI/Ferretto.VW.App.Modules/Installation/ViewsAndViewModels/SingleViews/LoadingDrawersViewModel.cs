@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.App.Controls;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

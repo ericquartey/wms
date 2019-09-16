@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -94,6 +92,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
 
+            this.shutterSensors = new ShutterSensors(this.BayNumber);
+
             this.SelectBayPosition1();
         }
 
@@ -122,7 +122,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+                || this.IsElevatorEmbarking
+                || this.IsTuningChain;
 
         public bool IsWaitingForResponse
         {
@@ -189,6 +190,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
                         },
@@ -199,6 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {

@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -374,7 +375,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
                 {
                     var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
+                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
+                        ? this.machineSensorsStatus.AxisXPosition
+                        : this.machineSensorsStatus.AxisYPosition;
+
                     var msg = new NotificationMessage(
                         msgData,
                         "Request Position",
@@ -388,7 +392,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
                     var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
-                    int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
+                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
                     var msg = new NotificationMessage(

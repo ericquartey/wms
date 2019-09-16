@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 
@@ -49,7 +50,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
 
-            this.lastWriteMessage = new InverterMessage((short)0x00, (short)InverterParameterId.ControlWordParam);
+            this.lastWriteMessage = new InverterMessage((short)0x00, InverterParameterId.ControlWordParam);
 
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
 
@@ -119,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (currentMessage.IsWriteMessage)
                 {
-                    return currentMessage.GetWriteMessage();
+                    return currentMessage.ToBytes();
                 }
 
                 if (currentMessage.IsReadMessage)
@@ -524,7 +525,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
             }
 
-            return inverterMessage.GetWriteMessage().Length;
+            return inverterMessage.ToBytes().Length;
         }
 
         private async Task<int> ProcessActualPositionShafts(InverterMessage inverterMessage, CancellationToken stoppingToken)
@@ -549,7 +550,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.readCompleteEventSlim.Set();
 
-            return inverterMessage.GetWriteMessage().Length;
+            return inverterMessage.ToBytes().Length;
         }
 
         private async Task<int> ProcessDigitalInputs(InverterMessage inverterMessage, CancellationToken stoppingToken)
@@ -574,7 +575,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.readCompleteEventSlim.Set();
 
-            return inverterMessage.GetWriteMessage().Length;
+            return inverterMessage.ToBytes().Length;
         }
 
         private async Task<int> ProcessStatusWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
@@ -619,7 +620,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.readCompleteEventSlim.Set();
 
-            return inverterMessage.GetWriteMessage().Length;
+            return inverterMessage.ToBytes().Length;
         }
 
         private void TargetTick(object state)

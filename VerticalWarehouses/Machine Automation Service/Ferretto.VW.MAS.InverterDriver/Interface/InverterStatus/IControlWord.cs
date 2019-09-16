@@ -8,7 +8,7 @@
 
         bool EnableVoltage { set; }
 
-        bool FaultReset { get;  set; }
+        bool FaultReset { get; set; }
 
         bool Halt { set; }
 

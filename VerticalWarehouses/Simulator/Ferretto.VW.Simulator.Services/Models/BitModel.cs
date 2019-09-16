@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
-    
+
     public class BitModel : BindableBase
     {
         #region Fields

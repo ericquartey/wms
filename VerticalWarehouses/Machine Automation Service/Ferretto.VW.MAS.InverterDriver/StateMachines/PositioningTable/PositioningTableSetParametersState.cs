@@ -1,8 +1,6 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
@@ -37,10 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         /// <inheritdoc />
         public override void Start()
         {
@@ -74,10 +68,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
 
+                InverterDataset dataset;
+
                 switch (message.ParameterId)
                 {
-                    case InverterParameterId.TableTravelTableIndex:
-                        switch (this.tableIndex)
+                    case InverterParameterId.TableTravelTargetPosition:
+                        this.parameterId = 0;
+                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
+                        if (this.data.RefreshAll)
                         {
                             case InverterDataset.TableTravelP7:
                                 this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));

@@ -1,6 +1,7 @@
 ﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
-namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal interface IInverterState : IDisposable
     {
@@ -13,12 +14,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
         #region Methods
 
         /// <summary>
-        /// Release all resources
-        /// </summary>
-        void Release();
-
-        /// <summary>
-        /// Starts executing the current state logic
+        /// Starts executing the current state.
         /// </summary>
         void Start();
 

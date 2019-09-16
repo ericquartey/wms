@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190905130237_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190916065150_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -212,6 +212,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("CellId")
                         .IsUnique();
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.ToTable("LoadingUnits");
                 });
 
@@ -328,7 +331,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220),
+                            InstallationDate = new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823),
                             ServiceStatus = 86
                         });
                 });
@@ -426,6 +429,40 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("LoadedNetWeight");
+
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TorqueCurrentMeasurementSessions");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("MeasurementSessionId");
+
+                    b.Property<DateTime>("RequestTimeStamp");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasurementSessionId");
+
+                    b.ToTable("TorqueCurrentSamples");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.User", b =>
                 {
                     b.Property<string>("Name")
@@ -502,6 +539,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("LoadingUnit")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", "MeasurementSession")
+                        .WithMany("DataSamples")
+                        .HasForeignKey("MeasurementSessionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

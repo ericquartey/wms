@@ -1,6 +1,8 @@
-﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -22,15 +24,24 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public PositioningTableStateMachine(
             IInverterPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
+            if (data is null)
+            {
+                throw new System.ArgumentNullException(nameof(data));
+            }
+
+            if (inverterStatus is null)
+            {
+                throw new System.ArgumentNullException(nameof(inverterStatus));
+            }
+
             this.data = data;
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

@@ -19,7 +19,7 @@ namespace Ferretto.VW.Simulator.Services
                 throw new ArgumentNullException("b");
             }
 
-            byte[] c = new byte[a.Length + bytesRead];
+            var c = new byte[a.Length + bytesRead];
             Buffer.BlockCopy(a, 0, c, 0, a.Length);
             Buffer.BlockCopy(b, 0, c, a.Length, bytesRead);
             return c;
@@ -27,10 +27,10 @@ namespace Ferretto.VW.Simulator.Services
 
         public static int ByteIndexOf(byte[] searched, byte[] find, int start)
         {
-            for (int index = start; index <= searched.Length - find.Length; ++index)
+            for (var index = start; index <= searched.Length - find.Length; ++index)
             {
                 var matched = true;
-                for (int subIndex = 0; subIndex < find.Length; ++subIndex)
+                for (var subIndex = 0; subIndex < find.Length; ++subIndex)
                 {
                     if (find[subIndex] == searched[index + subIndex])
                     {
@@ -56,9 +56,9 @@ namespace Ferretto.VW.Simulator.Services
                 throw new ArgumentNullException(nameof(messageEndPattern));
             }
 
-            int startIndex = 0;
+            var startIndex = 0;
 
-            bool useStartPattern = false;
+            var useStartPattern = false;
             if (messageStartPattern != null)
             {
                 useStartPattern = messageStartPattern.Any();
@@ -80,17 +80,17 @@ namespace Ferretto.VW.Simulator.Services
 
                     if (!useStartPattern || (startIndex != -1 && receiveBuffer.Length >= (startIndex + messageStartPattern.Length)))
                     {
-                        int endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
+                        var endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
                         if (endIndex != -1)
                         {
                             // Cut message from raw buffer and enqueue it
-                            byte[] message = new byte[endIndex - startIndex - messageStartPattern.Length];
+                            var message = new byte[endIndex - startIndex - messageStartPattern.Length];
                             Array.Copy(receiveBuffer, startIndex + messageStartPattern.Length, message, 0, message.Length);
                             messages.Add(Encoding.ASCII.GetString(message));
 
                             // Remove message from raw buffer
-                            int count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
-                            byte[] newarray = new byte[count];
+                            var count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
+                            var newarray = new byte[count];
                             Buffer.BlockCopy(receiveBuffer, endIndex + messageEndPattern.Length, newarray, 0, count);
                             receiveBuffer = newarray;
                             startIndex = 0;
@@ -114,31 +114,31 @@ namespace Ferretto.VW.Simulator.Services
             return messages;
         }
 
-        public static IList<byte []> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
+        public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
         {
-            IList<byte []> messages = new List<byte []>();
+            IList<byte[]> messages = new List<byte[]>();
             if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
             {
-                int startIndex = 0;
+                var startIndex = 0;
                 while (startIndex != -1 && receiveBuffer.Length > 0)
                 {
-                    int messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
+                    var messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
 
                     // check if there is a message to extract
-                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)      
+                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)
                     {
                         // Cut message from raw buffer and enqueue it
-                        byte[] message = new byte[messageLength];
+                        var message = new byte[messageLength];
                         Array.Copy(receiveBuffer, startIndex, message, 0, message.Length);
                         messages.Add(message);
 
                         // Remove message from raw buffer
-                        int count = receiveBuffer.Length - messageLength;
-                        byte[] newarray = new byte[count];
+                        var count = receiveBuffer.Length - messageLength;
+                        var newarray = new byte[count];
                         Buffer.BlockCopy(receiveBuffer, startIndex + messageLength, newarray, 0, count);
                         receiveBuffer = newarray;
                         startIndex = 0;
-                        
+
                     }
                     else
                     {

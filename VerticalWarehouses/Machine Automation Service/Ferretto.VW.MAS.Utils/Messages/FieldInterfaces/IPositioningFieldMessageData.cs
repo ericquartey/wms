@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
@@ -10,7 +11,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         HorizontalMovementDirection Direction { get; set; }
 
-        decimal LoadedGrossWeight { get; set; }
+        bool IsTorqueCurrentSamplingEnabled { get; }
+
+        decimal? LoadedNetWeight { get; set; }
+
+        int? LoadingUnitId { get; }
 
         MovementType MovementType { get; set; }
 
@@ -26,7 +31,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         decimal[] TargetSpeed { get; set; }
 
-        (decimal Value, System.DateTime TimeStamp) TorqueCurrentSample { get; set; }
+        DataSample TorqueCurrentSample { get; set; }
 
         #endregion
     }

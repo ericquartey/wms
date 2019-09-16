@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -190,7 +189,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMoving
                 &&
-                !this.IsTuningChain;
+                !this.IsTuningChain
+                &&
+                !this.Sensors.ZeroPawlSensor;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)

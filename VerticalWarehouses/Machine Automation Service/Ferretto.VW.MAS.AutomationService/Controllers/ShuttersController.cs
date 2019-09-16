@@ -1,14 +1,12 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
-using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -66,11 +64,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
 
-            void publishAction() => this.PublishCommand(
-                messageData,
-                "Request shutter position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
+            void publishAction()
+            {
+                this.PublishCommand(
+messageData,
+"Request shutter position",
+MessageActor.FiniteStateMachines,
+MessageType.RequestPosition);
+            }
 
             var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
                 MessageType.ShutterPositioning,
