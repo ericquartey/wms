@@ -166,11 +166,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
-            void publishAction() => this.PublishCommand(
-                messageData,
-                "Request Horizontal position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
+            void publishAction()
+            {
+                this.PublishCommand(
+                    messageData,
+                    "Request Horizontal position",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.RequestPosition);
+            }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
@@ -185,11 +188,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
-            void publishAction() => this.PublishCommand(
-                messageData,
-                "Request vertical position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
+            void publishAction()
+            {
+                this.PublishCommand(
+messageData,
+"Request vertical position",
+MessageActor.FiniteStateMachines,
+MessageType.RequestPosition);
+            }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
@@ -205,7 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             // if direction is Forwards quote increments, else is decremented
 
             // the total length is splitted in two unequal distances
-            bool isLongerDistance = (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards) || (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
+            var isLongerDistance = (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards) || (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
 
             decimal[] speed = {
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0SpeedV1Longer : this.horizontalMovementShorterProfileDataLayer.P0SpeedV1Shorter,
@@ -479,7 +485,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 switchPosition,
                 HorizontalMovementDirection.Forwards)
             {
-                LoadedGrossWeight = netWeight + loadingUnitTare
+                LoadedNetWeight = netWeight,
+                LoadingUnitId = loadingUnitId
             };
 
             this.PublishCommand(

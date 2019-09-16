@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -8,10 +7,11 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
@@ -23,12 +23,11 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -94,6 +93,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Stopwatch sensorStopwatch;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly ISocketTransport socketTransport;
 
         private readonly Timer[] statusWordUpdateTimer;
@@ -121,20 +122,36 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Constructors
 
         public InverterDriverService(
+            ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
+            IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
-            IResolutionConversionDataLayer dataLayerResolutionConversion,
-            ILogger<InverterDriverService> logger)
+            IResolutionConversionDataLayer dataLayerResolutionConversion)
         {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
-
+            this.serviceScopeFactory = serviceScopeFactory;
             this.readWaitStopwatch = new Stopwatch();
 
             this.readSpeedStopwatch = new Stopwatch();
@@ -857,15 +874,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (currentMessage.IsWriteMessage)
                     {
-                        this.logger.LogTrace("9:Evaluate Write Message");
-
                         this.EvaluateWriteMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
                     }
-
-                    if (currentMessage.IsReadMessage)
+                    else
                     {
-                        this.logger.LogTrace("10:Evaluate Read Message");
-
                         this.EvaluateReadMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
                     }
                 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS.IODriver.Interface
+﻿namespace Ferretto.VW.MAS.IODriver.Interface
 {
     public interface IIoState
     {

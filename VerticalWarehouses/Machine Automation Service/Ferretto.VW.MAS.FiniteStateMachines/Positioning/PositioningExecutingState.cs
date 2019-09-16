@@ -1,17 +1,18 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
-using System.Threading;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -20,6 +21,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
     {
         #region Fields
 
+        private const int DefaultStatusWordPollingInterval = 100;
+
+        private readonly decimal fullPosition;
+
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private FieldCommandMessage commandMessage;
@@ -27,8 +32,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         private Timer delayTimer;
 
         private bool isDisposed;
-
-        private decimal fullPosition;
 
         private int numberExecutedSteps;
 
@@ -57,7 +60,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.positioningMessageData = positioningMessageData;
             this.machineSensorsStatus = machineSensorsStatus;
-            if (this.positioningMessageData.MovementMode == MovementMode.Position && this.positioningMessageData.MovementType == MovementType.TableTarget)
+
+            if (this.positioningMessageData.MovementMode == MovementMode.Position
+                &&
+                this.positioningMessageData.MovementType == MovementType.TableTarget)
             {
                 this.fullPosition = this.positioningMessageData.SwitchPosition[3];
                 this.fullPosition += (this.positioningMessageData.SwitchPosition[4] - this.positioningMessageData.SwitchPosition[3]) / 2;
@@ -121,6 +127,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 ? InverterIndex.Slave1
                 : InverterIndex.MainInverter;
 
+            var statusWordPollingInterval = DefaultStatusWordPollingInterval;
+
             switch (this.positioningMessageData.MovementMode)
             {
                 case MovementMode.Position:
@@ -137,6 +145,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 case MovementMode.TorqueCurrentSampling:
                     this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+                    statusWordPollingInterval = 500;
 
                     this.commandMessage = new FieldCommandMessage(
                         this.positioningFieldMessageData,
@@ -209,17 +218,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, 100);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
+            this.ParentStateMachine.PublishFieldCommandMessage(
+                new FieldCommandMessage(
+                    new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, statusWordPollingInterval),
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)inverterIndex);
-            this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+                (byte)inverterIndex));
         }
 
         public override void Stop()
@@ -229,7 +235,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             // stop timer
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, this.Logger, this.numberExecutedSteps, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningEndState(
+                    this.ParentStateMachine,
+                    this.machineSensorsStatus,
+                    this.positioningMessageData,
+                    this.Logger,
+                    this.numberExecutedSteps,
+                    true));
         }
 
         protected virtual void Dispose(bool disposing)
@@ -376,14 +389,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsZeroSensorError()
         {
-            if (this.positioningMessageData.MovementMode == MovementMode.Position
+            return this.positioningMessageData.MovementMode == MovementMode.Position
                 && this.positioningMessageData.MovementType == MovementType.TableTarget
-                && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle
-                )
-            {
-                return true;
-            }
-            return false;
+                && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle;
         }
 
         private void OnInverterStatusUpdated(FieldNotificationMessage message)

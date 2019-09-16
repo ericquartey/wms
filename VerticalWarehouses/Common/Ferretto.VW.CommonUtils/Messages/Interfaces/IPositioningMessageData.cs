@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -22,7 +23,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsStartedOnBoard { get; set; }
 
-        decimal LoadedGrossWeight { get; }
+        decimal? LoadedNetWeight { get; }
+
+        int? LoadingUnitId { get; }
 
         decimal LowerBound { get; }
 
@@ -41,6 +44,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal[] TargetSpeed { get; }
+
+        DataSample TorqueCurrentSample { get; }
 
         decimal UpperBound { get; }
 

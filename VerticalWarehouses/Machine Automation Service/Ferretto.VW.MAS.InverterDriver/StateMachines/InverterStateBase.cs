@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -56,9 +56,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        /// <inheritdoc />
-        public abstract void Release();
 
         /// <inheritdoc />
         public abstract void Start();

@@ -62,9 +62,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            await this.InitializeAsync();
-
             await base.StartAsync(cancellationToken);
+
+            await this.InitializeAsync();
         }
 
         protected override bool FilterCommand(CommandMessage command)

@@ -3,11 +3,11 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -18,7 +18,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
     {
         #region Fields
 
-        private bool disposed;
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -27,18 +29,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         protected InverterStateMachineBase(
             ILogger logger,
             IEventAggregator eventAggregator,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             this.Logger = logger;
             this.EventAggregator = eventAggregator;
             this.InverterCommandQueue = inverterCommandQueue;
+            this.serviceScopeFactory = serviceScopeFactory;
 
-            this.Logger.LogTrace($"Inverter FSM '{this.GetType().Name}' initialized.");
+            this.Logger.LogTrace($"Inverter '{this.GetType().Name}' FSM initialized.");
         }
 
         #endregion
@@ -83,7 +92,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public void EnqueueMessage(InverterMessage message)
+        public void EnqueueCommandMessage(InverterMessage message)
         {
             if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
             {
@@ -92,16 +101,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             }
         }
 
+        public TService GetRequiredService<TService>()
+            where TService : class
+        {
+            return this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<TService>();
+        }
+
         /// <inheritdoc />
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
             this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-        }
-
-        /// <inheritdoc />
-        public void Release()
-        {
-            this.CurrentState?.Release();
         }
 
         /// <inheritdoc />
@@ -124,13 +133,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
 
             if (disposing)
             {
+                if (this.CurrentState is IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
             }
 
             {
@@ -146,7 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         #endregion

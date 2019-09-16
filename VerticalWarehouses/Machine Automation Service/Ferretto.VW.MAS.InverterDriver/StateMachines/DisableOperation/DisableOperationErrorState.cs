@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -23,10 +23,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         #endregion
 
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {

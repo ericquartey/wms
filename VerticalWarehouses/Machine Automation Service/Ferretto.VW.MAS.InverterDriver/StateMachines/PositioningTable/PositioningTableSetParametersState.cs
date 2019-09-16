@@ -1,8 +1,6 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
@@ -35,16 +33,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
-        public override void Release()
-        {
-        }
-
         /// <inheritdoc />
         public override void Start()
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition, InverterDataset.TableTravelP7));
+            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition, InverterDataset.TableTravelP7));
             this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
             this.parameterId = 0;
         }
@@ -80,12 +74,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
                         if (this.data.RefreshAll)
                         {
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}");
                         }
                         else
                         {
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
                         }
                         break;
@@ -94,14 +88,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         if (++this.parameterId < this.data.TargetSpeed.Length)
                         {
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}");
                         }
                         else
                         {
                             this.parameterId = 0;
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}");
                         }
                         break;
@@ -110,14 +104,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         if (++this.parameterId < this.data.TargetAcceleration.Length)
                         {
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}");
                         }
                         else
                         {
                             this.parameterId = 0;
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetDeceleration[this.parameterId]}");
                         }
                         break;
@@ -126,14 +120,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         if (++this.parameterId < this.data.TargetDeceleration.Length)
                         {
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetDeceleration[this.parameterId]}");
                         }
                         else
                         {
                             this.parameterId = 0;
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
                         }
                         break;
@@ -142,12 +136,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         if (++this.parameterId < this.data.SwitchPosition.Length)
                         {
                             dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
                             this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
                         }
                         else
                         {
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, this.data.Direction, InverterDataset.TableTravelP7));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, this.data.Direction, InverterDataset.TableTravelP7));
                             this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
                         }
                         break;

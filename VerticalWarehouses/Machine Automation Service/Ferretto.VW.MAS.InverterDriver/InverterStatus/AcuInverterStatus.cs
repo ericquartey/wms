@@ -1,7 +1,7 @@
 ﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {

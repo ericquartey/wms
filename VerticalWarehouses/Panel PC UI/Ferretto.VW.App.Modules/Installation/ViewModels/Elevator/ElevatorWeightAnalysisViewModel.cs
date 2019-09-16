@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
 
-        private readonly ObservableCollection<(decimal Value, DateTime TimeStamp)> measuredSamples = new ObservableCollection<(decimal Value, DateTime TimeStamp)>();
+        private readonly ObservableCollection<DataSample> measuredSamples = new ObservableCollection<DataSample>();
 
         private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
 
@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ObservableCollection<(decimal Value, DateTime TimeStamp)> MeasuredSamples => this.measuredSamples;
+        public ObservableCollection<DataSample> MeasuredSamples => this.measuredSamples;
 
         public ICommand StartCommand =>
           this.startCommand
@@ -287,6 +287,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            System.Diagnostics.Debug.WriteLine($"Positioning notification: mode={message?.Data?.MovementMode}, axis={message.Data.AxisMovement}, status={message?.Status}, position={message?.Data.CurrentPosition}, sample={message?.Data?.TorqueCurrentSample?.Value}");
+
             if (message is null
                 || message.Data is null
                 || message.Data.AxisMovement != Axis.Vertical)
@@ -301,7 +303,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (
                 message.Data.MovementMode == MovementMode.TorqueCurrentSampling
                 &&
-                message.Status == MessageStatus.OperationExecuting)
+                message.Status == MessageStatus.OperationExecuting
+                &&
+                message.Data.TorqueCurrentSample != null)
             {
                 this.measuredSamples.Add(message.Data.TorqueCurrentSample);
             }
