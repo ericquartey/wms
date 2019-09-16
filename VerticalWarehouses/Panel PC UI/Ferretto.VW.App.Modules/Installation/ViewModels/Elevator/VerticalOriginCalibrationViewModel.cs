@@ -22,7 +22,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
-        private decimal? currentPosition;
+        private decimal? currentHorizontalPosition;
+
+        private decimal? currentVerticalPosition;
 
         private bool isExecutingProcedure;
 
@@ -52,6 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal upperBound;
 
+        private bool verticalOperation;
+
         #endregion
 
         #region Constructors
@@ -79,10 +83,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentPosition
+        public decimal? CurrentHorizontalPosition
         {
-            get => this.currentPosition;
-            private set => this.SetProperty(ref this.currentPosition, value);
+            get => this.currentHorizontalPosition;
+            private set => this.SetProperty(ref this.currentHorizontalPosition, value);
+        }
+
+        public decimal? CurrentVerticalPosition
+        {
+            get => this.currentVerticalPosition;
+            private set => this.SetProperty(ref this.currentVerticalPosition, value);
         }
 
         public bool IsExecutingProcedure
@@ -201,7 +211,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -225,6 +236,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
         {
+            this.verticalOperation = axisToCalibrate == Axis.Vertical;
+
             var res = string.Empty;
             switch (status)
             {
@@ -295,7 +308,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            this.CurrentPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            if (this.verticalOperation)
+            {
+                this.CurrentVerticalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            }
+            else
+            {
+                this.CurrentHorizontalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            }
         }
 
         private void OnHomingProcedureStatusChanged(MessageNotifiedEventArgs message)
@@ -343,6 +363,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.verticalOperation = true;
 
                 await this.verticalOriginProcedureService.StartAsync();
 
