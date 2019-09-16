@@ -291,19 +291,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message is null
                 || message.Data is null
-                || message.Data.AxisMovement != Axis.Vertical)
+                || message.Data.AxisMovement != Axis.Vertical
+                || message.Data.MovementMode != MovementMode.TorqueCurrentSampling)
             {
                 return;
             }
 
-            if (message.Data.MovementMode == MovementMode.Position)
-            {
-                this.CurrentPosition = message.Data.CurrentPosition;
-            }
-            else if (
-                message.Data.MovementMode == MovementMode.TorqueCurrentSampling
-                &&
-                message.Status == MessageStatus.OperationExecuting
+            this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
+
+            if (message.Status == MessageStatus.OperationExecuting
                 &&
                 message.Data.TorqueCurrentSample != null)
             {

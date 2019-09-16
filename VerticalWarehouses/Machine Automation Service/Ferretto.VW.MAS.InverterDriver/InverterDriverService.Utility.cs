@@ -276,7 +276,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is AngInverterStatus angInverter)
                     {
-                        var axis = (inverterStatus.CommonControlWord.HorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
+                        var axis = inverterStatus.CommonControlWord.HorizontalAxis
+                            ? Axis.Horizontal
+                            : Axis.Vertical;
+
                         if ((axis == this.currentAxis || currentStateMachine == null) &&
                             (angInverter.UpdateANGInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
                             )
@@ -329,6 +332,21 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (currentMessage.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 currentStateMachine?.ValidateCommandResponse(currentMessage);
+
+                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(
+                    new FieldNotificationMessage(
+                        new InverterStatusUpdateFieldMessageData(
+                            new CommonUtils.Messages.Data.DataSample
+                            {
+                                Value = currentMessage.IntPayload / 10m,
+                                TimeStamp = DateTime.Now
+                            }),
+                    "Inverter Inputs update",
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterStatusUpdate,
+                    MessageStatus.OperationExecuting,
+                    (byte)inverterIndex));
             }
         }
 

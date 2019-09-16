@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Stopwatch axisStopwatch;
 
-        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
+        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
         private readonly Task commandReceiveTask;
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ILogger logger;
 
-        private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
         private readonly Task notificationReceiveTask;
 
@@ -175,9 +175,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-
-            this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
-            this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 

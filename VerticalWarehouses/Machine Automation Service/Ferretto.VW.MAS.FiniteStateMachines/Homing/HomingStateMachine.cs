@@ -97,12 +97,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
-            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+            if (message.Type == FieldMessageType.InverterStatusUpdate
+                &&
                 message.Status == MessageStatus.OperationExecuting)
             {
-                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                if (message.Data is InverterStatusUpdateFieldMessageData data
+                    &&
+                    data.CurrentPosition.HasValue)
                 {
-                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition.Value);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"Current Encoder position: {data.CurrentPosition}",

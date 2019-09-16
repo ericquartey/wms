@@ -217,8 +217,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 this.Logger.LogTrace($"21:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
 
                 this.installationHub.Clients.All.PositioningNotify(message);
 

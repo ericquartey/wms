@@ -94,8 +94,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             base.ValidateCommandResponse(message);
 
-            this.Logger.LogInformation($"Received response {message.ParameterId}, {message.SystemIndex}.");
-
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 var sample = this.measurementsProvider.AddSample(
@@ -118,23 +116,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private void NotifyNewSample(TorqueCurrentSample sample)
         {
             this.ParentStateMachine.PublishNotificationEvent(
-                new FieldNotificationMessage(
-                    new PositioningFieldMessageData(
-                        new PositioningMessageData
-                        {
-                            TorqueCurrentSample = new DataSample
-                            {
-                                TimeStamp = sample.TimeStamp,
-                                Value = sample.Value
-                            }
-                        }),
-                "New torque sample acquired",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.Positioning,
-                MessageStatus.OperationExecuting,
-                this.InverterStatus.SystemIndex,
-                ErrorLevel.Info));
+                 new FieldNotificationMessage(
+                     new InverterStatusUpdateFieldMessageData(
+                         new DataSample
+                         {
+                             Value = sample.Value,
+                             TimeStamp = sample.TimeStamp
+                         }),
+                 "Inverter Inputs update",
+                 FieldMessageActor.FiniteStateMachines,
+                 FieldMessageActor.InverterDriver,
+                 FieldMessageType.InverterStatusUpdate,
+                 MessageStatus.OperationExecuting,
+                 this.InverterStatus.SystemIndex));
         }
 
         private void RequestSample()
