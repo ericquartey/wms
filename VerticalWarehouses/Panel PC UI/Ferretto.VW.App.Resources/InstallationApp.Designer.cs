@@ -1114,6 +1114,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to position.
+        /// </summary>
+        public static string GoToPosition {
+            get {
+                return ResourceManager.GetString("GoToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height control.
         /// </summary>
         public static string HeightControlCheck {
@@ -1929,6 +1938,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PawlEncoder {
             get {
                 return ResourceManager.GetString("PawlEncoder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
             }
         }
         

@@ -92,6 +92,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
 
+            this.shutterSensors = new ShutterSensors(this.BayNumber);
+
             this.SelectBayPosition1();
         }
 
@@ -120,7 +122,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+                || this.IsElevatorEmbarking
+                || this.IsTuningChain;
 
         public bool IsWaitingForResponse
         {
@@ -187,6 +190,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
                         },
@@ -197,6 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {
@@ -236,6 +241,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            // reset all status if stop machine
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsElevatorMovingToCell = false;
+                this.IsElevatorMovingToHeight = false;
+                this.IsElevatorMovingToLoadingUnit = false;
+                this.IsElevatorMovingToBay = false;
+                this.IsElevatorDisembarking = false;
+                this.IsElevatorEmbarking = false;
+                this.IsTuningChain = false;
             }
         }
 
