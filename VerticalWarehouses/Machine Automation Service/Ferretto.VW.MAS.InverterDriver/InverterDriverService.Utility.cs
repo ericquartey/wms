@@ -151,17 +151,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     if (inverterStatus.CommonStatusWord.Value != currentMessage.UShortPayload)
                     {
-                        var notificationData = new InverterStatusWordFieldMessageData(currentMessage.UShortPayload);
                         var msgNotification = new FieldNotificationMessage(
-                        notificationData,
-                        "Inverter Status Word update",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStatusWord,
-                        MessageStatus.OperationExecuting,
-                        (byte)inverterIndex);
+                            new InverterStatusWordFieldMessageData(currentMessage.UShortPayload),
+                            "Inverter Status Word update",
+                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.InverterStatusWord,
+                            MessageStatus.OperationExecuting,
+                            (byte)inverterIndex);
 
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                     }
                 }
 
@@ -208,9 +207,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
                                         this.logger.LogDebug("Sensor Update");
-                                        var notificationData = new InverterStatusUpdateFieldMessageData(angInverter.Inputs);
+
                                         var msgNotification = new FieldNotificationMessage(
-                                            notificationData,
+                                            new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
                                             "Inverter Inputs update",
                                             FieldMessageActor.FiniteStateMachines,
                                             FieldMessageActor.InverterDriver,
@@ -218,7 +217,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             MessageStatus.OperationExecuting,
                                             angInverter.SystemIndex);
 
-                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                     }
                                 }
                                 break;
@@ -228,9 +227,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     if (acuInverter.UpdateACUInverterInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
-                                        var notificationData = new InverterStatusUpdateFieldMessageData(acuInverter.Inputs);
                                         var msgNotification = new FieldNotificationMessage(
-                                            notificationData,
+                                            new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
                                             "Inverter Inputs update",
                                             FieldMessageActor.FiniteStateMachines,
                                             FieldMessageActor.InverterDriver,
@@ -238,7 +236,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             MessageStatus.OperationExecuting,
                                             acuInverter.SystemIndex);
 
-                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                     }
                                 }
                                 break;
@@ -248,9 +246,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     if (aglInverter.UpdateAGLInverterInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
-                                        var notificationData = new InverterStatusUpdateFieldMessageData(aglInverter.Inputs);
                                         var msgNotification = new FieldNotificationMessage(
-                                            notificationData,
+                                            new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
                                             "Inverter Inputs update",
                                             FieldMessageActor.FiniteStateMachines,
                                             FieldMessageActor.InverterDriver,
@@ -258,7 +255,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             MessageStatus.OperationExecuting,
                                             aglInverter.SystemIndex);
 
-                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                     }
                                 }
                                 break;
@@ -313,20 +310,25 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             var notificationData = new InverterStatusUpdateFieldMessageData(axis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
                             var msgNotification = new FieldNotificationMessage(
-                              notificationData,
-                              "Inverter encoder value update",
-                              FieldMessageActor.FiniteStateMachines,
-                              FieldMessageActor.InverterDriver,
-                              FieldMessageType.InverterStatusUpdate,
-                              MessageStatus.OperationExecuting,
-                              (byte)inverterIndex);
+                                notificationData,
+                                "Inverter encoder value update",
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.InverterStatusUpdate,
+                                MessageStatus.OperationExecuting,
+                                (byte)inverterIndex);
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
                             this.forceStatusPublish = false;
                         }
                     }
                 }
+            }
+
+            if (currentMessage.ParameterId == InverterParameterId.TorqueCurrent)
+            {
+                currentStateMachine?.ValidateCommandResponse(currentMessage);
             }
         }
 
@@ -722,7 +724,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                                 this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-                                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
                             }
                             else
                             {
@@ -889,7 +891,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             MessageStatus.OperationEnd,
                                             (byte)currentInverter);
 
-                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                     }
                                     else
                                     {
@@ -920,7 +922,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             MessageStatus.OperationEnd,
                                             (byte)currentInverter);
 
-                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                     }
                                     else
                                     {
@@ -1025,7 +1027,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageStatus.OperationEnd,
                     (byte)currentInverter);
 
-                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(endNotification);
             }
         }
 
@@ -1055,7 +1057,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageStatus.OperationEnd,
                     (byte)currentInverter);
 
-                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(endNotification);
             }
             else
             {

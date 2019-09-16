@@ -607,7 +607,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(calibrateErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(calibrateErrorNotification);
                     }
                     break;
 
@@ -623,7 +623,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOffErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOffErrorNotification);
                     }
                     break;
 
@@ -639,7 +639,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOnErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOnErrorNotification);
                     }
                     break;
 
@@ -656,7 +656,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(positioningErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(positioningErrorNotification);
                     }
                     break;
 
@@ -672,7 +672,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOfferrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOfferrorNotification);
                     }
                     break;
 
@@ -688,7 +688,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOnerrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOnerrorNotification);
                     }
                     break;
 
@@ -704,7 +704,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(shutterPositioningErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(shutterPositioningErrorNotification);
                     }
                     break;
 
@@ -720,7 +720,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                        MessageStatus.OperationError,
                        (byte)inverterIndex,
                        ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
                     }
                     break;
 
@@ -736,7 +736,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
                     break;
 
@@ -752,7 +752,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
                     break;
             }

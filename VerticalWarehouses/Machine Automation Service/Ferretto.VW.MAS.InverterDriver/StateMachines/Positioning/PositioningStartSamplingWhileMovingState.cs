@@ -20,8 +20,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private const int SamplingInterval = 1;
-
         private readonly IInverterPositioningFieldMessageData data;
 
         private readonly ITorqueCurrentMeasurementsDataProvider measurementsProvider;
@@ -31,8 +29,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private DateTime lastRequestTimeStamp;
 
         private TorqueCurrentMeasurementSession measurementSession;
-
-        private Timer samplingTimer;
 
         private bool stopRequested;
 
@@ -79,7 +75,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogInformation("Starting sampling of torque current.");
 
-            this.samplingTimer = new Timer(this.OnTimerTick, null, SamplingInterval, Timeout.Infinite);
+            this.RequestSample();
         }
 
         public override void Stop()
@@ -92,7 +88,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             base.Stop();
 
             this.stopRequested = true;
-            this.samplingTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -113,19 +108,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 if (!this.stopRequested && !this.TargetPositionReached)
                 {
-                    this.samplingTimer.Change(SamplingInterval, Timeout.Infinite);
+                    this.RequestSample();
                 }
             }
 
             return true;
-        }
-
-        protected override void OnDisposing()
-        {
-            base.OnDisposing();
-
-            this.samplingTimer.Dispose();
-            this.samplingTimer = null;
         }
 
         private void NotifyNewSample(TorqueCurrentSample sample)
@@ -150,15 +137,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 ErrorLevel.Info));
         }
 
-        private void OnTimerTick(object state)
+        private void RequestSample()
         {
-            if (this.stopRequested)
-            {
-                return;
-            }
-
             this.lastRequestTimeStamp = DateTime.Now;
-            this.Logger.LogInformation("Requesting new sample.");
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(

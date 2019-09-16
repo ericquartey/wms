@@ -404,8 +404,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TorqueCurrent:
-                    //message.Payload = random.Next(1, 5);
-                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(random.Next(1, 5)));
+                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(random.Next(20, 29)));
                     result = client.Client.Send(torqueMessage);
                     break;
 
