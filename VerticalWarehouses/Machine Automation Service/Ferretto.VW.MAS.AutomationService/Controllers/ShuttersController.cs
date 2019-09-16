@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
                 MovementMode.Position,
-                MovementType.Relative, //MovementType.Absolute, // TODO enable absolute positioning when Inverter is ready
+                MovementType.Relative, //MovementType.Absolute,
                 0,
                 0);
 

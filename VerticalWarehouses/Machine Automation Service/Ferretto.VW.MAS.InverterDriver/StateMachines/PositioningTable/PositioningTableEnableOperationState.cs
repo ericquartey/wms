@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 //INFO Set the axis to move in the CW
                 currentStatus.TableTravelControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
                 currentStatus.TableTravelControlWord.EnableOperation = true;
+                currentStatus.TableTravelControlWord.Resume = false;
             }
 
             this.Logger.LogDebug("Inverter Enable Operation");

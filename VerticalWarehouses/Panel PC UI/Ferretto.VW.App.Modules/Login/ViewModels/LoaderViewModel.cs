@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 ThreadOption.UIThread,
                 false);
 
-            await this.CheckFirewallStatusAsync();
+            //  await this.CheckFirewallStatusAsync();
         }
 
         private async Task CheckFirewallStatusAsync()

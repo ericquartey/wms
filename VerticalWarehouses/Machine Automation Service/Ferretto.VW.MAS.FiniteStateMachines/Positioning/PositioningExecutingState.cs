@@ -26,9 +26,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private Timer delayTimer;
 
-        private bool isDisposed;
-
         private decimal fullPosition;
+
+        private bool isDisposed;
 
         private int numberExecutedSteps;
 
@@ -300,6 +300,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
+            return false;
             if (!this.positioningMessageData.IsStartedOnBoard)
             {
                 if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -338,6 +339,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
+            return false;
             if (this.positioningMessageData.IsStartedOnBoard)
             {
                 if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -376,6 +378,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsZeroSensorError()
         {
+            return false;
             if (this.positioningMessageData.MovementMode == MovementMode.Position
                 && this.positioningMessageData.MovementType == MovementType.TableTarget
                 && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle
