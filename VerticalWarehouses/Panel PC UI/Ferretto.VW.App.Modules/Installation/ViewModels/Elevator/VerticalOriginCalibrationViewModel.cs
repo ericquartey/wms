@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -220,6 +221,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private bool CanExecuteStartCommand()
         {
             return !this.isExecutingProcedure
@@ -236,8 +247,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
         {
-            this.verticalOperation = axisToCalibrate == Axis.Vertical;
-
             var res = string.Empty;
             switch (status)
             {
@@ -288,6 +297,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 ||
                 message.Status == MessageStatus.OperationError)
             {
+                this.verticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+
                 this.ShowNotification(
                     string.Format(
                         this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
@@ -322,6 +333,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
+                this.verticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
+
                 switch (h.Status)
                 {
                     case MessageStatus.OperationStart:
