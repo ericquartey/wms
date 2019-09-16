@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public MissionOperationsController(
             IEventAggregator eventAggregator,
-            ILogger<AutomationService> logger,
+            ILogger<MissionOperationsController> logger,
             IMissionOperationsDataService missionOperationsDataService)
         {
             if (eventAggregator is null)
