@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <Content Remove="nlog.config" />
-      <Content Remove="Configuration\**\*.json" />
+    <Content Remove="Configuration\**\*.json" />
   </ItemGroup>
 
   <ItemGroup>

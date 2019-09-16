@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         private Timer delayTimer;
 
-        private bool disposed;
+        private bool isDisposed;
 
         private bool pulseOneTime;
 
@@ -44,46 +44,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #endregion
 
-        #region Destructors
-
-        ~ResetStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        private void DelayElapsed(object state)
-        {
-            var pulseIoMessage = new IoWriteMessage();
-
-            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
-            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
-
-            this.EnqueueMessage(pulseIoMessage);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.delayTimer?.Dispose();
-                this.CurrentState.Dispose();
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
@@ -118,6 +79,38 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             this.pulseOneTime = false;
             this.CurrentState = new ResetStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.delayTimer?.Dispose();
+
+                if (this.CurrentState is System.IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
+            }
+
+            this.isDisposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        private void DelayElapsed(object state)
+        {
+            var pulseIoMessage = new IoWriteMessage();
+
+            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
+
+            this.EnqueueMessage(pulseIoMessage);
         }
 
         #endregion

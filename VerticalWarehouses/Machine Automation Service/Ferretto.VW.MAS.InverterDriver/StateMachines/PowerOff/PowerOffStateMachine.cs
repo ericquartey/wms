@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         private readonly FieldCommandMessage nextCommandMessage;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -35,15 +33,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             this.inverterStatus = inverterStatus;
 
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerOffStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -72,22 +61,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

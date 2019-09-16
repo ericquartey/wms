@@ -47,8 +47,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
-        private bool disposed;
-
         private CancellationToken stoppingToken;
 
         #endregion
@@ -83,31 +81,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-        #region Destructors
-
-        ~HostedIoDriver()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.Dispose();
-            }
-
-            this.disposed = true;
-        }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {

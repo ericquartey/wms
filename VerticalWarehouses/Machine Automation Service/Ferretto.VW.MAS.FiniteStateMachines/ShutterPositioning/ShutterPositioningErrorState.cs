@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
-        private bool disposed;
-
         private FieldCommandMessage stopMessage;
 
         #endregion
@@ -46,15 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.machineSensorsStatus = machineSensorsStatus;
             this.errorMessage = errorMessage;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -143,17 +132,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

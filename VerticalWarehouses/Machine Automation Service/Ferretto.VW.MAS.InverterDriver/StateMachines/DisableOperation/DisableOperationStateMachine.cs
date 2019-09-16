@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -32,15 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         #endregion
 
-        #region Destructors
-
-        ~DisableOperationStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc />
@@ -53,22 +42,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

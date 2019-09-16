@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly IPositioningMessageData positioningMessageData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -44,15 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.positioningMessageData = positioningMessageData;
 
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -91,17 +80,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            bool checkConditions;
-
-            //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions();
-
-                if (checkConditions)
+                var canStartPositioning = this.CheckConditions();
+                if (canStartPositioning)
                 {
-                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero && this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero
+                        &&
+                        this.machineSensorsStatus.IsSensorZeroOnCradle)
                     {
                         this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
                     }
@@ -141,21 +127,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         private bool CheckConditions()

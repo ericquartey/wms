@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IVerticalAxisDataLayer verticalAxis;
 
-        private bool disposed;
-
         private PositioningMessageData positioningMessageData;
 
         #endregion
@@ -51,15 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.verticalAxis = verticalAxis;
             this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerCradleState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -129,21 +118,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             if (this.drawerOperationData.Operation == DrawerOperation.Pickup)
                             {
                                 this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
-                                        this.ParentStateMachine,
-                                        this.drawerOperationData,
-                                        this.Logger));
+                                    this.ParentStateMachine,
+                                    this.drawerOperationData,
+                                    this.Logger));
                             }
                             else
                             {
                                 this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
-                                        this.ParentStateMachine,
-                                        Axis.Vertical,
-                                        this.drawerOperationData,
-                                        this.generalInfoDataLayer,
-                                        this.verticalAxis,
-                                        this.horizontalAxis,
-                                        this.machineSensorsStatus,
-                                        this.Logger));
+                                    this.ParentStateMachine,
+                                    Axis.Vertical,
+                                    this.drawerOperationData,
+                                    this.generalInfoDataLayer,
+                                    this.verticalAxis,
+                                    this.horizontalAxis,
+                                    this.machineSensorsStatus,
+                                    this.Logger));
                             }
                         }
 
@@ -195,8 +184,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -207,22 +194,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.drawerOperationData,
                 this.Logger,
                 true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         //TEMP Check this code
@@ -285,7 +256,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                (target >= 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
         }
 
         #endregion

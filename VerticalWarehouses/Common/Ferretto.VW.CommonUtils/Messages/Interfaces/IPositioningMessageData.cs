@@ -14,11 +14,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int Delay { get; set; }
 
-        int Direction { get; set; }
+        HorizontalMovementDirection Direction { get; set; }
 
         int ExecutedCycles { get; set; }
 
         bool IsOneKMachine { get; set; }
+
+        bool IsStartedOnBoard { get; set; }
 
         decimal LoadedGrossWeight { get; }
 

@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         private readonly bool stopRequested;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -31,15 +29,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.machineData = machineData;
             this.stopRequested = stopRequested;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerEnableEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -85,29 +74,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageType.PowerEnable,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

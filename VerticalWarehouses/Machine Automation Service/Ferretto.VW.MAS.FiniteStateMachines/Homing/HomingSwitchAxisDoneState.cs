@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly IHomingOperation homingOperation;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -29,15 +27,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             : base(parentMachine, logger)
         {
             this.homingOperation = homingOperation;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingSwitchAxisDoneState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -99,8 +88,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.CalibrateAxis,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -109,22 +96,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

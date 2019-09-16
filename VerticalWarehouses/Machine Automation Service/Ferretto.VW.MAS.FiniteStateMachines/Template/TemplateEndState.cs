@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         private readonly bool stopRequested;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -28,15 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             this.stopRequested = stopRequested;
             this.machineData = machineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~TemplateEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -71,21 +60,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop()
         {
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

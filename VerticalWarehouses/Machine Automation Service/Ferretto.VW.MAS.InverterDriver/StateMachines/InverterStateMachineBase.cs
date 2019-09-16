@@ -43,15 +43,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~InverterStateMachineBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
@@ -89,7 +80,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -134,8 +124,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            this.Logger.LogDebug($"Disposing {this.GetType()}");
-
             if (this.disposed)
             {
                 return;

@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard)
         {
             try
             {
@@ -117,20 +117,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     publishAction);
 
                 // check feasibility
-                if (isOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
+                if (isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
                 {
-                    throw new InvalidOperationException("Invalid " + (isOnBoard ? "Deposit" : "Pickup") + " command for " + (isOnBoard ? "empty" : "full") + " elevator");
+                    throw new InvalidOperationException("Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
                 }
                 var zeroSensor = (this.machineConfigurationProvider.IsOneKMachine() ? IOMachineSensors.ZeroPawlSensorOneK : IOMachineSensors.ZeroPawlSensor);
-                if ((!isOnBoard && !messageData.SensorsStates[(int)zeroSensor])
-                    || (isOnBoard && messageData.SensorsStates[(int)zeroSensor])
+                if ((!isStartedOnBoard && !messageData.SensorsStates[(int)zeroSensor])
+                    || (isStartedOnBoard && messageData.SensorsStates[(int)zeroSensor])
                     )
                 {
                     throw new InvalidOperationException("Invalid Zero Chain position");
                 }
 
                 // execute command
-                this.elevatorProvider.MoveHorizontalAuto(direction, isOnBoard);
+                var position = this.elevatorProvider.GetHorizontalPosition();
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position);
                 return this.Accepted();
             }
             catch (Exception ex)

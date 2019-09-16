@@ -51,6 +51,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -107,108 +108,119 @@
                            Text="{Binding EmbarkedLoadingUnit.Weight, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
 
                 <TextBlock Grid.Row="6"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+                <controls:PpcSensorControl Grid.Row="6"
+                                           Grid.Column="1"
+                                           Margin="0,5"
+                                           SensorState="{Binding Sensors.ZeroPawlSensor}" />
+
+
+
+                <TextBlock Grid.Row="7"
                            Grid.ColumnSpan="2"
-                           Margin="0,20,0,0"
+                           Margin="0,5,0,0"
                            FontSize="14"
                            FontWeight="Bold"
                            Foreground="White"
                            Text="Cella" />
-                <Border Grid.Row="7"
+                <Border Grid.Row="8"
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,5"
                         BorderBrush="Black"
                         BorderThickness="0,2,0,0" />
 
-                <TextBlock Grid.Row="8"
+                <TextBlock Grid.Row="9"
                            Grid.Column="0"
                            Foreground="White"
                            Text="{x:Static res:InstallationApp.TrayInCell}" />
-                <TextBlock Grid.Row="8"
+                <TextBlock Grid.Row="9"
                            Grid.Column="1"
                            Foreground="White"
                            Text="{Binding LoadingUnitInCell.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
-                <TextBlock Grid.Row="9"
+                <TextBlock Grid.Row="10"
                            Grid.Column="0"
                            Foreground="White"
                            Text="{x:Static res:InstallationApp.CellHeight}" />
-                <TextBlock Grid.Row="9"
+                <TextBlock Grid.Row="10"
                            Grid.Column="1"
                            Foreground="White"
                            Text="{Binding SelectedCell.Position, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
 
-                <TextBlock Grid.Row="10"
+                <TextBlock Grid.Row="11"
                            Grid.ColumnSpan="2"
                            Margin="0,20,0,0"
                            FontSize="14"
                            FontWeight="Bold"
                            Foreground="White"
                            Text="Baia" />
-                <Border Grid.Row="11"
+                <Border Grid.Row="12"
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,5"
                         BorderBrush="Black"
                         BorderThickness="0,2,0,0" />
 
-                <TextBlock Grid.Row="12"
+                <TextBlock Grid.Row="13"
                            Grid.Column="0"
                            Foreground="White"
                            Text="{x:Static res:InstallationApp.BayHeight}" />
-                <TextBlock Grid.Row="12"
+                <TextBlock Grid.Row="13"
                            Grid.Column="1"
                            Foreground="White"
                            Text="{Binding BayPositionHeight}" />
-                <TextBlock Grid.Row="13"
+                <TextBlock Grid.Row="14"
                            Grid.Column="0"
                            Foreground="White"
                            Text="{x:Static res:InstallationApp.TrayInBay}" />
-                <TextBlock Grid.Row="13"
+                <TextBlock Grid.Row="14"
                            Grid.Column="1"
                            Foreground="White"
                            Text="{Binding LoadingUnitInBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
 
-                <TextBlock Grid.Row="14"
+                <TextBlock Grid.Row="15"
                            Grid.ColumnSpan="2"
                            Margin="0,20,0,0"
                            FontSize="14"
                            FontWeight="Bold"
                            Foreground="White"
                            Text="Serranda" />
-                <Border Grid.Row="15"
+                <Border Grid.Row="16"
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,5"
                         BorderBrush="Black"
                         BorderThickness="0,2,0,0" />
 
-                <TextBlock Grid.Row="16"
-                           Grid.Column="0"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.ShutterOpen}" />
-                <controls:PpcSensorControl Grid.Row="16"
-                                           Grid.Column="1"
-                                           Margin="0,5"
-                                           SensorState="{Binding Sensors.Open}" />
-
                 <TextBlock Grid.Row="17"
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.ShutterMidWay}" />
+                           Text="{x:Static res:InstallationApp.ShutterOpen}" />
                 <controls:PpcSensorControl Grid.Row="17"
                                            Grid.Column="1"
                                            Margin="0,5"
-                                           SensorState="{Binding Sensors.MidWay}" />
+                                           SensorState="{Binding Sensors.Open}" />
 
                 <TextBlock Grid.Row="18"
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                           Text="{x:Static res:InstallationApp.ShutterMidWay}" />
                 <controls:PpcSensorControl Grid.Row="18"
                                            Grid.Column="1"
                                            Margin="0,5"
-                                           SensorState="{Binding Sensors.Closed}" />
+                                           SensorState="{Binding Sensors.MidWay}" />
 
+                <TextBlock Grid.Row="19"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                <controls:PpcSensorControl Grid.Row="19"
+                                           Grid.Column="1"
+                                           Margin="0,5"
+                                           SensorState="{Binding Sensors.Closed}" />
 
             </Grid>
         </Border>
@@ -242,7 +254,7 @@
                                 IsBusy="{Binding IsElevatorMovingToHeight}" />
             <controls:PpcTextBox Grid.Column="0"
                                  Margin="5"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  InputText="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsEnabled="{Binding CanInputHeight}"
@@ -260,7 +272,7 @@
 
             <controls:PpcTextBox Grid.Column="1"
                                  Margin="5"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  InputText="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsEnabled="{Binding CanInputCellId}"
@@ -277,7 +289,7 @@
                                 IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
             <controls:PpcTextBox Grid.Column="2"
                                  Margin="5"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  InputText="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsEnabled="{Binding CanInputLoadingUnitId}"
@@ -368,7 +380,8 @@
                                 Margin="5"
                                 HorizontalAlignment="Left"
                                 Command="{Binding OpenShutterCommand}"
-                                Content="APRI SERRANDA" />
+                                Content="APRI SERRANDA"
+                                IsEnabled="False" />
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="1"

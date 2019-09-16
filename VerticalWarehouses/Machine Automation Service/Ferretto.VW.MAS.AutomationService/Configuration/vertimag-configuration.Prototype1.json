@@ -25,7 +25,7 @@
     //"Bay1Height1":,
     //"Bay1Position2":,
     //"Bay1Height2":,
-    "Bay2Position1": 743.00,
+    "Bay2Position1": 648.00,
     "Bay2Height1": 1080.0,
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
@@ -120,60 +120,60 @@
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementLongerProfile": {
-    "TotalSteps": 4,
+  "HorizontalMovementShorterProfile": {
+    "TotalSteps": 5,
     "TotalMovement": 1235.9,
     "MovementCorrection": 20.0,
-    "P0Quote": 0.0,
+    //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 730.0,
+    "P0Deceleration": 1.0,
+    "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
+    "P1Acceleration": 1.0,
+    "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
+    "P2Acceleration": 1000.0,
+    "P2Deceleration": 1.0,
+    "P2SpeedV3": 500.0,
+    "P3Quote": 600.0,
+    "P3Acceleration": 1.0,
+    "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
     "P4Quote": 985.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
-    "P4SpeedV5": 730.0,
-    "P5Quote": 1135.0
+    "P4Acceleration": 1000.0,
+    "P4Deceleration": 1000.0,
+    "P4SpeedV5": 200.0,
+    "P5Quote": 1235.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
   },
-  "HorizontalMovementShorterProfile": {
-    "TotalSteps": 4,
+  "HorizontalMovementLongerProfile": {
+    "TotalSteps": 5,
     "TotalMovement": 1241.0,
     "MovementCorrection": 20.0,
-    "P0Quote": 0.0,
+    //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 730.0,
+    "P0Deceleration": 1.0,
+    "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
+    "P1Acceleration": 1.0,
+    "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
+    "P2Acceleration": 1000.0,
+    "P2Deceleration": 1.0,
+    "P2SpeedV3": 500.0,
+    "P3Quote": 600.0,
+    "P3Acceleration": 1.0,
+    "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
-    "P4Quote": 991.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
-    "P4SpeedV5": 730.0,
-    "P5Quote": 1141.0
+    "P4Quote": 985.00,
+    "P4Acceleration": 1000.0,
+    "P4Deceleration": 1000.0,
+    "P4SpeedV5": 200.0,
+    "P5Quote": 1241.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":

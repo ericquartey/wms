@@ -37,15 +37,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~InverterStateBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public virtual string Type => this.GetType().ToString();

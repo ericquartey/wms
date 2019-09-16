@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private readonly bool stopRequested;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -43,15 +41,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.inverterIndex = inverterIndex;
             this.machineSensorsStatus = machineSensorsStatus;
             this.stopRequested = stopRequested;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -170,21 +159,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

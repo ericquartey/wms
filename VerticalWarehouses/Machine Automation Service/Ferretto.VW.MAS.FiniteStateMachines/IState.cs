@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    internal interface IState : IDisposable
+    internal interface IState
     {
         #region Properties
 

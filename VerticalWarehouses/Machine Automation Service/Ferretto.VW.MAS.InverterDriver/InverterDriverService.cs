@@ -190,15 +190,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Destructors
-
-        ~InverterDriverService()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public InverterDiagnosticsData AxisIntervalTimeData { get; }
@@ -664,6 +655,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.Positioning:
+                case FieldMessageType.TorqueCurrentSampling:
                     this.ProcessPositioningMessage(receivedMessage);
                     break;
 
@@ -727,7 +719,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (InverterDriverException ex)
                     {
-                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException}");
+                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}; Inner exception: {ex.InnerException.Message}");
                     }
                     catch (Exception ex)
                     {
@@ -796,7 +788,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 catch (InvalidOperationException ex)
                 {
                     // connection error
-                    this.logger.LogError($"Exception {ex.Message}");
+                    this.logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message ?? string.Empty}");
                     this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                     continue;
                 }

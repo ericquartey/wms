@@ -230,10 +230,12 @@
 
         <StackPanel Name="StackPanelButtons"
                     Grid.Column="1"
-                    Margin="10,0,0,0"
                     HorizontalAlignment="Stretch"
                     DataContext="{Binding States}"
                     Orientation="Horizontal">
+
+            <StackPanel Margin="10,0,0,0"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Prev}"

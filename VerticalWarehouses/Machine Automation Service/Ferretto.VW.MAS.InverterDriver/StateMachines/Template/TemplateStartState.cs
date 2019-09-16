@@ -32,15 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void Release()
@@ -96,15 +87,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+            else
             {
-                this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                {
+                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             //True means I got the expected response. Do not request more status words
             return returnValue;
         }
