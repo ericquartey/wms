@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.CommonUtils.Messages
+namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public class NotificationMessageUI<TData> : IBaseNotificationMessageUI
             where TData : class, IMessageData

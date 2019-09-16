@@ -19,7 +19,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public partial class AutomationService : BackgroundService
+    internal partial class AutomationService : BackgroundService
     {
         #region Fields
 

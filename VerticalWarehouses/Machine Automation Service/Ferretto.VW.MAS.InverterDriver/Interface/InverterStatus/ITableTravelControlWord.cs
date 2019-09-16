@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+
+namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
 {
     public interface ITableTravelControlWord : IControlWord
     {

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public partial class AutomationService
+    partial class AutomationService
     {
         #region Methods
 
