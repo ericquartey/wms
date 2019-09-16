@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -21,6 +21,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
+        #region Properties
+
+        protected bool TargetPositionReached =>
+            this.InverterStatus is AngInverterStatus currentStatus
+            &&
+            currentStatus.PositionStatusWord.SetPointAcknowledge
+            &&
+            currentStatus.PositionStatusWord.PositioningAttained;
+
+        #endregion
+
         #region Methods
 
         /// <inheritdoc />
@@ -30,6 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 currentStatus.PositionControlWord.NewSetPoint = true;
             }
+
             //TODO complete type failure check
             this.Logger.LogDebug("Set New Setpoint");
 
@@ -37,7 +49,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -67,26 +79,33 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(
+                    new PositioningErrorState(
+                        this.ParentStateMachine,
+                        this.InverterStatus,
+                        this.Logger));
+
+                return true;
+            }
+
+            this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+
+            if (this.TargetPositionReached)
+            {
+                this.ParentStateMachine.ChangeState(
+                    new PositioningDisableOperationState(
+                        this.ParentStateMachine,
+                        this.InverterStatus,
+                        this.Logger));
+
+                this.Logger.LogDebug("Target position reached.");
             }
             else
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus is AngInverterStatus currentStatus)
-                {
-                    if (currentStatus.PositionStatusWord.SetPointAcknowledge && currentStatus.PositionStatusWord.PositioningAttained)
-                    {
-                        this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                        this.Logger.LogDebug("Position Reached !");
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug("Position Not Reached");
-                    }
-                }
+                this.Logger.LogDebug("Moving towards target position.");
             }
-            //INFO Next status word request handled by timer
-            return true;
+
+            return true; //INFO Next status word request handled by timer
         }
 
         #endregion

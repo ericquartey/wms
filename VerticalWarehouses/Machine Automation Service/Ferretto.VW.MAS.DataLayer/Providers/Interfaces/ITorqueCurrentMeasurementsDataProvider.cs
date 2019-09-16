@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         TorqueCurrentMeasurementSession AddMeasurementSession(int? loadingUnitId, decimal? loadedNetWeight);
 
-        TorqueCurrentSample AddSample(int sessionId, decimal value, System.DateTime timeStamp);
+        TorqueCurrentSample AddSample(int sessionId, decimal value, System.DateTime timeStamp, System.DateTime requestTimeStamp);
 
         IEnumerable<TorqueCurrentMeasurementSession> GetAllMeasurementSessions();
 

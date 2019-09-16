@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             if (loadedNetWeight.HasValue && !loadingUnitId.HasValue)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Cannot specify a loaded net weight when no loading unit is specified.");
             }
 
             var entry = this.dataContext.TorqueCurrentMeasurementSessions.Add(
@@ -50,14 +50,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return entry.Entity;
         }
 
-        public TorqueCurrentSample AddSample(int sessionId, decimal value, DateTime timeStamp)
+        public TorqueCurrentSample AddSample(int sessionId, decimal value, DateTime timeStamp, DateTime requestTimeStamp)
         {
             var entry = this.dataContext.TorqueCurrentSamples.Add(
                 new TorqueCurrentSample
                 {
                     MeasurementSessionId = sessionId,
                     Value = value,
-                    TimeStamp = timeStamp
+                    TimeStamp = timeStamp,
+                    RequestTimeStamp = requestTimeStamp
                 });
 
             this.dataContext.SaveChanges();

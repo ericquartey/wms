@@ -1,7 +1,8 @@
 ﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal interface IInverterStateMachine : IDisposable
     {
@@ -17,7 +18,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
         /// Enqueue message.
         /// </summary>
         /// <param name="message">A <see cref="InverterMessage"/> message to enqueue.</param>
-        void EnqueueMessage(InverterMessage message);
+        void EnqueueCommandMessage(InverterMessage message);
 
         TService GetRequiredService<TService>()
             where TService : class;

@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.AxisMovement = positioningFieldMessageData.AxisMovement;
             this.MovementType = positioningFieldMessageData.MovementType;
             this.NumberCycles = positioningFieldMessageData.NumberCycles;
-            this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
-            this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
             this.TargetAcceleration = targetAcceleration;
             this.TargetDeceleration = targetDeceleration;
             this.TargetPosition = targetPosition;
@@ -31,6 +29,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
             this.Direction = direction;
+
+            this.IsTorqueCurrentSamplingEnabled = positioningFieldMessageData.IsTorqueCurrentSamplingEnabled;
+            this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
+            this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
         }
 
         #endregion

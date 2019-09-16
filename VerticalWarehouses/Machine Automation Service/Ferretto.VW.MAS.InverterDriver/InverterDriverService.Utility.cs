@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -7,10 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
@@ -22,7 +22,6 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -63,7 +62,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readAxisPositionMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.ActualPositionShaft);
+                            var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
 
                             this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
@@ -88,7 +87,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
+                            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.DigitalInputsOutputs);
 
                             this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
 
@@ -113,7 +112,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                            var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
 
                             this.logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
 
@@ -173,7 +172,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!currentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
                 {
-                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
 
                     this.logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
 
@@ -367,7 +366,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
                 this.logger.LogTrace("6:Request Status word");
-                var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
                 this.inverterCommandQueue.Enqueue(readStatusWordMessage);
             }
         }
@@ -613,7 +612,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
 
-                var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
+                var inverterMessagePacket = message.IsWriteMessage ? message.ToBytes() : message.GetReadMessage();
 
                 this.roundTripStopwatch.Reset();
                 this.roundTripStopwatch.Start();
@@ -1164,7 +1163,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncAxisTimer)
             {
                 var inverterIndex = (InverterIndex)state;
-                var readAxisPositionMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.ActualPositionShaft);
+                var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
 
                 this.logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
@@ -1186,7 +1185,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             lock (this.syncSensorTimer)
             {
-                var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
+                var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.DigitalInputsOutputs);
 
                 this.sensorIntervalStopwatch.Stop();
                 this.SensorIntervalTimeData.AddValue(this.sensorIntervalStopwatch.ElapsedTicks);
@@ -1213,7 +1212,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var inverterIndex = (InverterIndex)state;
                 if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex) < 2)
                 {
-                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
 
                     this.logger.LogTrace($"1:readStatusWordTimer={readStatusWordMessage}");
 

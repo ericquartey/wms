@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int MeasurementSessionId { get; set; }
 
+        public DateTime RequestTimeStamp { get; set; }
+
         public DateTime TimeStamp { get; set; }
 
         public decimal Value { get; set; }

@@ -169,10 +169,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             void publishAction()
             {
                 this.PublishCommand(
-messageData,
-"Request Horizontal position",
-MessageActor.FiniteStateMachines,
-MessageType.RequestPosition);
+                    messageData,
+                    "Request Horizontal position",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.RequestPosition);
             }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
@@ -485,7 +485,8 @@ MessageType.RequestPosition);
                 switchPosition,
                 HorizontalMovementDirection.Forwards)
             {
-                LoadedNetWeight = netWeight + loadingUnitTare
+                LoadedNetWeight = netWeight,
+                LoadingUnitId = loadingUnitId
             };
 
             this.PublishCommand(

@@ -4,6 +4,17 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
+    public class DataSample
+    {
+        #region Properties
+
+        public System.DateTime TimeStamp { get; set; }
+
+        public decimal Value { get; set; }
+
+        #endregion
+    }
+
     public class PositioningMessageData : IPositioningMessageData
     {
         #region Constructors
@@ -68,7 +79,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsStartedOnBoard { get; set; }
 
-        public decimal LoadedGrossWeight { get; set; }
+        public decimal? LoadedNetWeight { get; set; }
+
+        public int? LoadingUnitId { get; set; }
 
         public decimal LowerBound { get; set; }
 
@@ -88,7 +101,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal[] TargetSpeed { get; set; }
 
-        public (decimal Value, System.DateTime TimeStamp) TorqueCurrentSample { get; set; }
+        public DataSample TorqueCurrentSample { get; set; }
 
         public decimal UpperBound { get; set; }
 

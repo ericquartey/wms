@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -374,7 +375,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
                 {
                     var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
+                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
+                        ? this.machineSensorsStatus.AxisXPosition
+                        : this.machineSensorsStatus.AxisYPosition;
+
                     var msg = new NotificationMessage(
                         msgData,
                         "Request Position",

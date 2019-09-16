@@ -3,7 +3,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
     {
         #region Fields
 
-        private readonly IServiceScope serviceScope;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        private bool disposed;
+        private bool isDisposed;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.Logger = logger;
             this.EventAggregator = eventAggregator;
             this.InverterCommandQueue = inverterCommandQueue;
-            this.serviceScope = serviceScopeFactory.CreateScope();
+            this.serviceScopeFactory = serviceScopeFactory;
 
             this.Logger.LogTrace($"Inverter '{this.GetType().Name}' FSM initialized.");
         }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public void EnqueueMessage(InverterMessage message)
+        public void EnqueueCommandMessage(InverterMessage message)
         {
             if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
             {
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         public TService GetRequiredService<TService>()
             where TService : class
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TService>();
+            return this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<TService>();
         }
 
         /// <inheritdoc />
@@ -133,15 +133,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.serviceScope.Dispose();
-
                 if (this.CurrentState is IDisposable disposableState)
                 {
                     disposableState.Dispose();
@@ -161,7 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         #endregion
