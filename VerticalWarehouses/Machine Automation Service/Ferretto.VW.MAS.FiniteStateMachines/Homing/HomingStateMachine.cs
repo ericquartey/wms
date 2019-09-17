@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     public class HomingStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -32,6 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             Axis axisToCalibrate,
             bool isOneKMachine,
             BayNumber requestingBay,
+            BayNumber targetBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.axisToCalibrate = axisToCalibrate;
 
-            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, targetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -54,8 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 

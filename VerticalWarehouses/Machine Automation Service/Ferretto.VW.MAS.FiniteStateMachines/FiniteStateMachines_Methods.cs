@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
-
-
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -201,10 +199,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (receivedMessage.Data is IHomingMessageData data)
                 {
+                    receivedMessage.TargetBay = BayNumber.ElevatorBay;
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         this.machineConfigurationProvider.IsOneKMachine(),
                         receivedMessage.RequestingBay,
+                        receivedMessage.TargetBay,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
@@ -531,7 +531,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
-
                     currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
                         this.baysProvider.GetInverterList(message.RequestingBay)[this.baysProvider.ShutterInverterPosition],
