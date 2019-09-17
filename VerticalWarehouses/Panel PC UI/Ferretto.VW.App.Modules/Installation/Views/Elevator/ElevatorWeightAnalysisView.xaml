@@ -28,32 +28,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightAnalysis}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputScope="Number"
-                             InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.Displacement}" />
-
-        <controls:PpcLabeledText Grid.Row="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
-
         <controls:PpcTextBox Grid.Row="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
-
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding LoadingUnit.Tare}"
-                                 LabelText="{x:Static res:InstallationApp.TrayTare}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
@@ -63,6 +42,34 @@
                              InputText="{Binding InputNetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding CanInputNetWeight}"
                              LabelText="{x:Static res:InstallationApp.NetWeight}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding LoadingUnit.Tare}"
+                                 LabelText="{x:Static res:InstallationApp.TrayTare}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
+        <controls:PpcTextBox Grid.Row="2"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputScope="Number"
+                             InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.Displacement}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding AverageCurrent, StringFormat={}{0:N4}}"
+                                 LabelText="Corrente Media [A]" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"

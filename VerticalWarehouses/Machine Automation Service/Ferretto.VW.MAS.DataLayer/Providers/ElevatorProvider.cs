@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public decimal GetHorizontalPosition()
+        public decimal? GetHorizontalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public decimal GetVerticalPosition()
+        public decimal? GetVerticalPosition()
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
