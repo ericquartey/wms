@@ -17,6 +17,7 @@ namespace Ferretto.VW.Simulator.Services
 {
     internal class MachineService : BindableBase, IMachineService
     {
+
         #region Fields
 
         public byte[] Buffer;
@@ -49,11 +50,11 @@ namespace Ferretto.VW.Simulator.Services
         {
             this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 4 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 5, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 5 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 7, Enabled = false }); //da sistemare
 
@@ -63,6 +64,8 @@ namespace Ferretto.VW.Simulator.Services
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -93,6 +96,8 @@ namespace Ferretto.VW.Simulator.Services
         public IODeviceModel RemoteIOs03 { get => this.remoteIOs[2]; set { var ios = this.remoteIOs[2]; this.SetProperty(ref ios, value); } }
 
         #endregion
+
+
 
         #region Methods
 

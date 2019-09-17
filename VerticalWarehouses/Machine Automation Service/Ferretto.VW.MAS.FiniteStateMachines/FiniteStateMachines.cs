@@ -208,7 +208,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var messageCurrentStateMachine);
+                if (!this.currentStateMachines.TryGetValue(receivedMessage.TargetBay,
+                    out var messageCurrentStateMachine))
+                {
+                    messageCurrentStateMachine = null;
+                }
 
                 if (messageCurrentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
@@ -770,6 +774,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.PowerEnable:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.InverterFaultReset:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)
