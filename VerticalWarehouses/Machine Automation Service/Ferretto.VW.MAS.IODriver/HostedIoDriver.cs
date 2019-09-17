@@ -18,8 +18,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ParameterHidesMember
 
+// ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {

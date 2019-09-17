@@ -84,8 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStartRecallButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var messageData = new MoveDrawerMessageDataDTO { DrawerOperation = DrawerOperation.ManualRecall };
-                await this.loadingUnitsService.StartMovingAsync(messageData);
+                await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualRecall);
 
                 this.NoteString = "Start drawer recall...";
             }
@@ -103,8 +102,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStartStoreButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var messageData = new MoveDrawerMessageDataDTO { DrawerOperation = DrawerOperation.ManualStore };
-                await this.loadingUnitsService.StartMovingAsync(messageData);
+                await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualStore);
 
                 this.NoteString = "Start drawer storing...";
             }

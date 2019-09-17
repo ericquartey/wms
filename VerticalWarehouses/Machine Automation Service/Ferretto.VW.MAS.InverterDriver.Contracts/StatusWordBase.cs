@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.CommonUtils.Enumerations
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public class StatusWordBase : IStatusWord
     {

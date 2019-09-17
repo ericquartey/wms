@@ -171,8 +171,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public int SendDelay => this.sendDelay;
 
-        public short ShortPayload => this.ConvertPayloadToShort();
-
         public string StringPayload => this.ConvertPayloadToString();
 
         public byte SystemIndex { get; private set; }
@@ -401,24 +399,15 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
                 case InverterParameterId.ActualPositionShaft:
+                case InverterParameterId.TorqueCurrent:
                     if (this.payloadLength == 4)
                     {
                         returnValue = BitConverter.ToInt32(this.payload, 0);
                     }
-
-                    break;
-
-                default:
-                    returnValue = default(int);
                     break;
             }
 
             return returnValue;
-        }
-
-        private short ConvertPayloadToShort()
-        {
-            return default(short);
         }
 
         private string ConvertPayloadToString()
@@ -430,13 +419,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.DigitalInputsOutputs:
                     returnValue = Encoding.ASCII.GetString(this.payload);
                     break;
-
-                default:
-                    returnValue = default(string);
-                    break;
             }
+
             return returnValue;
-            ;
         }
 
         private uint ConvertPayloadToUInt()

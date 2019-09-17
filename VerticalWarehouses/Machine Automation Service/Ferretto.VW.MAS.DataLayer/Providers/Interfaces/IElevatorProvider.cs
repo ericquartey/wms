@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        decimal GetHorizontalPosition();
+        decimal? GetHorizontalPosition();
 
-        decimal GetVerticalPosition();
+        decimal? GetVerticalPosition();
 
         void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position);
 

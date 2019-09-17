@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
@@ -261,7 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnElevatorPositionChanged(CommonUtils.Messages.NotificationMessageUI<PositioningMessageData> message)
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
             {
