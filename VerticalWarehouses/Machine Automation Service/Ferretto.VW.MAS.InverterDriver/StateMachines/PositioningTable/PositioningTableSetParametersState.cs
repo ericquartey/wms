@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private int parameterId;
 
-        private InverterDataset tableIndex;
+        private InverterTableIndex tableIndex;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.tableIndex = InverterDataset.TableTravelP7;
+            this.tableIndex = InverterTableIndex.TableTravelP7;
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
             this.parameterId = 0;
@@ -73,18 +73,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     case InverterParameterId.TableTravelTableIndex:
                         switch (this.tableIndex)
                         {
-                            case InverterDataset.TableTravelP7:
+                            case InverterTableIndex.TableTravelP7:
                                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
                                 this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
                                 break;
 
-                            case InverterDataset.TableTravelSet1:
-                            case InverterDataset.TableTravelSet2:
-                            case InverterDataset.TableTravelSet3:
-                            case InverterDataset.TableTravelSet4:
-                            case InverterDataset.TableTravelSet5:
+                            case InverterTableIndex.TableTravelSet1:
+                            case InverterTableIndex.TableTravelSet2:
+                            case InverterTableIndex.TableTravelSet3:
+                            case InverterTableIndex.TableTravelSet4:
+                            case InverterTableIndex.TableTravelSet5:
                                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId]));
-                                this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}: dataset {this.tableIndex}");
+                                this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}: table index {this.tableIndex}");
                                 break;
                         }
                         break;
@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         else
                         {
                             this.parameterId = 0;
-                            this.tableIndex = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
                             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
                         }
@@ -110,25 +110,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                     case InverterParameterId.TableTravelTargetSpeeds:
                         this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId]));
-                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: dataset {this.tableIndex}");
+                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
 
                         break;
 
                     case InverterParameterId.TableTravelTargetAccelerations:
                         this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetAcceleration[this.parameterId]));
-                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: dataset {this.tableIndex}");
+                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
 
                         break;
 
                     case InverterParameterId.TableTravelTargetDecelerations:
                         this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId]));
-                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: dataset {this.tableIndex}");
+                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: table index {this.tableIndex}");
                         break;
 
                     case InverterParameterId.TableTravelSwitchPositions:
                         if (++this.parameterId < this.data.SwitchPosition.Length)
                         {
-                            this.tableIndex = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
                             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
                         }
