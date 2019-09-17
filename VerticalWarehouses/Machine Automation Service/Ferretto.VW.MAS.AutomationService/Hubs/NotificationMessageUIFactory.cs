@@ -1,8 +1,10 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.CommonUtils.Messages
+namespace Ferretto.VW.MAS.AutomationService
 {
-    public static class NotificationMessageUiFactory
+    internal static class NotificationMessageUiFactory
     {
         #region Methods
 
@@ -16,15 +18,14 @@ namespace Ferretto.VW.CommonUtils.Messages
         /// </exception>
         public static IBaseNotificationMessageUI FromNotificationMessage(NotificationMessage message)
         {
-            if (message == null)
+            if (message is null)
             {
                 throw new System.ArgumentNullException(nameof(message));
             }
 
-            var space = typeof(NotificationMessageUiFactory).Namespace;
-            var messageType = $"{space}.Data.{message.Type}MessageData";
+            var messageType = $"Ferretto.VW.CommonUtils.Messages.Data.{message.Type}MessageData";
 
-            var messageDataType = typeof(NotificationMessageUiFactory).Assembly.GetType(messageType);
+            var messageDataType = typeof(IMessageData).Assembly.GetType(messageType);
             if (messageDataType == null)
             {
                 throw new System.InvalidOperationException(

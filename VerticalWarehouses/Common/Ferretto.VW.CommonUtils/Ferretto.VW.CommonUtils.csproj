@@ -10,4 +10,8 @@
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj" />
+  </ItemGroup>
+  
 </Project>

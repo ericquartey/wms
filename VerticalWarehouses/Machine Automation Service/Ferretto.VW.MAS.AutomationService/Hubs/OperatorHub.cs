@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public class OperatorHub : Hub<IOperatorHub>
+    internal class OperatorHub : Hub<IOperatorHub>
     {
         #region Fields
 

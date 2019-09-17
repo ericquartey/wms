@@ -67,7 +67,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        public decimal CurrentPosition { get; set; }
+        public decimal? CurrentPosition { get; set; }
 
         public int Delay { get; set; }
 
