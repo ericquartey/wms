@@ -134,10 +134,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                     this.ShowNotification("Connessione ai servizi stabilita.", Services.Models.NotificationSeverity.Success);
 
-                    await this.bayManager.InitializeAsync();
-                    var machineIdentity = this.bayManager.Identity;
+                    try
+                    {
+                        await this.bayManager.InitializeAsync();
+                        var machineIdentity = this.bayManager.Identity;
 
-                    this.NavigateToLoginPage(machineIdentity);
+                        this.NavigateToLoginPage(machineIdentity);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowNotification(ex);
+                    }
 
                     break;
 

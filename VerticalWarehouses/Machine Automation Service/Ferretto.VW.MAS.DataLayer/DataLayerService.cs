@@ -181,6 +181,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     await scope.ServiceProvider
                        .GetRequiredService<ILoadingUnitsProvider>()
                        .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
+
+                    scope.ServiceProvider
+                        .GetRequiredService<IBaysConfigurationProvider>()
+                        .LoadFromConfiguration();
                 }
                 catch (Exception ex)
                 {

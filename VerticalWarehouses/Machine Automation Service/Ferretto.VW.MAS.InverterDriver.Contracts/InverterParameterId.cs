@@ -36,6 +36,8 @@
 
         ShutterTargetVelocityParam = 480,
 
+        TableTravelTableIndex = 1200,
+
         TableTravelTargetPosition = 1202,
 
         TableTravelTargetSpeeds = 1203,

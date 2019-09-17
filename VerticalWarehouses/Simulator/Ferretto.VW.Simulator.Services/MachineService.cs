@@ -487,10 +487,10 @@ namespace Ferretto.VW.Simulator.Services
                 case InverterParameterId.TableTravelTargetAccelerations:
                     {
                         var replyMessage = message.ToBytes();
-                        //if (uintPayload == 0)
-                        //{
-                        //    replyMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(1), true);
-                        //}
+                        if (message.UIntPayload == 0)
+                        {
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(1), true);
+                        }
 
                         result = client.Client.Send(replyMessage);
                     }
@@ -500,8 +500,13 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
+                case InverterParameterId.TableTravelTableIndex:
+                    inverter.TableIndex = (short)message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 case InverterParameterId.TableTravelSwitchPositions:
-                    var switchId = (int)(message.DataSetIndex - InverterDataset.TableTravelSet1);
+                    var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelSet1;
                     inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
                     result = client.Client.Send(message.ToBytes());
                     break;

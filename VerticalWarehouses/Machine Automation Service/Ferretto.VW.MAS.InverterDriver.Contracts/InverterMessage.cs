@@ -444,6 +444,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusDigitalSignals:
+                case InverterParameterId.TableTravelTableIndex:
+                case InverterParameterId.TableTravelDirection:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);

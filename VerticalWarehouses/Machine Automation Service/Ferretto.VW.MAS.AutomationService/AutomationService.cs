@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.AutomationService
     internal partial class AutomationService : AutomationBackgroundService
     {
         #region Fields
+
+        private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IBaysDataService baysDataService;
 
@@ -43,12 +45,18 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IApplicationLifetime applicationLifetime)
             : base(eventAggregator, logger)
         {
             if (serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            if (applicationLifetime is null)
+            {
+                throw new ArgumentNullException(nameof(applicationLifetime));
             }
 
             if (installationHub is null)
@@ -90,6 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.baysDataService = baysDataService;
             this.missionDataService = missionDataService;
             this.serviceScopeFactory = serviceScopeFactory;
+            this.applicationLifetime = applicationLifetime;
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -22,7 +23,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
-        private decimal? currentPosition;
+        private decimal? currentHorizontalPosition;
+
+        private decimal? currentVerticalPosition;
 
         private bool isExecutingProcedure;
 
@@ -52,6 +55,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal upperBound;
 
+        private bool verticalOperation;
+
         #endregion
 
         #region Constructors
@@ -79,10 +84,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentPosition
+        public decimal? CurrentHorizontalPosition
         {
-            get => this.currentPosition;
-            private set => this.SetProperty(ref this.currentPosition, value);
+            get => this.currentHorizontalPosition;
+            private set => this.SetProperty(ref this.currentHorizontalPosition, value);
+        }
+
+        public decimal? CurrentVerticalPosition
+        {
+            get => this.currentVerticalPosition;
+            private set => this.SetProperty(ref this.currentVerticalPosition, value);
         }
 
         public bool IsExecutingProcedure
@@ -201,11 +212,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -275,6 +297,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 ||
                 message.Status == MessageStatus.OperationError)
             {
+                this.verticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+
                 this.ShowNotification(
                     string.Format(
                         this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
@@ -295,13 +319,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            this.CurrentPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            if (this.verticalOperation)
+            {
+                this.CurrentVerticalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            }
+            else
+            {
+                this.CurrentHorizontalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+            }
         }
 
         private void OnHomingProcedureStatusChanged(MessageNotifiedEventArgs message)
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
+                this.verticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
+
                 switch (h.Status)
                 {
                     case MessageStatus.OperationStart:
@@ -343,6 +376,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.verticalOperation = true;
 
                 await this.verticalOriginProcedureService.StartAsync();
 
