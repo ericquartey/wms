@@ -1027,4 +1027,7 @@
   <data name="Position" xml:space="preserve">
     <value>Quota</value>
   </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Confermi l'operazione?</value>
+  </data>
 </root>
