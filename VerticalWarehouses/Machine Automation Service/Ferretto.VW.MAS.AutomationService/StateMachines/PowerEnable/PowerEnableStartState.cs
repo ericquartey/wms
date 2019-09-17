@@ -59,25 +59,40 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
             switch (message.Type)
             {
                 case MessageType.Stop:
-                    if (this.stateMachineResponses.TryGetValue(message.TargetBay, out var stateMachineResponse))
+                    if (message.Status != MessageStatus.OperationStart &&
+                        message.Status != MessageStatus.OperationExecuting)
                     {
-                        stateMachineResponse = message.Status;
-                        this.stateMachineResponses[message.TargetBay] = stateMachineResponse;
-                    }
-                    else
-                    {
-                        this.stateMachineResponses.Add(message.TargetBay, message.Status);
-                    }
-
-                    if (this.stateMachineResponses.Values.Any(r => r == MessageStatus.OperationError))
-                    {
-                        this.stateData.NotificationMessage = message;
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                        if (this.stateMachineResponses.TryGetValue(message.TargetBay, out var stateMachineResponse))
+                        {
+                            stateMachineResponse = message.Status;
+                            this.stateMachineResponses[message.TargetBay] = stateMachineResponse;
+                        }
+                        else
+                        {
+                            this.stateMachineResponses.Add(message.TargetBay, message.Status);
+                        }
                     }
 
                     if (this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
                     {
-                        this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.stateData));
+                        if (this.stateMachineResponses.Values.Any(r => r != MessageStatus.OperationEnd))
+                        {
+                            this.stateData.NotificationMessage = message;
+                            this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                        }
+                        else
+                        {
+                            var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState);
+                            var commandMessage = new CommandMessage(
+                                commandData,
+                                $"Setting Power enable state to {this.machineData.RequestedPowerState}",
+                                MessageActor.FiniteStateMachines,
+                                MessageActor.AutomationService,
+                                MessageType.PowerEnable,
+                                this.RequestingBay);
+
+                            this.ParentStateMachine.PublishCommandMessage(commandMessage);
+                        }
                     }
 
                     break;
@@ -134,9 +149,10 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
                 foreach (var configuredBay in this.machineData.ConfiguredBays)
                 {
-                    commandMessage.TargetBay = configuredBay.Index;
+                    var newCommandMessage = new CommandMessage(commandMessage);
+                    newCommandMessage.TargetBay = configuredBay.Index;
 
-                    this.ParentStateMachine.PublishCommandMessage(commandMessage);
+                    this.ParentStateMachine.PublishCommandMessage(newCommandMessage);
                 }
             }
 

@@ -834,6 +834,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.ResetSecurity:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
+                                    this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                                    this.SendCleanDebug();
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                        }
+                        break;
                 }
 
                 messageCurrentStateMachine?.ProcessNotificationMessage(receivedMessage);

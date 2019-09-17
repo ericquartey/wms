@@ -561,9 +561,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
-            if (this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var currentStateMachine))
+            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
                 currentStateMachine.Stop(StopRequestReason.Stop);
+            }
+            else
+            {
+                var errorNotification = new NotificationMessage(
+                    receivedMessage.Data,
+                    $"Bay {receivedMessage.TargetBay} is already stopped",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    receivedMessage.Type,
+                    receivedMessage.RequestingBay,
+                    receivedMessage.TargetBay,
+                    MessageStatus.OperationEnd);
+
+                this.logger.LogDebug($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
             }
         }
 
