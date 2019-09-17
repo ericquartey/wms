@@ -332,6 +332,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.MachineStatusActiveMethod(receivedMessage);
                         break;
                 }
+
+                this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             }
             while (!this.stoppingToken.IsCancellationRequested);
 

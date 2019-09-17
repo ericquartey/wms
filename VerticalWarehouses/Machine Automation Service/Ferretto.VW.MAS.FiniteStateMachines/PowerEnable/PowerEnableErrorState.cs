@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Power Enable Stopped due to an error",
+                $"Power Enable Stopped due to an error. Filed message: {this.stateData.FieldMessage.Description}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
+﻿using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
@@ -9,10 +7,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 
 
         #region Properties
-
-        List<InverterIndex> ConfiguredInverters { get; }
-
-        List<IoIndex> ConfiguredIoDevices { get; }
 
         bool Enable { get; }
 

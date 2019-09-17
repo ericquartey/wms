@@ -14,6 +14,18 @@ namespace Ferretto.VW.MAS.Utils.Messages
         {
         }
 
+        public CommandMessage(CommandMessage otherMessage)
+        {
+            this.Data = otherMessage.Data;
+            this.Description = otherMessage.Description;
+            this.Destination = otherMessage.Destination;
+            this.Source = otherMessage.Source;
+            this.Type = otherMessage.Type;
+            this.RequestingBay = otherMessage.RequestingBay;
+            this.TargetBay = otherMessage.TargetBay;
+            this.Verbosity = otherMessage.Verbosity;
+        }
+
         public CommandMessage(
             IMessageData data,
             string description,

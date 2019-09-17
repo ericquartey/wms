@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
-    public class PowerEnablePowerDownState : StateBase
+    public class PowerEnablePowerSwitchState : StateBase
     {
 
         #region Fields
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnablePowerDownState(IPowerEnableStateData stateData)
+        public PowerEnablePowerSwitchState(IPowerEnableStateData stateData)
             : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Destructors
 
-        ~PowerEnablePowerDownState()
+        ~PowerEnablePowerSwitchState()
         {
             this.Dispose(false);
         }

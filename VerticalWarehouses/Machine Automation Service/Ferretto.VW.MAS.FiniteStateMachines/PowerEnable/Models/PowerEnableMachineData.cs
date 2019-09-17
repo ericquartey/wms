@@ -17,20 +17,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 
         public PowerEnableMachineData(
             bool enable,
-            List<IoIndex> configuredIoDevices,
-            List<InverterIndex> configuredInverters,
             BayNumber requestingBay,
+            BayNumber targetBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.EventAggregator = eventAggregator;
-            this.ConfiguredIoDevices = configuredIoDevices;
-            this.ConfiguredInverters = configuredInverters;
             this.Enable = enable;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
             this.RequestingBay = requestingBay;
+            this.TargetBay = targetBay;
         }
 
         #endregion
@@ -38,10 +36,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 
 
         #region Properties
-
-        public List<InverterIndex> ConfiguredInverters { get; }
-
-        public List<IoIndex> ConfiguredIoDevices { get; }
 
         public bool Enable { get; }
 

@@ -60,14 +60,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if (this.machineData.Enable)
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.stateData));
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableStopInverterState(this.stateData));
-                        }
+                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
                         break;
 
                     case MessageStatus.OperationError:
@@ -76,7 +69,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                         break;
                 }
             }
-            else if (message.Type == FieldMessageType.IoDriverException)
+
+            if (message.Type == FieldMessageType.IoDriverException)
             {
                 this.stateData.FieldMessage = message;
                 this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));

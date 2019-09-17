@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -37,11 +36,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 this.currentStateMachines.Remove(BayNumber.BayOne);
             }
 
-            currentStateMachine = new PowerEnableStateMachine(
-                data.Enable,
-                this.vertimagConfiguration.GetInstalledIoList().ToList(),
-                this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                BayNumber.None,
+            currentStateMachine = new PowerEnableStateMachine(null,
                 this.eventAggregator,
                 this.logger,
                 this.serviceScopeFactory);
@@ -358,10 +353,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     !this.machineSensorsStatus.IsMachineInRunningState && data.Enable)
                 {
                     currentStateMachine = new PowerEnableStateMachine(
-                        data.Enable,
-                        this.vertimagConfiguration.GetInstalledIoList().ToList(),
-                        this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                        message.RequestingBay,
+                        message,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
