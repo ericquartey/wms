@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseSensorsViewModel(
-            MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService)
+            IMachineSensorsService machineSensorsService)
             : base(Services.PresentationMode.Installer)
         {
             if (machineSensorsService is null)

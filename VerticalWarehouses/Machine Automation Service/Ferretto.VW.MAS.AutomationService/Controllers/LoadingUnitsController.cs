@@ -179,10 +179,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("start-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMoving([FromBody]MoveDrawerMessageDataDTO data)
+        public IActionResult StartMoving(DrawerOperation drawerOperation)
         {
             var drawerOperationData = new DrawerOperationMessageData(
-               data.DrawerOperation,
+               drawerOperation,
                DrawerOperationStep.None);
 
             drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO HACK remove this hardcoded value

@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces

@@ -11,7 +11,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        decimal CurrentPosition { get; set; }
+        decimal? CurrentPosition { get; set; }
 
         int Delay { get; set; }
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         decimal[] TargetSpeed { get; }
 
-        DataSample TorqueCurrentSample { get; }
+        DataSample TorqueCurrentSample { get; set; }
 
         decimal UpperBound { get; }
 
