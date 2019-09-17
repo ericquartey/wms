@@ -404,6 +404,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
 
                 this.measuredSamplesInCurrentSession.Clear();
+                this.AverageCurrent = null;
 
                 await this.weightAnalysisProcedureService.StartAsync(
                     this.InputDisplacement.Value,
