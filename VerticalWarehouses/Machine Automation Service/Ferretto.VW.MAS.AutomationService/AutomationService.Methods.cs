@@ -150,17 +150,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 .BayStatusChanged(messageData);
         }
 
-        private void OnDataLayerReady()
-        {
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var baysConfigurationProvider = scope.ServiceProvider
-                    .GetRequiredService<IBaysConfigurationProvider>();
-
-                baysConfigurationProvider.LoadFromConfiguration();
-            }
-        }
-
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
         {
             if (machineErrorMessageData == null)
@@ -217,7 +206,7 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 this.Logger.LogTrace($"21:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                 var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
 
                 this.installationHub.Clients.All.PositioningNotify(message);
 

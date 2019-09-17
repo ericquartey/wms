@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -24,6 +25,10 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 case MessageType.SensorsChanged:
                     this.OnSensorsChanged(receivedMessage);
+                    break;
+
+                case MessageType.DlException:
+                    this.OnDataLayerException(receivedMessage);
                     break;
 
                 case MessageType.Homing:
@@ -66,10 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
                     break;
 
-                case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
-                    break;
-
                 case MessageType.ErrorStatusChanged:
                     this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
                     break;
@@ -85,6 +86,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.MachineStatusActive:
                     this.MachineStatusActiveMethod(receivedMessage);
                     break;
+            }
+        }
+
+        private void OnDataLayerException(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
+            {
+                this.applicationLifetime.StopApplication();
             }
         }
 

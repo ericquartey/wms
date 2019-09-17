@@ -14,9 +14,8 @@
     "InstallationDate": "2011-05-01T19:43:37+0100",
     "Model": "Vertimag 1000kg",
     "Serial": "Prototype #2",
-    "Height": 9.000,
+    "Height": 4.563,
     "MaxGrossWeight": 50000,
-    "MaxDrawerGrossWeight": 990,
     "BaysQuantity": 2,
     "Bay1Type": 4,
     "Bay2Type": 2,
@@ -68,30 +67,29 @@
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
-    "Inverter1": "192.168.0.100",
+    "Inverter1": "198.168.0.100",
     "Inverter1Port": 17221,
     "InverterIndexMaster": 0,
-    "InverterIndexChain": 1,
-    //"InverterIndexShutter1": 2,
-    //"InverterIndexBay1": 3,
-    //"InverterIndexShutter2": 4,
+    "InverterIndexShutter1": 2,
+    "InverterIndexBay1": 3,
+    "InverterIndexShutter2": 4,
     "IOExpansion1Installed": true,
-    "IOExpansion2Installed": false,
+    "IOExpansion2Installed": true,
     "IOExpansion3Installed": false,
-    "IOExpansion1IPAddress": "192.168.0.1",
+    "IOExpansion1IPAddress": "198.168.0.1",
     "IOExpansion1Port": 19550,
-    "IOExpansion2IPAddress": "192.168.0.2",
+    "IOExpansion2IPAddress": "198.168.0.2",
     "IOExpansion2Port": 19550,
     "PPC1MasterIPAddress": "::1",
-    "PPC2SlaveIPAddress": "192.168.0.2",
-    "PPC3SlaveIPAddress": "192.168.0.3"
+    "PPC2SlaveIPAddress": "198.168.0.2",
+    "PPC3SlaveIPAddress": "198.168.0.3"
   },
 
   "VerticalAxis": {
-    "MaxEmptySpeed": 600.0,
+    "MaxEmptySpeed": 770.0,
     "MaxEmptyAcceleration": 1000.0,
     "MaxEmptyDeceleration": 1000.0,
-    "MinFullSpeed": 420.0,
+    "MinFullSpeed": 550.0,
     "MaxFullAcceleration": 400.0,
     "MaxFullDeceleration": 400.0,
     "HomingSearchDirection": false,
@@ -101,9 +99,9 @@
     "HomingExitSpeed": 50.0,
     "HomingExitAcceleration": 750.0,
     "HomingExitDeceleration": 750.0,
-    "Resolution": 99.177657,
+    "Resolution": 77.61182,
     "Offset": 350.0,
-    "UpperBound": 8600.0, //TEMP temporary commented for test on belt-burnishing,
+    "UpperBound": 1000.0, //TEMP temporary commented for test on belt-burnishing 4000.0 is too much //"UpperBound": 4000.0,
     "LowerBound": 350.0,
     "TakingOffset": 0.0,
     "DepositOffset": 0.0
@@ -112,16 +110,16 @@
     "MaxEmptySpeed": 730.0,
     "MaxEmptyAcceleration": 1500.0,
     "MaxEmptyDeceleration": 1500.0,
-    "MaxFullSpeed": 550.0,
-    "MaxFullAcceleration": 200.00,
-    "MaxFullDeceleration": 200.00,
+    "MaxFullSpeed": 55.0,
+    "MaxFullAcceleration": 350.00,
+    "MaxFullDeceleration": 350.00,
     //"HomingExecuted":false,
     "Resolution": 77.6722,
     "Offset": 0.0,
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementShorterProfile": {
+  "HorizontalMovementLongerProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1235.9,
     "MovementCorrection": 20.0,
@@ -150,7 +148,7 @@
     //"P5Deceleration":
     //"P5Speed":
   },
-  "HorizontalMovementLongerProfile": {
+  "HorizontalMovementShorterProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1241.0,
     "MovementCorrection": 20.0,
@@ -183,7 +181,7 @@
     "FeedRate": 0.10,
     "PositiveTargetDirection": 30.0,
     "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
+    "FeedRateAfterZero": 0.30
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
@@ -193,7 +191,6 @@
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
-    "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
     "HigherDistance": 2000.0,
