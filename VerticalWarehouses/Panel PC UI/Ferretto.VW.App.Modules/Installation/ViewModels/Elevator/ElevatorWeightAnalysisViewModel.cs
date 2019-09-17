@@ -28,7 +28,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ObservableCollection<DataSample> measuredSamples = new ObservableCollection<DataSample>();
 
+        private readonly List<DataSample> measuredSamplesInCurrentSession = new List<DataSample>();
+
         private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
+
+        private decimal? averageCurrent;
 
         private bool canInputNetWeight;
 
@@ -89,6 +93,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public decimal? AverageCurrent
+        {
+            get => this.averageCurrent;
+            private set => this.SetProperty(ref this.averageCurrent, value);
+        }
 
         public bool CanInputNetWeight
         {
@@ -304,11 +314,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message.Data.TorqueCurrentSample != null)
             {
                 this.measuredSamples.Add(message.Data.TorqueCurrentSample);
+                this.measuredSamplesInCurrentSession.Add(message.Data.TorqueCurrentSample);
             }
 
             if (message.Status == MessageStatus.OperationStop)
             {
                 this.IsExecutingProcedure = false;
+
+                this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -325,6 +338,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.Status == MessageStatus.OperationEnd)
             {
                 this.IsExecutingProcedure = false;
+
+                this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.ProcedureCompleted,
@@ -387,6 +402,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
+
+                this.measuredSamplesInCurrentSession.Clear();
 
                 await this.weightAnalysisProcedureService.StartAsync(
                     this.InputDisplacement.Value,
