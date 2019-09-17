@@ -569,6 +569,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public Dictionary<Axis, int[]> SwitchPositions { get; set; }
 
+        public int TableIndex { get; set; }
+
         public Dictionary<Axis, int> TargetAcceleration { get; set; }
 
         public Dictionary<Axis, int> TargetDeceleration { get; set; }
