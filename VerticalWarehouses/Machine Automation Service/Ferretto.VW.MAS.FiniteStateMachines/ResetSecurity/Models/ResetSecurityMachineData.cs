@@ -15,11 +15,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
 
         public ResetSecurityMachineData(
             BayNumber requestingBay,
+            BayNumber targetBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.RequestingBay = requestingBay;
+            this.TargetBay = targetBay;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;

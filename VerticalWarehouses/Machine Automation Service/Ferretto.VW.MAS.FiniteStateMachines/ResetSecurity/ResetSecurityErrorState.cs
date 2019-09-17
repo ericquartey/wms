@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                     "Reset Security Stopped due to an error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
-                    MessageType.NoType,
+                    MessageType.ResetSecurity,
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,
                     MessageStatus.OperationError,

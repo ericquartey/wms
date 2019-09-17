@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
-    public class PowerEnablePowerSwitchState : StateBase
+    public class PowerEnableResetSecurityState : StateBase
     {
 
         #region Fields
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnablePowerSwitchState(IPowerEnableStateData stateData)
+        public PowerEnableResetSecurityState(IPowerEnableStateData stateData)
             : base(stateData.ParentMachine, stateData.MachineData.RequestingBay, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #region Destructors
 
-        ~PowerEnablePowerSwitchState()
+        ~PowerEnableResetSecurityState()
         {
             this.Dispose(false);
         }
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.PowerEnable)
+            if (message.Type == MessageType.ResetSecurity)
             {
                 switch (message.Status)
                 {
@@ -68,13 +68,12 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void Start()
         {
-            var commandData = new PowerEnableMessageData(false);
             var commandMessage = new CommandMessage(
-                commandData,
+                null,
                 $"Setting Power enable state to {this.machineData.RequestedPowerState}",
                 MessageActor.FiniteStateMachines,
                 MessageActor.AutomationService,
-                MessageType.PowerEnable,
+                MessageType.ResetSecurity,
                 this.RequestingBay);
 
             this.ParentStateMachine.PublishCommandMessage(commandMessage);
@@ -83,7 +82,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
             var notificationMessage = new NotificationMessage(
                 notificationData,
-                "Disabling machine power",
+                $"Setting machine power to {this.machineData.RequestedPowerState}",
                 MessageActor.AutomationService,
                 MessageActor.AutomationService,
                 MessageType.PowerEnable,

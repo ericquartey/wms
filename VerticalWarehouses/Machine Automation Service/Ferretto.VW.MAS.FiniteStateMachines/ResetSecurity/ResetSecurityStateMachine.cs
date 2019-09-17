@@ -25,6 +25,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public ResetSecurityStateMachine(
             BayNumber requestingBay,
+            BayNumber targetBay,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -32,7 +33,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new ResetSecurityMachineData(requestingBay, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new ResetSecurityMachineData(requestingBay, targetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion

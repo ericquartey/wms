@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 "Reset Security Completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.NoType,
+                MessageType.ResetSecurity,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));

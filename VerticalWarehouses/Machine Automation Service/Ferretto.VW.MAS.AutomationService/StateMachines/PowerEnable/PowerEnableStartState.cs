@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
                     if (this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
                     {
-                        this.ParentStateMachine.ChangeState(new PowerEnablePowerSwitchState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.stateData));
                     }
 
                     break;

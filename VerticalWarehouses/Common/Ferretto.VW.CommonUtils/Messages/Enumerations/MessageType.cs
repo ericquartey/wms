@@ -80,6 +80,8 @@
 
         CurrentSamplingInPlaceNotification,
 
-        InverterFaultReset
+        InverterFaultReset,
+
+        ResetSecurity
     }
 }

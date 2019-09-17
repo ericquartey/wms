@@ -22,6 +22,16 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Type = FieldMessageType.NoType;
         }
 
+        public FieldCommandMessage(FieldCommandMessage otherMessage)
+        {
+            this.Data = otherMessage.Data;
+            this.Description = otherMessage.Description;
+            this.Destination = otherMessage.Destination;
+            this.Source = otherMessage.Source;
+            this.Type = otherMessage.Type;
+            this.DeviceIndex = otherMessage.DeviceIndex;
+        }
+
         public FieldCommandMessage(
             IFieldMessageData data,
             string description,

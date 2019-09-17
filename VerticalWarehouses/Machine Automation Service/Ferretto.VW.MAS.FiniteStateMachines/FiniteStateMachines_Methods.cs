@@ -332,6 +332,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IPowerEnableMessageData data)
             {
+                //TODO verify pre conditions (is this actually an error ?)
                 if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
                 {
                     this.logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType()}");
@@ -347,11 +348,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         ErrorLevel.Critical);
 
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                    return;
                 }
 
                 if (this.machineSensorsStatus.IsMachineInRunningState && !data.Enable ||
                     !this.machineSensorsStatus.IsMachineInRunningState && data.Enable)
                 {
+                    message.TargetBay = BayNumber.BayOne;
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
                         this.eventAggregator,
@@ -431,38 +435,49 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage()
+        private void ProcessResetSecurityMessage(CommandMessage message)
         {
             this.logger.LogTrace("1:Method Start");
 
-            //if (message.Data is IResetSecurityMessageData data)
+            if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
             {
-                if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
-                {
-                    this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                    this.currentStateMachines.Remove(BayNumber.BayOne);
-                }
+                this.logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType()}");
+                var notificationMessage = new NotificationMessage(
+                    null,
+                    "Power Enable Critical error",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.PowerEnable,
+                    message.RequestingBay,
+                    BayNumber.BayOne,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Critical);
 
-                currentStateMachine = new ResetSecurityStateMachine(
-                    BayNumber.ElevatorBay,
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                return;
+            }
+
+            currentStateMachine = new ResetSecurityStateMachine(
+                    message.RequestingBay,
+                    BayNumber.BayOne,
                     this.eventAggregator,
                     this.logger,
                     this.serviceScopeFactory);
 
-                this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
+            this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+            this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
-                try
-                {
-                    this.logger.LogDebug("Starting Reset Security FSM");
-                    currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+            try
+            {
+                this.logger.LogDebug("Starting Reset Security FSM");
+                currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
 
-            // provo a scrivere??
             if (context.Controller is BaseAutomationController baseController)
             {
                 var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];

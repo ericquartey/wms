@@ -59,7 +59,8 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
             switch (message.Type)
             {
                 case MessageType.InverterFaultReset:
-                    if (message.Status == MessageStatus.OperationEnd)
+                    if (message.Status != MessageStatus.OperationStart &&
+                        message.Status != MessageStatus.OperationExecuting)
                     {
                         if (this.stateMachineResponses.TryGetValue(message.TargetBay, out var stateMachineResponse))
                         {
@@ -70,16 +71,18 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                         {
                             this.stateMachineResponses.Add(message.TargetBay, message.Status);
                         }
+                    }
 
-                        if (this.stateMachineResponses.Values.Any(r => r == MessageStatus.OperationError))
+                    if (this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
+                    {
+                        if (this.stateMachineResponses.Values.Any(r => r != MessageStatus.OperationEnd))
                         {
                             this.stateData.NotificationMessage = message;
                             this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
                         }
-
-                        if (this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
+                        else
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnablePowerSwitchState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.stateData));
                         }
                     }
 
