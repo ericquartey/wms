@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal partial class AutomationService
+    partial class AutomationService
     {
 
 

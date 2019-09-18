@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    internal class HomingErrorState : StateBase
+    public class HomingErrorState : StateBase
     {
 
         #region Fields
@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         private readonly IHomingMachineData machineData;
 
         private readonly IHomingStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
@@ -55,7 +57,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
+            if(message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
@@ -94,7 +96,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             InverterIndex currentInverterIndex;
-            if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+            if(this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
             {
                 currentInverterIndex = InverterIndex.Slave1;
             }
@@ -135,12 +137,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

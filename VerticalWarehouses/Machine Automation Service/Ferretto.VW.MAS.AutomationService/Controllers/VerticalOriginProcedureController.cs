@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -29,7 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (configurationProvider is null)
+            if(configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }

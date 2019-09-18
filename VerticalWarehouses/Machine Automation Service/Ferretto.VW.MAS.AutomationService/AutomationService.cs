@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -23,7 +24,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal partial class AutomationService : AutomationBackgroundService
+    public partial class AutomationService : AutomationBackgroundService
     {
 
         #region Fields
@@ -39,6 +40,8 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly Task commandReceiveTask;
 
         private readonly IDataHubClient dataHubClient;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
@@ -128,6 +131,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.logger = logger;
             this.baysProvider = baysProvider;
             this.applicationLifetime = applicationLifetime;
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
@@ -173,115 +177,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
             }
             while(!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private async void NotificationReceiveTaskFunction()
-        {
-            do
-            {
-                NotificationMessage receivedMessage;
-                try
-                {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-
-                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                }
-                catch(OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End - Operation Canceled");
-
-                    return;
-                }
-
-                switch(receivedMessage.Type)
-                {
-                    case MessageType.SensorsChanged:
-                    this.OnSensorsChanged(receivedMessage);
-                    break;
-
-                    case MessageType.Homing:
-                    this.HomingMethod(receivedMessage);
-                    break;
-
-                    case MessageType.SwitchAxis:
-                    this.SwitchAxisMethod(receivedMessage);
-                    break;
-
-                    case MessageType.ShutterPositioning:
-                    this.ShutterPositioningMethod(receivedMessage);
-                    break;
-
-                    case MessageType.CalibrateAxis:
-                    this.CalibrateAxisMethod(receivedMessage);
-                    break;
-
-                    case MessageType.CurrentPosition:
-                    this.CurrentPositionMethod(receivedMessage);
-                    break;
-
-                    case MessageType.Positioning:
-                    this.OnPositioningChanged(receivedMessage);
-                    break;
-
-                    case MessageType.ResolutionCalibration:
-                    this.ResolutionCalibrationMethod(receivedMessage);
-                    break;
-
-                    case MessageType.ExecuteMission:
-                    if(receivedMessage.Data is INewMissionOperationAvailable data)
-                    {
-                        await this.OnNewMissionOperationAvailable(data);
-                        this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.MissionId}, mission quantity: {data.PendingMissionsCount}");
-                    }
-                    break;
-
-                    case MessageType.ElevatorWeightCheck:
-                    this.ElevatorWeightCheckMethod(receivedMessage);
-                    break;
-
-                    case MessageType.BayOperationalStatusChanged:
-                    this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
-                    this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
-                    break;
-
-                    case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
-                    break;
-
-                    case MessageType.ErrorStatusChanged:
-                    this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
-                    break;
-
-                    case MessageType.InverterStatusWord:
-                    this.OnInverterStatusWordChanged(receivedMessage);
-                    break;
-
-                    case MessageType.MachineStateActive:
-                    this.MachineStateActiveMethod(receivedMessage);
-                    break;
-
-                    case MessageType.MachineStatusActive:
-                    this.MachineStatusActiveMethod(receivedMessage);
-                    break;
-                }
-
-                this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
-            }
-            while(!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("9:Method End");
-        }
-
-        private void OnDataLayerReady()
-        {
-            this.configuredBays = this.baysProvider.GetAll().ToList();
-
-            using(var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var baysConfigurationProvider = scope.ServiceProvider.GetRequiredService<IBaysConfigurationProvider>();
-
-                baysConfigurationProvider.LoadFromConfiguration();
-            }
         }
 
         #endregion

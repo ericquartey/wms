@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +74,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 var stateData = new ResetFaultStateData(this, this.machineData);
                 this.CurrentState = new ResetFaultStartState(stateData);
@@ -83,7 +84,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -91,12 +92,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

@@ -9,24 +9,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
 
         private readonly IPowerEnableStateData stateData;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
         public PowerEnableErrorState(IPowerEnableStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -69,12 +74,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

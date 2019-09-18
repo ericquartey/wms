@@ -13,16 +13,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableStateMachine : StateMachineBase
     {
+
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
         public PowerEnableStateMachine(
-            CommandMessage receivedMessage,
+                    CommandMessage receivedMessage,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory
@@ -31,13 +34,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            if (receivedMessage.Data is IPowerEnableMessageData data)
+            if(receivedMessage.Data is IPowerEnableMessageData data)
             {
                 this.machineData = new PowerEnableMachineData(data.Enable, receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
             }
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -46,7 +51,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.ProcessCommandMessage(message);
             }
@@ -65,7 +70,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 var stateData = new PowerEnableStateData(this, this.machineData);
                 this.CurrentState = new PowerEnableStartState(stateData);
@@ -79,7 +84,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace("1:Method Start");
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -87,12 +92,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

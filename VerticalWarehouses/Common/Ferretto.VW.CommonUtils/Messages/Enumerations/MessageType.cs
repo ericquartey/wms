@@ -84,6 +84,8 @@
 
         InverterFaultReset,
 
-        ResetSecurity
+        ResetSecurity,
+
+        WeightAcquisitionCommand
     }
 }

@@ -60,30 +60,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             //TODO when Inverter Driver notifies completion of Positioning at the destination level move to next state
-            if (message.Type == FieldMessageType.Positioning)
+            if(message.Type == FieldMessageType.Positioning)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
 
-                        var currentStep = this.machineData.DrawerOperationData.Step;
-                        if (currentStep == DrawerOperationStep.None)
-                        {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                        }
+                    var currentStep = this.machineData.DrawerOperationData.Step;
+                    if(currentStep == DrawerOperationStep.None)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                    }
 
-                        if (currentStep == DrawerOperationStep.MovingElevatorUp ||
-                            currentStep == DrawerOperationStep.MovingElevatorDown)
-                        {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                        }
+                    if(currentStep == DrawerOperationStep.MovingElevatorUp ||
+                        currentStep == DrawerOperationStep.MovingElevatorDown)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                    }
 
-                        break;
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -140,12 +140,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
@@ -238,19 +238,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    }
             //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.None)
+            if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.None)
             {
-                target = this.drawerOperationData.SourceVerticalPosition;
+                target = this.machineData.DrawerOperationData.SourceVerticalPosition;
             }
             else
             {
-                target = this.drawerOperationData.DestinationVerticalPosition;
+                target = this.machineData.DrawerOperationData.DestinationVerticalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
-            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            decimal[] maxAcceleration = { this.verticalAxis.MaxEmptyAcceleration };
-            decimal[] maxDeceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            var maxSpeed = this.machineData.VerticalAxis.MaxEmptySpeed;
+            decimal[] maxAcceleration = { this.machineData.VerticalAxis.MaxEmptyAcceleration };
+            decimal[] maxDeceleration = { this.machineData.VerticalAxis.MaxEmptyDeceleration };
             decimal[] switchPosition = { 0 };
             var feedRate = 0.10;  // TEMP: remove this code line (used only for test)
 
@@ -269,7 +269,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 switchPosition,
-                (target > this.drawerOperationData.SourceHorizontalPosition ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
+                (target > this.machineData.DrawerOperationData.SourceHorizontalPosition ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
         }
 
         #endregion

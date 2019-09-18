@@ -127,8 +127,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
 
                 // execute command
-                var position = this.elevatorProvider.GetHorizontalPosition();
-                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position.Value);
+                var position = this.elevatorProvider.GetHorizontalPosition(this.BayNumber);
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position.Value, this.BayNumber);
                 return this.Accepted();
             }
             catch(Exception ex)
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveHorizontal(direction, this.BayNumber);
+                this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber);
                 return this.Accepted();
             }
             catch(Exception ex)

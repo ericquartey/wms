@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    internal interface IStateMachine : IDisposable
+    public interface IStateMachine : IDisposable
     {
 
 

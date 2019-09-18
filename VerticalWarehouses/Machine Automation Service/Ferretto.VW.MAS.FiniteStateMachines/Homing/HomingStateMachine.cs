@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     internal class HomingStateMachine : StateMachineBase
     {
+
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -55,6 +56,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
+
+
         #region Methods
 
         /// <inheritdoc/>
@@ -62,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.ProcessCommandMessage(message);
             }
@@ -72,9 +75,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.CalibrateAxis)
+            if(message.Type == FieldMessageType.CalibrateAxis)
             {
-                if (message.Status == MessageStatus.OperationExecuting)
+                if(message.Status == MessageStatus.OperationExecuting)
                 {
                     var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps + 1, this.machineData.MaximumSteps, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
@@ -90,7 +93,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     this.PublishNotificationMessage(notificationMessage);
                 }
 
-                if (message.Status == MessageStatus.OperationEnd)
+                if(message.Status == MessageStatus.OperationEnd)
                 {
                     this.machineData.NumberOfExecutedSteps++;
                     this.machineData.AxisToCalibrate =
@@ -100,12 +103,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
-            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+            if(message.Type == FieldMessageType.InverterStatusUpdate &&
                 message.Status == MessageStatus.OperationExecuting)
             {
-                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                if(message.Data is InverterStatusUpdateFieldMessageData data)
                 {
-                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition.Value);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"Current Encoder position: {data.CurrentPosition}",
@@ -120,7 +123,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
             }
@@ -131,7 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.ProcessNotificationMessage(message);
             }
@@ -149,28 +152,28 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Start()
         {
             this.Logger.LogTrace("1:Method Start");
-            switch (this.axisToCalibrate)
+            switch(this.axisToCalibrate)
             {
                 case Axis.HorizontalAndVertical:
-                    this.machineData.AxisToCalibrate = Axis.Horizontal;
-                    this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 3;
-                    break;
+                this.machineData.AxisToCalibrate = Axis.Horizontal;
+                this.machineData.NumberOfExecutedSteps = 0;
+                this.machineData.MaximumSteps = 3;
+                break;
 
                 case Axis.Horizontal:
-                    this.machineData.AxisToCalibrate = Axis.Horizontal;
-                    this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 1;
-                    break;
+                this.machineData.AxisToCalibrate = Axis.Horizontal;
+                this.machineData.NumberOfExecutedSteps = 0;
+                this.machineData.MaximumSteps = 1;
+                break;
 
                 case Axis.Vertical:
-                    this.machineData.AxisToCalibrate = Axis.Vertical;
-                    this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 1;
-                    break;
+                this.machineData.AxisToCalibrate = Axis.Vertical;
+                this.machineData.NumberOfExecutedSteps = 0;
+                this.machineData.MaximumSteps = 1;
+                break;
             }
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 var stateData = new HomingStateData(this, this.machineData);
                 this.CurrentState = new HomingStartState(stateData);
@@ -185,7 +188,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace("1:Method Start");
 
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -193,12 +196,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

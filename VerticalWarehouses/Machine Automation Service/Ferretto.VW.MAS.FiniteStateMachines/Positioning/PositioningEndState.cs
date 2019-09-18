@@ -14,11 +14,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     internal class PositioningEndState : StateBase
     {
+
         #region Fields
 
         private readonly IPositioningMachineData machineData;
 
         private readonly IPositioningStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
@@ -42,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -53,30 +58,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            switch (message.Type)
+            switch(message.Type)
             {
                 case FieldMessageType.InverterStop:
-                    switch (message.Status)
-                    {
-                        case MessageStatus.OperationEnd:
-                            var notificationMessage = new NotificationMessage(
-                               this.machineData.MessageData,
-                               this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                               MessageActor.Any,
-                               MessageActor.FiniteStateMachines,
-                               MessageType.Positioning,
-                               this.machineData.RequestingBay,
-                               this.machineData.TargetBay,
-                               MessageStatus.OperationStop);
+                switch(message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                    var notificationMessage = new NotificationMessage(
+                       this.machineData.MessageData,
+                       this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                       MessageActor.Any,
+                       MessageActor.FiniteStateMachines,
+                       MessageType.Positioning,
+                       this.machineData.RequestingBay,
+                       this.machineData.TargetBay,
+                       MessageStatus.OperationStop);
 
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                            break;
-
-                        case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
-                            break;
-                    }
+                    this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                     break;
+
+                    case MessageStatus.OperationError:
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    break;
+                }
+                break;
             }
         }
 
@@ -89,13 +94,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger?.LogTrace("1:Method Start");
 
-            lock (this.machineData.MachineSensorStatus)
+            lock(this.machineData.MachineSensorStatus)
             {
                 this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical) ? this.machineData.MachineSensorStatus.AxisYPosition : this.machineData.MachineSensorStatus.AxisXPosition;
             }
 
             var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-            if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
+            if(this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
@@ -176,12 +181,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

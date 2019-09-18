@@ -12,16 +12,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateStateMachine : StateMachineBase
     {
+
         #region Fields
 
         private readonly ITemplateMachineData machineData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
         public TemplateStateMachine(
-            CommandMessage receivedMessage,
+                    CommandMessage receivedMessage,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -33,6 +36,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -56,7 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 var stateData = new TemplateStateData(this, this.machineData);
                 this.CurrentState = new TemplateStartState(stateData);
@@ -66,7 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop(StopRequestReason reason)
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -74,12 +79,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

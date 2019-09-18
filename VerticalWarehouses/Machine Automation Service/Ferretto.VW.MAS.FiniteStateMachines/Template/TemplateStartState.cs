@@ -10,24 +10,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateStartState : StateBase
     {
+
         #region Fields
 
         private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
         public TemplateStartState(ITemplateStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -37,18 +42,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if (message.Type == FieldMessageType.NoType)
+            if(message.Type == FieldMessageType.NoType)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
-                        break;
+                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -90,12 +95,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

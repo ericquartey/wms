@@ -4,9 +4,9 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    internal interface IState : IDisposable
+    public interface IState : IDisposable
     {
 
 

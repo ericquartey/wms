@@ -35,17 +35,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (shutterTestParametersProvider is null)
+            if(shutterTestParametersProvider is null)
             {
                 throw new ArgumentNullException(nameof(shutterTestParametersProvider));
             }
 
-            if (configurationProvider is null)
+            if(configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
 
-            if (shutterManualMovementsDataLayer is null)
+            if(shutterManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(shutterManualMovementsDataLayer));
             }
@@ -81,7 +81,7 @@ MessageType.RequestPosition);
                 MessageType.ShutterPositioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                PublishAction);
+                publishAction);
 
             return this.Ok(notifyData.ShutterPosition);
         }
@@ -133,39 +133,39 @@ MessageType.RequestPosition);
         {
             var direction = ShutterMovementDirection.None;
             var position = this.GetShutterPosition(bayNumber);
-            switch (targetPosition)
+            switch(targetPosition)
             {
                 case ShutterPosition.Closed:
-                    if (position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Opened)
-                    {
-                        direction = ShutterMovementDirection.Down;
-                    }
-                    break;
+                if(position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Opened)
+                {
+                    direction = ShutterMovementDirection.Down;
+                }
+                break;
 
                 case ShutterPosition.Half:
-                    if (position.Value == ShutterPosition.Opened)
-                    {
-                        direction = ShutterMovementDirection.Down;
-                    }
-                    else if (position.Value == ShutterPosition.Closed)
-                    {
-                        direction = ShutterMovementDirection.Up;
-                    }
-                    break;
+                if(position.Value == ShutterPosition.Opened)
+                {
+                    direction = ShutterMovementDirection.Down;
+                }
+                else if(position.Value == ShutterPosition.Closed)
+                {
+                    direction = ShutterMovementDirection.Up;
+                }
+                break;
 
                 case ShutterPosition.Opened:
-                    if (position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Closed)
-                    {
-                        direction = ShutterMovementDirection.Up;
-                    }
-                    break;
+                if(position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Closed)
+                {
+                    direction = ShutterMovementDirection.Up;
+                }
+                break;
 
                 default:
-                    break;
+                break;
             }
-            if (direction == ShutterMovementDirection.None)
+            if(direction == ShutterMovementDirection.None)
             {
-                if (targetPosition != position.Value)
+                if(targetPosition != position.Value)
                 {
                     return this.BadRequest(Resources.Shutters.ThePositionIsNotValid);
                 }
@@ -185,7 +185,6 @@ MessageType.RequestPosition);
                 targetPosition,
                 direction,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
@@ -209,12 +208,12 @@ MessageType.RequestPosition);
         [ProducesDefaultResponseType]
         public IActionResult RunTest(int bayNumber, int delayInSeconds, int testCycleCount)
         {
-            if (delayInSeconds <= 0)
+            if(delayInSeconds <= 0)
             {
                 return this.BadRequest(Resources.Shutters.TheDelayBetweenTestCyclesMustBeStrictlyPositive);
             }
 
-            if (testCycleCount <= 0)
+            if(testCycleCount <= 0)
             {
                 return this.BadRequest(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
@@ -230,7 +229,7 @@ MessageType.RequestPosition);
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
-                MovementMode.TestLoop,
+                MovementMode.ShutterTest,
                 MovementType.Absolute,
                 testCycleCount,
                 delayInMilliseconds);

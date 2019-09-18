@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal class OperatorHub : Hub<IOperatorHub>
+    public class OperatorHub : Hub<IOperatorHub>
     {
 
         #region Fields
@@ -26,12 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService
             IBaysProvider baysProvider,
             ILogger<OperatorHub> logger)
         {
-            if (baysProvider == null)
+            if(baysProvider == null)
             {
                 throw new ArgumentNullException(nameof(baysProvider));
             }
 
-            if (logger == null)
+            if(logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -51,10 +51,10 @@ namespace Ferretto.VW.MAS.AutomationService
             var ipAddress = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var bay = this.baysProvider.GetByIpAddress(ipAddress);
 
-            if (bay != null)
+            if(bay != null)
             {
                 this.logger.LogInformation($"Client on bay {bay.Index} connected to signalR hub.");
-                if (this.Context.Items.ContainsKey(BayIdEntry))
+                if(this.Context.Items.ContainsKey(BayIdEntry))
                 {
                     this.Context.Items[BayIdEntry] = bay.Index;
                 }

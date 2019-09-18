@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 {
     public class ShutterPositioningMachineData : IShutterPositioningMachineData
     {
+
+
         #region Constructors
 
         public ShutterPositioningMachineData(
@@ -36,6 +39,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
         }
 
         #endregion
+
+
 
         #region Properties
 

@@ -65,59 +65,59 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.ShutterPositioning)
+            if(message.Type == FieldMessageType.ShutterPositioning)
             {
-                if (message.Data is InverterShutterPositioningFieldMessageData messageData)
+                if(message.Data is InverterShutterPositioningFieldMessageData messageData)
                 {
-                    switch (message.Status)
+                    switch(message.Status)
                     {
                         case MessageStatus.OperationEnd:
-                            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                        if(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                        {
+                            if(messageData.ShutterPosition == ShutterPosition.Opened)
                             {
-                                if (messageData.ShutterPosition == ShutterPosition.Opened)
+                                this.numberOfExecutedCycles++;
+                                if(this.numberOfExecutedCycles == this.machineData.PositioningMessageData.RequestedCycles)
                                 {
-                                    this.numberOfExecutedCycles++;
-                                    if (this.numberOfExecutedCycles == this.machineData.PositioningMessageData.RequestedCycles)
-                                    {
-                                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
-                                    }
-                                    else
-                                    {
-                                        this.StartPositioning(messageData.ShutterPosition, ShutterMovementDirection.Down);
-                                    }
-                                }
-                                else if (messageData.ShutterPosition == ShutterPosition.Closed)
-                                {
-                                    if (this.machineData.PositioningMessageData.Delay > 0)
-                                    {
-                                        this.machineData.DelayTimer.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
-                                    }
-                                    else
-                                    {
-                                        this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
-                                    }
-                                }
-                                else if (messageData.ShutterPosition == ShutterPosition.Half)
-                                {
-                                    this.StartPositioning(messageData.ShutterPosition, this.oldDirection);
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                                 }
                                 else
                                 {
-                                    this.Logger.LogError($"Invalid position of Shutter at Operation End: {messageData.ShutterPosition}");
-                                    this.stateData.FieldMessage = message;
-                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                                    this.StartPositioning(messageData.ShutterPosition, ShutterMovementDirection.Down);
                                 }
+                            }
+                            else if(messageData.ShutterPosition == ShutterPosition.Closed)
+                            {
+                                if(this.machineData.PositioningMessageData.Delay > 0)
+                                {
+                                    this.machineData.DelayTimer.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                                }
+                                else
+                                {
+                                    this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
+                                }
+                            }
+                            else if(messageData.ShutterPosition == ShutterPosition.Half)
+                            {
+                                this.StartPositioning(messageData.ShutterPosition, this.oldDirection);
                             }
                             else
                             {
-                                this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
+                                this.Logger.LogError($"Invalid position of Shutter at Operation End: {messageData.ShutterPosition}");
+                                this.stateData.FieldMessage = message;
+                                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
                             }
-                            break;
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
+                        }
+                        break;
 
                         case MessageStatus.OperationError:
-                            this.stateData.FieldMessage = message;
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
-                            break;
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                        break;
                     }
                 }
             }
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-            if (message.Type == MessageType.CheckCondition &&
+            if(message.Type == MessageType.CheckCondition &&
                 message.Status == MessageStatus.OperationExecuting)
             {
                 // delay expired
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
@@ -181,10 +181,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         private void StartPositioning(ShutterPosition position, ShutterMovementDirection direction)
         {
             ShutterPosition shutterPositionTarget;
-            if (direction == ShutterMovementDirection.Down)
+            if(direction == ShutterMovementDirection.Down)
             {
                 shutterPositionTarget = ShutterPosition.Closed;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && position == ShutterPosition.Opened)
+                if(this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && position == ShutterPosition.Opened)
                 {
                     shutterPositionTarget = ShutterPosition.Half;
                 }
@@ -192,22 +192,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             else
             {
                 shutterPositionTarget = ShutterPosition.Opened;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && position == ShutterPosition.Closed)
+                if(this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && position == ShutterPosition.Closed)
                 {
                     shutterPositionTarget = ShutterPosition.Half;
                 }
             }
             // speed is negative to go up
-            var speedRate = this.shutterPositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
+            var speedRate = this.machineData.PositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
 
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
-                this.shutterPositioningMessageData.ShutterType,
+                this.machineData.PositioningMessageData.ShutterType,
                 speedRate,
-                this.shutterPositioningMessageData.HigherDistance,
-                this.shutterPositioningMessageData.LowerDistance,
-                this.shutterPositioningMessageData.MovementType);
+                this.machineData.PositioningMessageData.HigherDistance,
+                this.machineData.PositioningMessageData.LowerDistance,
+                this.machineData.PositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,

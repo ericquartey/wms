@@ -10,25 +10,27 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         #region Methods
 
-        decimal GetHorizontalPosition(BayNumber bayNumber);
+        decimal? GetHorizontalPosition(BayNumber requestingBay);
 
-        decimal GetVerticalPosition(BayNumber bayNumber);
+        decimal GetVerticalPosition(BayNumber requestingBay);
 
-        void MoveHorizontal(HorizontalMovementDirection direction, BayNumber bayNumber);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position, BayNumber requestingBay);
 
-        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
 
-        void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber);
+        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory, BayNumber requestingBay);
 
-        void MoveVerticalOfDistance(decimal distance, BayNumber bayNumber);
+        void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay);
 
-        void RunInMotionCurrentSampling(decimal displacement, decimal netWeight);
+        void MoveVerticalOfDistance(decimal distance, BayNumber requestingBay);
 
-        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight);
+        void RunInMotionCurrentSampling(decimal displacement, decimal netWeight, BayNumber requestingBay);
 
-        void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId);
+        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight, BayNumber requestingBay);
 
-        void Stop(BayNumber bayNumber);
+        void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay);
+
+        void Stop(BayNumber requestingBay);
 
         void UpdateResolution(decimal newResolution);
 

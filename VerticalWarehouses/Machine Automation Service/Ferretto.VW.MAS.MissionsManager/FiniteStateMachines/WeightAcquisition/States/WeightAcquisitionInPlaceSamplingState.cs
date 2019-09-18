@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -8,6 +9,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 {
     internal class WeightAcquisitionInPlaceSamplingState : StateBase, IWeightAcquisitionInPlaceSamplingState
     {
+
         #region Fields
 
         private readonly IElevatorProvider elevatorProvider;
@@ -26,13 +28,15 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         #endregion
 
+
+
         #region Methods
 
         protected override void OnEnter(IMessageData data)
         {
-            if (data is WeightAcquisitionCommandMessageData messageData)
+            if(data is WeightAcquisitionCommandMessageData messageData)
             {
-                this.elevatorProvider.RunInPlaceCurrentSampling(messageData.InPlaceSamplingDuration, messageData.NetWeight);
+                this.elevatorProvider.RunInPlaceCurrentSampling(messageData.InPlaceSamplingDuration, messageData.NetWeight, BayNumber.ElevatorBay);
             }
         }
 

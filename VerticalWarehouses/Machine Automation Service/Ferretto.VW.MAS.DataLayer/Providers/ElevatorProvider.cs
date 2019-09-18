@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public decimal GetHorizontalPosition(BayNumber bayNumber)
+        public decimal? GetHorizontalPosition(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition ?? 0;
         }
 
-        public void MoveHorizontal(HorizontalMovementDirection direction, BayNumber requestingBay)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position, BayNumber requestingBay)
         {
             // if direction is Forwards quote increments, else is decremented
 
@@ -264,10 +264,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay)
         {
             var setupStatus = this.setupStatusProvider.Get();
 
@@ -302,7 +304,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
@@ -456,17 +458,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void RunInMotionCurrentSampling(decimal displacement, decimal netWeight)
+        public void RunInMotionCurrentSampling(decimal displacement, decimal netWeight, BayNumber requestingBay)
         {
             throw new NotImplementedException();
         }
 
-        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight)
+        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight, BayNumber requestingBay)
         {
             throw new NotImplementedException();
         }
 
-        public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId)
+        public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
             if(displacement <= 0)
             {
@@ -513,7 +515,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.TorqueCurrentSampling);
+                MessageType.TorqueCurrentSampling,
+                requestingBay,
+                BayNumber.ElevatorBay);
         }
 
         public void Stop(BayNumber bayNumber)

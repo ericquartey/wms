@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -60,61 +61,61 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             //TODO when Inverter Driver notifies completion of Positioning of the drawer move to next state
-            if (message.Type == FieldMessageType.Positioning)
+            if(message.Type == FieldMessageType.Positioning)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
 
-                        // TEMP Check sensors' status
-                        // NOTE: Comment the line about the sensor check, if you use it with Bender
-                        if (!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    // TEMP Check sensors' status
+                    // NOTE: Comment the line about the sensor check, if you use it with Bender
+                    if(!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        var notificationMessage = new NotificationMessage(
+                            null,
+                            "Cradle is not completely loaded",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.DrawerOperation,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Error,
+                            MessageVerbosity.Error);
+
+                        using(var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                         {
-                            var notificationMessage = new NotificationMessage(
-                                null,
-                                "Cradle is not completely loaded",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.DrawerOperation,
-                                this.machineData.RequestingBay,
-                                this.machineData.TargetBay,
-                                MessageStatus.OperationError,
-                                ErrorLevel.Error,
-                                MessageVerbosity.Error);
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                            {
-                                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
-                            }
-
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                            this.stateData.FieldMessage = message;
-                            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
-
-                            return;
+                            errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
                         }
 
-                        if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
-                            this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
-                        {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
-                        }
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                        if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
-                            this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
-                        {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                        }
-
-                        break;
-
-                    case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
-                        break;
+
+                        return;
+                    }
+
+                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
+                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
+                    }
+
+                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
+                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                    }
+
+                    break;
+
+                    case MessageStatus.OperationError:
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -171,12 +172,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
@@ -215,19 +216,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    target = +150;
             //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+            if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
             {
-                target = this.drawerOperationData.SourceHorizontalPosition;
+                target = this.machineData.DrawerOperationData.SourceHorizontalPosition;
             }
             else
             {
-                target = this.drawerOperationData.DestinationHorizontalPosition;
+                target = this.machineData.DrawerOperationData.DestinationHorizontalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
-            var maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-            decimal[] maxAcceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] maxDeceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            var maxSpeed = this.machineData.HorizontalAxis.MaxEmptySpeedHA;
+            decimal[] maxAcceleration = { this.machineData.HorizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] maxDeceleration = { this.machineData.HorizontalAxis.MaxEmptyDecelerationHA };
             decimal[] switchPosition = { 0 };
             var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 

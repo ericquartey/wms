@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    internal abstract class StateBase : IState
+    public abstract class StateBase : IState
     {
 
         #region Fields
@@ -83,12 +83,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

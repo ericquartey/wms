@@ -9,24 +9,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateEndState : StateBase
     {
+
         #region Fields
 
         private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
         public TemplateEndState(ITemplateStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -64,12 +69,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

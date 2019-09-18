@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -13,11 +12,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     internal class PositioningErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IPositioningMachineData machineData;
 
         private readonly IPositioningStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
@@ -41,6 +43,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -52,7 +56,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
+            if(message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
@@ -147,12 +151,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
