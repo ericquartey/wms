@@ -9,17 +9,17 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public int BackInitialReferenceCell => this.GetIntegerConfigurationValue((long)PanelControl.BackInitialReferenceCell, ConfigurationCategory.PanelControl);
+        public int BackInitialReferenceCell => this.GetIntegerConfigurationValue(PanelControl.BackInitialReferenceCell, ConfigurationCategory.PanelControl);
 
-        public int BackPanelQuantity => this.GetIntegerConfigurationValue((long)PanelControl.BackPanelQuantity, ConfigurationCategory.PanelControl);
+        public int BackPanelQuantity => this.GetIntegerConfigurationValue(PanelControl.BackPanelQuantity, ConfigurationCategory.PanelControl);
 
-        public decimal FeedRatePC => this.GetDecimalConfigurationValue((long)PanelControl.FeedRate, ConfigurationCategory.PanelControl);
+        public decimal FeedRatePC => this.GetDecimalConfigurationValue(PanelControl.FeedRate, ConfigurationCategory.PanelControl);
 
-        public int FrontInitialReferenceCell => this.GetIntegerConfigurationValue((long)PanelControl.FrontInitialReferenceCell, ConfigurationCategory.PanelControl);
+        public int FrontInitialReferenceCell => this.GetIntegerConfigurationValue(PanelControl.FrontInitialReferenceCell, ConfigurationCategory.PanelControl);
 
-        public int FrontPanelQuantity => this.GetIntegerConfigurationValue((long)PanelControl.FrontPanelQuantity, ConfigurationCategory.PanelControl);
+        public int FrontPanelQuantity => this.GetIntegerConfigurationValue(PanelControl.FrontPanelQuantity, ConfigurationCategory.PanelControl);
 
-        public decimal StepValuePC => this.GetDecimalConfigurationValue((long)PanelControl.StepValue, ConfigurationCategory.PanelControl);
+        public decimal StepValuePC => this.GetDecimalConfigurationValue(PanelControl.StepValue, ConfigurationCategory.PanelControl);
 
         #endregion
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Dictionary<InverterIndex, InverterType> GetInstalledInverterList()
         {
-            long setupNetworkInverterIndex;
+            SetupNetwork setupNetworkInverterIndex;
             InverterType inverterType;
 
             var installedInverters = new Dictionary<InverterIndex, InverterType>();
@@ -25,59 +26,62 @@ namespace Ferretto.VW.MAS.DataLayer
                 switch (inverterIndex)
                 {
                     case InverterIndex.MainInverter:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexMaster;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexMaster;
                         inverterType = InverterType.Ang;
                         break;
 
                     case InverterIndex.Slave1:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexChain;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexChain;
                         inverterType = InverterType.Ang; //TEMP Verify
                         break;
 
                     case InverterIndex.Slave2:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter1;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexShutter1;
                         inverterType = InverterType.Agl;
                         break;
 
                     case InverterIndex.Slave3:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay1;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexBay1;
                         inverterType = InverterType.Acu;
                         break;
 
                     case InverterIndex.Slave4:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter2;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexShutter2;
                         inverterType = InverterType.Agl;
                         break;
 
                     case InverterIndex.Slave5:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay2;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexBay2;
                         inverterType = InverterType.Acu;
                         break;
 
                     case InverterIndex.Slave6:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter3;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexShutter3;
                         inverterType = InverterType.Agl;
                         break;
 
                     case InverterIndex.Slave7:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay3;
+                        setupNetworkInverterIndex = SetupNetwork.InverterIndexBay3;
                         inverterType = InverterType.Acu;
                         break;
 
                     default:
-                        setupNetworkInverterIndex = (long)SetupNetwork.Undefined;
+                        setupNetworkInverterIndex = SetupNetwork.Undefined;
                         inverterType = InverterType.Undefined;
                         break;
                 }
 
                 try
                 {
-                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
-                    installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
+                    if (setupNetworkInverterIndex != (long)SetupNetwork.Undefined)
+                    {
+                        _ = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
+                        installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
+                    }
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogDebug($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
@@ -116,10 +120,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    var isInstalled = this.GetBoolConfigurationValue((long)isExpansionInstalledIndex, ConfigurationCategory.SetupNetwork);
-                    if (isInstalled)
+                    if (isExpansionInstalledIndex != SetupNetwork.Undefined)
                     {
-                        installedIoDevices.Add(ioIndex);
+                        var isInstalled = this.GetBoolConfigurationValue(isExpansionInstalledIndex, ConfigurationCategory.SetupNetwork);
+                        if (isInstalled)
+                        {
+                            installedIoDevices.Add(ioIndex);
+                        }
                     }
                 }
                 catch (DataLayerPersistentException ex)

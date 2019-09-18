@@ -4,10 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Configuration;
 
 // ReSharper disable ParameterHidesMember
@@ -20,15 +19,21 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Stopwatch readStopwatch;
 
+        /// <summary>
+        /// The timeout for read operations on the socket.
+        /// </summary>
+        /// <remarks>
+        /// The value -1 is used to indicate no timeout.
+        /// </remarks>
+        private readonly int readTimeoutMilliseconds;
+
         private readonly byte[] receiveBuffer = new byte[1024];
 
         private readonly Stopwatch roundTripStopwatch;
 
-        private bool disposed;
-
         private IPAddress inverterAddress;
 
-        private readonly int readTimeoutMilliseconds;        // -1 is no timeout
+        private bool isDisposed;
 
         private int sendPort;
 
@@ -57,15 +62,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Destructors
-
-        ~SocketTransport()
-        {
-            this.Dispose(true);
-        }
-
-        #endregion
-
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
@@ -88,7 +84,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            if (this.inverterAddress == null)
+            if (this.inverterAddress is null)
             {
                 throw new ArgumentNullException(
                     nameof(this.inverterAddress),
@@ -104,7 +100,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (this.sendPort == 0)
             {
-                throw new ArgumentNullException(nameof(this.sendPort), $"{nameof(this.sendPort)} can't be zero");
+                throw new ArgumentNullException(
+                    nameof(this.sendPort),
+                    $"{nameof(this.sendPort)} can't be zero");
             }
 
             if (this.sendPort < 1024 || this.sendPort > 65535)
@@ -113,7 +111,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     nameof(this.sendPort),
                     $"{nameof(this.sendPort)} value must be between 1204 and 65535");
             }
-
             if (this.transportClient != null || this.transportStream != null)
             {
                 this.transportClient?.Dispose();
@@ -180,7 +177,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -298,23 +294,25 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this.isDisposed)
             {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.disposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.transportStream?.Close();
+                this.transportStream?.Dispose();
+                this.transportStream = null;
+
+                this.transportClient?.Close();
+                this.transportClient?.Dispose();
+                this.transportClient = null;
+            }
+
+            this.isDisposed = true;
         }
 
         #endregion

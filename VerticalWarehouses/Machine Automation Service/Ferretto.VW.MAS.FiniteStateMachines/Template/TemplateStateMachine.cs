@@ -10,14 +10,11 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateStateMachine : StateMachineBase
+    internal class TemplateStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
-
-        private bool disposed;
 
         #endregion
 
@@ -36,17 +33,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         #endregion
-
-        #region Destructors
-
-        ~TemplateStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
 
         #region Methods
 

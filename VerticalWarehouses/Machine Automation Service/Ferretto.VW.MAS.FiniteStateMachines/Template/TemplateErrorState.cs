@@ -6,16 +6,13 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateErrorState : StateBase
+    internal class TemplateErrorState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -29,17 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         #endregion
-
-        #region Destructors
-
-        ~TemplateErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
 
         #region Methods
 

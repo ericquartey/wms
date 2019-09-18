@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public abstract class StateBase : IState
+    internal abstract class StateBase : IState
     {
 
         #region Fields

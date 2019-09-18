@@ -74,7 +74,9 @@
 
         ElevatorWeightCheck,
 
-        WeightAcquisitionCommand,
+        PositioningTable,
+
+        TorqueCurrentSampling
 
         CurrentSamplingInMotionNotification,
 

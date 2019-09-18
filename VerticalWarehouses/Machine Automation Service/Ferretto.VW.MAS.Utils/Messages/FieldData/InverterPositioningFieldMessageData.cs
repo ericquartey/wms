@@ -9,10 +9,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public InverterPositioningFieldMessageData(
             IPositioningFieldMessageData positioningFieldMessageData,
-            int targetAcceleration,
-            int targetDeceleration,
+            int[] targetAcceleration,
+            int[] targetDeceleration,
             int targetPosition,
-            int targetSpeed,
+            int[] targetSpeed,
+            int[] switchPosition,
+            int direction,
+            bool refreshAll,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -23,6 +26,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetDeceleration = targetDeceleration;
             this.TargetPosition = targetPosition;
             this.TargetSpeed = targetSpeed;
+            this.SwitchPosition = switchPosition;
+            this.RefreshAll = refreshAll;
+            this.Direction = direction;
+
+            this.IsTorqueCurrentSamplingEnabled = positioningFieldMessageData.IsTorqueCurrentSamplingEnabled;
+            this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
+            this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
         }
 
         #endregion
@@ -31,17 +41,29 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis AxisMovement { get; set; }
 
+        public int Direction { get; set; }
+
+        public bool IsTorqueCurrentSamplingEnabled { get; set; }
+
+        public decimal? LoadedNetWeight { get; }
+
+        public int? LoadingUnitId { get; set; }
+
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
 
-        public int TargetAcceleration { get; set; }
+        public bool RefreshAll { get; }
 
-        public int TargetDeceleration { get; set; }
+        public int[] SwitchPosition { get; set; }
+
+        public int[] TargetAcceleration { get; set; }
+
+        public int[] TargetDeceleration { get; set; }
 
         public int TargetPosition { get; set; }
 
-        public int TargetSpeed { get; set; }
+        public int[] TargetSpeed { get; set; }
 
         #endregion
 

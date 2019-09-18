@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews

@@ -8,9 +8,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityErrorState : StateBase
+    internal class ResetSecurityErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IResetSecurityMachineData machineData;
@@ -40,8 +39,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -95,21 +92,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

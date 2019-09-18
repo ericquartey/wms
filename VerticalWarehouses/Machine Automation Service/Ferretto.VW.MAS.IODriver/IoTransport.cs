@@ -38,15 +38,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-        #region Destructors
-
-        ~IoTransport()
-        {
-            this.Dispose(true);
-        }
-
-        #endregion
-
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;

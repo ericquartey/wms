@@ -67,9 +67,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            await this.InitializeAsync();
-
             await base.StartAsync(cancellationToken);
+
+            await this.InitializeAsync();
         }
 
         protected override bool FilterCommand(CommandMessage command)
@@ -188,6 +188,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     await scope.ServiceProvider
                        .GetRequiredService<ILoadingUnitsProvider>()
                        .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
+
+                    scope.ServiceProvider
+                        .GetRequiredService<IBaysConfigurationProvider>()
+                        .LoadFromConfiguration();
                 }
                 catch (Exception ex)
                 {

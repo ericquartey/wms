@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -14,21 +11,22 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using IStateMachine = Ferretto.VW.MAS.AutomationService.StateMachines.Interface.IStateMachine;
 
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public partial class AutomationService : BackgroundService
+    internal partial class AutomationService : AutomationBackgroundService
     {
 
         #region Fields
+
+        private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IBaysDataService baysDataService;
 
@@ -40,8 +38,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IDataHubClient dataHubClient;
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
         private readonly ILogger<AutomationService> logger;
@@ -49,10 +45,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IMachinesDataService machinesDataService;
 
         private readonly IMissionsDataService missionDataService;
-
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
-
-        private readonly Task notificationReceiveTask;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
@@ -78,56 +70,52 @@ namespace Ferretto.VW.MAS.AutomationService
             IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
             IServiceScopeFactory serviceScopeFactory,
-            IBaysProvider baysProvider)
+            IApplicationLifetime applicationLifetime,
+            IBaysProvider baysProvider )
+            : base(eventAggregator, logger)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (serviceScopeFactory == null)
+            if (serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            logger.LogTrace("1:Method Start");
-
-            if (eventAggregator == null)
+            if (applicationLifetime is null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(applicationLifetime));
             }
 
-            if (installationHub == null)
+            if (installationHub is null)
             {
                 throw new ArgumentNullException(nameof(installationHub));
             }
 
-            if (dataHubClient == null)
+            if (dataHubClient is null)
             {
                 throw new ArgumentNullException(nameof(dataHubClient));
             }
 
-            if (machinesDataService == null)
+            if (machinesDataService is null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
             }
 
-            if (operatorHub == null)
+            if (operatorHub is null)
             {
                 throw new ArgumentNullException(nameof(operatorHub));
             }
 
-            if (baysDataService == null)
+            if (baysDataService is null)
             {
                 throw new ArgumentNullException(nameof(baysDataService));
             }
 
-            if (missionDataService == null)
+            if (missionDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionDataService));
             }
 
-            this.eventAggregator = eventAggregator;
+            this.Logger.LogTrace("1:Method Start");
+
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
             this.machinesDataService = machinesDataService;
@@ -136,18 +124,8 @@ namespace Ferretto.VW.MAS.AutomationService
             this.missionDataService = missionDataService;
             this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
-
             this.baysProvider = baysProvider;
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
-
-            this.InitializeMethodSubscriptions();
-
-            this.dataHubClient.EntityChanged += this.OnWmsEntityChanged;
+            this.applicationLifetime = applicationLifetime;
         }
 
         #endregion
@@ -161,23 +139,6 @@ namespace Ferretto.VW.MAS.AutomationService
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
-            }
-
-            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -210,37 +171,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void InitializeMethodSubscriptions()
-        {
-            this.logger.LogTrace("1:Commands Subscription");
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(
-                commandMessage =>
-                {
-                    this.commandQueue.Enqueue(commandMessage);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                commandMessage =>
-                    commandMessage.Destination == MessageActor.AutomationService
-                    ||
-                    commandMessage.Destination == MessageActor.Any);
-
-            this.logger.LogTrace("2:Notifications Subscription");
-            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(
-                notificationMessage =>
-                {
-                    this.notificationQueue.Enqueue(notificationMessage);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                notificationMessage =>
-                    notificationMessage.Destination == MessageActor.AutomationService
-                    ||
-                    notificationMessage.Destination == MessageActor.Any);
         }
 
         private async void NotificationReceiveTaskFunction()

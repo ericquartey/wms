@@ -9,9 +9,9 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateBP => this.GetDecimalConfigurationValue((long)BayPositionControl.FeedRate, ConfigurationCategory.BayPositionControl);
+        public decimal FeedRateBP => this.GetDecimalConfigurationValue(BayPositionControl.FeedRate, ConfigurationCategory.BayPositionControl);
 
-        public decimal StepValueBP => this.GetDecimalConfigurationValue((long)BayPositionControl.StepValue, ConfigurationCategory.BayPositionControl);
+        public decimal StepValueBP => this.GetDecimalConfigurationValue(BayPositionControl.StepValue, ConfigurationCategory.BayPositionControl);
 
         #endregion
     }

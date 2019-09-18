@@ -13,7 +13,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningStateMachine : StateMachineBase
+    internal class PositioningStateMachine : StateMachineBase
     {
         #region Fields
 

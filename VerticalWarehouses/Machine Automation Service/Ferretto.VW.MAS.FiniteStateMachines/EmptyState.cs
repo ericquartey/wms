@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public class EmptyState : StateBase
+    internal class EmptyState : StateBase
     {
 
 

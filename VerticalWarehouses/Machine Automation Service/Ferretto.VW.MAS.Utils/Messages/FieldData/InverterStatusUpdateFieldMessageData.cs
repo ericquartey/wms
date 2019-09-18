@@ -11,6 +11,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Constructors
 
         public InverterStatusUpdateFieldMessageData(
+            DataSample torqueCurrent,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
+        {
+            this.TorqueCurrent = torqueCurrent;
+        }
+
+        public InverterStatusUpdateFieldMessageData(
             Axis currentAxis,
             bool[] currentSensorStatus,
             int currentPosition,
@@ -47,7 +55,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis CurrentAxis { get; }
 
-        public int CurrentPosition { get; }
+        public decimal? CurrentPosition { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Performance",

@@ -9,7 +9,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     public class ResetSecurityStateMachine : IoStateMachineBase
     {
-
         #region Fields
 
         private const int PULSE_INTERVAL = 350;
@@ -20,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private Timer delayTimer;
 
-        private bool disposed;
+        private bool isDisposed;
 
         private bool pulseOneTime;
 
@@ -45,48 +44,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         #endregion
 
-        #region Destructors
-
-        ~ResetSecurityStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        private void DelayElapsed(object state)
-        {
-            var pulseIoMessage = new IoWriteMessage();
-            pulseIoMessage.SwitchResetSecurity(false);
-            pulseIoMessage.SwitchPowerEnable(true);
-
-            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
-            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
-
-            this.EnqueueMessage(pulseIoMessage);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.delayTimer?.Dispose();
-                this.CurrentState.Dispose();
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {
@@ -121,6 +79,40 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             this.pulseOneTime = false;
             this.CurrentState = new ResetSecurityStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.delayTimer?.Dispose();
+
+                if (this.CurrentState is System.IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
+            }
+
+            this.isDisposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        private void DelayElapsed(object state)
+        {
+            var pulseIoMessage = new IoWriteMessage();
+            pulseIoMessage.SwitchResetSecurity(false);
+            pulseIoMessage.SwitchPowerEnable(true);
+
+            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
+
+            this.EnqueueMessage(pulseIoMessage);
         }
 
         #endregion

@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
     public class TemplateEndState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoIndex index;
@@ -18,8 +17,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
         private readonly IoStatus status;
 
         private readonly ITemplateData templateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -40,34 +37,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {

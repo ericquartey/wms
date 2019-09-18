@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityStartState : StateBase
+    internal class ResetSecurityStartState : StateBase
     {
 
         #region Fields

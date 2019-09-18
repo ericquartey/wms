@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
-    public class ShutterPositioningStateMachine : StateMachineBase
+    internal class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -56,6 +57,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #endregion
 
         #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -130,44 +142,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop(reason);
+                this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-            if (disposing)
-            {
-                this.machineData.DelayTimer?.Dispose();
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
-        private void DelayTimerMethod(object state)
-        {
-            // stop timer
-            this.machineData.DelayTimer.Change(Timeout.Infinite, Timeout.Infinite);
-
-            // send a notification to wake up the state machine waiting for the delay
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Delay Timer Expired",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
-                MessageType.CheckCondition,
-                this.machineData.RequestingBay,
-                this.machineData.RequestingBay,
-                MessageStatus.OperationExecuting);
-
-            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         #endregion

@@ -7,13 +7,19 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal Acceleration => this.GetDecimalConfigurationValue((long)ShutterManualMovements.Acceleration, ConfigurationCategory.ShutterManualMovements);
+        public decimal Acceleration => this.GetDecimalConfigurationValue(ShutterManualMovements.Acceleration, ConfigurationCategory.ShutterManualMovements);
 
-        public decimal Deceleration => this.GetDecimalConfigurationValue((long)ShutterManualMovements.Deceleration, ConfigurationCategory.ShutterManualMovements);
+        public decimal Deceleration => this.GetDecimalConfigurationValue(ShutterManualMovements.Deceleration, ConfigurationCategory.ShutterManualMovements);
 
-        public decimal FeedRateSM => this.GetDecimalConfigurationValue((long)ShutterManualMovements.FeedRate, ConfigurationCategory.ShutterManualMovements);
+        public decimal FeedRateSM => this.GetDecimalConfigurationValue(ShutterManualMovements.FeedRate, ConfigurationCategory.ShutterManualMovements);
 
-        public decimal MaxSpeed => this.GetDecimalConfigurationValue((long)ShutterManualMovements.MaxSpeed, ConfigurationCategory.ShutterManualMovements);
+        public decimal HigherDistance => this.GetDecimalConfigurationValue(ShutterManualMovements.HigherDistance, ConfigurationCategory.ShutterManualMovements);
+
+        public decimal LowerDistance => this.GetDecimalConfigurationValue(ShutterManualMovements.LowerDistance, ConfigurationCategory.ShutterManualMovements);
+
+        public decimal MaxSpeed => this.GetDecimalConfigurationValue(ShutterManualMovements.MaxSpeed, ConfigurationCategory.ShutterManualMovements);
+
+        public decimal MinSpeed => this.GetDecimalConfigurationValue(ShutterManualMovements.MinSpeed, ConfigurationCategory.ShutterManualMovements);
 
         #endregion
     }

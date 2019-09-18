@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Pannelli Mensola")]
         PanelsCheck,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.SHUTTTER1HEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
         BayShape,
 
@@ -42,15 +42,15 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Peso")]
         WeightMeasurement,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.LOADFIRSTDRAWER, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.LOADINGDRAWERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento cassetti")]
         AllLoadingUnits,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.SAVERESTORECONFIG, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Salva e ripristina")]
         SaveRestore,
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Stato sensori")]
         SensorsState,
 
-        [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.ManualMovements.MANUALMOVEMENTS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Movimenti manuali a bassa velocità")]
         ManualMovements,
 
@@ -66,15 +66,19 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Movimenti semi-automatici")]
         SemiAutoMovements,
 
+        [View(Utils.Modules.Installation.WEIGHTANALYSIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Analisi profilo peso")]
+        WeightAnalysis,
+
         [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Controllo quote celle")]
         CellsHeightCheck,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.CELLSSIDECONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Modifica blocco celle")]
         CellsBlockTuning,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.DRAWERLOADINGUNLOADINGTEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Test di Imbarco/Sbarco")]
         HorizontalHoming,
 

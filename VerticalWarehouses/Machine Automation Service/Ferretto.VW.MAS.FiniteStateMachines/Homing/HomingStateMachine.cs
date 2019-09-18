@@ -13,7 +13,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingStateMachine : StateMachineBase
+    internal class HomingStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -86,8 +86,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         this.machineData.RequestingBay,
                         this.machineData.TargetBay,
                         MessageStatus.OperationExecuting);
-
-                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                     this.PublishNotificationMessage(notificationMessage);
                 }

@@ -1,22 +1,20 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateStartState : StateBase
+    internal class TemplateStartState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -30,17 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         #endregion
-
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
 
         #region Methods
 

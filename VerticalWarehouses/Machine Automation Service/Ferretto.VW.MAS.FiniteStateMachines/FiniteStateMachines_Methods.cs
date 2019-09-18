@@ -21,9 +21,8 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
-
 {
-    public partial class FiniteStateMachines
+    internal partial class FiniteStateMachines
     {
         #region Methods
 
@@ -279,7 +278,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage(CommandMessage message)
+        private void ProcessPositioningMessage(IPositioningMessageData data)
         {
             if (message.Data is IPositioningMessageData data)
             {
@@ -406,7 +405,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
                 {
                     var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
+                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
+                        ? this.machineSensorsStatus.AxisXPosition
+                        : this.machineSensorsStatus.AxisYPosition;
+
                     var msg = new NotificationMessage(
                         msgData,
                         "Request Position",

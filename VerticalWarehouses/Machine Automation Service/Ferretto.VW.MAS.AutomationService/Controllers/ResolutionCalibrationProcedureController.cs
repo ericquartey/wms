@@ -1,11 +1,11 @@
 ﻿using System;
+using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Microsoft.AspNetCore.Http;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Models;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -96,10 +96,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             var resolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Resolution,
+                    VerticalAxis.Resolution,
                     ConfigurationCategory.VerticalAxis);
 
-            return resolution * measuredDistance / expectedDistance;
+            return resolution * expectedDistance / measuredDistance;
         }
 
         [HttpGet("parameters")]
@@ -108,15 +108,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new ResolutionCalibrationParameters
             {
                 CurrentResolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Resolution,
+                    VerticalAxis.Resolution,
                     ConfigurationCategory.VerticalAxis),
 
                 InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)ResolutionCalibration.InitialPosition,
+                    ResolutionCalibration.InitialPosition,
                     ConfigurationCategory.ResolutionCalibration),
 
                 FinalPosition = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)ResolutionCalibration.FinalPosition,
+                    ResolutionCalibration.FinalPosition,
                     ConfigurationCategory.ResolutionCalibration),
             };
 

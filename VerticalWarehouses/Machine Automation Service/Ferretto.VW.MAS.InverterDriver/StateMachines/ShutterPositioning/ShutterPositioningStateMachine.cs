@@ -1,12 +1,14 @@
-﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
-    public class ShutterPositioningStateMachine : InverterStateMachineBase
+    internal class ShutterPositioningStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -14,33 +16,31 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
 
         public ShutterPositioningStateMachine(
             IInverterShutterPositioningFieldMessageData shutterPositionData,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
             IInverterStatusBase inverterStatus,
-              IEventAggregator eventAggregator,
-              ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            ILogger logger,
+            IEventAggregator eventAggregator,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
+            if (shutterPositionData is null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterPositionData));
+            }
+
+            if (inverterStatus is null)
+            {
+                throw new System.ArgumentNullException(nameof(inverterStatus));
+            }
+
             this.shutterPositionData = shutterPositionData;
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -60,23 +60,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        /// <inheritdoc/>
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

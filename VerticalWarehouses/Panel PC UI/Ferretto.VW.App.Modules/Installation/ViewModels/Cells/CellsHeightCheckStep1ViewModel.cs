@@ -2,13 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-
 using Prism.Commands;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -97,9 +93,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
-            await base.OnNavigatedAsync();
-
             this.ShowSteps();
+
+            await base.OnNavigatedAsync();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

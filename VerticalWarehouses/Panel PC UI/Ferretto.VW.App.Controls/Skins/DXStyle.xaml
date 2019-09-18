@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/WinUIMessageBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/MessageBox/WinUIMessageBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/SpinEdit/SpinEdit.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

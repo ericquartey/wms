@@ -14,12 +14,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateMachineBase : IIoStateMachine
     {
-
         #region Fields
 
         protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue;
 
-        private bool disposed;
+        private bool isDisposed;
 
         #endregion
 
@@ -35,17 +34,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #endregion
 
-        #region Destructors
-
-        ~IoStateMachineBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Properties
 
         protected IIoState CurrentState { get; set; }
@@ -56,12 +44,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #endregion
 
-
-
         #region Methods
 
         public void ChangeState(IIoState newState)
         {
+            if (newState is null)
+            {
+                throw new ArgumentNullException(nameof(newState));
+            }
+
             var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, newState.GetType().Name, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
@@ -75,7 +66,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-            this.CurrentState.Dispose();
+            if (this.CurrentState is IDisposable disposableState)
+            {
+                disposableState.Dispose();
+            }
 
             this.CurrentState = newState;
             this.CurrentState.Start();
@@ -84,7 +78,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void EnqueueMessage(IoWriteMessage message)
@@ -113,7 +106,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -135,7 +128,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         #endregion

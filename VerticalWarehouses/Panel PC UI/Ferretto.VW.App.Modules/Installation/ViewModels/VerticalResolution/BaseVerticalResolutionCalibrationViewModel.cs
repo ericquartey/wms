@@ -159,8 +159,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
             this.subscriptionToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(

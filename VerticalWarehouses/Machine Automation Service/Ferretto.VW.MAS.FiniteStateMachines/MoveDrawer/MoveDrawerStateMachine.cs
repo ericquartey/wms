@@ -14,7 +14,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerStateMachine : StateMachineBase
+    internal class MoveDrawerStateMachine : StateMachineBase
     {
 
         #region Fields

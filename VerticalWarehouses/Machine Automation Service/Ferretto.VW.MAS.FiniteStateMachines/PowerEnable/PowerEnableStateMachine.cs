@@ -11,14 +11,11 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStateMachine : StateMachineBase
+    internal class PowerEnableStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
-
-        private bool disposed;
 
         #endregion
 
@@ -41,17 +38,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         }
 
         #endregion
-
-        #region Destructors
-
-        ~PowerEnableStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
 
         #region Methods
 

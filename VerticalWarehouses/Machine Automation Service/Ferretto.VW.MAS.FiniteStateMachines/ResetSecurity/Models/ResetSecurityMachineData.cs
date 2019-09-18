@@ -9,8 +9,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
 {
     public class ResetSecurityMachineData : IResetSecurityMachineData
     {
-
-
         #region Constructors
 
         public ResetSecurityMachineData(
@@ -28,8 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

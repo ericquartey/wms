@@ -32,13 +32,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             MovementMode movementMode,
             decimal target,
-            decimal speed,
-            decimal acceleration,
-            decimal deceleration,
+            decimal[] speed,
+            decimal[] acceleration,
+            decimal[] deceleration,
             int numberCycles,
             decimal lowerBound,
             decimal upperBound,
             int delay,
+            decimal[] switchPosition,
+            HorizontalMovementDirection direction,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -52,7 +54,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
+            this.SwitchPosition = switchPosition;
             this.Delay = delay;
+            this.Direction = direction;
         }
 
         public PositioningMessageData(IPositioningMessageData other)
@@ -77,15 +81,21 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        public decimal CurrentPosition { get; set; }
+        public decimal? CurrentPosition { get; set; }
 
         public int Delay { get; set; }
+
+        public HorizontalMovementDirection Direction { get; set; }
 
         public int ExecutedCycles { get; set; }
 
         public bool IsOneKMachine { get; set; }
 
         public bool IsStartedOnBoard { get; set; }
+
+        public decimal? LoadedNetWeight { get; set; }
+
+        public int? LoadingUnitId { get; set; }
 
         public decimal LowerBound { get; set; }
 
@@ -95,13 +105,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int NumberCycles { get; set; }
 
-        public decimal TargetAcceleration { get; set; }
+        public decimal[] SwitchPosition { get; set; }
 
-        public decimal TargetDeceleration { get; set; }
+        public decimal[] TargetAcceleration { get; set; }
+
+        public decimal[] TargetDeceleration { get; set; }
 
         public decimal TargetPosition { get; set; }
 
-        public decimal TargetSpeed { get; set; }
+        public decimal[] TargetSpeed { get; set; }
+
+        public DataSample TorqueCurrentSample { get; set; }
 
         public DataSample TorqueCurrentSample { get; set; }
 

@@ -9,8 +9,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -25,7 +25,7 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public partial class FiniteStateMachines : BackgroundService
+    internal partial class FiniteStateMachines : BackgroundService
     {
 
         #region Fields
@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly IMachineConfigurationProvider machineConfigurationProvider;
 
-        private readonly MachineSensorsStatus machineSensorsStatus;
-
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
@@ -73,6 +71,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private bool forceRemoteIoStatusPublish;
 
         private List<IoIndex> ioIndexDeviceList;
+
+        private bool isDataLayerReady;
+
+        private bool isDisposed;
+
+        private MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
 
@@ -142,15 +146,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.Dispose(false);
         }
 
-        #endregion
-
-
-
-        #region Methods
-
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -159,7 +157,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -253,6 +251,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
+                    case MessageType.TorqueCurrentSampling:
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
 
@@ -307,10 +306,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void FieldNotificationReceiveTaskFunction()
         {
-            NotificationMessage msg;
             do
             {
-                FieldNotificationMessage receivedMessage;
                 try
                 {
                     this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
@@ -874,7 +871,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void RetrieveIoDevicesConfigurationAsync()
         {
+            this.isDataLayerReady = true;
+
             this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
+
+            this.machineSensorsStatus = new MachineSensorsStatus(this.machineConfigurationProvider.IsOneKMachine());
         }
 
         private void SendCleanDebug()

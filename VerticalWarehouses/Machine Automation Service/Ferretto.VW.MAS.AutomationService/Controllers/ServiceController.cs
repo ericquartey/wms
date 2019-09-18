@@ -2,10 +2,10 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Microsoft.AspNetCore.Http;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -67,18 +67,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
+            decimal[] speed = { actualSpeed };
+            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.Relative,
                 MovementMode.FindZero,
                 ChainLength,
-                actualSpeed,
-                this.horizontalAxis.MaxEmptyAccelerationHA,
-                this.horizontalAxis.MaxEmptyDecelerationHA,
+                speed,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                     messageData,

@@ -7,16 +7,13 @@ using Ferretto.VW.MAS.Utils.Utilities;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateEndState : StateBase
+    internal class TemplateEndState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
 
         private readonly ITemplateStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -30,17 +27,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         #endregion
-
-        #region Destructors
-
-        ~TemplateEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
 
         #region Methods
 

@@ -1,15 +1,17 @@
-﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
-    public class PowerOnStateMachine : InverterStateMachineBase
+    internal class PowerOnStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -17,33 +19,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         private readonly FieldCommandMessage nextCommandMessage;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
 
         public PowerOnStateMachine(
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
-            IEventAggregator eventAggregator,
             ILogger logger,
+            IEventAggregator eventAggregator,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory,
             FieldCommandMessage nextCommandMessage = null)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.nextCommandMessage = nextCommandMessage;
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerOnStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -73,22 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

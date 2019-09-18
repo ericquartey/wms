@@ -20,14 +20,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #region Constructors
 
-        public FooterViewModel() : base()
+        public FooterViewModel()
+            : base()
         {
             var notificationEvent = this.EventAggregator.GetEvent<PresentationNotificationPubSubEvent>();
 
             notificationEvent.Subscribe(
-                                notificationMessage => this.NotificationChanged(notificationMessage),
-                                ThreadOption.UIThread,
-                                true);
+                notificationMessage => this.NotificationChanged(notificationMessage),
+                ThreadOption.UIThread,
+                true);
         }
 
         #endregion
@@ -90,10 +91,17 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 if (message.Exception is SwaggerException<ProblemDetails> swaggerException)
                 {
-                    this.NotificationMessage =
-                        swaggerException.Result.Title +
-                        System.Environment.NewLine +
-                        swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
+                    if (swaggerException.Result is null)
+                    {
+                        this.NotificationMessage = swaggerException.Message;
+                    }
+                    else
+                    {
+                        this.NotificationMessage =
+                            swaggerException.Result.Title +
+                            System.Environment.NewLine +
+                            swaggerException.Result.Detail.Split('\n', '\r').FirstOrDefault();
+                    }
                 }
                 else if (message.Exception is SwaggerException)
                 {

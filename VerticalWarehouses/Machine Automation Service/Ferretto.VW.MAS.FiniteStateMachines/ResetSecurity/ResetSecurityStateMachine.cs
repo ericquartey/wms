@@ -10,7 +10,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityStateMachine : StateMachineBase
+    internal class ResetSecurityStateMachine : StateMachineBase
     {
 
         #region Fields

@@ -4,6 +4,9 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -14,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningExecutingState : StateBase
+    internal class PositioningExecutingState : StateBase, IDisposable
     {
         #region Fields
 
@@ -43,19 +46,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+
+            if (this.positioningMessageData.MovementMode == MovementMode.Position
+                &&
+                this.positioningMessageData.MovementType == MovementType.TableTarget)
+            {
+                this.fullPosition = this.positioningMessageData.SwitchPosition[3];
+                this.fullPosition += (this.positioningMessageData.SwitchPosition[4] - this.positioningMessageData.SwitchPosition[3]) / 2;
+            }
         }
 
         #endregion
 
         #region Destructors
 
-        ~PositioningExecutingState()
-        {
+        ~PositioningExecutingState() {
             this.Dispose(false);
         }
 
         #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -71,7 +80,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     switch (message.Type)
                     {
                         case FieldMessageType.InverterStatusUpdate:
-                            this.OnInverterStatusUpdated(message);
+                            this.ProcessExecutingStatusUpdate(message);
                             break;
                     }
                     break;
@@ -209,9 +218,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -221,9 +230,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.delayTimer?.Dispose();
             }
 
-            this.disposed = true;
-
-            base.Dispose(disposing);
+            this.isDisposed = true;
         }
 
         private void DelayElapsed(object state)
@@ -266,109 +273,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             if (this.numberExecutedSteps > 0 &&
                 this.numberExecutedSteps % 2 == 0)
             {
-                //using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                //{
-                //    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                {
+                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
-                //    setupStatusProvider.IncreaseBeltBurnishingCycle();
-                //}
-
-                Debug.Write("Belt completed cycle.");
-            }
-
-            Debug.Write("Belt current position " + beltBurnishingPosition);
-        }
-
-        private bool IsLoadingErrorDuringPickup()
-        {
-            return false;
-            //if (!this.machineData.MessageData.IsStartedOnBoard)
-            //{
-            //    if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
-            //    {
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition > this.machineData.MessageData.SwitchPosition[1]
-            //            && this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[2]
-            //            && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
-            //            )
-            //        {
-            //            return true;
-            //        }
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition > this.fullPosition
-            //            && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //    else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
-            //    {
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[1]
-            //            && this.machineData.MachineSensorStatus.AxisXPosition >= this.machineData.MessageData.SwitchPosition[2]
-            //            && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
-            //            )
-            //        {
-            //            return true;
-            //        }
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition < this.fullPosition
-            //            && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //}
-            return false;
-        }
-
-        private bool IsUnloadingErrorDuringDeposit()
-        {
-            return false;
-            //if (this.machineData.MessageData.IsStartedOnBoard)
-            //{
-            //    if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
-            //    {
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition > this.machineData.MessageData.SwitchPosition[1]
-            //            && this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[2]
-            //            && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
-            //            )
-            //        {
-            //            return true;
-            //        }
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition > this.fullPosition
-            //            && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //    else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
-            //    {
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[1]
-            //            && this.machineData.MachineSensorStatus.AxisXPosition >= this.machineData.MessageData.SwitchPosition[2]
-            //            && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
-            //            )
-            //        {
-            //            return true;
-            //        }
-            //        if (this.machineData.MachineSensorStatus.AxisXPosition < this.fullPosition
-            //            && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //}
-            //return false;
-        }
-
-        private bool IsZeroSensorError()
-        {
-            return false;
-            if (this.machineData.MessageData.MovementMode == MovementMode.Position
-                && this.machineData.MessageData.MovementType == MovementType.TableTarget
-                && this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle == this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
-                )
-            {
-                return true;
-            }
-            return false;
-        }
+                    setupStatusProvider.IncreaseBeltBurnishingCycle();
+                }
 
         private void OnInverterStatusUpdated(FieldNotificationMessage message)
         {
@@ -420,6 +330,149 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     MessageType.Positioning,
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,
+                    MessageStatus.OperationExecuting);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
+        }
+
+        private bool IsLoadingErrorDuringPickup()
+        {
+            return false;
+            if (!this.positioningMessageData.IsStartedOnBoard)
+            {
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[1]
+                        && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition > this.fullPosition
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        return true;
+                    }
+                }
+                else if (this.positioningMessageData.Direction == HorizontalMovementDirection.Backwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[1]
+                        && this.machineSensorsStatus.AxisXPosition >= this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition < this.fullPosition
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool IsUnloadingErrorDuringDeposit()
+        {
+            return false;
+            if (this.positioningMessageData.IsStartedOnBoard)
+            {
+                if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition > this.positioningMessageData.SwitchPosition[1]
+                        && this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition > this.fullPosition
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+                    {
+                        return true;
+                    }
+                }
+                else if (this.positioningMessageData.Direction == HorizontalMovementDirection.Backwards)
+                {
+                    if (this.machineSensorsStatus.AxisXPosition < this.positioningMessageData.SwitchPosition[1]
+                        && this.machineSensorsStatus.AxisXPosition >= this.positioningMessageData.SwitchPosition[2]
+                        && !this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                        )
+                    {
+                        return true;
+                    }
+                    if (this.machineSensorsStatus.AxisXPosition < this.fullPosition
+                        && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool IsZeroSensorError()
+        {
+            return false;
+            if (this.positioningMessageData.MovementMode == MovementMode.Position
+                && this.positioningMessageData.MovementType == MovementType.TableTarget
+                && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle
+                )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void OnInverterStatusUpdated(FieldNotificationMessage message)
+        {
+            if (this.positioningMessageData.MovementMode == MovementMode.FindZero)
+            {
+                if (this.machineSensorsStatus.IsSensorZeroOnCradle)
+                {
+                    var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                    this.commandMessage = new FieldCommandMessage(
+                        null,
+                        $"Stop Operation due to zero position reached",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.InverterStop,
+                        (byte)inverterIndex);
+
+                    this.Logger.LogTrace(
+                        $"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+                    this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+                }
+            }
+            else if (this.positioningMessageData.MovementMode == MovementMode.Position && this.positioningMessageData.MovementType == MovementType.TableTarget)
+            {
+                if (this.IsLoadingErrorDuringPickup())
+                {
+                    this.Logger.LogError("Cradle not correctly loaded during pickup");
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                }
+                else if (this.IsUnloadingErrorDuringDeposit())
+                {
+                    this.Logger.LogError("Cradle not correctly unloaded during deposit");
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
+                }
+            }
+
+            if (message.Data is InverterStatusUpdateFieldMessageData data)
+            {
+                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
+                this.positioningMessageData.TorqueCurrentSample = data.TorqueCurrent;
+
+                var notificationMessage = new NotificationMessage(
+                    this.positioningMessageData,
+                    $"Current Encoder position: {data.CurrentPosition}",
+                    MessageActor.AutomationService,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning,
                     MessageStatus.OperationExecuting);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -483,6 +536,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
             else
             {
+                decimal[] switchPosition = { 0 };
+                decimal[] speed = { this.positioningMessageData.TargetSpeed[0] / 2 };
                 var newPositioningMessageData = new PositioningMessageData(
                     Axis.Horizontal,
                     MovementType.Relative,

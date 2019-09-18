@@ -1,62 +1,62 @@
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
-    public interface IHorizontalMovementBackwardProfileDataLayer
+    public interface IHorizontalMovementShorterProfileDataLayer
     {
         #region Properties
 
-        decimal MovementCorrection { get; }
+        decimal MovementCorrectionShorter { get; }
 
-        decimal P0Acceleration { get; }
+        decimal P0AccelerationShorter { get; }
 
-        decimal P0Deceleration { get; }
+        decimal P0DecelerationShorter { get; }
 
-        decimal P0Quote { get; }
+        decimal P0QuoteShorter { get; }
 
-        decimal P0SpeedV1 { get; }
+        decimal P0SpeedV1Shorter { get; }
 
-        decimal P1Acceleration { get; }
+        decimal P1AccelerationShorter { get; }
 
-        decimal P1Deceleration { get; }
+        decimal P1DecelerationShorter { get; }
 
-        decimal P1Quote { get; }
+        decimal P1QuoteShorter { get; }
 
-        decimal P1SpeedV2 { get; }
+        decimal P1SpeedV2Shorter { get; }
 
-        decimal P2Acceleration { get; }
+        decimal P2AccelerationShorter { get; }
 
-        decimal P2Deceleration { get; }
+        decimal P2DecelerationShorter { get; }
 
-        decimal P2Quote { get; }
+        decimal P2QuoteShorter { get; }
 
-        decimal P2SpeedV3 { get; }
+        decimal P2SpeedV3Shorter { get; }
 
-        decimal P3Acceleration { get; }
+        decimal P3AccelerationShorter { get; }
 
-        decimal P3Deceleration { get; }
+        decimal P3DecelerationShorter { get; }
 
-        decimal P3Quote { get; }
+        decimal P3QuoteShorter { get; }
 
-        decimal P3SpeedV4 { get; }
+        decimal P3SpeedV4Shorter { get; }
 
-        decimal P4Acceleration { get; }
+        decimal P4AccelerationShorter { get; }
 
-        decimal P4Deceleration { get; }
+        decimal P4DecelerationShorter { get; }
 
-        decimal P4Quote { get; }
+        decimal P4QuoteShorter { get; }
 
-        decimal P4SpeedV5 { get; }
+        decimal P4SpeedV5Shorter { get; }
 
-        decimal P5Acceleration { get; }
+        decimal P5AccelerationShorter { get; }
 
-        decimal P5Deceleration { get; }
+        decimal P5DecelerationShorter { get; }
 
-        decimal P5Quote { get; }
+        decimal P5QuoteShorter { get; }
 
-        decimal P5Speed { get; }
+        decimal P5SpeedShorter { get; }
 
-        decimal TotalMovement { get; }
+        decimal TotalMovementShorter { get; }
 
-        int TotalSteps { get; }
+        int TotalStepsShorter { get; }
 
         #endregion
     }

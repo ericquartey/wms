@@ -90,7 +90,7 @@
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementForwardProfile": {
+  "HorizontalMovementLongerProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1235.9,
     "MovementCorrection": 20.0,
@@ -106,7 +106,7 @@
     "P4SpeedV5": 730.0,
     "P5Quote": 1135.0
   },
-  "HorizontalMovementBackwardProfile": {
+  "HorizontalMovementShorterProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1241.0,
     "MovementCorrection": 20.0,
@@ -137,7 +137,9 @@
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
     "Acceleration": 500.0,
-    "Deceleration": 500.0
+    "Deceleration": 500.0,
+    "HigherDistance": 2000.0,
+    "LowerDistance": 2100.0
   },
   "BeltBurnishing": {
     "CycleQuantity": 200

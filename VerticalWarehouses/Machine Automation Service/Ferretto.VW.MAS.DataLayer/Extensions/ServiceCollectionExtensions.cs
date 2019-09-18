@@ -42,14 +42,15 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IGeneralInfoConfigurationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementBackwardProfileDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementForwardProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementLongerProfileDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupNetworkDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
@@ -73,6 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
                 .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
                 .AddTransient<IElevatorProvider, ElevatorProvider>()
+                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
             services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();

@@ -4,6 +4,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -13,7 +15,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
-    public class ShutterPositioningExecutingState : StateBase
+    internal class ShutterPositioningExecutingState : StateBase
     {
 
         #region Fields
@@ -195,11 +197,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     shutterPositionTarget = ShutterPosition.Half;
                 }
             }
+            // speed is negative to go up
+            var speedRate = this.shutterPositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
+
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
-                this.machineData.PositioningMessageData.ShutterType,
-                this.machineData.PositioningMessageData.SpeedRate);
+                this.shutterPositioningMessageData.ShutterType,
+                speedRate,
+                this.shutterPositioningMessageData.HigherDistance,
+                this.shutterPositioningMessageData.LowerDistance,
+                this.shutterPositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,

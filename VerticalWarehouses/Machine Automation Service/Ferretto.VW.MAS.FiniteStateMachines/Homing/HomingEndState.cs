@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingEndState : StateBase
+    internal class HomingEndState : StateBase
     {
 
         #region Fields
@@ -70,6 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                             break;
 
                         case MessageStatus.OperationError:
+                            this.stateData.FieldMessage = message;
                             this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                             break;
                     }
@@ -94,8 +96,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
-
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
@@ -139,8 +139,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
-
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 

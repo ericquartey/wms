@@ -209,41 +209,41 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementForwardProfile configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementLongerProfile configurationValueEnum)
         {
             ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalMovementForwardProfile.TotalSteps:
+                case HorizontalMovementLongerProfile.TotalSteps:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
-                case HorizontalMovementForwardProfile.MovementCorrection:
-                case HorizontalMovementForwardProfile.P0Acceleration:
-                case HorizontalMovementForwardProfile.P0Deceleration:
-                case HorizontalMovementForwardProfile.P0Quote:
-                case HorizontalMovementForwardProfile.P0SpeedV1:
-                case HorizontalMovementForwardProfile.P1Acceleration:
-                case HorizontalMovementForwardProfile.P1Deceleration:
-                case HorizontalMovementForwardProfile.P1Quote:
-                case HorizontalMovementForwardProfile.P1SpeedV2:
-                case HorizontalMovementForwardProfile.P2Acceleration:
-                case HorizontalMovementForwardProfile.P2Deceleration:
-                case HorizontalMovementForwardProfile.P2Quote:
-                case HorizontalMovementForwardProfile.P2SpeedV3:
-                case HorizontalMovementForwardProfile.P3Acceleration:
-                case HorizontalMovementForwardProfile.P3Deceleration:
-                case HorizontalMovementForwardProfile.P3Quote:
-                case HorizontalMovementForwardProfile.P3SpeedV4:
-                case HorizontalMovementForwardProfile.P4Acceleration:
-                case HorizontalMovementForwardProfile.P4Deceleration:
-                case HorizontalMovementForwardProfile.P4Quote:
-                case HorizontalMovementForwardProfile.P4SpeedV5:
-                case HorizontalMovementForwardProfile.P5Acceleration:
-                case HorizontalMovementForwardProfile.P5Deceleration:
-                case HorizontalMovementForwardProfile.P5Quote:
-                case HorizontalMovementForwardProfile.P5Speed:
-                case HorizontalMovementForwardProfile.TotalMovement:
+                case HorizontalMovementLongerProfile.MovementCorrection:
+                case HorizontalMovementLongerProfile.P0Acceleration:
+                case HorizontalMovementLongerProfile.P0Deceleration:
+                case HorizontalMovementLongerProfile.P0Quote:
+                case HorizontalMovementLongerProfile.P0SpeedV1:
+                case HorizontalMovementLongerProfile.P1Acceleration:
+                case HorizontalMovementLongerProfile.P1Deceleration:
+                case HorizontalMovementLongerProfile.P1Quote:
+                case HorizontalMovementLongerProfile.P1SpeedV2:
+                case HorizontalMovementLongerProfile.P2Acceleration:
+                case HorizontalMovementLongerProfile.P2Deceleration:
+                case HorizontalMovementLongerProfile.P2Quote:
+                case HorizontalMovementLongerProfile.P2SpeedV3:
+                case HorizontalMovementLongerProfile.P3Acceleration:
+                case HorizontalMovementLongerProfile.P3Deceleration:
+                case HorizontalMovementLongerProfile.P3Quote:
+                case HorizontalMovementLongerProfile.P3SpeedV4:
+                case HorizontalMovementLongerProfile.P4Acceleration:
+                case HorizontalMovementLongerProfile.P4Deceleration:
+                case HorizontalMovementLongerProfile.P4Quote:
+                case HorizontalMovementLongerProfile.P4SpeedV5:
+                case HorizontalMovementLongerProfile.P5Acceleration:
+                case HorizontalMovementLongerProfile.P5Deceleration:
+                case HorizontalMovementLongerProfile.P5Quote:
+                case HorizontalMovementLongerProfile.P5Speed:
+                case HorizontalMovementLongerProfile.TotalMovement:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
@@ -254,41 +254,41 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementBackwardProfile configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementShorterProfile configurationValueEnum)
         {
             ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalMovementBackwardProfile.TotalSteps:
+                case HorizontalMovementShorterProfile.TotalSteps:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
-                case HorizontalMovementBackwardProfile.MovementCorrection:
-                case HorizontalMovementBackwardProfile.P0Acceleration:
-                case HorizontalMovementBackwardProfile.P0Deceleration:
-                case HorizontalMovementBackwardProfile.P0Quote:
-                case HorizontalMovementBackwardProfile.P0SpeedV1:
-                case HorizontalMovementBackwardProfile.P1Acceleration:
-                case HorizontalMovementBackwardProfile.P1Deceleration:
-                case HorizontalMovementBackwardProfile.P1Quote:
-                case HorizontalMovementBackwardProfile.P1SpeedV2:
-                case HorizontalMovementBackwardProfile.P2Acceleration:
-                case HorizontalMovementBackwardProfile.P2Deceleration:
-                case HorizontalMovementBackwardProfile.P2Quote:
-                case HorizontalMovementBackwardProfile.P2SpeedV3:
-                case HorizontalMovementBackwardProfile.P3Acceleration:
-                case HorizontalMovementBackwardProfile.P3Deceleration:
-                case HorizontalMovementBackwardProfile.P3Quote:
-                case HorizontalMovementBackwardProfile.P3SpeedV4:
-                case HorizontalMovementBackwardProfile.P4Acceleration:
-                case HorizontalMovementBackwardProfile.P4Deceleration:
-                case HorizontalMovementBackwardProfile.P4Quote:
-                case HorizontalMovementBackwardProfile.P4SpeedV5:
-                case HorizontalMovementBackwardProfile.P5Acceleration:
-                case HorizontalMovementBackwardProfile.P5Deceleration:
-                case HorizontalMovementBackwardProfile.P5Quote:
-                case HorizontalMovementBackwardProfile.P5Speed:
-                case HorizontalMovementBackwardProfile.TotalMovement:
+                case HorizontalMovementShorterProfile.MovementCorrection:
+                case HorizontalMovementShorterProfile.P0Acceleration:
+                case HorizontalMovementShorterProfile.P0Deceleration:
+                case HorizontalMovementShorterProfile.P0Quote:
+                case HorizontalMovementShorterProfile.P0SpeedV1:
+                case HorizontalMovementShorterProfile.P1Acceleration:
+                case HorizontalMovementShorterProfile.P1Deceleration:
+                case HorizontalMovementShorterProfile.P1Quote:
+                case HorizontalMovementShorterProfile.P1SpeedV2:
+                case HorizontalMovementShorterProfile.P2Acceleration:
+                case HorizontalMovementShorterProfile.P2Deceleration:
+                case HorizontalMovementShorterProfile.P2Quote:
+                case HorizontalMovementShorterProfile.P2SpeedV3:
+                case HorizontalMovementShorterProfile.P3Acceleration:
+                case HorizontalMovementShorterProfile.P3Deceleration:
+                case HorizontalMovementShorterProfile.P3Quote:
+                case HorizontalMovementShorterProfile.P3SpeedV4:
+                case HorizontalMovementShorterProfile.P4Acceleration:
+                case HorizontalMovementShorterProfile.P4Deceleration:
+                case HorizontalMovementShorterProfile.P4Quote:
+                case HorizontalMovementShorterProfile.P4SpeedV5:
+                case HorizontalMovementShorterProfile.P5Acceleration:
+                case HorizontalMovementShorterProfile.P5Deceleration:
+                case HorizontalMovementShorterProfile.P5Quote:
+                case HorizontalMovementShorterProfile.P5Speed:
+                case HorizontalMovementShorterProfile.TotalMovement:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
@@ -450,14 +450,14 @@ namespace Ferretto.VW.MAS.DataLayer
                         actualParameterType = this.CheckConfigurationValueType((HorizontalAxis)parameter);
                         break;
                     }
-                case ConfigurationCategory.HorizontalMovementForwardProfile:
+                case ConfigurationCategory.HorizontalMovementLongerProfile:
                     {
-                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementForwardProfile)parameter);
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementLongerProfile)parameter);
                         break;
                     }
-                case ConfigurationCategory.HorizontalMovementBackwardProfile:
+                case ConfigurationCategory.HorizontalMovementShorterProfile:
                     {
-                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementBackwardProfile)parameter);
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementShorterProfile)parameter);
                         break;
                     }
                 case ConfigurationCategory.VerticalManualMovements:

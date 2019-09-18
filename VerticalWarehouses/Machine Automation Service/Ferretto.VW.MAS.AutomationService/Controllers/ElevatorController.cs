@@ -1,6 +1,8 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -22,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
 
         #endregion
 
@@ -31,7 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ElevatorController(
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
-            IHubContext<InstallationHub, IInstallationHub> installationHub,
+            IMachineConfigurationProvider machineConfigurationProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
@@ -40,19 +42,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
 
-            if (installationHub is null)
-            {
-                throw new ArgumentNullException(nameof(installationHub));
-            }
-
             if (elevatorWeightCheckProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
+            if (machineConfigurationProvider is null)
+            {
+                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+            }
 
             this.elevatorProvider = elevatorProvider;
-            this.installationHub = installationHub;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
+            this.machineConfigurationProvider = machineConfigurationProvider;
         }
 
         #endregion
@@ -87,10 +88,56 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpPost("horizontal/move")]
+        [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontal(HorizontalMovementDirection direction)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard)
+        {
+            try
+            {
+                void publishAction()
+                {
+                    this.PublishCommand(
+                        null,
+                        "Sensors changed Command",
+                        MessageActor.FiniteStateMachines,
+                        MessageType.SensorsChanged);
+                }
+
+                var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
+                    MessageType.SensorsChanged,
+                    MessageActor.FiniteStateMachines,
+                    MessageStatus.OperationExecuting,
+                    publishAction);
+
+                // check feasibility
+                if (isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
+                {
+                    throw new InvalidOperationException("Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
+                }
+                var zeroSensor = (this.machineConfigurationProvider.IsOneKMachine() ? IOMachineSensors.ZeroPawlSensorOneK : IOMachineSensors.ZeroPawlSensor);
+                if ((!isStartedOnBoard && !messageData.SensorsStates[(int)zeroSensor])
+                    || (isStartedOnBoard && messageData.SensorsStates[(int)zeroSensor])
+                    )
+                {
+                    throw new InvalidOperationException("Invalid Zero Chain position");
+                }
+
+                // execute command
+                var position = this.elevatorProvider.GetHorizontalPosition();
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position.Value);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
+        }
+
+        [HttpPost("horizontal/move-manual")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
             try
             {
@@ -209,7 +256,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorWeightCheckProvider.Start(loadingUnitId, runToTest, weight);
 
                 var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
-                this.installationHub.Clients.All.ElevatorWeightCheck(new NotificationMessageUI<IElevatorWeightCheckMessageData>() { Data = data });
 
                 return this.Accepted();
             }

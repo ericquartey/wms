@@ -18,8 +18,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ParameterHidesMember
 
+// ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
@@ -46,8 +46,6 @@ namespace Ferretto.VW.MAS.IODriver
         private readonly Task notificationReceiveTask;
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
-        private bool disposed;
 
         private CancellationToken stoppingToken;
 
@@ -83,31 +81,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-        #region Destructors
-
-        ~HostedIoDriver()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        protected void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.Dispose();
-            }
-
-            this.disposed = true;
-        }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -204,22 +178,22 @@ namespace Ferretto.VW.MAS.IODriver
                 switch (ioIndex)
                 {
                     case IoIndex.IoDevice1:
-                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
-                        var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger, this.stoppingToken);
 
                         break;
 
                     case IoIndex.IoDevice2:
-                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
-                        var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger, this.stoppingToken);
 
                         break;
 
                     case IoIndex.IoDevice3:
-                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
-                        var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger, this.stoppingToken);
 
                         break;

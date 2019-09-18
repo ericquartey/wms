@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingCalibrateAxisDoneState : StateBase
+    internal class HomingCalibrateAxisDoneState : StateBase
     {
 
         #region Fields
@@ -139,9 +140,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-                this.Logger.LogTrace(
-                    $"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
                 var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
@@ -169,8 +167,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 this.machineData.TargetBay,
                 MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -180,22 +176,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

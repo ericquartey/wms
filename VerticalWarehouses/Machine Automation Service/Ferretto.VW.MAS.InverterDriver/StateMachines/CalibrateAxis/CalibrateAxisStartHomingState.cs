@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class CalibrateAxisStartHomingState : InverterStateBase
+    internal class CalibrateAxisStartHomingState : InverterStateBase
     {
         #region Fields
 
@@ -32,21 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
-        #region Destructors
-
-        ~CalibrateAxisStartHomingState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void Start()
         {
@@ -60,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -82,29 +67,31 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;    // EvaluateReadMessage will send a new StatusWordParam after receiving a StatusWord response
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            else
             {
-                if (this.axisToCalibrate == Axis.Horizontal)
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus is AngInverterStatus currentStatus)
                 {
-                    this.homingReachedReset = true;
-                }
-                if (!currentStatus.HomingStatusWord.HomingAttained)
-                {
-                    this.homingReachedReset = true;
-                }
-                if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
-                {
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
-                    returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
+                    if (this.axisToCalibrate == Axis.Horizontal)
+                    {
+                        this.homingReachedReset = true;
+                    }
+                    if (!currentStatus.HomingStatusWord.HomingAttained)
+                    {
+                        this.homingReachedReset = true;
+                    }
+                    if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
+                    {
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
+                    }
                 }
             }
 

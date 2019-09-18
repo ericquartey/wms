@@ -2,6 +2,9 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -10,9 +13,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerStartState : StateBase
+    internal class MoveDrawerStartState : StateBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -133,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-                this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
@@ -165,8 +167,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 MessageStatus.OperationStart);
-
-            this.Logger.LogDebug($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

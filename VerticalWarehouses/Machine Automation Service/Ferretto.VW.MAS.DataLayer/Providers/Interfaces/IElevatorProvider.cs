@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight);
 
+        void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId);
+
         void Stop(BayNumber bayNumber);
 
         void UpdateResolution(decimal newResolution);

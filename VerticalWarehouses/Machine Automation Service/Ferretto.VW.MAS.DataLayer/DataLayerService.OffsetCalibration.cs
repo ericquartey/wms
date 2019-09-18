@@ -8,11 +8,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateOC => this.GetDecimalConfigurationValue((long)OffsetCalibration.FeedRate, ConfigurationCategory.OffsetCalibration);
+        public decimal FeedRateOC => this.GetDecimalConfigurationValue(OffsetCalibration.FeedRate, ConfigurationCategory.OffsetCalibration);
 
-        public int ReferenceCell => this.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
+        public int ReferenceCell => this.GetIntegerConfigurationValue(OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
 
-        public decimal StepValue => this.GetDecimalConfigurationValue((long)OffsetCalibration.StepValue, ConfigurationCategory.OffsetCalibration);
+        public decimal StepValue => this.GetDecimalConfigurationValue(OffsetCalibration.StepValue, ConfigurationCategory.OffsetCalibration);
 
         #endregion
     }

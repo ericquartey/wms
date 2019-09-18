@@ -1,15 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
@@ -126,20 +123,19 @@ namespace Ferretto.VW.MAS.Utils
         {
             do
             {
-                CommandMessage command;
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out command);
                     this.Logger.LogTrace(
                         $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
+
+                    await this.OnCommandReceivedAsync(command);
                 }
                 catch (OperationCanceledException)
                 {
                     this.Logger.LogTrace("Operation Canceled.");
                     return;
                 }
-
-                await this.OnCommandReceivedAsync(command);
             }
             while (!this.CancellationToken.IsCancellationRequested);
         }

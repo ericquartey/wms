@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
@@ -68,6 +68,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     case (ushort)InverterOperationMode.ProfileVelocity:
                         this.controlWord = new ProfileVelocityControlWord(this.controlWord);
                         this.statusWord = new ProfileVelocityStatusWord(this.statusWord);
+                        break;
+
+                    case (ushort)InverterOperationMode.TableTravel:
+                        this.controlWord = new TableTravelControlWord(this.controlWord);
+                        this.statusWord = new TableTravelStatusWord(this.statusWord);
                         break;
                 }
                 this.operatingMode = value;
