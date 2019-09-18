@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
-    public interface IHomingInverterStatus
+    public interface IHomingInverterStatus : IInverterStatusBase
     {
         #region Properties
 

@@ -21,7 +21,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             IInverterStatusBase inverterStatus,
             ILogger logger)
         {
-            if (logger == null)
+            if (inverterStatus is null)
+            {
+                throw new ArgumentNullException(nameof(inverterStatus));
+            }
+
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }

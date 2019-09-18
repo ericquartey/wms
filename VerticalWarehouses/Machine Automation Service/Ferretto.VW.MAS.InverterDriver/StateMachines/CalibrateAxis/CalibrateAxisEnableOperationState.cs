@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -34,12 +35,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.Logger.LogDebug($"CalibrateEnable axis={this.axisToCalibrate}");
+            this.InverterStatus.CommonControlWord.HorizontalAxis =
+                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                ? false
+                : this.axisToCalibrate == Axis.Horizontal;
 
-            //this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;  // remove the assignment for the acu
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(
+                this.InverterStatus.SystemIndex,
+                (short)InverterParameterId.ControlWordParam,
+                this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
@@ -76,7 +82,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(
+                        new CalibrateAxisStartHomingState(
+                            this.ParentStateMachine,
+                            this.axisToCalibrate,
+                            this.InverterStatus as IHomingInverterStatus,
+                            this.Logger));
+
                     returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
                 }
             }

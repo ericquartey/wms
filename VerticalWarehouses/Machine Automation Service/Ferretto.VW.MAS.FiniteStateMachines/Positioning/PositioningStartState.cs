@@ -84,8 +84,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.Logger.LogDebug($"Machine 1T :: FSM - PositioningStartState.ProcessFieldNotificationMessage => Change state to PositioningExecutingState");
-
                 this.ParentStateMachine.ChangeState(
                     new PositioningExecutingState(
                         this.ParentStateMachine,
@@ -120,8 +118,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             else
             {
                 this.ioSwitched = true;
-
-                this.Logger.LogDebug($"Machine 1T :: FSM - PositioningStartState.Start => ioSwitched={this.ioSwitched}");
             }
 
             {
@@ -154,8 +150,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 (byte)inverterIndex);
 
             this.Logger.LogDebug($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-            this.Logger.LogDebug($"Machine 1T :: FSM - PositioningStartState.Start => Send InverterSwitchOn command to Inverter index={inverterIndex}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 

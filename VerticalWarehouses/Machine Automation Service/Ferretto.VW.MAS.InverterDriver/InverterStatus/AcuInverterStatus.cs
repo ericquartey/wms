@@ -124,6 +124,42 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
+        public ITableTravelControlWord TableTravelControlWord
+        {
+            get
+            {
+                if (this.OperatingMode != (ushort)InverterOperationMode.TableTravel)
+                {
+                    throw new InvalidOperationException("Inverter is not configured for TableTravel Mode");
+                }
+
+                if (this.controlWord is ITableTravelControlWord word)
+                {
+                    return word;
+                }
+
+                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType()} is not compatible with TableTravel Mode");
+            }
+        }
+
+        public ITableTravelStatusWord TableTravelStatusWord
+        {
+            get
+            {
+                if (this.OperatingMode != (ushort)InverterOperationMode.TableTravel)
+                {
+                    throw new InvalidOperationException("Inverter is not configured for TableTravel Mode");
+                }
+
+                if (this.statusWord is ITableTravelStatusWord word)
+                {
+                    return word;
+                }
+
+                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with TableTravel Mode");
+            }
+        }
+
         #endregion
 
         #region Methods

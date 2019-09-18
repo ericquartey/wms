@@ -20,13 +20,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public PositioningEndState(
             IInverterStateMachine parentStateMachine,
-            IInverterStatusBase inverterStatus,
+            IPositioningInverterStatus inverterStatus,
             ILogger logger,
             bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.stopRequested = stopRequested;
+            this.Inverter = inverterStatus;
         }
+
+        #endregion
+
+        #region Properties
+
+        public IPositioningInverterStatus Inverter { get; }
 
         #endregion
 
@@ -35,29 +42,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.stopRequested)
-            {
-                if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
-                {
-                    var controlWord = positioningInverterStatus.PositionControlWord;
-                    controlWord.NewSetPoint = false;
-                }
-            }
-
             this.Logger.LogDebug("Notify Positioning End");
 
-            var notificationMessage = new FieldNotificationMessage(
-                null,
-                "Message",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.Positioning,
-                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
-                this.InverterStatus.SystemIndex);
+            this.Inverter.PositionControlWord.NewSetPoint = !this.stopRequested;
 
-            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+            this.ParentStateMachine.PublishNotificationEvent(
+                new FieldNotificationMessage(
+                    null,
+                    "Message",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.Positioning,
+                    (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd,
+                    this.InverterStatus.SystemIndex));
         }
 
         /// <inheritdoc />

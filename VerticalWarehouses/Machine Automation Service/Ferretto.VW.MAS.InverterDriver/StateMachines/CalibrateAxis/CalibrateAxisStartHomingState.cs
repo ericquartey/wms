@@ -22,12 +22,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStartHomingState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
-            IInverterStatusBase inverterStatus,
+            IHomingInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+
+            this.Inverter = inverterStatus;
         }
+
+        #endregion
+
+        #region Properties
+
+        public IHomingInverterStatus Inverter { get; }
 
         #endregion
 
@@ -35,39 +43,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            InverterMessage inverterMessage = null;
-            switch (this.InverterStatus.InverterType)
-            {
-                case Utils.Enumerations.InverterType.Ang:
-                    if (this.InverterStatus is AngInverterStatus currentAngStatus)
-                    {
-                        currentAngStatus.HomingControlWord.HomingOperation = true;
-                    }
-                    inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
+            this.Inverter.HomingControlWord.HomingOperation = true;
 
-                    break;
-
-                case Utils.Enumerations.InverterType.Acu:
-                    if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
-                    {
-                        currentAcuStatus.HomingControlWord.HomingOperation = true;
-                    }
-                    inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AcuInverterStatus)this.InverterStatus).HomingControlWord.Value);
-
-                    break;
-            }
-
-            //if (this.InverterStatus is AngInverterStatus currentStatus )
-            //{
-            //    currentStatus.HomingControlWord.HomingOperation = true;
-            //}
-
-            ////TODO complete type failure check
-            //var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.ControlWordParam,
+                    this.Inverter.HomingControlWord.Value));
         }
 
         /// <inheritdoc />

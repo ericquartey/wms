@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public bool AGL_ShutterSensorA => this.Inputs?[(int)InverterSensors.AGL_ShutterSensorA] ?? false;
 
         public bool AGL_ShutterSensorB => this.Inputs?[(int)InverterSensors.AGL_ShutterSensorB] ?? false;
+
         //public bool AGL_HardwareSensorSTOB => this.Inputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
 
         public ShutterPosition CurrentShutterPosition

@@ -129,8 +129,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             var statusWordPollingInterval = DefaultStatusWordPollingInterval;
 
-            this.Logger.LogDebug($"PositioningExecutingState.Start movement mode={this.positioningMessageData.MovementMode} inverterIndex={inverterIndex}");
-
             switch (this.positioningMessageData.MovementMode)
             {
                 case MovementMode.Position:
@@ -218,7 +216,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     break;
             }
 
-            this.Logger.LogDebug($"Send command to inverter for the Positioning");
             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
             this.ParentStateMachine.PublishFieldCommandMessage(

@@ -13,22 +13,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public PositioningStartMovingState(
             IInverterStateMachine parentStateMachine,
-            IInverterStatusBase inverterStatus,
+            IPositioningInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.Inverter = inverterStatus;
         }
 
         #endregion
 
         #region Properties
 
+        public IPositioningInverterStatus Inverter { get; }
+
         protected bool TargetPositionReached =>
-            this.InverterStatus is AngInverterStatus currentStatus
+            this.Inverter.PositionStatusWord.SetPointAcknowledge
             &&
-            currentStatus.PositionStatusWord.SetPointAcknowledge
-            &&
-            currentStatus.PositionStatusWord.PositioningAttained;
+            this.Inverter.PositionStatusWord.PositioningAttained;
 
         #endregion
 
@@ -39,23 +40,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
 
-            if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
-            {
-                var controlWord = positioningInverterStatus.PositionControlWord;
+            this.Inverter.PositionControlWord.NewSetPoint = true;
 
-                controlWord.NewSetPoint = true;
-                var inverterMessage = new InverterMessage(
+            this.Logger.LogDebug("Set New Setpoint");
+
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWordParam,
-                    controlWord.Value);
-
-                //TODO complete type failure check
-                this.Logger.LogDebug("Set New Setpoint");
-
-                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-            }
+                    this.Inverter.PositionControlWord.Value));
         }
 
         /// <inheritdoc />
@@ -63,7 +56,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningEndState(
+                    this.ParentStateMachine,
+                    this.Inverter,
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -101,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.ChangeState(
                     new PositioningDisableOperationState(
                         this.ParentStateMachine,
-                        this.InverterStatus,
+                        this.Inverter,
                         this.Logger));
 
                 this.Logger.LogDebug("Target position reached.");

@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         bool ANG_ZeroElevatorSensor { get; }
 
+        #endregion
+
         //bool ANG_BarrierCalibration { get; }
 
         //bool ANG_ElevatorMotorTemprature { get; }
@@ -35,17 +37,5 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         //bool ANG_PresenceDrawerOnCradleMachineSide { get; }
 
         //bool ANG_PresenceDraweronCradleOperatoreSide { get; }
-
-        IHomingControlWord HomingControlWord { get; }
-
-        IHomingStatusWord HomingStatusWord { get; }
-
-        IPositionStatusWord PositionStatusWord { get; }
-
-        ITableTravelControlWord TableTravelControlWord { get; }
-
-        ITableTravelStatusWord TableTravelStatusWord { get; }
-
-        #endregion
     }
 }

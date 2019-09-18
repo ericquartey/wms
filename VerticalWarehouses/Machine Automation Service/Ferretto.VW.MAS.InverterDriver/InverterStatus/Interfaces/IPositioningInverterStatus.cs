@@ -3,11 +3,17 @@ using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
-    public interface IPositioningInverterStatus
+    public interface IPositioningInverterStatus : IInverterStatusBase
     {
         #region Properties
 
         IPositionControlWord PositionControlWord { get; }
+
+        IPositionStatusWord PositionStatusWord { get; }
+
+        ITableTravelControlWord TableTravelControlWord { get; }
+
+        ITableTravelStatusWord TableTravelStatusWord { get; }
 
         #endregion
 

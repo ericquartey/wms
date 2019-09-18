@@ -22,12 +22,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         bool ACU_ZeroSensor { get; }
 
-        IHomingControlWord HomingControlWord { get; }
-
-        IHomingStatusWord HomingStatusWord { get; }
-
-        IPositionStatusWord PositionStatusWord { get; }
-
         #endregion
     }
 }
