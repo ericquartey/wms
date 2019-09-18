@@ -84,6 +84,13 @@
                             Command="{Binding StartCommand}"
                             Content="{x:Static res:InstallationApp.Start}" />
 
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding MoveToBayCommand}"
+                            Content="Sposta a posizione elevatore" />
+
 
         <dxc:ChartControl Grid.Row="3"
                           Grid.ColumnSpan="3"

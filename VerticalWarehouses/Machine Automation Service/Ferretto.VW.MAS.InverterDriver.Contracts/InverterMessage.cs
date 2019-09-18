@@ -400,7 +400,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
                 case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.TorqueCurrent:
                     if (this.payloadLength == 4)
                     {
                         returnValue = BitConverter.ToInt32(this.payload, 0);
@@ -445,6 +444,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusDigitalSignals:
+                case InverterParameterId.TorqueCurrent:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);

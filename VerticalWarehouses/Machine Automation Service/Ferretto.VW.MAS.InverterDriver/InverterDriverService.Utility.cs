@@ -332,21 +332,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (currentMessage.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 currentStateMachine?.ValidateCommandResponse(currentMessage);
-
-                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(
-                    new FieldNotificationMessage(
-                        new InverterStatusUpdateFieldMessageData(
-                            new CommonUtils.Messages.Data.DataSample
-                            {
-                                Value = currentMessage.IntPayload / 10m,
-                                TimeStamp = DateTime.Now
-                            }),
-                    "Inverter Inputs update",
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageType.InverterStatusUpdate,
-                    MessageStatus.OperationExecuting,
-                    (byte)inverterIndex));
             }
         }
 
