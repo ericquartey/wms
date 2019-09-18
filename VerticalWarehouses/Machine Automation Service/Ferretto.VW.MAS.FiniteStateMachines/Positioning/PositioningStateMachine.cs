@@ -15,12 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IPositioningMachineData machineData;
-
-        private bool disposed;
 
         #endregion
 
@@ -65,8 +62,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -123,6 +118,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 }
                 else
                 {
+                    var notificationMessage = new NotificationMessage(
+                        this.machineData.MessageData,
+                        "Conditions not verified for positioning",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.InverterException,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
+                        MessageStatus.OperationStart);
+
+                    this.Logger.LogError($"Conditions not verified for positioning");
+
+                    this.PublishNotificationMessage(notificationMessage);
                     this.CurrentState = new PositioningErrorState(stateData);
                 }
 
@@ -143,31 +151,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
         private bool CheckConditions()
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            var checkConditions = ((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && this.machineData.MessageData.MovementMode == MovementMode.Position) ||
-                                    this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
-                                    this.machineData.MessageData.AxisMovement == Axis.Vertical ||
-                                    this.machineData.MessageData.AxisMovement == Axis.Horizontal;
-
-            return checkConditions;
+            return (((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
+                    !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
+                    (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)) ||
+                this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                ) &&
+                this.machineData.MessageData.AxisMovement == Axis.Vertical)
+                ||
+                this.machineData.MessageData.AxisMovement == Axis.Horizontal;
         }
 
         #endregion

@@ -4,10 +4,19 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
+    public class DataSample
+    {
+        #region Properties
+
+        public System.DateTime TimeStamp { get; set; }
+
+        public decimal Value { get; set; }
+
+        #endregion
+    }
+
     public class PositioningMessageData : IPositioningMessageData
     {
-
-
         #region Constructors
 
         public PositioningMessageData()
@@ -62,8 +71,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #endregion
 
-
-
         #region Properties
 
         public Axis AxisMovement { get; set; }
@@ -77,6 +84,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int ExecutedCycles { get; set; }
 
         public bool IsOneKMachine { get; set; }
+
+        public bool IsStartedOnBoard { get; set; }
 
         public decimal LowerBound { get; set; }
 
@@ -94,13 +103,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal TargetSpeed { get; set; }
 
+        public DataSample TorqueCurrentSample { get; set; }
+
         public decimal UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         #endregion
-
-
 
         #region Methods
 

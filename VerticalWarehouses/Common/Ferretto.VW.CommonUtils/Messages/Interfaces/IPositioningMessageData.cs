@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -18,6 +19,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsOneKMachine { get; set; }
 
+        bool IsStartedOnBoard { get; set; }
+
         decimal LowerBound { get; }
 
         MovementMode MovementMode { get; set; }
@@ -33,6 +36,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal TargetSpeed { get; }
+
+        DataSample TorqueCurrentSample { get; set; }
 
         decimal UpperBound { get; }
 

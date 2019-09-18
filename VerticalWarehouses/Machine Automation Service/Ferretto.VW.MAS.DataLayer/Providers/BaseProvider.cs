@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class BaseProvider
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -32,8 +31,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
-
-
         #region Methods
 
         protected void PublishCommand(
@@ -41,8 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             string description,
             MessageActor receiver,
             MessageType messageType,
-            BayNumber requestingBay = BayNumber.None,
-            BayNumber targetBay = BayNumber.None)
+            BayNumber requestingBay,
+            BayNumber targetBay)
         {
             this.eventAggregator
                 .GetEvent<CommandEvent>()

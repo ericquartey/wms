@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class ElevatorProvider : BaseProvider, IElevatorProvider
     {
-
         #region Fields
 
         private readonly IBayPositionControlDataLayer bayPositionControl;
@@ -135,11 +134,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
-
-
         #region Methods
 
-        public decimal GetHorizontalPosition()
+        public decimal GetHorizontalPosition(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
@@ -147,7 +144,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 "Request Horizontal position",
                 MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
+                MessageType.RequestPosition,
+                bayNumber,
+                BayNumber.ElevatorBay);
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
@@ -158,7 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public decimal GetVerticalPosition()
+        public decimal GetVerticalPosition(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
@@ -166,7 +165,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
+                MessageType.RequestPosition,
+                bayNumber,
+                BayNumber.ElevatorBay);
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
@@ -177,7 +178,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition;
         }
 
-        public void MoveHorizontal(HorizontalMovementDirection direction)
+        public void MoveHorizontal(HorizontalMovementDirection direction, BayNumber bayNumber)
         {
             var setupStatus = this.setupStatusProvider.Get();
 
@@ -206,10 +207,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
+        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
         {
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
             var upperBound = this.verticalAxisDataLayer.UpperBound;
@@ -249,10 +252,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
-        public void MoveVertical(VerticalMovementDirection direction)
+        public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber)
         {
             var movementType = MovementType.Relative;
 
@@ -298,10 +303,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(decimal distance)
+        public void MoveVerticalOfDistance(decimal distance, BayNumber bayNumber)
         {
             if (distance == 0)
             {
@@ -335,7 +342,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
         public void RunInMotionCurrentSampling(decimal displacement, decimal netWeight)
@@ -348,13 +357,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             throw new NotImplementedException();
         }
 
-        public void Stop()
+        public void Stop(BayNumber bayNumber)
         {
             this.PublishCommand(
                 null,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop);
+                MessageType.Stop,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
         public void UpdateResolution(decimal newResolution)

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -41,7 +42,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
             {
                 this.elevatorProvider.MoveToVerticalPosition(
                     messageData.InitialPosition,
-                    DataModels.FeedRateCategory.VerticalManualMovementsAfterZero);
+                    DataModels.FeedRateCategory.VerticalManualMovementsAfterZero,
+                    BayNumber.None);        //TODO correct bay number
             }
         }
 

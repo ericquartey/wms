@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -294,6 +295,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
+                    data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+                    data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
+
                     currentStateMachine = new PositioningStateMachine(
                         message.RequestingBay,
                         targetBay,
@@ -559,6 +563,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private void ProcessStopMessage(CommandMessage receivedMessage)
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
+            if (receivedMessage.TargetBay == BayNumber.None)
+            {
+                if (this.currentStateMachines.Any(x => x.Key == receivedMessage.RequestingBay))
+                {
+                    receivedMessage.TargetBay = receivedMessage.RequestingBay;
+                }
+                else
+                {
+                    // message received from the UI: let's stop the first active FSM
+                    receivedMessage.TargetBay = this.currentStateMachines.Keys.FirstOrDefault();
+                }
+            }
 
             if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {

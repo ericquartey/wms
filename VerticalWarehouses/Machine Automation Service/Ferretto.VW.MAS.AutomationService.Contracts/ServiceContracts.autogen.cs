@@ -904,13 +904,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     /// <summary>0 = Absolute
-    /// 1 = Relative</summary>
+    /// 1 = Relative
+    /// 2 = TableTarget</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementType
     {
         Absolute = 0,
     
         Relative = 1,
+    
+        TableTarget = 2,
     
     }
     
