@@ -313,6 +313,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
+            return false;
             if (!this.positioningMessageData.IsStartedOnBoard)
             {
                 if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -351,6 +352,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
+            return false;
             if (this.positioningMessageData.IsStartedOnBoard)
             {
                 if (this.positioningMessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -389,9 +391,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsZeroSensorError()
         {
-            return this.positioningMessageData.MovementMode == MovementMode.Position
+            return false;
+            if (this.positioningMessageData.MovementMode == MovementMode.Position
                 && this.positioningMessageData.MovementType == MovementType.TableTarget
-                && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle;
+                && this.machineSensorsStatus.IsDrawerCompletelyOnCradle == this.machineSensorsStatus.IsSensorZeroOnCradle
+                )
+            {
+                return true;
+            }
+            return false;
         }
 
         private void OnInverterStatusUpdated(FieldNotificationMessage message)

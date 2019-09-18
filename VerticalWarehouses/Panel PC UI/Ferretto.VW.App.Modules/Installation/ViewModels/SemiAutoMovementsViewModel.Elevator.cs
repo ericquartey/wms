@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
+using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -245,11 +249,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
-
-                await this.machineServiceService.SearchHorizontalZeroAsync();
-
-                this.IsTuningChain = true;
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.IsWaitingForResponse = true;
+                    await this.machineServiceService.SearchHorizontalZeroAsync();
+                    this.IsTuningChain = true;
+                }
             }
             catch (Exception ex)
             {

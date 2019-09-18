@@ -1094,4 +1094,7 @@
   <data name="Position" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Confirmation operation?</value>
+  </data>
 </root>

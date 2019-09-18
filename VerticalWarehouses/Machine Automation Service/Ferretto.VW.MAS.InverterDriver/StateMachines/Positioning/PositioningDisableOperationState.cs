@@ -30,6 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 currentStatus.PositionControlWord.EnableOperation = false;
                 currentStatus.PositionControlWord.NewSetPoint = false;
+                currentStatus.PositionControlWord.RelativeMovement = false;
             }
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
