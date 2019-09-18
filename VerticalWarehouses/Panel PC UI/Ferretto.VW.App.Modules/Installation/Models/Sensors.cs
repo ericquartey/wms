@@ -229,6 +229,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         private bool zeroPawlSensor;
 
+        private bool zeroPawlSensorOneK;
+
         private bool zeroVerticalSensor;
 
         #endregion
@@ -456,6 +458,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         public bool TrolleyOptionBay3 { get => this.trolleyOptionBay3; set => this.SetProperty(ref this.trolleyOptionBay3, value); }
 
         public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
+
+        public bool ZeroPawlSensorOneK { get => this.zeroPawlSensorOneK; set => this.SetProperty(ref this.zeroPawlSensorOneK, value); }
 
         public bool ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 

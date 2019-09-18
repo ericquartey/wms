@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private readonly bool isOneKMachine;
+
         private readonly bool[] sensorStatus;
 
         private decimal axisXPosition;
 
         private decimal axisYPosition;
-
-        private readonly bool isOneKMachine;
 
         #endregion
 
@@ -61,6 +61,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
+
+        public bool[] Sensors => this.sensorStatus;
 
         #endregion
 

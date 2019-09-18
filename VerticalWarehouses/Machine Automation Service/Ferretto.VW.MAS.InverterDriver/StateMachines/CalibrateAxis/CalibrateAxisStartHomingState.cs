@@ -35,13 +35,35 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            InverterMessage inverterMessage = null;
+            switch (this.InverterStatus.InverterType)
             {
-                currentStatus.HomingControlWord.HomingOperation = true;
+                case Utils.Enumerations.InverterType.Ang:
+                    if (this.InverterStatus is AngInverterStatus currentAngStatus)
+                    {
+                        currentAngStatus.HomingControlWord.HomingOperation = true;
+                    }
+                    inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
+
+                    break;
+
+                case Utils.Enumerations.InverterType.Acu:
+                    if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
+                    {
+                        currentAcuStatus.HomingControlWord.HomingOperation = true;
+                    }
+                    inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AcuInverterStatus)this.InverterStatus).HomingControlWord.Value);
+
+                    break;
             }
 
-            //TODO complete type failure check
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
+            //if (this.InverterStatus is AngInverterStatus currentStatus )
+            //{
+            //    currentStatus.HomingControlWord.HomingOperation = true;
+            //}
+
+            ////TODO complete type failure check
+            //var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -88,6 +110,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         this.homingReachedReset = true;
                     }
                     if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
+                    {
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
+                    }
+                }
+
+                if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
+                {
+                    if (this.axisToCalibrate == Axis.Horizontal)
+                    {
+                        this.homingReachedReset = true;
+                    }
+                    if (!currentAcuStatus.HomingStatusWord.HomingAttained)
+                    {
+                        this.homingReachedReset = true;
+                    }
+                    if (this.homingReachedReset && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam

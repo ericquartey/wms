@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
+﻿using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
     public interface IAcuInverterStatus : IInverterStatusBase
     {
@@ -19,6 +21,10 @@
         bool ACU_HardwareSensorSTO { get; }
 
         bool ACU_ZeroSensor { get; }
+
+        IHomingControlWord HomingControlWord { get; }
+
+        IHomingStatusWord HomingStatusWord { get; }
 
         #endregion
     }

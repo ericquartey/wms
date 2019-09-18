@@ -82,15 +82,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 }
             }
 
-            if (this.ioSwitched && this.inverterSwitched)
+            if (!this.positioningMessageData.IsOneKMachine)
+            {
+                if (this.ioSwitched && this.inverterSwitched)
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningExecutingState(
+                            this.ParentStateMachine,
+                            this.machineSensorsStatus,
+                            this.positioningMessageData,
+                            this.Logger));
+                }
+            }
+            else
             {
                 this.ParentStateMachine.ChangeState(
-                    new PositioningExecutingState(
-                        this.ParentStateMachine,
-                        this.machineSensorsStatus,
-                        this.positioningMessageData,
-                        this.Logger));
+                        new PositioningExecutingState(
+                            this.ParentStateMachine,
+                            this.machineSensorsStatus,
+                            this.positioningMessageData,
+                            this.Logger));
             }
+
+            //if (this.ioSwitched && this.inverterSwitched)
+            //{
+            //    this.ParentStateMachine.ChangeState(
+            //        new PositioningExecutingState(
+            //            this.ParentStateMachine,
+            //            this.machineSensorsStatus,
+            //            this.positioningMessageData,
+            //            this.Logger));
+            //}
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
