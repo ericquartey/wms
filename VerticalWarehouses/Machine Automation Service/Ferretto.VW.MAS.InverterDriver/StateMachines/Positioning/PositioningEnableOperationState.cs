@@ -1,7 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
@@ -37,21 +35,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogTrace("1:Method Start");
-
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
             {
+                var controlWord = positioningInverterStatus.PositionControlWord;
+
                 //INFO Set the axis to move in the CW
-                currentStatus.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
-                currentStatus.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative || this.data.MovementType == MovementType.TableTarget);
-                currentStatus.PositionControlWord.EnableOperation = true;
+                controlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
+                controlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative || this.data.MovementType == MovementType.TableTarget);
+                controlWord.EnableOperation = true;
+
+                this.Logger.LogDebug("Inverter Enable Operation");
+
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, controlWord.Value);
+                this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
-
-            this.Logger.LogDebug("Inverter Enable Operation");
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
-            this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            else
+            {
+                //TODO Throw an exception
+            }
         }
 
         /// <inheritdoc />

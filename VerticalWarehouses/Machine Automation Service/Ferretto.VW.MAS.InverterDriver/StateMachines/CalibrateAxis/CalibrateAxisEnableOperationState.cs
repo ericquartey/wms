@@ -34,7 +34,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;
+            this.Logger.LogDebug($"CalibrateEnable axis={this.axisToCalibrate}");
+
+            //this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;  // remove the assignment for the acu
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);

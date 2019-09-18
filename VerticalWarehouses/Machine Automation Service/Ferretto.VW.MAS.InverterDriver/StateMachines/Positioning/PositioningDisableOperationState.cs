@@ -1,6 +1,4 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
-
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -26,18 +24,24 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
             {
-                currentStatus.PositionControlWord.EnableOperation = false;
-                currentStatus.PositionControlWord.NewSetPoint = false;
-                currentStatus.PositionControlWord.RelativeMovement = false;
+                var controlWord = positioningInverterStatus.PositionControlWord;
+
+                controlWord.EnableOperation = false;
+                controlWord.NewSetPoint = false;
+                controlWord.RelativeMovement = false;
+
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            else
+            {
+                //TODO Throw an exception
+            }
         }
 
         /// <inheritdoc />

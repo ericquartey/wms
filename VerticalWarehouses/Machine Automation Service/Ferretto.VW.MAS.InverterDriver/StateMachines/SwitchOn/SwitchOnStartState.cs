@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.SwitchOn = true;
-            this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToSwitchOn == Axis.Horizontal;
+            //this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToSwitchOn == Axis.Horizontal;  // remove this assignment for the acu inverter
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 

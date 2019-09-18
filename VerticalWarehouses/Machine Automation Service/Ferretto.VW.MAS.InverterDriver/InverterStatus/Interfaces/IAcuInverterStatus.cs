@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         IHomingStatusWord HomingStatusWord { get; }
 
+        IPositionStatusWord PositionStatusWord { get; }
+
         #endregion
     }
 }

@@ -37,19 +37,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
+
+            if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
             {
-                currentStatus.PositionControlWord.NewSetPoint = true;
+                var controlWord = positioningInverterStatus.PositionControlWord;
+
+                controlWord.NewSetPoint = true;
+                var inverterMessage = new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.ControlWordParam,
+                    controlWord.Value);
+
+                //TODO complete type failure check
+                this.Logger.LogDebug("Set New Setpoint");
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
-
-            //TODO complete type failure check
-            this.Logger.LogDebug("Set New Setpoint");
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />

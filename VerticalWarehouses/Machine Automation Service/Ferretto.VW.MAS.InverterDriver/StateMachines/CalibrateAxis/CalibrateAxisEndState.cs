@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -42,7 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             if (this.stopRequested)
             {
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IHomingInverterStatus currentStatus)
                 {
                     currentStatus.HomingControlWord.HomingOperation = false;
                 }

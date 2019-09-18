@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -38,11 +37,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             if (this.stopRequested)
             {
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IPositioningInverterStatus positioningInverterStatus)
                 {
-                    currentStatus.PositionControlWord.NewSetPoint = false;
+                    var controlWord = positioningInverterStatus.PositionControlWord;
+                    controlWord.NewSetPoint = false;
                 }
             }
+
             this.Logger.LogDebug("Notify Positioning End");
 
             var notificationMessage = new FieldNotificationMessage(
