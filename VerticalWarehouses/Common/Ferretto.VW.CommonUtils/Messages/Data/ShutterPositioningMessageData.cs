@@ -25,7 +25,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             int requestedCycles,
             int delay,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            MessageVerbosity verbosity = MessageVerbosity.Debug )
         {
             this.ShutterPosition = shutterPosition;
             this.ShutterMovementDirection = shutterMovementDirection;
@@ -40,24 +40,24 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Verbosity = verbosity;
         }
 
-        public ShutterPositioningMessageData(IShutterPositioningMessageData shutterPositioningMessageData)
+        public ShutterPositioningMessageData( IShutterPositioningMessageData shutterPositioningMessageData )
         {
-            if (shutterPositioningMessageData == null)
+            if ( shutterPositioningMessageData == null )
             {
-                throw new System.ArgumentNullException(nameof(shutterPositioningMessageData));
+                throw new System.ArgumentNullException( nameof( shutterPositioningMessageData ) );
             }
 
-            this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
-            this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
-            this.ShutterType = shutterpositioningMessageData.ShutterType;
-            this.SpeedRate = shutterpositioningMessageData.SpeedRate;
-            this.HigherDistance = shutterpositioningMessageData.HigherDistance;
-            this.LowerDistance = shutterpositioningMessageData.LowerDistance;
-            this.MovementMode = shutterpositioningMessageData.MovementMode;
-            this.MovementType = shutterpositioningMessageData.MovementType;
-            this.RequestedCycles = shutterpositioningMessageData.RequestedCycles;
-            this.Delay = shutterpositioningMessageData.Delay;
-            this.Verbosity = shutterpositioningMessageData.Verbosity;
+            this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterPositioningMessageData.ShutterType;
+            this.SpeedRate = shutterPositioningMessageData.SpeedRate;
+            this.HigherDistance = shutterPositioningMessageData.HigherDistance;
+            this.LowerDistance = shutterPositioningMessageData.LowerDistance;
+            this.MovementMode = shutterPositioningMessageData.MovementMode;
+            this.MovementType = shutterPositioningMessageData.MovementType;
+            this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
+            this.Delay = shutterPositioningMessageData.Delay;
+            this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
 
         #endregion

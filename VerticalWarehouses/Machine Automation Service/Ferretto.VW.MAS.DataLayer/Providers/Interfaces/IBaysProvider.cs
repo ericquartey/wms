@@ -3,6 +3,7 @@ using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces

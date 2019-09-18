@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IElevatorProvider
     {
+
+
         #region Methods
 
         decimal GetHorizontalPosition(BayNumber bayNumber);

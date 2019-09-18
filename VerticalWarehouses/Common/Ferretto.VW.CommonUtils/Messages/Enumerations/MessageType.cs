@@ -76,7 +76,7 @@
 
         PositioningTable,
 
-        TorqueCurrentSampling
+        TorqueCurrentSampling,
 
         CurrentSamplingInMotionNotification,
 

@@ -12,6 +12,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -45,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IConfigurationValueManagmentDataLayer configurationValueManagement)
             : base(eventAggregator)
         {
-            if (eventAggregator is null)
+            if(eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
@@ -84,7 +85,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay Activate(BayNumber bayIndex)
         {
             var bay = this.GetByIndex(bayIndex);
-            if (bay is null)
+            if(bay is null)
             {
                 throw new EntityNotFoundException(bayIndex);
             }
@@ -99,7 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay AssignMissionOperation(BayNumber bayIndex, int? missionId, int? missionOperationId)
         {
             var bay = this.GetByIndex(bayIndex);
-            if (bay is null)
+            if(bay is null)
             {
                 throw new EntityNotFoundException(bayIndex);
             }
@@ -114,7 +115,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void Create(Bay bay)
         {
-            if (bay is null)
+            if(bay is null)
             {
                 throw new ArgumentNullException(nameof(bay));
             }
@@ -127,7 +128,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay Deactivate(BayNumber bayIndex)
         {
             var bay = this.GetByIndex(bayIndex);
-            if (bay is null)
+            if(bay is null)
             {
                 throw new EntityNotFoundException(bayIndex);
             }
@@ -153,27 +154,27 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             BayNumber returnValue = BayNumber.None;
 
-            switch (inverterIndex)
+            switch(inverterIndex)
             {
                 case InverterIndex.MainInverter:
                 case InverterIndex.Slave1:
-                    returnValue = BayNumber.ElevatorBay;
-                    break;
+                returnValue = BayNumber.ElevatorBay;
+                break;
 
                 case InverterIndex.Slave2:
                 case InverterIndex.Slave3:
-                    returnValue = BayNumber.BayOne;
-                    break;
+                returnValue = BayNumber.BayOne;
+                break;
 
                 case InverterIndex.Slave4:
                 case InverterIndex.Slave5:
-                    returnValue = BayNumber.BayTwo;
-                    break;
+                returnValue = BayNumber.BayTwo;
+                break;
 
                 case InverterIndex.Slave6:
                 case InverterIndex.Slave7:
-                    returnValue = BayNumber.BayThree;
-                    break;
+                returnValue = BayNumber.BayThree;
+                break;
             }
 
             return returnValue;
@@ -183,19 +184,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             BayNumber returnValue = BayNumber.None;
 
-            switch (ioIndex)
+            switch(ioIndex)
             {
                 case IoIndex.IoDevice1:
-                    returnValue = BayNumber.BayOne;
-                    break;
+                returnValue = BayNumber.BayOne;
+                break;
 
                 case IoIndex.IoDevice2:
-                    returnValue = BayNumber.BayTwo;
-                    break;
+                returnValue = BayNumber.BayTwo;
+                break;
 
                 case IoIndex.IoDevice3:
-                    returnValue = BayNumber.BayThree;
-                    break;
+                returnValue = BayNumber.BayThree;
+                break;
             }
 
             return returnValue;
@@ -210,32 +211,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public BayNumber GetByMovementType(IPositioningMessageData data)
         {
             BayNumber targetBay;
-            switch (data.MovementMode)
+            switch(data.MovementMode)
             {
                 case MovementMode.BeltBurnishing:
                 case MovementMode.FindZero:
+                targetBay = BayNumber.ElevatorBay;
+                break;
+
+                case MovementMode.Position:
+                switch(data.AxisMovement)
+                {
+                    case Axis.Horizontal:
+                    case Axis.Vertical:
+                    case Axis.HorizontalAndVertical:
                     targetBay = BayNumber.ElevatorBay;
                     break;
 
-                case MovementMode.Position:
-                    switch (data.AxisMovement)
-                    {
-                        case Axis.Horizontal:
-                        case Axis.Vertical:
-                        case Axis.HorizontalAndVertical:
-                            targetBay = BayNumber.ElevatorBay;
-                            break;
-
-                        default:
-                            targetBay = BayNumber.None;
-                            break;
-                    }
-
-                    break;
-
-                default:
+                    default:
                     targetBay = BayNumber.None;
                     break;
+                }
+
+                break;
+
+                default:
+                targetBay = BayNumber.None;
+                break;
             }
 
             return targetBay;
@@ -245,57 +246,57 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             InverterIndex returnValue = InverterIndex.None;
 
-            switch (bayIndex)
+            switch(bayIndex)
             {
                 case BayNumber.ElevatorBay:
-                    switch (data.MovementMode)
+                switch(data.MovementMode)
+                {
+                    case MovementMode.Position:
+                    switch(data.AxisMovement)
                     {
-                        case MovementMode.Position:
-                            switch (data.AxisMovement)
-                            {
-                                case Axis.Horizontal:
-                                    returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                                    break;
+                        case Axis.Horizontal:
+                        returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                        break;
 
-                                case Axis.Vertical:
-                                    returnValue = InverterIndex.MainInverter;
-                                    break;
-
-                                default:
-                                    throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
-                            }
-                            break;
-
-                        case MovementMode.BeltBurnishing:
-                            returnValue = InverterIndex.MainInverter;
-                            break;
-
-                        case MovementMode.FindZero:
-                        case MovementMode.Profile:
-                            returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                            break;
+                        case Axis.Vertical:
+                        returnValue = InverterIndex.MainInverter;
+                        break;
 
                         default:
-                            returnValue = InverterIndex.None;
-                            break;
+                        throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
                     }
                     break;
+
+                    case MovementMode.BeltBurnishing:
+                    returnValue = InverterIndex.MainInverter;
+                    break;
+
+                    case MovementMode.FindZero:
+                    case MovementMode.Profile:
+                    returnValue = this.machineConfigurationProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                    break;
+
+                    default:
+                    returnValue = InverterIndex.None;
+                    break;
+                }
+                break;
 
                 case BayNumber.BayOne:
                 case BayNumber.BayTwo:
                 case BayNumber.BayThree:
-                    switch (data.MovementMode)
-                    {
-                        case MovementMode.ShutterTest:
-                        case MovementMode.Position:
-                            returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
-                            break;
-                    }
+                switch(data.MovementMode)
+                {
+                    case MovementMode.ShutterTest:
+                    case MovementMode.Position:
+                    returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
                     break;
+                }
+                break;
 
                 default:
-                    returnValue = InverterIndex.None;
-                    break;
+                returnValue = InverterIndex.None;
+                break;
             }
 
             return returnValue;
@@ -307,32 +308,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             var bay = this.GetByIndex(bayIndex);
 
-            switch (bay.Type)
+            switch(bay.Type)
             {
                 case BayType.Elevator:
-                    if (this.machineConfigurationProvider.IsOneKMachine())
-                    {
-                        returnValue.Add(InverterIndex.MainInverter);
-                        returnValue.Add(InverterIndex.Slave1);
-                    }
-                    else
-                    {
-                        returnValue.Add(InverterIndex.MainInverter);
-                    }
+                if(this.machineConfigurationProvider.IsOneKMachine())
+                {
+                    returnValue.Add(InverterIndex.MainInverter);
+                    returnValue.Add(InverterIndex.Slave1);
+                }
+                else
+                {
+                    returnValue.Add(InverterIndex.MainInverter);
+                }
 
-                    break;
+                break;
 
                 case BayType.Single:
                 case BayType.Double:
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
-                    break;
+                returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
+                break;
 
                 case BayType.ExternalSingle:
                 case BayType.ExternalDouble:
                 case BayType.Carousel:
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
-                    break;
+                returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
+                returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
+                break;
             }
 
             return returnValue;
@@ -342,20 +343,20 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             IoIndex returnValue = IoIndex.None;
 
-            switch (bayIndex)
+            switch(bayIndex)
             {
                 case BayNumber.ElevatorBay:
                 case BayNumber.BayOne:
-                    returnValue = IoIndex.IoDevice1;
-                    break;
+                returnValue = IoIndex.IoDevice1;
+                break;
 
                 case BayNumber.BayTwo:
-                    returnValue = IoIndex.IoDevice2;
-                    break;
+                returnValue = IoIndex.IoDevice2;
+                break;
 
                 case BayNumber.BayThree:
-                    returnValue = IoIndex.IoDevice3;
-                    break;
+                returnValue = IoIndex.IoDevice3;
+                break;
             }
 
             return returnValue;
@@ -364,7 +365,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
         {
             var bay = this.GetByIndex(targetBay);
-            if (bay is null)
+            if(bay is null)
             {
                 throw new EntityNotFoundException(targetBay);
             }
@@ -379,7 +380,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public void Update(BayNumber bayIndex, string ipAddress, BayType bayType)
         {
             var bay = this.GetByIndex(bayIndex);
-            if (bay is null)
+            if(bay is null)
             {
                 throw new EntityNotFoundException(bayIndex);
             }
@@ -393,21 +394,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Bay UpdatePosition(BayNumber bayIndex, int position, decimal height)
         {
             var bay = this.GetByIndex(bayIndex);
-            if (bay.Positions.Count() < position)
+            if(bay.Positions.Count() < position)
             {
                 throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }
 
             var lowerBound = this.verticalAxis.LowerBound;
             var upperBound = this.verticalAxis.UpperBound;
-            if (height < lowerBound || height > upperBound)
+            if(height < lowerBound || height > upperBound)
             {
                 throw new ArgumentOutOfRangeException(
                     string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, lowerBound, upperBound));
             }
 
             var bayPosition = $"Bay{bayIndex}Position{position}";
-            if (Enum.TryParse<GeneralInfo>(bayPosition, out var positionValue))
+            if(Enum.TryParse<GeneralInfo>(bayPosition, out var positionValue))
             {
                 this.configurationValueManagement.SetDecimalConfigurationValue((long)positionValue, ConfigurationCategory.GeneralInfo, height);
 
@@ -421,7 +422,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private void Update(Bay bay)
         {
-            if (bay is null)
+            if(bay is null)
             {
                 throw new ArgumentNullException(nameof(bay));
             }

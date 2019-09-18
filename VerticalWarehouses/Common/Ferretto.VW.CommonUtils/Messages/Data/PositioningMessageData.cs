@@ -6,6 +6,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class DataSample
     {
+
+
         #region Properties
 
         public System.DateTime TimeStamp { get; set; }
@@ -17,6 +19,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
     public class PositioningMessageData : IPositioningMessageData
     {
+
+
         #region Constructors
 
         public PositioningMessageData()
@@ -26,7 +30,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Major Code Smell",
             "S107:Methods should not have too many parameters",
-            Justification = "Check if we really need this constructor.")]
+            Justification = "Check if we really need this constructor." )]
         public PositioningMessageData(
             Axis axisMovement,
             MovementType movementType,
@@ -41,7 +45,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int delay,
             decimal[] switchPosition,
             HorizontalMovementDirection direction,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            MessageVerbosity verbosity = MessageVerbosity.Debug )
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -59,7 +63,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Direction = direction;
         }
 
-        public PositioningMessageData(IPositioningMessageData other)
+        public PositioningMessageData( IPositioningMessageData other )
         {
             this.AxisMovement = other.AxisMovement;
             this.MovementType = other.MovementType;
@@ -74,6 +78,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -117,13 +123,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public DataSample TorqueCurrentSample { get; set; }
 
-        public DataSample TorqueCurrentSample { get; set; }
-
         public decimal UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         #endregion
+
+
 
         #region Methods
 

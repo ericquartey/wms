@@ -5,6 +5,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IPositioningMessageData : IMessageData
     {
+
+
         #region Properties
 
         Axis AxisMovement { get; }
@@ -44,8 +46,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal[] TargetSpeed { get; }
-
-        DataSample TorqueCurrentSample { get; set; }
 
         DataSample TorqueCurrentSample { get; set; }
 

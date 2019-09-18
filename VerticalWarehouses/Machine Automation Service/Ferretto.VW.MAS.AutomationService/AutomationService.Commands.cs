@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     partial class AutomationService
     {
+
+
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)

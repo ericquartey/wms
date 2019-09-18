@@ -7,8 +7,10 @@ using Ferretto.VW.MAS.Utils;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal partial class AutomationService : AutomationBackgroundService
+    internal partial class AutomationService
     {
+
+
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -21,77 +23,77 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage)
         {
-            switch (receivedMessage.Type)
+            switch(receivedMessage.Type)
             {
                 case MessageType.SensorsChanged:
-                    this.OnSensorsChanged(receivedMessage);
-                    break;
+                this.OnSensorsChanged(receivedMessage);
+                break;
 
                 case MessageType.DlException:
-                    this.OnDataLayerException(receivedMessage);
-                    break;
+                this.OnDataLayerException(receivedMessage);
+                break;
 
                 case MessageType.Homing:
-                    this.HomingMethod(receivedMessage);
-                    break;
+                this.HomingMethod(receivedMessage);
+                break;
 
                 case MessageType.SwitchAxis:
-                    this.SwitchAxisMethod(receivedMessage);
-                    break;
+                this.SwitchAxisMethod(receivedMessage);
+                break;
 
                 case MessageType.ShutterPositioning:
-                    this.ShutterPositioningMethod(receivedMessage);
-                    break;
+                this.ShutterPositioningMethod(receivedMessage);
+                break;
 
                 case MessageType.CalibrateAxis:
-                    this.CalibrateAxisMethod(receivedMessage);
-                    break;
+                this.CalibrateAxisMethod(receivedMessage);
+                break;
 
                 case MessageType.CurrentPosition:
-                    this.CurrentPositionMethod(receivedMessage);
-                    break;
+                this.CurrentPositionMethod(receivedMessage);
+                break;
 
                 case MessageType.Positioning:
-                    this.OnPositioningChanged(receivedMessage);
-                    break;
+                this.OnPositioningChanged(receivedMessage);
+                break;
 
                 case MessageType.ResolutionCalibration:
-                    this.ResolutionCalibrationMethod(receivedMessage);
-                    break;
+                this.ResolutionCalibrationMethod(receivedMessage);
+                break;
 
                 case MessageType.ExecuteMission:
-                    await this.OnNewMissionOperationAvailable(receivedMessage.Data as INewMissionOperationAvailable);
-                    break;
+                await this.OnNewMissionOperationAvailable(receivedMessage.Data as INewMissionOperationAvailable);
+                break;
 
                 case MessageType.ElevatorWeightCheck:
-                    this.ElevatorWeightCheckMethod(receivedMessage);
-                    break;
+                this.ElevatorWeightCheckMethod(receivedMessage);
+                break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
-                    break;
+                this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
+                break;
 
                 case MessageType.ErrorStatusChanged:
-                    this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
-                    break;
+                this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
+                break;
 
                 case MessageType.InverterStatusWord:
-                    this.OnInverterStatusWordChanged(receivedMessage);
-                    break;
+                this.OnInverterStatusWordChanged(receivedMessage);
+                break;
 
                 case MessageType.MachineStateActive:
-                    this.MachineStateActiveMethod(receivedMessage);
-                    break;
+                this.MachineStateActiveMethod(receivedMessage);
+                break;
 
                 case MessageType.MachineStatusActive:
-                    this.MachineStatusActiveMethod(receivedMessage);
-                    break;
+                this.MachineStatusActiveMethod(receivedMessage);
+                break;
             }
         }
 
         private void OnDataLayerException(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
+            if(receivedMessage.ErrorLevel == ErrorLevel.Critical)
             {
                 this.applicationLifetime.StopApplication();
             }

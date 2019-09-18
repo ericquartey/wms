@@ -18,6 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ElevatorController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IElevatorProvider elevatorProvider;
@@ -37,16 +38,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
-            if (elevatorProvider is null)
+            if(elevatorProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
 
-            if (elevatorWeightCheckProvider is null)
+            if(elevatorWeightCheckProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
-            if (machineConfigurationProvider is null)
+            if(machineConfigurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(machineConfigurationProvider));
             }
@@ -58,6 +59,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+
+
         #region Methods
 
         [HttpGet("horizontal/position")]
@@ -68,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 var position = this.elevatorProvider.GetHorizontalPosition(this.BayNumber);
                 return this.Ok(position);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse<decimal>(ex);
             }
@@ -82,7 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 var position = this.elevatorProvider.GetVerticalPosition(this.BayNumber);
                 return this.Ok(position);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse<decimal>(ex);
             }
@@ -111,12 +114,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     publishAction);
 
                 // check feasibility
-                if (isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
+                if(isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
                 {
                     throw new InvalidOperationException("Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
                 }
                 var zeroSensor = (this.machineConfigurationProvider.IsOneKMachine() ? IOMachineSensors.ZeroPawlSensorOneK : IOMachineSensors.ZeroPawlSensor);
-                if ((!isStartedOnBoard && !messageData.SensorsStates[(int)zeroSensor])
+                if((!isStartedOnBoard && !messageData.SensorsStates[(int)zeroSensor])
                     || (isStartedOnBoard && messageData.SensorsStates[(int)zeroSensor])
                     )
                 {
@@ -128,7 +131,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position.Value);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -144,7 +147,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.MoveHorizontal(direction, this.BayNumber);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -161,7 +164,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -177,7 +180,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.MoveVertical(direction, this.BayNumber);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -193,7 +196,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -209,7 +212,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorProvider.Stop(this.BayNumber);
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -225,7 +228,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorWeightCheckProvider.Stop();
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -240,7 +243,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 return this.Ok();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -259,7 +262,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
