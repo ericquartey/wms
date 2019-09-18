@@ -535,8 +535,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
+                    message.TargetBay = message.RequestingBay;
                     currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
+                        message.TargetBay,
                         this.baysProvider.GetInverterList(message.RequestingBay)[this.baysProvider.ShutterInverterPosition],
                         this.machineSensorsStatus,
                         this.eventAggregator,
@@ -544,7 +546,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.serviceScopeFactory);
 
                     this.logger.LogDebug($"2:Starting FSM {currentStateMachine.GetType()}");
-                    this.currentStateMachines.Add(message.RequestingBay, currentStateMachine);
+                    this.currentStateMachines.Add(message.TargetBay, currentStateMachine);
 
                     try
                     {

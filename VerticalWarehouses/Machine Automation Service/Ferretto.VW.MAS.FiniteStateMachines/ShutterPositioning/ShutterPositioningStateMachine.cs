@@ -17,7 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
@@ -31,6 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public ShutterPositioningStateMachine(
             IShutterPositioningMessageData positioningMessageData,
             BayNumber requestingBay,
+            BayNumber targetBay,
             InverterIndex inverterIndex,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new ShutterPositioningMachineData(positioningMessageData, requestingBay, inverterIndex, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new ShutterPositioningMachineData(positioningMessageData, requestingBay, targetBay, inverterIndex, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -54,8 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         }
 
         #endregion
-
-
 
         #region Methods
 

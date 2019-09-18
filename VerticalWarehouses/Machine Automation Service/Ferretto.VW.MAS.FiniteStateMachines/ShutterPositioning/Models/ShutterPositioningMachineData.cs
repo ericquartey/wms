@@ -13,13 +13,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 {
     public class ShutterPositioningMachineData : IShutterPositioningMachineData
     {
-
-
         #region Constructors
 
         public ShutterPositioningMachineData(
             IShutterPositioningMessageData positioningMessageData,
             BayNumber requestingBay,
+            BayNumber targetBay,
             InverterIndex inverterIndex,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
@@ -28,6 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
         {
             this.PositioningMessageData = positioningMessageData;
             this.RequestingBay = requestingBay;
+            this.TargetBay = targetBay;
             this.InverterIndex = inverterIndex;
             this.MachineSensorsStatus = machineSensorsStatus;
             this.EventAggregator = eventAggregator;
@@ -36,8 +36,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
         }
 
         #endregion
-
-
 
         #region Properties
 
