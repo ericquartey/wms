@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while parsing raw message bytes", InverterDriverExceptionCode.InverterPacketMalformed, ex);
+                throw new InverterDriverException($"Exception {ex.Message} while parsing raw message bytes\nLength:{rawMessage.Length} payloadLength:{this.payloadLength}", InverterDriverExceptionCode.InverterPacketMalformed, ex);
             }
         }
 
@@ -179,8 +179,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         {
             get
             {
-                var errorNumber = BitConverter.ToInt32(this.payload, 0);
-                return this.telegramErrorText.ContainsKey(errorNumber) ? this.telegramErrorText[errorNumber] : string.Empty;
+                return this.telegramErrorText.ContainsKey(this.UShortPayload) ? this.telegramErrorText[this.UShortPayload] : string.Empty;
             }
         }
 
@@ -400,7 +399,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
                 case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.TorqueCurrent:
                     if (this.payloadLength == 4)
                     {
                         returnValue = BitConverter.ToInt32(this.payload, 0);
@@ -445,6 +443,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusDigitalSignals:
+                case InverterParameterId.TorqueCurrent:
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
                     if (this.payloadLength == 2)

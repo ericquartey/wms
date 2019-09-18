@@ -37,8 +37,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
-        private const int STATUS_WORD_UPDATE_INTERVAL = 300;
-
         private readonly Stopwatch axisIntervalStopwatch;
 
         private readonly Timer[] axisPositionUpdateTimer;
