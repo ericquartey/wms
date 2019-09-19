@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
-    public interface IPowerEnableStateData : IStateData
+    internal interface IPowerEnableStateData : IStateData
     {
     }
 }

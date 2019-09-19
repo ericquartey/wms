@@ -6,10 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public interface IState : IDisposable
+    internal interface IState : IDisposable
     {
-
-
         #region Properties
 
         ILogger<FiniteStateMachines> Logger { get; }
@@ -20,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         string Type { get; }
 
         #endregion
-
-
 
         #region Methods
 

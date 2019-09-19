@@ -24,7 +24,7 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public partial class FiniteStateMachines : BackgroundService
+    internal partial class FiniteStateMachines : BackgroundService
     {
         #region Fields
 

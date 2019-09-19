@@ -7,10 +7,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
 {
-    public class ResetFaultStateData : IResetFaultStateData
+    internal class ResetFaultStateData : IResetFaultStateData
     {
-
-
         #region Constructors
 
         public ResetFaultStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 {
-    public class ShutterPositioningStateData : IShutterPositioningStateData
+    internal class ShutterPositioningStateData : IShutterPositioningStateData
     {
-
-
         #region Constructors
 
         public ShutterPositioningStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

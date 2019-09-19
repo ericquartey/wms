@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 {
-    public interface IHomingStateData : IStateData
+    internal interface IHomingStateData : IStateData
     {
     }
 }

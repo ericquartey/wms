@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS.DataLayer.Providers;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -31,8 +33,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpGet]
@@ -41,10 +41,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             void publishAction()
             {
                 this.PublishCommand(
-null,
-"Sensors changed Command",
-MessageActor.FiniteStateMachines,
-MessageType.SensorsChanged);
+                null,
+                "Sensors changed Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.SensorsChanged);
             }
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(

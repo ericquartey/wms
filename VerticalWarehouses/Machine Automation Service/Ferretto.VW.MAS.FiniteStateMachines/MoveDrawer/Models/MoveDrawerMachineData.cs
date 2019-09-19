@@ -12,10 +12,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 {
-    public class MoveDrawerMachineData : IMoveDrawerMachineData
+    internal class MoveDrawerMachineData : IMoveDrawerMachineData
     {
-
-
         #region Constructors
 
         public MoveDrawerMachineData(
@@ -45,8 +43,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

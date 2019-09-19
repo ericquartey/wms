@@ -7,9 +7,8 @@ using Ferretto.VW.MAS.Utils.Utilities;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
-    public class ResetFaultEndState : StateBase
+    internal class ResetFaultEndState : StateBase
     {
-
         #region Fields
 
         private readonly IResetFaultMachineData machineData;
@@ -39,8 +38,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
         }
 
         #endregion
-
-
 
         #region Methods
 

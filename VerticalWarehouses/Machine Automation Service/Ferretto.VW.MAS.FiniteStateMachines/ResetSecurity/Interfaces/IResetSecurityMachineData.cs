@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces
 {
-    public interface IResetSecurityMachineData : IMachineData
+    internal interface IResetSecurityMachineData : IMachineData
     {
     }
 }

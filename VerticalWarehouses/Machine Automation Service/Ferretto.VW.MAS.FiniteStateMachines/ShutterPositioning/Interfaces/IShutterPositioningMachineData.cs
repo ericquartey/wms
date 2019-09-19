@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces
 {
-    public interface IShutterPositioningMachineData : IMachineData
+    internal interface IShutterPositioningMachineData : IMachineData
     {
         #region Properties
 

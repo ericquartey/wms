@@ -5,10 +5,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 {
-    public class PowerEnableStateData : IPowerEnableStateData
+    internal class PowerEnableStateData : IPowerEnableStateData
     {
-
-
         #region Constructors
 
         public PowerEnableStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -20,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

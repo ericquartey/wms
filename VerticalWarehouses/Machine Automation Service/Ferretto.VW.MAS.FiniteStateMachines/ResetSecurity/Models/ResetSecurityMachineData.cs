@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
 {
-    public class ResetSecurityMachineData : IResetSecurityMachineData
+    internal class ResetSecurityMachineData : IResetSecurityMachineData
     {
         #region Constructors
 

@@ -6,15 +6,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IElevatorProvider
     {
-
-
         #region Methods
 
         decimal? GetHorizontalPosition(BayNumber requestingBay);
 
         decimal GetVerticalPosition(BayNumber requestingBay);
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position, BayNumber requestingBay);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
 

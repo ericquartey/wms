@@ -3,10 +3,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
-    public interface IStateData
+    internal interface IStateData
     {
-
-
         #region Properties
 
         FieldNotificationMessage FieldMessage { get; set; }

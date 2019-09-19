@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 {
-    public class PowerEnableMachineData : IPowerEnableMachineData
+    internal class PowerEnableMachineData : IPowerEnableMachineData
     {
         #region Constructors
 

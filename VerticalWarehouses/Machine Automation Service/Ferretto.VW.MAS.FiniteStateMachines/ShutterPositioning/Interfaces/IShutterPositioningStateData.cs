@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces
 {
-    public interface IShutterPositioningStateData : IStateData
+    internal interface IShutterPositioningStateData : IStateData
     {
     }
 }

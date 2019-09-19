@@ -5,7 +5,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
-    public interface IMachineData
+    internal interface IMachineData
     {
         #region Properties
 

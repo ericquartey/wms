@@ -7,10 +7,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 {
-    public class MoveDrawerStateData : IMoveDrawerStateData
+    internal class MoveDrawerStateData : IMoveDrawerStateData
     {
-
-
         #region Constructors
 
         public MoveDrawerStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

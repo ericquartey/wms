@@ -2,10 +2,8 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
-    public interface IPowerEnableMachineData : IMachineData
+    internal interface IPowerEnableMachineData : IMachineData
     {
-
-
         #region Properties
 
         bool Enable { get; }

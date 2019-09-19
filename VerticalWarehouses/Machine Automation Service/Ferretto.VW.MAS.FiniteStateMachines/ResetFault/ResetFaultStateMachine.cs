@@ -13,9 +13,8 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
-    public class ResetFaultStateMachine : StateMachineBase
+    internal class ResetFaultStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IResetFaultMachineData machineData;
@@ -50,8 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         #endregion
 
-
-
         #region Methods
 
         /// <inheritdoc/>
@@ -74,7 +71,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
         /// <inheritdoc/>
         public override void Start()
         {
-            lock(this.CurrentState)
+            lock (this.CurrentState)
             {
                 var stateData = new ResetFaultStateData(this, this.machineData);
                 this.CurrentState = new ResetFaultStartState(stateData);
@@ -84,7 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
-            lock(this.CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -92,12 +89,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

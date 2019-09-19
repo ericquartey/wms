@@ -9,10 +9,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public interface IStateMachine : IDisposable
+    internal interface IStateMachine : IDisposable
     {
-
-
         #region Properties
 
         IEventAggregator EventAggregator { get; }
@@ -22,8 +20,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         IServiceScopeFactory ServiceScopeFactory { get; }
 
         #endregion
-
-
 
         #region Methods
 

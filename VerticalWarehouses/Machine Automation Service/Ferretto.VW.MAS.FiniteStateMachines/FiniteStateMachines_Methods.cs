@@ -422,10 +422,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationExecuting);
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                 }
-                else if(message.RequestingBay > 0)
+                else if (message.RequestingBay > 0)
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
+                    var inverterStatus = new AglInverterStatus((byte)this.baysProvider.GetInverterList(message.RequestingBay).ToArray()[this.baysProvider.BayInverterPosition]);
                     var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -584,7 +584,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
-                if(receivedMessage.Data is IStopMessageData data)
+                if (receivedMessage.Data is IStopMessageData data)
                 {
                     currentStateMachine.Stop(data.StopReason);
                 }

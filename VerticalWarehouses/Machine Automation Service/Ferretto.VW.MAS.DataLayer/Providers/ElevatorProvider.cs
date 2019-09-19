@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class ElevatorProvider : BaseProvider, IElevatorProvider
     {
-
         #region Fields
 
         private readonly IBayPositionControlDataLayer bayPositionControl;
@@ -181,11 +180,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
-
-
         #region Methods
 
-        public decimal? GetHorizontalPosition(BayNumber bayNumber)
+        public decimal? GetHorizontalPosition(BayNumber requestingBay)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
@@ -194,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 "Request Horizontal position",
                 MessageActor.FiniteStateMachines,
                 MessageType.RequestPosition,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
@@ -227,9 +224,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition ?? 0;
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position, BayNumber requestingBay)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay)
         {
-            var sensors = this.sensorsProvider.GetAll();
+            var sensors = this.sensorsProvider.GetAll(requestingBay);
 
             var isLoadingUnitOnBoard =
                 sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
@@ -252,7 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             // execute command
-            var position = this.GetHorizontalPosition().Value;
+            var position = this.GetHorizontalPosition(requestingBay).Value;
 
             // if direction is Forwards height increments, else is decremented
 
@@ -369,7 +366,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
             var upperBound = this.verticalAxisDataLayer.UpperBound;
 
-            if(targetPosition < lowerBound || targetPosition > upperBound)
+            if (targetPosition < lowerBound || targetPosition > upperBound)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(targetPosition),
@@ -377,7 +374,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if(!homingDone)
+            if (!homingDone)
             {
                 throw new InvalidOperationException(
                    Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
@@ -423,7 +420,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             //INFO Absolute movement using the min and max reachable positions for limits
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if(homingDone)
+            if (homingDone)
             {
                 feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                 movementType = MovementType.Absolute;
@@ -472,7 +469,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void MoveVerticalOfDistance(decimal distance, BayNumber bayNumber)
         {
-            if(distance == 0)
+            if (distance == 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(distance),
@@ -480,7 +477,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if(!homingDone)
+            if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
@@ -526,7 +523,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
-            if(displacement <= 0)
+            if (displacement <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(displacement),
@@ -534,7 +531,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if(!homingDone)
+            if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
@@ -586,7 +583,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void UpdateResolution(decimal newResolution)
         {
-            if(newResolution <= 0)
+            if (newResolution <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(newResolution));
             }
@@ -602,52 +599,52 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             switch (feedRateCategory)
             {
                 case FeedRateCategory.VerticalManualMovements:
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
-                break;
+                    feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
+                    break;
 
                 case FeedRateCategory.VerticalManualMovementsAfterZero:
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
-                break;
+                    feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                    break;
 
                 case FeedRateCategory.HorizontalManualMovements:
-                feedRate = this.horizontalManualMovementsDataLayer.FeedRateHM;
-                break;
+                    feedRate = this.horizontalManualMovementsDataLayer.FeedRateHM;
+                    break;
 
                 case FeedRateCategory.VerticalResolutionCalibration:
-                feedRate = this.resolutionCalibrationDataLayer.FeedRate;
-                break;
+                    feedRate = this.resolutionCalibrationDataLayer.FeedRate;
+                    break;
 
                 case FeedRateCategory.VerticalOffsetCalibration:
-                feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
-                break;
+                    feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
+                    break;
 
                 case FeedRateCategory.CellHeightCheck:
-                feedRate = this.cellControlDataLayer.FeedRateCC;
-                break;
+                    feedRate = this.cellControlDataLayer.FeedRateCC;
+                    break;
 
                 case FeedRateCategory.PanelHeightCheck:
-                feedRate = this.panelControlDataLayer.FeedRatePC;
-                break;
+                    feedRate = this.panelControlDataLayer.FeedRatePC;
+                    break;
 
                 case FeedRateCategory.LoadingUnitWeight:
-                feedRate = this.weightControl.FeedRateWC;
-                break;
+                    feedRate = this.weightControl.FeedRateWC;
+                    break;
 
                 case FeedRateCategory.BayHeight:
-                feedRate = this.bayPositionControl.FeedRateBP;
-                break;
+                    feedRate = this.bayPositionControl.FeedRateBP;
+                    break;
 
                 case FeedRateCategory.LoadFirstDrawer:
-                throw new NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                    throw new NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
 
                 case FeedRateCategory.ShutterManualMovements:
-                throw new NotImplementedException(nameof(FeedRateCategory.ShutterManualMovements));
+                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterManualMovements));
 
                 case FeedRateCategory.ShutterHeightCheck:
-                throw new NotImplementedException(nameof(FeedRateCategory.ShutterHeightCheck));
+                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterHeightCheck));
 
                 default:
-                throw new ArgumentOutOfRangeException(nameof(feedRateCategory));
+                    throw new ArgumentOutOfRangeException(nameof(feedRateCategory));
             }
 
             return feedRate;

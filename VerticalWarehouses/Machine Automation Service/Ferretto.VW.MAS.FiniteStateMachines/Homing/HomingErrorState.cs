@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingErrorState : StateBase
+    internal class HomingErrorState : StateBase
     {
         #region Fields
 
