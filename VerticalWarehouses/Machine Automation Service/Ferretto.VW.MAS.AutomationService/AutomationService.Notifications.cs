@@ -88,7 +88,13 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.MachineStatusActive:
                 this.MachineStatusActiveMethod(receivedMessage);
                 break;
+
+                case MessageType.DataLayerReady:
+                this.OnDataLayerReady();
+                break;
             }
+
+            this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
         }
 
         private void OnDataLayerException(NotificationMessage receivedMessage)

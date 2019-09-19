@@ -114,9 +114,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
-            this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
-
             this.currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -880,6 +877,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
 
             this.machineSensorsStatus = new MachineSensorsStatus(this.machineConfigurationProvider.IsOneKMachine());
+
+            this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
+            this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
         }
 
         private void SendCleanDebug()
