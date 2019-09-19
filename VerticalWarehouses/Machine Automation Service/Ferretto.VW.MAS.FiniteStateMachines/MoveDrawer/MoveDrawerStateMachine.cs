@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,7 +11,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerStateMachine : StateMachineBase
+    internal class MoveDrawerStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -29,8 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         private readonly ISetupStatusProvider setupStatusProvider;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private bool disposed;
 
         #endregion
 
@@ -57,15 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.drawerOperationData = drawerOperationData;
 
             this.CurrentState = new EmptyState(logger);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -105,12 +93,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            base.PublishNotificationMessage(message);
-        }
-
-        /// <inheritdoc/>
         public override void Start()
         {
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
@@ -146,7 +128,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 return;
             }
 
-            if (!this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+            if (this.drawerOperationData.Operation != DrawerOperation.Deposit && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
             {
                 var notificationMessage = new NotificationMessage(
                     null,
@@ -210,21 +192,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             {
                 this.CurrentState.Stop();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

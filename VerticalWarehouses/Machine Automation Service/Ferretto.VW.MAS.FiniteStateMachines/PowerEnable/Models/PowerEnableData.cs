@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,10 +9,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 {
-    public class PowerEnableData : IPowerEnableData
+    internal class PowerEnableData : IPowerEnableData
     {
-
-
         #region Constructors
 
         public PowerEnableData(IEventAggregator eventAggregator,
@@ -30,8 +29,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

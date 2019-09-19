@@ -9,14 +9,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     public class ResetSecurityEndState : IoStateBase
     {
-
         #region Fields
 
         private readonly IoIndex index;
 
         private readonly IoStatus status;
-
-        private bool disposed;
 
         #endregion
 
@@ -37,34 +34,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         #endregion
 
-        #region Destructors
-
-        ~ResetSecurityEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
 
         public override void ProcessMessage(IoMessage message)
         {

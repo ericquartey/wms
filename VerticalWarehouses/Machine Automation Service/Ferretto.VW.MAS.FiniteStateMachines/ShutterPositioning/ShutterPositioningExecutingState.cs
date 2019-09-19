@@ -5,7 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
-    public class ShutterPositioningExecutingState : StateBase
+    internal class ShutterPositioningExecutingState : StateBase
     {
         #region Fields
 
@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         private readonly int numberOfRequestedCycles;
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
-
-        private bool disposed;
 
         private ShutterMovementDirection OldDirection;
 
@@ -51,15 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.machineSensorsStatus = machineSensorsStatus;
             this.delayTimer = delayTimer;
             this.inverterIndex = inverterIndex;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningExecutingState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -146,8 +135,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
             var inverterStatus = new AglInverterStatus((byte)this.inverterIndex);
-            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.aglInverterInputs.Length);
-            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.inverterIndex * inverterStatus.Inputs.Length);
+            Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
@@ -174,18 +163,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, this.Logger, true));
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         private void StartPositioning(ShutterPosition position, ShutterMovementDirection direction)
         {
             ShutterPosition shutterPositionTarget;
@@ -205,11 +182,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     shutterPositionTarget = ShutterPosition.Half;
                 }
             }
+            // speed is negative to go up
+            var speedRate = this.shutterPositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
+
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
                 this.shutterPositioningMessageData.ShutterType,
-                this.shutterPositioningMessageData.SpeedRate);
+                speedRate,
+                this.shutterPositioningMessageData.HigherDistance,
+                this.shutterPositioningMessageData.LowerDistance,
+                this.shutterPositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,

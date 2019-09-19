@@ -72,7 +72,16 @@
     <None Update="Controls\Menu\PpcStepsMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Controls\PpcSpinEdit\PpcSpinEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Skins\Palette.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\DevExpress\MessageBox\WinUIMessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\DevExpress\SpinEdit\SpinEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Styles\Styles.xaml">

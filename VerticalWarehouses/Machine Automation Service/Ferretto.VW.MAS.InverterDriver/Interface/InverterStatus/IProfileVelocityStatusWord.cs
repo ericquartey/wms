@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
 {

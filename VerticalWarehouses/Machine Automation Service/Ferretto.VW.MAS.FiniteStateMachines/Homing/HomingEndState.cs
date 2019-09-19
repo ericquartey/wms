@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -13,15 +13,13 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingEndState : StateBase
+    internal class HomingEndState : StateBase
     {
         #region Fields
 
         private readonly IHomingOperation homingOperation;
 
         private readonly bool stopRequested;
-
-        private bool disposed;
 
         #endregion
 
@@ -36,15 +34,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.stopRequested = stopRequested;
             this.homingOperation = homingOperation;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -96,8 +85,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             if (this.homingOperation.IsOneKMachine)
@@ -109,8 +96,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterSetTimer,
                     (byte)InverterIndex.Slave1);
-
-                this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
@@ -140,39 +125,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.Homing,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             if (!this.stopRequested)
             {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+                var setupStatusProvider = this.ParentStateMachine
+                    .ServiceScopeFactory.CreateScope().ServiceProvider
+                    .GetRequiredService<ISetupStatusProvider>();
 
-                    setupStatusProvider.CompleteVerticalOrigin();
-                }
+                setupStatusProvider.CompleteVerticalOrigin();
             }
         }
 
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

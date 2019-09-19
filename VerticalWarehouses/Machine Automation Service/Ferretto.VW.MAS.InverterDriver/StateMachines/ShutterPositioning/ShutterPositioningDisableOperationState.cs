@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
-    public class ShutterPositioningDisableOperationState : InverterStateBase
+    internal class ShutterPositioningDisableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -29,20 +29,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #endregion
 
-        #region Destructors
-
-        ~ShutterPositioningDisableOperationState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -53,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -74,24 +61,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
-
-            if (this.InverterStatus is AglInverterStatus currentStatus)
+            else
             {
-                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus is AglInverterStatus currentStatus)
                 {
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                    returnValue = true;
+                    if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                    {
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        returnValue = true;
+                    }
                 }
             }
-
             return returnValue;
         }
 

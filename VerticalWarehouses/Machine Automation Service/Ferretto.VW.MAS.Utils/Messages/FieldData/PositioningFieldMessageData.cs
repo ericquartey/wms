@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
@@ -12,9 +13,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             Axis axisMovement,
             MovementType movementType,
             decimal target,
-            decimal speed,
-            decimal acceleration,
-            decimal deceleration,
+            decimal[] speed,
+            decimal[] acceleration,
+            decimal[] deceleration,
             int numberCycles,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -33,7 +34,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            if (messageData == null)
+            if (messageData is null)
             {
                 throw new System.ArgumentNullException(nameof(messageData));
             }
@@ -44,6 +45,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = messageData.TargetSpeed;
             this.TargetAcceleration = messageData.TargetAcceleration;
             this.TargetDeceleration = messageData.TargetDeceleration;
+            this.Direction = messageData.Direction;
+            this.SwitchPosition = messageData.SwitchPosition;
+
+            this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
+            this.LoadedNetWeight = messageData.LoadedNetWeight;
+            this.LoadingUnitId = messageData.LoadingUnitId;
+            this.TorqueCurrentSample = messageData.TorqueCurrentSample;
         }
 
         #endregion
@@ -52,17 +60,29 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis AxisMovement { get; set; }
 
+        public HorizontalMovementDirection Direction { get; set; }
+
+        public bool IsTorqueCurrentSamplingEnabled { get; }
+
+        public decimal? LoadedNetWeight { get; set; }
+
+        public int? LoadingUnitId { get; }
+
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
 
-        public decimal TargetAcceleration { get; set; }
+        public decimal[] SwitchPosition { get; set; }
 
-        public decimal TargetDeceleration { get; set; }
+        public decimal[] TargetAcceleration { get; set; }
+
+        public decimal[] TargetDeceleration { get; set; }
 
         public decimal TargetPosition { get; set; }
 
-        public decimal TargetSpeed { get; set; }
+        public decimal[] TargetSpeed { get; set; }
+
+        public DataSample TorqueCurrentSample { get; set; }
 
         #endregion
 

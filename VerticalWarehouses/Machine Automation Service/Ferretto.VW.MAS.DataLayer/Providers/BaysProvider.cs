@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         positions.Add(
                             this.configurationValueManagment
-                                .GetDecimalConfigurationValue((long)positionFound, ConfigurationCategory.GeneralInfo));
+                                .GetDecimalConfigurationValue(positionFound, ConfigurationCategory.GeneralInfo));
                     }
                     catch
                     {

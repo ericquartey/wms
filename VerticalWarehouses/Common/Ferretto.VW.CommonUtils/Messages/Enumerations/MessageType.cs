@@ -71,5 +71,9 @@
         RequestPosition,
 
         ElevatorWeightCheck,
+
+        PositioningTable,
+
+        TorqueCurrentSampling
     }
 }

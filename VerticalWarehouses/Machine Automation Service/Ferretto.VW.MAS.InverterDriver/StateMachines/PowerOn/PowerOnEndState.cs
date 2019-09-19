@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
-    public class PowerOnEndState : InverterStateBase
+    internal class PowerOnEndState : InverterStateBase
     {
         #region Constructors
 
@@ -24,20 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         #endregion
 
-        #region Destructors
-
-        ~PowerOnEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {

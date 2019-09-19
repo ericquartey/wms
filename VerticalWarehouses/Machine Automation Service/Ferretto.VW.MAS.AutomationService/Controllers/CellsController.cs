@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
+using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -64,16 +63,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
-        [HttpPost("height")]
+        [HttpPost("{id}/height")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cell> UpdateHeight(int cellId, decimal height)
+        public ActionResult<Cell> UpdateHeight(int id, decimal height)
         {
             try
             {
-                var cell = this.cellsProvider.UpdateHeight(cellId, height);
+                var cell = this.cellsProvider.UpdateHeight(id, height);
 
                 return this.Ok(cell);
             }

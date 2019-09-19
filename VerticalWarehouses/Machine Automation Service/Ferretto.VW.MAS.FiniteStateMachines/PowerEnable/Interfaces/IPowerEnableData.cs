@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -6,10 +7,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
-    public interface IPowerEnableData
+    internal interface IPowerEnableData
     {
-
-
         #region Properties
 
         List<InverterIndex> ConfiguredInverters { get; }

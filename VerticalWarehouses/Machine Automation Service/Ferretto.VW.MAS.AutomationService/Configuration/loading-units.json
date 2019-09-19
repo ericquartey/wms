@@ -6,12 +6,12 @@
     {
       "id": "classe_300",
       "max-load-capacity": 300,
-      "tare": 1000
+      "tare": 120
     },
     {
       "id": "c700",
       "max-load-capacity": 700,
-      "tare": 1000
+      "tare": 150
     }
   ],
   "loading-units": [

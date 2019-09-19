@@ -22,10 +22,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? inputMeasuredInitialPosition;
 
+        private bool isOperationCompleted;
+
         private DelegateCommand moveToPositionCommand;
 
         private VerticalResolutionCalibrationData procedureParameters;
-        private bool isOperationCompleted;
 
         #endregion
 
@@ -138,20 +139,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             this.RetrieveInputData();
 
-            this.ShowSteps();
-
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
-        }
-
-        private void ShowSteps()
-        {
-            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1);
-            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP3);
-            this.ShowAbortStep(true, true);
         }
 
         protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -226,6 +220,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.InitialPosition = this.procedureParameters.InitialPosition;
                 this.CurrentResolution = this.procedureParameters.CurrentResolution;
             }
+        }
+
+        private void ShowSteps()
+        {
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP3);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion

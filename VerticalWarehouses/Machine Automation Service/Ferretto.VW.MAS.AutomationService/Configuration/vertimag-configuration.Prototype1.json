@@ -16,6 +16,7 @@
     "Serial": "Prototype #1",
     "Height": 4.563,
     "MaxGrossWeight": 50000,
+    "MaxDrawerGrossWeight": 800,
     "BaysQuantity": 2,
     "Bay1Type": 4,
     "Bay2Type": 2,
@@ -24,7 +25,7 @@
     //"Bay1Height1":,
     //"Bay1Position2":,
     //"Bay1Height2":,
-    "Bay2Position1": 743.00,
+    "Bay2Position1": 648.00,
     "Bay2Height1": 1080.0,
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
@@ -67,7 +68,7 @@
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
-    "Inverter1": "198.168.0.100",
+    "Inverter1": "192.168.0.100",
     "Inverter1Port": 17221,
     "InverterIndexMaster": 0,
     "InverterIndexShutter1": 2,
@@ -76,9 +77,9 @@
     "IOExpansion1Installed": true,
     "IOExpansion2Installed": true,
     "IOExpansion3Installed": false,
-    "IOExpansion1IPAddress": "198.168.0.1",
+    "IOExpansion1IPAddress": "192.168.0.1",
     "IOExpansion1Port": 19550,
-    "IOExpansion2IPAddress": "198.168.0.2",
+    "IOExpansion2IPAddress": "192.168.0.2",
     "IOExpansion2Port": 19550,
     "PPC1MasterIPAddress": "::1",
     "PPC2SlaveIPAddress": "198.168.0.2",
@@ -101,7 +102,7 @@
     "HomingExitDeceleration": 750.0,
     "Resolution": 77.61182,
     "Offset": 350.0,
-    "UpperBound": 1000.0, //TEMP temporary commented for test on belt-burnishing 4000.0 is too much //"UpperBound": 4000.0,
+    "UpperBound": 4000.0,
     "LowerBound": 350.0,
     "TakingOffset": 0.0,
     "DepositOffset": 0.0
@@ -119,60 +120,60 @@
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-  "HorizontalMovementForwardProfile": {
-    "TotalSteps": 4,
-    "TotalMovement": 1235.9,
+  "HorizontalMovementShorterProfile": {
+    "TotalSteps": 5,
+    "TotalMovement": 1414.0,
     "MovementCorrection": 20.0,
-    "P0Quote": 0.0,
+    //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 730.0,
+    "P0Deceleration": 0.0,
+    "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
+    "P1Acceleration": 1000.0,
+    "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
+    "P2Acceleration": 1000.0,
+    "P2Deceleration": 1000.0,
+    "P2SpeedV3": 500.0,
+    "P3Quote": 600.0,
+    "P3Acceleration": 1000.0,
+    "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
     "P4Quote": 985.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
-    "P4SpeedV5": 730.0,
-    "P5Quote": 1135.0
+    "P4Acceleration": 1000.0,
+    "P4Deceleration": 1000.0,
+    "P4SpeedV5": 200.0,
+    "P5Quote": 1414.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
   },
-  "HorizontalMovementBackwardProfile": {
-    "TotalSteps": 4,
-    "TotalMovement": 1241.0,
+  "HorizontalMovementLongerProfile": {
+    "TotalSteps": 5,
+    "TotalMovement": 1420.0,
     "MovementCorrection": 20.0,
-    "P0Quote": 0.0,
+    //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
     "P0Deceleration": 1000.0,
-    "P0SpeedV1": 730.0,
+    "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
+    "P1Acceleration": 1000.0,
+    "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
+    "P2Acceleration": 1000.0,
+    "P2Deceleration": 1000.0,
+    "P2SpeedV3": 500.0,
+    "P3Quote": 600.0,
+    "P3Acceleration": 1000.0,
+    "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
-    "P4Quote": 991.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
-    "P4SpeedV5": 730.0,
-    "P5Quote": 1141.0
+    "P4Quote": 985.00,
+    "P4Acceleration": 1000.0,
+    "P4Deceleration": 1000.0,
+    "P4SpeedV5": 200.0,
+    "P5Quote": 1420.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
@@ -181,7 +182,7 @@
     "FeedRate": 0.10,
     "PositiveTargetDirection": 30.0,
     "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.30
+    "FeedRateAfterZero": 0.15
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
@@ -191,8 +192,11 @@
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
+    "MinSpeed": 50.0,
     "Acceleration": 500.0,
-    "Deceleration": 500.0
+    "Deceleration": 500.0,
+    "HigherDistance": 2000.0,
+    "LowerDistance": 2100.0
   },
   "BeltBurnishing": {
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much

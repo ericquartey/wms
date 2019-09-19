@@ -5,7 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerCradleState : StateBase
+    internal class MoveDrawerCradleState : StateBase
     {
         #region Fields
 
@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private bool disposed;
 
         private PositioningMessageData positioningMessageData;
 
@@ -52,15 +50,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.verticalAxis = verticalAxis;
             this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerCradleState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -127,7 +116,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                         if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
                             this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
                         {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                            if (this.drawerOperationData.Operation == DrawerOperation.Pickup)
+                            {
+                                this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                                    this.ParentStateMachine,
+                                    this.drawerOperationData,
+                                    this.Logger));
+                            }
+                            else
+                            {
+                                this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
                                     this.ParentStateMachine,
                                     Axis.Vertical,
                                     this.drawerOperationData,
@@ -136,6 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                                     this.horizontalAxis,
                                     this.machineSensorsStatus,
                                     this.Logger));
+                            }
                         }
 
                         break;
@@ -186,8 +185,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -200,59 +197,53 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 true));
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         //TEMP Check this code
         private void GetParameters()
         {
             decimal target = 0;
 
-            //TEMP: Remove the hardcoded value (used only for test)
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
-            {
-                target = +150;
-            }
+            ////TEMP: Remove the hardcoded value (used only for test)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
+            //{
+            //    target = +150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)   // (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
-            {
-                // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                // Use the side in order to get the correct sign of movement
-                target = -150;
-            }
+            //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)   // (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
+            //{
+            //    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //    // Use the side in order to get the correct sign of movement
+            //    target = -150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)  // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
-            {
-                target = -150;
-            }
+            //if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)  // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
+            //{
+            //    target = -150;
+            //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell)   // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell)   // (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell)
+            //{
+            //    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //    // Use the side in order to get the correct sign of movement
+            //    target = +150;
+            //}
+
+            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
             {
-                // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                // Use the side in order to get the correct sign of movement
-                target = +150;
+                target = this.drawerOperationData.SourceHorizontalPosition;
+            }
+            else
+            {
+                target = this.drawerOperationData.DestinationHorizontalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
             var maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-            var maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
-            var maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
+            decimal[] maxAcceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] maxDeceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
             var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 
-            var speed = maxSpeed * (decimal)feedRate;
+            decimal[] speed = { maxSpeed * (decimal)feedRate };
 
             this.positioningMessageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -265,7 +256,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition,
+                (target >= 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
         }
 
         #endregion

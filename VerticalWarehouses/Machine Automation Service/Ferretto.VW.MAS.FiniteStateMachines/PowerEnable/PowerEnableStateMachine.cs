@@ -6,14 +6,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStateMachine : StateMachineBase
+    internal class PowerEnableStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IPowerEnableData machineData;
-
-        private bool disposed;
 
         #endregion
 
@@ -30,33 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
-        #region Destructors
-
-        ~PowerEnableStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)

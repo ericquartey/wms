@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -8,14 +7,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityErrorState : StateBase
+    internal class ResetSecurityErrorState : StateBase
     {
-
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
-
-        private bool disposed;
 
         #endregion
 
@@ -32,33 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #endregion
 
-        #region Destructors
-
-        ~ResetSecurityErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

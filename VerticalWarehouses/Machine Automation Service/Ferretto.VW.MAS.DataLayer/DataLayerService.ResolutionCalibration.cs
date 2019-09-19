@@ -9,11 +9,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRate => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FeedRate, ConfigurationCategory.ResolutionCalibration);
+        public decimal FeedRate => this.GetDecimalConfigurationValue(ResolutionCalibration.FeedRate, ConfigurationCategory.ResolutionCalibration);
 
-        public decimal FinalPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FinalPosition, ConfigurationCategory.ResolutionCalibration);
+        public decimal FinalPosition => this.GetDecimalConfigurationValue(ResolutionCalibration.FinalPosition, ConfigurationCategory.ResolutionCalibration);
 
-        public decimal InitialPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.InitialPosition, ConfigurationCategory.ResolutionCalibration);
+        public decimal InitialPosition => this.GetDecimalConfigurationValue(ResolutionCalibration.InitialPosition, ConfigurationCategory.ResolutionCalibration);
 
         #endregion
     }

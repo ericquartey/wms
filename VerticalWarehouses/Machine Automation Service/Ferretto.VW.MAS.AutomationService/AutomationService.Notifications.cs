@@ -1,0 +1,102 @@
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils;
+
+namespace Ferretto.VW.MAS.AutomationService
+{
+    internal partial class AutomationService : AutomationBackgroundService
+    {
+        #region Methods
+
+        protected override bool FilterNotification(NotificationMessage notification)
+        {
+            return
+                notification.Destination == MessageActor.AutomationService
+                ||
+                notification.Destination == MessageActor.Any;
+        }
+
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage)
+        {
+            switch (receivedMessage.Type)
+            {
+                case MessageType.SensorsChanged:
+                    this.OnSensorsChanged(receivedMessage);
+                    break;
+
+                case MessageType.DlException:
+                    this.OnDataLayerException(receivedMessage);
+                    break;
+
+                case MessageType.Homing:
+                    this.HomingMethod(receivedMessage);
+                    break;
+
+                case MessageType.SwitchAxis:
+                    this.SwitchAxisMethod(receivedMessage);
+                    break;
+
+                case MessageType.ShutterPositioning:
+                    this.ShutterPositioningMethod(receivedMessage);
+                    break;
+
+                case MessageType.CalibrateAxis:
+                    this.CalibrateAxisMethod(receivedMessage);
+                    break;
+
+                case MessageType.CurrentPosition:
+                    this.CurrentPositionMethod(receivedMessage);
+                    break;
+
+                case MessageType.Positioning:
+                    this.OnPositioningChanged(receivedMessage);
+                    break;
+
+                case MessageType.ResolutionCalibration:
+                    this.ResolutionCalibrationMethod(receivedMessage);
+                    break;
+
+                case MessageType.ExecuteMission:
+                    await this.OnNewMissionOperationAvailable(receivedMessage.Data as INewMissionOperationAvailable);
+                    break;
+
+                case MessageType.ElevatorWeightCheck:
+                    this.ElevatorWeightCheckMethod(receivedMessage);
+                    break;
+
+                case MessageType.BayOperationalStatusChanged:
+                    this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
+                    break;
+
+                case MessageType.ErrorStatusChanged:
+                    this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
+                    break;
+
+                case MessageType.InverterStatusWord:
+                    this.OnInverterStatusWordChanged(receivedMessage);
+                    break;
+
+                case MessageType.MachineStateActive:
+                    this.MachineStateActiveMethod(receivedMessage);
+                    break;
+
+                case MessageType.MachineStatusActive:
+                    this.MachineStatusActiveMethod(receivedMessage);
+                    break;
+            }
+        }
+
+        private void OnDataLayerException(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
+            {
+                this.applicationLifetime.StopApplication();
+            }
+        }
+
+        #endregion
+    }
+}

@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -10,15 +10,13 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStopInverterState : StateBase
+    internal class PowerEnableStopInverterState : StateBase
     {
         #region Fields
 
         private readonly IPowerEnableData machineData;
 
         private int currentInverterIndex;
-
-        private bool disposed;
 
         #endregion
 
@@ -31,15 +29,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.machineData = machineData;
             this.currentInverterIndex = 0;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PowerEnableStopInverterState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -126,22 +115,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

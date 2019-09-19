@@ -1,6 +1,8 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -22,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
 
         #endregion
 
@@ -31,7 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ElevatorController(
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
-            IHubContext<InstallationHub, IInstallationHub> installationHub,
+            IMachineConfigurationProvider machineConfigurationProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
@@ -40,19 +42,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
 
-            if (installationHub is null)
-            {
-                throw new ArgumentNullException(nameof(installationHub));
-            }
-
             if (elevatorWeightCheckProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
+            if (machineConfigurationProvider is null)
+            {
+                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+            }
 
             this.elevatorProvider = elevatorProvider;
-            this.installationHub = installationHub;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
+            this.machineConfigurationProvider = machineConfigurationProvider;
         }
 
         #endregion
@@ -87,14 +88,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpPost("horizontal/move")]
+        [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontal(HorizontalMovementDirection direction)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontal(direction);
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
+        }
+
+        [HttpPost("horizontal/move-manual")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                this.elevatorProvider.MoveHorizontalManual(direction);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -209,7 +226,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.elevatorWeightCheckProvider.Start(loadingUnitId, runToTest, weight);
 
                 var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
-                this.installationHub.Clients.All.ElevatorWeightCheck(new NotificationMessageUI<IElevatorWeightCheckMessageData>() { Data = data });
 
                 return this.Accepted();
             }

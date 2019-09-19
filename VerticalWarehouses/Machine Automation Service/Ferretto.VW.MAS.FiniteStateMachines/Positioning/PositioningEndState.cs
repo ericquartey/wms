@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningEndState : StateBase
+    internal class PositioningEndState : StateBase
     {
         #region Fields
 
@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         private readonly IPositioningMessageData positioningMessageData;
 
         private readonly bool stopRequested;
-
-        private bool disposed;
 
         #endregion
 
@@ -41,15 +39,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.positioningMessageData = positioningMessageData;
             this.machineSensorsStatus = machineSensorsStatus;
             this.numberExecutedSteps = numberExecutedSteps;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningEndState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -186,21 +175,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

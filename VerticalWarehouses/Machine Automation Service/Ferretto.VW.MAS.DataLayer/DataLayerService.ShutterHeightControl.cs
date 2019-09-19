@@ -9,9 +9,9 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateSH => this.GetDecimalConfigurationValue((long)ShutterHeightControl.FeedRate, ConfigurationCategory.ShutterHeightControl);
+        public decimal FeedRateSH => this.GetDecimalConfigurationValue(ShutterHeightControl.FeedRate, ConfigurationCategory.ShutterHeightControl);
 
-        public decimal RequiredTolerance => this.GetDecimalConfigurationValue((long)ShutterHeightControl.RequiredTolerance, ConfigurationCategory.ShutterHeightControl);
+        public decimal RequiredTolerance => this.GetDecimalConfigurationValue(ShutterHeightControl.RequiredTolerance, ConfigurationCategory.ShutterHeightControl);
 
         #endregion
     }

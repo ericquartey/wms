@@ -13,25 +13,26 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingStateMachine : StateMachineBase
+    internal class HomingStateMachine : StateMachineBase
     {
         #region Fields
 
         private readonly Axis calibrateAxis;
 
+        private readonly bool isOneKMachine;
+
         private readonly ILogger logger;
 
-        private bool disposed;
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private HomingOperation homingOperation;
-
-        private bool isOneKMachine;
 
         #endregion
 
         #region Constructors
 
         public HomingStateMachine(
+            IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
             IHomingMessageData calibrateMessageData,
             bool isOneKMachine,
@@ -47,15 +48,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
 
             this.isOneKMachine = isOneKMachine;
-        }
 
-        #endregion
-
-        #region Destructors
-
-        ~HomingStateMachine()
-        {
-            this.Dispose(false);
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -90,8 +84,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         MessageType.CalibrateAxis,
                         MessageStatus.OperationExecuting);
 
-                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
                     this.PublishNotificationMessage(notificationMessage);
                 }
 
@@ -105,12 +97,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
-            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+            if (message.Type == FieldMessageType.InverterStatusUpdate
+                &&
                 message.Status == MessageStatus.OperationExecuting)
             {
-                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                if (message.Data is InverterStatusUpdateFieldMessageData data
+                    &&
+                    data.CurrentPosition.HasValue)
                 {
-                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition.Value);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"Current Encoder position: {data.CurrentPosition}",
@@ -151,6 +146,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            bool checkConditions;
+
             this.logger.LogTrace("1:Method Start");
             switch (this.calibrateAxis)
             {
@@ -169,10 +166,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new HomingStartState(
-                    this,
-                    this.homingOperation,
-                    this.logger);
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                checkConditions = this.CheckConditions();
+                if (!checkConditions)
+                {
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        "Conditions not verified for positioning",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.InverterException,
+                        MessageStatus.OperationStart);
+
+                    this.PublishNotificationMessage(notificationMessage);
+
+                    this.Logger.LogError($"Conditions not verified for homing");
+
+                    this.CurrentState = new HomingErrorState(
+                        this,
+                        this.homingOperation,
+                        null,
+                        this.logger);
+                }
+                else
+                {
+                    this.CurrentState = new HomingStartState(
+                        this,
+                        this.homingOperation,
+                        this.logger);
+                }
 
                 this.CurrentState.Start();
             }
@@ -190,19 +212,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             }
         }
 
-        protected override void Dispose(bool disposing)
+        private bool CheckConditions()
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            //HACK The condition must be handled by the Bug #3711
+            //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
+            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && !this.machineSensorsStatus.IsSensorZeroOnCradle) ||
+                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle);
 
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
+            return checkConditions;
         }
 
         #endregion

@@ -94,15 +94,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #endregion
 
-        #region Destructors
-
-        ~IoDevice()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         private IIoStateMachine CurrentStateMachine
@@ -115,7 +106,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.currentStateMachine = value;
                 }
 
-                string objectName = string.Empty;
+                var objectName = string.Empty;
                 if (this.currentStateMachine != null)
                 {
                     objectName = this.currentStateMachine.GetType().Name;
@@ -166,7 +157,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     }
                     catch (IoDriverException ex)
                     {
-                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
                     }
@@ -185,6 +176,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
                     }
 
                     this.writeEnableEvent.Set();
@@ -224,6 +219,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 catch (IoDriverException ex)
                 {
                     // connection error
+                    this.logger.LogError($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
                     this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     continue;
                 }
@@ -484,7 +480,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public async Task StartHardwareCommunications()
         {
-            this.logger.LogTrace($"1:ioAddress={this.ipAddress}:ioPort={this.port}");
+            this.logger.LogInformation($"1:Configure ioAddress={this.ipAddress}:ioPort={this.port}");
 
             this.ioTransport.Configure(this.ipAddress, this.port);
 
@@ -494,7 +490,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             catch (IoDriverException ex)
             {
-                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
@@ -512,6 +508,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                 var ex = new Exception();
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
+            }
+            else
+            {
+                this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
             }
 
             try

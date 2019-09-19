@@ -3,8 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -22,192 +24,212 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="configurationFilePath">Configuration parameters to load</param>
         private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
+            var dataContext = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<DataLayerContext>();
+            if (dataContext.ConfigurationValues.Any())
+            {
+                return;
+            }
+
+            this.Logger.LogInformation($"First run: loading machine configration from external file '{configurationFilePath}' ...");
+
+            string fileContents = null;
             using (var streamReader = new StreamReader(configurationFilePath))
             {
-                var json = streamReader.ReadToEnd();
-                var jsonObject = JObject.Parse(json);
+                fileContents = streamReader.ReadToEnd();
+            }
 
-                foreach (var jsonCategory in jsonObject)
+            var jsonObject = JObject.Parse(fileContents);
+
+            foreach (var jsonCategory in jsonObject)
+            {
+                if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
                 {
-                    if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
+                    throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
+                }
+
+                foreach (var jsonData in (JObject)jsonCategory.Value)
+                {
+                    switch (jsonElementCategory)
                     {
-                        throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
-                    }
+                        case ConfigurationCategory.GeneralInfo:
+                            if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                    foreach (var jsonData in (JObject)jsonCategory.Value)
-                    {
-                        switch (jsonElementCategory)
-                        {
-                            case ConfigurationCategory.GeneralInfo:
-                                if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.SetupNetwork:
+                            if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.SetupNetwork:
-                                if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.VerticalAxis:
+                            if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.VerticalAxis:
-                                if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.HorizontalAxis:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.HorizontalAxis:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.HorizontalMovementLongerProfile:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerProfileData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.HorizontalMovementForwardProfile:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementForwardProfile horizontalMovementForwardProfileData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerProfileData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.HorizontalMovementShorterProfile:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterProfileData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.HorizontalMovementBackwardProfile:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementBackwardProfile horizontalMovementBackwardProfileData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterProfileData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.VerticalManualMovements:
+                            if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.VerticalManualMovements:
-                                if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.HorizontalManualMovements:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalManualMovements horizontalManualMovementsData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.HorizontalManualMovements:
-                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalManualMovements horizontalManualMovementsData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.BeltBurnishing:
+                            if (!Enum.TryParse(jsonData.Key, false, out BeltBurnishing beltBurnishingData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.BeltBurnishing:
-                                if (!Enum.TryParse(jsonData.Key, false, out BeltBurnishing beltBurnishingData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.ResolutionCalibration:
+                            if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.ResolutionCalibration:
-                                if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.OffsetCalibration:
+                            if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.OffsetCalibration:
-                                if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.CellControl:
+                            if (!Enum.TryParse(jsonData.Key, false, out CellControl cellControlData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.CellControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out CellControl cellControlData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)cellControlData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)cellControlData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.PanelControl:
+                            if (!Enum.TryParse(jsonData.Key, false, out PanelControl panelControlData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.PanelControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out PanelControl panelControlData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)panelControlData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)panelControlData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.ShutterHeightControl:
+                            if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.ShutterHeightControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.WeightControl:
+                            if (!Enum.TryParse(jsonData.Key, false, out WeightControl weightControlData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.WeightControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out WeightControl weightControlData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.BayPositionControl:
+                            if (!Enum.TryParse(jsonData.Key, false, out BayPositionControl bayPositionControlData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.BayPositionControl:
-                                if (!Enum.TryParse(jsonData.Key, false, out BayPositionControl bayPositionControlData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
+                            break;
 
-                                break;
+                        case ConfigurationCategory.LoadFirstDrawer:
+                            if (!Enum.TryParse(jsonData.Key, false, out LoadFirstDrawer loadFirstDrawerData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
 
-                            case ConfigurationCategory.LoadFirstDrawer:
-                                if (!Enum.TryParse(jsonData.Key, false, out LoadFirstDrawer loadFirstDrawerData))
-                                {
-                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                                }
+                            this.SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
+                            break;
 
-                                break;
-                        }
+                        case ConfigurationCategory.ShutterManualMovements:
+                            if (!Enum.TryParse(jsonData.Key, false, out ShutterManualMovements shutterManualMovementsData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
+
+                            this.SaveConfigurationData(jsonElementCategory, (long)shutterManualMovementsData, jsonData.Value);
+
+                            break;
                     }
                 }
             }

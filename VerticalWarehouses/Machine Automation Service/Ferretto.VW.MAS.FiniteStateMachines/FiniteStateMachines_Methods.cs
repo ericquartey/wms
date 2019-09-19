@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -22,9 +23,8 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
-
 {
-    public partial class FiniteStateMachines
+    internal partial class FiniteStateMachines
     {
         #region Methods
 
@@ -239,6 +239,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 //TEMP Instantiate the homing states machine
                 this.currentStateMachine = new HomingStateMachine(
+                    this.machineSensorsStatus,
                     this.eventAggregator,
                     data,
                     this.machineConfigurationProvider.IsOneKMachine(),
@@ -274,34 +275,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage(CommandMessage message)
+        private void ProcessPositioningMessage(IPositioningMessageData data)
         {
+            if (data is null)
+            {
+                return;
+            }
+
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IPositioningMessageData data)
+            data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+            data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
+
+            this.currentStateMachine = new PositioningStateMachine(
+                this.machineSensorsStatus,
+                this.eventAggregator,
+                data,
+                this.logger,
+                this.serviceScopeFactory);
+
+            this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+            try
             {
-                data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+                this.logger.LogDebug("Starting Positioning FSM");
+                this.currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                this.currentStateMachine = new PositioningStateMachine(
-                    this.machineSensorsStatus,
-                    this.eventAggregator,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.logger.LogDebug("Starting Positioning FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 
@@ -371,7 +375,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
                 {
                     var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal) ? this.machineSensorsStatus.AxisXPosition : this.machineSensorsStatus.AxisYPosition;
+                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
+                        ? this.machineSensorsStatus.AxisXPosition
+                        : this.machineSensorsStatus.AxisYPosition;
+
                     var msg = new NotificationMessage(
                         msgData,
                         "Request Position",
@@ -385,8 +392,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
                     var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
-                    int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
-                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
                     var msg = new NotificationMessage(
                         notificationMessageData,

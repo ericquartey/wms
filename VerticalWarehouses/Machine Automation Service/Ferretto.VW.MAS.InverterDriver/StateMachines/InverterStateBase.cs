@@ -1,12 +1,12 @@
 ﻿using System;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
-    public abstract class InverterStateBase : IInverterState
+    internal abstract class InverterStateBase : IInverterState
     {
         #region Fields
 
@@ -21,7 +21,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             IInverterStatusBase inverterStatus,
             ILogger logger)
         {
-            if (logger == null)
+            if (inverterStatus is null)
+            {
+                throw new ArgumentNullException(nameof(inverterStatus));
+            }
+
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -33,15 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.Logger = logger;
 
             this.Logger.LogTrace($"Inverter state '{this.GetType().Name}' initialized.");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~InverterStateBase()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -65,9 +61,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        /// <inheritdoc />
-        public abstract void Release();
 
         /// <inheritdoc />
         public abstract void Start();

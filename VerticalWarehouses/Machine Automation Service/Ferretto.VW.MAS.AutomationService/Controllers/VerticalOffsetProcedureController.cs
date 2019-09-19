@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
@@ -91,15 +90,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new VerticalOffsetProcedureParameters
             {
                 ReferenceCellId = this.configurationProvider.GetIntegerConfigurationValue(
-                    (long)OffsetCalibration.ReferenceCell,
+                    OffsetCalibration.ReferenceCell,
                     category),
 
                 StepValue = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)OffsetCalibration.StepValue,
+                    OffsetCalibration.StepValue,
                     category),
 
                 VerticalOffset = this.configurationProvider.GetDecimalConfigurationValue(
-                    (long)VerticalAxis.Offset,
+                    VerticalAxis.Offset,
                     ConfigurationCategory.VerticalAxis)
             };
 
@@ -135,7 +134,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var maxSpeed = this.verticalAxis.MaxEmptySpeed;
             var feedRate = this.offsetCalibration.FeedRateOC;
 
-            var speed = maxSpeed * feedRate;
+            decimal[] speed = { maxSpeed * feedRate };
+            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -143,12 +145,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MovementMode.Position,
                 displacement,
                 speed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
+                acceleration,
+                deceleration,
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition,
+                (displacement > 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
 
             this.PublishCommand(
                 messageData,

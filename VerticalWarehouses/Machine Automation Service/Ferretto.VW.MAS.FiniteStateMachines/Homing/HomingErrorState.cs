@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -11,15 +11,13 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingErrorState : StateBase
+    internal class HomingErrorState : StateBase
     {
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
 
         private readonly IHomingOperation homingOperation;
-
-        private bool disposed;
 
         #endregion
 
@@ -34,15 +32,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.homingOperation = homingOperation;
             this.errorMessage = errorMessage;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -92,8 +81,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             if (this.homingOperation.IsOneKMachine)
@@ -106,8 +93,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageType.InverterSetTimer,
                     (byte)InverterIndex.Slave1);
 
-                this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
@@ -119,8 +104,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
                 (byte)inverterIndex);
-
-            this.Logger.LogTrace($"3:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -139,21 +122,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

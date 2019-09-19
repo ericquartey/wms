@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private IPAddress ioAddress;
 
-        private int readTimeoutMilliseconds;    // -1 is no timeout
+        private readonly int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 
@@ -34,15 +34,6 @@ namespace Ferretto.VW.MAS.IODriver
         public IoTransport(int readTimeoutMilliseconds)
         {
             this.readTimeoutMilliseconds = readTimeoutMilliseconds;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~IoTransport()
-        {
-            this.Dispose(true);
         }
 
         #endregion

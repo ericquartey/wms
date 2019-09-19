@@ -1,13 +1,13 @@
 using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Microsoft.AspNetCore.Http;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Models;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -65,13 +65,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.UpperBound,
+                        VerticalAxis.UpperBound,
                         ConfigurationCategory.VerticalAxis),
                 LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.LowerBound,
+                        VerticalAxis.LowerBound,
                         ConfigurationCategory.VerticalAxis),
                 RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
-                        (long)BeltBurnishing.CycleQuantity,
+                        BeltBurnishing.CycleQuantity,
                          ConfigurationCategory.BeltBurnishing),
             };
 
@@ -104,10 +104,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.UpperBound,
+                        VerticalAxis.UpperBound,
                         ConfigurationCategory.VerticalAxis),
                 LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.LowerBound,
+                        VerticalAxis.LowerBound,
                         ConfigurationCategory.VerticalAxis)
             };
 
@@ -161,18 +161,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
+            decimal[] speed = { this.verticalAxis.MaxEmptySpeed };
+            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
+            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
+
             var data = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
                 MovementMode.BeltBurnishing,
                 upperBoundPosition,
-                this.verticalAxis.MaxEmptySpeed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
+                speed,
+                acceleration,
+                deceleration,
                 totalTestCycleCount,
                 lowerBoundPosition,
                 upperBoundPosition,
-                delayStart);
+                delayStart,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
 
             this.PublishCommand(
                 data,

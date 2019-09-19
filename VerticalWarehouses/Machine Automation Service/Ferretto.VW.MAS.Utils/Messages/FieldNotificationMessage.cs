@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldNotificationMessage
     {
-
-
         #region Constructors
 
         public FieldNotificationMessage()
@@ -52,8 +50,6 @@ namespace Ferretto.VW.MAS.Utils.Messages
         }
 
         #endregion
-
-
 
         #region Properties
 

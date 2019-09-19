@@ -4,10 +4,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces
 {
-    public interface ITemplateData
+    internal interface ITemplateData
     {
-
-
         #region Properties
 
         IEventAggregator EventAggregator { get; }

@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS.IODriver.Interface
+﻿namespace Ferretto.VW.MAS.IODriver.Interface
 {
-    public interface IIoState : IDisposable
+    public interface IIoState
     {
-
-
         #region Properties
 
         /// <summary>
@@ -14,8 +10,6 @@ namespace Ferretto.VW.MAS.IODriver.Interface
         string Type { get; }
 
         #endregion
-
-
 
         #region Methods
 

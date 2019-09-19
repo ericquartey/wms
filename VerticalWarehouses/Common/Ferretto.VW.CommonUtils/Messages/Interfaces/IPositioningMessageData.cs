@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -10,13 +11,21 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        decimal CurrentPosition { get; set; }
+        decimal? CurrentPosition { get; set; }
 
         int Delay { get; set; }
+
+        HorizontalMovementDirection Direction { get; set; }
 
         int ExecutedCycles { get; set; }
 
         bool IsOneKMachine { get; set; }
+
+        bool IsStartedOnBoard { get; set; }
+
+        decimal? LoadedNetWeight { get; }
+
+        int? LoadingUnitId { get; }
 
         decimal LowerBound { get; }
 
@@ -26,13 +35,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int NumberCycles { get; }
 
-        decimal TargetAcceleration { get; }
+        decimal[] SwitchPosition { get; set; }
 
-        decimal TargetDeceleration { get; }
+        decimal[] TargetAcceleration { get; }
+
+        decimal[] TargetDeceleration { get; }
 
         decimal TargetPosition { get; }
 
-        decimal TargetSpeed { get; }
+        decimal[] TargetSpeed { get; }
+
+        DataSample TorqueCurrentSample { get; set; }
 
         decimal UpperBound { get; }
 

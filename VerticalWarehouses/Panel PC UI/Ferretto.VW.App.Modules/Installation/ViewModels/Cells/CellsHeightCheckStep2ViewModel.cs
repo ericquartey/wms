@@ -159,14 +159,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowSteps();
+
             await base.OnNavigatedAsync();
 
             if (this.Data is Cell cell)
             {
                 this.Cell = cell;
             }
-
-            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

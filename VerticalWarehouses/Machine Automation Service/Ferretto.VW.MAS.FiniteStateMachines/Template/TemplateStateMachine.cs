@@ -5,14 +5,11 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateStateMachine : StateMachineBase
+    internal class TemplateStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly ITemplateData machineData;
-
-        private bool disposed;
 
         #endregion
 
@@ -29,33 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)

@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -48,10 +47,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var parameters = new HomingProcedureParameters
             {
-                UpperBound = this.configurationProvider.GetDecimalConfigurationValue((long)VerticalAxis.UpperBound, category),
-                LowerBound = this.configurationProvider.GetDecimalConfigurationValue((long)VerticalAxis.LowerBound, category),
-                Offset = this.configurationProvider.GetDecimalConfigurationValue((long)VerticalAxis.Offset, category),
-                Resolution = this.configurationProvider.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, category),
+                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.UpperBound, category),
+                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.LowerBound, category),
+                Offset = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.Offset, category),
+                Resolution = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.Resolution, category),
             };
 
             return this.Ok(parameters);

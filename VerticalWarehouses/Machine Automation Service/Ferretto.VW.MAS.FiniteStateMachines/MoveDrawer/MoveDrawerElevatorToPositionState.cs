@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerElevatorToPositionState : StateBase
+    internal class MoveDrawerElevatorToPositionState : StateBase
     {
         #region Fields
 
@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private bool disposed;
 
         private PositioningMessageData positioningMessageData;
 
@@ -49,15 +47,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.verticalAxis = verticalAxis;
             this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~MoveDrawerElevatorToPositionState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -156,8 +145,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
@@ -170,113 +157,107 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 true));
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         //TEMP Check this code
         private void GetParameters()
         {
             decimal target = 0;
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.None) //(this.drawerOperationStep == DrawerOperationStep.None)
+            //if (this.drawerOperationData.Step == DrawerOperationStep.None) //(this.drawerOperationStep == DrawerOperationStep.None)
+            //{
+            //    if (this.drawerOperationData.Source == DrawerDestination.Cell)
+            //    {
+            //        // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+
+            //        target = 100;
+            //    }
+            //    else
+            //    {
+            //        switch (this.drawerOperationData.Source)
+            //        {
+            //            case DrawerDestination.CarouselBay1Up:
+            //            case DrawerDestination.ExternalBay1Up:
+            //            case DrawerDestination.InternalBay1Up:
+            //                target = this.generalInfoDataLayer.Bay1Position1;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay1Down:
+            //            case DrawerDestination.ExternalBay1Down:
+            //            case DrawerDestination.InternalBay1Down:
+            //                target = this.generalInfoDataLayer.Bay1Position2;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay2Up:
+            //            case DrawerDestination.ExternalBay2Up:
+            //            case DrawerDestination.InternalBay2Up:
+            //                target = this.generalInfoDataLayer.Bay2Position1;
+            //                break;
+
+            //            // Add other destinations here
+
+            //            default:
+            //                break;
+            //        }
+
+            //        target /= 10; // TEMP: remove this code line (used only for test)
+            //    }
+            //}
+            //else
+            //{
+            //    if (this.drawerOperationData.Destination == DrawerDestination.Cell)
+            //    {
+            //        // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+            //        target = 100;
+            //    }
+            //    else
+            //    {
+            //        switch (this.drawerOperationData.Destination)
+            //        {
+            //            case DrawerDestination.CarouselBay1Up:
+            //            case DrawerDestination.ExternalBay1Up:
+            //            case DrawerDestination.InternalBay1Up:
+            //                target = this.generalInfoDataLayer.Bay1Position1;
+            //                break;
+
+            //            case DrawerDestination.CarouselBay1Down:
+            //            case DrawerDestination.ExternalBay1Down:
+            //            case DrawerDestination.InternalBay1Down:
+            //                target = this.generalInfoDataLayer.Bay1Position2;
+            //                // TODO
+            //                break;
+
+            //            case DrawerDestination.CarouselBay2Up:
+            //            case DrawerDestination.ExternalBay2Up:
+            //            case DrawerDestination.InternalBay2Up:
+            //                target = this.generalInfoDataLayer.Bay2Position1;
+            //                break;
+
+            //            // Add other destinations here
+
+            //            default:
+            //                break;
+            //        }
+
+            //        target /= 10;  // TEMP: remove this code line (used only for test)
+            //    }
+            //}
+
+            if (this.drawerOperationData.Step == DrawerOperationStep.None)
             {
-                if (this.drawerOperationData.Source == DrawerDestination.Cell)
-                {
-                    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-
-                    target = 100;
-                }
-                else
-                {
-                    switch (this.drawerOperationData.Source)
-                    {
-                        case DrawerDestination.CarouselBay1Up:
-                        case DrawerDestination.ExternalBay1Up:
-                        case DrawerDestination.InternalBay1Up:
-                            target = this.generalInfoDataLayer.Bay1Position1;
-                            break;
-
-                        case DrawerDestination.CarouselBay1Down:
-                        case DrawerDestination.ExternalBay1Down:
-                        case DrawerDestination.InternalBay1Down:
-                            target = this.generalInfoDataLayer.Bay1Position2;
-                            break;
-
-                        case DrawerDestination.CarouselBay2Up:
-                        case DrawerDestination.ExternalBay2Up:
-                        case DrawerDestination.InternalBay2Up:
-                            target = this.generalInfoDataLayer.Bay2Position1;
-                            break;
-
-                        // Add other destinations here
-
-                        default:
-                            break;
-                    }
-
-                    target /= 10; // TEMP: remove this code line (used only for test)
-                }
+                target = this.drawerOperationData.SourceVerticalPosition;
             }
             else
             {
-                if (this.drawerOperationData.Destination == DrawerDestination.Cell)
-                {
-                    // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
-                    target = 100;
-                }
-                else
-                {
-                    switch (this.drawerOperationData.Destination)
-                    {
-                        case DrawerDestination.CarouselBay1Up:
-                        case DrawerDestination.ExternalBay1Up:
-                        case DrawerDestination.InternalBay1Up:
-                            target = this.generalInfoDataLayer.Bay1Position1;
-                            break;
-
-                        case DrawerDestination.CarouselBay1Down:
-                        case DrawerDestination.ExternalBay1Down:
-                        case DrawerDestination.InternalBay1Down:
-                            target = this.generalInfoDataLayer.Bay1Position2;
-                            // TODO
-                            break;
-
-                        case DrawerDestination.CarouselBay2Up:
-                        case DrawerDestination.ExternalBay2Up:
-                        case DrawerDestination.InternalBay2Up:
-                            target = this.generalInfoDataLayer.Bay2Position1;
-                            break;
-
-                        // Add other destinations here
-
-                        default:
-                            break;
-                    }
-
-                    target /= 10;  // TEMP: remove this code line (used only for test)
-                }
+                target = this.drawerOperationData.DestinationVerticalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
             var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            var maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
-            var maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+            decimal[] maxAcceleration = { this.verticalAxis.MaxEmptyAcceleration };
+            decimal[] maxDeceleration = { this.verticalAxis.MaxEmptyDeceleration };
+            decimal[] switchPosition = { 0 };
             var feedRate = 0.10;  // TEMP: remove this code line (used only for test)
 
-            var speed = maxSpeed * (decimal)feedRate;
+            decimal[] speed = { maxSpeed * (decimal)feedRate };
 
             this.positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -289,7 +270,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 0,
-                0);
+                0,
+                switchPosition,
+                (target > this.drawerOperationData.SourceHorizontalPosition ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
         }
 
         #endregion

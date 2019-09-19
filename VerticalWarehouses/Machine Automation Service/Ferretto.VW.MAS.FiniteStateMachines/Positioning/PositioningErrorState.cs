@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningErrorState : StateBase
+    internal class PositioningErrorState : StateBase
     {
         #region Fields
 
@@ -20,8 +20,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly IPositioningMessageData positioningMessageData;
-
-        private bool disposed;
 
         #endregion
 
@@ -42,15 +40,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -66,17 +55,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 var notificationMessageData = new PositioningMessageData(
                     this.positioningMessageData.AxisMovement,
-                this.positioningMessageData.MovementType,
-                this.positioningMessageData.MovementMode,
-                this.positioningMessageData.TargetPosition,
-                this.positioningMessageData.TargetSpeed,
-                this.positioningMessageData.TargetAcceleration,
-                this.positioningMessageData.TargetDeceleration,
-                0,
-                this.positioningMessageData.LowerBound,
-                this.positioningMessageData.UpperBound,
-                0,
-                MessageVerbosity.Error);
+                    this.positioningMessageData.MovementType,
+                    this.positioningMessageData.MovementMode,
+                    this.positioningMessageData.TargetPosition,
+                    this.positioningMessageData.TargetSpeed,
+                    this.positioningMessageData.TargetAcceleration,
+                    this.positioningMessageData.TargetDeceleration,
+                    0,
+                    this.positioningMessageData.LowerBound,
+                    this.positioningMessageData.UpperBound,
+                    0,
+                    this.positioningMessageData.SwitchPosition,
+                    this.positioningMessageData.Direction,
+                    MessageVerbosity.Error);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
@@ -161,6 +152,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
                 0,
+                this.positioningMessageData.SwitchPosition,
+                this.positioningMessageData.Direction,
                 MessageVerbosity.Info);
 
             var notificationMessage = new NotificationMessage(
@@ -177,21 +170,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

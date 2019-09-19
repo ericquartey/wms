@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -493,6 +493,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation operation?.
+        /// </summary>
+        public static string ConfirmationOperation {
+            get {
+                return ResourceManager.GetString("ConfirmationOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
@@ -615,6 +624,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Disembark {
             get {
                 return ResourceManager.GetString("Disembark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disembark backwards.
+        /// </summary>
+        public static string DisembarkBackwards {
+            get {
+                return ResourceManager.GetString("DisembarkBackwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disembark forwards.
+        /// </summary>
+        public static string DisembarkForwards {
+            get {
+                return ResourceManager.GetString("DisembarkForwards", resourceCulture);
             }
         }
         
@@ -799,11 +826,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Embark backwards.
+        /// </summary>
+        public static string EmbarkBackwards {
+            get {
+                return ResourceManager.GetString("EmbarkBackwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Embarked Tray.
         /// </summary>
         public static string EmbarkedTray {
             get {
                 return ResourceManager.GetString("EmbarkedTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embark forwards.
+        /// </summary>
+        public static string EmbarkForwards {
+            get {
+                return ResourceManager.GetString("EmbarkForwards", resourceCulture);
             }
         }
         
@@ -867,6 +912,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FinalPosition {
             get {
                 return ResourceManager.GetString("FinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firewall is enabled on this terminal..
+        /// </summary>
+        public static string FirewallIsEnabledOnThisTerminal {
+            get {
+                return ResourceManager.GetString("FirewallIsEnabledOnThisTerminal", resourceCulture);
             }
         }
         
@@ -1065,6 +1119,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GoToInitialPosition {
             get {
                 return ResourceManager.GetString("GoToInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to position.
+        /// </summary>
+        public static string GoToPosition {
+            get {
+                return ResourceManager.GetString("GoToPosition", resourceCulture);
             }
         }
         
@@ -1474,6 +1537,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis movements.
+        /// </summary>
+        public static string LSMTEngineTitle {
+            get {
+                return ResourceManager.GetString("LSMTEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gate engine movements.
         /// </summary>
         public static string LSMTGateEngineTitle {
@@ -1560,6 +1632,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ManualDrawerStoreRecallButton {
             get {
                 return ResourceManager.GetString("ManualDrawerStoreRecallButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Movements.
+        /// </summary>
+        public static string ManualMovements {
+            get {
+                return ResourceManager.GetString("ManualMovements", resourceCulture);
             }
         }
         
@@ -1717,6 +1798,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Net Weight [kg].
+        /// </summary>
+        public static string NetWeight {
+            get {
+                return ResourceManager.GetString("NetWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New resolution [imp/mm].
         /// </summary>
         public static string NewResolution {
@@ -1861,11 +1951,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prev.
         /// </summary>
         public static string Prev {
             get {
                 return ResourceManager.GetString("Prev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure completed..
+        /// </summary>
+        public static string ProcedureCompleted {
+            get {
+                return ResourceManager.GetString("ProcedureCompleted", resourceCulture);
             }
         }
         
@@ -2419,6 +2527,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tray Tare [kg].
+        /// </summary>
+        public static string TrayTare {
+            get {
+                return ResourceManager.GetString("TrayTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tray Weight [kg].
         /// </summary>
         public static string TrayWeight {
@@ -2631,6 +2748,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalResolutionDone {
             get {
                 return ResourceManager.GetString("VerticalResolutionDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight Analysis.
+        /// </summary>
+        public static string WeightAnalysis {
+            get {
+                return ResourceManager.GetString("WeightAnalysis", resourceCulture);
             }
         }
         

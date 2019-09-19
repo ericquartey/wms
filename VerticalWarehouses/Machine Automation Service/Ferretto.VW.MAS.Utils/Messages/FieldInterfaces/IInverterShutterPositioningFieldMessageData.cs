@@ -6,6 +6,12 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
+        int HigherDistance { get; set; }
+
+        int LowerDistance { get; set; }
+
+        MovementType MovementType { get; }
+
         ShutterMovementDirection ShutterMovementDirection { get; }
 
         ShutterPosition ShutterPosition { get; set; }

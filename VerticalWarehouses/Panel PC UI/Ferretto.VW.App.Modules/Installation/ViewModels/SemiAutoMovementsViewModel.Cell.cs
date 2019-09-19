@@ -16,17 +16,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canInputCellId;
 
+        private bool canInputHeight;
+
+        private bool canInputLoadingUnitId;
+
         private IEnumerable<Cell> cells;
 
         private int? inputCellId;
 
+        private decimal? inputHeight;
+
+        private int? inputLoadingUnitId;
+
         private bool isElevatorMovingToCell;
+
+        private bool isElevatorMovingToHeight;
+
+        private bool isElevatorMovingToLoadingUnit;
 
         private LoadingUnit loadingUnitInCell;
 
         private DelegateCommand moveToCellHeightCommand;
 
+        private DelegateCommand moveToHeightCommand;
+
+        private DelegateCommand moveToLoadingUnitHeightCommand;
+
         private Cell selectedCell;
+
+        private LoadingUnit selectedLoadingUnit;
 
         #endregion
 
@@ -36,6 +54,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canInputCellId;
             private set => this.SetProperty(ref this.canInputCellId, value);
+        }
+
+        public bool CanInputLoadingUnitId
+        {
+            get => this.canInputLoadingUnitId;
+            private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
+        }
+
+        public bool CanInputQuote
+        {
+            get => this.canInputHeight;
+            private set => this.SetProperty(ref this.canInputHeight, value);
         }
 
         public int? InputCellId
@@ -54,12 +84,66 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public decimal? InputHeight
+        {
+            get => this.inputHeight;
+            set
+            {
+                if (this.SetProperty(ref this.inputHeight, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int? InputLoadingUnitId
+        {
+            get => this.inputLoadingUnitId;
+            set
+            {
+                if (this.SetProperty(ref this.inputLoadingUnitId, value)
+                    &&
+                    this.LoadingUnits != null)
+                {
+                    this.SelectedLoadingUnit = value == null
+                        ? null
+                        : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
+                }
+            }
+        }
+
         public bool IsElevatorMovingToCell
         {
             get => this.isElevatorMovingToCell;
             private set
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsElevatorMovingToHeight
+        {
+            get => this.isElevatorMovingToHeight;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsElevatorMovingToLoadingUnit
+        {
+            get => this.isElevatorMovingToLoadingUnit;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
                 {
                     this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
                     this.RaiseCanExecuteChanged();
@@ -80,6 +164,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.MoveToCellHeightAsync(),
                this.CanMoveToCellHeight));
 
+        public ICommand MoveToHeightCommand =>
+                   this.moveToHeightCommand
+           ??
+           (this.moveToHeightCommand = new DelegateCommand(
+               async () => await this.MoveToHeightAsync(),
+               this.CanMoveToHeight));
+
+        public ICommand MoveToLoadingUnitHeightCommand =>
+                   this.moveToLoadingUnitHeightCommand
+           ??
+           (this.moveToLoadingUnitHeightCommand = new DelegateCommand(
+               async () => await this.MoveToLoadingUnitHeightAsync(),
+               this.CanMoveToLoadingUnitHeight));
+
         public Cell SelectedCell
         {
             get => this.selectedCell;
@@ -92,6 +190,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.LoadingUnitInCell = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
                     }
 
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public LoadingUnit SelectedLoadingUnit
+        {
+            get => this.selectedLoadingUnit;
+            protected set
+            {
+                if (this.SetProperty(ref this.selectedLoadingUnit, value))
+                {
+                    this.LoadingUnitInCell = this.selectedLoadingUnit;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -121,7 +232,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsElevatorMoving
                 &&
-                !this.IsElevatorMovingToCell;
+                !this.IsElevatorMovingToCell
+                &&
+                !this.IsElevatorMovingToHeight
+                &&
+                !this.IsElevatorMovingToLoadingUnit;
+        }
+
+        private bool CanMoveToHeight()
+        {
+            return this.InputHeight != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMoving
+                &&
+                !this.IsElevatorMovingToCell
+                &&
+                !this.IsElevatorMovingToHeight
+                &&
+                !this.IsElevatorMovingToLoadingUnit;
+        }
+
+        private bool CanMoveToLoadingUnitHeight()
+        {
+            return this.SelectedLoadingUnit != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsElevatorMoving
+                &&
+                !this.IsElevatorMovingToCell
+                &&
+                !this.IsElevatorMovingToHeight
+                &&
+                !this.IsElevatorMovingToLoadingUnit;
         }
 
         private async Task MoveToCellHeightAsync()
@@ -139,6 +284,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.IsElevatorMovingToCell = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveToHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.InputHeight.Value,
+                    FeedRateCategory.VerticalManualMovementsAfterZero);
+
+                this.IsElevatorMovingToHeight = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToHeight = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveToLoadingUnitHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.SelectedLoadingUnit.Cell?.Position ?? 0,
+                    FeedRateCategory.VerticalManualMovementsAfterZero);
+
+                this.IsElevatorMovingToLoadingUnit = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToLoadingUnit = false;
 
                 this.ShowNotification(ex);
             }

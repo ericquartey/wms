@@ -1,6 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Enumerations;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
@@ -42,6 +41,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public IStatusWord CommonStatusWord => this.statusWord;
 
+        public bool[] Inputs { get; protected set; }
+
         public InverterType InverterType
         {
             get => this.inverterType;
@@ -69,6 +70,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                         this.controlWord = new ProfileVelocityControlWord(this.controlWord);
                         this.statusWord = new ProfileVelocityStatusWord(this.statusWord);
                         break;
+
+                    case (ushort)InverterOperationMode.TableTravel:
+                        this.controlWord = new TableTravelControlWord(this.controlWord);
+                        this.statusWord = new TableTravelStatusWord(this.statusWord);
+                        break;
                 }
                 this.operatingMode = value;
             }
@@ -79,6 +85,12 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             get => this.systemIndex;
             protected set => this.systemIndex = value;
         }
+
+        #endregion
+
+        #region Methods
+
+        public abstract bool UpdateInputsStates(bool[] newInputStates);
 
         #endregion
     }

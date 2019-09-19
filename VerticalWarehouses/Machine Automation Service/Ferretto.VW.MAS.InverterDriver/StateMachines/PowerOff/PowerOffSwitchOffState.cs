@@ -1,12 +1,12 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    public class PowerOffSwitchOffState : InverterStateBase
+    internal class PowerOffSwitchOffState : InverterStateBase
     {
         #region Constructors
 
@@ -20,20 +20,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         #endregion
 
-        #region Destructors
-
-        ~PowerOffSwitchOffState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -43,7 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -63,21 +50,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+            else
             {
-                this.ParentStateMachine.ChangeState(new PowerOffDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                {
+                    this.ParentStateMachine.ChangeState(new PowerOffDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

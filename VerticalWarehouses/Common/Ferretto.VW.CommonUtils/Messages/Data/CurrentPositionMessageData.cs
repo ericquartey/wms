@@ -6,6 +6,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     public class CurrentPositionMessageData : IMessageData
     {
         #region Constructors
+
         public CurrentPositionMessageData()
         {
         }
@@ -35,7 +36,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        public decimal CurrentPosition { get; set; }
+        public decimal? CurrentPosition { get; set; }
 
         public int ExecutedCycles { get; set; }
 

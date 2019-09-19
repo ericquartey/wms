@@ -5,5 +5,7 @@
         Absolute = 0,
 
         Relative = 1,
+
+        TableTarget = 2,
     }
 }

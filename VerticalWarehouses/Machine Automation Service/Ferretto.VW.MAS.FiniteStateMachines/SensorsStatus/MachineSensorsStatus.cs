@@ -1,6 +1,5 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
@@ -14,6 +13,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private readonly bool isOneKMachine;
+
         private readonly bool[] sensorStatus;
 
         private decimal axisXPosition;
@@ -24,11 +25,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #region Constructors
 
-        public MachineSensorsStatus()
+        public MachineSensorsStatus(bool isOneKMachine)
         {
             //INFO hp: the sensorStatus array contains the Remote IO sensor status between index 0 and 47
             // followed by the Inverter sensor between index 48 and 111
             this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
+            this.isOneKMachine = isOneKMachine;
         }
 
         #endregion
@@ -56,9 +58,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsMachineInNormalState => this.sensorStatus[(int)IOMachineSensors.NormalState];
 
-        public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor];
+        public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
+
+        public bool[] Sensors => this.sensorStatus;
 
         #endregion
 
