@@ -43,7 +43,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         if (receivedMessage.Status == MessageStatus.OperationEnd ||
                             receivedMessage.Status == MessageStatus.OperationError)
                         {
-                            this.logger.LogDebug($"Positioning Deallocating {messageCurrentStateMachine?.GetType()} state machine");
                             this.logger.LogTrace($"4:Deallocation SM {messageCurrentStateMachine?.GetType()}");
 
                             if (messageCurrentStateMachine is PositioningStateMachine)

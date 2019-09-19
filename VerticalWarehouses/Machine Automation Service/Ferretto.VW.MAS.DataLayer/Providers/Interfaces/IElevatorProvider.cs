@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         decimal? GetVerticalPosition();
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, decimal position);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction);
 

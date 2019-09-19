@@ -73,6 +73,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
                 .AddTransient<IElevatorProvider, ElevatorProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<ISensorsProvider, SensorsProvider>()
                 .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
             services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();

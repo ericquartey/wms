@@ -46,7 +46,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -81,7 +86,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         break;
 
                     case InverterParameterId.PositionDecelerationParam:
-                        this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningEnableOperationState(
+                                this.ParentStateMachine,
+                                this.data,
+                                this.InverterStatus as IPositioningInverterStatus,
+                                this.Logger));
                         break;
                 }
             }
