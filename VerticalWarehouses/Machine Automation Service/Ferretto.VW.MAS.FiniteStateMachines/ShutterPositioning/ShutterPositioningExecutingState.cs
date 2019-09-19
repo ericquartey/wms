@@ -233,6 +233,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
+            this.machineData.PositioningMessageData.ExecutedCycles = this.numberOfExecutedCycles;
             var notificationMessage = new NotificationMessage(
                 this.machineData.PositioningMessageData,
                 "ShutterControl Test Executing",

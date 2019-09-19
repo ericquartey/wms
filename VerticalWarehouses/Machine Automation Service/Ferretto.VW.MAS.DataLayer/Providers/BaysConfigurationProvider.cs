@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class BaysConfigurationProvider : Interfaces.IBaysConfigurationProvider
     {
-
         #region Fields
 
         private readonly Interfaces.IBaysProvider baysProvider;
@@ -50,8 +49,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -106,7 +103,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         Index = bayIndex,
                         ExternalId = bayNumber,
                         IpAddress = ipAddresses[i].ToString(),
-                        Type = bayTypes[i],
+                        Type = bayTypes[i]
                     });
                 }
                 else
@@ -115,18 +112,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
                 }
-
-                bay = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
-                if (bay == null)
+            }
+            var bayE = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
+            if (bayE == null)
+            {
+                this.baysProvider.Create(new Bay
                 {
-                    this.baysProvider.Create(new Bay
-                    {
-                        Index = BayNumber.ElevatorBay,
-                        ExternalId = 4,
-                        IpAddress = IPAddress.Broadcast.ToString(),
-                        Type = BayType.Elevator
-                    });
-                }
+                    Index = BayNumber.ElevatorBay,
+                    ExternalId = 4,
+                    IpAddress = IPAddress.Broadcast.ToString(),
+                    Type = BayType.Elevator
+                });
             }
         }
 
