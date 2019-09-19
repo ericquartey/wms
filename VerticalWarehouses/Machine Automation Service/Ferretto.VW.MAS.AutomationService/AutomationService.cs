@@ -147,38 +147,6 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.dataHubClient.ConnectAsync();
         }
 
-        private void CommandReceiveTaskFunction()
-        {
-            do
-            {
-                CommandMessage receivedMessage;
-                try
-                {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
-                    this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
-                }
-                catch(OperationCanceledException)
-                {
-                    this.logger.LogTrace("3:Method End - Operation Canceled");
-                    return;
-                }
-
-                switch(receivedMessage.Type)
-                {
-                    case MessageType.PowerEnable:
-                    this.currentStateMachine = new PowerEnableStateMachine(receivedMessage, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
-                    this.currentStateMachine.Start();
-                    break;
-
-                    case MessageType.Stop:
-                    this.currentStateMachine?.Stop(StopRequestReason.Stop);
-                    break;
-                }
-            }
-            while(!this.stoppingToken.IsCancellationRequested);
-        }
-
         #endregion
     }
 }

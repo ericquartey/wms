@@ -585,7 +585,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if(this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
-                currentStateMachine.Stop(StopRequestReason.Stop);
+                if(receivedMessage.Data is IStopMessageData data)
+                {
+                    currentStateMachine.Stop(data.StopReason);
+                }
+                else
+                {
+                    currentStateMachine.Stop(StopRequestReason.Stop);
+                }
             }
             else
             {

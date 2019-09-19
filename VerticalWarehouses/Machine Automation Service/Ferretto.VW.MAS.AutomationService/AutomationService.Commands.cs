@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.Utils.Messages;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -24,8 +26,11 @@ namespace Ferretto.VW.MAS.AutomationService
             switch(command.Type)
             {
                 case MessageType.PowerEnable:
-                this.currentStateMachine = new PowerEnableStateMachine(command, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
-                this.currentStateMachine.Start();
+                if(command.Data is IPowerEnableMessageData messageData)
+                {
+                    this.currentStateMachine = new PowerEnableStateMachine(messageData.Enable, command.RequestingBay, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                    this.currentStateMachine.Start();
+                }
                 break;
 
                 case MessageType.Stop:

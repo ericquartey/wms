@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable.Models;
@@ -27,17 +26,17 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
         #region Constructors
 
         public PowerEnableStateMachine(
-            CommandMessage message,
+            bool enable,
+            BayNumber requestingBay,
             List<Bay> configuredBays,
             IEventAggregator eventAggregator,
             ILogger<AutomationService> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(message.RequestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            var messageData = message.Data as PowerEnableMessageData;
-            this.machineData = new PowerEnableMachineData(messageData.Enable, message.RequestingBay, configuredBays, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new PowerEnableMachineData(enable, requestingBay, configuredBays, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -70,7 +69,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 var stateData = new PowerEnableStateData(this, this.machineData);
                 this.CurrentState = new PowerEnableStartState(stateData);
@@ -80,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -88,12 +87,12 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

@@ -522,8 +522,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void Stop(BayNumber bayNumber)
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,

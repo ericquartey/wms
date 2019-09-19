@@ -609,25 +609,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 switch(receivedMessage.Type)
                 {
-                    case MessageType.FaultStateChanged:
-                    case MessageType.RunningStateChanged:
-
-                    if(receivedMessage.Data is IStateChangedMessageData messageData)
-                    {
-                        if(!messageData.CurrentState)
-                        {
-                            var reason = receivedMessage.Type == MessageType.FaultStateChanged ? StopRequestReason.FaultStateChanged : StopRequestReason.RunningStateChanged;
-
-                            foreach(var stateMachine in this.currentStateMachines.Values)
-                            {
-                                stateMachine?.Stop(reason);
-                            }
-                            continue;
-                        }
-                    }
-
-                    break;
-
                     case MessageType.DataLayerReady:
 
                     // TEMP Retrieve the current configuration of IO devices
