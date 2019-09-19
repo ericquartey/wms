@@ -35,18 +35,39 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ElevatorStructuralProperties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BeltRigidity = table.Column<decimal>(nullable: false),
+                    BeltSpacing = table.Column<decimal>(nullable: false),
+                    HalfShaftLength = table.Column<decimal>(nullable: false),
+                    Height = table.Column<decimal>(nullable: false),
+                    MaximumLoadOnBoard = table.Column<decimal>(nullable: false),
+                    PulleyDiameter = table.Column<decimal>(nullable: false),
+                    ShaftDiameter = table.Column<decimal>(nullable: false),
+                    ShaftElasticity = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElevatorStructuralProperties", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ErrorDefinitions",
                 columns: table => new
                 {
-                    Code = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Code = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     Reason = table.Column<string>(nullable: true),
                     Severity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ErrorDefinitions", x => x.Code);
+                    table.PrimaryKey("PK_ErrorDefinitions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,6 +118,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MachineStatistics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MovementParameters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Acceleration = table.Column<decimal>(nullable: false),
+                    Deceleration = table.Column<decimal>(nullable: false),
+                    Speed = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovementParameters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,14 +207,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Name = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     AccessLevel = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: false),
                     PasswordSalt = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Name);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,6 +242,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Elevators",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LoadingUnitOnBoard = table.Column<int>(nullable: true),
+                    StructuralPropertiesId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Elevators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Elevators_ElevatorStructuralProperties_StructuralPropertiesId",
+                        column: x => x.StructuralPropertiesId,
+                        principalTable: "ElevatorStructuralProperties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Errors",
                 columns: table => new
                 {
@@ -220,7 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         name: "FK_Errors_ErrorDefinitions_Code",
                         column: x => x.Code,
                         principalTable: "ErrorDefinitions",
-                        principalColumn: "Code",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -238,7 +296,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         name: "FK_ErrorStatistics_ErrorDefinitions_Code",
                         column: x => x.Code,
                         principalTable: "ErrorDefinitions",
-                        principalColumn: "Code",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -293,6 +351,44 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ElevatorAxes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EmptyLoadId = table.Column<int>(nullable: true),
+                    LowerBound = table.Column<decimal>(nullable: false),
+                    MaximumLoadId = table.Column<int>(nullable: true),
+                    Offset = table.Column<decimal>(nullable: false),
+                    Orientation = table.Column<int>(nullable: false),
+                    Resolution = table.Column<decimal>(nullable: false),
+                    UpperBound = table.Column<decimal>(nullable: false),
+                    ElevatorId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElevatorAxes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_Elevators_ElevatorId",
+                        column: x => x.ElevatorId,
+                        principalTable: "Elevators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_MovementParameters_EmptyLoadId",
+                        column: x => x.EmptyLoadId,
+                        principalTable: "MovementParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_MovementParameters_MaximumLoadId",
+                        column: x => x.MaximumLoadId,
+                        principalTable: "MovementParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bays",
                 columns: table => new
                 {
@@ -325,8 +421,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BlockSize = table.Column<int>(nullable: false),
                     BookedCellsNumber = table.Column<int>(nullable: false),
-                    Position = table.Column<decimal>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: false),
+                    Position = table.Column<decimal>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     Side = table.Column<int>(nullable: false),
                     StartCell = table.Column<int>(nullable: false)
@@ -344,8 +440,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
-                columns: new[] { "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 100032, "Cassetto non caricato completamente", "Il cassetto potrebbe essersi incastrato.", 0 });
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100032, 100032, "Cassetto non caricato completamente", "Il cassetto potrebbe essersi incastrato.", 0 });
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
@@ -355,7 +451,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 19, 16, 51, 38, 827, DateTimeKind.Local).AddTicks(5976), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -364,13 +460,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Name", "AccessLevel", "PasswordHash", "PasswordSalt" },
-                values: new object[] { "installer", 0, "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=", "2xw+hMIYBtLCoUqQGXSL0A==" });
+                columns: new[] { "Id", "AccessLevel", "Name", "PasswordHash", "PasswordSalt" },
+                values: new object[] { -1, 0, "installer", "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=", "2xw+hMIYBtLCoUqQGXSL0A==" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Name", "AccessLevel", "PasswordHash", "PasswordSalt" },
-                values: new object[] { "operator", 2, "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=", "iB+IdMnlzvXvitHWJff38A==" });
+                columns: new[] { "Id", "AccessLevel", "Name", "PasswordHash", "PasswordSalt" },
+                values: new object[] { -2, 2, "operator", "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=", "iB+IdMnlzvXvitHWJff38A==" });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -394,9 +490,36 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "PanelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_ElevatorId",
+                table: "ElevatorAxes",
+                column: "ElevatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_EmptyLoadId",
+                table: "ElevatorAxes",
+                column: "EmptyLoadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_MaximumLoadId",
+                table: "ElevatorAxes",
+                column: "MaximumLoadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Elevators_StructuralPropertiesId",
+                table: "Elevators",
+                column: "StructuralPropertiesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ErrorDefinitions_Code",
+                table: "ErrorDefinitions",
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Errors_Code",
                 table: "Errors",
-                column: "Code");
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FreeBlocks_LoadingUnitId",
@@ -419,6 +542,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_TorqueCurrentSamples_MeasurementSessionId",
                 table: "TorqueCurrentSamples",
                 column: "MeasurementSessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Name",
+                table: "Users",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -428,6 +557,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConfigurationValues");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorAxes");
 
             migrationBuilder.DropTable(
                 name: "Errors");
@@ -457,6 +589,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
+                name: "Elevators");
+
+            migrationBuilder.DropTable(
+                name: "MovementParameters");
+
+            migrationBuilder.DropTable(
                 name: "ErrorDefinitions");
 
             migrationBuilder.DropTable(
@@ -464,6 +602,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "TorqueCurrentMeasurementSessions");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorStructuralProperties");
 
             migrationBuilder.DropTable(
                 name: "Cells");

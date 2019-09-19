@@ -39,6 +39,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 {
                     builder.HasData(new ErrorDefinition
                     {
+                        Id = (int)enumValue.GetValue(null),
                         Code = (int)enumValue.GetValue(null),
                         Description = attribute.Description,
                         Reason = attribute.Reason,

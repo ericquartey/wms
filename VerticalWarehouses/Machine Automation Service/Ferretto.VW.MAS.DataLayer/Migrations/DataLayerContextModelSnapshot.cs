@@ -92,6 +92,80 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("ConfigurationValues");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("LoadingUnitOnBoard");
+
+                    b.Property<int?>("StructuralPropertiesId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StructuralPropertiesId");
+
+                    b.ToTable("Elevators");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ElevatorId");
+
+                    b.Property<int?>("EmptyLoadId");
+
+                    b.Property<decimal>("LowerBound");
+
+                    b.Property<int?>("MaximumLoadId");
+
+                    b.Property<decimal>("Offset");
+
+                    b.Property<int>("Orientation");
+
+                    b.Property<decimal>("Resolution");
+
+                    b.Property<decimal>("UpperBound");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElevatorId");
+
+                    b.HasIndex("EmptyLoadId");
+
+                    b.HasIndex("MaximumLoadId");
+
+                    b.ToTable("ElevatorAxes");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorStructuralProperties", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("BeltRigidity");
+
+                    b.Property<decimal>("BeltSpacing");
+
+                    b.Property<decimal>("HalfShaftLength");
+
+                    b.Property<decimal>("Height");
+
+                    b.Property<decimal>("MaximumLoadOnBoard");
+
+                    b.Property<decimal>("PulleyDiameter");
+
+                    b.Property<decimal>("ShaftDiameter");
+
+                    b.Property<decimal>("ShaftElasticity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ElevatorStructuralProperties");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
                 {
                     b.Property<int>("Id")
@@ -105,15 +179,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Errors");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Code");
 
                     b.Property<string>("Description")
                         .IsRequired();
@@ -122,13 +199,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Severity");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("ErrorDefinitions");
 
                     b.HasData(
                         new
                         {
+                            Id = 100032,
                             Code = 100032,
                             Description = "Cassetto non caricato completamente",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
@@ -308,6 +389,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Acceleration");
+
+                    b.Property<decimal>("Deceleration");
+
+                    b.Property<decimal>("Speed");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MovementParameters");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -329,7 +426,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823),
+                            InstallationDate = new DateTime(2016, 11, 19, 16, 51, 38, 827, DateTimeKind.Local).AddTicks(5976),
                             ServiceStatus = 86
                         });
                 });
@@ -463,10 +560,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.User", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessLevel");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired();
@@ -474,22 +573,27 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("PasswordSalt")
                         .IsRequired();
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Name = "installer",
+                            Id = -1,
                             AccessLevel = 0,
+                            Name = "installer",
                             PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
                             PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A=="
                         },
                         new
                         {
-                            Name = "operator",
+                            Id = -2,
                             AccessLevel = 2,
+                            Name = "operator",
                             PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                             PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
                         });
@@ -508,6 +612,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany("Cells")
                         .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorStructuralProperties", "StructuralProperties")
+                        .WithMany()
+                        .HasForeignKey("StructuralPropertiesId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxis", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Elevator")
+                        .WithMany("Axes")
+                        .HasForeignKey("ElevatorId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoad")
+                        .WithMany()
+                        .HasForeignKey("EmptyLoadId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "MaximumLoad")
+                        .WithMany()
+                        .HasForeignKey("MaximumLoadId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>

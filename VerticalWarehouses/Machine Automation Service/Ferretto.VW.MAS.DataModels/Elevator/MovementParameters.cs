@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class MovementParameters : DataModel
+    public class MovementParameters : DataModel
     {
         #region Properties
 

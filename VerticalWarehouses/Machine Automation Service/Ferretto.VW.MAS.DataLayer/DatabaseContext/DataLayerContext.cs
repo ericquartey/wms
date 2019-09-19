@@ -41,6 +41,12 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
+        public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
+
+        public DbSet<Elevator> Elevators { get; set; }
+
+        public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
+
         public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
         public DbSet<Error> Errors { get; set; }
@@ -54,6 +60,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<LogEntry> LogEntries { get; set; }
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
+
+        public DbSet<MovementParameters> MovementParameters { get; set; }
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 

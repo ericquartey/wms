@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class ElevatorStructuralProperties
+    public class ElevatorStructuralProperties : DataModel
     {
         #region Properties
 
@@ -15,9 +15,19 @@
         public decimal BeltSpacing { get; set; }
 
         /// <summary>
+        /// The half-shaft length, in millimeters.
+        /// </summary>
+        public decimal HalfShaftLength { get; set; }
+
+        /// <summary>
         /// The machine height, in millimeters.
         /// </summary>
         public decimal Height { get; set; }
+
+        /// <summary>
+        /// The maximum weight that can be loaded on the cradle.
+        /// </summary>
+        public decimal MaximumLoadOnBoard { get; set; }
 
         /// <summary>
         /// The diameter, in millimeters, of the pulley (belt wheel).
@@ -33,11 +43,6 @@
         /// The shaft elasticity.
         /// </summary>
         public decimal ShaftElasticity { get; set; }
-
-        /// <summary>
-        /// The shaft length, in millimeters.
-        /// </summary>
-        public decimal ShaftLength { get; set; }
 
         #endregion
     }

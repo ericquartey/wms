@@ -51,7 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var elevator = Newtonsoft.Json.JsonConvert.DeserializeObject<Elevator>(jsonCategory.Value.ToString());
 
-                    // dataContext.Elevators.Add(elevator);
+                    dataContext.Elevators.Add(elevator);
+                    dataContext.SaveChanges();
 
                     continue;
                 }
