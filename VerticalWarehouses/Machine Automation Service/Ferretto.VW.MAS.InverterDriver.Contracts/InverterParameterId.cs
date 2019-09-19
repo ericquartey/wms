@@ -46,8 +46,6 @@
 
         TableTravelTargetDecelerations = 1206,
 
-        TableTravelSwitchPositions = 1209,
-
         TableTravelDirection = 1261,
 
         TorqueCurrent = 211,

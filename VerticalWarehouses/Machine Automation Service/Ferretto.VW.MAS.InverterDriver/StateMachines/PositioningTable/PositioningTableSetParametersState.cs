@@ -86,12 +86,33 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId]));
                                 this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}: table index {this.tableIndex}");
                                 break;
+
+                            case InverterTableIndex.TableTravelP1:
+                            case InverterTableIndex.TableTravelP2:
+                            case InverterTableIndex.TableTravelP3:
+                            case InverterTableIndex.TableTravelP4:
+                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.SwitchPosition[this.parameterId]));
+                                this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: table index {this.tableIndex}");
+                                break;
                         }
                         break;
 
                     case InverterParameterId.TableTravelTargetPosition:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, (short)this.data.Direction));
-                        this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
+                        if (this.tableIndex == InverterTableIndex.TableTravelDirection)
+                        {
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, (short)this.data.Direction));
+                            this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
+                        }
+                        else if (++this.parameterId < this.data.SwitchPosition.Length - 1)
+                        {
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                        }
                         break;
 
                     case InverterParameterId.TableTravelDirection:
@@ -121,11 +142,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         break;
 
                     case InverterParameterId.TableTravelTargetDecelerations:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId]));
-                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: table index {this.tableIndex}");
-                        break;
-
-                    case InverterParameterId.TableTravelSwitchPositions:
                         if (++this.parameterId < this.data.SwitchPosition.Length)
                         {
                             this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
@@ -134,7 +150,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                            this.parameterId = 0;
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
                         }
                         break;
                 }
