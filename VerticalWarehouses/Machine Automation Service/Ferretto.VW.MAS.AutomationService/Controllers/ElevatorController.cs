@@ -95,37 +95,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                void publishAction()
-                {
-                    this.PublishCommand(
-                        null,
-                        "Sensors changed Command",
-                        MessageActor.FiniteStateMachines,
-                        MessageType.SensorsChanged);
-                }
-
-                var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(
-                    MessageType.SensorsChanged,
-                    MessageActor.FiniteStateMachines,
-                    MessageStatus.OperationExecuting,
-                    publishAction);
-
-                // check feasibility
-                if (isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
-                {
-                    throw new InvalidOperationException("Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
-                }
-                var zeroSensor = (this.machineConfigurationProvider.IsOneKMachine() ? IOMachineSensors.ZeroPawlSensorOneK : IOMachineSensors.ZeroPawlSensor);
-                if ((!isStartedOnBoard && !messageData.SensorsStates[(int)zeroSensor])
-                    || (isStartedOnBoard && messageData.SensorsStates[(int)zeroSensor])
-                    )
-                {
-                    throw new InvalidOperationException("Invalid Zero Chain position");
-                }
-
-                // execute command
-                var position = this.elevatorProvider.GetHorizontalPosition();
-                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, position.Value);
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard);
                 return this.Accepted();
             }
             catch (Exception ex)
