@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
             bool isOneKMachine,
             BayNumber requestingBay,
             BayNumber targetBay,
+            IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -31,6 +32,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
             this.IsOneKMachine = isOneKMachine;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
+            this.MachineSensorStatus = machineSensorsStatus;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -61,6 +63,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
         public bool IsOneKMachine { get; }
 
         public ILogger<FiniteStateMachines> Logger { get; }
+
+        public IMachineSensorsStatus MachineSensorStatus { get; }
 
         public int MaximumSteps { get; set; }
 

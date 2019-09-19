@@ -13,14 +13,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     internal class HomingSwitchAxisDoneState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
 
         private readonly IHomingStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -43,8 +40,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -81,18 +76,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Start()
         {
+            var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate);
-
-            InverterIndex targetInverter;
-
-            if (this.machineData.IsOneKMachine)
-            {
-                targetInverter = this.machineData.AxisToCalibrate == Axis.Vertical ? InverterIndex.MainInverter : InverterIndex.Slave1;
-            }
-            else
-            {
-                targetInverter = InverterIndex.MainInverter;
-            }
 
             var commandMessage = new FieldCommandMessage(
                 calibrateAxisData,
@@ -126,22 +111,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -16,14 +16,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     internal class HomingEndState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
 
         private readonly IHomingStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
@@ -46,8 +43,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -99,33 +94,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
+            if (this.machineData.IsOneKMachine)
+            {
+                inverterMessage = new FieldCommandMessage(
+                    inverterDataMessage,
+                    "Update Inverter axis position status",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterSetTimer,
+                    (byte)InverterIndex.Slave1);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+            }
+
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
-                if (this.machineData.AxisToCalibrate == Axis.Vertical)
-                {
-                    var stopMessage = new FieldCommandMessage(
-                        null,
-                        "Homing Stopped",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop,
-                        (byte)InverterIndex.MainInverter);
+                var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                var stopMessage = new FieldCommandMessage(
+                    null,
+                    "Homing Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop,
+                    (byte)targetInverter);
 
-                    this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-                }
-
-                if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
-                {
-                    var stopMessage = new FieldCommandMessage(
-                        null,
-                        "Homing Stopped",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop,
-                        (byte)InverterIndex.Slave1);
-
-                    this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-                }
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
 
             var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
@@ -156,21 +149,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion
