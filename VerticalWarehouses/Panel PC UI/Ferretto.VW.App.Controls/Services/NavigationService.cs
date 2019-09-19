@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Controls.Utils;

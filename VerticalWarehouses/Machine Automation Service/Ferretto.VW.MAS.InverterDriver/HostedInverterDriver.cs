@@ -10,6 +10,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
@@ -74,7 +75,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task inverterSendTask;
 
-        private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+        //private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+
+        private readonly IInverterService inverterService;
 
         private readonly ILogger logger;
 
@@ -122,6 +125,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public HostedInverterDriver(
             IEventAggregator eventAggregator,
+            IInverterService inverterService,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
@@ -130,6 +134,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
+            this.inverterService = inverterService;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
@@ -162,8 +167,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.SensorTimeData = new InverterDiagnosticsData();
 
             this.SensorIntervalTimeData = new InverterDiagnosticsData();
-
-            this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
             this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
 
@@ -302,7 +305,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-                if (this.inverterStatuses.Count == 0)
+                if (this.inverterService.StatusesCount == 0)
                 {
                     this.logger.LogError("4:Invert Driver not configured for this message Type");
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using Ferretto.VW.App.Controls.Interfaces;
@@ -33,8 +35,7 @@ namespace Ferretto.VW.App.Controls
 
         protected PpcDialogView()
         {
-            this.LoadTheme();
-            this.Loaded += this.OnPpcDialogView_Loaded;
+            this.Loaded += async (sender, e) => await this.View_Loaded(sender, e);
         }
 
         #endregion
@@ -71,14 +72,16 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public static void ShowDialog(INavigableView registeredView, bool isNoModalDialog = false)
+        public static void ShowDialog(INavigableView registeredView, bool isNoModalDialog = false, bool isChildOfMainWindow = true)
         {
             if (!(registeredView is PpcDialogView ppcDialog))
             {
                 return;
             }
 
-            if (Application.Current.MainWindow.IsVisible)
+            if (Application.Current.MainWindow.IsVisible
+                &&
+                isChildOfMainWindow)
             {
                 ppcDialog.Owner = Application.Current.MainWindow;
                 ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -113,11 +116,6 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public virtual void OnPpcDialogView_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.CheckDataContext();
-        }
-
         protected override void OnClose()
         {
             base.OnClose();
@@ -136,13 +134,6 @@ namespace Ferretto.VW.App.Controls
 
         private void CheckDataContext()
         {
-            if (this.IsWrongDataContext() == false)
-            {
-                return;
-            }
-
-            ((INavigableViewModel)this.DataContext)?.Appear();
-            SetFocus(this, this.FocusedStart);
         }
 
         private string GetAttachedViewModel()
@@ -163,12 +154,41 @@ namespace Ferretto.VW.App.Controls
 
         private void LoadTheme()
         {
+            if (this.Owner == null)
+            {
+                return;
+            }
+
             var themeName = ServiceLocator.Current.GetInstance<IThemeService>().ActiveTheme;
             var dictionary = new ResourceDictionary();
             var resourceUri =
                 $"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_THEMENAME};Component/Skins/{themeName}/{themeName}DialogPopup.xaml";
             dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
             this.Resources.MergedDictionaries.Add(dictionary);
+        }
+
+        private async Task View_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (this.IsWrongDataContext() == false)
+            {
+                return;
+            }
+
+            this.LoadTheme();
+
+            if (this.DataContext is IActivationViewModel activationViewModel)
+            {
+                this.SetBinding(
+                    IsEnabledProperty,
+                    new Binding(nameof(IActivationViewModel.IsEnabled)) { Source = activationViewModel });
+            }
+
+            if (this.DataContext is INavigableViewModel viewModel)
+            {
+                await viewModel.OnNavigatedAsync();
+            }
+
+            SetFocus(this, this.FocusedStart);
         }
 
         #endregion

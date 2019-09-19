@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
-
-
         #region Methods
 
         public void ExecuteResetSecurity()
@@ -22,7 +20,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             else
             {
-                this.CurrentStateMachine = new ResetSecurityStateMachine(this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
+                this.CurrentStateMachine = new ResetSecurityStateMachine(this.ioCommandQueue, this.ioDeviceService.GetStatus(this.deviceIndex), this.deviceIndex, this.eventAggregator, this.logger);
                 this.CurrentStateMachine.Start();
             }
         }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using Ferretto.VW.MAS.IODriver.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver
 {
     public class IoStatus
     {
-
         #region Fields
 
         private const short COMTOUT_DEFAULT = 20000;
@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.IODriver
         private const int TOTAL_OUTPUTS = 8;
 
         private readonly bool[] inputs;
+
+        private readonly IoIndex ioIndex;
 
         private readonly bool[] outputs;
 
@@ -46,7 +48,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public IoStatus()
+        public IoStatus(IoIndex ioIndex)
         {
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -58,11 +60,10 @@ namespace Ferretto.VW.MAS.IODriver
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
             this.useSetupOutputLines = false;
             this.ipAddress = string.Empty;
+            this.ioIndex = ioIndex;
         }
 
         #endregion
-
-
 
         #region Properties
 
@@ -87,6 +88,8 @@ namespace Ferretto.VW.MAS.IODriver
         public byte FwRelease { get => this.fwRelease; set => this.fwRelease = value; }
 
         public bool[] InputData => this.inputs;
+
+        public IoIndex IoIndex => this.ioIndex;
 
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
@@ -114,8 +117,6 @@ namespace Ferretto.VW.MAS.IODriver
         #endregion
 
         // Add other output signals names
-
-
 
         #region Methods
 

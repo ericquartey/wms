@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? currentHorizontalPosition;
 
-        private decimal? currentPosition;
-
         private decimal? currentVerticalPosition;
 
         private SubscriptionToken movementsSubscriptionToken;

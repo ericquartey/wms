@@ -1,15 +1,24 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.App.Services
 {
     public class DialogService : IDialogService
     {
+        #region Fields
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         public DialogService()
@@ -20,6 +29,34 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Methods
+
+        public void Show(string moduleName, string viewModelName)
+        {
+            if (!MvvmNaming.IsViewModelNameValid(viewModelName))
+            {
+                this.logger.Warn($"Unable to show to view '{moduleName}.{viewModelName}' because name is invalid.");
+                return;
+            }
+
+            this.logger.Trace($"Show view '{moduleName}.{viewModelName}'.");
+            try
+            {
+                var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+                navigationService.LoadModule(moduleName);
+
+                var viewName = MvvmNaming.GetViewNameFromViewModelName(viewModelName);
+
+                var winView = ServiceLocator.Current.GetInstance<INavigableView>(viewName);
+
+                //var ppcMessagePopup = new PpcDialogView();
+                //ppcMessagePopup.Content = view;
+                PpcMessagePopup.ShowDialog(winView, false, false);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"Cannot show view '{moduleName}.{viewModelName}'.");
+            }
+        }
 
         public void ShowCustomMessagePopup(string title, string message)
         {
