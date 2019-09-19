@@ -30,7 +30,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Major Code Smell",
             "S107:Methods should not have too many parameters",
-            Justification = "Check if we really need this constructor." )]
+            Justification = "Check if we really need this constructor.")]
         public PositioningMessageData(
             Axis axisMovement,
             MovementType movementType,
@@ -45,7 +45,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int delay,
             decimal[] switchPosition,
             HorizontalMovementDirection direction,
-            MessageVerbosity verbosity = MessageVerbosity.Debug )
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -63,7 +63,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Direction = direction;
         }
 
-        public PositioningMessageData( IPositioningMessageData other )
+        public PositioningMessageData(IPositioningMessageData other)
         {
             this.AxisMovement = other.AxisMovement;
             this.MovementType = other.MovementType;
@@ -75,6 +75,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.NumberCycles = other.NumberCycles;
             this.LowerBound = other.LowerBound;
             this.UpperBound = other.UpperBound;
+            this.SwitchPosition = other.SwitchPosition;
+            this.Delay = other.Delay;
+            this.Direction = other.Direction;
         }
 
         #endregion
