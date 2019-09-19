@@ -477,10 +477,18 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetPosition:
-                    inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
-                    inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
-                    inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
-                        && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                    if (inverter.TableIndex < (int)InverterTableIndex.TableTravelP1)
+                    {
+                        inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                        inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                        inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
+                            && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                    }
+                    else
+                    {
+                        var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelP1;
+                        inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
+                    }
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -507,12 +515,6 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.TableTravelTableIndex:
                     inverter.TableIndex = (short)message.UShortPayload;
-                    result = client.Client.Send(message.ToBytes());
-                    break;
-
-                case InverterParameterId.TableTravelSwitchPositions:
-                    var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelSet1;
-                    inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
                     result = client.Client.Send(message.ToBytes());
                     break;
 
