@@ -5,8 +5,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 {
     public interface IHomingMachineData : IMachineData
     {
-
-
         #region Properties
 
         Axis AxisToCalibrate { get; set; }
@@ -14,6 +12,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
         Axis AxisToCalibrated { get; }
 
         bool IsOneKMachine { get; }
+
+        IMachineSensorsStatus MachineSensorStatus { get; }
 
         int MaximumSteps { get; set; }
 

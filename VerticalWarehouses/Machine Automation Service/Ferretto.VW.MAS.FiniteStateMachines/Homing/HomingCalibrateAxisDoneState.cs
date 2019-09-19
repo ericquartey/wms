@@ -13,14 +13,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     internal class HomingCalibrateAxisDoneState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
 
         private readonly IHomingStateData stateData;
-
-        private bool disposed;
 
         private bool inverterSwitched;
 
@@ -47,8 +44,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -113,23 +108,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            if (this.machineData.IsOneKMachine)
-            {
-                this.ioSwitched = true;
-                var slaveInverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
-                var slaveInverterCommandMessage = new FieldCommandMessage(
-                    slaveInverterCommandMessageData,
-                    $"Switch Axis {this.machineData.AxisToCalibrate}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSwitchOn,
-                    (byte)(this.machineData.AxisToCalibrate == Axis.Horizontal ? InverterIndex.Slave1 : InverterIndex.MainInverter));
-
-                this.Logger.LogTrace($"5:Publishing Field Command Message {slaveInverterCommandMessage.Type} Destination {slaveInverterCommandMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(slaveInverterCommandMessage);
-            }
-            else
+            var inverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+            if (!this.machineData.IsOneKMachine)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -141,20 +121,50 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     (byte)IoIndex.IoDevice1);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+            }
+            else
+            {
+                this.ioSwitched = true;
+            }
 
-                var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
-                var inverterCommandMessage = new FieldCommandMessage(
-                    inverterCommandMessageData,
-                    $"Switch Axis {this.machineData.AxisToCalibrate}",
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Switch Axis {this.machineData.AxisToCalibrate}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSwitchOn,
+                (byte)inverterIndex);
+
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            if (this.machineData.AxisToCalibrated != this.machineData.AxisToCalibrate)
+            {
+                var inverterIndexOld = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrated == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                var inverterDataMessageOld = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+                var inverterMessageOld = new FieldCommandMessage(
+                    inverterDataMessageOld,
+                    "Update Inverter axis position status",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSwitchOn,
-                    (byte)InverterIndex.MainInverter);
+                    FieldMessageType.InverterSetTimer,
+                    (byte)inverterIndexOld);
 
-                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessageOld);
             }
+
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, true, 250);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter axis position status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSetTimer,
+                (byte)inverterIndex);
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrated, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
