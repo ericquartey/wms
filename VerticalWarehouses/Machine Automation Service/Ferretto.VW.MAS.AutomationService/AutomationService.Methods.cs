@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 if(reason != StopRequestReason.NoReason)
                 {
-                    this.currentStateMachine = new PowerEnableStateMachine(false, BayNumber.BayOne, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                    this.currentStateMachine = new PowerEnableStateMachine(false, BayNumber.BayOne, reason, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
                     this.currentStateMachine.Start();
                 }
             }

@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.PowerEnable:
                 if(command.Data is IPowerEnableMessageData messageData)
                 {
-                    this.currentStateMachine = new PowerEnableStateMachine(messageData.Enable, command.RequestingBay, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                    this.currentStateMachine = new PowerEnableStateMachine(messageData.Enable, command.RequestingBay, messageData.Enable ? StopRequestReason.NoReason : StopRequestReason.RunningStateChanged, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
                     this.currentStateMachine.Start();
                 }
                 break;

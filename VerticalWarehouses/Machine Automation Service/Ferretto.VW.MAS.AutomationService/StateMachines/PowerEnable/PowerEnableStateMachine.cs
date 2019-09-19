@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         private readonly IPowerEnableMachineData machineData;
 
+        private readonly StopRequestReason stopRequestReason;
+
         private bool disposed;
 
         #endregion
@@ -28,6 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
         public PowerEnableStateMachine(
             bool enable,
             BayNumber requestingBay,
+            StopRequestReason stopRequestReason,
             List<Bay> configuredBays,
             IEventAggregator eventAggregator,
             ILogger<AutomationService> logger,
@@ -35,6 +38,8 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
             : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
+
+            this.stopRequestReason = stopRequestReason;
 
             this.machineData = new PowerEnableMachineData(enable, requestingBay, configuredBays, eventAggregator, logger, serviceScopeFactory);
         }
@@ -72,6 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
             lock(this.CurrentState)
             {
                 var stateData = new PowerEnableStateData(this, this.machineData);
+                stateData.StopRequestReason = this.stopRequestReason;
                 this.CurrentState = new PowerEnableStartState(stateData);
                 this.CurrentState?.Start();
             }
