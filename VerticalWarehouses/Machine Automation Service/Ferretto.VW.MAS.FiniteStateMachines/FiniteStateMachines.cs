@@ -332,7 +332,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if(receivedMessage.Source is FieldMessageActor.IoDriver)
                 {
                     var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                    messageBayBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex);
+                    messageBayBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
                 }
 
                 if(receivedMessage.Source is FieldMessageActor.InverterDriver)

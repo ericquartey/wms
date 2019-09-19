@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
-        BayNumber GetByIoIndex(IoIndex ioIndex);
+        BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
 
         Bay GetByIpAddress(IPAddress remoteIpAddress);
 

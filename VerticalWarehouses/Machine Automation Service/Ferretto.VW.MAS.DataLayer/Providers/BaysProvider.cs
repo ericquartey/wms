@@ -180,25 +180,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
-        public BayNumber GetByIoIndex(IoIndex ioIndex)
+        public BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType)
         {
             BayNumber returnValue = BayNumber.None;
 
-            switch(ioIndex)
+            //Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
+            if(messageType == FieldMessageType.SwitchAxis)
             {
-                case IoIndex.IoDevice1:
-                returnValue = BayNumber.BayOne;
-                break;
-
-                case IoIndex.IoDevice2:
-                returnValue = BayNumber.BayTwo;
-                break;
-
-                case IoIndex.IoDevice3:
-                returnValue = BayNumber.BayThree;
-                break;
+                returnValue = BayNumber.ElevatorBay;
             }
+            else
+            {
+                switch(ioIndex)
+                {
+                    case IoIndex.IoDevice1:
+                    returnValue = BayNumber.BayOne;
+                    break;
 
+                    case IoIndex.IoDevice2:
+                    returnValue = BayNumber.BayTwo;
+                    break;
+
+                    case IoIndex.IoDevice3:
+                    returnValue = BayNumber.BayThree;
+                    break;
+                }
+            }
             return returnValue;
         }
 

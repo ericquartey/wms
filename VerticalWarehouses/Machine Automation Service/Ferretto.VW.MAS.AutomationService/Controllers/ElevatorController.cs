@@ -1,16 +1,13 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -98,7 +95,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                void publishAction()
+                void PublishAction()
                 {
                     this.PublishCommand(
                         null,
@@ -111,7 +108,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.SensorsChanged,
                     MessageActor.FiniteStateMachines,
                     MessageStatus.OperationExecuting,
-                    publishAction);
+                    PublishAction);
 
                 // check feasibility
                 if(isStartedOnBoard != (messageData.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSideBay1] && messageData.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSideBay1]))
