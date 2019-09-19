@@ -2,15 +2,13 @@ using System;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class Error
+    public sealed class Error : DataModel
     {
         #region Properties
 
         public int Code { get; set; }
 
         public ErrorDefinition Definition { get; set; }
-
-        public int Id { get; set; }
 
         public DateTime OccurrenceDate { get; set; }
 

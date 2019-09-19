@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<Cell> GetAll();
 
-        CellStatisticsSummary GetStatistics();
+        Models.CellStatisticsSummary GetStatistics();
 
         void LoadFrom(string fileNamePath);
 

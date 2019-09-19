@@ -1,14 +1,12 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class MachineIdentity
+    public sealed class MachineIdentity : DataModel
     {
         #region Properties
 
         public int AreaId { get; set; }
 
         public decimal Depth { get; set; }
-
-        public int Id { get; set; }
 
         public System.DateTime InstallationDate { get; set; }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,13 +25,17 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="configurationFilePath">Configuration parameters to load</param>
         private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
-            var dataContext = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<DataLayerContext>();
+            var dataContext = this.serviceScopeFactory
+                .CreateScope()
+                .ServiceProvider
+                .GetRequiredService<DataLayerContext>();
+
             if (dataContext.ConfigurationValues.Any())
             {
                 return;
             }
 
-            this.Logger.LogInformation($"First run: loading machine configration from external file '{configurationFilePath}' ...");
+            this.Logger.LogInformation($"First run: loading machine configration from external JSON file ...");
 
             string fileContents = null;
             using (var streamReader = new StreamReader(configurationFilePath))
@@ -42,6 +47,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
             foreach (var jsonCategory in jsonObject)
             {
+                if (jsonCategory.Key == nameof(Elevator))
+                {
+                    var elevator = Newtonsoft.Json.JsonConvert.DeserializeObject<Elevator>(jsonCategory.Value.ToString());
+
+                    // dataContext.Elevators.Add(elevator);
+
+                    continue;
+                }
+
                 if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
                 {
                     throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");

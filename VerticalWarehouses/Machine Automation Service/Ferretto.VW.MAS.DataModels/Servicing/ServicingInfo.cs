@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class ServicingInfo
+    public sealed class ServicingInfo
     {
         #region Properties
 

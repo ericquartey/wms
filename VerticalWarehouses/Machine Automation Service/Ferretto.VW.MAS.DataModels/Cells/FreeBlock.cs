@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class FreeBlock
+    public sealed class FreeBlock
     {
         #region Properties
 
@@ -8,13 +8,13 @@
 
         public int BookedCellsNumber { get; set; }
 
-        public decimal Position { get; set; }
-
         public int FreeBlockId { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
 
         public int LoadingUnitId { get; set; }
+
+        public decimal Position { get; set; }
 
         public int Priority { get; set; }
 

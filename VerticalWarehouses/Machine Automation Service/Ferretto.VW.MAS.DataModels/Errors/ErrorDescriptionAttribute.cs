@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class ErrorDescriptionAttribute : Attribute
+    public sealed class ErrorDescriptionAttribute : Attribute
     {
         #region Fields
 

@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class LogEntry
+    public sealed class LogEntry : DataModel
     {
         #region Properties
 
@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DataModels
         public string ErrorLevel { get; set; }
 
         public string Exception { get; set; }
-
-        public int Id { get; set; }
 
         public string Level { get; set; }
 

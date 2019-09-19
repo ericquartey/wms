@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(u => u.Name);
+            builder.HasIndex(u => u.Name).IsUnique();
 
             builder.Property(u => u.PasswordHash).IsRequired();
 

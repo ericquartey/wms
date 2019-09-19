@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
+
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             {
                                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
+                                errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCompletelyLoaded);
                             }
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

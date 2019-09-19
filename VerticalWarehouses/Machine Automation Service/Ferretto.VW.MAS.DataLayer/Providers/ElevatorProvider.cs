@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
@@ -302,7 +302,7 @@ MessageType.RequestPosition);
                 MessageType.Positioning);
         }
 
-        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
+        public void MoveToVerticalPosition(decimal targetPosition, DataModels.FeedRateCategory feedRateCategory)
         {
             var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
             var upperBound = this.verticalAxisDataLayer.UpperBound;
@@ -517,55 +517,55 @@ MessageType.RequestPosition);
             this.setupStatusProvider.CompleteVerticalResolution();
         }
 
-        private decimal GetFeedRate(FeedRateCategory feedRateCategory)
+        private decimal GetFeedRate(DataModels.FeedRateCategory feedRateCategory)
         {
             decimal feedRate;
             switch (feedRateCategory)
             {
-                case FeedRateCategory.VerticalManualMovements:
+                case DataModels.FeedRateCategory.VerticalManualMovements:
                     feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
                     break;
 
-                case FeedRateCategory.VerticalManualMovementsAfterZero:
+                case DataModels.FeedRateCategory.VerticalManualMovementsAfterZero:
                     feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                     break;
 
-                case FeedRateCategory.HorizontalManualMovements:
+                case DataModels.FeedRateCategory.HorizontalManualMovements:
                     feedRate = this.horizontalManualMovementsDataLayer.FeedRateHM;
                     break;
 
-                case FeedRateCategory.VerticalResolutionCalibration:
+                case DataModels.FeedRateCategory.VerticalResolutionCalibration:
                     feedRate = this.resolutionCalibrationDataLayer.FeedRate;
                     break;
 
-                case FeedRateCategory.VerticalOffsetCalibration:
+                case DataModels.FeedRateCategory.VerticalOffsetCalibration:
                     feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
                     break;
 
-                case FeedRateCategory.CellHeightCheck:
+                case DataModels.FeedRateCategory.CellHeightCheck:
                     feedRate = this.cellControlDataLayer.FeedRateCC;
                     break;
 
-                case FeedRateCategory.PanelHeightCheck:
+                case DataModels.FeedRateCategory.PanelHeightCheck:
                     feedRate = this.panelControlDataLayer.FeedRatePC;
                     break;
 
-                case FeedRateCategory.LoadingUnitWeight:
+                case DataModels.FeedRateCategory.LoadingUnitWeight:
                     feedRate = this.weightControl.FeedRateWC;
                     break;
 
-                case FeedRateCategory.BayHeight:
+                case DataModels.FeedRateCategory.BayHeight:
                     feedRate = this.bayPositionControl.FeedRateBP;
                     break;
 
-                case FeedRateCategory.LoadFirstDrawer:
-                    throw new NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                case DataModels.FeedRateCategory.LoadFirstDrawer:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.LoadFirstDrawer));
 
-                case FeedRateCategory.ShutterManualMovements:
-                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterManualMovements));
+                case DataModels.FeedRateCategory.ShutterManualMovements:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterManualMovements));
 
-                case FeedRateCategory.ShutterHeightCheck:
-                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterHeightCheck));
+                case DataModels.FeedRateCategory.ShutterHeightCheck:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterHeightCheck));
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(feedRateCategory));

@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class Bay
+    public sealed class Bay
     {
         #region Properties
 

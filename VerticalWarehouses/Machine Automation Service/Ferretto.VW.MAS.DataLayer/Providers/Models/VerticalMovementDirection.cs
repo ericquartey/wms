@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿namespace Ferretto.VW.MAS.DataLayer.Providers.Models
 {
     public enum VerticalMovementDirection
     {

@@ -2,11 +2,9 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class Cell
+    public sealed class Cell : DataModel
     {
         #region Properties
-
-        public int Id { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
 

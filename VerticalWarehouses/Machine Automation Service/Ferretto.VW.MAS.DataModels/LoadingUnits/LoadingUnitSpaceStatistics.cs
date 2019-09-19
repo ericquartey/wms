@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class LoadingUnitSpaceStatistics
+    public sealed class LoadingUnitSpaceStatistics
     {
         #region Properties
 
