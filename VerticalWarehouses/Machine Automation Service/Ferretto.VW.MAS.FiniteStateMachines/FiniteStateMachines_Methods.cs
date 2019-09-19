@@ -423,7 +423,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationExecuting);
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                 }
-                else if(data.BayNumber > 0)
+                else if(message.RequestingBay > 0)
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
                     var inverterStatus = new AglInverterStatus((byte)this.baysProvider.GetInverterList(message.RequestingBay).ToArray()[this.baysProvider.BayInverterPosition]);

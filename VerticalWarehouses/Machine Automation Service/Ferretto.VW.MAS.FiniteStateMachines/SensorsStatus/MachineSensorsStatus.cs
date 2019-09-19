@@ -120,6 +120,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                             if(this.sensorStatus[(int)IOMachineSensors.RunningState] !=
                                 newSensorStatus[(int)IOMachineSensors.RunningState])
                             {
+                                //During Fault Handling running status will be set off. This prevents double firing the power off procedure
                                 if(!this.IsInverterInFault)
                                 {
                                     StatusUpdateEventArgs args = new StatusUpdateEventArgs();
