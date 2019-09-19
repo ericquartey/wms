@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case InverterIndex.Slave1:
                         setupNetworkInverterIndex = SetupNetwork.InverterIndexChain;
-                        inverterType = InverterType.Ang; //TEMP Verify
+                        inverterType = InverterType.Acu; //TEMP Verify
                         break;
 
                     case InverterIndex.Slave2:

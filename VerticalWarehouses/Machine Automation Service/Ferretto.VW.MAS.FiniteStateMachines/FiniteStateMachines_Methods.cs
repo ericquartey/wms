@@ -23,7 +23,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public partial class FiniteStateMachines
+    internal partial class FiniteStateMachines
     {
         #region Methods
 
@@ -425,9 +425,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 else if(message.RequestingBay > 0)
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus((byte)this.baysProvider.GetInverterList(message.RequestingBay).ToArray()[this.baysProvider.BayInverterPosition]);
-                    int sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.aglInverterInputs.Length);
-                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+                    var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
+                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
                     var msg = new NotificationMessage(
                         notificationMessageData,

@@ -1275,6 +1275,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime InstallationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOneTonMachine { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastServiceDate { get; set; }
     

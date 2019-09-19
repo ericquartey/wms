@@ -76,9 +76,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Start()
         {
-            var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate);
+            var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal)
+                ? InverterIndex.Slave1
+                : InverterIndex.MainInverter;
 
+            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.homingOperation.AxisToCalibrate);
             var commandMessage = new FieldCommandMessage(
                 calibrateAxisData,
                 $"Homing {this.machineData.AxisToCalibrate} State Started",

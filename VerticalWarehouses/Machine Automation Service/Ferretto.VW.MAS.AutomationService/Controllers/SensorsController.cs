@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.MAS.DataLayer.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -9,13 +8,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class SensorsController : BaseAutomationController
     {
+        #region Fields
 
+        private readonly ISensorsProvider sensorsProvider;
+
+        #endregion
 
         #region Constructors
 
-        public SensorsController(IEventAggregator eventAggregator)
+        public SensorsController(
+            IEventAggregator eventAggregator,
+            ISensorsProvider sensorsProvider)
             : base(eventAggregator)
         {
+            if (sensorsProvider is null)
+            {
+                throw new System.ArgumentNullException(nameof(sensorsProvider));
+            }
+
+            this.sensorsProvider = sensorsProvider;
         }
 
         #endregion

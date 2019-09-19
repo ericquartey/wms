@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -6,8 +7,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public BaysSensorsViewModel(IMachineSensorsService machineSensorsService)
-            : base(machineSensorsService)
+        public BaysSensorsViewModel(IMachineSensorsService machineSensorsService, IBayManager bayManager)
+            : base(machineSensorsService, bayManager)
         {
         }
 

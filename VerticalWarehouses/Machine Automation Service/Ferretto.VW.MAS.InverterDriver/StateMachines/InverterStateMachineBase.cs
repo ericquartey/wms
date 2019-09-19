@@ -115,6 +115,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
+            this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
             this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 

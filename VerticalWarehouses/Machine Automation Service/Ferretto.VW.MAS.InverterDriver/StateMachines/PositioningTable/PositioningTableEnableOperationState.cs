@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -21,12 +22,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public PositioningTableEnableOperationState(
             IInverterStateMachine parentStateMachine,
             IInverterPositioningFieldMessageData data,
-            IInverterStatusBase inverterStatus,
+            IPositioningInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
+
+            this.Inverter = inverterStatus;
         }
+
+        #endregion
+
+        #region Properties
+
+        public IPositioningInverterStatus Inverter { get; }
 
         #endregion
 
@@ -35,22 +44,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            if (this.InverterStatus is AngInverterStatus currentStatus)
-            {
-                //INFO Set the axis to move in the CW
-                currentStatus.TableTravelControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
-                currentStatus.TableTravelControlWord.EnableOperation = true;
-                currentStatus.TableTravelControlWord.Resume = false;
-            }
-
             this.Logger.LogDebug("Inverter Enable Operation");
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).TableTravelControlWord.Value);
-            this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.Inverter.TableTravelControlWord.EnableOperation = true;
+            this.Inverter.TableTravelControlWord.Resume = false;
+            this.Inverter.TableTravelControlWord.HorizontalAxis =
+                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                ? false
+                : this.data.AxisMovement == Axis.Horizontal;
 
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.ControlWordParam,
+                    this.Inverter.TableTravelControlWord.Value));
         }
 
         /// <inheritdoc />

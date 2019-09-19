@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
+        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+
         private readonly IServicingProvider servicingProvider;
 
         #endregion
@@ -25,7 +27,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IdentityController(
             IGeneralInfoConfigurationDataLayer generalInfo,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
-            IServicingProvider servicingProvider)
+            IServicingProvider servicingProvider,
+            IMachineConfigurationProvider machineConfigurationProvider)
         {
             if (generalInfo is null)
             {
@@ -42,9 +45,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(servicingProvider));
             }
 
+            if (machineConfigurationProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(machineConfigurationProvider));
+            }
+
             this.generalInfo = generalInfo;
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.servicingProvider = servicingProvider;
+            this.machineConfigurationProvider = machineConfigurationProvider;
         }
 
         #endregion
@@ -71,6 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
                 LastServiceDate = servicingInfo.LastServiceDate,
+                IsOneTonMachine = this.machineConfigurationProvider.IsOneKMachine(),
             };
 
             return this.Ok(machineInfo);

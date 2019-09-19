@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -33,17 +32,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is IHomingInverterStatus currentStatus)
             {
                 currentStatus.HomingControlWord.HomingOperation = false;
                 currentStatus.HomingControlWord.EnableOperation = false;
+
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.HomingControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).HomingControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
