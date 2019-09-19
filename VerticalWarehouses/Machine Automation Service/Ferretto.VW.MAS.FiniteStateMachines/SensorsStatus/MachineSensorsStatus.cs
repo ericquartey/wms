@@ -15,13 +15,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private readonly bool isOneKMachine;
+
         private readonly bool[] sensorStatus;
 
         private decimal axisXPosition;
 
         private decimal axisYPosition;
-
-        private readonly bool isOneKMachine;
 
         #endregion
 
@@ -92,40 +92,43 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                 var requiredUpdate = false;
                 var updateDone = false;
 
-                if (newSensorStatus == null)
+                if(newSensorStatus == null)
                 {
                     return false;
                 }
 
-                if (messageActor == FieldMessageActor.IoDriver)
+                if(messageActor == FieldMessageActor.IoDriver)
                 {
-                    if (ioIndex > 2)
+                    if(ioIndex > 2)
                     {
                         return false;
                     }
 
-                    for (var index = 0; index < REMOTEIO_INPUTS; index++)
+                    for(var index = 0; index < REMOTEIO_INPUTS; index++)
                     {
-                        if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
+                        if(this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if (requiredUpdate)
+                    if(requiredUpdate)
                     {
-                        if (ioIndex == 0)
+                        if(ioIndex == 0)
                         {
-                            if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
+                            if(this.sensorStatus[(int)IOMachineSensors.RunningState] !=
                                 newSensorStatus[(int)IOMachineSensors.RunningState])
                             {
-                                StatusUpdateEventArgs args = new StatusUpdateEventArgs();
-                                args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
-                                this.OnRunningStateChanged(args);
+                                if(!this.IsInverterInFault)
+                                {
+                                    StatusUpdateEventArgs args = new StatusUpdateEventArgs();
+                                    args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
+                                    this.OnRunningStateChanged(args);
+                                }
                             }
 
-                            if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
+                            if(this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
                                 newSensorStatus[(int)IOMachineSensors.InverterInFault1])
                             {
                                 StatusUpdateEventArgs args = new StatusUpdateEventArgs();
@@ -141,18 +144,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 requiredUpdate = false;
 
-                if (messageActor == FieldMessageActor.InverterDriver)
+                if(messageActor == FieldMessageActor.InverterDriver)
                 {
-                    for (var index = 0; index < INVERTER_INPUTS; index++)
+                    for(var index = 0; index < INVERTER_INPUTS; index++)
                     {
-                        if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
+                        if(this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if (requiredUpdate)
+                    if(requiredUpdate)
                     {
                         Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
                         updateDone = true;
@@ -161,7 +164,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 return updateDone;
             }
-            catch (Exception exc)
+            catch(Exception exc)
             {
                 Console.WriteLine($@"{exc}");
                 return false;

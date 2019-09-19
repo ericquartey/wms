@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -91,6 +89,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.DataLayerReady:
                 this.OnDataLayerReady();
+                break;
+
+                case MessageType.FaultStateChanged:
+                case MessageType.RunningStateChanged:
+                this.OnMachineRunningStatusChange(receivedMessage);
                 break;
             }
 
