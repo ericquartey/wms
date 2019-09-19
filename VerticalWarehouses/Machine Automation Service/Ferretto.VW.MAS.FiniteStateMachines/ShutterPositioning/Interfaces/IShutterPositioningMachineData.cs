@@ -8,11 +8,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces
 {
     public interface IShutterPositioningMachineData : IMachineData
     {
-
-
         #region Properties
-
-        Timer DelayTimer { get; set; }
 
         InverterIndex InverterIndex { get; }
 
