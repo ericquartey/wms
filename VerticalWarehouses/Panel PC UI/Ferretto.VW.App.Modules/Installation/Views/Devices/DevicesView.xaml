@@ -16,6 +16,7 @@
                      MinWidth="800"
                      MinHeight="635"
                      ShowTitle="True"
+                     WindowState="Maximized"
                      mc:Ignorable="d">
 
     <ctrls:PpcDialogView.DataContext>
@@ -53,9 +54,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0"
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                               Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                               ToolTip="{Binding Id}" />
+
+                    <Grid Grid.Row="1"
                           Margin="5,5,5,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -67,24 +76,40 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <controls:PpcIcon Grid.Column="0"
-                                          Height="36"
-                                          Margin="0,0,10,0"
-                                          VerticalAlignment="Top"
-                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                          Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/device.png" />
 
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
+                        <TextBlock Grid.Column="0"
+                                   Margin="0,5,5,0"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
-                                   ToolTip="{Binding Id}" />
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Output:" />
+
+                        <ItemsControl Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="-2,3"
+                                      ItemsSource="{Binding Outputs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ctrls:SensorSquare Height="30"
+                                                        Margin="2,3"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        IsReadOnly="True"
+                                                        LabelText="{Binding Name}"
+                                                        SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource VW_SensorSquareStyle}"
+                                                        ToolTip="{Binding Description}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
                     </Grid>
 
-
-                    <Grid Grid.Row="1"
+                    <Grid Grid.Row="2"
                           Margin="5,5">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -98,7 +123,7 @@
 
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
-                                      ItemsSource="{Binding IoStatusItems}">
+                                      ItemsSource="{Binding IoStatuses}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" />
@@ -106,7 +131,8 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:Sensor Margin="2,3"
+                                    <ctrls:Sensor Height="20"
+                                                  Margin="2,3"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
                                                   FontSizeLabel="10"
@@ -114,7 +140,7 @@
                                                   LabelText="{Binding Name}"
                                                   SensorState="{Binding Value}"
                                                   Style="{StaticResource VW_SensorStyle}"
-                                                  ToolTip="{Binding Name}" />
+                                                  ToolTip="{Binding Description}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -167,7 +193,7 @@
                     </Grid>
 
                     <Grid Grid.Row="1"
-                          Margin="5,1,5,1">
+                          Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -188,7 +214,7 @@
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
                                       Margin="-2,0,0,0"
-                                      ItemsSource="{Binding ControlWordItems}">
+                                      ItemsSource="{Binding ControlWords}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" />
@@ -196,11 +222,11 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:SensorSquare Height="21"
+                                    <ctrls:SensorSquare Height="20"
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
-                                                        FontSizeLabel="10"
+                                                        FontSizeLabel="8"
                                                         IsEnabled="{Binding IsReadable}"
                                                         IsReadOnly="True"
                                                         LabelText="{Binding Name}"
@@ -208,6 +234,43 @@
                                                         Style="{StaticResource VW_SensorSquareStyle}"
                                                         ToolTip="{Binding Description}" />
 
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+
+                    <Grid Grid.Row="2"
+                          Margin="5">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   HorizontalAlignment="Left"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Input:" />
+
+                        <ItemsControl Grid.Row="1"
+                                      Margin="-2,3"
+                                      ItemsSource="{Binding DigitalIOs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ctrls:Sensor Margin="2,3"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  FontSizeLabel="13"
+                                                  HeightControl="21"
+                                                  LabelText="{Binding Name}"
+                                                  SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Style="{StaticResource VWSIM_CustomSensorControlStyle}"
+                                                  ToolTip="{Binding Description}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -235,7 +298,7 @@
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
                                       Margin="-2,0,0,0"
-                                      ItemsSource="{Binding StatusWordItems}">
+                                      ItemsSource="{Binding StatusWords}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" />
@@ -243,7 +306,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:SensorSquare Height="21"
+                                    <ctrls:SensorSquare Height="20"
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"

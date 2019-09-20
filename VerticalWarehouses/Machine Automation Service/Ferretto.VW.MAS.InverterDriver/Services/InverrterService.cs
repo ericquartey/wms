@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.InverterDriver.Interface.Services;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
@@ -12,6 +11,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Services
         #region Fields
 
         private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+
+        private readonly object syncRoot = new object();
 
         #endregion
 
@@ -30,15 +31,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Services
         {
             get
             {
-                lock (this.inverterStatuses)
+                lock (this.syncRoot)
                 {
-                    var statuses = new List<IInverterStatusBase>();
-                    foreach (var status in this.inverterStatuses.ToList())
-                    {
-                        statuses.Add((IInverterStatusBase)status.Value);
-                    }
-                    return statuses;
-                    //return this.inverterStatuses.ToList().Select(i => i.Value.OfType<IInverterStatusBase>());
+                    return this.inverterStatuses.Values.ToList();
                 }
             }
         }
@@ -47,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Services
         {
             get
             {
-                lock (this.inverterStatuses)
+                lock (this.syncRoot)
                 {
                     return this.inverterStatuses.Count;
                 }
@@ -65,36 +60,30 @@ namespace Ferretto.VW.MAS.InverterDriver.Services
                 return false;
             }
 
-            if (this.inverterStatuses.ContainsKey(inverterIndex))
+            lock (this.syncRoot)
             {
-                return false;
-            }
-
-            this.inverterStatuses.Add(inverterIndex, inverterStatus);
-            return true;
-        }
-
-        public IInverterStatusBase GetStatus(InverterIndex inverterIndex)
-        {
-            lock (this.inverterStatuses)
-            {
-                if (this.inverterStatuses.TryGetValue(inverterIndex, out var currentStatus))
+                if (this.inverterStatuses.ContainsKey(inverterIndex))
                 {
-                    return currentStatus;
+                    return false;
                 }
+
+                this.inverterStatuses.Add(inverterIndex, inverterStatus);
             }
 
-            return null;
+            return true;
         }
 
         public bool TryGetValue(InverterIndex inverterIndex, out IInverterStatusBase inverterStatuse)
         {
             inverterStatuse = null;
 
-            if (this.inverterStatuses.TryGetValue(inverterIndex, out var statuses))
+            lock (this.syncRoot)
             {
-                inverterStatuse = statuses;
-                return true;
+                if (this.inverterStatuses.TryGetValue(inverterIndex, out var statuses))
+                {
+                    inverterStatuse = statuses;
+                    return true;
+                }
             }
 
             return false;

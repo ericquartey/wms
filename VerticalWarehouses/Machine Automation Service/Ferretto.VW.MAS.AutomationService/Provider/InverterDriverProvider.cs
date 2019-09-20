@@ -66,13 +66,14 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                     statusWords.Add(new BitBase(prop.Name, value, prop.Name));
                 }
 
-                controlWords.ForEach(v => v.Value = true);
-                statusWords.ForEach(v => v.Value = true);
+                var inputs = new List<BitBase>();
+                // TO DO retrieve input data
 
                 var device = new InverterDevice();
                 device.Id = (int)status.SystemIndex;
-                device.ControlWordItems = controlWords;
-                device.StatusWordItems = statusWords;
+                device.ControlWords = controlWords;
+                device.StatusWords = statusWords;
+                device.DigitalIOs = inputs;
                 device.Id = status.SystemIndex;
                 inverterDevices.Add(device);
             }

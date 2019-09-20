@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 var inverterStatuses = this.inverterProvider.GetStatuses;
                 var ioDeviceStatuses = this.ioDeviceProvider.GetStatuses;
-                var result = (InvertersStatuses: inverterStatuses, IoStatuses: ioDeviceStatuses);
+                var result = (InvertersStatuses: inverterStatuses, IoStatuses: new List<IoDevice>());
                 return this.Ok(result);
             }
             catch (System.Exception ex)

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.IODriver.Interface.Services;
-using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Microsoft.Extensions.Hosting;
 
 namespace Ferretto.VW.MAS.IODriver.Services
 {
@@ -13,6 +10,8 @@ namespace Ferretto.VW.MAS.IODriver.Services
         #region Fields
 
         private readonly Dictionary<IoIndex, IoStatus> ioStatuses;
+
+        private readonly object syncRoot = new object();
 
         #endregion
 
@@ -32,7 +31,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
         {
             get
             {
-                lock (this.ioStatuses)
+                lock (this.syncRoot)
                 {
                     return this.ioStatuses.Values.ToList();
                 }
@@ -45,7 +44,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
 
         public void AddIoStatus(IoIndex index)
         {
-            lock (this.ioStatuses)
+            lock (this.syncRoot)
             {
                 this.ioStatuses.Add(index, new IoStatus(index));
             }
@@ -53,7 +52,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
 
         public IoStatus GetStatus(IoIndex deviceIndex)
         {
-            lock (this.ioStatuses)
+            lock (this.syncRoot)
             {
                 if (this.ioStatuses.TryGetValue(deviceIndex, out var currentStatus))
                 {
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
 
         public bool UpdateInputStates(bool[] inputData, IoIndex deviceIndex)
         {
-            lock (this.ioStatuses)
+            lock (this.syncRoot)
             {
                 if (this.ioStatuses.ContainsKey(deviceIndex))
                 {
@@ -79,7 +78,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
 
         public bool UpdateOutputStates(bool[] outputData, IoIndex deviceIndex)
         {
-            lock (this.ioStatuses)
+            lock (this.syncRoot)
             {
                 if (this.ioStatuses.ContainsKey(deviceIndex))
                 {

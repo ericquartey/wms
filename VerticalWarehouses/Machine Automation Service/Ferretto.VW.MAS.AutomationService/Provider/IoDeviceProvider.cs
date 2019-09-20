@@ -44,14 +44,27 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                     if (value is bool isValue)
                     {
                         var bit = new BitBase(prop.Name, isValue, prop.Name);
-                        bit.Value = true;
                         newData.Add(bit);
                     }
                 }
 
+                var inputs = new List<BitBase>();
+                foreach (var inputData in status.InputData)
+                {
+                    inputs.Add(new BitBase(string.Empty, inputData, string.Empty));
+                }
+
+                var outputs = new List<BitBase>();
+                foreach (var outputData in status.OutputData)
+                {
+                    outputs.Add(new BitBase(string.Empty, outputData, string.Empty));
+                }
+
                 var device = new IoDevice();
                 device.Id = (int)status.IoIndex;
-                device.IoStatusItems = newData;
+                device.IoStatuses = newData;
+                device.Inputs = inputs;
+                device.Outputs = outputs;
                 ioDevices.Add(device);
             }
 

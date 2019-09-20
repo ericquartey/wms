@@ -6,9 +6,11 @@ namespace Ferretto.VW.MAS.AutomationService.Models
     {
         #region Properties
 
-        public IEnumerable<BitBase> ControlWordItems { get; set; }
+        public IEnumerable<BitBase> ControlWords { get; set; }
 
-        public IEnumerable<BitBase> StatusWordItems { get; set; }
+        public IEnumerable<BitBase> DigitalIOs { get; set; }
+
+        public IEnumerable<BitBase> StatusWords { get; set; }
 
         #endregion
     }
