@@ -38,25 +38,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Homing;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.SetOperatingModeParam,
+                    this.InverterStatus.OperatingMode));
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-
-            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-            var notificationMessage = new FieldNotificationMessage(
-                messageData,
+            this.ParentStateMachine.PublishNotificationEvent(
+                new FieldNotificationMessage(
+                    new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info),
                 $"{this.axisToCalibrate} Homing started",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.CalibrateAxis,
                 MessageStatus.OperationStart,
-                this.InverterStatus.SystemIndex);
-
-            this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                this.InverterStatus.SystemIndex));
         }
 
         /// <inheritdoc />

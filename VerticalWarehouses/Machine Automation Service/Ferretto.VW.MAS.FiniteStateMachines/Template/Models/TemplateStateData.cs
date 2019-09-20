@@ -7,10 +7,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
 {
-    public class TemplateStateData : ITemplateStateData
+    internal class TemplateStateData : ITemplateStateData
     {
-
-
         #region Constructors
 
         public TemplateStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

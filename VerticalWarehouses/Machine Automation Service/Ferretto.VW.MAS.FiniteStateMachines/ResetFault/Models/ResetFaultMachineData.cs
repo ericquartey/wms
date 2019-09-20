@@ -11,10 +11,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
 {
-    public class ResetFaultMachineData : IResetFaultMachineData
+    internal class ResetFaultMachineData : IResetFaultMachineData
     {
-
-
         #region Constructors
 
         public ResetFaultMachineData(BayNumber requestingBay, BayNumber targetBay, List<InverterIndex> bayInverters, IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IServiceScopeFactory serviceScopeFactory)
@@ -28,8 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

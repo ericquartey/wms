@@ -8,9 +8,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public abstract class StateBase : IState
+    internal abstract class StateBase : IState
     {
-
         #region Fields
 
         public const int SENSOR_UPDATE_FAST = 50;
@@ -43,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-
-
         #region Properties
 
         public ILogger<FiniteStateMachines> Logger { get; }
@@ -54,8 +51,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         protected IStateMachine ParentStateMachine { get; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -83,12 +78,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

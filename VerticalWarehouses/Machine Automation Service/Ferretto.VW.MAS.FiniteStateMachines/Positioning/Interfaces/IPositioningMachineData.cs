@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces
 {
-    public interface IPositioningMachineData : IMachineData
+    internal interface IPositioningMachineData : IMachineData
     {
-
-
         #region Properties
 
         IBaysProvider BaysProvider { get; }

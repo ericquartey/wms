@@ -11,9 +11,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
-    public class ResetFaultStartState : StateBase
+    internal class ResetFaultStartState : StateBase
     {
-
         #region Fields
 
         private readonly Dictionary<InverterIndex, MessageStatus> inverterresponses;
@@ -48,8 +47,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -58,14 +55,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if(message.Type == FieldMessageType.InverterFaultReset)
+            if (message.Type == FieldMessageType.InverterFaultReset)
             {
                 Enum.TryParse(typeof(InverterIndex), message.DeviceIndex.ToString(), out var messageInverterIndex);
 
-                if(message.Status != MessageStatus.OperationStart &&
+                if (message.Status != MessageStatus.OperationStart &&
                     message.Status != MessageStatus.OperationExecuting)
                 {
-                    if(this.inverterresponses.TryGetValue((InverterIndex)messageInverterIndex, out var inverterResponse))
+                    if (this.inverterresponses.TryGetValue((InverterIndex)messageInverterIndex, out var inverterResponse))
                     {
                         inverterResponse = message.Status;
                         this.inverterresponses[(InverterIndex)messageInverterIndex] = inverterResponse;
@@ -76,9 +73,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
                     }
                 }
 
-                if(this.inverterresponses.Values.Count == this.machineData.BayInverters.Count)
+                if (this.inverterresponses.Values.Count == this.machineData.BayInverters.Count)
                 {
-                    if(this.inverterresponses.Values.Any(r => r != MessageStatus.OperationEnd))
+                    if (this.inverterresponses.Values.Any(r => r != MessageStatus.OperationEnd))
                     {
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.stateData));
@@ -105,7 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
                 FieldMessageType.InverterFaultReset,
                 (byte)InverterIndex.None);
 
-            foreach(var bayInverter in this.machineData.BayInverters)
+            foreach (var bayInverter in this.machineData.BayInverters)
             {
                 var newCommandMessage = new FieldCommandMessage(commandMessage);
                 newCommandMessage.DeviceIndex = (byte)bayInverter;
@@ -134,12 +131,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

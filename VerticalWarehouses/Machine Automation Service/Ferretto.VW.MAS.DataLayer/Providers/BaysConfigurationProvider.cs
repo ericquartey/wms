@@ -95,31 +95,43 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 var bayNumber = i + 1;
                 var bayIndex = Enum.Parse<BayNumber>(bayNumber.ToString());
 
-                var bay = this.baysProvider.GetByIndex(bayIndex);
-                if (bay == null)
+                try
+                {
+                    var bay = this.baysProvider.GetByIndex(bayIndex);
+                    this.baysProvider.Update(bayIndex,
+                        ipAddresses[i].ToString(),
+                        bayTypes[i]);
+                }
+                catch (EntityNotFoundException)
                 {
                     this.baysProvider.Create(new Bay
                     {
+                        Number = bayNumber,
                         Index = bayIndex,
                         ExternalId = bayNumber,
                         IpAddress = ipAddresses[i].ToString(),
                         Type = bayTypes[i]
                     });
                 }
-                else
-                {
-                    this.baysProvider.Update(bayIndex,
-                        ipAddresses[i].ToString(),
-                        bayTypes[i]);
-                }
             }
-            var bayE = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
-            if (bayE == null)
+            try
+            {
+                var bayE = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
+                this.baysProvider.Create(new Bay
+                {
+                    Number = (int)BayNumber.ElevatorBay,
+                    Index = BayNumber.ElevatorBay,
+                    ExternalId = (int)BayNumber.ElevatorBay,
+                    IpAddress = IPAddress.Broadcast.ToString(),
+                    Type = BayType.Elevator
+                });
+            }
+            catch (EntityNotFoundException)
             {
                 this.baysProvider.Create(new Bay
                 {
                     Index = BayNumber.ElevatorBay,
-                    ExternalId = 4,
+                    ExternalId = (int)BayNumber.ElevatorBay,
                     IpAddress = IPAddress.Broadcast.ToString(),
                     Type = BayType.Elevator
                 });

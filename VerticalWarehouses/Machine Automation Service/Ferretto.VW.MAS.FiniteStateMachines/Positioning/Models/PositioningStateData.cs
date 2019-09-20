@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 {
-    public class PositioningStateData : IPositioningStateData
+    internal class PositioningStateData : IPositioningStateData
     {
-
-
         #region Constructors
 
         public PositioningStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

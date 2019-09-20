@@ -12,10 +12,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 {
-    public class ShutterPositioningMachineData : IShutterPositioningMachineData
+    internal class ShutterPositioningMachineData : IShutterPositioningMachineData
     {
-
-
         #region Constructors
 
         public ShutterPositioningMachineData(
@@ -39,8 +37,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

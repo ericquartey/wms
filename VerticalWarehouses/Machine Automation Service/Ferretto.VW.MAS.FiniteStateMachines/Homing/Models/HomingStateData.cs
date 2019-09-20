@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 {
-    public class HomingStateData : IHomingStateData
+    internal class HomingStateData : IHomingStateData
     {
-
-
         #region Constructors
 
         public HomingStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

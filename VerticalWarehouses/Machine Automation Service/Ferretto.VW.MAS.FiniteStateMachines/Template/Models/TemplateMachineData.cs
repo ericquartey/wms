@@ -8,10 +8,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
 {
-    public class TemplateMachineData : ITemplateMachineData
+    internal class TemplateMachineData : ITemplateMachineData
     {
-
-
         #region Constructors
 
         public TemplateMachineData(BayNumber requestingBay, BayNumber targetBay, IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IServiceScopeFactory serviceScopeFactory)
@@ -26,8 +24,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

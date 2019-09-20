@@ -5,10 +5,8 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces
 {
-    public interface IResetFaultMachineData : IMachineData
+    internal interface IResetFaultMachineData : IMachineData
     {
-
-
         #region Properties
 
         List<InverterIndex> BayInverters { get; }

@@ -13,10 +13,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 {
-    public class PositioningMachineData : IPositioningMachineData
+    internal class PositioningMachineData : IPositioningMachineData
     {
-
-
         #region Constructors
 
         public PositioningMachineData(BayNumber requestingBay,
@@ -41,8 +39,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

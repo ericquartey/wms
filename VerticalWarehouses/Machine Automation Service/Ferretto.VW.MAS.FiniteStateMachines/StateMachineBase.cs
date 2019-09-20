@@ -12,9 +12,8 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public abstract class StateMachineBase : IStateMachine
+    internal abstract class StateMachineBase : IStateMachine
     {
-
         #region Fields
 
         private bool disposed;
@@ -44,8 +43,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
-
-
         #region Properties
 
         public IEventAggregator EventAggregator { get; }
@@ -57,8 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         protected IState CurrentState { get; set; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -78,14 +73,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.PublishNotificationMessage(notificationMessage);
 
-            lock(this.CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState = newState;
                 this.CurrentState.Start();
             }
 
             this.Logger.LogTrace($"1:{newState.GetType()}");
-            if(message != null)
+            if (message != null)
             {
                 this.Logger.LogTrace($"2:{newState.GetType()}{message.Type}:{message.Destination}");
                 this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
@@ -142,12 +137,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

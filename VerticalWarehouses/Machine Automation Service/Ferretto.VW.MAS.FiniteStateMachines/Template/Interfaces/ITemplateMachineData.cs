@@ -2,10 +2,8 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces
 {
-    public interface ITemplateMachineData : IMachineData
+    internal interface ITemplateMachineData : IMachineData
     {
-
-
         #region Properties
 
         string Message { get; }

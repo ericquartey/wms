@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public Bay GetByIndex(BayNumber bayIndex)
         {
-            var bay = this.dataContext.Bays.SingleOrDefault(b => b.Index == bayIndex);
+            var bay = this.dataContext.Bays.SingleOrDefault(b => b.ExternalId == (int)bayIndex);
             if (bay is null)
             {
                 throw new EntityNotFoundException(bayIndex);

@@ -174,8 +174,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus = new AglInverterStatus((byte)this.machineData.InverterIndex);
-            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.aglInverterInputs.Length);
-            Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.aglInverterInputs, 0, inverterStatus.aglInverterInputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
+            Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
             ShutterPositioningFieldMessageData messageData;
@@ -234,8 +234,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             var notificationMessageData1 = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus1 = new AglInverterStatus((byte)this.machineData.InverterIndex);
-            int sensorStart1 = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus1.aglInverterInputs.Length);
-            Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart1, inverterStatus1.aglInverterInputs, 0, inverterStatus1.aglInverterInputs.Length);
+            int sensorStart1 = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus1.Inputs.Length);
+            Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart1, inverterStatus1.Inputs, 0, inverterStatus1.Inputs.Length);
             notificationMessageData1.ShutterPosition = inverterStatus1.CurrentShutterPosition;
             var notificationMessage = new NotificationMessage(
                 notificationMessageData1,

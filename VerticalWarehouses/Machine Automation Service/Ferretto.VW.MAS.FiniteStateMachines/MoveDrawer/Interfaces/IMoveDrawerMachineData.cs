@@ -5,10 +5,8 @@ using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces
 {
-    public interface IMoveDrawerMachineData : IMachineData
+    internal interface IMoveDrawerMachineData : IMachineData
     {
-
-
         #region Properties
 
         IDrawerOperationMessageData DrawerOperationData { get; }

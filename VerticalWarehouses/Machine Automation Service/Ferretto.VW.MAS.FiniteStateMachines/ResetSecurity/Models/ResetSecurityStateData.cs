@@ -6,10 +6,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
 {
-    public class ResetSecurityStateData : IResetSecurityStateData
+    internal class ResetSecurityStateData : IResetSecurityStateData
     {
-
-
         #region Constructors
 
         public ResetSecurityStateData(IStateMachine parentMachine, IMachineData machineData)
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

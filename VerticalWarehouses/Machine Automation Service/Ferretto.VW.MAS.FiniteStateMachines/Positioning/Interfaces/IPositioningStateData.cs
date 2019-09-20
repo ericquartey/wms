@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces
 {
-    public interface IPositioningStateData : IStateData
+    internal interface IPositioningStateData : IStateData
     {
     }
 }
