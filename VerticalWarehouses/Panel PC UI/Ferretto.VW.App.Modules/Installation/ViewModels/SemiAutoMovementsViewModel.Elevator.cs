@@ -138,6 +138,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsZeroChain
+        {
+            get => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+        }
+
         public ICommand TuningBayCommand =>
                     this.tuningBayCommand
             ??
@@ -179,7 +184,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
-                !this.Sensors.LuPresentInOperatorSideBay1;
+                !this.Sensors.LuPresentInOperatorSideBay1
+                &&
+                this.IsZeroChain;
         }
 
         private bool CanTuningBay()
@@ -195,7 +202,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningChain
                 &&
-                !this.Sensors.ZeroPawlSensor;
+                !this.IsZeroChain;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)

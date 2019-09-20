@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorEmbarking
                 || this.IsTuningChain;
 
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;

@@ -115,7 +115,7 @@
                 <controls:PpcSensorControl Grid.Row="6"
                                            Grid.Column="1"
                                            Margin="0,5"
-                                           SensorState="{Binding Sensors.ZeroPawlSensor}" />
+                                           SensorState="{Binding IsZeroChain}" />
 
 
 
