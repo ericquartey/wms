@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class BaysConfigurationProvider : Interfaces.IBaysConfigurationProvider
     {
+
         #region Fields
 
         private readonly Interfaces.IBaysProvider baysProvider;
@@ -28,17 +29,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             ISetupNetworkDataLayer networkConfiguration,
             Interfaces.IBaysProvider baysProvider)
         {
-            if (generalInfoConfiguration == null)
+            if(generalInfoConfiguration == null)
             {
                 throw new ArgumentNullException(nameof(generalInfoConfiguration));
             }
 
-            if (networkConfiguration == null)
+            if(networkConfiguration == null)
             {
                 throw new ArgumentNullException(nameof(networkConfiguration));
             }
 
-            if (baysProvider == null)
+            if(baysProvider == null)
             {
                 throw new ArgumentNullException(nameof(baysProvider));
             }
@@ -50,6 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
+
+
         #region Methods
 
         public void LoadFromConfiguration()
@@ -58,39 +61,39 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var ipAddresses = new List<System.Net.IPAddress>();
             var bayTypes = new List<BayType>();
 
-            switch (baysCount)
+            switch(baysCount)
             {
                 case 1:
-                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
 
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
-                    break;
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
+                break;
 
                 case 2:
-                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
-                    ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
 
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
 
-                    break;
+                break;
 
                 case 3:
-                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
-                    ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
-                    ipAddresses.Add(this.networkConfiguration.PPC3SlaveIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
+                ipAddresses.Add(this.networkConfiguration.PPC3SlaveIPAddress);
 
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
-                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay3Type);
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
+                bayTypes.Add((BayType)this.generalInfoConfiguration.Bay3Type);
 
-                    break;
+                break;
 
                 default:
-                    throw new Exception($"Unexpected amount of bays in configuration ({baysCount}).");
+                throw new Exception($"Unexpected amount of bays in configuration ({baysCount}).");
             }
 
-            for (var i = 0; i < baysCount; i++)
+            for(var i = 0; i < baysCount; i++)
             {
                 var bayNumber = i + 1;
                 var bayIndex = Enum.Parse<BayNumber>(bayNumber.ToString());
@@ -102,7 +105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
                 }
-                catch (EntityNotFoundException)
+                catch(EntityNotFoundException)
                 {
                     this.baysProvider.Create(new Bay
                     {
@@ -117,19 +120,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             try
             {
                 var bayE = this.baysProvider.GetByIndex(BayNumber.ElevatorBay);
-                this.baysProvider.Create(new Bay
-                {
-                    Number = (int)BayNumber.ElevatorBay,
-                    Index = BayNumber.ElevatorBay,
-                    ExternalId = (int)BayNumber.ElevatorBay,
-                    IpAddress = IPAddress.Broadcast.ToString(),
-                    Type = BayType.Elevator
-                });
+                this.baysProvider.Update(BayNumber.ElevatorBay,
+                    IPAddress.Broadcast.ToString(),
+                    BayType.Elevator);
             }
-            catch (EntityNotFoundException)
+            catch(EntityNotFoundException)
             {
                 this.baysProvider.Create(new Bay
                 {
+                    Number = (int)BayNumber.ElevatorBay,
                     Index = BayNumber.ElevatorBay,
                     ExternalId = (int)BayNumber.ElevatorBay,
                     IpAddress = IPAddress.Broadcast.ToString(),

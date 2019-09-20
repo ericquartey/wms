@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Type");
 
-                    b.HasKey("Number");
+                    b.HasKey("Index");
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
@@ -336,7 +336,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823),
+                            InstallationDate = new DateTime(2016, 11, 20, 8, 34, 2, 465, DateTimeKind.Local).AddTicks(3908),
                             ServiceStatus = 86
                         });
                 });

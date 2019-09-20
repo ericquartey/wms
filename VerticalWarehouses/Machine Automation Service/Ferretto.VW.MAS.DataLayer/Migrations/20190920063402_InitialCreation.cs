@@ -155,6 +155,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TorqueCurrentMeasurementSessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LoadedNetWeight = table.Column<decimal>(nullable: false),
+                    LoadingUnitId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TorqueCurrentMeasurementSessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -228,6 +242,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalTable: "ErrorDefinitions",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TorqueCurrentSamples",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    MeasurementSessionId = table.Column<int>(nullable: false),
+                    RequestTimeStamp = table.Column<DateTime>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
+                    Value = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TorqueCurrentSamples", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TorqueCurrentSamples_TorqueCurrentMeasurementSessions_MeasurementSessionId",
+                        column: x => x.MeasurementSessionId,
+                        principalTable: "TorqueCurrentMeasurementSessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,7 +358,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 12, 14, 42, 8, 735, DateTimeKind.Local).AddTicks(6537), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 20, 8, 34, 2, 465, DateTimeKind.Local).AddTicks(3908), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -381,6 +417,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "LoadingUnits",
                 column: "Code",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TorqueCurrentSamples_MeasurementSessionId",
+                table: "TorqueCurrentSamples",
+                column: "MeasurementSessionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -413,6 +454,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "SetupStatus");
 
             migrationBuilder.DropTable(
+                name: "TorqueCurrentSamples");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
@@ -420,6 +464,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "LoadingUnits");
+
+            migrationBuilder.DropTable(
+                name: "TorqueCurrentMeasurementSessions");
 
             migrationBuilder.DropTable(
                 name: "Cells");
