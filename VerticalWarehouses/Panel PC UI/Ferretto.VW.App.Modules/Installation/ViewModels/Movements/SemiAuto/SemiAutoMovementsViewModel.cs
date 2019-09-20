@@ -323,7 +323,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed;
+            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed && !this.shutterSensors.MidWay;
 
             this.CanInputCellId = this.Cells != null
                &&

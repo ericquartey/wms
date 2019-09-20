@@ -203,6 +203,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningChain
                 &&
+                !this.Sensors.LuPresentInMachineSideBay1
+                &&
+                !this.Sensors.LuPresentInOperatorSideBay1
+                &&
                 !this.IsZeroChain;
         }
 
