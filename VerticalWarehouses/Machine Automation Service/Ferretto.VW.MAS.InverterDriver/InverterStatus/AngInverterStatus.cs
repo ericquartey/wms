@@ -240,7 +240,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
             switch (axisToMove)
             {
-                case Axis.Both:
+                case Axis.HorizontalAndVertical:
                 case Axis.Vertical:
                     if (this.currentPositionAxisVertical != position)
                     {

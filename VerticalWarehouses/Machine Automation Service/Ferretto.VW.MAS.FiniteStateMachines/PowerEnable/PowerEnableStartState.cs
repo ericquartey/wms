@@ -11,23 +11,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableStartState : StateBase
     {
+
         #region Fields
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableMachineData machineData;
+
+        private readonly IPowerEnableStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PowerEnableStartState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableStartState(IPowerEnableStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -40,29 +46,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.PowerEnable)
+            if(message.Type == FieldMessageType.PowerEnable)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if (this.machineData.Enable)
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, this.machineData));
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableStopInverterState(this.ParentStateMachine, this.machineData));
-                        }
-                        break;
+                    this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                    break;
                 }
             }
-            else if (message.Type == FieldMessageType.IoDriverException)
+
+            if(message.Type == FieldMessageType.IoDriverException)
             {
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, this.machineData, message));
+                this.stateData.FieldMessage = message;
+                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
             }
         }
 
@@ -94,16 +96,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.machineData, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

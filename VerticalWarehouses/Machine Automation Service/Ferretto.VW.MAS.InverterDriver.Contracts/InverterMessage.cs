@@ -446,6 +446,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.TorqueCurrent:
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
+                case InverterParameterId.ShutterTargetPosition:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);

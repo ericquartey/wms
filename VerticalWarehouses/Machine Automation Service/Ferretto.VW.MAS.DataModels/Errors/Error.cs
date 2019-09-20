@@ -1,10 +1,15 @@
 using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
     public class Error
     {
+
+
         #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         public int Code { get; set; }
 

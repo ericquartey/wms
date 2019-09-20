@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class OperatorHubClient : AutoReconnectHubClient, IOperatorHubClient
     {
+
+
         #region Constructors
 
         public OperatorHubClient(Uri uri)
@@ -15,6 +17,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         #endregion
+
+
 
         #region Events
 
@@ -25,6 +29,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
+
+
 
         #region Methods
 
@@ -45,7 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.BayStatusChanged?.Invoke(
                 this,
                 new BayStatusChangedEventArgs(
-                    e.BayNumber,
+                    e.Index,
                     e.BayType,
                     e.BayStatus,
                     e.PendingMissionsCount,

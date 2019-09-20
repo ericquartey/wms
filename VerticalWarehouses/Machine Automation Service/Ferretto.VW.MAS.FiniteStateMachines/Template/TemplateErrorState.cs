@@ -8,27 +8,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateErrorState : StateBase
     {
+
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly ITemplateMachineData machineData;
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public TemplateErrorState(
-            IStateMachine parentMachine,
-            ITemplateData machineData,
-            FieldNotificationMessage errorMessage)
-            : base(parentMachine, machineData.Logger)
+        public TemplateErrorState(ITemplateStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -49,18 +51,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Template Error State",
+                $"Template Error State Notification with {this.machineData.Message} and {this.stateData.Message}. Filed message: {this.stateData.FieldMessage.Description}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

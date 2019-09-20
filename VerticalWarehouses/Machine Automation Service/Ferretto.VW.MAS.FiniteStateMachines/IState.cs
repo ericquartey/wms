@@ -1,11 +1,16 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    internal interface IState
+    internal interface IState : IDisposable
     {
         #region Properties
+
+        ILogger<FiniteStateMachines> Logger { get; }
 
         /// <summary>
         /// Get the type of state (string description).
@@ -42,7 +47,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <summary>
         /// Executes stop action in the current state to stop running Finite State Machine
         /// </summary>
-        void Stop();
+        /// <param name="reason"></param>
+        void Stop(StopRequestReason reason);
 
         #endregion
     }

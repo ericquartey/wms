@@ -1,10 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
+
+
         #region Constructors
 
         public ShutterPositioningMessageData()
@@ -15,7 +18,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             ShutterPosition shutterPosition,
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
-            int bayNumber,
             decimal speedRate,
             decimal higherDistance,
             decimal lowerDistance,
@@ -23,12 +25,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             int requestedCycles,
             int delay,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            MessageVerbosity verbosity = MessageVerbosity.Debug )
         {
             this.ShutterPosition = shutterPosition;
             this.ShutterMovementDirection = shutterMovementDirection;
             this.ShutterType = shutterType;
-            this.BayNumber = bayNumber;
             this.SpeedRate = speedRate;
             this.HigherDistance = higherDistance;
             this.LowerDistance = lowerDistance;
@@ -39,31 +40,31 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Verbosity = verbosity;
         }
 
-        public ShutterPositioningMessageData(IShutterPositioningMessageData shutterpositioningMessageData)
+        public ShutterPositioningMessageData( IShutterPositioningMessageData shutterPositioningMessageData )
         {
-            if (shutterpositioningMessageData == null)
+            if ( shutterPositioningMessageData == null )
             {
-                throw new System.ArgumentNullException(nameof(shutterpositioningMessageData));
+                throw new System.ArgumentNullException( nameof( shutterPositioningMessageData ) );
             }
 
-            this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
-            this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
-            this.ShutterType = shutterpositioningMessageData.ShutterType;
-            this.SpeedRate = shutterpositioningMessageData.SpeedRate;
-            this.HigherDistance = shutterpositioningMessageData.HigherDistance;
-            this.LowerDistance = shutterpositioningMessageData.LowerDistance;
-            this.MovementMode = shutterpositioningMessageData.MovementMode;
-            this.MovementType = shutterpositioningMessageData.MovementType;
-            this.RequestedCycles = shutterpositioningMessageData.RequestedCycles;
-            this.Delay = shutterpositioningMessageData.Delay;
-            this.Verbosity = shutterpositioningMessageData.Verbosity;
+            this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterPositioningMessageData.ShutterType;
+            this.SpeedRate = shutterPositioningMessageData.SpeedRate;
+            this.HigherDistance = shutterPositioningMessageData.HigherDistance;
+            this.LowerDistance = shutterPositioningMessageData.LowerDistance;
+            this.MovementMode = shutterPositioningMessageData.MovementMode;
+            this.MovementType = shutterPositioningMessageData.MovementType;
+            this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
+            this.Delay = shutterPositioningMessageData.Delay;
+            this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
 
         #endregion
 
-        #region Properties
 
-        public int BayNumber { get; set; }
+
+        #region Properties
 
         public int Delay { get; set; }
 
@@ -90,6 +91,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+
 
         #region Methods
 

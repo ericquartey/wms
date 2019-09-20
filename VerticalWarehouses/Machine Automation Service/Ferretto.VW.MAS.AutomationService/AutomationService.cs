@@ -1,8 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
+using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
@@ -10,19 +20,32 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal partial class AutomationService : AutomationBackgroundService
+    public partial class AutomationService : AutomationBackgroundService
     {
+
         #region Fields
 
         private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IBaysDataService baysDataService;
 
+        private readonly IBaysProvider baysProvider;
+
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+
+        private readonly Task commandReceiveTask;
+
         private readonly IDataHubClient dataHubClient;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
+
+        private readonly ILogger<AutomationService> logger;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -31,6 +54,12 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private List<DataModels.Bay> configuredBays;
+
+        private IStateMachine currentStateMachine;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -46,45 +75,46 @@ namespace Ferretto.VW.MAS.AutomationService
             IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
             IServiceScopeFactory serviceScopeFactory,
-            IApplicationLifetime applicationLifetime)
+            IApplicationLifetime applicationLifetime,
+            IBaysProvider baysProvider)
             : base(eventAggregator, logger)
         {
-            if (serviceScopeFactory is null)
+            if(serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            if (applicationLifetime is null)
+            if(applicationLifetime is null)
             {
                 throw new ArgumentNullException(nameof(applicationLifetime));
             }
 
-            if (installationHub is null)
+            if(installationHub is null)
             {
                 throw new ArgumentNullException(nameof(installationHub));
             }
 
-            if (dataHubClient is null)
+            if(dataHubClient is null)
             {
                 throw new ArgumentNullException(nameof(dataHubClient));
             }
 
-            if (machinesDataService is null)
+            if(machinesDataService is null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
             }
 
-            if (operatorHub is null)
+            if(operatorHub is null)
             {
                 throw new ArgumentNullException(nameof(operatorHub));
             }
 
-            if (baysDataService is null)
+            if(baysDataService is null)
             {
                 throw new ArgumentNullException(nameof(baysDataService));
             }
 
-            if (missionDataService is null)
+            if(missionDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionDataService));
             }
@@ -98,10 +128,15 @@ namespace Ferretto.VW.MAS.AutomationService
             this.baysDataService = baysDataService;
             this.missionDataService = missionDataService;
             this.serviceScopeFactory = serviceScopeFactory;
+            this.logger = logger;
+            this.baysProvider = baysProvider;
             this.applicationLifetime = applicationLifetime;
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
+
+
 
         #region Methods
 

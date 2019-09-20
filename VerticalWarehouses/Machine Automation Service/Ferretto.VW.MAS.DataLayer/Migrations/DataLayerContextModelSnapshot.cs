@@ -18,8 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
-                    b.Property<int>("Number")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Index");
 
                     b.Property<int?>("CurrentMissionId");
 
@@ -33,9 +32,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("LoadingUnitId");
 
+                    b.Property<int>("Number");
+
+                    b.Property<int>("Operation");
+
                     b.Property<int>("Type");
 
-                    b.HasKey("Number");
+                    b.HasKey("Index");
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
@@ -96,6 +99,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BayNumber");
 
                     b.Property<int>("Code");
 
@@ -221,6 +226,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("BayNumber");
+
                     b.Property<string>("Data");
 
                     b.Property<string>("Description");
@@ -329,7 +336,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 16, 8, 51, 49, 868, DateTimeKind.Local).AddTicks(823),
+                            InstallationDate = new DateTime(2016, 11, 20, 8, 34, 2, 465, DateTimeKind.Local).AddTicks(3908),
                             ServiceStatus = 86
                         });
                 });

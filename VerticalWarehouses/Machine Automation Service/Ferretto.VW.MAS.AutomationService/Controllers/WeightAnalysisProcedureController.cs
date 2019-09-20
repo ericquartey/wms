@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class WeightAnalysisProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IElevatorProvider elevatorProvider;
@@ -24,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorProvider elevatorProvider)
             : base(eventAggregator)
         {
-            if (elevatorProvider is null)
+            if(elevatorProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
@@ -33,6 +34,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -44,11 +47,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId);
+                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber);
 
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -61,11 +64,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.Stop();
+                this.elevatorProvider.Stop(this.BayNumber);
 
                 return this.Accepted();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return this.NegativeResponse(ex);
             }

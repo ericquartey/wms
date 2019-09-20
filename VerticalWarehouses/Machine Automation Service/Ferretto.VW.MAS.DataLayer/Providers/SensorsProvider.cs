@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public bool[] GetAll()
+        public bool[] GetAll(BayNumber requestingBay)
         {
             void publishAction()
             {
@@ -25,7 +25,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     null,
                     "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
-                    MessageType.SensorsChanged);
+                    MessageType.SensorsChanged,
+                    requestingBay,
+                    BayNumber.ElevatorBay);
             }
 
             var messageData = this.WaitForResponseEventAsync<SensorsChangedMessageData>(

@@ -14,11 +14,13 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
 using Prism.Regions;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class InstallatorMenuViewModel : BaseMainViewModel
     {
+
         #region Fields
 
         private readonly int bayNumber;
@@ -61,13 +63,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.setupStatusService = setupStatusService;
+
+            //TODO Review Implementation avoid using numbers to identify bays
+            this.bayNumber = (int)bayManager.Bay.Index;
+
             this.machineModeService = machineModeService;
-            this.bayNumber = bayManager.Bay.Number;
 
             this.InitializeData();
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -86,6 +93,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BindingList<MainNavigationMenuItem> SensorsItems => this.sensorsItems;
 
         #endregion
+
+
 
         #region Methods
 

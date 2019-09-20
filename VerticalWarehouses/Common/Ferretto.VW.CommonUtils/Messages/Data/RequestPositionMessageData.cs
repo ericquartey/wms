@@ -6,6 +6,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class RequestPositionMessageData : IRequestPositionMessageData
     {
+
+
         #region Constructors
 
         public RequestPositionMessageData()
@@ -14,12 +16,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public RequestPositionMessageData(Axis currentAxis, int bayNumber, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.BayNumber = bayNumber;
             this.CurrentAxis = currentAxis;
             this.Verbosity = verbosity;
         }
 
         #endregion
+
+
 
         #region Properties
 

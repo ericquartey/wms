@@ -56,11 +56,11 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
         }

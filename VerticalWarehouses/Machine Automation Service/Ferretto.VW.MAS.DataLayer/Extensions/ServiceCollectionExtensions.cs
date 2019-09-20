@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+
+
         #region Methods
 
         public static IServiceCollection AddDataLayer(

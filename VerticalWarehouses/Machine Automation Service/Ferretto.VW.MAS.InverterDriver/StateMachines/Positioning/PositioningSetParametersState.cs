@@ -8,6 +8,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningSetParametersState : InverterStateBase
     {
+
         #region Fields
 
         private readonly IInverterPositioningFieldMessageData data;

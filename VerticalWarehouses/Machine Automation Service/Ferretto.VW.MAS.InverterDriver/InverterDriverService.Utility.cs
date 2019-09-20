@@ -274,11 +274,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
                 {
-                    if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is IPositioningInverterStatus positioningInverter)
+                    if ((inverterStatus.InverterType == InverterType.Ang || inverterStatus.InverterType == InverterType.Acu)
+                        && inverterStatus is IPositioningInverterStatus positioningInverter
+                        )
                     {
-                        var axis = inverterStatus.CommonControlWord.HorizontalAxis
-                            ? Axis.Horizontal
-                            : Axis.Vertical;
+                        var axis = (inverterIndex == InverterIndex.MainInverter && !inverterStatus.CommonControlWord.HorizontalAxis)
+                            ? Axis.Vertical
+                            : Axis.Horizontal;
 
                         if ((axis == this.currentAxis || currentStateMachine == null) &&
                             (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
@@ -565,10 +567,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError("3:Invalid message data for ProcessFaultResetMessage message Type");
+                this.logger.LogError($"3:Inverter number {currentInverter} is not configured for this machine");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0), FieldMessageType.InverterStop);
             }
         }
 

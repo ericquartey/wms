@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
+
+
         #region Methods
 
         public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)

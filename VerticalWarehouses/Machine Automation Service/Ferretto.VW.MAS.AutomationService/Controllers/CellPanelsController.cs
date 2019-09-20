@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CellPanelsController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly ICellPanelsProvider cellPanelsProvider;
@@ -34,6 +35,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

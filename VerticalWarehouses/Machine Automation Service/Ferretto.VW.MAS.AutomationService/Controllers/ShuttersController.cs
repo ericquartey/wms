@@ -2,11 +2,12 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Microsoft.AspNetCore.Http;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -67,10 +68,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             void publishAction()
             {
                 this.PublishCommand(
-messageData,
-"Request shutter position",
-MessageActor.FiniteStateMachines,
-MessageType.RequestPosition);
+                messageData,
+                "Request shutter position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
             }
 
             var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
@@ -106,7 +107,6 @@ MessageType.RequestPosition);
                 targetPosition,
                 direction,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 0,
                 0,
@@ -182,7 +182,6 @@ MessageType.RequestPosition);
                 targetPosition,
                 direction,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
@@ -224,11 +223,10 @@ MessageType.RequestPosition);
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
                 ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
-                bayNumber,
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
-                MovementMode.TestLoop,
+                MovementMode.ShutterTest,
                 MovementType.Absolute,
                 testCycleCount,
                 delayInMilliseconds);
@@ -247,8 +245,9 @@ MessageType.RequestPosition);
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop);

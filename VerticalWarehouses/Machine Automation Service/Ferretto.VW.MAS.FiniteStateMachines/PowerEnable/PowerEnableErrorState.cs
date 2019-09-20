@@ -9,27 +9,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableErrorState : StateBase
     {
+
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IPowerEnableMachineData machineData;
 
-        private readonly IPowerEnableData machineData;
+        private readonly IPowerEnableStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PowerEnableErrorState(
-            IStateMachine parentMachine,
-            IPowerEnableData machineData,
-            FieldNotificationMessage errorMessage)
-            : base(parentMachine, machineData.Logger)
+        public PowerEnableErrorState(IPowerEnableStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPowerEnableMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -53,19 +55,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Power Enable Stopped due to an error",
+                $"Power Enable Stopped due to an error. Filed message: {this.stateData.FieldMessage.Description}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

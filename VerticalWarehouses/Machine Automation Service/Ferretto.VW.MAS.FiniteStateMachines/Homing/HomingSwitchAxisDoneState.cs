@@ -15,19 +15,28 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
+
+        private readonly IHomingStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public HomingSwitchAxisDoneState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public HomingSwitchAxisDoneState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.homingOperation = homingOperation;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingSwitchAxisDoneState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -48,11 +57,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.homingOperation, this.Logger));
+                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.stateData));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                         break;
                 }
             }
@@ -66,14 +76,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Start()
         {
-            var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal)
+            var inverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
                 ? InverterIndex.Slave1
                 : InverterIndex.MainInverter;
 
-            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.homingOperation.AxisToCalibrate);
+            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate);
             var commandMessage = new FieldCommandMessage(
                 calibrateAxisData,
-                $"Homing {this.homingOperation.AxisToCalibrate} State Started",
+                $"Homing {this.machineData.AxisToCalibrate} State Started",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.CalibrateAxis,
@@ -83,23 +93,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.homingOperation.AxisToCalibrate, this.homingOperation.NumberOfExecutedSteps + 1, this.homingOperation.MaximumSteps, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps + 1, this.machineData.MaximumSteps, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{this.homingOperation.AxisToCalibrate} axis calibration started",
+                $"{this.machineData.AxisToCalibrate} axis calibration started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.homingOperation, this.Logger, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
         }
 
         #endregion

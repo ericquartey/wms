@@ -9,6 +9,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class DiagnosticDetailsViewModel : BaseViewModel
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -51,6 +52,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #endregion
 
+
+
         #region Properties
 
         public string CurrentMachineStatusFSM { get => this.currentMachineStatusFSM; set => this.SetProperty(ref this.currentMachineStatusFSM, value); }
@@ -68,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public bool IsOpen { get; set; }
 
         #endregion
+
+
 
         #region Methods
 

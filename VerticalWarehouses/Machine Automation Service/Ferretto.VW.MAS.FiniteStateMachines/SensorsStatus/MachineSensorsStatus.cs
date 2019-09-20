@@ -5,8 +5,10 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
+
     public class MachineSensorsStatus : IMachineSensorsStatus
     {
+
         #region Fields
 
         private const int INVERTER_INPUTS = 8;
@@ -35,6 +37,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
+
+
+        #region Events
+
+        public event EventHandler<StatusUpdateEventArgs> FaultStateChanged;
+
+        public event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
+
+        #endregion
+
+
+
         #region Properties
 
         public decimal AxisXPosition { get => this.axisXPosition; set => this.axisXPosition = value; }
@@ -54,9 +68,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalState];
+        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.RunningState];
 
-        public bool IsMachineInNormalState => this.sensorStatus[(int)IOMachineSensors.NormalState];
+        public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
+
+        public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
         public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
@@ -65,6 +81,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public bool[] Sensors => this.sensorStatus;
 
         #endregion
+
+
 
         #region Methods
 
@@ -76,29 +94,52 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                 var requiredUpdate = false;
                 var updateDone = false;
 
-                if (newSensorStatus == null)
+                if(newSensorStatus == null)
                 {
-                    return updateDone;
+                    return false;
                 }
 
-                if (messageActor == FieldMessageActor.IoDriver)
+                if(messageActor == FieldMessageActor.IoDriver)
                 {
-                    if (ioIndex < 0 || ioIndex > 2)
+                    if(ioIndex > 2)
                     {
                         return false;
                     }
 
-                    for (var index = 0; index < REMOTEIO_INPUTS; index++)
+                    for(var index = 0; index < REMOTEIO_INPUTS; index++)
                     {
-                        if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
+                        if(this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if (requiredUpdate)
+                    if(requiredUpdate)
                     {
+                        if(ioIndex == 0)
+                        {
+                            if(this.sensorStatus[(int)IOMachineSensors.RunningState] !=
+                                newSensorStatus[(int)IOMachineSensors.RunningState])
+                            {
+                                //During Fault Handling running status will be set off. This prevents double firing the power off procedure
+                                if(!this.IsInverterInFault)
+                                {
+                                    StatusUpdateEventArgs args = new StatusUpdateEventArgs();
+                                    args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
+                                    this.OnRunningStateChanged(args);
+                                }
+                            }
+
+                            if(this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
+                                newSensorStatus[(int)IOMachineSensors.InverterInFault1])
+                            {
+                                StatusUpdateEventArgs args = new StatusUpdateEventArgs();
+                                args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
+                                this.OnFaultStateChanged(args);
+                            }
+                        }
+
                         Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
                         updateDone = true;
                     }
@@ -106,18 +147,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 requiredUpdate = false;
 
-                if (messageActor == FieldMessageActor.InverterDriver)
+                if(messageActor == FieldMessageActor.InverterDriver)
                 {
-                    for (var index = 0; index < INVERTER_INPUTS; index++)
+                    for(var index = 0; index < INVERTER_INPUTS; index++)
                     {
-                        if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
+                        if(this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if (requiredUpdate)
+                    if(requiredUpdate)
                     {
                         Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
                         updateDone = true;
@@ -126,11 +167,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 return updateDone;
             }
-            catch (Exception exc)
+            catch(Exception exc)
             {
-                Console.WriteLine($"{exc}");
+                Console.WriteLine($@"{exc}");
                 return false;
             }
+        }
+
+        protected virtual void OnFaultStateChanged(StatusUpdateEventArgs e)
+        {
+            EventHandler<StatusUpdateEventArgs> handler = FaultStateChanged;
+            handler?.Invoke(this, e);
+        }
+
+        protected virtual void OnRunningStateChanged(StatusUpdateEventArgs e)
+        {
+            EventHandler<StatusUpdateEventArgs> handler = RunningStateChanged;
+            handler?.Invoke(this, e);
         }
 
         #endregion

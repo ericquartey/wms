@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice
     {
+
         #region Fields
 
         private const int IO_POLLING_INTERVAL = 50;
@@ -119,6 +120,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -126,6 +129,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         }
 
         #endregion
+
+
 
         #region Methods
 

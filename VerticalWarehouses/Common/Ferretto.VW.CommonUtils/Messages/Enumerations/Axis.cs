@@ -8,6 +8,6 @@
 
         Vertical,
 
-        Both
+        HorizontalAndVertical
     }
 }
