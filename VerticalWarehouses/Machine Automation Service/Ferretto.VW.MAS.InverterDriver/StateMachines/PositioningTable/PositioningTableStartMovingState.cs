@@ -33,9 +33,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 currentStatus.TableTravelControlWord.StartMotionBlock = true;
                 var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
             else
             {
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IPositioningInverterStatus currentStatus)
                 {
                     if (currentStatus.TableTravelStatusWord.MotionBlockInProgress && currentStatus.TableTravelStatusWord.TargetReached)
                     {

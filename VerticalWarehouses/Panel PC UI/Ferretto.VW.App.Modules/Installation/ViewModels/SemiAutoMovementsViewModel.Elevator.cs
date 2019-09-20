@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningChain, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.isTuningChain));
+                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -140,7 +140,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsZeroChain
         {
-            get => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+            get => this.isZeroChain;
+            set => this.SetProperty(ref this.isZeroChain, value);
         }
 
         public ICommand TuningBayCommand =>

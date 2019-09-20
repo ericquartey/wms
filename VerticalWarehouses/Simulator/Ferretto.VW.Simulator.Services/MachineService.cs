@@ -567,7 +567,7 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
-            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
+            inverter.CurrentAxis = (!inverter.IsHorizontalAxis && inverter.Id == 0) ? Axis.Vertical : Axis.Horizontal;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)

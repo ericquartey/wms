@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private bool isZeroChain;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken sensorsToken;
@@ -191,6 +193,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
                             this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
