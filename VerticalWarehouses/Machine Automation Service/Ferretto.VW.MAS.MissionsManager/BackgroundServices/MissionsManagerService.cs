@@ -1,19 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS.MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService : AutomationBackgroundService
     {
 
         #region Fields
+
+        private readonly List<IFiniteStateMachine> activeStateMachines;
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
 
@@ -43,28 +52,17 @@ namespace Ferretto.VW.MAS.MissionsManager
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
         {
-            if (machinesDataService == null)
-            {
-                throw new ArgumentNullException(nameof(machinesDataService));
-            }
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            if (missionsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(missionsDataService));
-            }
+            this.activeStateMachines = new List<IFiniteStateMachine>();
 
-            if (serviceScopeFactory == null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.machinesDataService = machinesDataService;
-            this.missionsDataService = missionsDataService;
-            this.serviceScopeFactory = serviceScopeFactory;
             this.serviceScope = serviceScopeFactory.CreateScope();
+
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 
-            this.Logger.LogTrace("Mission manager initialised.");
+            this.Logger.LogTrace("Mission manager initialized.");
         }
 
         #endregion
@@ -77,12 +75,31 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             base.Dispose();
 
-            if (!this.isDisposed)
+            if(!this.isDisposed)
             {
                 this.serviceScope.Dispose();
 
                 this.isDisposed = true;
             }
+        }
+
+        protected override void NotifyError(IMessageData notificationData)
+        {
+
+            this.Logger.LogDebug($"Notifying Mission Manager service error");
+
+            var msg = new NotificationMessage(
+                notificationData,
+                "MM Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.FsmException,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

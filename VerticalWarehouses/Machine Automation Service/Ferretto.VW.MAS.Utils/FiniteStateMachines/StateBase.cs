@@ -1,8 +1,11 @@
-﻿using System;
+﻿// ReSharper disable ArrangeThisQualifier
+using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class StateBase : IState, IDisposable
     {
@@ -21,11 +24,7 @@ namespace Ferretto.VW.MAS.Utils
 
         protected StateBase(ILogger<StateBase> logger)
         {
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            this.Logger = logger;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -42,18 +41,23 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Methods
 
+        public IState CommandReceived(CommandMessage commandMessage)
+        {
+            return this.OnCommandReceived(commandMessage);
+        }
+
         public void Dispose()
         {
-            if (!this.isDisposed)
+            if(!this.isDisposed)
             {
                 this.OnDisposing();
                 this.isDisposed = true;
             }
         }
 
-        public void Enter(IMessageData data)
+        public void Enter(CommandMessage message)
         {
-            if (this.hasEntered)
+            if(this.hasEntered)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already entered.");
             }
@@ -62,12 +66,12 @@ namespace Ferretto.VW.MAS.Utils
 
             this.Logger.LogDebug($"Entering state {this.GetType()}.");
 
-            this.OnEnter(data);
+            this.OnEnter(message);
         }
 
         public void Exit()
         {
-            if (!this.hasExited)
+            if(!this.hasExited)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already exited.");
             }
@@ -79,13 +83,23 @@ namespace Ferretto.VW.MAS.Utils
             this.OnExit();
         }
 
+        public virtual IState NotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this.OnNotificationReceived(notificationMessage);
+        }
+
+        protected virtual IState OnCommandReceived(CommandMessage commandMessage)
+        {
+            return this;
+        }
+
         protected virtual void OnDisposing()
         {
             // do nothing
             // derived classes can customize the behaviour of this method
         }
 
-        protected virtual void OnEnter(IMessageData data)
+        protected virtual void OnEnter(CommandMessage commandMessage)
         {
             // do nothing
         }
@@ -93,6 +107,11 @@ namespace Ferretto.VW.MAS.Utils
         protected virtual void OnExit()
         {
             // do nothing
+        }
+
+        protected virtual IState OnNotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this;
         }
 
         #endregion

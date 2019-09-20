@@ -1,7 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.WeightAcquisition;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
         }
 
@@ -55,12 +56,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
         protected override IState OnCommandReceived(CommandMessage command)
         {
             var newState = base.OnCommandReceived(command);
-            if (newState != this.ActiveState)
+            if(newState != this.ActiveState)
             {
                 return newState;
             }
 
-            if (command.Data is WeightAcquisitionCommandMessageData commandData
+            if(command.Data is WeightAcquisitionCommandMessageData commandData
                 &&
                 commandData.CommandAction == CommonUtils.CommandAction.Abort)
             {
@@ -73,21 +74,21 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
         protected override IState OnNotificationReceived(NotificationMessage notification)
         {
             var newState = base.OnNotificationReceived(notification);
-            if (newState != this.ActiveState)
+            if(newState != this.ActiveState)
             {
                 return newState;
             }
 
-            switch (this.ActiveState)
+            switch(this.ActiveState)
             {
                 case IWeightAcquisitionMoveToStartPositionState _:
                     {
-                        if (this.abortRequested)
+                        if(this.abortRequested)
                         {
                             return this.GetState<IWeightAcquisitionMoveBackToStartPositionState>();
                         }
 
-                        if (notification.Type == MessageType.Positioning
+                        if(notification.Type == MessageType.Positioning
                             &&
                             notification.Status == MessageStatus.OperationEnd
                             &&
@@ -103,12 +104,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
                 case IWeightAcquisitionInPlaceSamplingState _:
                     {
-                        if (this.abortRequested)
+                        if(this.abortRequested)
                         {
                             return this.GetState<IWeightAcquisitionMoveBackToStartPositionState>();
                         }
 
-                        if (notification.Type == MessageType.CurrentSamplingInPlaceNotification
+                        if(notification.Type == MessageType.CurrentSamplingInPlaceNotification
                             &&
                             notification.Status == MessageStatus.OperationEnd)
                         {
@@ -120,12 +121,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
                 case IWeightAcquisitionInMotionSamplingState _:
                     {
-                        if (this.abortRequested)
+                        if(this.abortRequested)
                         {
                             return this.GetState<IWeightAcquisitionMoveBackToStartPositionState>();
                         }
 
-                        if (notification.Type == MessageType.CurrentSamplingInMotionNotification
+                        if(notification.Type == MessageType.CurrentSamplingInMotionNotification
                             &&
                             notification.Status == MessageStatus.OperationEnd)
                         {
@@ -137,7 +138,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
                 case IWeightAcquisitionMoveBackToStartPositionState _:
                     {
-                        if (notification.Type == MessageType.Positioning
+                        if(notification.Type == MessageType.Positioning
                             &&
                             notification.Status == MessageStatus.OperationEnd
                             &&
@@ -145,7 +146,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
                             &&
                             positioning.AxisMovement == Axis.Vertical)
                         {
-                            this.RaiseCompleted();
+                            var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId };
+                            this.RaiseCompleted(eventArgs);
 
                             return null;
                         }

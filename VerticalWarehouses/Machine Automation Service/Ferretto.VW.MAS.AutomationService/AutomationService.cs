@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -145,6 +146,25 @@ namespace Ferretto.VW.MAS.AutomationService
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
+        }
+
+        protected override void NotifyError(IMessageData notificationData)
+        {
+
+            this.Logger.LogDebug($"Notifying Automation Service service error");
+
+            var msg = new NotificationMessage(
+                notificationData,
+                "AS Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.FsmException,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public interface IFiniteStateMachine
     {
@@ -10,7 +10,15 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Events
 
-        event EventHandler Completed;
+        event EventHandler<FiniteStateMachinesEventArgs> Completed;
+
+        #endregion
+
+
+
+        #region Properties
+
+        Guid InstanceId { get; }
 
         #endregion
 
@@ -18,7 +26,7 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Methods
 
-        void Start(IMessageData data, CancellationToken cancellationToken);
+        void Start(CommandMessage commandMessage, CancellationToken cancellationToken);
 
         #endregion
     }

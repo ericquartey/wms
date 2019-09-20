@@ -2,7 +2,8 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
@@ -32,9 +33,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         #region Methods
 
-        protected override void OnEnter(IMessageData data)
+        protected override void OnEnter(CommandMessage commandMessage)
         {
-            if(data is WeightAcquisitionCommandMessageData messageData)
+            if(commandMessage is WeightAcquisitionCommandMessageData messageData)
             {
                 this.elevatorProvider.RunInMotionCurrentSampling(messageData.Displacement, messageData.NetWeight, BayNumber.ElevatorBay);
             }

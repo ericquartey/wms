@@ -1,50 +1,44 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus;
-using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.PowerEnable;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.WeightAcquisition;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS.MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
 
-        #region Fields
-
-        private IFiniteStateMachine activeStateMachine;
-
-        #endregion
-
-
 
         #region Properties
 
-        private IFiniteStateMachine ActiveStateMachine
+        private IFiniteStateMachine ActiveStateMachineX
         {
             get => this.activeStateMachine;
             set
             {
-                if (this.activeStateMachine != value)
+                if(this.activeStateMachine != value)
                 {
-                    if (this.activeStateMachine != null)
+                    if(this.activeStateMachine != null)
                     {
                         this.activeStateMachine.Completed -= this.OnActiveStateMachineCompleted;
                     }
 
-                    if (this.activeStateMachine is IDisposable disposable)
+                    if(this.activeStateMachine is IDisposable disposable)
                     {
                         disposable.Dispose();
                     }
 
                     this.activeStateMachine = value;
-                    if (this.activeStateMachine != null)
+                    if(this.activeStateMachine != null)
                     {
                         this.activeStateMachine.Completed += this.OnActiveStateMachineCompleted;
                     }
@@ -68,7 +62,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         protected override Task OnCommandReceivedAsync(CommandMessage command)
         {
-            switch (command.Type)
+            switch(command.Type)
             {
                 case MessageType.WeightAcquisitionCommand:
                     {
@@ -87,21 +81,31 @@ namespace Ferretto.VW.MAS.MissionsManager
             return Task.CompletedTask;
         }
 
-        private void OnActiveStateMachineCompleted(object sender, EventArgs e)
+        private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)
         {
-            this.ActiveStateMachine = null;
+            var stateMachine = this.activeStateMachines.FirstOrDefault(fsm => fsm.InstanceId.Equals(eventArgs.InstanceId));
+            if(stateMachine != null)
+            {
+                this.activeStateMachines.Remove(stateMachine);
+            }
+            else
+            {
+                var errorData = new MmExceptionMessageData(new ArgumentNullException("staeMachine"),
+                    "Completion event received from detached FSM", 0);
+                this.NotifyError(errorData);
+            }
         }
 
         private void OnPowerEnableCommandReceived(PowerEnableMessageData data)
         {
-            if (data is null)
+            if(data is null)
             {
                 return;
             }
 
-            if (data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
+            if(data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
             {
-                this.ActiveStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangePowerStatusStateMachine>();
+                this.ActiveStateMachine = ServiceProviderServiceExtensions.GetRequiredService<IPowerEnableStateMachine>(this.serviceScope.ServiceProvider);
                 this.ActiveStateMachine.Start(data, this.CancellationToken);
             }
         }
@@ -109,15 +113,15 @@ namespace Ferretto.VW.MAS.MissionsManager
         private void OnWeightAcquisitionProcedureCommandReceived(
                     WeightAcquisitionCommandMessageData data)
         {
-            if (data is null)
+            if(data is null)
             {
                 return;
             }
 
             // TODO we shall create a FSM manager to handle multiple concurrent requests
-            if (data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
+            if(data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
             {
-                this.ActiveStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IWeightAcquisitionStateMachine>();
+                this.ActiveStateMachine = ServiceProviderServiceExtensions.GetRequiredService<IWeightAcquisitionStateMachine>(this.serviceScope.ServiceProvider);
                 this.ActiveStateMachine.Start(data, this.CancellationToken);
             }
         }

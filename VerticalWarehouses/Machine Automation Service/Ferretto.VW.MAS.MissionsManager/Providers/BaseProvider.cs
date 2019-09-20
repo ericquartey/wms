@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.AspNetCore.Http;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.Providers
@@ -23,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
         protected BaseProvider(IEventAggregator eventAggregator)
         {
-            if (eventAggregator is null)
+            if(eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
@@ -64,7 +62,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         {
             TData messageData = null;
 
-            using (var semaphore = new Semaphore(0, 100))
+            using(var semaphore = new Semaphore(0, 100))
             {
                 var notificationEvent = this.eventAggregator
                     .GetEvent<NotificationEvent>();
@@ -91,7 +89,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                 var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
 
                 notificationEvent.Unsubscribe(subscriptionToken);
-                if (signalReceived == false)
+                if(signalReceived == false)
                 {
                     throw new InvalidOperationException("Waiting for the specified event timed out.");
                 }

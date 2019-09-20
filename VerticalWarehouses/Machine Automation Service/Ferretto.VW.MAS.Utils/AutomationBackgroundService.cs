@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -114,6 +115,8 @@ namespace Ferretto.VW.MAS.Utils
         protected abstract bool FilterCommand(CommandMessage command);
 
         protected abstract bool FilterNotification(NotificationMessage notification);
+
+        protected abstract void NotifyError(IMessageData notificationData);
 
         protected abstract Task OnCommandReceivedAsync(CommandMessage command);
 

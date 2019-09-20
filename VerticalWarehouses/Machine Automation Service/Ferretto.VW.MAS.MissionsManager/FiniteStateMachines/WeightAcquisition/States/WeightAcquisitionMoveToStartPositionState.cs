@@ -3,13 +3,15 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 {
     internal class WeightAcquisitionMoveToStartPositionState : StateBase, IWeightAcquisitionMoveToStartPositionState
     {
+
         #region Fields
 
         private readonly IElevatorProvider elevatorProvider;
@@ -23,7 +25,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
             IElevatorProvider elevatorProvider)
             : base(logger)
         {
-            if (elevatorProvider is null)
+            if(elevatorProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
@@ -33,11 +35,13 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         #endregion
 
+
+
         #region Methods
 
-        protected override void OnEnter(IMessageData data)
+        protected override void OnEnter(CommandMessage commandMessage)
         {
-            if (data is WeightAcquisitionCommandMessageData messageData)
+            if(commandMessage is WeightAcquisitionCommandMessageData messageData)
             {
                 this.elevatorProvider.MoveToVerticalPosition(
                     messageData.InitialPosition,

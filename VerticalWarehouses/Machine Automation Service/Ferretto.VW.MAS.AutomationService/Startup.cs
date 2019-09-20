@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.FiniteStateMachines;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.MissionsManager;
+using Ferretto.VW.MAS.MissionsManager.Extensions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.AutomationService
         private void RegisterSocketTransport(IServiceCollection services)
         {
             var useMockedTransport = this.Configuration.UseInverterDriverMock();
-            if (useMockedTransport)
+            if(useMockedTransport)
             {
                 services.AddSingleton<ISocketTransport, SocketTransportMock>();
             }
