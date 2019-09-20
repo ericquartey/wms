@@ -115,7 +115,7 @@
                 <controls:PpcSensorControl Grid.Row="6"
                                            Grid.Column="1"
                                            Margin="0,5"
-                                           SensorState="{Binding Sensors.ZeroPawlSensor}" />
+                                           SensorState="{Binding IsZeroChain}" />
 
 
 
@@ -340,8 +340,8 @@
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningChainCommand}"
-                                Content="Tuning CATENA"
-                                IsBusy="{Binding IsTuningChain}" />
+                                Content="Taratura CATENA"
+                                IsBusy="{Binding IsElevatorEmbarking}"/>
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="1"
