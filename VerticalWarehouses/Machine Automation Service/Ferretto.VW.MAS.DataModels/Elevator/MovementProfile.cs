@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ferretto.VW.MAS.DataModels.Elevator
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class MovementProfile : DataModel
     {

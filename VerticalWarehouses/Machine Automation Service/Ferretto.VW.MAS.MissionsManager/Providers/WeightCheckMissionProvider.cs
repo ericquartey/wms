@@ -7,7 +7,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class WeightCheckMissionProvider : BaseProvider, IWeightCheckMissionProvider
     {
-
         #region Fields
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
@@ -30,8 +29,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -58,7 +55,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
             }
 
             // TODO execute operations
-
             Task.Delay(5000);
         }
 

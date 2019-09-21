@@ -78,14 +78,8 @@
 
         TorqueCurrentSampling,
 
-        CurrentSamplingInMotionNotification,
-
-        CurrentSamplingInPlaceNotification,
-
         InverterFaultReset,
 
         ResetSecurity,
-
-        WeightAcquisitionCommand
     }
 }
