@@ -1,13 +1,17 @@
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.App.Services
 {
     internal class BayManager : IBayManager
     {
+
         #region Fields
 
         private readonly IMachineIdentityService identityService;
@@ -81,11 +85,15 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Events
 
         public event EventHandler NewMissionOperationAvailable;
 
         #endregion
+
+
 
         #region Properties
 
@@ -116,6 +124,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Methods
 
         public void CompleteCurrentMission()
@@ -134,19 +144,20 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.bay = await this.machineBaysService.GetByNumberAsync(bayNumber);
+            var bayIndex = ConfigurationManager.AppSettings.GetBayNumber();
+
+            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)bayIndex);
         }
 
-        public async Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+       public async Task<Bay> UpdateHeightAsync(MAS.AutomationService.Contracts.BayNumber bayIndex, int position, decimal height)
         {
-            this.bay = await this.machineBaysService.UpdateHeightAsync(bayNumber, position, height);
+            this.bay = await this.machineBaysService.UpdateHeightAsync(bayIndex, position, height);
             return this.bay;
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            if (this.Bay?.Index == (Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -155,7 +166,24 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            //TODO Review Implementation avoid using numbers to identify bays
+            MAS.AutomationService.Contracts.BayNumber bayIndex = MAS.AutomationService.Contracts.BayNumber.None;
+            switch (e.BayNumber)
+            {
+                case 1:
+                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    break;
+
+                case 2:
+                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    break;
+
+                case 3:
+                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    break;
+            }
+
+            if (this.Bay.Index == bayIndex)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

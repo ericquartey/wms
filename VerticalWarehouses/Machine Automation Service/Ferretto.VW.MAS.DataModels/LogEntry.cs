@@ -4,7 +4,11 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class LogEntry : DataModel
     {
+
+
         #region Properties
+
+        public string BayNumber { get; set; }
 
         public string Data { get; set; }
 

@@ -11,11 +11,19 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         IStatusWord CommonStatusWord { get; }
 
+        bool[] Inputs { get; }
+
         InverterType InverterType { get; }
 
         ushort OperatingMode { get; set; }
 
         byte SystemIndex { get; }
+
+        #endregion
+
+        #region Methods
+
+        bool UpdateInputsStates(bool[] newInputStates);
 
         #endregion
     }

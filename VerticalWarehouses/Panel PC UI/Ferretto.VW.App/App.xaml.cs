@@ -18,6 +18,7 @@ namespace Ferretto.VW.App
 {
     public partial class App
     {
+
         #region Fields
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -34,6 +35,8 @@ namespace Ferretto.VW.App
         }
 
         #endregion
+
+
 
         #region Methods
 

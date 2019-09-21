@@ -98,6 +98,6 @@
 
         MaxAcceptedBai3Height = 48L,
 
-        MaxDrawerGrossWeight = 49L,
+        MaxDrawerGrossWeight = 49L
     }
 }

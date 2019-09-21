@@ -60,8 +60,6 @@
 
         ErrorStatusChanged,
 
-        ResetSecurity,
-
         InverterStop,
 
         PowerEnable,
@@ -70,10 +68,24 @@
 
         RequestPosition,
 
+        RunningStateChanged,
+
+        FaultStateChanged,
+
         ElevatorWeightCheck,
 
         PositioningTable,
 
-        TorqueCurrentSampling
+        TorqueCurrentSampling,
+
+        CurrentSamplingInMotionNotification,
+
+        CurrentSamplingInPlaceNotification,
+
+        InverterFaultReset,
+
+        ResetSecurity,
+
+        WeightAcquisitionCommand
     }
 }

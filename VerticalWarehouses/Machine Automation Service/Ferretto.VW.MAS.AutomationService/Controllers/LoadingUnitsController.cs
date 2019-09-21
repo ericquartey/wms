@@ -18,6 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class LoadingUnitsController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
@@ -37,17 +38,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider is null)
+            if(loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
-            if (machinesDataService is null)
+            if(machinesDataService is null)
             {
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }
 
-            if (horizontalManualMovementsDataLayer is null)
+            if(horizontalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
@@ -58,6 +59,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -74,7 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             drawerOperationData.DestinationVerticalPosition = targetPosition;
             drawerOperationData.IsDestinationPositive = isPositive;
             drawerOperationData.DestinationHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
+            if(!isPositive)
             {
                 drawerOperationData.DestinationHorizontalPosition *= -1;
             }
@@ -104,17 +107,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 var machineId = 1; // TODO HACK remove this hardcoded value
                 var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                foreach(var stat in statistics)
                 {
                     var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    if(loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
                         stat.AreaFillPercentage = (decimal?)loadingUnit.AreaFillRate.Value * 100;
                     }
                 }
             }
-            catch (System.Exception)
+            catch(System.Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -131,16 +134,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 var machineId = 1; // TODO HACK remove this hardcoded value
                 var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                foreach(var stat in statistics)
                 {
                     var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    if(loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
                     }
                 }
             }
-            catch (System.Exception)
+            catch(System.Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -162,7 +165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             drawerOperationData.SourceVerticalPosition = targetPosition;
             drawerOperationData.IsSourcePositive = isPositive;
             drawerOperationData.SourceHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
+            if(!isPositive)
             {
                 drawerOperationData.SourceHorizontalPosition *= -1;
             }
@@ -202,8 +205,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop);

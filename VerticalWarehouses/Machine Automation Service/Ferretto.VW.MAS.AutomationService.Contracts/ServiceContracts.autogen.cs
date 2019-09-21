@@ -16,25 +16,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineBaysService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> ActivateAsync(int bayNumber);
+        System.Threading.Tasks.Task<Bay> ActivateAsync(BayNumber bayIndex);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> ActivateAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> ActivateAsync(BayNumber bayIndex, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> DeactivateAsync(int bayNumber);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> DeactivateAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(int bayNumber);
+        System.Threading.Tasks.Task<Bay> DeactivateAsync(BayNumber bayIndex);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> DeactivateAsync(BayNumber bayIndex, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayIndex);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayIndex, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction);
@@ -44,11 +44,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height);
+        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -368,13 +368,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOnAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResetSecurityAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResetSecurityAsync(System.Threading.CancellationToken cancellationToken);
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -605,6 +598,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("externalId", Required = Newtonsoft.Json.Required.Always)]
         public int ExternalId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber Index { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string IpAddress { get; set; }
     
@@ -619,6 +615,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
         public int Number { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
+        public BayOperation Operation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<decimal> Positions { get; set; }
@@ -638,6 +637,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data);
         }
+    
+    }
+    
+    /// <summary>0 = None
+    /// 1 = BayOne
+    /// 2 = BayTwo
+    /// 3 = BayThree
+    /// 4 = ElevatorBay
+    /// 10 = All</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayNumber
+    {
+        None = 0,
+    
+        BayOne = 1,
+    
+        BayTwo = 2,
+    
+        BayThree = 3,
+    
+        ElevatorBay = 4,
+    
+        All = 10,
     
     }
     
@@ -788,6 +810,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
+    /// <summary>0 = Idle
+    /// 1 = ExecutingMission</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayOperation
+    {
+        Idle = 0,
+    
+        ExecutingMission = 1,
+    
+    }
+    
     /// <summary>0 = Disconnected
     /// 1 = Idle
     /// 2 = Busy
@@ -810,7 +843,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 2 = Carousel
     /// 3 = ExternalSingle
     /// 4 = ExternalDouble
-    /// 5 = ExternalCarousel</summary>
+    /// 5 = ExternalCarousel
+    /// 6 = Elevator</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayType
     {
@@ -825,6 +859,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         ExternalDouble = 4,
     
         ExternalCarousel = 5,
+    
+        Elevator = 6,
     
     }
     
@@ -1079,6 +1115,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Error : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber BayNumber { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
         public int Code { get; set; }
     
@@ -1238,6 +1277,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime InstallationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOneTonMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastServiceDate { get; set; }

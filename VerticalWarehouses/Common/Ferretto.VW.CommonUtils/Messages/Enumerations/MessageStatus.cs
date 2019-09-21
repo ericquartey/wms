@@ -10,6 +10,10 @@
 
         OperationStop,
 
+        OperationFaultStop,
+
+        OperationRunningStop,
+
         OperationStart,
 
         OperationExecuting,

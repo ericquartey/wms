@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     // INFO The Overrun elevator must be inverted (WORKAROUND)
                                     ioStatuses[6] = !ioStatuses[6];
 
-                                    if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
                                         this.logger.LogDebug("Sensor Update");
 
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             case InverterType.Acu:
                                 if (inverterStatus is AcuInverterStatus acuInverter)
                                 {
-                                    if (acuInverter.UpdateACUInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
                                         var msgNotification = new FieldNotificationMessage(
                                             new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             case InverterType.Agl:
                                 if (inverterStatus is AglInverterStatus aglInverter)
                                 {
-                                    if (aglInverter.UpdateAGLInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
                                         var msgNotification = new FieldNotificationMessage(
                                             new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
@@ -274,14 +274,16 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
                 {
-                    if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is AngInverterStatus angInverter)
+                    if ((inverterStatus.InverterType == InverterType.Ang || inverterStatus.InverterType == InverterType.Acu)
+                        && inverterStatus is IPositioningInverterStatus positioningInverter
+                        )
                     {
-                        var axis = inverterStatus.CommonControlWord.HorizontalAxis
-                            ? Axis.Horizontal
-                            : Axis.Vertical;
+                        var axis = (inverterIndex == InverterIndex.MainInverter && !inverterStatus.CommonControlWord.HorizontalAxis)
+                            ? Axis.Vertical
+                            : Axis.Horizontal;
 
                         if ((axis == this.currentAxis || currentStateMachine == null) &&
-                            (angInverter.UpdateANGInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
+                            (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
                             )
                         {
                             ConfigurationCategory configurationCategory;
@@ -311,7 +313,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
                             currentAxisPosition += offset;
 
-                            var notificationData = new InverterStatusUpdateFieldMessageData(axis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
+                            var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverterStatus.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
                             var msgNotification = new FieldNotificationMessage(
                                 notificationData,
                                 "Inverter encoder value update",
@@ -565,10 +567,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.LogError("3:Invalid message data for ProcessFaultResetMessage message Type");
+                this.logger.LogError($"3:Inverter number {currentInverter} is not configured for this machine");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0), FieldMessageType.InverterStop);
             }
         }
 
@@ -826,79 +828,132 @@ namespace Ferretto.VW.MAS.InverterDriver
                             ? ConfigurationCategory.HorizontalAxis
                             : ConfigurationCategory.VerticalAxis;
 
+                        var currentPosition = 0;
                         if (inverterStatus is AngInverterStatus currentStatus)
                         {
-                            var currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
-                            var position = positioningData.TargetPosition;
-                            if (positioningData.MovementType == MovementType.Absolute)
+                            currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
+                        }
+                        else if (inverterStatus is AcuInverterStatus currentACUStatus)
+                        {
+                            currentPosition = currentACUStatus.CurrentPosition;
+                        }
+
+                        var position = positioningData.TargetPosition;
+                        if (positioningData.MovementType == MovementType.Absolute)
+                        {
+                            var offset = positioningData.AxisMovement == Axis.Horizontal
+                                ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
+                                : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
+
+                            position -= offset;
+
+                            if (position < 0)
                             {
-                                var offset = positioningData.AxisMovement == Axis.Horizontal
-                                    ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
-                                    : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
+                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
+                            }
+                        }
 
-                                position -= offset;
+                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
+                        int[] targetAcceleration;
+                        int[] targetDeceleration;
+                        int[] targetSpeed;
+                        int[] switchPosition;
+                        targetAcceleration = new int[positioningData.SwitchPosition.Length];
+                        targetDeceleration = new int[positioningData.SwitchPosition.Length];
+                        targetSpeed = new int[positioningData.SwitchPosition.Length];
+                        switchPosition = new int[positioningData.SwitchPosition.Length];
+                        for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
+                        {
+                            targetAcceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[i], configurationCategory);
+                            targetDeceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[i], configurationCategory);
+                            targetSpeed[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[i], configurationCategory);
+                            switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
+                        }
 
-                                if (position < 0)
+                        var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+
+                        var positioningFieldData = new InverterPositioningFieldMessageData(
+                            positioningData,
+                            targetAcceleration,
+                            targetDeceleration,
+                            targetPosition,
+                            targetSpeed,
+                            switchPosition,
+                            direction,
+                            this.refreshTargetTable);
+
+                        //this.refreshTargetTable = false;
+
+                        this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
+                        this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+
+                        this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
+
+                        switch (positioningData.MovementType)
+                        {
+                            case MovementType.Absolute:
+                                if (currentPosition == positioningFieldData.TargetPosition)
                                 {
-                                    throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
+                                    var msgNotification = new FieldNotificationMessage(
+                                        null,
+                                        "Axis already in position",
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.Positioning,
+                                        MessageStatus.OperationEnd,
+                                        (byte)currentInverter);
+
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                 }
-                            }
+                                else
+                                {
+                                    this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    var currentStateMachine = new PositioningStateMachine(
+                                        positioningFieldData,
+                                        inverterStatus,
+                                        this.logger,
+                                        this.eventAggregator,
+                                        this.inverterCommandQueue,
+                                        this.serviceScopeFactory);
 
-                            var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-                            int[] targetAcceleration;
-                            int[] targetDeceleration;
-                            int[] targetSpeed;
-                            int[] switchPosition;
-                            targetAcceleration = new int[positioningData.SwitchPosition.Length];
-                            targetDeceleration = new int[positioningData.SwitchPosition.Length];
-                            targetSpeed = new int[positioningData.SwitchPosition.Length];
-                            switchPosition = new int[positioningData.SwitchPosition.Length];
-                            for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
-                            {
-                                targetAcceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[i], configurationCategory);
-                                targetDeceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[i], configurationCategory);
-                                targetSpeed[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[i], configurationCategory);
-                                switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
-                            }
+                                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                    currentStateMachine.Start();
+                                }
+                                break;
 
-                            var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+                            case MovementType.Relative:
+                            case MovementType.TableTarget:
+                                if (positioningFieldData.TargetPosition == 0)
+                                {
+                                    var msgNotification = new FieldNotificationMessage(
+                                        null,
+                                        "Axis already in position",
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.Positioning,
+                                        MessageStatus.OperationEnd,
+                                        (byte)currentInverter);
 
-                            var positioningFieldData = new InverterPositioningFieldMessageData(
-                                positioningData,
-                                targetAcceleration,
-                                targetDeceleration,
-                                targetPosition,
-                                targetSpeed,
-                                switchPosition,
-                                direction,
-                                this.refreshTargetTable);
-
-                            //this.refreshTargetTable = false;
-
-                            this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
-                            this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
-
-                            this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
-
-                            switch (positioningData.MovementType)
-                            {
-                                case MovementType.Absolute:
-                                    if (currentPosition == positioningFieldData.TargetPosition)
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                }
+                                else
+                                {
+                                    this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    if (positioningData.MovementType == MovementType.TableTarget)
                                     {
-                                        var msgNotification = new FieldNotificationMessage(
-                                            null,
-                                            "Axis already in position",
-                                            FieldMessageActor.FiniteStateMachines,
-                                            FieldMessageActor.InverterDriver,
-                                            FieldMessageType.Positioning,
-                                            MessageStatus.OperationEnd,
-                                            (byte)currentInverter);
+                                        var currentStateMachine = new PositioningTableStateMachine(
+                                            positioningFieldData,
+                                            inverterStatus,
+                                            this.logger,
+                                            this.eventAggregator,
+                                            this.inverterCommandQueue,
+                                            this.serviceScopeFactory);
 
-                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                        currentStateMachine.Start();
                                     }
                                     else
                                     {
-                                        this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                         var currentStateMachine = new PositioningStateMachine(
                                             positioningFieldData,
                                             inverterStatus,
@@ -910,55 +965,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         this.currentStateMachines.Add(currentInverter, currentStateMachine);
                                         currentStateMachine.Start();
                                     }
-                                    break;
-
-                                case MovementType.Relative:
-                                case MovementType.TableTarget:
-                                    if (positioningFieldData.TargetPosition == 0)
-                                    {
-                                        var msgNotification = new FieldNotificationMessage(
-                                            null,
-                                            "Axis already in position",
-                                            FieldMessageActor.FiniteStateMachines,
-                                            FieldMessageActor.InverterDriver,
-                                            FieldMessageType.Positioning,
-                                            MessageStatus.OperationEnd,
-                                            (byte)currentInverter);
-
-                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                                    }
-                                    else
-                                    {
-                                        this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                        if (positioningData.MovementType == MovementType.TableTarget)
-                                        {
-                                            var currentStateMachine = new PositioningTableStateMachine(
-                                                positioningFieldData,
-                                                inverterStatus,
-                                                this.logger,
-                                                this.eventAggregator,
-                                                this.inverterCommandQueue,
-                                                this.serviceScopeFactory);
-
-                                            this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                                            currentStateMachine.Start();
-                                        }
-                                        else
-                                        {
-                                            var currentStateMachine = new PositioningStateMachine(
-                                                positioningFieldData,
-                                                inverterStatus,
-                                                this.logger,
-                                                this.eventAggregator,
-                                                this.inverterCommandQueue,
-                                                this.serviceScopeFactory);
-
-                                            this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                                            currentStateMachine.Start();
-                                        }
-                                    }
-                                    break;
-                            }
+                                }
+                                break;
                         }
                     }
                     catch (Exception ex)

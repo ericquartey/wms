@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IGeneralInfoConfigurationDataLayer
     {
+
+
         #region Properties
 
         string Address { get; }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal class InstallationHub : Hub<IInstallationHub>
+    public class InstallationHub : Hub<IInstallationHub>
     {
     }
 }

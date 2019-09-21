@@ -444,7 +444,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.bayManager.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
+                await this.bayManager.UpdateHeightAsync((MAS.AutomationService.Contracts.BayNumber) this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
 
                 this.ChangeDataFromBayPosition();
 

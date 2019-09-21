@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     internal class ShutterPositioningEnableOperationState : InverterStateBase
     {
+
         #region Fields
 
         private readonly ShutterPosition shutterDestination;

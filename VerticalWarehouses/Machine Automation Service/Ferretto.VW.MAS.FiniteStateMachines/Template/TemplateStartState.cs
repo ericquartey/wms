@@ -10,23 +10,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateStartState : StateBase
     {
+
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
+
+        private readonly ITemplateStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public TemplateStartState(
-            IStateMachine parentMachine,
-            ITemplateData machineData)
-            : base(parentMachine, machineData.Logger)
+        public TemplateStartState(ITemplateStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -36,17 +42,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if (message.Type == FieldMessageType.NoType)
+            if(message.Type == FieldMessageType.NoType)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData));
-                        break;
+                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.machineData, message));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -69,18 +76,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
             var notificationMessage = new NotificationMessage(
                 null,
-                "Template Start State Notification",
+                $"Template Start State Notification with {this.machineData.Message}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

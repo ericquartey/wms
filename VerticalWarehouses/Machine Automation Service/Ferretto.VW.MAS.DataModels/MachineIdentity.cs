@@ -10,6 +10,8 @@
 
         public System.DateTime InstallationDate { get; set; }
 
+        public bool IsOneTonMachine { get; set; }
+
         public System.DateTime? LastServiceDate { get; set; }
 
         public double MaxGrossWeight { get; set; }

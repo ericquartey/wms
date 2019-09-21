@@ -17,6 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public abstract class BaseVerticalResolutionCalibrationViewModel : BaseMainViewModel
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -70,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -133,6 +136,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanStop));
 
         #endregion
+
+
 
         #region Methods
 

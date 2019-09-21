@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
     {
+
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -34,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
+
+
 
         #region Methods
 

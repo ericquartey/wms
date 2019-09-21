@@ -14,6 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
+
         #region Fields
 
         private readonly IMachineShuttersService shuttersService;
@@ -56,6 +57,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -126,6 +129,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BindableBase NavigationViewModel { get; set; }
 
         #endregion
+
+
 
         #region Methods
 

@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class BeltBurnishingProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -35,17 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IVerticalAxisDataLayer verticalAxisDataLayer)
             : base(eventAggregator)
         {
-            if (dataLayerConfigurationValueManagement is null)
+            if(dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (setupStatusProvider is null)
+            if(setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if (verticalAxisDataLayer is null)
+            if(verticalAxisDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
@@ -56,6 +57,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -111,7 +114,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         ConfigurationCategory.VerticalAxis)
             };
 
-            if (upperBoundPosition <= 0)
+            if(upperBoundPosition <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
@@ -121,7 +124,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            if (upperBoundPosition > parameters.UpperBound)
+            if(upperBoundPosition > parameters.UpperBound)
             {
                 return this.BadRequest(
                     new ProblemDetails
@@ -131,7 +134,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            if (upperBoundPosition <= lowerBoundPosition)
+            if(upperBoundPosition <= lowerBoundPosition)
             {
                 return this.BadRequest(
                     new ProblemDetails
@@ -141,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            if (lowerBoundPosition < parameters.LowerBound)
+            if(lowerBoundPosition < parameters.LowerBound)
             {
                 return this.BadRequest(
                     new ProblemDetails
@@ -151,7 +154,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            if (totalTestCycleCount <= 0)
+            if(totalTestCycleCount <= 0)
             {
                 return this.BadRequest(
                     new ProblemDetails
@@ -195,8 +198,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop);

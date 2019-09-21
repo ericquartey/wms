@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal abstract class InverterStateMachineBase : IInverterStateMachine
     {
+
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -64,6 +65,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #endregion
 
+
+
         #region Methods
 
         /// <inheritdoc />
@@ -76,6 +79,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                 MessageActor.Any,
                 MessageActor.InverterDriver,
                 MessageType.MachineStateActive,
+                BayNumber.None,
+                BayNumber.None,
                 MessageStatus.OperationStart);
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -110,6 +115,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
+            this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
             this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
@@ -154,6 +161,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
                     MessageActor.Any,
                     MessageActor.InverterDriver,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);

@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
+
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -52,11 +53,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
+
+
         #region Properties
 
         public bool IsReady { get; private set; }
 
         #endregion
+
+
 
         #region Methods
 
@@ -85,6 +90,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
+                BayNumber = command.RequestingBay.ToString(),
                 Data = serializedData,
                 Description = command.Description,
                 Destination = command.Destination.ToString(),
@@ -106,6 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
+                BayNumber = message.RequestingBay.ToString(),
                 Data = serializedData,
                 Description = message.Description,
                 Destination = message.Destination.ToString(),
@@ -201,7 +208,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 "DataLayer initialization complete.",
                 MessageActor.Any,
                 MessageActor.DataLayer,
-                MessageType.DataLayerReady);
+                MessageType.DataLayerReady,
+                BayNumber.None);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
@@ -218,6 +226,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.Any,
                 MessageActor.DataLayer,
                 MessageType.DlException,
+                BayNumber.None,
+                BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
 

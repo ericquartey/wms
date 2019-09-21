@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+
+
         #region Methods
 
         public static IServiceCollection AddDataLayer(
@@ -73,6 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
                 .AddTransient<IElevatorProvider, ElevatorProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<ISensorsProvider, SensorsProvider>()
                 .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
             services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();

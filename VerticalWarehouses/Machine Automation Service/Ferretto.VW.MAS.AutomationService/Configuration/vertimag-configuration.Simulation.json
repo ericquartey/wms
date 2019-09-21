@@ -1,42 +1,43 @@
 {
-  "GeneralInfo": {
-    "Order": "190001",
-    "ClientCode": "12015400",
-    "ClientName": "Ferretto",
-    "Address": "Strada Padana verso Verona, 101",
-    "Zip": "36100",
-    "City": "Vicenza",
-    "Province": "Vicenza",
-    "Country": "Italia",
-    "Latitude": "45.528305393050246",
-    "Longitude": "11.498999179729909",
-    "ProductionDate": "2011-04-01T19:43:37+0100",
-    "InstallationDate": "2011-05-01T19:43:37+0100",
-    "Model": "Simulated VertiMAG",
-    "Serial": "Not applicable",
+    "GeneralInfo": {
+        "Order": "190001",
+        "ClientCode": "12015400",
+        "ClientName": "Ferretto",
+        "Address": "Strada Padana verso Verona, 101",
+        "Zip": "36100",
+        "City": "Vicenza",
+        "Province": "Vicenza",
+        "Country": "Italia",
+        "Latitude": "45.528305393050246",
+        "Longitude": "11.498999179729909",
+        "ProductionDate": "2011-04-01T19:43:37+0100",
+        "InstallationDate": "2011-05-01T19:43:37+0100",
+        "Model": "Simulated VertiMAG",
+        "Serial": "Not applicable",
     "Height": 4.563, //*************
     "MaxDrawerGrossWeight": 800, //*************
-    "MaxGrossWeight": 50000,
-    "BaysQuantity": 2,
-    "Bay1Type": 4,
-    "Bay2Type": 2,
-    "Bay3Type": 0,
-    "Bay1Position1": 500.00,
-    "Bay2Position1": 743.00,
-    "Bay2Height1": 1080.0,
-    "Bay2Position2": 1143.0,
-    "Bay2Height2": 680.0,
-    "Shutter1Type": 1,
-    "Shutter2Type": 1,
-    "LaserBay1": false,
-    "LaserBay2": false,
-    "LaserBay3": false,
-    "AlfaNumBay1": false,
-    "AlfaNumBay2": false,
-    "AlfaNumBay3": false,
-    "Barrier1Height": 30,
-    "Barrier2Height": 30
-  },
+        "MaxGrossWeight": 50000,
+        "MaxDrawerGrossWeight": 990,
+        "BaysQuantity": 2,
+        "Bay1Type": 4,
+        "Bay2Type": 2,
+        "Bay3Type": 0,
+        "Bay1Position1": 500.00,
+        "Bay2Position1": 743.00,
+        "Bay2Height1": 1080.0,
+        "Bay2Position2": 1143.0,
+        "Bay2Height2": 680.0,
+        "Shutter1Type": 1,
+        "Shutter2Type": 1,
+        "LaserBay1": false,
+        "LaserBay2": false,
+        "LaserBay3": false,
+        "AlfaNumBay1": false,
+        "AlfaNumBay2": false,
+        "AlfaNumBay3": false,
+        "Barrier1Height": 30,
+        "Barrier2Height": 30
+    },
   "Elevator": {
     "StructuralProperties": {
       "BeltRigidity": 7000000,
@@ -112,71 +113,72 @@
       }
     ]
   },
-  // socket simulator with toxy proxy
-  //"SetupNetwork": {
-  //    "MachineNumber": 1,
-  //    "WMS_ON": true,
-  //    "Inverter1": "127.0.0.1",
-  //    "Inverter1Port": 27221,
-  //    "InverterIndexMaster": 0,
-  //    "InverterIndexShutter1": 2,
-  //    "InverterIndexBay1": 3,
-  //    "InverterIndexShutter2": 4,
-  //    "IOExpansion1": "127.0.0.1",
-  //    "IOExpansion1Port": 29550,
-  //    "IOExpansion2": "127.0.0.1",
-  //    "IOExpansion2Port": 29551,
-  //    "SQLServerIPAddress": "172.16.199.100",
-  //    "SQLServerPort": 6000,
-  //    "PPC1MasterIPAddress": "::1",
-  //    "PPC2SlaveIPAddress": "198.168.0.2",
-  //    "PPC3SlaveIPAddress": "198.168.0.3"
-  //},
+    // socket simulator with toxy proxy
+    //"SetupNetwork": {
+    //    "MachineNumber": 1,
+    //    "WMS_ON": true,
+    //    "Inverter1": "127.0.0.1",
+    //    "Inverter1Port": 27221,
+    //    "InverterIndexMaster": 0,
+    //    "InverterIndexShutter1": 2,
+    //    "InverterIndexBay1": 3,
+    //    "InverterIndexShutter2": 4,
+    //    "IOExpansion1": "127.0.0.1",
+    //    "IOExpansion1Port": 29550,
+    //    "IOExpansion2": "127.0.0.1",
+    //    "IOExpansion2Port": 29551,
+    //    "SQLServerIPAddress": "172.16.199.100",
+    //    "SQLServerPort": 6000,
+    //    "PPC1MasterIPAddress": "::1",
+    //    "PPC2SlaveIPAddress": "198.168.0.2",
+    //    "PPC3SlaveIPAddress": "198.168.0.3"
+    //},
 
-  "SetupNetwork": {
-    "MachineNumber": 1,
-    "WMS_ON": true,
-    "Inverter1": "127.0.0.1",
-    "Inverter1Port": 17221,
-    "InverterIndexMaster": 0,
-    "InverterIndexChain": 1,
-    "InverterIndexShutter1": 2,
-    "InverterIndexBay1": 3,
-    "InverterIndexShutter2": 4,
-    "IOExpansion1Installed": true,
-    "IOExpansion2Installed": true,
-    "IOExpansion3Installed": false,
-    "IOExpansion1IPAddress": "127.0.0.1",
-    "IOExpansion1Port": 19550,
-    "IOExpansion2IPAddress": "127.0.0.1",
-    "IOExpansion2Port": 19551,
-    "PPC1MasterIPAddress": "::1",
-    "PPC2SlaveIPAddress": "198.168.0.2",
-    "PPC3SlaveIPAddress": "198.168.0.3"
-  },
+    "SetupNetwork": {
+        "MachineNumber": 1,
+        "WMS_ON": true,
+        "Inverter1": "127.0.0.1",
+        "Inverter1Port": 17221,
+        "InverterIndexMaster": 0,
+        "InverterIndexChain": 1,
+        "InverterIndexShutter1": 2,
+        "InverterIndexBay1": 3,
+        "InverterIndexShutter2": 4,
+        "InverterIndexBay2": 5,
+        "IOExpansion1Installed": true,
+        "IOExpansion2Installed": true,
+        "IOExpansion3Installed": false,
+        "IOExpansion1IPAddress": "127.0.0.1",
+        "IOExpansion1Port": 19550,
+        "IOExpansion2IPAddress": "127.0.0.1",
+        "IOExpansion2Port": 19551,
+        "PPC1MasterIPAddress": "::1",
+        "PPC2SlaveIPAddress": "198.168.0.2",
+        "PPC3SlaveIPAddress": "198.168.0.3"
+    },
 
-  "VerticalAxis": {
+    "VerticalAxis": {
     "MaxEmptySpeed": 770.0, //*************
     "MaxEmptyAcceleration": 1000.0, //*************
     "MaxEmptyDeceleration": 1000.0, //*************
     "MinFullSpeed": 550.0, //*************
     "MaxFullAcceleration": 400.0, //*************
     "MaxFullDeceleration": 400.0, //*************
-    "HomingSearchDirection": false,
-    "HomingSearchSpeed": 100.0,
-    "HomingSearchAcceleration": 750.0,
-    "HomingSearchDeceleration": 750.0,
-    "HomingExitSpeed": 50.0,
-    "HomingExitAcceleration": 750.0,
-    "HomingExitDeceleration": 750.0,
+        "HomingSearchDirection": false,
+        "HomingSearchSpeed": 100.0,
+        "HomingSearchAcceleration": 750.0,
+        "HomingSearchDeceleration": 750.0,
+        "HomingExitSpeed": 50.0,
+        "HomingExitAcceleration": 750.0,
+        "HomingExitDeceleration": 750.0,
     "Resolution": 77.61182, //*************
     "Offset": 300.0, //*************
     "UpperBound": 4000.0, //*************
     "LowerBound": 350.0, //*************
-    "TakingOffset": 0.0,
-    "DepositOffset": 0.0
-  },
-  "HorizontalAxis": {
+        "TakingOffset": 0.0,
+        "DepositOffset": 0.0
+    },
+    "HorizontalAxis": {
     "MaxEmptySpeed": 730.0, //*************
     "MaxEmptyAcceleration": 1500.0, //*************
     "MaxEmptyDeceleration": 1500.0, //*************
@@ -186,14 +188,14 @@
     //"HomingExecuted":false,  //?????????????
     "Resolution": 77.6722, //*************
     "Offset": 0.0, //*************
-    "ClockWiseRun": 1235.0,
-    "AntiClockWiseRun": 1241.0
-  },
-  "HorizontalMovementShorterProfile": {
-    "TotalSteps": 5,
-    "TotalMovement": 1414.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
+        "ClockWiseRun": 1235.0,
+        "AntiClockWiseRun": 1241.0
+    },
+    "HorizontalMovementShorterProfile": {
+        "TotalSteps": 5,
+        "TotalMovement": 1414.0,
+        "MovementCorrection": 20.0,
+        //"P0Quote": 0.0,
     "P0Acceleration": 1000.0, //*************
     "P0Deceleration": 0.0, //*************
     "P0SpeedV1": 200.0, //*************
@@ -205,99 +207,99 @@
     "P2Acceleration": 1000.0, //*************
     "P2Deceleration": 1000.0, //*************
     "P2SpeedV3": 500.0, //*************
-    "P3Quote": 600.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 100.0,
-    "P4Quote": 985.00,
-    "P4Acceleration": 1000.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 200.0,
-    "P5Quote": 1414.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "HorizontalMovementLongerProfile": {
-    "TotalSteps": 5,
-    "TotalMovement": 1420.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
-    "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 200.0,
-    "P1Quote": 100.0,
-    "P1Acceleration": 1000.0,
-    "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 250.0,
-    "P2Acceleration": 1000.0,
-    "P2Deceleration": 1000.0,
-    "P2SpeedV3": 500.0,
-    "P3Quote": 600.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 100.0,
-    "P4Quote": 985.00,
-    "P4Acceleration": 1000.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 200.0,
-    "P5Quote": 1420.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.30
-  },
-  "HorizontalManualMovements": {
-    "FeedRate": 0.10,
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 1235.0
-  },
-  "ShutterManualMovements": {
-    "FeedRate": 0.20,
-    "MaxSpeed": 500.0,
-    "MinSpeed": 50.0,
-    "Acceleration": 500.0,
-    "Deceleration": 500.0,
-    "HigherDistance": 2000.0,
-    "LowerDistance": 2100.0
-  },
-  "BeltBurnishing": {
-    "CycleQuantity": 200
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
-  },
-  "WeightControl": {
-    "FeedRate": 0.10
-  },
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
-  }
+        "P3Quote": 600.0,
+        "P3Acceleration": 1000.0,
+        "P3Deceleration": 1000.0,
+        "P3SpeedV4": 100.0,
+        "P4Quote": 985.00,
+        "P4Acceleration": 1000.0,
+        "P4Deceleration": 1000.0,
+        "P4SpeedV5": 200.0,
+        "P5Quote": 1414.0
+        //"P5Acceleration":
+        //"P5Deceleration":
+        //"P5Speed":
+    },
+    "HorizontalMovementLongerProfile": {
+        "TotalSteps": 5,
+        "TotalMovement": 1420.0,
+        "MovementCorrection": 20.0,
+        //"P0Quote": 0.0,
+        "P0Acceleration": 1000.0,
+        "P0Deceleration": 1000.0,
+        "P0SpeedV1": 200.0,
+        "P1Quote": 100.0,
+        "P1Acceleration": 1000.0,
+        "P1Deceleration": 1000.0,
+        "P1SpeedV2": 100.0,
+        "P2Quote": 250.0,
+        "P2Acceleration": 1000.0,
+        "P2Deceleration": 1000.0,
+        "P2SpeedV3": 500.0,
+        "P3Quote": 600.0,
+        "P3Acceleration": 1000.0,
+        "P3Deceleration": 1000.0,
+        "P3SpeedV4": 100.0,
+        "P4Quote": 985.00,
+        "P4Acceleration": 1000.0,
+        "P4Deceleration": 1000.0,
+        "P4SpeedV5": 200.0,
+        "P5Quote": 1420.0
+        //"P5Acceleration":
+        //"P5Deceleration":
+        //"P5Speed":
+    },
+    "VerticalManualMovements": {
+        "FeedRate": 0.10,
+        "PositiveTargetDirection": 30.0,
+        "NegativeTargetDirection": 30.0,
+        "FeedRateAfterZero": 0.30
+    },
+    "HorizontalManualMovements": {
+        "FeedRate": 0.10,
+        "InitialTargetPosition": 30.0,
+        "RecoveryTargetPosition": 1235.0
+    },
+    "ShutterManualMovements": {
+        "FeedRate": 0.20,
+        "MaxSpeed": 500.0,
+        "MinSpeed": 50.0,
+        "Acceleration": 500.0,
+        "Deceleration": 500.0,
+        "HigherDistance": 2000.0,
+        "LowerDistance": 2100.0
+    },
+    "BeltBurnishing": {
+        "CycleQuantity": 200
+    },
+    "ResolutionCalibration": {
+        "InitialPosition": 1000.0, //TEMP Temporary value for software test
+        "FinalPosition": 5500.0, //TEMP Temporary value for software test
+        "FeedRate": 0.20
+    },
+    "OffsetCalibration": {
+        "ReferenceCell": 50, //TEMP Temporary value for software test
+        "StepValue": 0.5,
+        "FeedRate": 0.20
+    },
+    "CellControl": {
+        "StepValue": 0.5,
+        "FeedRate": 0.20
+    },
+    "PanelControl": {
+        "FeedRate": 0.20
+    },
+    "ShutterHeightControl": {
+        "FeedRate": 0.10
+    },
+    "WeightControl": {
+        "FeedRate": 0.10
+    },
+    "BayPositionControl": {
+        "StepValue": 0.5,
+        "FeedRate": 0.20
+    },
+    "LoadFirstDrawer": {
+        "FeedRate": 0.20
+    }
 }

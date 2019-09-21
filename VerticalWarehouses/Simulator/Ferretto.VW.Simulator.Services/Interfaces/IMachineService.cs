@@ -6,6 +6,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 {
     public interface IMachineService
     {
+
+
         #region Properties
 
         ObservableCollection<InverterModel> Inverters { get; set; }
@@ -35,6 +37,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
         IODeviceModel RemoteIOs03 { get; set; }
 
         #endregion
+
+
 
         #region Methods
 

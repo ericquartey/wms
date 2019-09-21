@@ -5,6 +5,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IPositioningMessageData : IMessageData
     {
+
+
         #region Properties
 
         Axis AxisMovement { get; }

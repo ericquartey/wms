@@ -56,11 +56,11 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
         }
@@ -472,10 +472,18 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetPosition:
-                    inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
-                    inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
-                    inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
-                        && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                    if (inverter.TableIndex < (int)InverterTableIndex.TableTravelP1)
+                    {
+                        inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                        inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                        inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
+                            && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                    }
+                    else
+                    {
+                        var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelP1;
+                        inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
+                    }
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -502,12 +510,6 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.TableTravelTableIndex:
                     inverter.TableIndex = (short)message.UShortPayload;
-                    result = client.Client.Send(message.ToBytes());
-                    break;
-
-                case InverterParameterId.TableTravelSwitchPositions:
-                    var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelSet1;
-                    inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -565,7 +567,7 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
-            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
+            inverter.CurrentAxis = (!inverter.IsHorizontalAxis && inverter.Id == 0) ? Axis.Vertical : Axis.Horizontal;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)

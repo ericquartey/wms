@@ -26,19 +26,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            this.Logger.LogDebug("Set Sequence Mode");
+            if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.SequenceMode = true;
                 currentStatus.TableTravelControlWord.StartMotionBlock = true;
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
-            //TODO complete type failure check
-            this.Logger.LogDebug("Set Sequence Mode");
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).TableTravelControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            else
+            {
+                this.Logger.LogError($"1:Invalid inverter status");
+                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+            }
         }
 
         /// <inheritdoc />
@@ -73,7 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IPositioningInverterStatus currentStatus)
                 {
                     if (currentStatus.TableTravelStatusWord.MotionBlockInProgress && currentStatus.TableTravelStatusWord.TargetReached)
                     {
