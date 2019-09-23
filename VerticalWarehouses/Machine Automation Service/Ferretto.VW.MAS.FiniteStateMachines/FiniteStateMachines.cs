@@ -318,7 +318,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -573,7 +573,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -581,6 +581,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
 
                 this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var messageCurrentStateMachine);
+
+                this.logger.LogDebug($"Notification [{receivedMessage.Type}] for {receivedMessage.TargetBay} - Status {receivedMessage.Status} ");
 
                 switch (receivedMessage.Type)
                 {
