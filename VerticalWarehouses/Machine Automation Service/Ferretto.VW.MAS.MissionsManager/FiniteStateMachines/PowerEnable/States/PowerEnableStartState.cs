@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.PowerEnable.States
 
         protected override void OnEnter(CommandMessage commandMessage)
         {
-            if(commandMessage is IPowerEnableMessageData messageData)
+            if(commandMessage.Data is IPowerEnableMessageData messageData)
             {
                 if(messageData.Enable)
                 {

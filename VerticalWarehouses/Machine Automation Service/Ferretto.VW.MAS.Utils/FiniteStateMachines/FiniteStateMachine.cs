@@ -114,9 +114,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        protected ILogger<StateBase> Logger { get; }
+        public CommandMessage StartData { get; private set; }
 
-        protected CommandMessage StartData { get; private set; }
+        protected ILogger<StateBase> Logger { get; }
 
         #endregion
 

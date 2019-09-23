@@ -4,10 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -83,19 +83,19 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             }
         }
 
-        protected override void NotifyError(IMessageData notificationData)
+        protected override void NotifyCommandError(CommandMessage notificationData)
         {
 
             this.Logger.LogDebug($"Notifying Mission Manager service error");
 
             var msg = new NotificationMessage(
-                notificationData,
+                notificationData?.Data,
                 "MM Error",
                 MessageActor.Any,
                 MessageActor.MissionsManager,
-                MessageType.FsmException,
-                BayNumber.None,
-                BayNumber.None,
+                MessageType.MissionManagerException,
+                notificationData?.RequestingBay ?? BayNumber.None,
+                notificationData?.TargetBay ?? BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
 

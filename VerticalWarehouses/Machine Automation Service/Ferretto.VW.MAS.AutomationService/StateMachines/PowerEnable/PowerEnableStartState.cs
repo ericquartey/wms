@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
     public class PowerEnableStartState : StateBase
     {
 
-        #region Fields
+        //private readonly IPowerEnableMachineData machineData;
 
-        private readonly IPowerEnableMachineData machineData;
+        #region Fields
 
         private readonly IPowerEnableStateData stateData;
 

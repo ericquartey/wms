@@ -1,7 +1,6 @@
 ﻿// ReSharper disable ArrangeThisQualifier
 using System;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -71,7 +70,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Exit()
         {
-            if(!this.hasExited)
+            if(this.hasExited)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already exited.");
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable ArrangeThisQualifier
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
@@ -10,44 +11,10 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
-
-
-        #region Properties
-
-        private IFiniteStateMachine ActiveStateMachineX
-        {
-            get => this.activeStateMachine;
-            set
-            {
-                if(this.activeStateMachine != value)
-                {
-                    if(this.activeStateMachine != null)
-                    {
-                        this.activeStateMachine.Completed -= this.OnActiveStateMachineCompleted;
-                    }
-
-                    if(this.activeStateMachine is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-
-                    this.activeStateMachine = value;
-                    if(this.activeStateMachine != null)
-                    {
-                        this.activeStateMachine.Completed += this.OnActiveStateMachineCompleted;
-                    }
-                }
-            }
-        }
-
-        #endregion
-
 
 
         #region Methods
@@ -66,14 +33,13 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             {
                 case MessageType.WeightAcquisitionCommand:
                     {
-                        this.OnWeightAcquisitionProcedureCommandReceived(
-                            command.Data as WeightAcquisitionCommandMessageData);
+                        this.OnWeightAcquisitionProcedureCommandReceived(command);
                         break;
                     }
 
                 case MessageType.PowerEnable:
                     {
-                        this.OnPowerEnableCommandReceived(command.Data as PowerEnableMessageData);
+                        this.OnPowerEnableCommandReceived(command);
                         break;
                     }
             }
@@ -86,43 +52,73 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             var stateMachine = this.activeStateMachines.FirstOrDefault(fsm => fsm.InstanceId.Equals(eventArgs.InstanceId));
             if(stateMachine != null)
             {
+                if(stateMachine is IDisposable disposableMachine)
+                {
+                    disposableMachine.Dispose();
+                }
+
+                stateMachine.Completed -= this.OnActiveStateMachineCompleted;
+
                 this.activeStateMachines.Remove(stateMachine);
             }
             else
             {
-                var errorData = new MmExceptionMessageData(new ArgumentNullException("staeMachine"),
-                    "Completion event received from detached FSM", 0);
-                this.NotifyError(errorData);
+                var commandMessage = (sender as IFiniteStateMachine)?.StartData;
+                this.NotifyCommandError(commandMessage);
             }
         }
 
-        private void OnPowerEnableCommandReceived(PowerEnableMessageData data)
+        private void OnPowerEnableCommandReceived(CommandMessage command)
         {
-            if(data is null)
+            if(command is null)
             {
                 return;
             }
 
-            if(data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
+            switch(((PowerEnableMessageData)command.Data).CommandAction)
             {
-                this.ActiveStateMachine = ServiceProviderServiceExtensions.GetRequiredService<IPowerEnableStateMachine>(this.serviceScope.ServiceProvider);
-                this.ActiveStateMachine.Start(data, this.CancellationToken);
+                case CommandAction.Start:
+                if(this.activeStateMachines.Any(asm => asm.GetType() == typeof(IPowerEnableStateMachine)))
+                {
+                    this.NotifyCommandError(command);
+                }
+                else
+                {
+                    var newStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IPowerEnableStateMachine>();
+                    newStateMachine.Completed += this.OnActiveStateMachineCompleted;
+                    this.activeStateMachines.Add(newStateMachine);
+
+                    newStateMachine.Start(command, this.CancellationToken);
+                }
+
+                break;
             }
         }
 
-        private void OnWeightAcquisitionProcedureCommandReceived(
-                    WeightAcquisitionCommandMessageData data)
+        private void OnWeightAcquisitionProcedureCommandReceived(CommandMessage command)
         {
-            if(data is null)
+            if(command is null)
             {
                 return;
             }
 
-            // TODO we shall create a FSM manager to handle multiple concurrent requests
-            if(data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
+            switch(((PowerEnableMessageData)command.Data).CommandAction)
             {
-                this.ActiveStateMachine = ServiceProviderServiceExtensions.GetRequiredService<IWeightAcquisitionStateMachine>(this.serviceScope.ServiceProvider);
-                this.ActiveStateMachine.Start(data, this.CancellationToken);
+                case CommandAction.Start:
+                if(this.activeStateMachines.Any(asm => asm.GetType() == typeof(IWeightAcquisitionStateMachine)))
+                {
+                    this.NotifyCommandError(command);
+                }
+                else
+                {
+                    var newStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IWeightAcquisitionStateMachine>();
+                    newStateMachine.Completed += this.OnActiveStateMachineCompleted;
+                    this.activeStateMachines.Add(newStateMachine);
+
+                    newStateMachine.Start(command, this.CancellationToken);
+                }
+
+                break;
             }
         }
 

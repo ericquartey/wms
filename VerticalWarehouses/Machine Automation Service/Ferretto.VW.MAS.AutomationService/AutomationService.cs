@@ -148,13 +148,13 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.dataHubClient.ConnectAsync();
         }
 
-        protected override void NotifyError(IMessageData notificationData)
+        protected override void NotifyCommandError(CommandMessage notificationData)
         {
 
             this.Logger.LogDebug($"Notifying Automation Service service error");
 
             var msg = new NotificationMessage(
-                notificationData,
+                notificationData.Data,
                 "AS Error",
                 MessageActor.Any,
                 MessageActor.MissionsManager,

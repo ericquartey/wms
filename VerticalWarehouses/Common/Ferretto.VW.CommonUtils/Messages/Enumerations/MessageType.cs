@@ -86,6 +86,8 @@
 
         ResetSecurity,
 
-        WeightAcquisitionCommand
+        WeightAcquisitionCommand,
+
+        MissionManagerException
     }
 }

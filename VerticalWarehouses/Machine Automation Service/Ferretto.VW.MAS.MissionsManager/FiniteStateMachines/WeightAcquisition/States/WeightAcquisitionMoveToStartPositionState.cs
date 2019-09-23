@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         protected override void OnEnter(CommandMessage commandMessage)
         {
-            if(commandMessage is WeightAcquisitionCommandMessageData messageData)
+            if(commandMessage.Data is WeightAcquisitionCommandMessageData messageData)
             {
                 this.elevatorProvider.MoveToVerticalPosition(
                     messageData.InitialPosition,

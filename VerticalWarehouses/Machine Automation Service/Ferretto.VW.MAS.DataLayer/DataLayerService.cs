@@ -82,13 +82,13 @@ namespace Ferretto.VW.MAS.DataLayer
             return true;
         }
 
-        protected override void NotifyError(IMessageData notificationData)
+        protected override void NotifyCommandError(CommandMessage notificationData)
         {
 
             this.Logger.LogDebug($"Notifying Data Layer service error");
 
             var msg = new NotificationMessage(
-                notificationData,
+                notificationData.Data,
                 "DL Error",
                 MessageActor.Any,
                 MessageActor.MissionsManager,

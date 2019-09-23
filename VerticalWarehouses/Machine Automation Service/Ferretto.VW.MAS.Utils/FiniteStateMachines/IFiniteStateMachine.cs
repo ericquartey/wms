@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         Guid InstanceId { get; }
 
+        CommandMessage StartData { get; }
+
         #endregion
 
 
