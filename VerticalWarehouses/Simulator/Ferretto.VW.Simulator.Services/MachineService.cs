@@ -517,8 +517,8 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.ShutterAbsoluteEnable:
-                case InverterParameterId.ShutterAbsoluteRevs:
+                case InverterParameterId.ShutterLowVelocity:
+                case InverterParameterId.ShutterHighVelocityDuration:
                     result = client.Client.Send(message.ToBytes());
                     break;
 
