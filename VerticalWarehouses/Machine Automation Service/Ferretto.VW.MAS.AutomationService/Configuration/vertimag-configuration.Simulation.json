@@ -71,7 +71,7 @@
     "InverterIndexShutter2": 4,
     "InverterIndexBay2": 5,
     "IOExpansion1Installed": true,
-    "IOExpansion2Installed": true,
+    "IOExpansion2Installed": false,
     "IOExpansion3Installed": false,
     "IOExpansion1IPAddress": "127.0.0.1",
     "IOExpansion1Port": 19550,

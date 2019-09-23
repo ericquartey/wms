@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                this.ShutterSensors.Open;
+                (this.ShutterSensors.Open || this.ShutterSensors.MidWay);
         }
 
         private bool CanExecuteIntermediateCommand()
@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                !this.ShutterSensors.MidWay;
+                (this.ShutterSensors.Open || this.ShutterSensors.Closed);
         }
 
         private bool CanExecuteOpenCommand()
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                this.ShutterSensors.Closed;
+                (this.ShutterSensors.Closed || this.ShutterSensors.MidWay);
         }
 
         private async Task ClosedShutterAsync()
