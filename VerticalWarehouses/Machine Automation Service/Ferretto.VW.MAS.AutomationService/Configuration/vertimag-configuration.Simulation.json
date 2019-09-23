@@ -27,7 +27,7 @@
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
     "Shutter1Type": 1,
-    "Shutter2Type": 1,
+    "Shutter2Type": 2,
     "LaserBay1": false,
     "LaserBay2": false,
     "LaserBay3": false,
@@ -191,8 +191,8 @@
     "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
-    "HigherDistance": 400.0,
-    "LowerDistance": 500.0,
+    "HigherDistance": 467.0,
+    "LowerDistance": 472.0,
     "HighSpeedPercent": 90.0
   },
   "BeltBurnishing": {
