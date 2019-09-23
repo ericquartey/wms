@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 {
     partial class InverterDriverService
     {
-
-
         #region Methods
 
         private void OnCommandReceived(FieldCommandMessage receivedMessage)
@@ -24,9 +22,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if(this.inverterStatuses.Count == 0)
+            if (this.inverterStatuses.Count == 0)
             {
-                this.logger.LogError("4:Invert Driver not configured for this message Type");
+                this.logger.LogError("4:Inverter Driver not configured for this message Type");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
@@ -36,7 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
 
-            if(messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
+            if (messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
             {
                 this.logger.LogTrace("4: Stop the timer for update shaft position");
                 this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
@@ -46,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
-            if(messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
+            if (messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
             {
                 this.logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
                 this.logger.LogError($"5a: Message {receivedMessage.Type} will be discarded!");
@@ -56,52 +54,52 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
-            switch(receivedMessage.Type)
+            switch (receivedMessage.Type)
             {
                 case FieldMessageType.CalibrateAxis:
-                this.ProcessCalibrateAxisMessage(receivedMessage);
-                break;
+                    this.ProcessCalibrateAxisMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterPowerOff:
-                this.ProcessPowerOffMessage(receivedMessage);
-                break;
+                    this.ProcessPowerOffMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterPowerOn:
-                this.ProcessPowerOnMessage(receivedMessage);
-                break;
+                    this.ProcessPowerOnMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.Positioning:
                 case FieldMessageType.TorqueCurrentSampling:
-                this.ProcessPositioningMessage(receivedMessage);
-                break;
+                    this.ProcessPositioningMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.ShutterPositioning:
-                this.ProcessShutterPositioningMessage(receivedMessage);
-                break;
+                    this.ProcessShutterPositioningMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterSetTimer:
-                this.ProcessInverterSetTimerMessage(receivedMessage);
-                break;
+                    this.ProcessInverterSetTimerMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterSwitchOff:
-                this.ProcessInverterSwitchOffMessage(receivedMessage);
-                break;
+                    this.ProcessInverterSwitchOffMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterSwitchOn:
-                this.ProcessInverterSwitchOnMessage(receivedMessage);
-                break;
+                    this.ProcessInverterSwitchOnMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterStop:
-                this.ProcessStopMessage(receivedMessage);
-                break;
+                    this.ProcessStopMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterFaultReset:
-                this.ProcessFaultResetMessage(receivedMessage);
-                break;
+                    this.ProcessFaultResetMessage(receivedMessage);
+                    break;
 
                 case FieldMessageType.InverterDisable:
-                this.ProcessDisableMessage(receivedMessage);
-                break;
+                    this.ProcessDisableMessage(receivedMessage);
+                    break;
             }
 
             var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);

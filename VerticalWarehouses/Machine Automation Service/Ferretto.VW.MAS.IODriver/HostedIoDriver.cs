@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            this.logger.LogDebug("1:Starting Tasks");
+            this.logger.LogTrace("1:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();

@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, TargetBay:{receivedMessage.TargetBay}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -226,12 +226,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
-                    this.logger.LogWarning($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}");
+                    this.logger.LogError($"Message [{receivedMessage.Type}] will be discarded!");
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
 
+                this.logger.LogInformation($"Processing command [{receivedMessage.Type}] by {receivedMessage.RequestingBay} for {receivedMessage.TargetBay}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.Homing:
@@ -317,7 +319,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -562,7 +564,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status} TargetBay:{receivedMessage.TargetBay}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -572,7 +574,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -580,6 +582,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
 
                 this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var messageCurrentStateMachine);
+
+                if (receivedMessage.Type != MessageType.MachineStateActive && receivedMessage.Type != MessageType.MachineStatusActive)
+                {
+                    this.logger.LogDebug($"Notification [{receivedMessage.Type}] for {receivedMessage.TargetBay} - Status {receivedMessage.Status} ");
+                }
 
                 switch (receivedMessage.Type)
                 {

@@ -206,7 +206,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                                     if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
-                                        this.logger.LogDebug("Sensor Update");
+                                        this.logger.LogTrace("Sensor Update");
 
                                         var msgNotification = new FieldNotificationMessage(
                                             new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
