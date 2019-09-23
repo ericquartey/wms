@@ -191,8 +191,8 @@
     "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
-    "HigherDistance": 2000.0,
-    "LowerDistance": 2100.0,
+    "HigherDistance": 400.0,
+    "LowerDistance": 500.0,
     "HighSpeedPercent": 90.0
   },
   "BeltBurnishing": {

@@ -139,13 +139,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 case InverterParameterId.ShutterLowVelocity:
                     {
                         var byteDataReceived = message.ToBytes();
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration, this.dataset);
-                        var byteData = data.ToBytes();
+                        if (this.duration > 0)
+                        {
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration, this.dataset);
+                            var byteData = data.ToBytes();
 
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set duration: {this.duration}; dataset: {this.dataset}");
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set duration: {this.duration}; dataset: {this.dataset}");
 
-                        returnValue = true;
+                            returnValue = true;
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
                     }
                     break;
 
