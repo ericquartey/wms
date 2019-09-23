@@ -225,7 +225,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 }
                 // t = s / v
                 // time is in tenth of seconds, a fraction of the constant speed movement: t = t * (percent / 100) * 10
-                this.duration = Math.Abs(space / this.shutterPositionData.SpeedRate) * this.shutterPositionData.HighSpeedPercent / 10;
+                // v = cm / sec
+                // s = mm
+                // t = (s/1000) / (v/100) * (p/100) * 10
+                this.duration = Math.Abs(space / this.shutterPositionData.SpeedRate) * this.shutterPositionData.HighSpeedPercent / 100;
             }
         }
 
