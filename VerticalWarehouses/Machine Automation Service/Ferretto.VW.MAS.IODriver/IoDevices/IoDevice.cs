@@ -26,7 +26,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice
     {
-
         #region Fields
 
         private const int IO_POLLING_INTERVAL = 50;
@@ -129,8 +128,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -538,7 +535,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void StartPollingIoMessage()
         {
-            this.logger.LogDebug($"1:Create Timer to poll data");
+            this.logger.LogTrace($"1:Create Timer to poll data");
 
             this.pollIoTimer?.Dispose();
 
