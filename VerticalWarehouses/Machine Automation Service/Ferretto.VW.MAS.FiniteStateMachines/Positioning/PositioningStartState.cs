@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-                this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+                this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageType.InverterSwitchOn,
                 (byte)inverterIndex);
 
-            this.Logger.LogDebug($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
