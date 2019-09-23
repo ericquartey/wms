@@ -582,7 +582,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var messageCurrentStateMachine);
 
-                this.logger.LogDebug($"Notification [{receivedMessage.Type}] for {receivedMessage.TargetBay} - Status {receivedMessage.Status} ");
+                if (receivedMessage.Type != MessageType.MachineStateActive && receivedMessage.Type != MessageType.MachineStatusActive)
+                {
+                    this.logger.LogDebug($"Notification [{receivedMessage.Type}] for {receivedMessage.TargetBay} - Status {receivedMessage.Status} ");
+                }
 
                 switch (receivedMessage.Type)
                 {
