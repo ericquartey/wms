@@ -129,6 +129,9 @@
   <data name="ThePositionIsNotValid" xml:space="preserve">
     <value>The starting position is not valid</value>
   </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>The Shutter Type is not valid</value>
+  </data>
   <data name="TheSpeedRateIsNotValid" xml:space="preserve">
     <value>The SpeedRate is not valid</value>
   </data>

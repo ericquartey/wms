@@ -129,6 +129,9 @@
   <data name="ThePositionIsNotValid" xml:space="preserve">
     <value>La Posizione iniziale non è valida</value>
   </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Il tipo di serranda non è valido</value>
+  </data>
   <data name="TheSpeedRateIsNotValid" xml:space="preserve">
     <value>La Velocità alta non è valida</value>
   </data>

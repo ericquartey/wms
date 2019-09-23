@@ -97,6 +97,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Shutter Type is not valid.
+        /// </summary>
+        public static string TheShutterTypeIsNotValid {
+            get {
+                return ResourceManager.GetString("TheShutterTypeIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The SpeedRate is not valid.
         /// </summary>
         public static string TheSpeedRateIsNotValid {
