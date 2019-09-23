@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -232,6 +232,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     continue;
                 }
 
+                this.logger.LogInformation($"Processing command [{receivedMessage.Type}] by {receivedMessage.RequestingBay} for {receivedMessage.TargetBay}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.Homing:
