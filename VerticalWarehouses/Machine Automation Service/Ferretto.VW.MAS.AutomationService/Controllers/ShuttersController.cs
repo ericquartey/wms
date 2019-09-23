@@ -63,24 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             // TODO add check on bay number
 
-            var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
-
-            void publishAction()
-            {
-                this.PublishCommand(
-                messageData,
-                "Request shutter position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
-            }
-
-            var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
-                MessageType.ShutterPositioning,
-                MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting,
-                publishAction);
-
-            return this.Ok(notifyData.ShutterPosition);
+            return this.Ok(this.GetShutterPositionController(bayNumber));
         }
 
         [HttpGet]
@@ -129,29 +112,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveTo(int bayNumber, ShutterPosition targetPosition)
         {
             var direction = ShutterMovementDirection.None;
-            var position = this.GetShutterPosition(bayNumber);
+            var position = this.GetShutterPositionController(bayNumber);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
-                    if (position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Opened)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
                     break;
 
                 case ShutterPosition.Half:
-                    if (position.Value == ShutterPosition.Opened)
+                    if (position == ShutterPosition.Opened)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
-                    else if (position.Value == ShutterPosition.Closed)
+                    else if (position == ShutterPosition.Closed)
                     {
                         direction = ShutterMovementDirection.Up;
                     }
                     break;
 
                 case ShutterPosition.Opened:
-                    if (position.Value == ShutterPosition.Half || position.Value == ShutterPosition.Closed)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed)
                     {
                         direction = ShutterMovementDirection.Up;
                     }
@@ -162,7 +145,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
             if (direction == ShutterMovementDirection.None)
             {
-                if (targetPosition != position.Value)
+                if (targetPosition != position)
                 {
                     return this.BadRequest(Resources.Shutters.ThePositionIsNotValid);
                 }
@@ -253,6 +236,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
+        }
+
+        private ShutterPosition GetShutterPositionController(int bayNumber)
+        {
+            var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
+            void publishAction()
+            {
+                this.PublishCommand(
+                messageData,
+                "Request shutter position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+            }
+
+            var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
+                MessageType.ShutterPositioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting,
+                publishAction);
+            return notifyData.ShutterPosition;
         }
 
         #endregion
