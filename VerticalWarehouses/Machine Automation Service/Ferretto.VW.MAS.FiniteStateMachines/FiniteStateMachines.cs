@@ -226,7 +226,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
-                    this.logger.LogWarning($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}");
+                    this.logger.LogError($"Message [{receivedMessage.Type}] will be discarded!");
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
