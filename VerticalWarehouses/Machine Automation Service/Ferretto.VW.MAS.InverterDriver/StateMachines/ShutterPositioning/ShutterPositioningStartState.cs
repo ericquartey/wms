@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         var byteData = data.ToBytes();
 
                         this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {this.dataset}");
+                        this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {(int)this.dataset}");
                     }
                     break;
 
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         var byteData = data.ToBytes();
 
                         this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {this.dataset}");
+                        this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
 
                         returnValue = true;
                     }
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             var byteData = data.ToBytes();
 
                             this.ParentStateMachine.EnqueueCommandMessage(data);
-                            this.Logger.LogDebug($"Set duration: {this.duration}; dataset: {this.dataset}");
+                            this.Logger.LogDebug($"Set duration: {this.duration}; dataset: {(int)this.dataset}");
 
                             returnValue = true;
                         }
