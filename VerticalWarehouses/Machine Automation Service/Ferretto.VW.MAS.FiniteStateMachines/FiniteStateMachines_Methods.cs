@@ -381,7 +381,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
-                    this.logger.LogDebug($"Machine is already in the requested state [Actual State:{this.machineSensorsStatus.IsMachineInRunningState}] [Requested State {data.Enable}]");
+                    this.logger.LogDebug($"Machine is already in the requested state [Actual State: {this.machineSensorsStatus.IsMachineInRunningState}] [Requested State: {data.Enable}]");
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Completed",
