@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             decimal speedRate,
             decimal higherDistance,
             decimal lowerDistance,
+            decimal highSpeedPercent,
+            decimal lowerSpeed,
             MovementType movementType,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -25,6 +27,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.SpeedRate = speedRate;
             this.HigherDistance = higherDistance;
             this.LowerDistance = lowerDistance;
+            this.HighSpeedPercent = highSpeedPercent;
+            this.LowerSpeed = lowerSpeed;
             this.MovementType = movementType;
         }
 
@@ -44,6 +48,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.SpeedRate = messageData.SpeedRate;
             this.HigherDistance = messageData.HigherDistance;
             this.LowerDistance = messageData.LowerDistance;
+            this.HighSpeedPercent = messageData.HighSpeedPercent;
+            this.LowerSpeed = messageData.LowerSpeed;
             this.MovementType = messageData.MovementType;
         }
 
@@ -53,7 +59,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public decimal HigherDistance { get; }
 
+        public decimal HighSpeedPercent { get; set; }
+
         public decimal LowerDistance { get; }
+
+        public decimal LowerSpeed { get; }
 
         public MovementType MovementType { get; }
 

@@ -906,30 +906,30 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return;
             }
             if (this.TargetShutterPosition == (int)ShutterPosition.Opened
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 304)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 4)
                 )
             {
                 this.AxisPosition++;
             }
             else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 306)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 6)
                 )
             {
                 this.AxisPosition--;
             }
 
             // Shutter position
-            if (this.AxisPosition <= 300)
+            if (this.AxisPosition <= 0)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
+            else if (this.AxisPosition >= 4 && this.AxisPosition <= 6)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 310)
+            else if (this.AxisPosition >= 10)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
