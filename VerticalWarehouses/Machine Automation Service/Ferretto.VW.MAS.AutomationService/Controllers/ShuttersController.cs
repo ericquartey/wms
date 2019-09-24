@@ -69,11 +69,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("shutters/position")]
-        public ActionResult<ShutterPosition> GetShutterPosition(int bayNumber)
+        public ActionResult<ShutterPosition> GetShutterPosition()
         {
             // TODO add check on bay number
 
-            return this.Ok(this.GetShutterPositionController(bayNumber));
+            return this.Ok(this.GetShutterPositionController(this.BayNumber));
         }
 
         [HttpGet]
@@ -84,8 +84,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(parameters);
         }
 
-        [HttpPost("{bayNumber}/move")]
-        public void Move(int bayNumber, ShutterMovementDirection direction)
+        [HttpPost("move")]
+        public void Move(ShutterMovementDirection direction)
         {
             var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
 
@@ -97,17 +97,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 : ShutterPosition.Closed;
 
             var shutterType = ShutterType.NoType;
-            switch (bayNumber)
+            switch (this.BayNumber)
             {
-                case (int)BayNumber.BayOne:
+                case BayNumber.BayOne:
                     shutterType = (ShutterType)this.configurationProvider.Shutter1Type;
                     break;
 
-                case (int)BayNumber.BayTwo:
+                case BayNumber.BayTwo:
                     shutterType = (ShutterType)this.configurationProvider.Shutter2Type;
                     break;
 
-                case (int)BayNumber.BayThree:
+                case BayNumber.BayThree:
                     shutterType = (ShutterType)this.configurationProvider.Shutter3Type;
                     break;
 
@@ -138,14 +138,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.ShutterPositioning);
         }
 
-        [HttpPost("{bayNumber}/moveTo")]
+        [HttpPost("moveTo")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveTo(int bayNumber, ShutterPosition targetPosition)
+        public IActionResult MoveTo(ShutterPosition targetPosition)
         {
             var direction = ShutterMovementDirection.None;
-            var position = this.GetShutterPositionController(bayNumber);
+            var position = this.GetShutterPositionController(this.BayNumber);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
@@ -202,17 +202,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             var shutterType = ShutterType.NoType;
-            switch (bayNumber)
+            switch (this.BayNumber)
             {
-                case (int)BayNumber.BayOne:
+                case BayNumber.BayOne:
                     shutterType = (ShutterType)this.configurationProvider.Shutter1Type;
                     break;
 
-                case (int)BayNumber.BayTwo:
+                case BayNumber.BayTwo:
                     shutterType = (ShutterType)this.configurationProvider.Shutter2Type;
                     break;
 
-                case (int)BayNumber.BayThree:
+                case BayNumber.BayThree:
                     shutterType = (ShutterType)this.configurationProvider.Shutter3Type;
                     break;
 
@@ -247,11 +247,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("{bayNumber}/run-test")]
+        [HttpPost("run-test")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult RunTest(int bayNumber, int delayInSeconds, int testCycleCount)
+        public IActionResult RunTest(int delayInSeconds, int testCycleCount)
         {
             if (delayInSeconds <= 0)
             {
@@ -275,17 +275,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             var shutterType = ShutterType.NoType;
-            switch (bayNumber)
+            switch (this.BayNumber)
             {
-                case (int)BayNumber.BayOne:
+                case BayNumber.BayOne:
                     shutterType = (ShutterType)this.configurationProvider.Shutter1Type;
                     break;
 
-                case (int)BayNumber.BayTwo:
+                case BayNumber.BayTwo:
                     shutterType = (ShutterType)this.configurationProvider.Shutter2Type;
                     break;
 
-                case (int)BayNumber.BayThree:
+                case BayNumber.BayThree:
                     shutterType = (ShutterType)this.configurationProvider.Shutter3Type;
                     break;
 
@@ -333,15 +333,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        private ShutterPosition GetShutterPositionController(int bayNumber)
+        private ShutterPosition GetShutterPositionController(BayNumber bayNumber)
         {
-            if (!Enum.IsDefined(typeof(BayNumber), bayNumber)
-                || bayNumber == (int)BayNumber.None)
-            {
-                return ShutterPosition.None;
-            }
-
-            var messageData = new RequestPositionMessageData(Axis.None, bayNumber);
+            var messageData = new RequestPositionMessageData(Axis.None, (int)bayNumber);
 
             void publishAction()
             {
