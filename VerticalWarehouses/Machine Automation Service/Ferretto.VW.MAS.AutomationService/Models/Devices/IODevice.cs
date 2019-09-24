@@ -7,11 +7,11 @@ namespace Ferretto.VW.MAS.AutomationService.Models
     {
         #region Properties
 
-        public IEnumerable<BitBase> Inputs { get; set; }
+        public IEnumerable<BitInfo> Inputs { get; set; }
 
-        public IEnumerable<BitBase> IoStatuses { get; set; }
+        public IEnumerable<BitInfo> IoStatuses { get; set; }
 
-        public IEnumerable<BitBase> Outputs { get; set; }
+        public IEnumerable<BitInfo> Outputs { get; set; }
 
         #endregion
     }

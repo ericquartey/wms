@@ -24,6 +24,24 @@
     </ctrls:PpcDialogView.DataContext>
     <ctrls:PpcDialogView.Resources>
 
+        <Style x:Key="Border"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+            <Setter Property="BorderThickness" Value="7" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style x:Key="Grid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="-1" />
+            <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+        </Style>
+
+
         <Style x:Key="VWSIM_Border_IoDriver"
                TargetType="{x:Type Border}">
             <Setter Property="Width" Value="Auto" />
@@ -94,7 +112,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:SensorSquare Height="30"
+                                    <ctrls:SensorSquare Height="25"
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -131,7 +149,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:Sensor Height="20"
+                                    <ctrls:Sensor Height="25"
                                                   Margin="2,3"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
@@ -222,7 +240,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:SensorSquare Height="20"
+                                    <ctrls:SensorSquare Height="25"
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -254,7 +272,7 @@
 
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
-                                      ItemsSource="{Binding DigitalIOs}">
+                                      ItemsSource="{Binding DigitalInputs}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" />
@@ -276,7 +294,7 @@
                         </ItemsControl>
                     </Grid>
 
-                    <Grid Grid.Row="2"
+                    <Grid Grid.Row="3"
                           Margin="5,1,5,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -306,7 +324,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ctrls:SensorSquare Height="20"
+                                    <ctrls:SensorSquare Height="25"
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -339,6 +357,7 @@
 
         <Grid Margin="15">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -385,7 +404,190 @@
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                        Text="VW Simulator" />
 
-            <controls:PpcButton Grid.Column="2"
+            <Grid Grid.Column="2"
+                  Margin="15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        MinWidth="150"
+                        Style="{StaticResource Border}">
+                    <Grid Style="{StaticResource Grid}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                   Text="Finite state machine" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Status:" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentMachineStatusFSM, FallbackValue='TEST'}" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="State:" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentStateFSM, FallbackValue='TEST'}" />
+
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        MinWidth="150"
+                        Style="{StaticResource Border}">
+                    <Grid Style="{StaticResource Grid}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                   Text="IO Drive" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Status:" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentMachineStatusIODriver, FallbackValue='TEST'}" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="State:" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentStateIODriver, FallbackValue='TEST'}" />
+
+                    </Grid>
+
+                </Border>
+
+                <Border Grid.Column="2"
+                        MinWidth="150"
+                        Style="{StaticResource Border}">
+                    <Grid Style="{StaticResource Grid}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                   Text="Inverter" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Status:" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentMachineStatusInverter, FallbackValue='TEST'}" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Margin="0,0,5,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="State:" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="{Binding CurrentStateInverter, FallbackValue='TEST'}" />
+
+
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+            <controls:PpcButton Grid.Column="3"
                                 Margin="0,20"
                                 HorizontalAlignment="Right"
                                 Command="{Binding RefreshCommand}"

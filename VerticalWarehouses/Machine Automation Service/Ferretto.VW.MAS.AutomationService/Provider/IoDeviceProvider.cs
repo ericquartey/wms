@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.IODriver;
@@ -37,27 +38,29 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             var properties = typeof(IoStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             foreach (var status in ioStatuses)
             {
-                var newData = new List<BitBase>();
+                var newData = new List<BitInfo>();
                 foreach (var prop in properties)
                 {
                     var value = prop?.GetValue(status);
                     if (value is bool isValue)
                     {
-                        var bit = new BitBase(prop.Name, isValue, prop.Name);
+                        var bit = new BitInfo(prop.Name, isValue, prop.Name);
                         newData.Add(bit);
                     }
                 }
 
-                var inputs = new List<BitBase>();
+                //var inputs = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), 16).ToArray();
+                var inputs = new List<BitInfo>();
                 foreach (var inputData in status.InputData)
                 {
-                    inputs.Add(new BitBase(string.Empty, inputData, string.Empty));
+                    inputs.Add(new BitInfo(string.Empty, inputData, string.Empty));
                 }
 
-                var outputs = new List<BitBase>();
+                //var outputs = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), 8).ToArray();
+                var outputs = new List<BitInfo>();
                 foreach (var outputData in status.OutputData)
                 {
-                    outputs.Add(new BitBase(string.Empty, outputData, string.Empty));
+                    outputs.Add(new BitInfo(string.Empty, outputData, string.Empty));
                 }
 
                 var device = new IoDevice();

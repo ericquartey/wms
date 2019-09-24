@@ -1126,13 +1126,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class InverterDevice : DeviceBase
     {
         [Newtonsoft.Json.JsonProperty("controlWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> ControlWords { get; set; }
+        public System.Collections.Generic.IEnumerable<BitInfo> ControlWords { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("digitalIOs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> DigitalIOs { get; set; }
+        [Newtonsoft.Json.JsonProperty("digitalInputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> DigitalInputs { get; set; }
     
         [Newtonsoft.Json.JsonProperty("statusWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> StatusWords { get; set; }
+        public System.Collections.Generic.IEnumerable<BitInfo> StatusWords { get; set; }
     
         public string ToJson() 
         {
@@ -1147,13 +1147,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class BitBase 
+    public partial class BitInfo 
     {
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isReadable", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsReadable { get; set; }
+        [Newtonsoft.Json.JsonProperty("isUsed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsUsed { get; set; }
     
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
@@ -1166,9 +1166,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static BitBase FromJson(string data)
+        public static BitInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BitBase>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BitInfo>(data);
         }
     
     }
@@ -1195,13 +1195,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class IoDevice : DeviceBase
     {
         [Newtonsoft.Json.JsonProperty("inputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> Inputs { get; set; }
+        public System.Collections.Generic.IEnumerable<BitInfo> Inputs { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ioStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> IoStatuses { get; set; }
+        public System.Collections.Generic.IEnumerable<BitInfo> IoStatuses { get; set; }
     
         [Newtonsoft.Json.JsonProperty("outputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<BitBase> Outputs { get; set; }
+        public System.Collections.Generic.IEnumerable<BitInfo> Outputs { get; set; }
     
         public string ToJson() 
         {

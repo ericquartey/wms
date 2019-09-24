@@ -3,13 +3,13 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.MAS.AutomationService.Models
 {
-    public class BitBase
+    public class BitInfo
     {
         #region Fields
 
         private string description;
 
-        private bool isReadable;
+        private bool isUsed;
 
         private string name;
 
@@ -19,20 +19,20 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         #region Constructors
 
-        public BitBase()
+        public BitInfo()
         {
         }
 
-        public BitBase(bool? value)
+        public BitInfo(bool? value)
         {
             if (!(value is null))
             {
-                this.IsReadable = true;
+                this.IsUsed = true;
                 this.Value = (bool)value;
             }
         }
 
-        public BitBase(string name, bool? value, string description = "") : this(value)
+        public BitInfo(string name, bool? value, string description = "") : this(value)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -53,10 +53,10 @@ namespace Ferretto.VW.MAS.AutomationService.Models
             set => this.description = value;
         }
 
-        public bool IsReadable
+        public bool IsUsed
         {
-            get => this.isReadable;
-            set => this.isReadable = value;
+            get => this.isUsed;
+            set => this.isUsed = value;
         }
 
         public string Name

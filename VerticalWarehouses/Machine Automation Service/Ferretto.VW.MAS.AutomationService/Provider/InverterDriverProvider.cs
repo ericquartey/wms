@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Reflection;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
@@ -33,6 +37,54 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Methods
 
+        private IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension)
+        {
+            var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), dimension).ToArray();
+            foreach (var prop in properties)
+            {
+                try
+                {
+                    if (prop.CanRead &&
+                        prop.PropertyType == typeof(bool) &&
+                        prop.GetValue(status) is bool propValue)
+                    {
+                        var position = prop.GetCustomAttribute<ColumnAttribute>().Order;
+                        bits[position] = new BitInfo(prop.Name, propValue, prop.Name);
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            return bits;
+        }
+
+        private IEnumerable<BitInfo> GetDigitalInputs(IInverterStatusBase status)
+        {
+            PropertyInfo[] inverterInputsProperties = null;
+            var digitalInputs = new List<BitInfo>();
+            switch (status)
+            {
+                case IAcuInverterStatus acu:
+                    inverterInputsProperties = typeof(IAcuInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+                    break;
+
+                case IAglInverterStatus agl:
+                    inverterInputsProperties = typeof(IAglInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+                    break;
+
+                case IAngInverterStatus ang:
+                    inverterInputsProperties = typeof(IAngInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return this.GetBits(inverterInputsProperties, status, 8);
+        }
+
         private IEnumerable<InverterDevice> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
         {
             var inverterDevices = new List<InverterDevice>();
@@ -40,40 +92,11 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             var statusWordProperties = typeof(IStatusWord).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             foreach (var status in inverterStatuses)
             {
-                var controlWords = new List<BitBase>();
-                foreach (var prop in controlWordProperties)
-                {
-                    bool? value = null;
-                    if (prop.CanRead &&
-                         prop.GetValue(status.CommonControlWord) is bool propValue)
-                    {
-                        value = propValue;
-                    }
-
-                    controlWords.Add(new BitBase(prop.Name, value, prop.Name));
-                }
-
-                var statusWords = new List<BitBase>();
-                foreach (var prop in statusWordProperties)
-                {
-                    bool? value = null;
-                    if (prop.CanRead &&
-                        prop.GetValue(status.CommonStatusWord) is bool propValue)
-                    {
-                        value = propValue;
-                    }
-
-                    statusWords.Add(new BitBase(prop.Name, value, prop.Name));
-                }
-
-                var inputs = new List<BitBase>();
-                // TO DO retrieve input data
-
                 var device = new InverterDevice();
                 device.Id = (int)status.SystemIndex;
-                device.ControlWords = controlWords;
-                device.StatusWords = statusWords;
-                device.DigitalIOs = inputs;
+                device.ControlWords = this.GetBits(controlWordProperties, status.CommonControlWord, 16);
+                device.StatusWords = this.GetBits(statusWordProperties, status.CommonStatusWord, 16);
+                device.DigitalInputs = this.GetDigitalInputs(status);
                 device.Id = status.SystemIndex;
                 inverterDevices.Add(device);
             }
