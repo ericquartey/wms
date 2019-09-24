@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private Error error;
 
+        private string errorTime;
+
         private ICommand markAsResolvedCommand;
 
         #endregion
@@ -39,7 +41,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public Error Error
         {
             get => this.error;
-            set => this.SetProperty(ref this.error, value);
+            set => this.SetProperty(ref this.error, value, this.OnErrorChanged);
+        }
+
+        public string ErrorTime
+        {
+            get => this.errorTime;
+            set => this.SetProperty(ref this.errorTime, value);
         }
 
         public ICommand MarkAsResolvedCommand =>
@@ -121,6 +129,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.ShowNotification(ex);
                 this.NavigationService.IsBusy = false;
             }
+        }
+
+        private void OnErrorChanged()
+        {
+            // var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
         }
 
         #endregion
