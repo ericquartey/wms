@@ -30,11 +30,11 @@
 
         ShutterTargetPosition = 414, // 19E
 
-        ShutterAbsoluteEnable = 458,
-
-        ShutterAbsoluteRevs = 460,
-
         ShutterTargetVelocityParam = 480,
+
+        ShutterLowVelocity = 481,
+
+        ShutterHighVelocityDuration = 583,
 
         TableTravelTableIndex = 1200,
 

@@ -90,9 +90,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
                 this.areErrorsPresent = error != null;
 
-                this.IsVisible = this.IsVisible.HasValue
-                    ? this.IsVisible.Value && this.areErrorsPresent
-                    : this.IsVisible;
+                this.IsVisible = this.areErrorsPresent;
             }
             catch (Exception)
             {

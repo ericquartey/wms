@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
     public class PowerEnableStartState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -46,8 +45,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -56,57 +53,57 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            switch(message.Type)
+            switch (message.Type)
             {
                 case MessageType.Stop:
-                if(message.Status != MessageStatus.OperationStart &&
-                    message.Status != MessageStatus.OperationExecuting)
-                {
-                    this.UpdateResponseList(message);
-                }
+                    if (message.Status != MessageStatus.OperationStart &&
+                        message.Status != MessageStatus.OperationExecuting)
+                    {
+                        this.UpdateResponseList(message);
+                    }
 
-                this.CheckChangeStateConditions(message);
-                break;
+                    this.CheckChangeStateConditions(message);
+                    break;
 
                 case MessageType.PowerEnable:
 
-                switch(message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                    if(this.machineData.RequestedPowerState)
+                    switch (message.Status)
                     {
-                        this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.stateData));
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
-                    }
-                    break;
+                        case MessageStatus.OperationEnd:
+                            if (this.machineData.RequestedPowerState)
+                            {
+                                this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.stateData));
+                            }
+                            else
+                            {
+                                this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+                            }
+                            break;
 
-                    case MessageStatus.OperationError:
-                    this.stateData.NotificationMessage = message;
-                    this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                        case MessageStatus.OperationError:
+                            this.stateData.NotificationMessage = message;
+                            this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                            break;
+                    }
                     break;
-                }
-                break;
 
                 default:
-                if(message.Status == MessageStatus.OperationFaultStop ||
-                    message.Status == MessageStatus.OperationRunningStop)
-                {
-                    this.UpdateResponseList(message);
-                }
-                this.CheckChangeStateConditions(message);
-                break;
+                    if (message.Status == MessageStatus.OperationFaultStop ||
+                        message.Status == MessageStatus.OperationRunningStop)
+                    {
+                        this.UpdateResponseList(message);
+                    }
+                    this.CheckChangeStateConditions(message);
+                    break;
             }
         }
 
         public override void Start()
         {
             CommandMessage commandMessage;
-            if(this.machineData.RequestedPowerState)
+            if (this.machineData.RequestedPowerState)
             {
-                var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState);
+                var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState, this.machineData.ConfiguredBays.Select(x => x.Index).ToList());
                 commandMessage = new CommandMessage(
                     commandData,
                     $"Setting Power enable state to {this.machineData.RequestedPowerState}",
@@ -128,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                     MessageType.Stop,
                     this.RequestingBay);
 
-                foreach(var configuredBay in this.machineData.ConfiguredBays)
+                foreach (var configuredBay in this.machineData.ConfiguredBays)
                 {
                     var newCommandMessage = new CommandMessage(commandMessage);
                     newCommandMessage.TargetBay = configuredBay.Index;
@@ -160,12 +157,12 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 
@@ -176,16 +173,16 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         private void CheckChangeStateConditions(NotificationMessage message)
         {
-            if(this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
+            if (this.stateMachineResponses.Values.Count == this.machineData.ConfiguredBays.Count)
             {
-                if(this.stateMachineResponses.Values.Any(r => r == MessageStatus.OperationError))
+                if (this.stateMachineResponses.Values.Any(r => r == MessageStatus.OperationError))
                 {
                     this.stateData.NotificationMessage = message;
                     this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
                 }
                 else
                 {
-                    var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState);
+                    var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState, this.machineData.ConfiguredBays.Select(x => x.Index).ToList());
                     var commandMessage = new CommandMessage(
                         commandData,
                         $"Setting Power enable state to {this.machineData.RequestedPowerState}",
@@ -201,7 +198,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         private void UpdateResponseList(NotificationMessage message)
         {
-            if(this.stateMachineResponses.TryGetValue(message.TargetBay, out var stateMachineResponse))
+            if (this.stateMachineResponses.TryGetValue(message.TargetBay, out var stateMachineResponse))
             {
                 stateMachineResponse = message.Status;
                 this.stateMachineResponses[message.TargetBay] = stateMachineResponse;

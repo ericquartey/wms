@@ -27,7 +27,7 @@
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
     "Shutter1Type": 1,
-    "Shutter2Type": 1,
+    "Shutter2Type": 2,
     "LaserBay1": false,
     "LaserBay2": false,
     "LaserBay3": false,
@@ -71,7 +71,7 @@
     "InverterIndexShutter2": 4,
     "InverterIndexBay2": 5,
     "IOExpansion1Installed": true,
-    "IOExpansion2Installed": false,
+    "IOExpansion2Installed": true,
     "IOExpansion3Installed": false,
     "IOExpansion1IPAddress": "127.0.0.1",
     "IOExpansion1Port": 19550,
@@ -191,8 +191,9 @@
     "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
-    "HigherDistance": 2000.0,
-    "LowerDistance": 2100.0
+    "HigherDistance": 467.0,
+    "LowerDistance": 472.0,
+    "HighSpeedPercent": 90.0
   },
   "BeltBurnishing": {
     "CycleQuantity": 200

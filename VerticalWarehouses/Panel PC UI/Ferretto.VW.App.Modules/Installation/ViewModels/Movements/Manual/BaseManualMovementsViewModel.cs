@@ -15,7 +15,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public abstract class BaseManualMovementsViewModel : BaseMainViewModel
     {
-
         #region Fields
 
         private readonly IBayManager bayManagerService;
@@ -41,12 +40,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            if(machineElevatorService is null)
+            if (machineElevatorService is null)
             {
                 throw new ArgumentNullException(nameof(machineElevatorService));
             }
 
-            if(bayManagerService is null)
+            if (bayManagerService is null)
             {
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
@@ -56,8 +55,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
-
-
 
         #region Properties
 
@@ -84,8 +81,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-
-
         #region Methods
 
         public void DisableAllExceptThis()
@@ -93,14 +88,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var name = this.GetType().ToString();
             this.EventAggregator
               .GetEvent<ManualMovementsChangedPubSubEvent>()
-              .Publish(new ManualMovementshangedMessage(name));
+              .Publish(new ManualMovementsChangedMessage(name));
         }
 
         public override void Disappear()
         {
             base.Disappear();
 
-            if(this.notificationUIsubscriptionToken != null)
+            if (this.notificationUIsubscriptionToken != null)
             {
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -108,7 +103,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.notificationUIsubscriptionToken = null;
             }
 
-            if(this.movementsSubscriptionToken != null)
+            if (this.movementsSubscriptionToken != null)
             {
                 this.EventAggregator
                  .GetEvent<ManualMovementsChangedPubSubEvent>()
@@ -122,19 +117,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.EventAggregator
                .GetEvent<ManualMovementsChangedPubSubEvent>()
-               .Publish(new ManualMovementshangedMessage(null));
+               .Publish(new ManualMovementsChangedMessage(null));
         }
 
-        public virtual void EnabledChanged(ManualMovementshangedMessage message)
+        public virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
-            if(string.IsNullOrEmpty(message.ViewModelName))
+            if (string.IsNullOrEmpty(message.ViewModelName))
             {
                 this.IsEnabled = true;
                 return;
             }
 
             var name = this.GetType().ToString();
-            if(!name.Equals(message.ViewModelName))
+            if (!name.Equals(message.ViewModelName))
             {
                 this.IsEnabled = false;
             }
@@ -181,7 +176,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
                 this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -189,31 +184,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)
         {
-            if(message is null
+            if (message is null
                 ||
                 message.Data is null)
             {
                 return;
             }
 
-            switch(message.Data.AxisMovement)
+            switch (message.Data.AxisMovement)
             {
                 case CommonUtils.Messages.Enumerations.Axis.None:
-                break;
+                    break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Horizontal:
-                this.CurrentHorizontalPosition = message.Data.CurrentPosition;
-                break;
+                    this.CurrentHorizontalPosition = message.Data.CurrentPosition;
+                    break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Vertical:
-                this.CurrentVerticalPosition = message.Data.CurrentPosition;
-                break;
+                    this.CurrentVerticalPosition = message.Data.CurrentPosition;
+                    break;
 
                 case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:
-                break;
+                    break;
 
                 default:
-                break;
+                    break;
             }
         }
 

@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:0} days ago.
+        /// </summary>
+        public static string DaysAgo {
+            get {
+                return ResourceManager.GetString("DaysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error Code.
         /// </summary>
         public static string ErrorCode {
@@ -124,6 +133,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Seen.
+        /// </summary>
+        public static string FirstSeen {
+            get {
+                return ResourceManager.GetString("FirstSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} hours ago.
+        /// </summary>
+        public static string HoursAgo {
+            get {
+                return ResourceManager.GetString("HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual.
         /// </summary>
         public static string ManualMode {
@@ -133,11 +160,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:0} minutes ago.
+        /// </summary>
+        public static string MinutesAgo {
+            get {
+                return ResourceManager.GetString("MinutesAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just now.
+        /// </summary>
+        public static string Now {
+            get {
+                return ResourceManager.GetString("Now", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string PasswordLogin {
+            get {
+                return ResourceManager.GetString("PasswordLogin", resourceCulture);
             }
         }
         
@@ -156,6 +210,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SwitchOff {
             get {
                 return ResourceManager.GetString("SwitchOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string UserLogin {
+            get {
+                return ResourceManager.GetString("UserLogin", resourceCulture);
             }
         }
         

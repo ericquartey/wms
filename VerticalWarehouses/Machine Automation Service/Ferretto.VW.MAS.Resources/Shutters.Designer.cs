@@ -70,6 +70,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MinSpeed is not valid.
+        /// </summary>
+        public static string TheMinSpeedIsNotValid {
+            get {
+                return ResourceManager.GetString("TheMinSpeedIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of test cycles must be strictly positive..
         /// </summary>
         public static string TheNumberOfTestCyclesMustBeStrictlyPositive {
@@ -84,6 +93,24 @@ namespace Ferretto.VW.MAS.Resources {
         public static string ThePositionIsNotValid {
             get {
                 return ResourceManager.GetString("ThePositionIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Shutter Type is not valid.
+        /// </summary>
+        public static string TheShutterTypeIsNotValid {
+            get {
+                return ResourceManager.GetString("TheShutterTypeIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SpeedRate is not valid.
+        /// </summary>
+        public static string TheSpeedRateIsNotValid {
+            get {
+                return ResourceManager.GetString("TheSpeedRateIsNotValid", resourceCulture);
             }
         }
     }
