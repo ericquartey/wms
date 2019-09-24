@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -12,6 +9,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 {
     internal class PowerEnableMachineData : IPowerEnableMachineData
     {
+
+
         #region Constructors
 
         public PowerEnableMachineData(
@@ -19,7 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineSensorsStatus machineSensorsStatus,
-            List<BayNumber> configuredBays,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -31,14 +29,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MachineSensorStatus = machineSensorsStatus;
-            this.ConfiguredBays = configuredBays;
         }
 
         #endregion
 
-        #region Properties
 
-        public List<BayNumber> ConfiguredBays { get; }
+
+        #region Properties
 
         public bool Enable { get; }
 

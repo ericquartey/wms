@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     var notificationMessage = new NotificationMessage(
                        this.machineData.MessageData,
                        this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                       MessageActor.Any,
+                       MessageActor.FiniteStateMachines,
                        MessageActor.FiniteStateMachines,
                        MessageType.Positioning,
                        this.machineData.RequestingBay,
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     this.machineData.RequestingBay,
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     this.machineData.RequestingBay,

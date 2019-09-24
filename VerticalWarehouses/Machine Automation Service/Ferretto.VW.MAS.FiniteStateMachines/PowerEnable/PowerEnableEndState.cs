@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableEndState : StateBase
     {
+
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -41,6 +42,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -82,12 +85,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
