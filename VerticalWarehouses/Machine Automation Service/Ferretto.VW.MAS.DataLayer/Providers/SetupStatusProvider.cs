@@ -13,11 +13,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
     {
         #region Fields
 
+        private readonly IConfiguration configuration;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider;
-
-        private readonly IConfiguration configuration;
 
         #endregion
 
@@ -52,23 +52,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public void IncreaseBeltBurnishingCycle()
-        {
-            this.Update(s => s.BeltBurnishingCompletedCycles++);
-        }
-
         public void CompleteBeltBurnishing()
         {
             this.Update(s => s.BeltBurnishingCompleted = true);
-        }
-
-        public void ResetBeltBurnishing()
-        {
-            this.Update(s =>
-            {
-                s.BeltBurnishingCompletedCycles = 0;
-                s.BeltBurnishingCompleted = true;
-            });
         }
 
         public void CompleteVerticalOffset()
@@ -240,20 +226,28 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 },
             };
 
-#if DEBUG
-            // NOTE although controlled by configuration,
-            //      the setup status override shall not hit production,
-            //      that's why it is wrapped in a DEBUG preprocessor statement
-
             if (this.configuration.IsSetupStatusOverridden())
             {
                 var debugStatus = SetupStatusCapabilities.Complete;
                 debugStatus.BeltBurnishing.CompletedCycles = status.BeltBurnishingCompletedCycles;
                 return debugStatus;
             }
-#endif
 
             return statusCapabilities;
+        }
+
+        public void IncreaseBeltBurnishingCycle()
+        {
+            this.Update(s => s.BeltBurnishingCompletedCycles++);
+        }
+
+        public void ResetBeltBurnishing()
+        {
+            this.Update(s =>
+            {
+                s.BeltBurnishingCompletedCycles = 0;
+                s.BeltBurnishingCompleted = true;
+            });
         }
 
         private void Update(Action<SetupStatus> updateAction)
