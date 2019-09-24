@@ -133,7 +133,29 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private void OnErrorChanged()
         {
-            // var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
+            if (this.error is null)
+            {
+                this.ErrorTime = null;
+                return;
+            }
+
+            var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
+            if (elapsedTime.TotalMinutes < 1)
+            {
+                this.ErrorTime = Resources.VWApp.Now;
+            }
+            else if (elapsedTime.TotalHours < 1)
+            {
+                this.ErrorTime = string.Format(Resources.VWApp.MinutesAgo, elapsedTime.TotalMinutes);
+            }
+            else if (elapsedTime.TotalDays < 1)
+            {
+                this.ErrorTime = string.Format(Resources.VWApp.HoursAgo, elapsedTime.TotalHours);
+            }
+            else
+            {
+                this.ErrorTime = string.Format(Resources.VWApp.DaysAgo, elapsedTime.TotalDays);
+            }
         }
 
         #endregion
