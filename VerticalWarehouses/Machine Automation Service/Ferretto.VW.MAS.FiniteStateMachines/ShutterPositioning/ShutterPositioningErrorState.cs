@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     internal class ShutterPositioningErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
@@ -47,6 +48,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         #endregion
 
+
+
         #region Methods
 
         /// <inheritdoc/>
@@ -59,7 +62,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterStop && message.Status != MessageStatus.OperationStart)
+            if(message.Type == FieldMessageType.InverterStop && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
                 var inverterStatus = new AglInverterStatus(message.DeviceIndex);
@@ -70,7 +73,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Shutter Positioning Stopped for an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
@@ -138,7 +141,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }

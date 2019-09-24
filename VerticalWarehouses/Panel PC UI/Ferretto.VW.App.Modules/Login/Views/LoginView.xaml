@@ -55,7 +55,8 @@
                    Text="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
         <StackPanel Name="LoginForm"
-                    Grid.Row="4">
+                    Grid.Row="4"
+                    IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
 
             <ctrls:PpcTextBox Width="200"
                               Margin="0,10"
@@ -72,7 +73,8 @@
             <ctrls:PpcButton Margin="0,20"
                              HorizontalAlignment="Left"
                              Command="{Binding LoginCommand}"
-                             Content="{x:Static res:General.Login}" />
+                             Content="{x:Static res:General.Login}"
+                             IsBusy="{Binding IsWaitingForResponse}" />
         </StackPanel>
 
     </Grid>

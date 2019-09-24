@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     this.machineData.RequestingBay,
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 this.machineData.RequestingBay,

@@ -125,7 +125,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         this.machineData.TargetBay,
                         MessageStatus.OperationStart);
 
-                    this.Logger.LogError(errorText);
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                        errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                    }
+
+                    this.Logger.LogError($"Conditions not verified for positioning");
 
                     this.PublishNotificationMessage(notificationMessage);
                     this.CurrentState = new PositioningErrorState(stateData);
