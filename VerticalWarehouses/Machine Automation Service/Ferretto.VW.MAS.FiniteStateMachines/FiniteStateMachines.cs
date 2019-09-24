@@ -604,6 +604,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                             }
                         }
+                        this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
+                        this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                        this.SendCleanDebug();
                         break;
 
                         case MessageType.Positioning:
