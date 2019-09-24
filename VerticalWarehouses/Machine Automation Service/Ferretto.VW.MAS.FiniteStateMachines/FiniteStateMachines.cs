@@ -761,6 +761,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
                             }
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                var msg = receivedMessage;
+                                msg.Destination = MessageActor.AutomationService;
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
                         }
                         break;
 
