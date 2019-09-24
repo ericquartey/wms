@@ -92,8 +92,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("07", false, "Cumulativo Inverter In Fault"));
             this.inputs.Add(new BitModel("08", false, "Selezione motore elevatore (feedback)"));
             this.inputs.Add(new BitModel("09", false, "Selezione motore culla (feedback)"));
-            this.inputs.Add(new BitModel("10", false, "Presenza cassetto su culla lato macchina"));
-            this.inputs.Add(new BitModel("11", false, "Presenza cassetto su culla lato operatore"));
+            this.inputs.Add(new BitModel("10", false, "Presenza cassetto su culla lato operatore"));
+            this.inputs.Add(new BitModel("11", false, "Presenza cassetto su culla lato macchina"));
             this.inputs.Add(new BitModel("12", false, "Taratura barriera"));
             this.inputs.Add(new BitModel("13", false, "Libero"));
             this.inputs.Add(new BitModel("14", false, "Opzione trolley - Aggancio trolley"));
