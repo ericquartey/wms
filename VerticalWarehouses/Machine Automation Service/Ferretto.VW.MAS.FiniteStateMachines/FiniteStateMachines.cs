@@ -434,7 +434,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             {
                                 this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
                                 var powerEnableData = new PowerEnableMessageData(false);
-                                this.CreatePowerEnableStateMachine(powerEnableData);
+                                this.CreatePowerEnableStateMachine(powerEnableData, this.machineSensorsStatus);
                             }
 
                             var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
@@ -760,6 +760,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                                     //TODO: According to the type of error we can try to resolve here
                                     break;
+                            }
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop ||
+                                receivedMessage.Status == MessageStatus.OperationError)
+                            {
+                                var msg = receivedMessage;
+                                msg.Destination = MessageActor.AutomationService;
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                             }
                         }
                         break;

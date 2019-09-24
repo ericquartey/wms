@@ -104,6 +104,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             // Remove emergency button
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+            this.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value = true;
+            this.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value = true;
 
             // Set empty position on bay
             this.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;

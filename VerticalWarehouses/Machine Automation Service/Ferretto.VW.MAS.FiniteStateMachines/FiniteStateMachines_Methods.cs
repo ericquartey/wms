@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Methods
 
-        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
+        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data, MachineSensorsStatus machineSensorsStatus)
         {
             if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
             {
@@ -36,6 +37,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
 
             currentStateMachine = new PowerEnableStateMachine(null,
+                machineSensorsStatus,
                 this.eventAggregator,
                 this.logger,
                 this.serviceScopeFactory);
@@ -342,14 +344,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType()}");
                     var notificationMessage = new NotificationMessage(
                         null,
-                        "Power Enable Critical error",
+                        "Power Enable Info",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.PowerEnable,
                         message.RequestingBay,
                         BayNumber.BayOne,
                         MessageStatus.OperationError,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Info);
 
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
@@ -362,6 +364,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     message.TargetBay = BayNumber.BayOne;
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
+                        this.machineSensorsStatus,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
