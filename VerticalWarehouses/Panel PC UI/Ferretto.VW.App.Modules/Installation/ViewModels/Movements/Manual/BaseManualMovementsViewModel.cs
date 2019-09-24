@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var name = this.GetType().ToString();
             this.EventAggregator
               .GetEvent<ManualMovementsChangedPubSubEvent>()
-              .Publish(new ManualMovementshangedMessage(name));
+              .Publish(new ManualMovementsChangedMessage(name));
         }
 
         public override void Disappear()
@@ -117,10 +117,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.EventAggregator
                .GetEvent<ManualMovementsChangedPubSubEvent>()
-               .Publish(new ManualMovementshangedMessage(null));
+               .Publish(new ManualMovementsChangedMessage(null));
         }
 
-        public virtual void EnabledChanged(ManualMovementshangedMessage message)
+        public virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
             if (string.IsNullOrEmpty(message.ViewModelName))
             {

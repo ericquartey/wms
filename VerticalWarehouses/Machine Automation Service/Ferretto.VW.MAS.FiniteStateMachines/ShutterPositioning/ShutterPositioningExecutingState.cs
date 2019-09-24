@@ -20,11 +20,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
+        private readonly Timer delayTimer;
+
         private readonly IShutterPositioningMachineData machineData;
 
         private readonly IShutterPositioningStateData stateData;
-
-        private Timer delayTimer;
 
         private bool disposed;
 
@@ -219,6 +219,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 speedRate,
                 this.machineData.PositioningMessageData.HigherDistance,
                 this.machineData.PositioningMessageData.LowerDistance,
+                this.machineData.PositioningMessageData.HighSpeedPercent,
+                this.machineData.PositioningMessageData.LowerSpeed,
                 this.machineData.PositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(

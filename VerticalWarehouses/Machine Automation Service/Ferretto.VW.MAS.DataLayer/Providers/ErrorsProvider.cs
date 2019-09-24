@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class ErrorsProvider : IErrorsProvider
     {
-
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -47,8 +46,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -108,6 +105,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public Error RecordNew(MachineErrors code, BayNumber bayIndex)
         {
+            var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null);
+            if (existingUnresolvedError != null)
+            {
+                return existingUnresolvedError;
+            }
+
             var newError = new Error
             {
                 Code = (int)code,

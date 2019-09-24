@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (this.inverterStatuses.Count == 0)
             {
-                this.logger.LogError("4:Invert Driver not configured for this message Type");
+                this.logger.LogError("4:Inverter Driver not configured for this message Type");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);

@@ -288,7 +288,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
 
-                if (this.inverterCommandQueue.Count > 2000 && Debugger.IsAttached)
+                if (this.inverterCommandQueue.Count > 20 && Debugger.IsAttached)
                 {
                     Debugger.Break();
                 }

@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public decimal HigherDistance => this.GetDecimalConfigurationValue(ShutterManualMovements.HigherDistance, ConfigurationCategory.ShutterManualMovements);
 
+        public decimal HighSpeedPercent => this.GetDecimalConfigurationValue(ShutterManualMovements.HighSpeedPercent, ConfigurationCategory.ShutterManualMovements);
+
         public decimal LowerDistance => this.GetDecimalConfigurationValue(ShutterManualMovements.LowerDistance, ConfigurationCategory.ShutterManualMovements);
 
         public decimal MaxSpeed => this.GetDecimalConfigurationValue(ShutterManualMovements.MaxSpeed, ConfigurationCategory.ShutterManualMovements);

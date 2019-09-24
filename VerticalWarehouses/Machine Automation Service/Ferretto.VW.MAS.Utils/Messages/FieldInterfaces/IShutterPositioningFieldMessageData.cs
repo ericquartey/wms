@@ -8,7 +8,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         decimal HigherDistance { get; }
 
+        decimal HighSpeedPercent { get; set; }
+
         decimal LowerDistance { get; }
+
+        decimal LowerSpeed { get; }
 
         MovementType MovementType { get; }
 
