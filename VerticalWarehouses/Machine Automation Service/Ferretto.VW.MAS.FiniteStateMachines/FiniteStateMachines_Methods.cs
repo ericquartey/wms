@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
-using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -30,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Methods
 
-        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data, MachineSensorsStatus machineSensorsStatus)
+        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
         {
             if(this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
             {
@@ -39,7 +38,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
 
             currentStateMachine = new PowerEnableStateMachine(null,
-                machineSensorsStatus,
+                this.machineSensorsStatus,
                 this.baysProvider,
                 this.eventAggregator,
                 this.logger,
