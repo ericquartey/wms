@@ -63,7 +63,7 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Resolution, StringFormat='{}{0:0.00}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding Resolution, StringFormat='{}{0:0.000000}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
                                  LabelText="{x:Static res:InstallationApp.Resolution}" />
 
         <controls:PpcLabeledText Grid.Row="3"
