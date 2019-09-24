@@ -47,6 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineSensorsService machineSensorsService,
             IMachineShuttersService shuttersService,
             IMachineServiceService machineServiceService,
+            IMachineCarouselService machineCarouselService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -85,6 +86,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(machineServiceService));
             }
 
+            if (machineCarouselService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineCarouselService));
+            }
+
             this.machineSensorsService = machineSensorsService;
             this.machineElevatorService = machineElevatorService;
             this.machineCellsService = machineCellsService;
@@ -92,6 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManagerService = bayManagerService;
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
+            this.machineCarouselService = machineCarouselService;
 
             this.shutterSensors = new ShutterSensors(this.BayNumber);
 
@@ -124,7 +131,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking
-                || this.IsTuningChain;
+                || this.IsTuningChain
+                || this.IsCarouselMoving;
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
@@ -263,6 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorDisembarking = false;
                 this.IsElevatorEmbarking = false;
                 this.IsTuningChain = false;
+                this.IsCarouselMoving = false;
             }
         }
 
@@ -298,6 +307,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
 
                         break;
                     }
@@ -311,6 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        this.IsCarouselMoving = false;
 
                         this.ShowNotification(
                             VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -356,6 +370,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
+            this.carouselDownCommand?.RaiseCanExecuteChanged();
+            this.carouselUpCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

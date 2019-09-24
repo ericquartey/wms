@@ -10,7 +10,7 @@
             xmlns:system="clr-namespace:System;assembly=mscorlib"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="50,20">
+    <Grid Margin="50,15">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -406,7 +406,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselUpCommand}"
                                 Content="GIOSTRA SU"
-                                Visibility="{Binding BayIsCarousel, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="1"
@@ -414,7 +414,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselDownCommand}"
                                 Content="GIOSTRA GIU"
-                                Visibility="{Binding BayIsCarousel, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
         </Grid>
 

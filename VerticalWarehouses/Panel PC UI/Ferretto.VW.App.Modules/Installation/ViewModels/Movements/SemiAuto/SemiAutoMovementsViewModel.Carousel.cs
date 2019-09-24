@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineCarouselService machineCarouselService;
+
         private DelegateCommand carouselDownCommand;
 
         private DelegateCommand carouselUpCommand;
@@ -23,8 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public bool BayIsCarousel => this.bayManagerService.Bay.Positions.Count() > 1;
 
         public ICommand CarouselDownCommand =>
                     this.carouselDownCommand
@@ -39,6 +39,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.carouselUpCommand = new DelegateCommand(
                 async () => await this.CarouselUpAsync(),
                 this.CanExecuteCarouselUpCommand));
+
+        public bool HasCarousel
+        {
+            get
+            {
+                var bay = this.bayManagerService.Bay;
+                return bay.Type == BayType.Carousel
+                        ||
+                       bay.Type == BayType.ExternalCarousel;
+            }
+        }
 
         public bool IsCarouselMoving
         {
@@ -60,19 +71,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteCarouselDownCommand()
         {
             return !this.IsElevatorMoving
-                &&
-                !this.IsCarouselMoving;
-            // &&
-            // (this.ShutterSensors.Closed || this.ShutterSensors.MidWay);
+              &&
+              !this.IsWaitingForResponse
+             //&&
+             //(this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
         }
 
         private bool CanExecuteCarouselUpCommand()
         {
             return !this.IsElevatorMoving
-                &&
-                !this.IsCarouselMoving;
+              &&
+              !this.IsWaitingForResponse;
             // &&
-            // (this.ShutterSensors.Open || this.ShutterSensors.MidWay);
+            // IoStatus.LoadingUnitInLowerBay;
         }
 
         private async Task CarouselDownAsync()
@@ -81,7 +92,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(this.BayNumber, ShutterPosition.Opened);
+                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Backwards);
+                this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
             {
@@ -99,7 +111,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(this.BayNumber, ShutterPosition.Closed);
+                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Forwards);
+                this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
             {
