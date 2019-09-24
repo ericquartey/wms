@@ -6,8 +6,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
-
-
         #region Constructors
 
         public ShutterPositioningMessageData()
@@ -25,7 +23,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             int requestedCycles,
             int delay,
-            MessageVerbosity verbosity = MessageVerbosity.Debug )
+            decimal highSpeedPercent,
+            decimal lowerSpeed,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPosition = shutterPosition;
             this.ShutterMovementDirection = shutterMovementDirection;
@@ -37,14 +37,16 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.MovementType = movementType;
             this.RequestedCycles = requestedCycles;
             this.Delay = delay;
+            this.HighSpeedPercent = highSpeedPercent;
+            this.LowerSpeed = lowerSpeed;
             this.Verbosity = verbosity;
         }
 
-        public ShutterPositioningMessageData( IShutterPositioningMessageData shutterPositioningMessageData )
+        public ShutterPositioningMessageData(IShutterPositioningMessageData shutterPositioningMessageData)
         {
-            if ( shutterPositioningMessageData == null )
+            if (shutterPositioningMessageData == null)
             {
-                throw new System.ArgumentNullException( nameof( shutterPositioningMessageData ) );
+                throw new System.ArgumentNullException(nameof(shutterPositioningMessageData));
             }
 
             this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
@@ -57,12 +59,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.MovementType = shutterPositioningMessageData.MovementType;
             this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
             this.Delay = shutterPositioningMessageData.Delay;
+            this.HighSpeedPercent = shutterPositioningMessageData.HighSpeedPercent;
+            this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
 
         #endregion
-
-
 
         #region Properties
 
@@ -72,7 +74,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal HigherDistance { get; }
 
+        public decimal HighSpeedPercent { get; set; }
+
         public decimal LowerDistance { get; }
+
+        public decimal LowerSpeed { get; }
 
         public MovementMode MovementMode { get; set; }
 
@@ -91,8 +97,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
-
-
 
         #region Methods
 

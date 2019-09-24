@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogDebug($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"Setup Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogTrace($"SetUp Network parameter not found: {isExpansionInstalledIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"Setup Network parameter not found: {isExpansionInstalledIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {

@@ -4,8 +4,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IShutterPositioningMessageData : IMessageData
     {
-
-
         #region Properties
 
         int Delay { get; set; }
@@ -14,7 +12,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         decimal HigherDistance { get; }
 
+        decimal HighSpeedPercent { get; set; }
+
         decimal LowerDistance { get; }
+
+        decimal LowerSpeed { get; }
 
         MovementMode MovementMode { get; set; }
 

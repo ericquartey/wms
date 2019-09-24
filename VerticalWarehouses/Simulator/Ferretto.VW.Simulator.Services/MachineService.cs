@@ -517,8 +517,8 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.ShutterAbsoluteEnable:
-                case InverterParameterId.ShutterAbsoluteRevs:
+                case InverterParameterId.ShutterLowVelocity:
+                case InverterParameterId.ShutterHighVelocityDuration:
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -573,7 +573,11 @@ namespace Ferretto.VW.Simulator.Services
         private void UpdateRemoteIO(IODeviceModel device)
         {
             // Logic
-            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
+            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
+                !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value
+                )
             {
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);

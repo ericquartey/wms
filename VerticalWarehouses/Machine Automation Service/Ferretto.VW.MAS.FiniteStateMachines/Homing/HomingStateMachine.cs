@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 {
                     var notificationMessage = new NotificationMessage(
                         null,
-                        "Conditions not verified for positioning",
+                        "Conditions not verified for homing",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.InverterException,

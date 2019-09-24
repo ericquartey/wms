@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 {
@@ -6,7 +8,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
     {
         #region Properties
 
+        List<BayNumber> ConfiguredBays { get; }
+
         bool Enable { get; }
+
+        IMachineSensorsStatus MachineSensorStatus { get; }
 
         #endregion
     }

@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class BaysController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -36,8 +35,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
-
-
 
         #region Methods
 

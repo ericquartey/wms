@@ -31,21 +31,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           InputText="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.UpperBound}"
-                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           InputText="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.LowerBound}"
-                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}" />
+        <controls:PpcTextBox Grid.Row="2"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
@@ -53,22 +51,21 @@
                                  ContentText="{Binding CurrentPosition}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                           Grid.Column="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.RequiredCycles}"
-                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           InputText="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
+        <controls:PpcTextBox Grid.Row="2"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
         <StackPanel Grid.Row="3"
                     Grid.Column="1"

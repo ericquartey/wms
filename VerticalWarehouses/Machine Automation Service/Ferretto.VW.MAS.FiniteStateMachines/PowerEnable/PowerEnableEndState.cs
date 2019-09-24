@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableEndState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -43,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -68,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             var notificationMessage = new NotificationMessage(
                 null,
                 "Power Enable Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
                 this.machineData.RequestingBay,

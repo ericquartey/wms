@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, TargetBay:{receivedMessage.TargetBay}");
                 }
                 catch(OperationCanceledException)
                 {
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch(Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -229,62 +229,64 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
-                    this.logger.LogWarning($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}");
+                    this.logger.LogError($"Message [{receivedMessage.Type}] will be discarded!");
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
 
-                switch(receivedMessage.Type)
+                this.logger.LogInformation($"Processing command [{receivedMessage.Type}] by {receivedMessage.RequestingBay} for {receivedMessage.TargetBay}");
+                switch (receivedMessage.Type)
                 {
                     case MessageType.Homing:
-                    this.ProcessHomingMessage(receivedMessage);
-                    break;
+                        this.ProcessHomingMessage(receivedMessage);
+                        break;
 
                     case MessageType.Stop:
-                    this.ProcessStopMessage(receivedMessage);
-                    break;
+                        this.ProcessStopMessage(receivedMessage);
+                        break;
 
                     case MessageType.ShutterPositioning:
-                    this.ProcessShutterPositioningMessage(receivedMessage);
-                    break;
+                        this.ProcessShutterPositioningMessage(receivedMessage);
+                        break;
 
                     case MessageType.Positioning:
                     case MessageType.TorqueCurrentSampling:
-                    this.ProcessPositioningMessage(receivedMessage);
-                    break;
+                        this.ProcessPositioningMessage(receivedMessage);
+                        break;
 
                     case MessageType.SensorsChanged:
-                    this.ProcessSensorsChangedMessage();
-                    break;
+                        this.ProcessSensorsChangedMessage();
+                        break;
 
                     case MessageType.CheckCondition:
-                    this.ProcessCheckConditionMessage(receivedMessage);
-                    break;
+                        this.ProcessCheckConditionMessage(receivedMessage);
+                        break;
 
                     case MessageType.DrawerOperation:
-                    this.ProcessDrawerOperation(receivedMessage);
-                    break;
+                        this.ProcessDrawerOperation(receivedMessage);
+                        break;
 
                     case MessageType.PowerEnable:
-                    this.ProcessPowerEnableMessage(receivedMessage);
-                    break;
+                        this.ProcessPowerEnableMessage(receivedMessage);
+                        break;
 
                     case MessageType.InverterStop:
-                    this.ProcessInverterStopMessage();
-                    break;
+                        this.ProcessInverterStopMessage();
+                        break;
 
                     case MessageType.RequestPosition:
-                    this.ProcessRequestPositionMessage(receivedMessage);
-                    break;
+                        this.ProcessRequestPositionMessage(receivedMessage);
+                        break;
 
                     case MessageType.InverterFaultReset:
-                    this.ProcessInverterFaultResetMessage(receivedMessage);
-                    break;
+                        this.ProcessInverterFaultResetMessage(receivedMessage);
+                        break;
 
                     case MessageType.ResetSecurity:
-                    this.ProcessResetSecurityMessage(receivedMessage);
-                    break;
+                        this.ProcessResetSecurityMessage(receivedMessage);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, receivedMessage.Type.ToString(), MessageVerbosity.Info);
@@ -320,7 +322,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch(Exception ex)
                 {
-                    this.logger.LogDebug($"2:Exception: {ex.Message}");
+                    this.logger.LogError($"2:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -424,19 +426,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     break;
 
                     case FieldMessageType.InverterStatusWord:
-                    this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                    if(receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
-                    {
-                        var statusWord = new StatusWordBase(statusWordData.Value);
-                        if(statusWord.IsFault
-                            && this.machineSensorsStatus.IsMachineInRunningState
-                            && (!messageCurrentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
-                            )
+                        this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
                         {
-                            this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
-                            var powerEnableData = new PowerEnableMessageData(false);
-                            this.CreatePowerEnableStateMachine(powerEnableData);
-                        }
+                            var statusWord = new StatusWordBase(statusWordData.Value);
+                            if (statusWord.IsFault
+                                && this.machineSensorsStatus.IsMachineInRunningState
+                                && (!messageCurrentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                )
+                            {
+                                this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
+                                var powerEnableData = new PowerEnableMessageData(false);
+                                this.CreatePowerEnableStateMachine(powerEnableData, this.machineSensorsStatus);
+                            }
 
                         var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
                         var msg2 = new NotificationMessage(
@@ -565,7 +567,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status} TargetBay:{receivedMessage.TargetBay}");
                 }
                 catch(OperationCanceledException)
                 {
@@ -575,7 +577,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch(Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogError($"3:Exception: {ex.Message}");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -765,11 +767,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             this.currentStateMachines.Remove(receivedMessage.TargetBay);
                             this.SendCleanDebug();
 
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop ||
+                                receivedMessage.Status == MessageStatus.OperationError)
+                            {
+                                var msg = receivedMessage;
+                                msg.Destination = MessageActor.AutomationService;
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
                         }
-                    }
-                    break;
+                        break;
 
                     case MessageType.InverterFaultReset:
                     if(receivedMessage.Source == MessageActor.FiniteStateMachines)

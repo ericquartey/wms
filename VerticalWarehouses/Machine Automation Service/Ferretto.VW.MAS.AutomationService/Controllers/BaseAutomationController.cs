@@ -14,7 +14,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     public class BaseAutomationController : ControllerBase
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -35,15 +34,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Properties
 
         public BayNumber BayNumber { get; set; }
 
         #endregion
-
-
 
         #region Methods
 
