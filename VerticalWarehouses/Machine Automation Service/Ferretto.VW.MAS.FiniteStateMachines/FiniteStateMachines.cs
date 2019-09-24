@@ -237,56 +237,56 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
 
                 this.logger.LogInformation($"Processing command [{receivedMessage.Type}] by {receivedMessage.RequestingBay} for {receivedMessage.TargetBay}");
-                switch (receivedMessage.Type)
+                switch(receivedMessage.Type)
                 {
                     case MessageType.Homing:
-                        this.ProcessHomingMessage(receivedMessage);
-                        break;
+                    this.ProcessHomingMessage(receivedMessage);
+                    break;
 
                     case MessageType.Stop:
-                        this.ProcessStopMessage(receivedMessage);
-                        break;
+                    this.ProcessStopMessage(receivedMessage);
+                    break;
 
                     case MessageType.ShutterPositioning:
-                        this.ProcessShutterPositioningMessage(receivedMessage);
-                        break;
+                    this.ProcessShutterPositioningMessage(receivedMessage);
+                    break;
 
                     case MessageType.Positioning:
                     case MessageType.TorqueCurrentSampling:
-                        this.ProcessPositioningMessage(receivedMessage);
-                        break;
+                    this.ProcessPositioningMessage(receivedMessage);
+                    break;
 
                     case MessageType.SensorsChanged:
-                        this.ProcessSensorsChangedMessage();
-                        break;
+                    this.ProcessSensorsChangedMessage();
+                    break;
 
                     case MessageType.CheckCondition:
-                        this.ProcessCheckConditionMessage(receivedMessage);
-                        break;
+                    this.ProcessCheckConditionMessage(receivedMessage);
+                    break;
 
                     case MessageType.DrawerOperation:
-                        this.ProcessDrawerOperation(receivedMessage);
-                        break;
+                    this.ProcessDrawerOperation(receivedMessage);
+                    break;
 
                     case MessageType.PowerEnable:
-                        this.ProcessPowerEnableMessage(receivedMessage);
-                        break;
+                    this.ProcessPowerEnableMessage(receivedMessage);
+                    break;
 
                     case MessageType.InverterStop:
-                        this.ProcessInverterStopMessage();
-                        break;
+                    this.ProcessInverterStopMessage();
+                    break;
 
                     case MessageType.RequestPosition:
-                        this.ProcessRequestPositionMessage(receivedMessage);
-                        break;
+                    this.ProcessRequestPositionMessage(receivedMessage);
+                    break;
 
                     case MessageType.InverterFaultReset:
-                        this.ProcessInverterFaultResetMessage(receivedMessage);
-                        break;
+                    this.ProcessInverterFaultResetMessage(receivedMessage);
+                    break;
 
                     case MessageType.ResetSecurity:
-                        this.ProcessResetSecurityMessage(receivedMessage);
-                        break;
+                    this.ProcessResetSecurityMessage(receivedMessage);
+                    break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, receivedMessage.Type.ToString(), MessageVerbosity.Info);
@@ -426,19 +426,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     break;
 
                     case FieldMessageType.InverterStatusWord:
-                        this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
+                    this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    if(receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
+                    {
+                        var statusWord = new StatusWordBase(statusWordData.Value);
+                        if(statusWord.IsFault
+                            && this.machineSensorsStatus.IsMachineInRunningState
+                            && (!messageCurrentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                            )
                         {
-                            var statusWord = new StatusWordBase(statusWordData.Value);
-                            if (statusWord.IsFault
-                                && this.machineSensorsStatus.IsMachineInRunningState
-                                && (!messageCurrentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
-                                )
-                            {
-                                this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
-                                var powerEnableData = new PowerEnableMessageData(false);
-                                this.CreatePowerEnableStateMachine(powerEnableData, this.machineSensorsStatus);
-                            }
+                            this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
+                            var powerEnableData = new PowerEnableMessageData(false);
+                            this.CreatePowerEnableStateMachine(powerEnableData, this.machineSensorsStatus);
+                        }
 
                         var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
                         var msg2 = new NotificationMessage(
@@ -586,15 +586,49 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var messageCurrentStateMachine);
 
-                if(receivedMessage.Source == MessageActor.FiniteStateMachines)
+                if(receivedMessage.Source == MessageActor.FiniteStateMachines && receivedMessage.Destination == MessageActor.FiniteStateMachines)
                 {
                     switch(receivedMessage.Type)
                     {
                         case MessageType.Homing:
+                        if(receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            try
+                            {
+                                this.setupStatusProvider.CompleteVerticalOrigin();
+                            }
+                            catch(Exception ex)
+                            {
+                                this.logger.LogDebug($"4:Exception: {ex.Message}");
+
+                                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                            }
+                        }
                         break;
 
-                        case
+                        case MessageType.Positioning:
+                        case MessageType.ShutterPositioning:
+                        case MessageType.DrawerOperation:
+                        case MessageType.PowerEnable:
+                        case MessageType.InverterFaultReset:
+                        case MessageType.ResetSecurity:
+                        this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
+                        this.currentStateMachines.Remove(receivedMessage.TargetBay);
+                        this.SendCleanDebug();
+                        break;
                     }
+
+                    var notificationMessage = new NotificationMessage(
+                        receivedMessage.Data,
+                        receivedMessage.Description,
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        receivedMessage.Type,
+                        receivedMessage.RequestingBay,
+                        receivedMessage.TargetBay,
+                        receivedMessage.Status);
+
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
 
                 switch(receivedMessage.Type)
@@ -615,232 +649,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);
 
-                    break;
-
-                    case MessageType.Homing:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-                            try
-                            {
-                                this.setupStatusProvider.CompleteVerticalOrigin();
-                            }
-                            catch(Exception ex)
-                            {
-                                this.logger.LogDebug($"4:Exception: {ex.Message}");
-
-                                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                            }
-
-                            this.logger.LogTrace($"5:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"6:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"7:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
-                        }
-                    }
-                    break;
-
-                    case MessageType.Positioning:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogTrace($"8:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"9:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"10:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
-                        }
-                    }
-                    break;
-
-                    case MessageType.ShutterPositioning:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogTrace($"11:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"12:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"13:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
-                        }
-                    }
-                    break;
-
-                    case MessageType.DrawerOperation:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogDebug($"17:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"18:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-                        }
-                    }
-                    break;
-
-                    case MessageType.PowerEnable:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                                    //TODO: According to the type of error we can try to resolve here
-                                    break;
-                            }
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop ||
-                                receivedMessage.Status == MessageStatus.OperationError)
-                            {
-                                var msg = receivedMessage;
-                                msg.Destination = MessageActor.AutomationService;
-                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-                            }
-                        }
-                        break;
-
-                    case MessageType.InverterFaultReset:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
-                        }
-                    }
-                    break;
-
-                    case MessageType.ResetSecurity:
-                    if(receivedMessage.Source == MessageActor.FiniteStateMachines)
-                    {
-                        switch(receivedMessage.Status)
-                        {
-                            case MessageStatus.OperationEnd:
-
-                            this.logger.LogTrace($"14:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationStop:
-
-                            this.logger.LogTrace($"15:Deallocation FSM {messageCurrentStateMachine?.GetType()}");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-                            break;
-
-                            case MessageStatus.OperationError:
-
-                            this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} for error");
-                            this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                            this.SendCleanDebug();
-
-                            //TODO: According to the type of error we can try to resolve here
-                            break;
-                        }
-                    }
                     break;
                 }
 
