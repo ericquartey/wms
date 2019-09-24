@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         // TODO: avoid hardcoding constants in code
         private const decimal ChainLength = 2850.0M;
 
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
         private readonly ILogger logger;

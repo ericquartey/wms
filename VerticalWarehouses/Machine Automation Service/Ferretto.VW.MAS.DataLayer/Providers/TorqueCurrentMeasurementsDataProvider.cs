@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 new TorqueCurrentMeasurementSession
                 {
                     LoadedNetWeight = loadedNetWeight ?? 0,
-                    LoadingUnitId = loadingUnitId
+                    LoadingUnitId = loadingUnitId,
                 });
 
             this.dataContext.SaveChanges();
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     MeasurementSessionId = sessionId,
                     Value = value,
                     TimeStamp = timeStamp,
-                    RequestTimeStamp = requestTimeStamp
+                    RequestTimeStamp = requestTimeStamp,
                 });
 
             this.dataContext.SaveChanges();

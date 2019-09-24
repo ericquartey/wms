@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<BayPosition> Positions { get; set; }
 
+        public ShutterType ShutterType { get; set; }
+
         public BayStatus Status
         {
             get

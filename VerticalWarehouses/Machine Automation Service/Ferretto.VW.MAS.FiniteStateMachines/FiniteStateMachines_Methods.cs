@@ -149,11 +149,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogTrace("2: Starting Drawer Operation FSM");
 
                     currentStateMachine = new MoveDrawerStateMachine(
-                        this.machineConfigurationProvider.IsOneKMachine(),
+                        this.machineProvider.IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         this.setupStatusProvider,
                         this.machineSensorsStatus,
-                        this.generalInfoDataLayer,
                         this.verticalAxis,
                         this.horizontalAxis,
                         data,
@@ -205,7 +204,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     receivedMessage.TargetBay = BayNumber.ElevatorBay;
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
-                        this.machineConfigurationProvider.IsOneKMachine(),
+                        this.machineProvider.IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         this.machineSensorsStatus,
@@ -298,7 +297,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
-                    data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
+                    data.IsOneKMachine = this.machineProvider.IsOneTonMachine();
                     data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
 
                     currentStateMachine = new PositioningStateMachine(

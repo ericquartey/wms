@@ -10,36 +10,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
-        {
-            ConfigurationDataType returnValue;
-            switch (configurationValueEnum)
-            {
-                case GeneralInfo.AlfaNumBay1:
-                case GeneralInfo.AlfaNumBay2:
-                case GeneralInfo.AlfaNumBay3:
-                case GeneralInfo.LaserBay1:
-                case GeneralInfo.LaserBay2:
-                case GeneralInfo.LaserBay3:
-                    returnValue = ConfigurationDataType.Boolean;
-                    break;
-
-                case GeneralInfo.Shutter1Type:
-                case GeneralInfo.Shutter2Type:
-                case GeneralInfo.Shutter3Type:
-                case GeneralInfo.Barrier1Height:
-                case GeneralInfo.Barrier2Height:
-                case GeneralInfo.Barrier3Height:
-                    returnValue = ConfigurationDataType.Integer;
-                    break;
-
-                default:
-                    returnValue = ConfigurationDataType.Undefined;
-                    break;
-            }
-            return returnValue;
-        }
-
         public ConfigurationDataType CheckConfigurationValueType(SetupNetwork configurationValueEnum)
         {
             ConfigurationDataType returnValue;
@@ -76,9 +46,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 case SetupNetwork.IOExpansion1IPAddress:
                 case SetupNetwork.IOExpansion2IPAddress:
                 case SetupNetwork.IOExpansion3IPAddress:
-                case SetupNetwork.LaserBay1:
-                case SetupNetwork.LaserBay2:
-                case SetupNetwork.LaserBay3:
                 case SetupNetwork.PPC1MasterIPAddress:
                 case SetupNetwork.PPC2SlaveIPAddress:
                 case SetupNetwork.PPC3SlaveIPAddress:
@@ -90,6 +57,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -133,6 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -162,6 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -207,6 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -252,6 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -271,6 +243,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -289,6 +262,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -320,6 +294,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -349,6 +324,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Undefined;
                     break;
             }
+
             return returnValue;
         }
 
@@ -386,96 +362,109 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
                     }
-                case ConfigurationCategory.GeneralInfo:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((GeneralInfo)parameter);
-                        break;
-                    }
+
                 case ConfigurationCategory.SetupNetwork:
                     {
                         actualParameterType = this.CheckConfigurationValueType((SetupNetwork)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.VerticalAxis:
                     {
                         actualParameterType = this.CheckConfigurationValueType((VerticalAxis)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.HorizontalAxis:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalAxis)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.HorizontalMovementLongerProfile:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementLongerProfile)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.HorizontalMovementShorterProfile:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementShorterProfile)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.VerticalManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((VerticalManualMovements)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.HorizontalManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalManualMovements)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.BeltBurnishing:
                     {
                         actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.ResolutionCalibration:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.OffsetCalibration:
                     {
                         actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.CellControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.PanelControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.ShutterHeightControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.WeightControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.BayPositionControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.LoadFirstDrawer:
                     {
                         actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
                         break;
                     }
+
                 case ConfigurationCategory.ShutterManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ShutterManualMovements)parameter);
                         break;
                     }
+
                 default:
                     throw new ArgumentNullException();
             }

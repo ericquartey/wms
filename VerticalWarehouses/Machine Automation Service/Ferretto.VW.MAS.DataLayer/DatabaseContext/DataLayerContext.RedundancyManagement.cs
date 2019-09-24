@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
     public partial class DataLayerContext : IRedundancyDbContext<DataLayerContext>
     {
-
         #region Fields
 
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
@@ -34,15 +33,11 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #endregion
 
-
-
         #region Properties
 
         public DbContextOptions<DataLayerContext> Options { get; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -63,6 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 }
             }
             catch (Exception ex)
+
             // Swap is handled in diagnostic interceptor:
             // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             {

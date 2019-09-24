@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 AccessLevel = accessLevel,
                 Name = userName,
                 PasswordSalt = salt,
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
             };
 
             this.dataContext.Users.Add(user);

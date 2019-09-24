@@ -103,7 +103,10 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
             CommandMessage commandMessage;
             if (this.machineData.RequestedPowerState)
             {
-                var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState, this.machineData.ConfiguredBays.Select(x => x.Index).ToList());
+                var commandData = new PowerEnableMessageData(
+                    this.machineData.RequestedPowerState,
+                    this.machineData.ConfiguredBays.Select(b => b.Number).ToList());
+
                 commandMessage = new CommandMessage(
                     commandData,
                     $"Setting Power enable state to {this.machineData.RequestedPowerState}",
@@ -182,7 +185,10 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                 }
                 else
                 {
-                    var commandData = new PowerEnableMessageData(this.machineData.RequestedPowerState, this.machineData.ConfiguredBays.Select(x => x.Index).ToList());
+                    var commandData = new PowerEnableMessageData(
+                        this.machineData.RequestedPowerState,
+                        this.machineData.ConfiguredBays.Select(b => b.Number).ToList());
+
                     var commandMessage = new CommandMessage(
                         commandData,
                         $"Setting Power enable state to {this.machineData.RequestedPowerState}",

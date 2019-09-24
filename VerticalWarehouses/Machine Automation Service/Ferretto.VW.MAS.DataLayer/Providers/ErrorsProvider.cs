@@ -66,8 +66,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         Code = e.Code,
                         Description = e.Definition.Description,
                         Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity
-                    }
+                        Severity = e.Definition.Severity,
+                    },
                 })
                 .FirstOrDefault();
         }
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             Code = s.Code,
                             Description = s.Error.Description,
                             Total = s.TotalErrors,
-                            RatioTotal = s.TotalErrors * 100.0 / totalErrors
+                            RatioTotal = s.TotalErrors * 100.0 / totalErrors,
                         }),
             };
 

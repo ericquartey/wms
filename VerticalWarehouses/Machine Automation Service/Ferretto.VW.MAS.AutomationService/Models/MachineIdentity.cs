@@ -1,6 +1,8 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using Ferretto.VW.MAS.DataModels;
+
+namespace Ferretto.VW.MAS.AutomationService.Models
 {
-    public sealed class MachineIdentity : DataModel
+    public sealed class MachineIdentity
     {
         #region Properties
 

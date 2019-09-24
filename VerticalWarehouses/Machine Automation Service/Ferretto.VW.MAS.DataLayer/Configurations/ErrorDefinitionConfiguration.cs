@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                         Code = (int)enumValue.GetValue(null),
                         Description = attribute.Description,
                         Reason = attribute.Reason,
-                        Severity = attribute.Severity
+                        Severity = attribute.Severity,
                     });
                 }
             }

@@ -44,12 +44,6 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         int IOExpansion3Port { get; }
 
-        IPAddress LaserBay1Net { get; }
-
-        IPAddress LaserBay2Net { get; }
-
-        IPAddress LaserBay3Net { get; }
-
         int MachineNumber { get; }
 
         IPAddress PPC1MasterIPAddress { get; }
@@ -60,7 +54,6 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         IPAddress SQLServerIPAddress { get; }
 
-        bool WMS_ON { get; }
         int SQLServerPort { get; }
 
         #endregion

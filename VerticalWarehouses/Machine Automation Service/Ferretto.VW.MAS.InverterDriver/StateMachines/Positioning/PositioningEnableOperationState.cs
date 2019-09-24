@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("Inverter Enable Operation");
 
             this.Inverter.PositionControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
                 ? false
                 : this.data.AxisMovement == Axis.Horizontal;
             this.Inverter.PositionControlWord.EnableOperation = true;

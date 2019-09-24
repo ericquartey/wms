@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         ///// <param name="loadingUnitHeight"></param>
         ///// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         ///// <returns>An object with position and side for a return mission</returns>
-        //LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
+        // LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
 
         #region Methods
 
@@ -27,12 +27,12 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         ///// This methods is been invoked when a drawer backs from the bay to cells
         ///// </summary>
         ///// <param name="loadingUnitId">Id of the Drawer we take into account</param>
-        //void SetReturnLoadingUnitInLocation(int loadingUnitId);
+        // void SetReturnLoadingUnitInLocation(int loadingUnitId);
 
         ///// <summary>
         ///// Set the status of a cell, when a drawer free some cells
         ///// </summary>
         ///// <param name="loadingUnitId">Id of the Drawer we take into account</param>
-        //void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId);
+        // void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId);
     }
 }

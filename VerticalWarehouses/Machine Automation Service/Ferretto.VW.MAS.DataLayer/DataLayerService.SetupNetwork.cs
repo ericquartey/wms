@@ -48,12 +48,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int IOExpansion3Port => this.GetIntegerConfigurationValue(SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
 
-        public IPAddress LaserBay1Net => this.GetIpAddressConfigurationValue(SetupNetwork.LaserBay1, ConfigurationCategory.SetupNetwork);
-
-        public IPAddress LaserBay2Net => this.GetIpAddressConfigurationValue(SetupNetwork.LaserBay2, ConfigurationCategory.SetupNetwork);
-
-        public IPAddress LaserBay3Net => this.GetIpAddressConfigurationValue(SetupNetwork.LaserBay3, ConfigurationCategory.SetupNetwork);
-
         public int MachineNumber => this.GetIntegerConfigurationValue(SetupNetwork.MachineNumber, ConfigurationCategory.SetupNetwork);
 
         public IPAddress PPC1MasterIPAddress => this.GetIpAddressConfigurationValue(SetupNetwork.PPC1MasterIPAddress, ConfigurationCategory.SetupNetwork);

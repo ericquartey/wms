@@ -42,13 +42,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task fieldNotificationReceiveTask;
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
         private readonly ILogger<FiniteStateMachines> logger;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
@@ -85,10 +81,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             ILogger<FiniteStateMachines> logger,
             ISetupStatusProvider setupStatusProvider,
             IVertimagConfigurationDataLayer vertimagConfiguration,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
@@ -100,15 +94,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.vertimagConfiguration = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            this.generalInfoDataLayer = generalInfoDataLayer ?? throw new ArgumentNullException(nameof(generalInfoDataLayer));
-
             this.verticalAxis = verticalAxis ?? throw new ArgumentNullException(nameof(verticalAxis));
-
-            this.horizontalAxis = horizontalAxis ?? throw new ArgumentNullException(nameof(horizontalAxis));
 
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
-            this.machineConfigurationProvider = machineConfigurationProvider ?? throw new ArgumentNullException(nameof(machineConfigurationProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
 
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
@@ -846,7 +836,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
 
-            this.machineSensorsStatus = new MachineSensorsStatus(this.machineConfigurationProvider.IsOneKMachine());
+            this.machineSensorsStatus = new MachineSensorsStatus(this.machineProvider.IsOneTonMachine());
 
             this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
             this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;

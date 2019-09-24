@@ -6,11 +6,11 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public MovementParameters EmptyLoad { get; set; }
+        public MovementParameters EmptyLoadMovement { get; set; }
 
         public decimal LowerBound { get; set; }
 
-        public MovementParameters MaximumLoad { get; set; }
+        public MovementParameters MaximumLoadMovement { get; set; }
 
         public decimal Offset { get; set; }
 

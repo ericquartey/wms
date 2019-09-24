@@ -46,12 +46,6 @@
 
         IOExpansion3Port = 28L,
 
-        LaserBay1 = 15L,
-
-        LaserBay2 = 16L,
-
-        LaserBay3 = 17L,
-
         AlfaNumBay1 = 18L,
 
         AlfaNumBay2 = 19L,

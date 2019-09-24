@@ -85,32 +85,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     Check = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted
+                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1Laser,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1Shape,
-                        CanBePerformed = status.Bay1Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.Bay1Check && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1Shutter,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted,
                     },
                 },
 
@@ -119,32 +119,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     Check = new SetupStepStatus
                     {
                         IsCompleted = status.Bay2Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted
+                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
                         IsCompleted = status.Bay2Laser,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay2Shape,
-                        CanBePerformed = status.Bay2Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.Bay2Check && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = status.Bay2Shutter,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted,
                     },
                 },
 
@@ -153,32 +153,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     Check = new SetupStepStatus
                     {
                         IsCompleted = status.Bay3Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted
+                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
                         IsCompleted = status.Bay3Laser,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay3Shape,
-                        CanBePerformed = status.Bay3Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.Bay3Check && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = status.Bay3Shutter,
-                        CanBePerformed = true
+                        CanBePerformed = true,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted
+                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted,
                     },
                 },
 
@@ -186,43 +186,43 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     CompletedCycles = status.BeltBurnishingCompletedCycles,
                     IsCompleted = status.BeltBurnishingCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted
+                    CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 CellsHeightCheck = new SetupStepStatus
                 {
                     IsCompleted = status.CellsHeightCheck,
-                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted
+                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
                 },
                 AllLoadingUnits = new SetupStepStatus
                 {
                     IsCompleted = status.AllLoadingUnits,
-                    CanBePerformed = (status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit) && verticalOrigin.IsCompleted
+                    CanBePerformed = (status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit) && verticalOrigin.IsCompleted,
                 },
                 HorizontalHoming = new SetupStepStatus
                 {
                     IsCompleted = status.HorizontalHoming,
-                    CanBePerformed = status.WeightMeasurement && verticalOrigin.IsCompleted
+                    CanBePerformed = status.WeightMeasurement && verticalOrigin.IsCompleted,
                 },
                 PanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = status.PanelsCheck,
-                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted
+                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
                 },
                 VerticalOriginCalibration = verticalOrigin,
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
                     IsCompleted = status.VerticalOffsetCalibration,
-                    CanBePerformed = status.VerticalResolution && verticalOrigin.IsCompleted
+                    CanBePerformed = status.VerticalResolution && verticalOrigin.IsCompleted,
                 },
                 VerticalResolution = new SetupStepStatus
                 {
                     IsCompleted = status.VerticalResolution,
-                    CanBePerformed = status.BeltBurnishingCompleted && verticalOrigin.IsCompleted
+                    CanBePerformed = status.BeltBurnishingCompleted && verticalOrigin.IsCompleted,
                 },
                 WeightMeasurement = new SetupStepStatus
                 {
                     IsCompleted = status.WeightMeasurement,
-                    CanBePerformed = true // TODO this should be probably conditioned by the bay checks
+                    CanBePerformed = true, // TODO this should be probably conditioned by the bay checks
                 },
             };
 

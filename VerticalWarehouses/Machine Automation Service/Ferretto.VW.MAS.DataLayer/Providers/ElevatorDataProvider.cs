@@ -2,6 +2,8 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
@@ -36,6 +38,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #endregion
 
         #region Methods
+
+        public ElevatorAxis GetHorizontalAxis()
+        {
+            return this.dataContext.ElevatorAxes
+                .Include(a => a.Profiles)
+                .Include(a => a.MaximumLoadMovement)
+                .Include(a => a.EmptyLoadMovement)
+                .Single(a => a.Orientation == Orientation.Horizontal);
+        }
 
         public decimal GetMaximumLoadOnBoard()
         {

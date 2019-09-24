@@ -1,8 +1,12 @@
-﻿namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+﻿using Ferretto.VW.MAS.DataModels;
+
+namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IElevatorDataProvider
     {
         #region Methods
+
+        ElevatorAxis GetHorizontalAxis();
 
         decimal GetMaximumLoadOnBoard();
 

@@ -176,10 +176,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
 
-                    scope.ServiceProvider
-                        .GetRequiredService<ICellsProvider>()
-                        .LoadFrom(configuration.GetCellsConfigurationFile());
-
                     await scope.ServiceProvider
                        .GetRequiredService<ILoadingUnitsProvider>()
                        .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());

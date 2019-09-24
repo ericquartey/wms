@@ -56,15 +56,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     continue;
                 }
-                else if (string.Equals(jsonCategory.Key, nameof(Customer), StringComparison.OrdinalIgnoreCase))
-                {
-                    var customer = Newtonsoft.Json.JsonConvert.DeserializeObject<Customer>(jsonCategory.Value.ToString());
-
-                    dataContext.Customers.Add(customer);
-                    dataContext.SaveChanges();
-
-                    continue;
-                }
                 else if (jsonCategory.Key == "ServicingProcedures")
                 {
                     continue;
@@ -79,16 +70,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     switch (jsonElementCategory)
                     {
-                        case ConfigurationCategory.GeneralInfo:
-                            if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
-
-                            break;
-
                         case ConfigurationCategory.SetupNetwork:
                             if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
                             {
@@ -328,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
-                //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                // TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
                 this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty));
             }
         }

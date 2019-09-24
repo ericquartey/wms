@@ -339,7 +339,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 CategoryName = (long)category,
                 VarName = configurationValueEnum,
                 VarType = ConfigurationDataType.String,
-                VarValue = value
+                VarValue = value,
             };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);

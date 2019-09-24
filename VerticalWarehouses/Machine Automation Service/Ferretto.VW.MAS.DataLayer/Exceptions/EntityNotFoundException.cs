@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.DataLayer.Exceptions
 {
     public class EntityNotFoundException : Exception
     {
-
-
         #region Constructors
 
         public EntityNotFoundException(BayNumber entityId)
@@ -29,8 +27,6 @@ namespace Ferretto.VW.MAS.DataLayer.Exceptions
         }
 
         #endregion
-
-
 
         #region Properties
 

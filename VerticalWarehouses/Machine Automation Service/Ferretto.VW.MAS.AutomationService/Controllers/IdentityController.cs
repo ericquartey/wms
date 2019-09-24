@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
@@ -12,8 +13,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfo;
-
         private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
         private readonly IMachineProvider machineProvider;
@@ -25,17 +24,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public IdentityController(
-            IGeneralInfoConfigurationDataLayer generalInfo,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
-            IMachineProvider machineProvider,
-            IMachineConfigurationProvider machineConfigurationProvider)
+            IMachineProvider machineProvider)
         {
-            if (generalInfo is null)
-            {
-                throw new System.ArgumentNullException(nameof(generalInfo));
-            }
-
             if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
@@ -51,12 +43,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machineProvider));
             }
 
-            if (machineConfigurationProvider == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineConfigurationProvider));
-            }
-
-            this.generalInfo = generalInfo;
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.servicingProvider = servicingProvider;
             this.machineProvider = machineProvider;
@@ -76,7 +62,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var machine = this.machineProvider.Get();
             var machineInfo = new MachineIdentity
             {
-                Id = 1,
                 AreaId = 2, // TODO remove this hardcoded value
                 Width = 3080, // TODO remove this hardcoded value
                 Depth = 500, // TODO remove this hardcoded value

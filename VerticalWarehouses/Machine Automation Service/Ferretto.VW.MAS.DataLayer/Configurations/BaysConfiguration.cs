@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,12 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder
                 .HasIndex(b => b.Number)
                 .IsUnique();
+
+            builder.Property(c => c.ShutterType)
+             .HasColumnType("text")
+             .HasConversion(
+                 enumValue => enumValue.ToString(),
+                 stringValue => System.Enum.Parse<ShutterType>(stringValue));
 
             builder
                 .Ignore(b => b.Status);

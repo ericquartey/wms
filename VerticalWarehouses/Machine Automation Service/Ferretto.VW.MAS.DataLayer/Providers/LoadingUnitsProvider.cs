@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
     {
-
         #region Fields
 
         private readonly DataLayerContext dataContext;
@@ -35,8 +34,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -63,8 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                  {
                      MissionsCount = l.MissionsCount,
                      Code = l.Code,
-                 }
-            ).ToArray();
+                 }).ToArray();
 
             return loadingUnits;
         }
@@ -80,8 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                      Code = l.Code,
                      MaxNetWeight = l.MaxNetWeight,
                      MaxWeightPercentage = (l.GrossWeight - l.Tare) * 100 / l.MaxNetWeight,
-                 }
-            ).ToArray();
+                 }).ToArray();
 
             return loadingUnits;
         }
@@ -117,11 +112,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         }
                         else if (propertyName == "width")
                         {
-                            while (!(width = await jsonFile.ReadAsInt32Async()).HasValue) { }
+                            while (!(width = await jsonFile.ReadAsInt32Async()).HasValue)
+                            {
+                            }
                         }
                         else if (propertyName == "depth")
                         {
-                            while (!(depth = await jsonFile.ReadAsInt32Async()).HasValue) { }
+                            while (!(depth = await jsonFile.ReadAsInt32Async()).HasValue)
+                            {
+                            }
                         }
                     }
                 }
@@ -139,7 +138,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         {
                             Code = loadingUnit.Code.ToString(),
                             MaxNetWeight = loadingUnitClass.MaxLoadCapacity,
-                            Tare = loadingUnitClass.Tare
+                            Tare = loadingUnitClass.Tare,
                         });
                 }
 
@@ -162,20 +161,27 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         {
                             if (propertyName == "id")
                             {
-                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String) { }
+                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String)
+                                {
+                                }
+
                                 loadingUnitClass.Id = jsonFile.Value as string;
                             }
                             else if (propertyName == "max-load-capacity")
                             {
                                 decimal? maxLoadCapacity;
-                                while (!(maxLoadCapacity = await jsonFile.ReadAsDecimalAsync()).HasValue) { }
+                                while (!(maxLoadCapacity = await jsonFile.ReadAsDecimalAsync()).HasValue)
+                                {
+                                }
 
                                 loadingUnitClass.MaxLoadCapacity = maxLoadCapacity.Value;
                             }
                             else if (propertyName == "tare")
                             {
                                 decimal? tare;
-                                while (!(tare = await jsonFile.ReadAsDecimalAsync()).HasValue) { }
+                                while (!(tare = await jsonFile.ReadAsDecimalAsync()).HasValue)
+                                {
+                                }
 
                                 loadingUnitClass.Tare = tare.Value;
                             }
@@ -204,13 +210,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         {
                             if (propertyName == "class")
                             {
-                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String) { }
+                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String)
+                                {
+                                }
+
                                 loadingUnit.Class = jsonFile.Value as string;
                             }
                             else if (propertyName == "code")
                             {
                                 int? code;
-                                while (!(code = await jsonFile.ReadAsInt32Async()).HasValue) { }
+                                while (!(code = await jsonFile.ReadAsInt32Async()).HasValue)
+                                {
+                                }
 
                                 loadingUnit.Code = code.Value;
                             }

@@ -14,10 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CarouselController : BaseAutomationController
     {
-
         #region Fields
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
@@ -43,32 +40,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<CarouselController> logger)
             : base(eventAggregator)
         {
-            if(verticalAxisDataLayer is null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if(verticalManualMovementsDataLayer is null)
+            if (verticalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
-            if(horizontalAxisDataLayer is null)
+            if (horizontalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
-            if(horizontalManualMovementsDataLayer is null)
+            if (horizontalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if(setupStatusProvider is null)
+            if (setupStatusProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if(logger is null)
+            if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
             }
@@ -82,8 +79,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
-
-
 
         #region Methods
 

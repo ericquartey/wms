@@ -4,8 +4,6 @@
     {
         Undefined = 0L,
 
-        GeneralInfo = 1L,
-
         SetupNetwork = 2L,
 
         VerticalAxis = 4L,

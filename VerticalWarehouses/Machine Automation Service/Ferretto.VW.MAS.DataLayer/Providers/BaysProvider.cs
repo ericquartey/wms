@@ -15,8 +15,8 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class BaysProvider : BaseProvider, IBaysProvider
@@ -103,9 +103,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void AddElevatorPseudoBay()
         {
+            if (this.dataContext.Bays.Any(b => b.Number == BayNumber.ElevatorBay))
+            {
+                return;
+            }
+
             this.dataContext.Bays.Add(new Bay
             {
-                Number = BayNumber.ElevatorBay
+                Number = BayNumber.ElevatorBay,
             });
             this.dataContext.SaveChanges();
         }
@@ -192,7 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             var returnValue = BayNumber.None;
 
-            //Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
+            // Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
             if (messageType == FieldMessageType.SwitchAxis)
             {
                 returnValue = BayNumber.ElevatorBay;
@@ -214,6 +219,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         break;
                 }
             }
+
             return returnValue;
         }
 
@@ -275,7 +281,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
-                                    returnValue = this.machineProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                                    returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                                     break;
 
                                 case Axis.Vertical:
@@ -285,6 +291,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 default:
                                     throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
                             }
+
                             break;
 
                         case MovementMode.BeltBurnishing:
@@ -293,13 +300,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                         case MovementMode.FindZero:
                         case MovementMode.Profile:
-                            returnValue = this.machineProvider.IsOneKMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                            returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
                         default:
                             returnValue = InverterIndex.None;
                             break;
                     }
+
                     break;
 
                 case BayNumber.BayOne:
@@ -312,6 +320,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
                             break;
                     }
+
                     break;
 
                 default:
@@ -331,7 +340,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             switch (bay.Type)
             {
                 case BayType.Elevator:
-                    if (this.machineProvider.IsOneKMachine())
+                    if (this.machineProvider.IsOneTonMachine())
                     {
                         returnValue.Add(InverterIndex.MainInverter);
                         returnValue.Add(InverterIndex.Slave1);

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                     TotalVerticalAxisKilometers = 34,
                     AreaFillPercentage = 87,
                     TotalMissionTime = System.TimeSpan.FromDays(30),
-                    WeightCapacityPercentage = 60
+                    WeightCapacityPercentage = 60,
                 });
         }
 

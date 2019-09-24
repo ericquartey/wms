@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -9,32 +7,37 @@ namespace Ferretto.VW.MAS.DataModels
         #region Properties
 
         /// <summary>
-        /// The bays of the machine.
+        /// Gets or sets the bays of the machine.
         /// </summary>
         public IEnumerable<Bay> Bays { get; set; }
 
         /// <summary>
-        /// The machine's elevator.
+        /// Gets or sets the machine's elevator.
         /// </summary>
         public Elevator Elevator { get; set; }
 
         /// <summary>
-        /// The machine height, in millimeters.
+        /// Gets or sets the machine height, in millimeters.
         /// </summary>
         public decimal Height { get; set; }
 
         /// <summary>
-        /// The maximum gross weight that the machine can have.
+        /// Gets or sets the maximum gross weight that the machine can have.
         /// </summary>
         public decimal MaxGrossWeight { get; set; }
 
         /// <summary>
-        /// The machine's model name.
+        /// Gets or sets the machine's model name.
         /// </summary>
         public string ModelName { get; set; }
 
         /// <summary>
-        /// The machine's serial number.
+        /// Gets or sets the panels on which the cells are mounted.
+        /// </summary>
+        public IEnumerable<CellPanel> Panels { get; set; }
+
+        /// <summary>
+        /// Gets or sets the machine's serial number.
         /// </summary>
         public string SerialNumber { get; set; }
 

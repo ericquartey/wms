@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly ICellControlDataLayer cellControlDataLayer;
 
-        private readonly IHorizontalAxisDataLayer horizontalAxisDataLayer;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
@@ -53,11 +53,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public ElevatorProvider(
             IEventAggregator eventAggregator,
+            IElevatorDataProvider elevatorDataProvider,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer,
             IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
             IVerticalAxisDataLayer verticalAxisDataLayer,
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             ICellControlDataLayer cellControlDataLayer,
             ISetupStatusProvider setupStatusProvider,
             IWeightControlDataLayer weightControl,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
             ISensorsProvider sensorsProvider,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             ILoadingUnitsProvider loadingUnitsProvider)
@@ -89,11 +89,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             if (horizontalMovementLongerProfileDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalMovementLongerProfileDataLayer));
-            }
-
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
             if (resolutionCalibrationDataLayer is null)
@@ -131,9 +126,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(weightControl));
             }
 
-            if (machineConfigurationProvider is null)
+            if (machineProvider is null)
             {
-                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+                throw new ArgumentNullException(nameof(machineProvider));
             }
 
             if (sensorsProvider is null)
@@ -151,11 +146,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(loadingUnitsProvider));
             }
 
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
             this.horizontalMovementShorterProfileDataLayer = horizontalMovementShorterProfileDataLayer;
             this.horizontalMovementLongerProfileDataLayer = horizontalMovementLongerProfileDataLayer;
-            this.horizontalAxisDataLayer = horizontalAxisDataLayer;
             this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
             this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
             this.verticalAxisDataLayer = verticalAxisDataLayer;
@@ -163,7 +158,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.cellControlDataLayer = cellControlDataLayer;
             this.setupStatusProvider = setupStatusProvider;
             this.weightControl = weightControl;
-            this.machineConfigurationProvider = machineConfigurationProvider;
+            this.machineProvider = machineProvider;
             this.sensorsProvider = sensorsProvider;
             this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer;
             this.loadingUnitsProvider = loadingUnitsProvider;
@@ -177,7 +172,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
-            void publishAction() => this.PublishCommand(
+            void PublishAction() => this.PublishCommand(
                 messageData,
                 "Request Horizontal position",
                 MessageActor.FiniteStateMachines,
@@ -189,7 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             return notifyData.CurrentPosition ?? 0;
         }
@@ -198,7 +193,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
-            void publishAction() => this.PublishCommand(
+            void PublishAction() => this.PublishCommand(
                 messageData,
                 "Request vertical position",
                 MessageActor.FiniteStateMachines,
@@ -210,7 +205,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             return notifyData.CurrentPosition ?? 0;
         }
@@ -230,7 +225,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     "Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
             }
 
-            var zeroSensor = this.machineConfigurationProvider.IsOneKMachine()
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
@@ -256,7 +251,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1SpeedV2Longer : this.horizontalMovementShorterProfileDataLayer.P1SpeedV2Shorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2SpeedV3Longer : this.horizontalMovementShorterProfileDataLayer.P2SpeedV3Shorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3SpeedV4Longer : this.horizontalMovementShorterProfileDataLayer.P3SpeedV4Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4SpeedV5Longer : this.horizontalMovementShorterProfileDataLayer.P4SpeedV5Shorter
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4SpeedV5Longer : this.horizontalMovementShorterProfileDataLayer.P4SpeedV5Shorter,
             };
 
             decimal[] acceleration =
@@ -265,7 +260,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1AccelerationShorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2AccelerationShorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4AccelerationShorter
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4AccelerationShorter,
             };
 
             decimal[] deceleration =
@@ -274,7 +269,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1DecelerationShorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2DecelerationShorter,
                 isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter
+                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter,
             };
 
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
@@ -284,7 +279,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * directionMultiplier,
                 position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * directionMultiplier,
                 position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * directionMultiplier
+                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * directionMultiplier,
             };
 
             var targetPosition = switchPosition.Last();
@@ -323,9 +318,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
-            decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
+            var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
+
+            decimal[] speed = { horizontalAxis.EmptyLoadMovement.Speed * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
+            decimal[] acceleration = { horizontalAxis.EmptyLoadMovement.Acceleration };
+            decimal[] deceleration = { horizontalAxis.EmptyLoadMovement.Deceleration };
             decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
@@ -409,7 +406,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             decimal feedRate;
             decimal targetPosition;
 
-            //INFO Absolute movement using the min and max reachable positions for limits
+            // INFO Absolute movement using the min and max reachable positions for limits
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (homingDone)
             {
@@ -420,7 +417,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     ? this.verticalAxisDataLayer.UpperBound
                     : this.verticalAxisDataLayer.LowerBound;
             }
-            else //INFO Before homing relative movements step by step
+
+            // INFO Before homing relative movements step by step
+            else
             {
                 feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
 
@@ -548,7 +547,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 HorizontalMovementDirection.Forwards)
             {
                 LoadedNetWeight = netWeight,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
 
             this.PublishCommand(

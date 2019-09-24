@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    internal class TorqueCurrentMeasurementSessionConfiguration : IEntityTypeConfiguration<TorqueCurrentMeasurementSession>
+    internal class TorqueCurrentMeasurementSessionsConfiguration : IEntityTypeConfiguration<TorqueCurrentMeasurementSession>
     {
         #region Methods
 

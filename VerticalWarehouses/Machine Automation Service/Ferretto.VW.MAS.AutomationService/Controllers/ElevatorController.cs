@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
@@ -52,15 +52,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
-            if (machineConfigurationProvider is null)
+            if (machineProvider is null)
             {
-                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+                throw new ArgumentNullException(nameof(machineProvider));
             }
 
             this.elevatorProvider = elevatorProvider;
             this.elevatorDataProvider = elevatorDataProvider;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
-            this.machineConfigurationProvider = machineConfigurationProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion

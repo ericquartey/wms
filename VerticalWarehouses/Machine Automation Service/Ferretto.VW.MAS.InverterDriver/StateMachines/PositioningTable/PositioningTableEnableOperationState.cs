@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
@@ -49,7 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Inverter.TableTravelControlWord.EnableOperation = true;
             this.Inverter.TableTravelControlWord.Resume = false;
             this.Inverter.TableTravelControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
                 ? false
                 : this.data.AxisMovement == Axis.Horizontal;
 
