@@ -135,8 +135,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100032,
-                            Description = "Cassetto non caricato completamente",
+                            Description = "Cassetto non caricato completamente.",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Code = 100033,
+                            Description = "Condizioni per il posizionamento non soddisfatte.",
+                            Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
                         });
                 });
@@ -155,6 +162,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100032,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100033,
                             TotalErrors = 0
                         });
                 });
@@ -336,7 +348,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 20, 8, 34, 2, 465, DateTimeKind.Local).AddTicks(3908),
+                            InstallationDate = new DateTime(2016, 11, 24, 13, 23, 47, 223, DateTimeKind.Local).AddTicks(772),
                             ServiceStatus = 86
                         });
                 });

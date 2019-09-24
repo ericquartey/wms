@@ -291,6 +291,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
         }
 
+        private bool IsBracketSensorError()
+        {
+            if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                && this.machineData.MessageData.MovementType == MovementType.Carousel)
+            {
+                return this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+            }
+            return false;
+        }
+
         private bool IsLoadingErrorDuringPickup()
         {
             if (!this.machineData.MessageData.IsStartedOnBoard)
@@ -445,6 +455,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     if (this.IsZeroSensorError())
                     {
                         this.Logger.LogError($"Zero sensor error after {(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle ? "pickup" : "deposit")}");
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    }
+                    else if (this.IsBracketSensorError())
+                    {
+                        this.Logger.LogError($"Bracket sensor error");
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                     }
                     else

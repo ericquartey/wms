@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private HealthStatus serviceHealthStatus;
 
+        private bool isWaitingForResponse;
+
         #endregion
 
         #region Constructors
@@ -115,6 +117,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         #endregion
 
         public override void Disappear()
@@ -156,9 +170,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private bool CanExecuteLogin()
         {
-            return this.machineIdentity != null
+            return
+                this.machineIdentity != null
                 &&
                 string.IsNullOrEmpty(this.UserLogin.Error)
+                &&
+                !this.IsWaitingForResponse
                 &&
                 (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
         }
@@ -179,28 +196,37 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 return;
             }
 
-            this.NavigationService.IsBusy = true;
+            this.IsWaitingForResponse = true;
 
-            var claims = await this.authenticationService.LogInAsync(
-               this.UserLogin.UserName,
-               this.UserLogin.Password);
-
-            this.NavigationService.IsBusy = false;
-
-            if (claims != null)
+            try
             {
-                if (claims.AccessLevel == UserAccessLevel.SuperUser)
+                var claims = await this.authenticationService.LogInAsync(
+                   this.UserLogin.UserName,
+                   this.UserLogin.Password);
+
+                if (claims != null)
                 {
-                    this.NavigateToInstallerMainView();
+                    if (claims.AccessLevel == UserAccessLevel.SuperUser)
+                    {
+                        this.NavigateToInstallerMainView();
+                    }
+                    else
+                    {
+                        this.NavigateToOperatorMainView();
+                    }
                 }
                 else
                 {
-                    this.NavigateToOperatorMainView();
+                    this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials, Services.Models.NotificationSeverity.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

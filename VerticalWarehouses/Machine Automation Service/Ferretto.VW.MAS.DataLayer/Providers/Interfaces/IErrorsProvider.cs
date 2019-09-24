@@ -5,8 +5,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IErrorsProvider
     {
-
-
         #region Methods
 
         Error GetCurrent();
