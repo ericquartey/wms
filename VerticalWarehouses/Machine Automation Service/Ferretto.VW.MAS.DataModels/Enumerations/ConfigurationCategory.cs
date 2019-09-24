@@ -38,6 +38,6 @@
 
         LoadFirstDrawer = 18L,
 
-        ShutterManualMovements = 19L
+        ShutterManualMovements = 19L,
     }
 }

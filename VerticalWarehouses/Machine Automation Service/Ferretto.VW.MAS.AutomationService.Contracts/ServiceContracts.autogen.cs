@@ -587,7 +587,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Bay 
+    public partial class Bay : DataModel
     {
         [Newtonsoft.Json.JsonProperty("currentMissionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentMissionId { get; set; }
@@ -595,32 +595,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("currentMissionOperationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentMissionOperationId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("externalId", Required = Newtonsoft.Json.Required.Always)]
-        public int ExternalId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber Index { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string IpAddress { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isExternal", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsExternal { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoadingUnit LoadingUnit { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LoadingUnitId { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
-        public int Number { get; set; }
+        public BayNumber Number { get; set; }
     
         [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
         public BayOperation Operation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<decimal> Positions { get; set; }
+        public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
@@ -637,29 +628,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data);
         }
-    
-    }
-    
-    /// <summary>0 = None
-    /// 1 = BayOne
-    /// 2 = BayTwo
-    /// 3 = BayThree
-    /// 4 = ElevatorBay
-    /// 10 = All</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayNumber
-    {
-        None = 0,
-    
-        BayOne = 1,
-    
-        BayTwo = 2,
-    
-        BayThree = 3,
-    
-        ElevatorBay = 4,
-    
-        All = 10,
     
     }
     
@@ -810,6 +778,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
+    /// <summary>0 = None
+    /// 1 = BayOne
+    /// 2 = BayTwo
+    /// 3 = BayThree
+    /// 4 = ElevatorBay
+    /// 10 = All</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayNumber
+    {
+        None = 0,
+    
+        BayOne = 1,
+    
+        BayTwo = 2,
+    
+        BayThree = 3,
+    
+        ElevatorBay = 4,
+    
+        All = 10,
+    
+    }
+    
     /// <summary>0 = Idle
     /// 1 = ExecutingMission</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -818,6 +809,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Idle = 0,
     
         ExecutingMission = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BayPosition : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public decimal Height { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static BayPosition FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data);
+        }
     
     }
     
@@ -841,9 +850,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// <summary>0 = Single
     /// 1 = Double
     /// 2 = Carousel
-    /// 3 = ExternalSingle
-    /// 4 = ExternalDouble
-    /// 5 = ExternalCarousel
     /// 6 = Elevator</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayType
@@ -853,12 +859,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Double = 1,
     
         Carousel = 2,
-    
-        ExternalSingle = 3,
-    
-        ExternalDouble = 4,
-    
-        ExternalCarousel = 5,
     
         Elevator = 6,
     

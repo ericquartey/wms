@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterPowerOnFieldMessageData : FieldMessageData, IInverterPowerOnFieldMessageData
     {
-
-
         #region Constructors
 
         public InverterPowerOnFieldMessageData(
@@ -18,15 +16,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #endregion
 
-
-
         #region Properties
 
         public FieldCommandMessage NextCommandMessage { get; set; }
 
         #endregion
-
-
 
         #region Methods
 

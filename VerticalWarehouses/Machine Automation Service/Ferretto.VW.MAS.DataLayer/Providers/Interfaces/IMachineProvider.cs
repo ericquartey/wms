@@ -2,11 +2,15 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface IMachineStatisticsProvider
+    public interface IMachineProvider
     {
         #region Methods
 
-        MachineStatistics GetMachineStatistics();
+        Machine Get();
+
+        MachineStatistics GetStatistics();
+
+        bool IsOneTonMachine();
 
         #endregion
     }

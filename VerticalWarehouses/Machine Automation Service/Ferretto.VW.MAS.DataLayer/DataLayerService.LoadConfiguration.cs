@@ -47,13 +47,26 @@ namespace Ferretto.VW.MAS.DataLayer
 
             foreach (var jsonCategory in jsonObject)
             {
-                if (jsonCategory.Key == nameof(Elevator))
+                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
                 {
-                    var elevator = Newtonsoft.Json.JsonConvert.DeserializeObject<Elevator>(jsonCategory.Value.ToString());
+                    var machine = Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString());
 
-                    dataContext.Elevators.Add(elevator);
+                    dataContext.Machines.Add(machine);
                     dataContext.SaveChanges();
 
+                    continue;
+                }
+                else if (string.Equals(jsonCategory.Key, nameof(Customer), StringComparison.OrdinalIgnoreCase))
+                {
+                    var customer = Newtonsoft.Json.JsonConvert.DeserializeObject<Customer>(jsonCategory.Value.ToString());
+
+                    dataContext.Customers.Add(customer);
+                    dataContext.SaveChanges();
+
+                    continue;
+                }
+                else if (jsonCategory.Key == "ServicingProcedures")
+                {
                     continue;
                 }
 

@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 if (bay != null)
                 {
-                    bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
+                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
                     this.Logger.LogDebug($"Bay#{bay.Number}: operation competed.");
 
                     this.bayStatusChangedEvent.Set();

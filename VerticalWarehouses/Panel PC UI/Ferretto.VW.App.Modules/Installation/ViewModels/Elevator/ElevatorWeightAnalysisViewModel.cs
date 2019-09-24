@@ -407,7 +407,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                var bayHeight = this.bayManager.Bay.Positions.First();
+                var bayHeight = this.bayManager.Bay.Positions.First().Height;
 
                 await this.machineElevatorService.MoveToVerticalPositionAsync(bayHeight, FeedRateCategory.VerticalManualMovementsAfterZero);
             }

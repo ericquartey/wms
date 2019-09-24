@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterSwitchOnFieldMessageData : FieldMessageData, IInverterSwitchOnFieldMessageData
     {
-
-
         #region Constructors
 
         public InverterSwitchOnFieldMessageData(Axis axisToSwitchOn, MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -18,15 +16,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #endregion
 
-
-
         #region Properties
 
         public Axis AxisToSwitchOn { get; }
 
         #endregion
-
-
 
         #region Methods
 

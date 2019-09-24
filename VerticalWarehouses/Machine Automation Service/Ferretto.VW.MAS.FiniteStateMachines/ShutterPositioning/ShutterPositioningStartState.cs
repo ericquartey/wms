@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                     // first step: close shutter
                                     ShutterPosition shutterPositionTarget;
                                     shutterPositionTarget = ShutterPosition.Closed;
-                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type)
+                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors)
                                     {
                                         shutterPositionTarget = ShutterPosition.Half;
                                     }
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 // TestLoop:
                 // not all starting positions are allowed
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type &&
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors &&
                     (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
                     )
                 {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     return;
                 }
                 var destination = ShutterPosition.Opened;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
                 {
                     destination = ShutterPosition.Half;
                 }

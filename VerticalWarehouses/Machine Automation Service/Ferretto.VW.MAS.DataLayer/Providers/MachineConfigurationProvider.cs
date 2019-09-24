@@ -12,26 +12,30 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private const int MaxDrawerGrossWeight = 990;
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfo;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public MachineConfigurationProvider(IGeneralInfoConfigurationDataLayer generalInfo)
+        public MachineConfigurationProvider(IElevatorDataProvider elevatorDataProvider)
         {
-            this.generalInfo = generalInfo ?? throw new ArgumentNullException(nameof(generalInfo));
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
+            }
+
+            this.elevatorDataProvider = elevatorDataProvider;
         }
 
         #endregion
-
-
 
         #region Methods
 
         public bool IsOneKMachine()
         {
-            return this.generalInfo.MaxDrawerGrossWeight == MaxDrawerGrossWeight;
+            var maximumLoadOnBoard = this.elevatorDataProvider.GetMaximumLoadOnBoard();
+            return maximumLoadOnBoard == MaxDrawerGrossWeight;
         }
 
         #endregion

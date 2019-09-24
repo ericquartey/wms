@@ -306,10 +306,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanChangeCurrentPosition1()
         {
             return !this.isElevatorMovingDown
-                        &&
-                        !this.isElevatorMovingToHeight
-                        &&
-                        !this.isElevatorMovingUp
+                &&
+                !this.isElevatorMovingToHeight
+                &&
+                !this.isElevatorMovingUp
                 &&
                 this.IsBayPositionsVisible;
         }
@@ -384,14 +384,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ChangeDataFromBayPosition()
         {
-            if (this.currentBayPosition == 1)
-            {
-                this.PositionHeight = this.bayManager.Bay.Positions.First();
-            }
-            else
-            {
-                this.PositionHeight = this.bayManager.Bay.Positions.Last();
-            }
+            this.PositionHeight = this.currentBayPosition == 1
+                ? this.bayManager.Bay.Positions.First().Height
+                : this.bayManager.Bay.Positions.Last().Height;
 
             this.InputStepValue = null;
         }
@@ -444,7 +439,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.bayManager.UpdateHeightAsync((MAS.AutomationService.Contracts.BayNumber) this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
+                await this.bayManager.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
 
                 this.ChangeDataFromBayPosition();
 

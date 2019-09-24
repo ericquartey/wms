@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IGeneralInfoConfigurationDataLayer generalInfo,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
+            IMachineProvider machineProvider,
             IMachineConfigurationProvider machineConfigurationProvider)
         {
             if (generalInfo is null)
@@ -45,6 +46,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(servicingProvider));
             }
 
+            if (machineProvider is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineProvider));
+            }
+
             if (machineConfigurationProvider == null)
             {
                 throw new System.ArgumentNullException(nameof(machineConfigurationProvider));
@@ -53,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.generalInfo = generalInfo;
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.servicingProvider = servicingProvider;
-            this.machineConfigurationProvider = machineConfigurationProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion
@@ -67,20 +73,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
+            var machine = this.machineProvider.Get();
             var machineInfo = new MachineIdentity
             {
                 Id = 1,
                 AreaId = 2, // TODO remove this hardcoded value
                 Width = 3080, // TODO remove this hardcoded value
                 Depth = 500, // TODO remove this hardcoded value
-                ModelName = this.generalInfo.Model,
-                SerialNumber = this.generalInfo.Serial,
+                ModelName = machine.ModelName,
+                SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
-                MaxGrossWeight = this.generalInfo.MaxGrossWeight,
+                MaxGrossWeight = machine.MaxGrossWeight,
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
                 LastServiceDate = servicingInfo.LastServiceDate,
-                IsOneTonMachine = this.machineConfigurationProvider.IsOneKMachine(),
+                IsOneTonMachine = this.machineProvider.IsOneTonMachine(),
             };
 
             return this.Ok(machineInfo);

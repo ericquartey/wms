@@ -6,7 +6,6 @@ namespace Ferretto.VW.MAS.Utils
 {
     public abstract class StateBase : IState, IDisposable
     {
-
         #region Fields
 
         private bool hasEntered;
@@ -25,20 +24,17 @@ namespace Ferretto.VW.MAS.Utils
             {
                 throw new ArgumentNullException(nameof(logger));
             }
+
             this.Logger = logger;
         }
 
         #endregion
-
-
 
         #region Properties
 
         protected ILogger<StateBase> Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 

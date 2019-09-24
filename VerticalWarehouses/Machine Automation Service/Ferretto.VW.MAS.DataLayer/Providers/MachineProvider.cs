@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class MachineStatisticsProvider : Interfaces.IMachineStatisticsProvider
+    internal class MachineProvider : Interfaces.IMachineProvider
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public MachineStatisticsProvider(DataLayerContext dataContext)
+        public MachineProvider(DataLayerContext dataContext)
         {
             if (dataContext == null)
             {
@@ -28,7 +28,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public MachineStatistics GetMachineStatistics()
+        public Machine Get()
+        {
+            return this.dataContext.Machines.Single();
+        }
+
+        public MachineStatistics GetStatistics()
         {
             return this.dataContext.MachineStatistics.FirstOrDefault();
         }

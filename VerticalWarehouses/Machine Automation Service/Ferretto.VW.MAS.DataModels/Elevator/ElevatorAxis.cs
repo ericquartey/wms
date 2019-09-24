@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class ElevatorAxis : DataModel
     {
@@ -13,6 +15,13 @@
         public decimal Offset { get; set; }
 
         public Orientation Orientation { get; set; }
+
+        /// <summary>
+        /// The last known position of the elevator's axis.
+        /// </summary>
+        public decimal Position { get; set; }
+
+        public IEnumerable<MovementProfile> Profiles { get; set; }
 
         public decimal Resolution { get; set; }
 

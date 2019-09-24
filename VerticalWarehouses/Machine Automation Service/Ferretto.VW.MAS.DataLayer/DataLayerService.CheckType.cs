@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
-
-
         #region Methods
 
         public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
@@ -17,21 +15,6 @@ namespace Ferretto.VW.MAS.DataLayer
             ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
-                case GeneralInfo.Address:
-                case GeneralInfo.Zip:
-                case GeneralInfo.City:
-                case GeneralInfo.ClientCode:
-                case GeneralInfo.ClientName:
-                case GeneralInfo.Country:
-                case GeneralInfo.Latitude:
-                case GeneralInfo.Longitude:
-                case GeneralInfo.Model:
-                case GeneralInfo.Order:
-                case GeneralInfo.Province:
-                case GeneralInfo.Serial:
-                    returnValue = ConfigurationDataType.String;
-                    break;
-
                 case GeneralInfo.AlfaNumBay1:
                 case GeneralInfo.AlfaNumBay2:
                 case GeneralInfo.AlfaNumBay3:
@@ -41,40 +24,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     returnValue = ConfigurationDataType.Boolean;
                     break;
 
-                case GeneralInfo.Bay1Height1:
-                case GeneralInfo.Bay1Height2:
-                case GeneralInfo.Bay2Height1:
-                case GeneralInfo.Bay2Height2:
-                case GeneralInfo.Bay3Height1:
-                case GeneralInfo.Bay3Height2:
-                case GeneralInfo.Bay1Position1:
-                case GeneralInfo.Bay1Position2:
-                case GeneralInfo.Bay2Position1:
-                case GeneralInfo.Bay2Position2:
-                case GeneralInfo.Bay3Position1:
-                case GeneralInfo.Bay3Position2:
-                case GeneralInfo.Height:
-                    returnValue = ConfigurationDataType.Float;
-                    break;
-
-                case GeneralInfo.Bay1Type:
-                case GeneralInfo.Bay2Type:
-                case GeneralInfo.Bay3Type:
                 case GeneralInfo.Shutter1Type:
                 case GeneralInfo.Shutter2Type:
                 case GeneralInfo.Shutter3Type:
-                case GeneralInfo.BaysQuantity:
                 case GeneralInfo.Barrier1Height:
                 case GeneralInfo.Barrier2Height:
                 case GeneralInfo.Barrier3Height:
-                case GeneralInfo.MaxGrossWeight:
-                case GeneralInfo.MaxDrawerGrossWeight:
                     returnValue = ConfigurationDataType.Integer;
-                    break;
-
-                case GeneralInfo.InstallationDate:
-                case GeneralInfo.ProductionDate:
-                    returnValue = ConfigurationDataType.Date;
                     break;
 
                 default:

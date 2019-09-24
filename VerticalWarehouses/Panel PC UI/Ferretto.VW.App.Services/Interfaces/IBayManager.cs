@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Services
 
         Task InitializeAsync();
 
-        Task<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height);
+        Task<Bay> UpdateHeightAsync(BayNumber bayNumber, int position, decimal height);
 
         #endregion
     }

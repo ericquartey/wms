@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
-            var inverterIndex = updateData.inverterIndex;
+            var inverterIndex = updateData.InverterIndex;
             switch (updateData.InverterTimer)
             {
                 case InverterTimer.AxisPosition:
@@ -657,7 +657,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogTrace("1:Method Start");
             if (receivedMessage.Data is IInverterSetTimerFieldMessageData updateData)
             {
-                updateData.inverterIndex = currentInverter;
+                updateData.InverterIndex = currentInverter;
                 this.ConfigureTimer(updateData);
             }
             else

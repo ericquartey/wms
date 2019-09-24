@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (this.isDisposed)
             {
@@ -240,6 +240,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
 
             this.isDisposed = true;
+
+            base.Dispose(disposing);
         }
 
         private void DelayElapsed(object state)

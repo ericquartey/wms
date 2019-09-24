@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IBaysProvider
     {
-
-
         #region Properties
 
         int BayInverterPosition { get; }
@@ -20,11 +18,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         #endregion
 
-
-
         #region Methods
 
         Bay Activate(BayNumber bayIndex);
+
+        void AddElevatorPseudoBay();
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
@@ -34,15 +32,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<Bay> GetAll();
 
-        Bay GetByIndex(BayNumber bayIndex);
-
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
 
-        Bay GetByIpAddress(IPAddress remoteIpAddress);
-
         BayNumber GetByMovementType(IPositioningMessageData data);
+
+        Bay GetByNumber(BayNumber bayIndex);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayIndex);
 
@@ -51,8 +47,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         IoIndex GetIoDevice(BayNumber bayIndex);
 
         Bay SetCurrentOperation(BayNumber bayIndex, BayOperation newOperation);
-
-        void Update(BayNumber bayIndex, string ipAddress, BayType bayType);
 
         Bay UpdatePosition(BayNumber bayIndex, int position, decimal height);
 

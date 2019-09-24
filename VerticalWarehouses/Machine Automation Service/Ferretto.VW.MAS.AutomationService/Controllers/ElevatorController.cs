@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
@@ -31,6 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ElevatorController(
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IMachineConfigurationProvider machineConfigurationProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
@@ -38,6 +41,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             if (elevatorProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorProvider));
+            }
+
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
             }
 
             if (elevatorWeightCheckProvider is null)
@@ -50,6 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.elevatorProvider = elevatorProvider;
+            this.elevatorDataProvider = elevatorDataProvider;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
             this.machineConfigurationProvider = machineConfigurationProvider;
         }
@@ -200,11 +209,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("vertical/resolution")]
-        public IActionResult UpdateResolution(decimal newResolution)
+        public IActionResult UpdateVerticalResolution(decimal newResolution)
         {
             try
             {
-                this.elevatorProvider.UpdateResolution(newResolution);
+                this.elevatorDataProvider.UpdateVerticalResolution(newResolution);
 
                 return this.Ok();
             }

@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void Stop(BayNumber requestingBay);
 
-        void UpdateResolution(decimal newResolution);
-
         #endregion
     }
 }

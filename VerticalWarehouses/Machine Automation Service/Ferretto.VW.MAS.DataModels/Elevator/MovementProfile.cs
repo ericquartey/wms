@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -8,7 +6,13 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public IEnumerable<MovementParameters> Steps { get; set; }
+        public decimal Correction { get; set; }
+
+        public MovementProfileType Name { get; set; }
+
+        public IEnumerable<StepMovementParameters> Steps { get; set; }
+
+        public decimal TotalDistance { get; set; }
 
         #endregion
     }

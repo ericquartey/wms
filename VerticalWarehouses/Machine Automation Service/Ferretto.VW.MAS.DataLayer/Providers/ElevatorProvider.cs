@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly ICellControlDataLayer cellControlDataLayer;
 
-        private readonly DataLayerContext dataContext;
-
         private readonly IHorizontalAxisDataLayer horizontalAxisDataLayer;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
@@ -54,7 +52,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #region Constructors
 
         public ElevatorProvider(
-            DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
@@ -74,11 +71,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             ILoadingUnitsProvider loadingUnitsProvider)
             : base(eventAggregator)
         {
-            if (dataContext is null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
             if (panelControlDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(panelControlDataLayer));
@@ -159,7 +151,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(loadingUnitsProvider));
             }
 
-            this.dataContext = dataContext;
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
             this.horizontalMovementShorterProfileDataLayer = horizontalMovementShorterProfileDataLayer;
@@ -579,18 +570,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Stop,
                 bayNumber,
                 BayNumber.ElevatorBay);
-        }
-
-        public void UpdateResolution(decimal newResolution)
-        {
-            if (newResolution <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(newResolution));
-            }
-
-            this.verticalAxisDataLayer.Resolution = newResolution;
-
-            this.setupStatusProvider.CompleteVerticalResolution();
         }
 
         private decimal GetFeedRate(DataModels.FeedRateCategory feedRateCategory)

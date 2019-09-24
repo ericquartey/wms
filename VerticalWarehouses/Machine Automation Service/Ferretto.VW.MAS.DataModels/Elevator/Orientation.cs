@@ -4,6 +4,6 @@
     {
         Vertical,
 
-        Horizontal
+        Horizontal,
     }
 }

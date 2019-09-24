@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterFaultFieldMessageData : FieldMessageData, IInverterFaultFieldMessageData
     {
-
-
         #region Constructors
 
         public InverterFaultFieldMessageData(

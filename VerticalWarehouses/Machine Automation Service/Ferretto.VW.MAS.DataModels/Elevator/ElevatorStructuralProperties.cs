@@ -20,11 +20,6 @@
         public decimal HalfShaftLength { get; set; }
 
         /// <summary>
-        /// The machine height, in millimeters.
-        /// </summary>
-        public decimal Height { get; set; }
-
-        /// <summary>
         /// The maximum weight that can be loaded on the cradle.
         /// </summary>
         public decimal MaximumLoadOnBoard { get; set; }

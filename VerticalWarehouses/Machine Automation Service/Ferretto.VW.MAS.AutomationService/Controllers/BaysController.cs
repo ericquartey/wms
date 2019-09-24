@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                var bay = this.baysProvider.GetByIndex(bayIndex);
+                var bay = this.baysProvider.GetByNumber(bayIndex);
 
                 return this.Ok(bay);
             }

@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterSwitchOffFieldMessageData : FieldMessageData, IInverterSwitchOffFieldMessageData
     {
-
-
         #region Constructors
 
         public InverterSwitchOffFieldMessageData(MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -16,8 +14,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         }
 
         #endregion
-
-
 
         #region Properties
 

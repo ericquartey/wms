@@ -26,7 +26,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
-
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -53,15 +52,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
-
-
         #region Properties
 
         public bool IsReady { get; private set; }
 
         #endregion
-
-
 
         #region Methods
 

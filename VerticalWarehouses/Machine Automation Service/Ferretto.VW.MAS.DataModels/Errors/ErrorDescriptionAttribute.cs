@@ -4,16 +4,6 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class ErrorDescriptionAttribute : Attribute
     {
-        #region Fields
-
-        public readonly string propertyName;
-
-        public readonly Type reasonResourceType;
-
-        private readonly Type descriptionResourceType;
-
-        #endregion
-
         #region Constructors
 
         public ErrorDescriptionAttribute(Type descriptionResourceType, Type reasonResourceType, string propertyName, int severity = 0)
@@ -33,9 +23,9 @@ namespace Ferretto.VW.MAS.DataModels
                 throw new ArgumentNullException(nameof(propertyName));
             }
 
-            this.descriptionResourceType = descriptionResourceType;
-            this.reasonResourceType = reasonResourceType;
-            this.propertyName = propertyName;
+            this.DescriptionResourceType = descriptionResourceType;
+            this.ReasonResourceType = reasonResourceType;
+            this.PropertyName = propertyName;
             this.Severity = severity;
 
             this.Description = descriptionResourceType
@@ -57,7 +47,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; }
 
+        public Type DescriptionResourceType { get; private set; }
+
+        public string PropertyName { get; private set; }
+
         public string Reason { get; }
+
+        public Type ReasonResourceType { get; private set; }
 
         public int Severity { get; }
 

@@ -3,33 +3,25 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class Bay
+    public class Bay : DataModel
     {
-
-
         #region Properties
 
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }
 
-        public int ExternalId { get; set; }
-
-        public BayNumber Index { get; set; }
-
-        public string IpAddress { get; set; }
-
         public bool IsActive { get; set; }
+
+        public bool IsExternal { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
 
-        public int? LoadingUnitId { get; set; }
-
-        public int Number { get; set; }
+        public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }
 
-        public IEnumerable<decimal> Positions { get; set; }
+        public IEnumerable<BayPosition> Positions { get; set; }
 
         public BayStatus Status
         {

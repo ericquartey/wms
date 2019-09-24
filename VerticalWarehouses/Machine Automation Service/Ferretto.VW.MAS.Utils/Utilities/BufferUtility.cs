@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     return index;
                 }
             }
+
             return -1;
         }
 

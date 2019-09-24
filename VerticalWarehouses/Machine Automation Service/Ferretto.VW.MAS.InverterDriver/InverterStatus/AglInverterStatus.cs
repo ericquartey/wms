@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
             this.InverterType = InverterType.Agl;
-            this.shutterType = ShutterType.Shutter3Type;
+            this.shutterType = ShutterType.ThreeSensors;
         }
 
         #endregion

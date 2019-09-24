@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
                 direction,
-                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                ShutterType.ThreeSensors, // TODO HACK remove this hardcoded value
                 speedRate,
                 0,
                 0,
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
                 direction,
-                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                ShutterType.ThreeSensors, // TODO HACK remove this hardcoded value
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
-                ShutterType.Shutter3Type, // TODO HACK remove this hardcoded value
+                ShutterType.ThreeSensors, // TODO HACK remove this hardcoded value
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,

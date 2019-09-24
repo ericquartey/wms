@@ -56,6 +56,6 @@
 
         InverterSetTimer,
 
-        TorqueCurrentSampling
+        TorqueCurrentSampling,
     }
 }

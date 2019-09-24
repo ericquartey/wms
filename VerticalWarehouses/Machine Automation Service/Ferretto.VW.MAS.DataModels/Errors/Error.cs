@@ -5,8 +5,6 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class Error : DataModel
     {
-
-
         #region Properties
 
         public BayNumber BayNumber { get; set; }

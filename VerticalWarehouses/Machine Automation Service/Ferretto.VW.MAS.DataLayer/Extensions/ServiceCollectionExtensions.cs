@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-
-
         #region Methods
 
         public static IServiceCollection AddDataLayer(
@@ -32,53 +30,56 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                    isActiveChannel: true,
                    p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
-            services.AddSingleton<IDataLayerService, DataLayerService>();
+            services
+                .AddSingleton<IDataLayerService, DataLayerService>();
 
             services
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IBayPositionControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IBeltBurnishingDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ICellControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellManagmentDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IGeneralInfoConfigurationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterProfileDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementLongerProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionConversionDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupNetworkDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellManagmentDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVertimagConfigurationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionConversionDataLayer);
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer);
 
             services
-                .AddTransient<IServicingProvider, ServicingProvider>()
+                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
+                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<IBaysProvider, BaysProvider>()
-                .AddTransient<ICellsProvider, CellsProvider>()
                 .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
-                .AddTransient<IErrorsProvider, ErrorsProvider>()
-                .AddTransient<IMachineStatisticsProvider, MachineStatisticsProvider>()
-                .AddTransient<IUsersProvider, UsersProvider>()
-                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
-                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
-                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
-                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
-                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
-                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddTransient<ICellsProvider, CellsProvider>()
+                .AddTransient<IElevatorDataProvider, ElevatorDataProvider>()
                 .AddTransient<IElevatorProvider, ElevatorProvider>()
-                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddTransient<IErrorsProvider, ErrorsProvider>()
+                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
+                .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>()
+                .AddTransient<IMachineProvider, MachineProvider>()
                 .AddTransient<ISensorsProvider, SensorsProvider>()
-                .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
+                .AddTransient<IServicingProvider, ServicingProvider>()
+                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
+                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
+                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<IUsersProvider, UsersProvider>();
 
-            services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();
+            services
+                .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();
 
             return services;
         }

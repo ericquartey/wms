@@ -14,7 +14,7 @@
 
         public System.DateTime? LastServiceDate { get; set; }
 
-        public double MaxGrossWeight { get; set; }
+        public decimal MaxGrossWeight { get; set; }
 
         public string ModelName { get; set; }
 

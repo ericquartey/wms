@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus
                         break;
                 }
             }
+
             return newState;
         }
 
