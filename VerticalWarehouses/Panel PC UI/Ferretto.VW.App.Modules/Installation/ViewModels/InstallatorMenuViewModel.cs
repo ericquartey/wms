@@ -20,7 +20,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class InstallatorMenuViewModel : BaseMainViewModel
     {
-
         #region Fields
 
         private readonly int bayNumber;
@@ -74,8 +73,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-
-
         #region Properties
 
         public bool AreItemsEnabled
@@ -93,8 +90,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BindingList<MainNavigationMenuItem> SensorsItems => this.sensorsItems;
 
         #endregion
-
-
 
         #region Methods
 
