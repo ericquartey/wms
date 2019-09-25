@@ -4,13 +4,13 @@ using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateStartState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -42,18 +40,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if(message.Type == FieldMessageType.NoType)
+            if (message.Type == FieldMessageType.NoType)
             {
-                switch(message.Status)
+                switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
-                    break;
+                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+                        break;
 
                     case MessageStatus.OperationError:
-                    this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
-                    break;
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
+                        break;
                 }
             }
         }
@@ -89,18 +87,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

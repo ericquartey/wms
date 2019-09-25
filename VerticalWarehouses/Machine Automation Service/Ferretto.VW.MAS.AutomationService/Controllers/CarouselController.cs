@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var targetPosition = this.horizontalAxis.CarouselDistance;
 
-            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
 
             decimal[] speed = { this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM / 10 };
             decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
@@ -113,8 +113,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
-                MovementType.Carousel,
-                MovementMode.Position,
+                MovementType.Relative,
+                MovementMode.BayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+        }
+
+        [HttpPost("move-manual")]
+        public void MoveManual(HorizontalMovementDirection direction)
+        {
+            var targetPosition = this.horizontalAxis.CarouselDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+
+            decimal[] speed = { this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxis.MaxFullAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxFullDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChainManual,
                 targetPosition,
                 speed,
                 acceleration,

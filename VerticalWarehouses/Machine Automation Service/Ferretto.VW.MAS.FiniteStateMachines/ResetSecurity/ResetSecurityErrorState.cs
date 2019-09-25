@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     internal class ResetSecurityErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IResetSecurityMachineData machineData;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -54,7 +51,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if(message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessage = new NotificationMessage(
                     null,
@@ -94,7 +91,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

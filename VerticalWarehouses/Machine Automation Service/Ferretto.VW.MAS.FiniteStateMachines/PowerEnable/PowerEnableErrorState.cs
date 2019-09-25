@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)

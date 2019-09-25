@@ -131,7 +131,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineCarouselService.MoveAsync(direction);
+                await this.machineCarouselService.MoveManualAsync(direction);
             }
             catch (System.Exception ex)
             {

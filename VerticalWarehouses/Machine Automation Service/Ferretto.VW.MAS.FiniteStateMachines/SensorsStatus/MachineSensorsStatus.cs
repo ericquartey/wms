@@ -101,13 +101,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             {
                 default:
                 case BayNumber.BayOne:
-                    return this.IsDrawerInBay1Bottom;
+                    return !this.IsDrawerInBay1Bottom;
 
                 case BayNumber.BayTwo:
-                    return this.IsDrawerInBay2Bottom;
+                    return !this.IsDrawerInBay2Bottom;
 
                 case BayNumber.BayThree:
-                    return this.IsDrawerInBay3Bottom;
+                    return !this.IsDrawerInBay3Bottom;
             }
         }
 
@@ -117,13 +117,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             {
                 default:
                 case BayNumber.BayOne:
-                    return this.IsDrawerInBay1Top;
+                    return !this.IsDrawerInBay1Top;
 
                 case BayNumber.BayTwo:
-                    return this.IsDrawerInBay2Top;
+                    return !this.IsDrawerInBay2Top;
 
                 case BayNumber.BayThree:
-                    return this.IsDrawerInBay3Top;
+                    return !this.IsDrawerInBay3Top;
             }
         }
 

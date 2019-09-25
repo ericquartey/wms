@@ -182,6 +182,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 ok = false;
                 errorText = "Zero sensor active with full elevator";
             }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+            {
+                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
+                if (!ok)
+                {
+                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                            $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
+                            $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
+                }
+                else
+                {
+                    ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                    if (!ok)
+                    {
+                        errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";
+                    }
+                }
+            }
             return ok;
         }
 

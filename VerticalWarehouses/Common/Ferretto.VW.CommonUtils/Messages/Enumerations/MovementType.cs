@@ -7,7 +7,5 @@
         Relative = 1,
 
         TableTarget = 2,
-
-        Carousel = 3,
     }
 }

@@ -46,10 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
             this.Inverter.PositionControlWord.EnableOperation = true;
-            this.Inverter.PositionControlWord.RelativeMovement =
-                this.data.MovementType == MovementType.Relative
-                ||
-                this.data.MovementType == MovementType.Carousel;
+            this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(

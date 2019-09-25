@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     internal class MoveDrawerElevatorToPositionState : StateBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -48,8 +47,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -60,30 +57,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             //TODO when Inverter Driver notifies completion of Positioning at the destination level move to next state
-            if(message.Type == FieldMessageType.Positioning)
+            if (message.Type == FieldMessageType.Positioning)
             {
-                switch(message.Status)
+                switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
 
-                    var currentStep = this.machineData.DrawerOperationData.Step;
-                    if(currentStep == DrawerOperationStep.None)
-                    {
-                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                    }
+                        var currentStep = this.machineData.DrawerOperationData.Step;
+                        if (currentStep == DrawerOperationStep.None)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                        }
 
-                    if(currentStep == DrawerOperationStep.MovingElevatorUp ||
-                        currentStep == DrawerOperationStep.MovingElevatorDown)
-                    {
-                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                    }
+                        if (currentStep == DrawerOperationStep.MovingElevatorUp ||
+                            currentStep == DrawerOperationStep.MovingElevatorDown)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                        }
 
-                    break;
+                        break;
 
                     case MessageStatus.OperationError:
-                    this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
-                    break;
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                        break;
                 }
             }
         }
@@ -134,18 +131,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 
@@ -238,7 +236,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    }
             //}
 
-            if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.None)
+            if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.None)
             {
                 target = this.machineData.DrawerOperationData.SourceVerticalPosition;
             }
