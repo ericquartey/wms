@@ -303,6 +303,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
+            return false;
             if (!this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -341,6 +342,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
+            return false;
             if (this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -379,6 +381,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsZeroSensorError()
         {
+            return false;
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
                 && this.machineData.MessageData.MovementType == MovementType.TableTarget
                 && this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle == this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
