@@ -8,6 +8,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
     internal class ResetFaultErrorState : StateBase
     {
+
         #region Fields
 
         private readonly IResetFaultMachineData machineData;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -58,7 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Inverter Fault reset failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.InverterFaultReset,
                 this.machineData.RequestingBay,
@@ -75,12 +78,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

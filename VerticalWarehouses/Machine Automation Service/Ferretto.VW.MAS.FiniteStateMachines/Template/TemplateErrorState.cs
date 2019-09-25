@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Template Error State Notification with {this.machineData.Message} and {this.stateData.Message}. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.machineData.RequestingBay,

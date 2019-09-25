@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Template End State Notification with {this.machineData.Message} and {this.stateData.Message}",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.machineData.RequestingBay,

@@ -126,15 +126,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                 case InverterParameterId.ShutterTargetVelocityParam:
                     {
-                        var byteDataReceived = message.ToBytes();
-                        var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
-                        var byteData = data.ToBytes();
+                        // TODO: remove this change state after inverter firmware update
+                        if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
+                        else
+                        {
+                            var byteDataReceived = message.ToBytes();
+                            var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
+                            var byteData = data.ToBytes();
 
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
 
-                        returnValue = true;
+                            returnValue = true;
+                        }
                     }
                     break;
 

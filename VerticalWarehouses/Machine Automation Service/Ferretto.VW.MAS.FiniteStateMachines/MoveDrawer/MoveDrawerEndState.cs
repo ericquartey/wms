@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             var notificationMessage = new NotificationMessage(
                 this.machineData.DrawerOperationData,
                 $"{MessageType.DrawerOperation} end",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 this.machineData.RequestingBay,
@@ -85,12 +85,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
