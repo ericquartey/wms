@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorProvider elevatorProvider)
             : base(eventAggregator)
         {
-            if(elevatorProvider is null)
+            if (elevatorProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 return this.Accepted();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return this.NegativeResponse(ex);
             }
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 return this.Accepted();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return this.NegativeResponse(ex);
             }

@@ -10,7 +10,7 @@ using Newtonsoft.Json.Schema;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
+    internal sealed class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
     {
         #region Fields
 

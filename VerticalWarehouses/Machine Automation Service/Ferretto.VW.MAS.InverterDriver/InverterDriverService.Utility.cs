@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -182,8 +183,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("3:Validate Command Response True");
                 }
             }
-
-            if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
+            else if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (this.inverterStatuses.TryGetValue(installedInverter.Key, out var inverterStatus))
                     {
-                        switch (inverterStatus.InverterType)
+                        switch (inverterStatus.Type)
                         {
                             case InverterType.Ang:
                                 if (inverterStatus is AngInverterStatus angInverter)
@@ -264,8 +264,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 this.forceStatusPublish = false;
             }
-
-            if (currentMessage.ParameterId == InverterParameterId.ActualPositionShaft)
+            else if (currentMessage.ParameterId == InverterParameterId.ActualPositionShaft)
             {
                 this.axisStopwatch.Stop();
                 this.AxisTimeData.AddValue(this.axisStopwatch.ElapsedTicks);
@@ -274,43 +273,27 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
                 {
-                    if ((inverterStatus.InverterType == InverterType.Ang || inverterStatus.InverterType == InverterType.Acu)
-                        && inverterStatus is IPositioningInverterStatus positioningInverter
-                        )
+                    if ((inverterStatus.Type == InverterType.Ang || inverterStatus.Type == InverterType.Acu)
+                        && inverterStatus is IPositioningInverterStatus positioningInverter)
                     {
                         var axis = (inverterIndex == InverterIndex.MainInverter && !inverterStatus.CommonControlWord.HorizontalAxis)
                             ? Axis.Vertical
                             : Axis.Horizontal;
 
                         if ((axis == this.currentAxis || currentStateMachine == null) &&
-                            (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish)
-                            )
+                            (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish))
                         {
-                            ConfigurationCategory configurationCategory;
-                            switch (axis)
-                            {
-                                case Axis.Horizontal:
-                                    configurationCategory = ConfigurationCategory.HorizontalAxis;
-                                    break;
-
-                                case Axis.Vertical:
-                                    configurationCategory = ConfigurationCategory.VerticalAxis;
-                                    break;
-
-                                default:
-                                    configurationCategory = ConfigurationCategory.Undefined;
-                                    break;
-                            }
+                            var axisOrientation = axis == Axis.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
                             decimal currentAxisPosition = 0;
-                            if ((currentMessage.IntPayload != 0) && (configurationCategory != ConfigurationCategory.Undefined))
+                            if (currentMessage.IntPayload != 0)
                             {
-                                currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
+                                currentAxisPosition = this.elevatorDataProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
                             }
 
                             var offset = axis == Axis.Horizontal
-                                ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
-                                : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
+                                ? this.elevatorDataProvider.GetHorizontalAxis().Offset
+                                : this.elevatorDataProvider.GetVerticalAxis().Offset;
                             currentAxisPosition += offset;
 
                             var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverterStatus.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
@@ -380,26 +363,31 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void InitializeInverterStatus()
         {
-            var inverterList = this.vertimagConfiguration.GetInstalledInverterList();
-            IInverterStatusBase inverterStatus = null;
-            foreach (var inverterType in inverterList)
+            var inverters = this.digitalDevicesDataProvider.GetAllInverters();
+
+            foreach (var inverter in inverters)
             {
-                switch (inverterType.Value)
+                IInverterStatusBase inverterStatus = null;
+
+                switch (inverter.Type)
                 {
                     case InverterType.Ang:
-                        inverterStatus = new AngInverterStatus((byte)inverterType.Key);
+                        inverterStatus = new AngInverterStatus(inverter.Index);
                         break;
 
                     case InverterType.Acu:
-                        inverterStatus = new AcuInverterStatus((byte)inverterType.Key);
+                        inverterStatus = new AcuInverterStatus(inverter.Index);
                         break;
 
                     case InverterType.Agl:
-                        inverterStatus = new AglInverterStatus((byte)inverterType.Key);
+                        inverterStatus = new AglInverterStatus(inverter.Index);
                         break;
+
+                    default:
+                        throw new Exception();
                 }
 
-                this.inverterStatuses.Add(inverterType.Key, inverterStatus);
+                this.inverterStatuses.Add((InverterIndex)inverter.Index, inverterStatus);
             }
 
             this.logger.LogTrace("1:Start Heart beat timer");
@@ -824,14 +812,16 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     try
                     {
-                        var configurationCategory = positioningData.AxisMovement == Axis.Horizontal
-                            ? ConfigurationCategory.HorizontalAxis
-                            : ConfigurationCategory.VerticalAxis;
+                        var axisOrientation = positioningData.AxisMovement == Axis.Horizontal
+                            ? Orientation.Horizontal
+                            : Orientation.Vertical;
 
                         var currentPosition = 0;
                         if (inverterStatus is AngInverterStatus currentStatus)
                         {
-                            currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
+                            currentPosition = this.currentAxis == Axis.Vertical
+                                ? currentStatus.CurrentPositionAxisVertical
+                                : currentStatus.CurrentPositionAxisHorizontal;
                         }
                         else if (inverterStatus is AcuInverterStatus currentACUStatus)
                         {
@@ -842,8 +832,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         if (positioningData.MovementType == MovementType.Absolute)
                         {
                             var offset = positioningData.AxisMovement == Axis.Horizontal
-                                ? this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(HorizontalAxis.Offset, configurationCategory)
-                                : this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(VerticalAxis.Offset, configurationCategory);
+                                ? this.elevatorDataProvider.GetHorizontalAxis().Offset
+                                : this.elevatorDataProvider.GetVerticalAxis().Offset;
 
                             position -= offset;
 
@@ -853,23 +843,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
 
-                        var targetPosition = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(position, configurationCategory);
-                        int[] targetAcceleration;
-                        int[] targetDeceleration;
-                        int[] targetSpeed;
-                        int[] switchPosition;
-                        targetAcceleration = new int[positioningData.SwitchPosition.Length];
-                        targetDeceleration = new int[positioningData.SwitchPosition.Length];
-                        targetSpeed = new int[positioningData.SwitchPosition.Length];
-                        switchPosition = new int[positioningData.SwitchPosition.Length];
-                        for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
-                        {
-                            targetAcceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration[i], configurationCategory);
-                            targetDeceleration[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration[i], configurationCategory);
-                            targetSpeed[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed[i], configurationCategory);
-                            switchPosition[i] = this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.SwitchPosition[i], configurationCategory);
-                        }
+                        var targetPosition = this.elevatorDataProvider.ConvertMillimetersToPulses(position, axisOrientation);
 
+                        var targetAcceleration = positioningData.TargetAcceleration
+                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .ToArray();
+
+                        var targetDeceleration = positioningData.TargetDeceleration
+                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .ToArray();
+
+                        var targetSpeed = positioningData.TargetSpeed
+                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .ToArray();
+
+                        var switchPosition = positioningData.SwitchPosition
+                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .ToArray();
+
+                        // TODO: what is '2' and '4'? Please replace with named constants.
                         var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
@@ -882,6 +874,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             direction,
                             this.refreshTargetTable);
 
+                        // TODO: why this comment? remove if not necessary!
                         //this.refreshTargetTable = false;
 
                         this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
@@ -1293,8 +1286,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.logger.LogTrace("1:Method Start");
 
-            this.inverterAddress = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.Inverter1, ConfigurationCategory.SetupNetwork);
-            this.inverterPort = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.Inverter1Port, ConfigurationCategory.SetupNetwork);
+            var masterInverter = this.digitalDevicesDataProvider.GetInverterByIndex(InverterIndex.MainInverter);
+
+            this.inverterAddress = masterInverter.IpAddress;
+            this.inverterPort = masterInverter.TcpPort;
 
             this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
             this.logger.LogInformation($"1:Configure ipAddress={this.inverterAddress}:Port={this.inverterPort}");

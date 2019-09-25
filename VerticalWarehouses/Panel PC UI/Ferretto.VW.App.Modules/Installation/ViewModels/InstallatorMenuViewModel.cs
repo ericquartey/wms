@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.setupStatusService = setupStatusService;
 
-            //TODO Review Implementation avoid using numbers to identify bays
+            // TODO Review Implementation avoid using numbers to identify bays
             this.bayNumber = (int)bayManager.Bay.Number;
 
             this.machineModeService = machineModeService;

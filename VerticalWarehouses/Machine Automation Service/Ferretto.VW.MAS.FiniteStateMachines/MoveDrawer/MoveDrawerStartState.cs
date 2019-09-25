@@ -9,6 +9,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+using Ferretto.VW.MAS.DataModels;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
@@ -48,8 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -135,7 +134,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+                this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }

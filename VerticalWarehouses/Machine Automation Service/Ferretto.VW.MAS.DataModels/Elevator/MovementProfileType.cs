@@ -2,8 +2,10 @@
 {
     public enum MovementProfileType
     {
+        Undefined,
+
         ShortProfile,
 
-        LongerProfile,
+        LongProfile,
     }
 }

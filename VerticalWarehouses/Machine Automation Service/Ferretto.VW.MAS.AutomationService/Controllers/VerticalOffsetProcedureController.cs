@@ -16,16 +16,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class VerticalOffsetProcedureController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly IElevatorProvider elevatorProvider;
+
         private readonly IOffsetCalibrationDataLayer offsetCalibration;
 
         private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
 
@@ -33,20 +34,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public VerticalOffsetProcedureController(
             IEventAggregator eventAggregator,
+            IElevatorProvider elevatorProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer configurationProvider,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
+            }
+
             if (configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
-            }
-
-            if (verticalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
             if (offsetCalibrationDataLayer is null)
@@ -59,26 +61,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
+            this.elevatorProvider = elevatorProvider;
+            this.elevatorDataProvider = elevatorDataProvider;
             this.configurationProvider = configurationProvider;
-            this.verticalAxis = verticalAxisDataLayer;
             this.offsetCalibration = offsetCalibrationDataLayer;
             this.setupStatusProvider = setupStatusProvider;
         }
 
         #endregion
 
-
-
         #region Methods
 
         [HttpPost("complete")]
         public IActionResult Complete(decimal newOffset)
         {
-            this.configurationProvider
-                .SetDecimalConfigurationValue(
-                    (long)VerticalAxis.Offset,
-                    ConfigurationCategory.VerticalAxis,
-                    newOffset);
+            this.elevatorDataProvider.UpdateVerticalOffset(newOffset);
 
             this.setupStatusProvider.CompleteVerticalOffset();
 
@@ -100,9 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     OffsetCalibration.StepValue,
                     category),
 
-                VerticalOffset = this.configurationProvider.GetDecimalConfigurationValue(
-                    VerticalAxis.Offset,
-                    ConfigurationCategory.VerticalAxis)
+                VerticalOffset = this.elevatorDataProvider.GetVerticalAxis().Offset
             };
 
             return this.Ok(parameters);
@@ -115,7 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var stepValue = this.offsetCalibration.StepValue;
 
-            this.ExecuteStep(-stepValue);
+            this.elevatorProvider.MoveVerticalOfDistance(-stepValue, this.BayNumber, this.offsetCalibration.FeedRateOC);
 
             return this.Accepted();
         }
@@ -127,41 +122,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var stepValue = this.offsetCalibration.StepValue;
 
-            this.ExecuteStep(stepValue);
+            this.elevatorProvider.MoveVerticalOfDistance(stepValue, this.BayNumber, this.offsetCalibration.FeedRateOC);
 
             return this.Accepted();
-        }
-
-        private void ExecuteStep(decimal displacement)
-        {
-            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            var feedRate = this.offsetCalibration.FeedRateOC;
-
-            decimal[] speed = { maxSpeed * feedRate };
-            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
-
-            var messageData = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Relative,
-                MovementMode.Position,
-                displacement,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                (displacement > 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
-
-            this.PublishCommand(
-                messageData,
-                "Offset Calibration Start",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
         }
 
         #endregion

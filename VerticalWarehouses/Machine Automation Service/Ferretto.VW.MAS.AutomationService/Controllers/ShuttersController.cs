@@ -2,12 +2,11 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
-using Microsoft.AspNetCore.Http;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -90,7 +89,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
                 direction,
-                bay.ShutterType,
+                bay.Shutter.Type,
                 speedRate,
                 0,
                 0,
@@ -180,7 +179,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
                 direction,
-                bay.ShutterType,
+                bay.Shutter.Type,
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
@@ -234,7 +233,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new ShutterPositioningMessageData(
                 ShutterPosition.None,
                 ShutterMovementDirection.None,
-                bay.ShutterType,
+                bay.Shutter.Type,
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,

@@ -11,6 +11,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CurrentMissionOperationId { get; set; }
 
+        public Inverter Inverter { get; set; }
+
+        public IoDevice IoDevice { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool IsExternal { get; set; }
@@ -23,7 +27,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<BayPosition> Positions { get; set; }
 
-        public ShutterType ShutterType { get; set; }
+        public Shutter Shutter { get; set; }
 
         public BayStatus Status
         {

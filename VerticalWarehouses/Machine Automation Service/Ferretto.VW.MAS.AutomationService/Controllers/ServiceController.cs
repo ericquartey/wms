@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         // TODO: avoid hardcoding constants in code
         private const decimal ChainLength = 2850.0M;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
         private readonly ILogger logger;
@@ -29,16 +32,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ServiceController(
             IEventAggregator eventAggregator,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
+            IElevatorDataProvider elevatorDataProvider,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ILogger<ServiceController> logger)
             : base(eventAggregator)
         {
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
-            }
-
             if (horizontalManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
@@ -50,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.logger = logger;
-            this.horizontalAxis = horizontalAxisDataLayer;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
         }
 
@@ -63,11 +61,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
+            var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
+            var actualSpeed = horizontalAxis.EmptyLoadMovement.Speed * this.horizontalManualMovements.FeedRateHM;
 
             decimal[] speed = { actualSpeed };
-            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] acceleration = { horizontalAxis.EmptyLoadMovement.Acceleration };
+            decimal[] deceleration = { horizontalAxis.EmptyLoadMovement.Deceleration };
             decimal[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(

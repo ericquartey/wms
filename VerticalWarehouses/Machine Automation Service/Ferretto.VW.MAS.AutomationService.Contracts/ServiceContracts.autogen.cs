@@ -237,11 +237,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StopWeightCheckAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution);
+        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, decimal runToTest, decimal weight);
@@ -441,11 +441,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineShuttersService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync();
@@ -455,25 +455,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction);
+        System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -595,6 +595,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("currentMissionOperationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentMissionOperationId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Inverter Inverter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ioDevice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IoDevice IoDevice { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
@@ -613,6 +619,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Shutter Shutter { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
     
@@ -628,6 +637,284 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Inverter : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
+        public InverterIndex Index { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPAddress IpAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        public int TcpPort { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        public InverterType Type { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Inverter FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Inverter>(data);
+        }
+    
+    }
+    
+    /// <summary>0 = MainInverter
+    /// 1 = Slave1
+    /// 2 = Slave2
+    /// 3 = Slave3
+    /// 4 = Slave4
+    /// 5 = Slave5
+    /// 6 = Slave6
+    /// 7 = Slave7
+    /// 16 = All
+    /// 255 = None</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum InverterIndex
+    {
+        MainInverter = 0,
+    
+        Slave1 = 1,
+    
+        Slave2 = 2,
+    
+        Slave3 = 3,
+    
+        Slave4 = 4,
+    
+        Slave5 = 5,
+    
+        Slave6 = 6,
+    
+        Slave7 = 7,
+    
+        All = 16,
+    
+        None = 255,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class IPAddress 
+    {
+        [Newtonsoft.Json.JsonProperty("addressFamily", Required = Newtonsoft.Json.Required.Always)]
+        public AddressFamily AddressFamily { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("scopeId", Required = Newtonsoft.Json.Required.Always)]
+        public long ScopeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isIPv6Multicast", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIPv6Multicast { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isIPv6LinkLocal", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIPv6LinkLocal { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isIPv6SiteLocal", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIPv6SiteLocal { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isIPv6Teredo", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIPv6Teredo { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isIPv4MappedToIPv6", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIPv4MappedToIPv6 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Always)]
+        public long Address { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static IPAddress FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IPAddress>(data);
+        }
+    
+    }
+    
+    /// <summary>0 = Unspecified
+    /// 1 = Unix
+    /// 2 = InterNetwork
+    /// 3 = ImpLink
+    /// 4 = Pup
+    /// 5 = Chaos
+    /// 6 = Ipx
+    /// 6 = NS
+    /// 7 = Iso
+    /// 7 = Osi
+    /// 8 = Ecma
+    /// 9 = DataKit
+    /// 10 = Ccitt
+    /// 11 = Sna
+    /// 12 = DecNet
+    /// 13 = DataLink
+    /// 14 = Lat
+    /// 15 = HyperChannel
+    /// 16 = AppleTalk
+    /// 17 = NetBios
+    /// 18 = VoiceView
+    /// 19 = FireFox
+    /// 21 = Banyan
+    /// 22 = Atm
+    /// 23 = InterNetworkV6
+    /// 24 = Cluster
+    /// 25 = Ieee12844
+    /// 26 = Irda
+    /// 28 = NetworkDesigners
+    /// 29 = Max
+    /// -1 = Unknown</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum AddressFamily
+    {
+        Unspecified = 0,
+    
+        Unix = 1,
+    
+        InterNetwork = 2,
+    
+        ImpLink = 3,
+    
+        Pup = 4,
+    
+        Chaos = 5,
+    
+        Ipx = 6,
+    
+        NS = 6,
+    
+        Iso = 7,
+    
+        Osi = 7,
+    
+        Ecma = 8,
+    
+        DataKit = 9,
+    
+        Ccitt = 10,
+    
+        Sna = 11,
+    
+        DecNet = 12,
+    
+        DataLink = 13,
+    
+        Lat = 14,
+    
+        HyperChannel = 15,
+    
+        AppleTalk = 16,
+    
+        NetBios = 17,
+    
+        VoiceView = 18,
+    
+        FireFox = 19,
+    
+        Banyan = 21,
+    
+        Atm = 22,
+    
+        InterNetworkV6 = 23,
+    
+        Cluster = 24,
+    
+        Ieee12844 = 25,
+    
+        Irda = 26,
+    
+        NetworkDesigners = 28,
+    
+        Max = 29,
+    
+        Unknown = -1,
+    
+    }
+    
+    /// <summary>0 = Undefined
+    /// 1 = Ang
+    /// 2 = Agl
+    /// 3 = Acu</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum InverterType
+    {
+        Undefined = 0,
+    
+        Ang = 1,
+    
+        Agl = 2,
+    
+        Acu = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class DataModel 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static DataModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class IoDevice : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
+        public IoIndex Index { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPAddress IpAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        public int TcpPort { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static IoDevice FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDevice>(data);
+        }
+    
+    }
+    
+    /// <summary>0 = IoDevice1
+    /// 1 = IoDevice2
+    /// 2 = IoDevice3
+    /// 16 = All
+    /// 255 = None</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum IoIndex
+    {
+        IoDevice1 = 0,
+    
+        IoDevice2 = 1,
+    
+        IoDevice3 = 2,
+    
+        All = 16,
+    
+        None = 255,
     
     }
     
@@ -743,38 +1030,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class DataModel 
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static DataModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data);
-        }
-    
-    }
-    
-    /// <summary>0 = InBay
-    /// 1 = OnMovementToLocation
-    /// 2 = OnMovementToBay
-    /// 3 = InLocation</summary>
+    /// <summary>0 = Undefined
+    /// 1 = InBay
+    /// 2 = OnMovementToLocation
+    /// 3 = OnMovementToBay
+    /// 4 = InLocation</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitStatus
     {
-        InBay = 0,
+        Undefined = 0,
     
-        OnMovementToLocation = 1,
+        InBay = 1,
     
-        OnMovementToBay = 2,
+        OnMovementToLocation = 2,
     
-        InLocation = 3,
+        OnMovementToBay = 3,
+    
+        InLocation = 4,
     
     }
     
@@ -827,6 +1099,41 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Shutter : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Inverter Inverter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterType Type { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Shutter FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Shutter>(data);
+        }
+    
+    }
+    
+    /// <summary>0 = Undefined
+    /// 1 = TwoSensors
+    /// 2 = ThreeSensors</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterType
+    {
+        Undefined = 0,
+    
+        TwoSensors = 1,
+    
+        ThreeSensors = 2,
     
     }
     
@@ -1269,7 +1576,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class MachineIdentity : DataModel
+    public partial class MachineIdentity 
     {
         [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
         public int AreaId { get; set; }
@@ -1288,7 +1595,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public System.DateTime? LastServiceDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
-        public double MaxGrossWeight { get; set; }
+        public decimal MaxGrossWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
@@ -1320,14 +1627,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
+    /// <summary>0 = Undefined
     /// 71 = Expiring
     /// 86 = Valid
     /// 88 = Expired</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineServiceStatus
     {
-        NotSpecified = 0,
+        Undefined = 0,
     
         Expiring = 71,
     

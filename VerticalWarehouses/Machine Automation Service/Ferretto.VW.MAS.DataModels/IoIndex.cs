@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.Utils.Enumerations
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Design",

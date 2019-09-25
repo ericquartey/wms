@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
@@ -20,8 +21,8 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice

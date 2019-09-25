@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
+    public sealed class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
     {
         #region Fields
 

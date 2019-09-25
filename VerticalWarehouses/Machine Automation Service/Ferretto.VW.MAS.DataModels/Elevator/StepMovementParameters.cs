@@ -4,7 +4,9 @@
     {
         #region Properties
 
-        public int Step { get; set; }
+        public int Number { get; set; }
+
+        public decimal Position { get; set; }
 
         #endregion
     }

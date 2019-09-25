@@ -16,13 +16,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
         private readonly ILogger logger;
 
         private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
 
         private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
@@ -32,27 +32,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CarouselController(
             IEventAggregator eventAggregator,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
+            IElevatorDataProvider elevatorDataProvider,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ISetupStatusProvider setupStatusProvider,
             ILogger<CarouselController> logger)
             : base(eventAggregator)
         {
-            if (verticalAxisDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
             if (verticalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
-            }
-
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
             if (horizontalManualMovementsDataLayer is null)
@@ -70,9 +59,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(logger));
             }
 
-            this.verticalAxis = verticalAxisDataLayer;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new System.ArgumentNullException(nameof(elevatorDataProvider));
             this.verticalManualMovements = verticalManualMovementsDataLayer;
-            this.horizontalAxis = horizontalAxisDataLayer;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
             this.setupStatusProvider = setupStatusProvider;
             this.logger = logger;

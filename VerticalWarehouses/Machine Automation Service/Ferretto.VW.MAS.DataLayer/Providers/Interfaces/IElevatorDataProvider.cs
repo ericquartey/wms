@@ -6,9 +6,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
+        int ConvertMillimetersToPulses(decimal millimeters, Orientation orientation);
+
+        decimal ConvertPulsesToMillimeters(int pulses, Orientation orientation);
+
         ElevatorAxis GetHorizontalAxis();
 
+        LoadingUnit GetLoadingUnitOnBoard();
+
         decimal GetMaximumLoadOnBoard();
+
+        ElevatorAxis GetVerticalAxis();
+
+        void UpdateVerticalOffset(decimal newOffset);
 
         void UpdateVerticalResolution(decimal newResolution);
 

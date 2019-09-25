@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 
@@ -21,11 +20,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay);
 
-        void MoveVerticalOfDistance(decimal distance, BayNumber requestingBay);
+        void MoveVerticalOfDistance(decimal distance, BayNumber requestingBay, decimal feedRate = 1);
 
-        void RunInMotionCurrentSampling(decimal displacement, decimal netWeight, BayNumber requestingBay);
-
-        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight, BayNumber requestingBay);
+        void RepeatVerticalMovement(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber requestingBay);
 
         void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay);
 

@@ -153,8 +153,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         receivedMessage.RequestingBay,
                         this.setupStatusProvider,
                         this.machineSensorsStatus,
-                        this.verticalAxis,
-                        this.horizontalAxis,
                         data,
                         this.eventAggregator,
                         this.logger,
@@ -426,7 +424,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 else if (message.RequestingBay > 0)
                 {
                     var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus((byte)this.baysProvider.GetInverterList(message.RequestingBay).ToArray()[this.baysProvider.ShutterInverterPosition]);
+                    var inverterStatus = new AglInverterStatus(this.baysProvider.GetInverterList(message.RequestingBay).ToArray()[this.baysProvider.ShutterInverterPosition]);
                     var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -505,7 +503,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            foreach (var index in this.ioIndexDeviceList)
+            foreach (var ioDevice in this.ioDevices)
             {
                 var ioDataMessage = new SensorsChangedFieldMessageData();
                 ioDataMessage.SensorsStatus = true;
@@ -515,7 +513,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     FieldMessageActor.IoDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.SensorsChanged,
-                    (byte)index);
+                    (byte)ioDevice.Index);
 
                 this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
             }

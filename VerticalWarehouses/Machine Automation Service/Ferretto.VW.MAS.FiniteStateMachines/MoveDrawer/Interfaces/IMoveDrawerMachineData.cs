@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces
 
         ISetupStatusProvider SetupStatusProvider { get; }
 
-        IVerticalAxisDataLayer VerticalAxis { get; }
-
         #endregion
     }
 }

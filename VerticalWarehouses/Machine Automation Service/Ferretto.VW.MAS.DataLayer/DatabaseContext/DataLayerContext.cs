@@ -55,6 +55,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<FreeBlock> FreeBlocks { get; set; }
 
+        public DbSet<Inverter> Inverters { get; set; }
+
+        public DbSet<IoDevice> IoDevices { get; set; }
+
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
         public DbSet<LogEntry> LogEntries { get; set; }
@@ -115,20 +119,24 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new BaysConfiguration());
-            modelBuilder.ApplyConfiguration(new PanelsConfiguration());
-            modelBuilder.ApplyConfiguration(new CellsConfiguration());
-            modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new TorqueCurrentSampleConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-            modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-            modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
-            modelBuilder.ApplyConfiguration(new SetupStatusConfiguration());
-            modelBuilder.ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration());
-            modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            modelBuilder
+                .ApplyConfiguration(new BaysConfiguration())
+                .ApplyConfiguration(new PanelsConfiguration())
+                .ApplyConfiguration(new CellsConfiguration())
+                .ApplyConfiguration(new ConfigurationValuesConfiguration())
+                .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
+                .ApplyConfiguration(new ErrorDefinitionConfiguration())
+                .ApplyConfiguration(new ErrorConfiguration())
+                .ApplyConfiguration(new ErrorStatisticConfiguration())
+                .ApplyConfiguration(new InvertersConfiguration())
+                .ApplyConfiguration(new IoDevicesConfiguration())
+                .ApplyConfiguration(new LoadingUnitsConfiguration())
+                .ApplyConfiguration(new MachineStatisticsConfiguration())
+                .ApplyConfiguration(new ServicingInfoConfiguration())
+                .ApplyConfiguration(new SetupStatusConfiguration())
+                .ApplyConfiguration(new ShuttersConfiguration())
+                .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
+                .ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

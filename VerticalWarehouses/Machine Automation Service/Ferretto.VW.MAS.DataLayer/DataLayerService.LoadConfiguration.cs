@@ -49,7 +49,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
                 {
-                    var machine = Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString());
+                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    settings.Converters.Add(new IPAddressConverter());
+
+                    var machine = Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString(), settings);
 
                     dataContext.Machines.Add(machine);
                     dataContext.SaveChanges();
@@ -70,56 +73,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     switch (jsonElementCategory)
                     {
-                        case ConfigurationCategory.SetupNetwork:
-                            if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.VerticalAxis:
-                            if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalAxis:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalMovementLongerProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerProfileData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerProfileData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalMovementShorterProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterProfileData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterProfileData, jsonData.Value);
-
-                            break;
-
                         case ConfigurationCategory.VerticalManualMovements:
                             if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
                             {
@@ -292,8 +245,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             &&
                             (stringValue.Count(c => c == ':') >= 2
                             ||
-                            stringValue.Count(c => c == '.') == 3)
-                            )
+                            stringValue.Count(c => c == '.') == 3))
                         {
                             this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
                         }

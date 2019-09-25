@@ -82,4 +82,6 @@
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>

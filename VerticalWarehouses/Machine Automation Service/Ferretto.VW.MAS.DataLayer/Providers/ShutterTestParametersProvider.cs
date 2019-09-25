@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Models;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ShutterTestParametersProvider : Interfaces.IShutterTestParametersProvider
+    internal sealed class ShutterTestParametersProvider : Interfaces.IShutterTestParametersProvider
     {
         #region Fields
 

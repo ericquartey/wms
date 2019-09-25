@@ -10,16 +10,16 @@ using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class BaysProvider : BaseProvider, IBaysProvider
+    internal sealed class BaysProvider : BaseProvider, IBaysProvider
     {
         #region Fields
 
@@ -27,11 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IMachineProvider machineProvider;
 
         private readonly NotificationEvent notificationEvent;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
 
@@ -40,30 +40,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public BaysProvider(
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
-            IVerticalAxisDataLayer verticalAxis,
             IMachineProvider machineProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer configurationValueManagement)
             : base(eventAggregator)
         {
-            if (dataContext is null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (machineProvider is null)
-            {
-                throw new ArgumentNullException(nameof(machineProvider));
-            }
-
-            this.dataContext = dataContext;
-            this.verticalAxis = verticalAxis;
-            this.machineProvider = machineProvider;
-            this.configurationValueManagement = configurationValueManagement;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.configurationValueManagement = configurationValueManagement ?? throw new ArgumentNullException(nameof(configurationValueManagement));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
@@ -259,7 +244,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public Bay GetByNumber(BayNumber bayNumber)
         {
-            var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+            var bay = this.dataContext.Bays
+                .Include(b => b.Inverter)
+                .Include(b => b.Positions)
+                .Include(b => b.Shutter)
+                .Include(b => b.LoadingUnit)
+                .SingleOrDefault(b => b.Number == bayNumber);
             if (bay is null)
             {
                 throw new EntityNotFoundException(bayNumber);
@@ -359,6 +349,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
                     }
+
                     break;
 
                 case BayType.Carousel:
@@ -408,25 +399,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return bay;
         }
 
-        public Bay UpdatePosition(BayNumber bayIndex, int positionIndex, decimal height)
+        public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, decimal height)
         {
-            if (positionIndex < 0 || positionIndex > 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(positionIndex));
-            }
-
-            var bay = this.GetByNumber(bayIndex);
-            if (bay.Positions.Count() == 1 && positionIndex == 1)
+            var bay = this.GetByNumber(bayNumber);
+            if (positionIndex < 0 || positionIndex > bay.Positions.Count() - 1)
             {
                 throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }
 
-            var lowerBound = this.verticalAxis.LowerBound;
-            var upperBound = this.verticalAxis.UpperBound;
-            if (height < lowerBound || height > upperBound)
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
             {
                 throw new ArgumentOutOfRangeException(
-                    string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, lowerBound, upperBound));
+                    string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, verticalAxis.LowerBound, verticalAxis.UpperBound));
             }
 
             var position = positionIndex == 0 ? bay.Positions.First() : bay.Positions.Last();
@@ -435,7 +420,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.dataContext.SaveChanges();
 
-            return this.GetByNumber(bayIndex);
+            return this.GetByNumber(bayNumber);
         }
 
         private void Update(Bay bay)

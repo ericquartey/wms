@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -54,15 +55,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
-        private readonly IResolutionConversionDataLayer dataLayerResolutionConversion;
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue;
+        private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly Timer heartBeatTimer;
 
-        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly Task inverterReceiveTask;
 
@@ -100,8 +103,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Timer[] statusWordUpdateTimer;
 
-        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
         private readonly ManualResetEventSlim writeEnableEvent;
 
         private readonly InverterDiagnosticsData WriteRoundtripTimeData = new InverterDiagnosticsData();
@@ -125,41 +126,23 @@ namespace Ferretto.VW.MAS.InverterDriver
         public InverterDriverService(
             ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfigurationDataLayer vertimagConfiguration,
-            IResolutionConversionDataLayer dataLayerResolutionConversion)
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.socketTransport = socketTransport;
-            this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-            this.dataLayerResolutionConversion = dataLayerResolutionConversion;
-            this.vertimagConfiguration = vertimagConfiguration;
-            this.logger = logger;
-            this.serviceScopeFactory = serviceScopeFactory;
+            this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
+            this.elevatorDataProvider = elevatorDataProvider;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
             this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
-
-            this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
-            this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 

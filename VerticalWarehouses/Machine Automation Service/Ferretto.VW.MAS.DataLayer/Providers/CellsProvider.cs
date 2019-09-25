@@ -6,12 +6,10 @@ using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class CellsProvider : Interfaces.ICellsProvider
+    internal sealed class CellsProvider : Interfaces.ICellsProvider
     {
         #region Fields
 

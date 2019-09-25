@@ -14,16 +14,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ResolutionCalibrationProcedureController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IResolutionCalibrationDataLayer resolutionCalibration;
 
         private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
 
@@ -31,12 +30,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ResolutionCalibrationProcedureController(
             IEventAggregator eventAggregator,
+            IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IResolutionCalibrationDataLayer resolutionCalibration,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
+            }
+
             if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
@@ -47,25 +51,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(resolutionCalibration));
             }
 
-            if (verticalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
             if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            this.verticalAxis = verticalAxisDataLayer;
             this.setupStatusProvider = setupStatusProvider;
+            this.elevatorDataProvider = elevatorDataProvider;
             this.configurationProvider = dataLayerConfigurationValueManagement;
             this.resolutionCalibration = resolutionCalibration;
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -95,9 +92,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            var resolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    VerticalAxis.Resolution,
-                    ConfigurationCategory.VerticalAxis);
+            var resolution = this.elevatorDataProvider.GetVerticalAxis().Resolution;
 
             return resolution * expectedDistance / measuredDistance;
         }
@@ -107,9 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var parameters = new ResolutionCalibrationParameters
             {
-                CurrentResolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    VerticalAxis.Resolution,
-                    ConfigurationCategory.VerticalAxis),
+                CurrentResolution = this.elevatorDataProvider.GetVerticalAxis().Resolution,
 
                 InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
                     ResolutionCalibration.InitialPosition,

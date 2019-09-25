@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevices;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
@@ -25,10 +25,9 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class HostedIoDriver : BackgroundService
     {
-
         #region Fields
 
-        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
+        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
         private readonly Task commandReceiveTask;
 
@@ -36,17 +35,17 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly Dictionary<IoIndex, IIoDevice> ioDevices;
+        private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
         private readonly ILogger logger;
 
-        private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
         private readonly Task notificationReceiveTask;
-
-        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private CancellationToken stoppingToken;
 
@@ -56,33 +55,35 @@ namespace Ferretto.VW.MAS.IODriver
 
         public HostedIoDriver(
             IEventAggregator eventAggregator,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
         {
-            logger.LogTrace("1:Method Start");
+            this.logger = logger
+                ?? throw new ArgumentNullException(nameof(logger));
 
-            this.logger = logger;
-            this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-            this.vertimagConfiguration = vertimagConfiguration;
-            this.configuration = configuration;
+            this.eventAggregator = eventAggregator
+                ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            this.ioDevices = new Dictionary<IoIndex, IIoDevice>();
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider
+                ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
 
-            this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
-            this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement
+                ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+
+            this.configuration = configuration
+                ?? throw new ArgumentNullException(nameof(configuration));
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
+
+            logger.LogTrace("1:Method Start");
 
             this.InitializeMethodSubscriptions();
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -96,11 +97,11 @@ namespace Ferretto.VW.MAS.IODriver
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), IoIndex.None);
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), DataModels.IoIndex.None);
             }
 
             return Task.CompletedTask;
@@ -117,7 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     this.logger.LogTrace($"1:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("2:Method End - Operation Canceled");
 
@@ -125,84 +126,60 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
 
-                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                var currentDevice = Enum.Parse<DataModels.IoIndex>(receivedMessage.DeviceIndex.ToString());
 
-                switch(receivedMessage.Type)
+                switch (receivedMessage.Type)
                 {
                     case FieldMessageType.SwitchAxis:
-                    switch(currentDevice)
-                    {
-                        case IoIndex.IoDevice1:
-                        this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
+                        switch (currentDevice)
+                        {
+                            case DataModels.IoIndex.IoDevice1:
+                                this.ioDevices[DataModels.IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
+                                break;
+                        }
                         break;
-                    }
-                    break;
 
                     case FieldMessageType.IoReset:
-                    this.ioDevices[currentDevice].ExecuteIoReset();
-                    break;
+                        this.ioDevices[currentDevice].ExecuteIoReset();
+                        break;
 
                     case FieldMessageType.SensorsChanged:
-                    this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
-                    break;
+                        this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
+                        break;
 
                     case FieldMessageType.ResetSecurity:
-                    this.ioDevices[currentDevice].ExecuteResetSecurity();
-                    break;
+                        this.ioDevices[currentDevice].ExecuteResetSecurity();
+                        break;
 
                     case FieldMessageType.PowerEnable:
-                    this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
-                    break;
+                        this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
+                        break;
                 }
             }
-            while(!this.stoppingToken.IsCancellationRequested);
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeIoDevice()
         {
-            var ioDevicesList = this.vertimagConfiguration.GetInstalledIoList();
-            IIoDevice ioDevice = null;
+            var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
 
             var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
-            var readTimeoutMilliseconds = this.configuration.GetValue<int>("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
+            var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
 
-            foreach(var ioIndex in ioDevicesList)
+            foreach (var ioDevice in ioDevices)
             {
-                IIoTransport transport;
-                if(!useMockedTransport)
-                {
-                    transport = new IoTransport(readTimeoutMilliseconds);
-                }
-                else
-                {
-                    transport = new IoTransportMock();
-                }
+                var transport = useMockedTransport ? (IIoTransport)new IoTransportMock() : new IoTransport(readTimeoutMilliseconds);
 
-                switch(ioIndex)
-                {
-                    case IoIndex.IoDevice1:
-                    var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
-                    var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger, this.stoppingToken);
-
-                    break;
-
-                    case IoIndex.IoDevice2:
-                    var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
-                    var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger, this.stoppingToken);
-
-                    break;
-
-                    case IoIndex.IoDevice3:
-                    var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
-                    var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger, this.stoppingToken);
-
-                    break;
-                }
-
-                this.ioDevices.Add(ioIndex, ioDevice);
+                this.ioDevices.Add(
+                    ioDevice.Index,
+                    new IoDevice(
+                        this.eventAggregator,
+                        transport,
+                        ioDevice.IpAddress,
+                        ioDevice.TcpPort,
+                        ioDevice.Index,
+                        this.logger,
+                        this.stoppingToken));
             }
         }
 
@@ -237,7 +214,7 @@ namespace Ferretto.VW.MAS.IODriver
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                     this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("2:Method End operation cancelled");
 
@@ -245,38 +222,38 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
 
-                var currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                var currentDevice = Enum.Parse<DataModels.IoIndex>(receivedMessage.DeviceIndex.ToString());
 
-                switch(receivedMessage.Type)
+                switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
-                    this.InitializeIoDevice();
-                    await this.StartHardwareCommunications();
+                        this.InitializeIoDevice();
+                        await this.StartHardwareCommunications();
 
-                    foreach(var ioDevice in this.ioDevices)
-                    {
-                        ioDevice.Value.ExecuteIoPowerUp();
-                    }
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
-                    break;
+                        break;
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
                     case FieldMessageType.PowerEnable:
                     case FieldMessageType.IoReset:
                     case FieldMessageType.ResetSecurity:
-                    if(receivedMessage.Status == MessageStatus.OperationEnd &&
-                        receivedMessage.ErrorLevel == ErrorLevel.NoError)
-                    {
-                        this.ioDevices[currentDevice].DestroyStateMachine();
-                    }
-                    break;
+                        if (receivedMessage.Status == MessageStatus.OperationEnd &&
+                            receivedMessage.ErrorLevel == ErrorLevel.NoError)
+                        {
+                            this.ioDevices[currentDevice].DestroyStateMachine();
+                        }
+                        break;
                 }
             }
-            while(!this.stoppingToken.IsCancellationRequested);
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SendMessage(IFieldMessageData messageData, IoIndex deviceIndex)
+        private void SendMessage(IFieldMessageData messageData, DataModels.IoIndex deviceIndex)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
             messageData,
@@ -293,7 +270,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private async Task StartHardwareCommunications()
         {
-            foreach(var device in this.ioDevices.Values)
+            foreach (var device in this.ioDevices.Values)
             {
                 await device.StartHardwareCommunications();
             }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class MachineProvider : Interfaces.IMachineProvider
+    internal sealed class MachineProvider : Interfaces.IMachineProvider
     {
         #region Fields
 

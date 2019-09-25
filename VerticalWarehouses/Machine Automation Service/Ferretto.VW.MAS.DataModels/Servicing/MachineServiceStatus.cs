@@ -2,7 +2,7 @@
 {
     public enum MachineServiceStatus
     {
-        NotSpecified,
+        Undefined,
 
         Valid = 'V',
 

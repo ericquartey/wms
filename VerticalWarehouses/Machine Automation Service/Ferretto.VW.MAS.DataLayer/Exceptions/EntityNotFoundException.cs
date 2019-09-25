@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Exceptions
 {
     public class EntityNotFoundException : Exception

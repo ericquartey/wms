@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -11,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     internal class ResetSecurityStartState : StateBase
     {
-
         #region Fields
 
         private readonly IResetSecurityMachineData machineData;
@@ -41,8 +41,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         }
 
         #endregion
-
-
 
         #region Methods
 

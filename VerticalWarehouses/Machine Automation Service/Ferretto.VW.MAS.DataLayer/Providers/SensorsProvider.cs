@@ -4,7 +4,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class SensorsProvider : BaseProvider, ISensorsProvider
+    internal sealed class SensorsProvider : BaseProvider, ISensorsProvider
     {
         #region Constructors
 

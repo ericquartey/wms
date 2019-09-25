@@ -359,7 +359,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersService.RunTestAsync(
-                    this.BayNumber,
                     this.InputDelayBetweenCycles.Value,
                     this.InputRequiredCycles.Value);
             }

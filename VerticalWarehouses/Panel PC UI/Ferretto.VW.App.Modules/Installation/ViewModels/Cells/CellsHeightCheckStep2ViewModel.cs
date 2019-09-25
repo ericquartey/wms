@@ -2,21 +2,16 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
     {
-
         #region Fields
-
-        private readonly bool isWaitingForResponse;
 
         private DelegateCommand applyCorrectionCommand;
 
@@ -46,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
-
-
 
         #region Properties
 

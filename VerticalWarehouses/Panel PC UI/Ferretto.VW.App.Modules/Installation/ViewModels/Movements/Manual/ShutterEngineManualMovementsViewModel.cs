@@ -14,7 +14,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
-
         #region Fields
 
         private readonly IMachineShuttersService shuttersService;
@@ -57,8 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         #endregion
-
-
 
         #region Properties
 
@@ -130,8 +127,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-
-
         #region Methods
 
         public override void Disappear()
@@ -180,7 +175,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   false);
             try
             {
-                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync(this.BayNumber);
+                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync();
             }
             catch (System.Exception ex)
             {
@@ -219,7 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.shuttersService.MoveAsync(this.BayNumber, direction);
+                await this.shuttersService.MoveAsync(direction);
             }
             catch (System.Exception ex)
             {

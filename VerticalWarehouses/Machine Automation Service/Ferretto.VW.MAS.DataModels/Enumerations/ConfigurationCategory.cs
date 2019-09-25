@@ -4,16 +4,6 @@
     {
         Undefined = 0L,
 
-        SetupNetwork = 2L,
-
-        VerticalAxis = 4L,
-
-        HorizontalAxis = 5L,
-
-        HorizontalMovementLongerProfile = 6L,
-
-        HorizontalMovementShorterProfile = 7L,
-
         VerticalManualMovements = 8L,
 
         HorizontalManualMovements = 9L,

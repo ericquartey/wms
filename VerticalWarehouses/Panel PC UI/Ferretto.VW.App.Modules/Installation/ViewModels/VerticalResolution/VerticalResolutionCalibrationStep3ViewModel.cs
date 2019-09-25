@@ -271,7 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.UpdateResolutionAsync(this.NewResolution.Value);
+                await this.MachineElevatorService.UpdateVerticalResolutionAsync(this.NewResolution.Value);
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.VerticalAxisResolutionUpdated,

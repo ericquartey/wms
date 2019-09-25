@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class SetupStatusProvider : ISetupStatusProvider
+    internal sealed class SetupStatusProvider : ISetupStatusProvider
     {
         #region Fields
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class CellPanelsProvider : Interfaces.ICellPanelsProvider
+    internal sealed class CellPanelsProvider : Interfaces.ICellPanelsProvider
     {
         #region Fields
 

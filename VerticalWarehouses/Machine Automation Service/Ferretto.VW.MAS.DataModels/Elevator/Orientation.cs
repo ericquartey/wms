@@ -2,6 +2,8 @@
 {
     public enum Orientation
     {
+        Undefined,
+
         Vertical,
 
         Horizontal,

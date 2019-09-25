@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -11,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableStartState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -46,22 +44,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if(message.Type == FieldMessageType.PowerEnable)
+            if (message.Type == FieldMessageType.PowerEnable)
             {
-                switch(message.Status)
+                switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                    this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
-                    break;
+                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+                        break;
 
                     case MessageStatus.OperationError:
-                    this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
-                    break;
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                        break;
                 }
             }
 
-            if(message.Type == FieldMessageType.IoDriverException)
+            if (message.Type == FieldMessageType.IoDriverException)
             {
                 this.stateData.FieldMessage = message;
                 this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
@@ -113,12 +111,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class UsersProvider : Interfaces.IUsersProvider
+    internal sealed class UsersProvider : Interfaces.IUsersProvider
     {
         #region Fields
 

@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class TorqueCurrentMeasurementsDataProvider : ITorqueCurrentMeasurementsDataProvider
+    public sealed class TorqueCurrentMeasurementsDataProvider : ITorqueCurrentMeasurementsDataProvider
     {
         #region Fields
 

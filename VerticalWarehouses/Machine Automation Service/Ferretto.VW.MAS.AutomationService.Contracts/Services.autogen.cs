@@ -2617,14 +2617,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution)
+        public System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution)
         {
-            return UpdateResolutionAsync(newResolution, System.Threading.CancellationToken.None);
+            return UpdateVerticalResolutionAsync(newResolution, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> UpdateResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken)
         {
             if (newResolution == null)
                 throw new System.ArgumentNullException("newResolution");
@@ -5356,22 +5356,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber)
+        public System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync()
         {
-            return GetShutterPositionAsync(bayNumber, System.Threading.CancellationToken.None);
+            return GetShutterPositionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (bayNumber == null)
-                throw new System.ArgumentNullException("bayNumber");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/shutters/position?");
-            urlBuilder_.Append("bayNumber=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/shutters/position");
     
             var client_ = _httpClient;
             try
@@ -5491,24 +5486,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction)
+        public System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction)
         {
-            return MoveAsync(bayNumber, direction, System.Threading.CancellationToken.None);
+            return MoveAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
-            if (bayNumber == null)
-                throw new System.ArgumentNullException("bayNumber");
-    
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/move?");
-            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/move?");
             urlBuilder_.Append("direction=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -5562,24 +5553,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition)
+        public System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition)
         {
-            return MoveToAsync(bayNumber, targetPosition, System.Threading.CancellationToken.None);
+            return MoveToAsync(targetPosition, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken)
         {
-            if (bayNumber == null)
-                throw new System.ArgumentNullException("bayNumber");
-    
             if (targetPosition == null)
                 throw new System.ArgumentNullException("targetPosition");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/moveTo?");
-            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/moveTo?");
             urlBuilder_.Append("targetPosition=").Append(System.Uri.EscapeDataString(ConvertToString(targetPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -5638,18 +5625,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount)
+        public System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount)
         {
-            return RunTestAsync(bayNumber, delayInSeconds, testCycleCount, System.Threading.CancellationToken.None);
+            return RunTestAsync(delayInSeconds, testCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken)
         {
-            if (bayNumber == null)
-                throw new System.ArgumentNullException("bayNumber");
-    
             if (delayInSeconds == null)
                 throw new System.ArgumentNullException("delayInSeconds");
     
@@ -5657,8 +5641,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 throw new System.ArgumentNullException("testCycleCount");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/{bayNumber}/run-test?");
-            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/shutters/run-test?");
             urlBuilder_.Append("delayInSeconds=").Append(System.Uri.EscapeDataString(ConvertToString(delayInSeconds, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("testCycleCount=").Append(System.Uri.EscapeDataString(ConvertToString(testCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;

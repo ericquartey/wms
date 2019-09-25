@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
 using Ferretto.VW.MAS.AutomationService.StateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
@@ -59,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.Template
                         break;
 
                     case MessageStatus.OperationError:
-                        ((IStateData)this.stateData).NotificationMessage = message;
+                        this.stateData.NotificationMessage = message;
                         this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
                         break;
                 }

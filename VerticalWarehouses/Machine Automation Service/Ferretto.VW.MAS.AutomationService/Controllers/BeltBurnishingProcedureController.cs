@@ -16,14 +16,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class BeltBurnishingProcedureController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IVerticalAxisDataLayer verticalAxis;
+        private readonly IElevatorProvider elevatorProvider;
+
+        private readonly ISetupStatusProvider setupStatusProvider;
 
         #endregion
 
@@ -31,34 +32,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BeltBurnishingProcedureController(
             IEventAggregator eventAggregator,
+            IElevatorProvider elevatorProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            ISetupStatusProvider setupStatusProvider,
-            IVerticalAxisDataLayer verticalAxisDataLayer)
+            ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
-            if(dataLayerConfigurationValueManagement is null)
-            {
-                throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
-            }
-
-            if(setupStatusProvider is null)
-            {
-                throw new ArgumentNullException(nameof(setupStatusProvider));
-            }
-
-            if(verticalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
-            this.configurationProvider = dataLayerConfigurationValueManagement;
-            this.setupStatusProvider = setupStatusProvider;
-            this.verticalAxis = verticalAxisDataLayer;
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.configurationProvider = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -67,15 +53,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var parameters = new BeltBurnishingParameters
             {
-                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        VerticalAxis.UpperBound,
-                        ConfigurationCategory.VerticalAxis),
-                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        VerticalAxis.LowerBound,
-                        ConfigurationCategory.VerticalAxis),
+                UpperBound = this.elevatorDataProvider.GetVerticalAxis().UpperBound,
+
+                LowerBound = this.elevatorDataProvider.GetVerticalAxis().LowerBound,
+
                 RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
-                        BeltBurnishing.CycleQuantity,
-                         ConfigurationCategory.BeltBurnishing),
+                    BeltBurnishing.CycleQuantity,
+                     ConfigurationCategory.BeltBurnishing),
             };
 
             return this.Ok(parameters);
@@ -104,93 +88,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
-            var parameters = new BeltBurnishingParameters
+            try
             {
-                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        VerticalAxis.UpperBound,
-                        ConfigurationCategory.VerticalAxis),
-                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(
-                        VerticalAxis.LowerBound,
-                        ConfigurationCategory.VerticalAxis)
-            };
+                this.elevatorProvider.RepeatVerticalMovement(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, this.BayNumber);
 
-            if(upperBoundPosition <= 0)
-            {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive
-                    });
+                return this.Accepted();
             }
-
-            if(upperBoundPosition > parameters.UpperBound)
+            catch (Exception ex)
             {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange
-                    });
+                return this.NegativeResponse(ex);
             }
-
-            if(upperBoundPosition <= lowerBoundPosition)
-            {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition
-                    });
-            }
-
-            if(lowerBoundPosition < parameters.LowerBound)
-            {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange
-                    });
-            }
-
-            if(totalTestCycleCount <= 0)
-            {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive
-                    });
-            }
-
-            decimal[] speed = { this.verticalAxis.MaxEmptySpeed };
-            decimal[] acceleration = { this.verticalAxis.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxis.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
-
-            var data = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Absolute,
-                MovementMode.BeltBurnishing,
-                upperBoundPosition,
-                speed,
-                acceleration,
-                deceleration,
-                totalTestCycleCount,
-                lowerBoundPosition,
-                upperBoundPosition,
-                delayStart,
-                switchPosition,
-                HorizontalMovementDirection.Forwards);
-
-            this.PublishCommand(
-                data,
-                "Execute Belt Burnishing Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
-
-            return this.Accepted();
         }
 
         [HttpPost("stop")]

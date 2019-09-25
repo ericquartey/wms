@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
-using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -59,7 +54,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private IStateMachine currentStateMachine;
 
-        private CancellationToken stoppingToken;
+        private readonly CancellationToken stoppingToken;
 
         #endregion
 
@@ -79,42 +74,42 @@ namespace Ferretto.VW.MAS.AutomationService
             IBaysProvider baysProvider)
             : base(eventAggregator, logger)
         {
-            if(serviceScopeFactory is null)
+            if (serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            if(applicationLifetime is null)
+            if (applicationLifetime is null)
             {
                 throw new ArgumentNullException(nameof(applicationLifetime));
             }
 
-            if(installationHub is null)
+            if (installationHub is null)
             {
                 throw new ArgumentNullException(nameof(installationHub));
             }
 
-            if(dataHubClient is null)
+            if (dataHubClient is null)
             {
                 throw new ArgumentNullException(nameof(dataHubClient));
             }
 
-            if(machinesDataService is null)
+            if (machinesDataService is null)
             {
                 throw new ArgumentNullException(nameof(machinesDataService));
             }
 
-            if(operatorHub is null)
+            if (operatorHub is null)
             {
                 throw new ArgumentNullException(nameof(operatorHub));
             }
 
-            if(baysDataService is null)
+            if (baysDataService is null)
             {
                 throw new ArgumentNullException(nameof(baysDataService));
             }
 
-            if(missionDataService is null)
+            if (missionDataService is null)
             {
                 throw new ArgumentNullException(nameof(missionDataService));
             }

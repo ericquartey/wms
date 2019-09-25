@@ -20,12 +20,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasIndex(b => b.Number)
                 .IsUnique();
 
-            builder.Property(c => c.ShutterType)
-             .HasColumnType("text")
-             .HasConversion(
-                 enumValue => enumValue.ToString(),
-                 stringValue => System.Enum.Parse<ShutterType>(stringValue));
-
             builder
                 .Ignore(b => b.Status);
         }
