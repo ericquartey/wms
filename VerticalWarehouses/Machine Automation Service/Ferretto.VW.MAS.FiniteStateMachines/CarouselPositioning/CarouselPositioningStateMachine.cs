@@ -13,17 +13,17 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    internal class PositioningStateMachine : StateMachineBase
+    internal class CarouselPositioningStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly IPositioningMachineData machineData;
+        private readonly ICarouselPositioningMachineData machineData;
 
         #endregion
 
         #region Constructors
 
-        public PositioningStateMachine(
+        public CarouselPositioningStateMachine(
             BayNumber requestingBay,
             BayNumber targetBay,
             IPositioningMessageData messageData,
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
 
-            this.machineData = new PositioningMachineData(
+            this.machineData = new CarouselPositioningMachineData(
                 requestingBay,
                 targetBay,
                 messageData,
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Destructors
 
-        ~PositioningStateMachine()
+        ~CarouselPositioningStateMachine()
         {
             this.Dispose(false);
         }
@@ -160,27 +160,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             bool ok = true;
             errorText = string.Empty;
-            if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
-               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+            ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                    !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
+                    !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
+            if (!ok)
             {
-                ok = false;
-                errorText = "Invalid presence sensors";
-            }
-            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-               this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
-            {
-                ok = false;
-                errorText = "Missing Zero sensor with empty elevator";
-            }
-            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-                this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
-                this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
-                (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
-                )
-            {
-                ok = false;
-                errorText = "Zero sensor active with full elevator";
+                errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                        $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
+                        $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
             }
             return ok;
         }
