@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +16,10 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
         #region Fields
 
         private readonly IInverterService inverterService;
+        private const int WORD_DIMENSION = 16;
+        private const int TOTAL_INPUTS = 8;
+        private const int SKIP_CHARS_FROM_NAME = 4;
+
 
         #endregion
 
@@ -37,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Methods
 
-        private IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension)
+        private IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)
         {
             var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), dimension).ToArray();
             foreach (var prop in properties)
@@ -49,7 +52,8 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                         prop.GetValue(status) is bool propValue)
                     {
                         var position = prop.GetCustomAttribute<ColumnAttribute>().Order;
-                        bits[position] = new BitInfo(prop.Name, propValue, prop.Name);
+                        var propName = prop.Name.Substring(skipCharFromName);
+                        bits[position] = new BitInfo(propName, propValue, propName);
                     }
                 }
                 catch
@@ -82,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                     break;
             }
 
-            return this.GetBits(inverterInputsProperties, status, 8);
+            return this.GetBits(inverterInputsProperties, status, TOTAL_INPUTS, SKIP_CHARS_FROM_NAME);
         }
 
         private IEnumerable<InverterDevice> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
@@ -94,8 +98,8 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             {
                 var device = new InverterDevice();
                 device.Id = (int)status.SystemIndex;
-                device.ControlWords = this.GetBits(controlWordProperties, status.CommonControlWord, 16);
-                device.StatusWords = this.GetBits(statusWordProperties, status.CommonStatusWord, 16);
+                device.ControlWords = this.GetBits(controlWordProperties, status.CommonControlWord, WORD_DIMENSION);
+                device.StatusWords = this.GetBits(statusWordProperties, status.CommonStatusWord, WORD_DIMENSION);
                 device.DigitalInputs = this.GetDigitalInputs(status);
                 device.Id = status.SystemIndex;
                 inverterDevices.Add(device);

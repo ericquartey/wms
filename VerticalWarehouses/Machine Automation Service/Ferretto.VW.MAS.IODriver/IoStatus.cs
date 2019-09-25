@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const byte SETUP_OUTPUTLINES_DEFAULT = 0x00;
 
-        private const int TOTAL_INPUTS = 16;
+        public const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
 
@@ -67,20 +68,26 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Properties
 
+        [Column(Order = (int)IoPorts.AntiIntrusionBarrierBay)]
         public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
 
+        [Column(Order = (int)IoPorts.CradleMotor)]
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
-
+        
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
 
+        [Column(Order = (int)IoPorts.CradleMotor)]
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
+        [Column(Order = (int)IoPorts.CradleMotorFeedback)]
         public bool CradleMotorSelected => this.inputs?[(int)IoPorts.CradleMotorFeedback] ?? false;
 
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
+        [Column(Order = (int)IoPorts.ElevatorMotor)]
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
+        [Column(Order = (int)IoPorts.ElevatorMotorFeedback)]
         public bool ElevatorMotorSelected => this.inputs?[(int)IoPorts.ElevatorMotorFeedback] ?? false;
 
         public ShdFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
@@ -94,20 +101,27 @@ namespace Ferretto.VW.MAS.IODriver
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
+        [Column(Order = (int)IoPorts.LoadingUnitInBay)]
         public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
 
+        [Column(Order = (int)IoPorts.ResetSecurity)]
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
+        [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
         public bool MicroCarterLeftSideBay => this.inputs?[(int)IoPorts.MicroCarterLeftSideBay] ?? false;
 
+        [Column(Order = (int)IoPorts.MicroCarterRightSideBay)]
         public bool MicroCarterRightSideBay => this.inputs?[(int)IoPorts.MicroCarterRightSideBay] ?? false;
 
+        [Column(Order = (int)IoPorts.MushroomEmergency)]
         public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
 
+        [Column(Order = (int)IoPorts.NormalState)]
         public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public bool[] OutputData => this.outputs;
 
+        [Column(Order = (int)IoPorts.ResetSecurity)]
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }

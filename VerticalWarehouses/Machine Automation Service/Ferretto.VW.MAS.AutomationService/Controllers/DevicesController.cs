@@ -36,17 +36,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<(IEnumerable<InverterDevice>, IEnumerable<IoDevice>)> GetAll()
         {
-            try
-            {
-                var inverterStatuses = this.inverterProvider.GetStatuses;
-                var ioDeviceStatuses = this.ioDeviceProvider.GetStatuses;
-                var result = (InvertersStatuses: inverterStatuses, IoStatuses: ioDeviceStatuses);
+                var invertersStatuses = this.inverterProvider.GetStatuses;
+                var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
+                var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
                 return this.Ok(result);
-            }
-            catch (System.Exception ex)
-            {
-                return this.BadRequest();
-            }
         }
 
         #endregion

@@ -7,28 +7,28 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
-        [Column(Order = 4)]
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelACradle)]
         bool ANG_EncoderChannelACradle { get; }
 
-        [Column(Order = 3)]
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelBCradle)]
         bool ANG_EncoderChannelBCradle { get; }
 
-        [Column(Order = 5)]
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelZCradle)]
         bool ANG_EncoderChannelZCradle { get; }
 
-        [Column(Order = 1)]
+        [Column(Order = (int)InverterSensors.ANG_HardwareSensorSS1)]
         bool ANG_HardwareSensorSS1 { get; }
 
-        [Column(Order = 0)]
+        [Column(Order = (int)InverterSensors.ANG_HardwareSensorSTO)]
         bool ANG_HardwareSensorSTO { get; }
 
-        [Column(Order = 6)]
+        [Column(Order = (int)InverterSensors.ANG_OverrunElevatorSensor)]
         bool ANG_OverrunElevatorSensor { get; }
 
-        [Column(Order = 7)]
+        [Column(Order = (int)InverterSensors.ANG_ZeroCradleSensor)]
         bool ANG_ZeroCradleSensor { get; }
 
-        [Column(Order = 2)]
+        [Column(Order = (int)InverterSensors.ANG_ZeroElevatorSensor)]
         bool ANG_ZeroElevatorSensor { get; }
 
         //bool ANG_BarrierCalibration { get; }

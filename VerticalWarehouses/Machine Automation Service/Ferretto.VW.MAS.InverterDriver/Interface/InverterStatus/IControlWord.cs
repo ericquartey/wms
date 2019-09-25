@@ -6,28 +6,28 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
     {
         #region Properties
 
-        [Column(Order = 4)]
+        [Column(Order = 3)]
         bool EnableOperation { set; }
 
-        [Column(Order = 2)]
+        [Column(Order = 1)]
         bool EnableVoltage { set; }
 
-        [Column(Order = 8)]
+        [Column(Order = 7)]
         bool FaultReset { get; set; }
 
-        [Column(Order = 9)]
+        [Column(Order = 8)]
         bool Halt { set; }
 
-        [Column(Order = 11)]
+        [Column(Order = 10)]
         bool HeartBeat { get; set; }
 
-        [Column(Order = 16)]
+        [Column(Order = 15)]
         bool HorizontalAxis { get; set; }
 
-        [Column(Order = 3)]
+        [Column(Order = 2)]
         bool QuickStop { set; }
 
-        [Column(Order = 1)]
+        [Column(Order = 0)]
         bool SwitchOn { set; }
 
         ushort Value { get; set; }

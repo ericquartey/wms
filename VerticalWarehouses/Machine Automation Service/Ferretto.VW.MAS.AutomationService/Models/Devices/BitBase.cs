@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Models
             }
 
             this.Description = description;
-            this.Name = name.Substring(0, Math.Min(name.Length, 3));
+            this.Name = name.Substring(0, Math.Min(name.Length, 4));
         }
 
         #endregion

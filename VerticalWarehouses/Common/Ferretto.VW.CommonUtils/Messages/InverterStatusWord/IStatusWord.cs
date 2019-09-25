@@ -6,37 +6,36 @@ namespace Ferretto.VW.CommonUtils.Enumerations
     {
         #region Properties
 
-        [Column(Order = 4)]
+        [Column(Order = 3)]
         bool IsFault { get; }
 
-        [Column(Order = 3)]
+        [Column(Order = 2)]
         bool IsOperationEnabled { get; }
 
-        [Column(Order = 6)]
+        [Column(Order = 5)]
         bool IsQuickStopTrue { get; }
 
-        [Column(Order = 1)]
+        [Column(Order = 0)]
         bool IsReadyToSwitchOn { get; }
 
-        [Column(Order = 10)]
+        [Column(Order = 9)]
         bool IsRemote { get; }
 
-        [Column(Order = 2)]
+        [Column(Order = 1)]
         bool IsSwitchedOn { get; }
 
-        [Column(Order = 7)]
+        [Column(Order = 6)]
         bool IsSwitchOnDisabled { get; }
 
-        [Column(Order = 5)]
+        [Column(Order = 4)]
         bool IsVoltageEnabled { get; }
 
-        [Column(Order = 8)]
+        [Column(Order = 7)]
         bool IsWarning { get; }
 
-        [Column(Order = 16)]
+        [Column(Order = 15)]
         bool IsWarning2 { get; }
 
-        [Column(Order = 1)]
         ushort Value { get; set; }
 
         #endregion

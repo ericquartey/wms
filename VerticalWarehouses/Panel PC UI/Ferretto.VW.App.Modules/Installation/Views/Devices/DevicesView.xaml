@@ -1,15 +1,12 @@
 ﻿<ctrls:PpcDialogView x:Class="Ferretto.VW.App.Installation.Views.DevicesView"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-                     xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
-                     xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                     xmlns:device="clr-namespace:Ferretto.VW.MAS.AutomationService.Contracts;assembly=Ferretto.VW.MAS.AutomationService.Contracts"
-                     xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Installation.Models"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     xmlns:prism="http://prismlibrary.com/"
+                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+                     xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
                      xmlns:vm="clr-namespace:Ferretto.VW.App.Modules.Installation.ViewModels"
+                     xmlns:device="clr-namespace:Ferretto.VW.MAS.AutomationService.Contracts;assembly=Ferretto.VW.MAS.AutomationService.Contracts"
                      Title="Devices"
                      Width="950"
                      Height="680"
@@ -114,6 +111,7 @@
                                 <DataTemplate>
                                     <ctrls:SensorSquare Height="25"
                                                         Margin="2,3"
+                                                        FontSizeLabel="9"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
                                                         IsReadOnly="True"
@@ -153,7 +151,7 @@
                                                   Margin="2,3"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
-                                                  FontSizeLabel="10"
+                                                  FontSizeLabel="9"
                                                   HeightControl="21"
                                                   LabelText="{Binding Name}"
                                                   SensorState="{Binding Value}"
@@ -244,7 +242,7 @@
                                                         Margin="2,3"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
-                                                        FontSizeLabel="8"
+                                                        FontSizeLabel="9"
                                                         IsEnabled="{Binding IsReadable}"
                                                         IsReadOnly="True"
                                                         LabelText="{Binding Name}"
@@ -283,11 +281,11 @@
                                     <ctrls:Sensor Margin="2,3"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
-                                                  FontSizeLabel="13"
+                                                  FontSizeLabel="9"
                                                   HeightControl="21"
                                                   LabelText="{Binding Name}"
                                                   SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  Style="{StaticResource VWSIM_CustomSensorControlStyle}"
+                                                  Style="{StaticResource VW_SensorStyle}"
                                                   ToolTip="{Binding Description}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -578,13 +576,8 @@
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                                    Text="{Binding CurrentStateInverter, FallbackValue='TEST'}" />
-
-
-
                     </Grid>
-
                 </Border>
-
             </Grid>
 
             <controls:PpcButton Grid.Column="3"

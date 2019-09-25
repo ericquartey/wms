@@ -6,28 +6,28 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
-        [Column(Order = 4)]
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelA)]
         bool ACU_EncoderChannelA { get; }
 
-        [Column(Order = 3)]
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelB)]
         bool ACU_EncoderChannelB { get; }
 
-        [Column(Order = 5)]
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelZ)]
         bool ACU_EncoderChannelZ { get; }
 
-        [Column(Order = 6)]
+        [Column(Order = (int)InverterSensors.ACU_FreeSensor1)]
         bool ACU_FreeSensor1 { get; }
 
-        [Column(Order = 7)]
+        [Column(Order = (int)InverterSensors.ACU_FreeSensor2)]
         bool ACU_FreeSensor2 { get; }
 
-        [Column(Order = 1)]
+        [Column(Order = (int)InverterSensors.ACU_HardwareSensorSS1)]
         bool ACU_HardwareSensorSS1 { get; }
 
-        [Column(Order = 0)]
+        [Column(Order = (int)InverterSensors.ACU_HardwareSensorSTO)]
         bool ACU_HardwareSensorSTO { get; }
 
-        [Column(Order = 2)]
+        [Column(Order = (int)InverterSensors.ACU_ZeroSensor)]
         bool ACU_ZeroSensor { get; }
 
         #endregion
