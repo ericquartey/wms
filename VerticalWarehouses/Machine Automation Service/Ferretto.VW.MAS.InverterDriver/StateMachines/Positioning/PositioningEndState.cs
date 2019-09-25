@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Notify Positioning End");
+            this.Logger.LogDebug($"Notify Positioning End. StopRequested = {this.stopRequested}");
 
             this.Inverter.PositionControlWord.NewSetPoint = !this.stopRequested;
 
