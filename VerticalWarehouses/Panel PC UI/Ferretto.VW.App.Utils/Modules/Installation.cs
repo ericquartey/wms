@@ -54,6 +54,15 @@
             #endregion
         }
 
+        public static class Devices
+        {
+            #region Fields
+
+            public const string DEVICES = "DevicesViewModel";
+
+            #endregion
+        }
+
         public static class Elevator
         {
             #region Classes

@@ -4,6 +4,8 @@
     {
         #region Methods
 
+        void Show(string moduleName, string viewModelName);
+
         void ShowCustomMessagePopup(string title, string message);
 
         /// <summary>
