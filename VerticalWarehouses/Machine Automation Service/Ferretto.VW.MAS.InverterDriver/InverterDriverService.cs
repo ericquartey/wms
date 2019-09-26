@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -62,7 +62,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task inverterSendTask;
 
-        private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+        //private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+
+        private readonly IInverterService inverterService;
 
         private readonly ILogger logger;
 
@@ -111,6 +113,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         public InverterDriverService(
             ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
+            IInverterService inverterService,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
@@ -134,6 +137,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
+            this.inverterService = inverterService;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
@@ -166,8 +170,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.SensorTimeData = new InverterDiagnosticsData();
 
             this.SensorIntervalTimeData = new InverterDiagnosticsData();
-
-            this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
             this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
 

@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.StatusWordParam)
             {
-                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                if (this.inverterService.TryGetValue(inverterIndex, out var inverterStatus))
                 {
                     if (inverterStatus.CommonStatusWord.Value != currentMessage.UShortPayload)
                     {
@@ -190,11 +190,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
-                foreach (var installedInverter in this.inverterStatuses)
+                foreach (var installedInverter in this.inverterService.GetStatuses)
                 {
-                    var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, (int)installedInverter.Key);
+                    var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, (int)installedInverter.SystemIndex);
 
-                    if (this.inverterStatuses.TryGetValue(installedInverter.Key, out var inverterStatus))
+                    if (this.inverterService.TryGetValue((InverterIndex)installedInverter.SystemIndex, out var inverterStatus))
                     {
                         switch (inverterStatus.InverterType)
                         {
@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace($"5:ActualPositionShaft.UIntPayload={currentMessage.IntPayload}");
 
-                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                if (this.inverterService.TryGetValue(inverterIndex, out var inverterStatus))
                 {
                     if ((inverterStatus.InverterType == InverterType.Ang || inverterStatus.InverterType == InverterType.Acu)
                         && inverterStatus is IPositioningInverterStatus positioningInverter
@@ -345,7 +345,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("2:Evaluate Control word");
 
-                if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                if (!this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");
 
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
                 }
 
-                this.inverterStatuses.Add(inverterType.Key, inverterStatus);
+                this.inverterService.AddStatus(inverterType.Key, inverterStatus);
             }
 
             this.logger.LogTrace("1:Start Heart beat timer");
@@ -469,7 +469,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogError("2:Required Inverter Status not configured");
 
@@ -526,7 +526,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 var currentStateMachine = new SwitchOffStateMachine(
                     inverterStatus,
@@ -552,7 +552,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 var currentStateMachine = new ResetFaultStateMachine(
                     inverterStatus,
@@ -580,7 +580,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 try
                 {
-                    if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                    if (this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                     {
                         var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
                         this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
@@ -675,7 +675,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 var currentStateMachine = new SwitchOffStateMachine(
                     inverterStatus,
@@ -705,7 +705,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (receivedMessage.Data is IInverterSwitchOnFieldMessageData switchOnData)
             {
-                if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+                if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     if (inverterStatus.CommonStatusWord.IsReadyToSwitchOn &
                         inverterStatus.CommonStatusWord.IsVoltageEnabled &
@@ -807,7 +807,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogError("2:Required Inverter Status not configured");
 
@@ -1005,7 +1005,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.logger.LogTrace("1:Parse Message Data");
 
-            if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 this.logger.LogError("2:Required Inverter Status not configured");
 
@@ -1048,7 +1048,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.logger.LogTrace("1:Parse Message Data");
 
-            if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 this.logger.LogError("2:Required Inverter Status not configured");
 
@@ -1093,7 +1093,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogError("2:Required Inverter Status not configured");
 
@@ -1132,7 +1132,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 var currentStateMachine = new StopStateMachine(
                     inverterStatus,
@@ -1251,7 +1251,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (this.socketTransport.IsConnected)
             {
-                if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                if (!this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("1:Inverter status not configured for Main Inverter");
 

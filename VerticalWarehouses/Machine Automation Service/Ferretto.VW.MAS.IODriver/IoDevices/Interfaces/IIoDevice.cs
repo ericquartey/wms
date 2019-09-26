@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices.Interfaces
 {
     public interface IIoDevice
     {
-
-
         #region Methods
 
         void DestroyStateMachine();

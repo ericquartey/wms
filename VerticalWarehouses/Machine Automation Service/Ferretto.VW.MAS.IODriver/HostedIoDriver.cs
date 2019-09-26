@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface.Services;
 using Ferretto.VW.MAS.IODriver.IoDevices;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IIoDeviceService iIoDeviceService;
+
         private readonly Dictionary<IoIndex, IIoDevice> ioDevices;
 
         private readonly ILogger logger;
@@ -56,6 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public HostedIoDriver(
             IEventAggregator eventAggregator,
+            IIoDeviceService iIoDeviceService,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedIoDriver> logger,
@@ -65,6 +69,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
+            this.iIoDeviceService = iIoDeviceService;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
             this.configuration = configuration;
@@ -183,21 +188,21 @@ namespace Ferretto.VW.MAS.IODriver
                     case IoIndex.IoDevice1:
                     var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
                     var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger, this.stoppingToken);
+                    ioDevice = new IoDevice(this.eventAggregator, this.iIoDeviceService, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger, this.stoppingToken);
 
                     break;
 
                     case IoIndex.IoDevice2:
                     var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
                     var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger, this.stoppingToken);
+                    ioDevice = new IoDevice(this.eventAggregator, this.iIoDeviceService, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger, this.stoppingToken);
 
                     break;
 
                     case IoIndex.IoDevice3:
                     var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue(SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
                     var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
-                    ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger, this.stoppingToken);
+                    ioDevice = new IoDevice(this.eventAggregator, this.iIoDeviceService, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger, this.stoppingToken);
 
                     break;
                 }

@@ -9,8 +9,8 @@
                       Height="400"                      
                       AllowsTransparency="True"
                       IsClosed="{Binding IsClosed}"
-                      Opacity="1"
-                      ResizeMode="NoResize"
+                      Opacity="1"                      
+                      ResizeMode="CanResizeWithGrip"
                       WindowStyle="None"
                       mc:Ignorable="d">
 
