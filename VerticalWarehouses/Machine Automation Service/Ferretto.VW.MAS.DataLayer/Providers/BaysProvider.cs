@@ -298,14 +298,22 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     switch (data.MovementMode)
                     {
                         case MovementMode.ShutterTest:
-                        case MovementMode.Position:
-                            returnValue = Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString());
+                        case MovementMode.ShutterPosition:
+                            returnValue = this.GetInverterList(bayIndex)[this.ShutterInverterPosition];
+                            break;
+
+                        case MovementMode.BayChain:
+                        case MovementMode.BayChainManual:
+                        case MovementMode.BayTest:
+                            returnValue = this.GetInverterList(bayIndex)[this.BayInverterPosition];
+                            break;
+
+                        default:
                             break;
                     }
                     break;
 
                 default:
-                    returnValue = InverterIndex.None;
                     break;
             }
 

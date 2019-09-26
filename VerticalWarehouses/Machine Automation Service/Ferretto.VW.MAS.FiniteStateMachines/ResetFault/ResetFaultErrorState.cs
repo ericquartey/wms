@@ -2,13 +2,13 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 {
     internal class ResetFaultErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IResetFaultMachineData machineData;
@@ -38,8 +38,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -74,16 +72,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

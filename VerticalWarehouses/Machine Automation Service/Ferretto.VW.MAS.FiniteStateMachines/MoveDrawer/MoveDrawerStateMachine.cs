@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     internal class MoveDrawerStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -66,8 +65,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -161,7 +158,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 case DrawerDestination.CarouselBay1Up:
                 case DrawerDestination.ExternalBay1Up:
                 case DrawerDestination.InternalBay1Up:
-                    bayCheckOk = this.machineData.MachineSensorsStatus.IsDrawerInBay1Up;
+                    bayCheckOk = this.machineData.MachineSensorsStatus.IsDrawerInBay1Top;
                     break;
             }
 

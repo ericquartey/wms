@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     internal class EmptyState : StateBase
     {
-
-
         #region Constructors
 
         public EmptyState(ILogger<FiniteStateMachines> logger)
@@ -19,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -46,7 +42,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         public override void Stop(StopRequestReason reason = StopRequestReason.Stop)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

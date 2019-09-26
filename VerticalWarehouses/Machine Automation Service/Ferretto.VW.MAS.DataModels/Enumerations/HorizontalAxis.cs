@@ -25,5 +25,7 @@
         ClockWiseRun = 6L,
 
         AntiClockWiseRun = 7L,
+
+        CarouselDistance = 12L
     }
 }

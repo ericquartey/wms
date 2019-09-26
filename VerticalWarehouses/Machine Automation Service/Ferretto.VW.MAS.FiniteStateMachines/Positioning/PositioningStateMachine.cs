@@ -100,12 +100,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                //INFO Check the Horizontal and Vertical conditions for Positioning
-                var checkConditions = this.CheckConditions();
-
                 var stateData = new PositioningStateData(this, this.machineData);
-
-                if (checkConditions)
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                if (this.CheckConditions(out string errorText))
                 {
                     if (this.machineData.MessageData.MovementMode == MovementMode.FindZero && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     {
@@ -120,7 +117,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 {
                     var notificationMessage = new NotificationMessage(
                         this.machineData.MessageData,
-                        "Conditions not verified for positioning",
+                        errorText,
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.InverterException,
@@ -135,7 +132,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
                     }
 
-                    this.Logger.LogError($"Conditions not verified for positioning");
+                    this.Logger.LogError(errorText);
 
                     this.PublishNotificationMessage(notificationMessage);
                     this.CurrentState = new PositioningErrorState(stateData);
@@ -158,18 +155,54 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
         }
 
-        private bool CheckConditions()
+        // return false in case of error
+        private bool CheckConditions(out string errorText)
         {
-            //HACK The condition must be handled by the Bug #3711
-            //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            return (((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
-                    !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
-                    (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)) ||
-                this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
-                ) &&
-                this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                ||
-                this.machineData.MessageData.AxisMovement == Axis.Horizontal;
+            bool ok = true;
+            errorText = string.Empty;
+            if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
+               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+            {
+                ok = false;
+                errorText = "Invalid presence sensors";
+            }
+            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+               this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+            {
+                ok = false;
+                errorText = "Missing Zero sensor with empty elevator";
+            }
+            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+                this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
+                this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
+                (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                )
+            {
+                ok = false;
+                errorText = "Zero sensor active with full elevator";
+            }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+            {
+                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
+                if (!ok)
+                {
+                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                            $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
+                            $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
+                }
+                else
+                {
+                    ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                    if (!ok)
+                    {
+                        errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";
+                    }
+                }
+            }
+            return ok;
         }
 
         #endregion
