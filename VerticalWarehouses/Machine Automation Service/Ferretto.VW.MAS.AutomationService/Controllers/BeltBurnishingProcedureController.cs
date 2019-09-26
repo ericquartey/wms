@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart)
+        public IActionResult Start(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
             try
             {

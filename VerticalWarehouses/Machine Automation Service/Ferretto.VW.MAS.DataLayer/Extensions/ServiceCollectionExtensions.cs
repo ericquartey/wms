@@ -50,8 +50,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer);
 
             services
-                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
-                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
                 .AddTransient<IBaysProvider, BaysProvider>()
                 .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()

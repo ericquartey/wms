@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<decimal> GetAdjustedResolution(decimal measuredDistance, decimal expectedDistance)
+        public ActionResult<decimal> GetAdjustedResolution(double measuredDistance, double expectedDistance)
         {
             if (measuredDistance <= 0)
             {
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var resolution = this.elevatorDataProvider.GetVerticalAxis().Resolution;
 
-            return resolution * expectedDistance / measuredDistance;
+            return resolution * (decimal)expectedDistance / (decimal)measuredDistance;
         }
 
         [HttpGet("parameters")]
@@ -104,11 +104,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 CurrentResolution = this.elevatorDataProvider.GetVerticalAxis().Resolution,
 
-                InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                InitialPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
                     ResolutionCalibration.InitialPosition,
                     ConfigurationCategory.ResolutionCalibration),
 
-                FinalPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                FinalPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
                     ResolutionCalibration.FinalPosition,
                     ConfigurationCategory.ResolutionCalibration),
             };

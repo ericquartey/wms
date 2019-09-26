@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         public int AreaId { get; set; }
 
-        public decimal Depth { get; set; }
+        public double Depth { get; set; }
 
         public System.DateTime InstallationDate { get; set; }
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         public System.DateTime? LastServiceDate { get; set; }
 
-        public decimal MaxGrossWeight { get; set; }
+        public double MaxGrossWeight { get; set; }
 
         public string ModelName { get; set; }
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         public int TrayCount { get; set; }
 
-        public decimal Width { get; set; }
+        public double Width { get; set; }
 
         #endregion
     }

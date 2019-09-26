@@ -4,13 +4,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public interface IMachineSensorsStatus
     {
-
-
         #region Properties
 
-        decimal AxisXPosition { get; set; }
+        double AxisXPosition { get; set; }
 
-        decimal AxisYPosition { get; set; }
+        double AxisYPosition { get; set; }
 
         bool[] DisplayedInputs { get; }
 
@@ -33,8 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         bool IsSensorZeroOnElevator { get; }
 
         #endregion
-
-
 
         #region Methods
 

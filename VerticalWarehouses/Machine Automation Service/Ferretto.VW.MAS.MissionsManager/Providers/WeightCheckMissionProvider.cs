@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
             var loadingUnit = this.loadingUnitsProvider.GetById(loadingUnitId);
 
-            if (loadingUnit.MaxNetWeight < loadingUnit.Tare + (decimal)weight)
+            if (loadingUnit.MaxNetWeight < loadingUnit.Tare + weight)
             {
                 throw new ArgumentOutOfRangeException(// TODO localize string
                     $"LoadingUnit {loadingUnitId}, weight ({weight}) must be less than ({loadingUnit.MaxNetWeight - loadingUnit.Tare}).");

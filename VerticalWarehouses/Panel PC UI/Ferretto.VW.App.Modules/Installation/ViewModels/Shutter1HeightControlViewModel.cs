@@ -14,17 +14,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private int activeRaysQuantity;
 
-        private decimal currentHeight;
+        private double currentHeight;
 
-        private decimal gateCorrection;
+        private double gateCorrection;
 
         private string noteText;
 
         private int speed;
 
-        private decimal systemError;
+        private double systemError;
 
-        private decimal tolerance;
+        private double tolerance;
 
         #endregion
 
@@ -43,9 +43,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public int ActiveRaysQuantity { get => this.activeRaysQuantity; set => this.SetProperty(ref this.activeRaysQuantity, value); }
 
-        public decimal CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
+        public double CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
-        public decimal GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
+        public double GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -53,9 +53,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public int Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
 
-        public decimal SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
+        public double SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
 
-        public decimal Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
+        public double Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
 
         #endregion
 

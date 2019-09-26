@@ -9,13 +9,10 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 {
     public class BayNumberFilter : IAsyncActionFilter
     {
-
-
         #region Methods
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-
             if (context.Controller is BaseAutomationController baseController)
             {
                 var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];

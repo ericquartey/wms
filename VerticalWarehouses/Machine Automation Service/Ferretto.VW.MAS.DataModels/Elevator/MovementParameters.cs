@@ -5,19 +5,19 @@
         #region Properties
 
         /// <summary>
-        /// The acceleration of the movement, in mm/s^2.
+        /// Gets or sets the acceleration of the movement, in mm/s^2.
         /// </summary>
-        public decimal Acceleration { get; set; }
+        public double Acceleration { get; set; }
 
         /// <summary>
-        /// The deceleration of the movement, in mm/s^2.
+        /// Gets or sets the deceleration of the movement, in mm/s^2.
         /// </summary>
-        public decimal Deceleration { get; set; }
+        public double Deceleration { get; set; }
 
         /// <summary>
-        /// The speed of the movement, in mm/s.
+        /// Gets or sets the speed of the movement, in mm/s.
         /// </summary>
-        public decimal Speed { get; set; }
+        public double Speed { get; set; }
 
         #endregion
     }

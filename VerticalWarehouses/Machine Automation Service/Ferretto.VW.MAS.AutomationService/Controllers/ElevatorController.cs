@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("horizontal/position")]
-        public ActionResult<decimal> GetHorizontalPosition()
+        public ActionResult<double> GetHorizontalPosition()
         {
             try
             {
@@ -76,12 +76,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
             catch (Exception ex)
             {
-                return this.NegativeResponse<decimal>(ex);
+                return this.NegativeResponse<double>(ex);
             }
         }
 
         [HttpGet("vertical/position")]
-        public ActionResult<decimal> GetVerticalPosition()
+        public ActionResult<double> GetVerticalPosition()
         {
             try
             {
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
             catch (Exception ex)
             {
-                return this.NegativeResponse<decimal>(ex);
+                return this.NegativeResponse<double>(ex);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
+        public IActionResult MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("vertical/move-relative")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveVerticalOfDistance(decimal distance)
+        public IActionResult MoveVerticalOfDistance(double distance)
         {
             try
             {
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("weight-check")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult WeightCheck(int loadingUnitId, decimal runToTest, decimal weight)
+        public IActionResult WeightCheck(int loadingUnitId, double runToTest, double weight)
         {
             try
             {

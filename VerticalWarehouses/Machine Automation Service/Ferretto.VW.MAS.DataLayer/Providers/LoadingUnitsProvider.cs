@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 int? width;
                 int? depth;
-                IEnumerable<(string Id, decimal MaxLoadCapacity, decimal Tare)> loadingUnitClasses = null;
+                IEnumerable<(string Id, double MaxLoadCapacity, double Tare)> loadingUnitClasses = null;
                 IEnumerable<(int Code, string Class)> loadingUnits = null;
 
                 jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("configuration/schemas/loading-units-schema.json")));
@@ -146,14 +146,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
-        private async Task<IEnumerable<(string Id, decimal MaxLoadCapacity, decimal Tare)>> ReadAllLoadingUnitClassesAsync(JSchemaValidatingReader jsonFile)
+        private async Task<IEnumerable<(string Id, double MaxLoadCapacity, double Tare)>> ReadAllLoadingUnitClassesAsync(JSchemaValidatingReader jsonFile)
         {
-            var classes = new List<(string id, decimal maxLoadCapaciy, decimal tare)>();
+            var classes = new List<(string id, double maxLoadCapaciy, double tare)>();
             while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndArray)
             {
                 if (jsonFile.TokenType == JsonToken.StartObject)
                 {
-                    (string Id, decimal MaxLoadCapacity, decimal Tare) loadingUnitClass = (string.Empty, 0, 0);
+                    (string Id, double MaxLoadCapacity, double Tare) loadingUnitClass = (string.Empty, 0, 0);
 
                     while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndObject)
                     {
@@ -169,8 +169,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             }
                             else if (propertyName == "max-load-capacity")
                             {
-                                decimal? maxLoadCapacity;
-                                while (!(maxLoadCapacity = await jsonFile.ReadAsDecimalAsync()).HasValue)
+                                double? maxLoadCapacity;
+                                while (!(maxLoadCapacity = await jsonFile.ReadAsDoubleAsync()).HasValue)
                                 {
                                 }
 
@@ -178,8 +178,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             }
                             else if (propertyName == "tare")
                             {
-                                decimal? tare;
-                                while (!(tare = await jsonFile.ReadAsDecimalAsync()).HasValue)
+                                double? tare;
+                                while (!(tare = await jsonFile.ReadAsDoubleAsync()).HasValue)
                                 {
                                 }
 

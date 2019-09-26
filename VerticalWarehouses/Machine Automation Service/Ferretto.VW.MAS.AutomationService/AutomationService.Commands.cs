@@ -3,14 +3,13 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
     partial class AutomationService
     {
-
-
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)
@@ -28,7 +27,15 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.PowerEnable:
                     if (command.Data is IPowerEnableMessageData messageData)
                     {
-                        this.currentStateMachine = new PowerEnableStateMachine(messageData.Enable, command.RequestingBay, messageData.Enable ? StopRequestReason.NoReason : StopRequestReason.RunningStateChanged, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                        this.currentStateMachine = new PowerEnableStateMachine(
+                            messageData.Enable,
+                            command.RequestingBay,
+                            messageData.Enable ? StopRequestReason.NoReason : StopRequestReason.RunningStateChanged,
+                            this.configuredBays,
+                            this.EventAggregator,
+                            this.Logger as ILogger<AutomationService>,
+                            this.serviceScopeFactory);
+
                         this.currentStateMachine.Start();
                     }
                     break;

@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        public decimal Height { get; set; }
+        public double Height { get; set; }
 
         #endregion
     }

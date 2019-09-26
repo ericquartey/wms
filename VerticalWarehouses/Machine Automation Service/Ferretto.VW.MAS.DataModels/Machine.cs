@@ -19,12 +19,12 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
-        public decimal Height { get; set; }
+        public double Height { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum gross weight that the machine can have.
         /// </summary>
-        public decimal MaxGrossWeight { get; set; }
+        public double MaxGrossWeight { get; set; }
 
         /// <summary>
         /// Gets or sets the machine's model name.

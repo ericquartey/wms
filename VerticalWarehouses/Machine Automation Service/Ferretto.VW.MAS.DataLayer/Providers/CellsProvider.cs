@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return cellStatistics;
         }
 
-        public Cell UpdateHeight(int cellId, decimal height)
+        public Cell UpdateHeight(int cellId, double height)
         {
             var cell = this.dataContext.Cells
                 .Include(c => c.Panel)

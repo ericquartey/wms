@@ -483,7 +483,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public async Task StartHardwareCommunications()
         {
-            this.logger.LogInformation($"1:Configure ioAddress={this.ipAddress}:ioPort={this.port}");
+            this.logger.LogInformation($"1:Configure I/O device {this.deviceIndex}, tcp-endpoint={this.ipAddress}:{this.port}");
 
             this.ioTransport.Configure(this.ipAddress, this.port);
 

@@ -70,7 +70,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .GetEvent<NotificationEvent>();
 
             var subscriptionToken = notificationEvent.Subscribe(
-                    m => { messageData = m.Data as TData; semaphore.Release(); },
+                    m =>
+                    {
+                        messageData = m.Data as TData;
+                        semaphore.Release();
+                    },
                     ThreadOption.PublisherThread,
                     false,
                     message =>

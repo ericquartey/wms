@@ -17,7 +17,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class LoadingUnitsController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
@@ -58,8 +57,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -112,7 +109,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     if (loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        stat.AreaFillPercentage = (decimal?)loadingUnit.AreaFillRate.Value * 100;
+                        stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
                     }
                 }
             }

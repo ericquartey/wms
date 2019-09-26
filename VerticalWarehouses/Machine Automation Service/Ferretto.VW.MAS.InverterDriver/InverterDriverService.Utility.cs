@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             var axisOrientation = axis == Axis.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
-                            decimal currentAxisPosition = 0;
+                            double currentAxisPosition = 0;
                             if (currentMessage.IntPayload != 0)
                             {
                                 currentAxisPosition = this.elevatorDataProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
@@ -539,6 +539,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogTrace("1:Method Start");
 
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+
+            if (currentInverter > InverterIndex.Slave7)
+            {
+                return;
+            }
 
             if (this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
             {
@@ -828,18 +833,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                             currentPosition = currentACUStatus.CurrentPosition;
                         }
 
-                        var position = positioningData.TargetPosition;
+                        var position = (double)positioningData.TargetPosition;
                         if (positioningData.MovementType == MovementType.Absolute)
                         {
-                            var offset = positioningData.AxisMovement == Axis.Horizontal
-                                ? this.elevatorDataProvider.GetHorizontalAxis().Offset
-                                : this.elevatorDataProvider.GetVerticalAxis().Offset;
+                            var axis = positioningData.AxisMovement == Axis.Horizontal
+                                ? this.elevatorDataProvider.GetHorizontalAxis()
+                                : this.elevatorDataProvider.GetVerticalAxis();
 
-                            position -= offset;
+                            position -= axis.Offset;
 
-                            if (position < 0)
+                            if (position < axis.LowerBound)
                             {
-                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis offset ({offset}).");
+                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
+                            }
+
+                            if (axis.Orientation == Orientation.Vertical)
+                            {
+                                var beltDisplacement = this.elevatorDataProvider.ComputeBeltDisplacement((double)positioningData.TargetPosition);
+                                this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
+                                position -= beltDisplacement;
                             }
                         }
 
@@ -1292,7 +1304,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.inverterPort = masterInverter.TcpPort;
 
             this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
-            this.logger.LogInformation($"1:Configure ipAddress={this.inverterAddress}:Port={this.inverterPort}");
+            this.logger.LogInformation($"1:Configure Inverter {masterInverter.Index}, tcp-endpoint={this.inverterAddress}:{this.inverterPort}");
 
             try
             {

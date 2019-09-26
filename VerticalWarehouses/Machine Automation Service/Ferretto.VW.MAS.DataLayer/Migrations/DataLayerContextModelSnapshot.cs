@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("BayId");
 
-                    b.Property<decimal>("Height");
+                    b.Property<double>("Height");
 
                     b.HasKey("Id");
 
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("PanelId");
 
-                    b.Property<decimal>("Position");
+                    b.Property<double>("Position");
 
                     b.Property<int>("Priority");
 
@@ -163,19 +163,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("InverterId");
 
-                    b.Property<decimal>("LowerBound");
+                    b.Property<double>("LowerBound");
 
                     b.Property<int?>("MaximumLoadMovementId");
 
-                    b.Property<decimal>("Offset");
+                    b.Property<double>("Offset");
 
                     b.Property<int>("Orientation");
 
-                    b.Property<decimal>("Position");
+                    b.Property<double>("Position");
 
                     b.Property<decimal>("Resolution");
 
-                    b.Property<decimal>("UpperBound");
+                    b.Property<double>("UpperBound");
 
                     b.HasKey("Id");
 
@@ -195,19 +195,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("BeltRigidity");
+                    b.Property<int>("BeltRigidity");
 
-                    b.Property<decimal>("BeltSpacing");
+                    b.Property<double>("BeltSpacing");
 
-                    b.Property<decimal>("HalfShaftLength");
+                    b.Property<double>("HalfShaftLength");
 
-                    b.Property<decimal>("MaximumLoadOnBoard");
+                    b.Property<double>("MaximumLoadOnBoard");
 
-                    b.Property<decimal>("PulleyDiameter");
+                    b.Property<double>("PulleyDiameter");
 
-                    b.Property<decimal>("ShaftDiameter");
+                    b.Property<double>("ShaftDiameter");
 
-                    b.Property<decimal>("ShaftElasticity");
+                    b.Property<double>("ShaftElasticity");
 
                     b.HasKey("Id");
 
@@ -298,32 +298,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
-                {
-                    b.Property<int>("FreeBlockId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BlockSize");
-
-                    b.Property<int>("BookedCellsNumber");
-
-                    b.Property<int>("LoadingUnitId");
-
-                    b.Property<decimal>("Position");
-
-                    b.Property<int>("Priority");
-
-                    b.Property<int>("Side");
-
-                    b.Property<int>("StartCell");
-
-                    b.HasKey("FreeBlockId");
-
-                    b.HasIndex("LoadingUnitId");
-
-                    b.ToTable("FreeBlocks");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
                 {
                     b.Property<int>("Id")
@@ -379,19 +353,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<decimal>("GrossWeight");
+                    b.Property<double>("GrossWeight");
 
-                    b.Property<decimal>("Height");
+                    b.Property<double>("Height");
 
                     b.Property<bool>("IsIntoMachine");
 
-                    b.Property<decimal>("MaxNetWeight");
+                    b.Property<double>("MaxNetWeight");
 
                     b.Property<int>("MissionsCount");
 
                     b.Property<long>("Status");
 
-                    b.Property<decimal>("Tare");
+                    b.Property<double>("Tare");
 
                     b.HasKey("Id");
 
@@ -447,9 +421,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ElevatorId");
 
-                    b.Property<decimal>("Height");
+                    b.Property<double>("Height");
 
-                    b.Property<decimal>("MaxGrossWeight");
+                    b.Property<double>("MaxGrossWeight");
 
                     b.Property<string>("ModelName");
 
@@ -525,14 +499,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("Acceleration");
+                    b.Property<double>("Acceleration");
 
-                    b.Property<decimal>("Deceleration");
+                    b.Property<double>("Deceleration");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<decimal>("Speed");
+                    b.Property<double>("Speed");
 
                     b.HasKey("Id");
 
@@ -546,13 +520,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("Correction");
+                    b.Property<double>("Correction");
 
                     b.Property<int?>("ElevatorAxisId");
 
                     b.Property<int>("Name");
 
-                    b.Property<decimal>("TotalDistance");
+                    b.Property<double>("TotalDistance");
 
                     b.HasKey("Id");
 
@@ -582,7 +556,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 25, 16, 58, 2, 133, DateTimeKind.Local).AddTicks(4836),
+                            InstallationDate = new DateTime(2016, 11, 26, 11, 24, 4, 244, DateTimeKind.Local).AddTicks(5083),
                             ServiceStatus = 86
                         });
                 });
@@ -703,7 +677,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("LoadedNetWeight");
+                    b.Property<double>("LoadedNetWeight");
 
                     b.Property<int?>("LoadingUnitId");
 
@@ -723,7 +697,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<decimal>("Value");
+                    b.Property<double>("Value");
 
                     b.HasKey("Id");
 
@@ -781,7 +755,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Number");
 
-                    b.Property<decimal>("Position");
+                    b.Property<double>("Position");
 
                     b.HasIndex("MovementProfileId");
 
@@ -875,14 +849,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
                         .WithOne("Statistics")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany()
-                        .HasForeignKey("LoadingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>

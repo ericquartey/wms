@@ -6,7 +6,7 @@
 
         public int Number { get; set; }
 
-        public decimal Position { get; set; }
+        public double Position { get; set; }
 
         #endregion
     }

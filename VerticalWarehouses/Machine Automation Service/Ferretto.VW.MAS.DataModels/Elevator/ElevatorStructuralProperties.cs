@@ -2,42 +2,51 @@
 {
     public class ElevatorStructuralProperties : DataModel
     {
+        #region Fields
+
+        /// <summary>
+        /// The sum of the distances between the belt pulleys and the top and bottom parts of the machine.
+        /// </summary>
+        public const double PulleysMargin = 308;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
-        /// The belt rigidity.
+        /// Gets or sets the belt rigidity.
         /// </summary>
-        public decimal BeltRigidity { get; set; }
+        public int BeltRigidity { get; set; }
 
         /// <summary>
-        /// The spacing between the upper and lower attachments of the elevator to the belt.
+        /// Gets or sets the spacing between the upper and lower attachments of the elevator to the belt.
         /// </summary>
-        public decimal BeltSpacing { get; set; }
+        public double BeltSpacing { get; set; }
 
         /// <summary>
-        /// The half-shaft length, in millimeters.
+        /// Gets or sets the half-shaft length, in millimeters.
         /// </summary>
-        public decimal HalfShaftLength { get; set; }
+        public double HalfShaftLength { get; set; }
 
         /// <summary>
-        /// The maximum weight that can be loaded on the cradle.
+        /// Gets or sets the maximum weight that can be loaded on the cradle.
         /// </summary>
-        public decimal MaximumLoadOnBoard { get; set; }
+        public double MaximumLoadOnBoard { get; set; }
 
         /// <summary>
-        /// The diameter, in millimeters, of the pulley (belt wheel).
+        /// Gets or sets the diameter, in millimeters, of the pulley (belt wheel).
         /// </summary>
-        public decimal PulleyDiameter { get; set; }
+        public double PulleyDiameter { get; set; }
 
         /// <summary>
-        /// The shaft diameter, in millimeters.
+        /// Gets or sets the shaft diameter, in millimeters.
         /// </summary>
-        public decimal ShaftDiameter { get; set; }
+        public double ShaftDiameter { get; set; }
 
         /// <summary>
-        /// The shaft elasticity.
+        /// Gets or sets the shaft elasticity.
         /// </summary>
-        public decimal ShaftElasticity { get; set; }
+        public double ShaftElasticity { get; set; }
 
         #endregion
     }

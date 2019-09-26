@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Status = message.Status.ToString(),
             };
 
-            this.SaveEntryToDb(logEntry);
+            // this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
         }
@@ -179,10 +179,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     await scope.ServiceProvider
                        .GetRequiredService<ILoadingUnitsProvider>()
                        .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
-
-                    scope.ServiceProvider
-                        .GetRequiredService<IBaysConfigurationProvider>()
-                        .LoadFromConfiguration();
                 }
                 catch (Exception ex)
                 {

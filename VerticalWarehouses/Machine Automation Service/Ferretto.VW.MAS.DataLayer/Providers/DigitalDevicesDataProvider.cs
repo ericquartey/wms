@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
@@ -30,6 +32,40 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public IEnumerable<Inverter> GetAllInverters()
         {
             return this.dataContext.Inverters.ToArray();
+        }
+
+        public IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber)
+        {
+            if (bayNumber == BayNumber.ElevatorBay)
+            {
+                return this.dataContext.Elevators
+                    .Include(e => e.Axes)
+                    .ThenInclude(a => a.Inverter)
+                    .Single()
+                    .Axes
+                    .Select(a => a.Inverter)
+                    .ToList();
+            }
+
+            var bay = this.dataContext.Bays
+                .Include(b => b.Inverter)
+                .Include(b => b.Shutter)
+                .ThenInclude(s => s.Inverter)
+                .SingleOrDefault(b => b.Number == bayNumber);
+
+            var inverters = new List<Inverter>();
+
+            if (bay.Shutter != null && bay.Shutter.Inverter != null)
+            {
+                inverters.Add(bay.Shutter.Inverter);
+            }
+
+            if (bay.Inverter != null)
+            {
+                inverters.Add(bay.Inverter);
+            }
+
+            return inverters;
         }
 
         public IEnumerable<IoDevice> GetAllIoDevices()

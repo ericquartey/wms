@@ -21,9 +21,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
-        private decimal? currentHorizontalPosition;
+        private double? currentHorizontalPosition;
 
-        private decimal? currentVerticalPosition;
+        private double? currentVerticalPosition;
 
         private SubscriptionToken movementsSubscriptionToken;
 
@@ -60,13 +60,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public int BayNumber => (int)this.bayManagerService.Bay.Number;
 
-        public decimal? CurrentHorizontalPosition
+        public double? CurrentHorizontalPosition
         {
             get => this.currentHorizontalPosition;
             protected set => this.SetProperty(ref this.currentHorizontalPosition, value);
         }
 
-        public decimal? CurrentVerticalPosition
+        public double? CurrentVerticalPosition
         {
             get => this.currentVerticalPosition;
             protected set => this.SetProperty(ref this.currentVerticalPosition, value);

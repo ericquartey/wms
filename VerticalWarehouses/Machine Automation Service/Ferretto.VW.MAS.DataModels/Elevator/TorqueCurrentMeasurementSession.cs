@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<TorqueCurrentSample> DataSamples { get; set; }
 
-        public decimal LoadedNetWeight { get; set; }
+        public double LoadedNetWeight { get; set; }
 
         public int? LoadingUnitId { get; set; }
 

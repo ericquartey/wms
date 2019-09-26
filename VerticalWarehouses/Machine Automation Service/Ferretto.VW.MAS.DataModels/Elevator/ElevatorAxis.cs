@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
-        private decimal offset;
+        private double offset;
 
         private decimal resolution;
 
@@ -18,11 +18,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
-        public decimal LowerBound { get; set; }
+        public double LowerBound { get; set; }
 
         public MovementParameters MaximumLoadMovement { get; set; }
 
-        public decimal Offset
+        public double Offset
         {
             get => this.offset;
             set
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// Gets or sets the last known position of the elevator's axis.
         /// </summary>
-        public decimal Position { get; set; }
+        public double Position { get; set; }
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public decimal UpperBound { get; set; }
+        public double UpperBound { get; set; }
 
         #endregion
 

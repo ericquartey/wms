@@ -58,10 +58,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 }
             }
             catch (Exception ex)
-
-            // Swap is handled in diagnostic interceptor:
-            // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             {
+                // Swap is handled in diagnostic interceptor:
+                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
                 System.Diagnostics.Debug.Assert(
                       this.Options == this.redundancyService.StandbyDbContextOptions,
                       $"This channel (previously was active) is now standby because {ex.Message}");

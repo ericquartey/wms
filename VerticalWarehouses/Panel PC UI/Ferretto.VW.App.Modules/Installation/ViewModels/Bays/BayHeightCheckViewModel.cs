@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly IMachineBaysService machineBaysService;
+
         private readonly IMachineElevatorService machineElevatorService;
 
         private DelegateCommand changeBayPosition1Command;
@@ -30,9 +32,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int currentBayPosition;
 
-        private decimal? currentHeight;
+        private double? currentHeight;
 
-        private decimal? inputStepValue;
+        private double? inputStepValue;
 
         private bool isBayPositionsVisible;
 
@@ -48,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveUpCommand;
 
-        private decimal positionHeight;
+        private double positionHeight;
 
         private DelegateCommand saveHeightCorrectionCommand;
 
@@ -60,7 +62,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BayHeightCheckViewModel(
             IBayManager bayManager,
-            IMachineElevatorService machineElevatorService)
+            IMachineElevatorService machineElevatorService,
+            IMachineBaysService machineBaysService)
             : base(PresentationMode.Installer)
         {
             if (bayManager is null)
@@ -73,8 +76,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(machineElevatorService));
             }
 
+            if (machineBaysService is null)
+            {
+                throw new ArgumentNullException(nameof(machineBaysService));
+            }
+
             this.bayManager = bayManager;
             this.machineElevatorService = machineElevatorService;
+            this.machineBaysService = machineBaysService;
         }
 
         #endregion
@@ -107,7 +116,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? CurrentHeight
+        public double? CurrentHeight
         {
             get => this.currentHeight;
             set
@@ -123,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             Environment.NewLine,
             this[nameof(this.InputStepValue)]);
 
-        public decimal? InputStepValue
+        public double? InputStepValue
         {
             get => this.inputStepValue;
             set
@@ -209,7 +218,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ExecuteMoveUpAsync(),
                 this.CanExecuteMoveUpCommand));
 
-        public decimal PositionHeight
+        public double PositionHeight
         {
             get => this.positionHeight;
             set
@@ -439,7 +448,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.bayManager.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
+                await this.machineBaysService.UpdateHeightAsync(this.bayManager.Bay.Number, this.currentBayPosition, this.currentHeight.Value);
 
                 this.ChangeDataFromBayPosition();
 

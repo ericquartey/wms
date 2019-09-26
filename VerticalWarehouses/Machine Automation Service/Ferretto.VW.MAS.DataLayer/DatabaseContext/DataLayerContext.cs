@@ -11,9 +11,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
     {
         #region Fields
 
-        private const string CONNECTION_STRING_NAME = "AutomationService";
+        private const string ConnectionStringName = "AutomationService";
 
-        private const string DEFAULT_APPLICATION_SETTINGS_FILE = "appsettings.json";
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
 
         #endregion
 
@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<Error> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
-
-        public DbSet<FreeBlock> FreeBlocks { get; set; }
 
         public DbSet<Inverter> Inverters { get; set; }
 
@@ -99,14 +97,14 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
                 .Build();
 
-            var connectionString = configurationBuilder.GetConnectionString(CONNECTION_STRING_NAME);
+            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException($"Unable to locate the connection string '{CONNECTION_STRING_NAME}'.");
+                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
             optionsBuilder.UseSqlite(connectionString);

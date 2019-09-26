@@ -39,12 +39,28 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public int ConvertMillimetersToPulses(decimal millimeters, Orientation orientation)
+        public double ComputeBeltDisplacement(double targetPosition)
         {
-            return (int)(this.GetAxis(orientation).Resolution * millimeters);
+            var loadingUnitOnBoard = this.GetLoadingUnitOnBoard();
+            if (loadingUnitOnBoard is null)
+            {
+                return 0;
+            }
+
+            var weight = (double)loadingUnitOnBoard.GrossWeight;
+
+            var shaftTorsion = this.ComputeShaftTorsion(weight);
+            var beltElongation = this.ComputeBeltElongation(weight, targetPosition);
+
+            return beltElongation + shaftTorsion;
         }
 
-        public decimal ConvertPulsesToMillimeters(int pulses, Orientation orientation)
+        public int ConvertMillimetersToPulses(double millimeters, Orientation orientation)
+        {
+            return (int)(this.GetAxis(orientation).Resolution * (decimal)millimeters);
+        }
+
+        public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
         {
             if (pulses == 0)
             {
@@ -59,7 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     $"Configured {orientation} axis resolution is zero, therefore it is not possible to convert pulses to millimeters.");
             }
 
-            return pulses / resolution;
+            return (double)(pulses / resolution);
         }
 
         public ElevatorAxis GetHorizontalAxis()
@@ -77,7 +93,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return elevator.LoadingUnit;
         }
 
-        public decimal GetMaximumLoadOnBoard()
+        public double GetMaximumLoadOnBoard()
         {
             var elevator = this.dataContext.Elevators.Single();
 
@@ -89,7 +105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.GetAxis(Orientation.Vertical);
         }
 
-        public void UpdateVerticalOffset(decimal newOffset)
+        public void UpdateVerticalOffset(double newOffset)
         {
             var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
 
@@ -108,6 +124,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.SaveChanges();
 
             this.setupStatusProvider.CompleteVerticalResolution();
+        }
+
+        private double ComputeBeltElongation(double weight, double targetPosition)
+        {
+            var machineHeight = this.dataContext.Machines.Single().Height;
+
+            var pulleysDistance = machineHeight - ElevatorStructuralProperties.PulleysMargin;
+
+            var properties = this.dataContext.ElevatorStructuralProperties.Single();
+
+            return
+                5000 * weight
+                /
+                ((properties.BeltRigidity / ((2 * pulleysDistance) - properties.BeltSpacing - targetPosition)) + (properties.BeltRigidity / targetPosition));
+        }
+
+        private double ComputeShaftTorsion(double weight)
+        {
+            var properties = this.dataContext.ElevatorStructuralProperties.Single();
+
+            const double m = 10.0 / 3;
+
+            return
+                64 * (m + 1) * (weight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
+                /
+                (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
 
         private ElevatorAxis GetAxis(Orientation orientation)

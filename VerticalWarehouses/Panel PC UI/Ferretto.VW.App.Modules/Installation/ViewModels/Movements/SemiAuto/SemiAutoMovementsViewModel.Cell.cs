@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? inputCellId;
 
-        private decimal? inputHeight;
+        private double? inputHeight;
 
         private int? inputLoadingUnitId;
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputHeight
+        public double? InputHeight
         {
             get => this.inputHeight;
             set

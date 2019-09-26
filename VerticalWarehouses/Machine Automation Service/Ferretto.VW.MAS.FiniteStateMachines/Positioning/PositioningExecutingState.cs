@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
-        private readonly decimal fullPosition;
+        private readonly double fullPosition;
 
         private readonly IPositioningMachineData machineData;
 
@@ -497,8 +497,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
             else
             {
-                decimal[] switchPosition = { 0 };
-                decimal[] speed = { this.machineData.MessageData.TargetSpeed[0] / 2 };
+                var switchPosition = new[] { 0.0 };
+                var speed = new[] { this.machineData.MessageData.TargetSpeed[0] / 2 };
                 var newPositioningMessageData = new PositioningMessageData(
                     Axis.Horizontal,
                     MovementType.Relative,

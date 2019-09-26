@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cell> UpdateHeight(int id, decimal height)
+        public ActionResult<Cell> UpdateHeight(int id, double height)
         {
             try
             {

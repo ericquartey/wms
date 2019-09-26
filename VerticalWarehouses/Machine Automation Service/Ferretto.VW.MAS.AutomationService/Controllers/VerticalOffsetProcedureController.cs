@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("complete")]
-        public IActionResult Complete(decimal newOffset)
+        public IActionResult Complete(double newOffset)
         {
             this.elevatorDataProvider.UpdateVerticalOffset(newOffset);
 
@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     OffsetCalibration.ReferenceCell,
                     category),
 
-                StepValue = this.configurationProvider.GetDecimalConfigurationValue(
+                StepValue = (double)this.configurationProvider.GetDecimalConfigurationValue(
                     OffsetCalibration.StepValue,
                     category),
 
@@ -108,9 +108,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveDown()
         {
-            var stepValue = this.offsetCalibration.StepValue;
+            var stepValue = (double)this.offsetCalibration.StepValue;
 
-            this.elevatorProvider.MoveVerticalOfDistance(-stepValue, this.BayNumber, this.offsetCalibration.FeedRateOC);
+            this.elevatorProvider.MoveVerticalOfDistance(-stepValue, this.BayNumber, (double)this.offsetCalibration.FeedRateOC);
 
             return this.Accepted();
         }
@@ -120,9 +120,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveUp()
         {
-            var stepValue = this.offsetCalibration.StepValue;
+            var stepValue = (double)this.offsetCalibration.StepValue;
 
-            this.elevatorProvider.MoveVerticalOfDistance(stepValue, this.BayNumber, this.offsetCalibration.FeedRateOC);
+            this.elevatorProvider.MoveVerticalOfDistance(stepValue, this.BayNumber, (double)this.offsetCalibration.FeedRateOC);
 
             return this.Accepted();
         }

@@ -6,21 +6,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class DataSample
     {
-
-
         #region Properties
 
         public System.DateTime TimeStamp { get; set; }
 
-        public decimal Value { get; set; }
+        public double Value { get; set; }
 
         #endregion
     }
 
     public class PositioningMessageData : IPositioningMessageData
     {
-
-
         #region Constructors
 
         public PositioningMessageData()
@@ -35,15 +31,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             Axis axisMovement,
             MovementType movementType,
             MovementMode movementMode,
-            decimal target,
-            decimal[] speed,
-            decimal[] acceleration,
-            decimal[] deceleration,
+            double target,
+            double[] speed,
+            double[] acceleration,
+            double[] deceleration,
             int numberCycles,
-            decimal lowerBound,
-            decimal upperBound,
+            double lowerBound,
+            double upperBound,
             int delay,
-            decimal[] switchPosition,
+            double[] switchPosition,
             HorizontalMovementDirection direction,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
@@ -82,15 +78,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #endregion
 
-
-
         #region Properties
 
         public Axis AxisMovement { get; set; }
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        public decimal? CurrentPosition { get; set; }
+        public double? CurrentPosition { get; set; }
 
         public int Delay { get; set; }
 
@@ -102,11 +96,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsStartedOnBoard { get; set; }
 
-        public decimal? LoadedNetWeight { get; set; }
+        public double? LoadedNetWeight { get; set; }
 
         public int? LoadingUnitId { get; set; }
 
-        public decimal LowerBound { get; set; }
+        public double LowerBound { get; set; }
 
         public MovementMode MovementMode { get; set; }
 
@@ -114,25 +108,23 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int NumberCycles { get; set; }
 
-        public decimal[] SwitchPosition { get; set; }
+        public double[] SwitchPosition { get; set; }
 
-        public decimal[] TargetAcceleration { get; set; }
+        public double[] TargetAcceleration { get; set; }
 
-        public decimal[] TargetDeceleration { get; set; }
+        public double[] TargetDeceleration { get; set; }
 
-        public decimal TargetPosition { get; set; }
+        public double TargetPosition { get; set; }
 
-        public decimal[] TargetSpeed { get; set; }
+        public double[] TargetSpeed { get; set; }
 
         public DataSample TorqueCurrentSample { get; set; }
 
-        public decimal UpperBound { get; set; }
+        public double UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         #endregion
-
-
 
         #region Methods
 

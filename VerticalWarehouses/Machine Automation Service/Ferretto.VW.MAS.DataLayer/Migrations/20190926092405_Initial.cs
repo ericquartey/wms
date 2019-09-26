@@ -27,13 +27,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BeltRigidity = table.Column<decimal>(nullable: false),
-                    BeltSpacing = table.Column<decimal>(nullable: false),
-                    HalfShaftLength = table.Column<decimal>(nullable: false),
-                    MaximumLoadOnBoard = table.Column<decimal>(nullable: false),
-                    PulleyDiameter = table.Column<decimal>(nullable: false),
-                    ShaftDiameter = table.Column<decimal>(nullable: false),
-                    ShaftElasticity = table.Column<decimal>(nullable: false)
+                    BeltRigidity = table.Column<int>(nullable: false),
+                    BeltSpacing = table.Column<double>(nullable: false),
+                    HalfShaftLength = table.Column<double>(nullable: false),
+                    MaximumLoadOnBoard = table.Column<double>(nullable: false),
+                    PulleyDiameter = table.Column<double>(nullable: false),
+                    ShaftDiameter = table.Column<double>(nullable: false),
+                    ShaftElasticity = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    LoadedNetWeight = table.Column<decimal>(nullable: false),
+                    LoadedNetWeight = table.Column<double>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     MeasurementSessionId = table.Column<int>(nullable: false),
                     RequestTimeStamp = table.Column<DateTime>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false),
-                    Value = table.Column<decimal>(nullable: false)
+                    Value = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -310,7 +310,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Height = table.Column<decimal>(nullable: false),
+                    Height = table.Column<double>(nullable: false),
                     BayId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -325,7 +325,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PanelId = table.Column<int>(nullable: false),
-                    Position = table.Column<decimal>(nullable: false),
+                    Position = table.Column<double>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false)
                 },
@@ -343,13 +343,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     CellId = table.Column<int>(nullable: true),
                     Code = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    GrossWeight = table.Column<decimal>(nullable: false),
-                    Height = table.Column<decimal>(nullable: false),
+                    GrossWeight = table.Column<double>(nullable: false),
+                    Height = table.Column<double>(nullable: false),
                     IsIntoMachine = table.Column<bool>(nullable: false),
-                    MaxNetWeight = table.Column<decimal>(nullable: false),
+                    MaxNetWeight = table.Column<double>(nullable: false),
                     MissionsCount = table.Column<int>(nullable: false),
                     Status = table.Column<long>(nullable: false),
-                    Tare = table.Column<decimal>(nullable: false)
+                    Tare = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -389,39 +389,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FreeBlocks",
-                columns: table => new
-                {
-                    FreeBlockId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BlockSize = table.Column<int>(nullable: false),
-                    BookedCellsNumber = table.Column<int>(nullable: false),
-                    LoadingUnitId = table.Column<int>(nullable: false),
-                    Position = table.Column<decimal>(nullable: false),
-                    Priority = table.Column<int>(nullable: false),
-                    Side = table.Column<int>(nullable: false),
-                    StartCell = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FreeBlocks", x => x.FreeBlockId);
-                    table.ForeignKey(
-                        name: "FK_FreeBlocks_LoadingUnits_LoadingUnitId",
-                        column: x => x.LoadingUnitId,
-                        principalTable: "LoadingUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Machines",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ElevatorId = table.Column<int>(nullable: true),
-                    Height = table.Column<decimal>(nullable: false),
-                    MaxGrossWeight = table.Column<decimal>(nullable: false),
+                    Height = table.Column<double>(nullable: false),
+                    MaxGrossWeight = table.Column<double>(nullable: false),
                     ModelName = table.Column<string>(nullable: true),
                     SerialNumber = table.Column<string>(nullable: true)
                 },
@@ -516,9 +491,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Correction = table.Column<decimal>(nullable: false),
+                    Correction = table.Column<double>(nullable: false),
                     Name = table.Column<int>(nullable: false),
-                    TotalDistance = table.Column<decimal>(nullable: false),
+                    TotalDistance = table.Column<double>(nullable: false),
                     ElevatorAxisId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -532,12 +507,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Acceleration = table.Column<decimal>(nullable: false),
-                    Deceleration = table.Column<decimal>(nullable: false),
-                    Speed = table.Column<decimal>(nullable: false),
+                    Acceleration = table.Column<double>(nullable: false),
+                    Deceleration = table.Column<double>(nullable: false),
+                    Speed = table.Column<double>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Number = table.Column<int>(nullable: true),
-                    Position = table.Column<decimal>(nullable: true),
+                    Position = table.Column<double>(nullable: true),
                     MovementProfileId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -559,13 +534,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
-                    LowerBound = table.Column<decimal>(nullable: false),
+                    LowerBound = table.Column<double>(nullable: false),
                     MaximumLoadMovementId = table.Column<int>(nullable: true),
-                    Offset = table.Column<decimal>(nullable: false),
+                    Offset = table.Column<double>(nullable: false),
                     Orientation = table.Column<int>(nullable: false),
-                    Position = table.Column<decimal>(nullable: false),
+                    Position = table.Column<double>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
-                    UpperBound = table.Column<decimal>(nullable: false),
+                    UpperBound = table.Column<double>(nullable: false),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -615,7 +590,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 25, 16, 58, 2, 133, DateTimeKind.Local).AddTicks(4836), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 26, 11, 24, 4, 244, DateTimeKind.Local).AddTicks(5083), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -731,11 +706,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FreeBlocks_LoadingUnitId",
-                table: "FreeBlocks",
-                column: "LoadingUnitId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Inverters_Index",
                 table: "Inverters",
                 column: "Index",
@@ -848,9 +818,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ErrorStatistics");
-
-            migrationBuilder.DropTable(
-                name: "FreeBlocks");
 
             migrationBuilder.DropTable(
                 name: "LogEntries");

@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height)
+        public ActionResult<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, double height)
         {
             try
             {

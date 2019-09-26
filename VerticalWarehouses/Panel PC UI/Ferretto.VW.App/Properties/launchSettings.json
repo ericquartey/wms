@@ -1,0 +1,22 @@
+{
+  "profiles": {
+    "PanelPC (Bay 1)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "1"
+      }
+    },
+    "PanelPC (Bay 2)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "2"
+      }
+    },
+    "PanelPC (Bay 3)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "3"
+      }
+    }
+  }
+}

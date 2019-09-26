@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Exceptions
@@ -7,12 +6,6 @@ namespace Ferretto.VW.MAS.DataLayer.Exceptions
     public class EntityNotFoundException : Exception
     {
         #region Constructors
-
-        public EntityNotFoundException(BayNumber entityId)
-            : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))
-        {
-            this.EntityId = entityId.ToString();
-        }
 
         public EntityNotFoundException(int entityId)
             : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))

@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ResolutionCalibrationParameters defaultParameters;
 
-        private decimal? inputInitialPosition;
+        private double? inputInitialPosition;
 
         private bool isOperationCompleted;
 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             Environment.NewLine,
             this[nameof(this.InputInitialPosition)]);
 
-        public decimal? InputInitialPosition
+        public double? InputInitialPosition
         {
             get => this.inputInitialPosition;
             set

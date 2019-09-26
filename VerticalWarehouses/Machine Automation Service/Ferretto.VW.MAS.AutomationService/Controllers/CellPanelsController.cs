@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CellPanelsController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly ICellPanelsProvider cellPanelsProvider;
@@ -36,8 +35,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpGet]
@@ -53,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CellPanel> UpdateHeight(int cellId, decimal newHeight)
+        public ActionResult<CellPanel> UpdateHeight(int cellId, double newHeight)
         {
             try
             {

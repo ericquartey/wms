@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private decimal? bayPositionHeight;
+        private double? bayPositionHeight;
 
         private bool isElevatorMovingToBay;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public int BayNumber => (int)this.bayManagerService.Bay.Number;
 
-        public decimal? BayPositionHeight
+        public double? BayPositionHeight
         {
             get => this.bayPositionHeight;
             protected set => this.SetProperty(ref this.bayPositionHeight, value);

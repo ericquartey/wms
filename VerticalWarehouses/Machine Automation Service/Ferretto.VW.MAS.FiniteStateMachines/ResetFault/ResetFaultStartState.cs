@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
                     }
                 }
 
-                if (this.inverterresponses.Values.Count == this.machineData.BayInverters.Count)
+                if (this.inverterresponses.Values.Count == this.machineData.BayInverters.Count())
                 {
                     if (this.inverterresponses.Values.Any(r => r != MessageStatus.OperationEnd))
                     {
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             foreach (var bayInverter in this.machineData.BayInverters)
             {
                 var newCommandMessage = new FieldCommandMessage(commandMessage);
-                newCommandMessage.DeviceIndex = (byte)bayInverter;
+                newCommandMessage.DeviceIndex = (byte)bayInverter.Index;
 
                 this.ParentStateMachine.PublishFieldCommandMessage(newCommandMessage);
             }

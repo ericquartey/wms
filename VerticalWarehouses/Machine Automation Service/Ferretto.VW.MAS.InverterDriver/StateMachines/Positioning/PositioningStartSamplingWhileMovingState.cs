@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 var sample = this.measurementsProvider.AddSample(
                     this.measurementSession.Id,
-                    message.UShortPayload / 10.0m,
+                    message.UShortPayload / 10.0,
                     DateTime.Now,
                     this.lastRequestTimeStamp);
 

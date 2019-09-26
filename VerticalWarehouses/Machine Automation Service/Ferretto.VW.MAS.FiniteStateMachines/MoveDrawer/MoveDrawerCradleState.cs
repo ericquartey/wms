@@ -188,8 +188,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         private void GetParameters()
         {
             var target = this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell
-                ? this.machineData.DrawerOperationData.SourceHorizontalPosition
-                : this.machineData.DrawerOperationData.DestinationHorizontalPosition;
+                ? (double)this.machineData.DrawerOperationData.SourceHorizontalPosition
+                : (double)this.machineData.DrawerOperationData.DestinationHorizontalPosition;
 
             ////TEMP: Remove the hardcoded value (used only for test)
             //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
@@ -223,12 +223,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 var horizontalAxis = elevatorDataProvider.GetHorizontalAxis();
 
                 var maxSpeed = horizontalAxis.EmptyLoadMovement.Speed;
-                decimal[] maxAcceleration = { horizontalAxis.EmptyLoadMovement.Acceleration };
-                decimal[] maxDeceleration = { horizontalAxis.EmptyLoadMovement.Deceleration };
-                decimal[] switchPosition = { 0 };
+                var maxAcceleration = new[] { horizontalAxis.EmptyLoadMovement.Acceleration };
+                var maxDeceleration = new[] { horizontalAxis.EmptyLoadMovement.Deceleration };
+                var switchPosition = new[] { 0.0 };
                 var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 
-                decimal[] speed = { maxSpeed * (decimal)feedRate };
+                var speed = new[] { maxSpeed * feedRate };
 
                 this.positioningMessageData = new PositioningMessageData(
                     Axis.Horizontal,

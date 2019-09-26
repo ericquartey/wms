@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         #region Methods
 
         IEnumerable<Inverter> GetAllInverters();
+
+        IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber);
 
         IEnumerable<IoDevice> GetAllIoDevices();
 

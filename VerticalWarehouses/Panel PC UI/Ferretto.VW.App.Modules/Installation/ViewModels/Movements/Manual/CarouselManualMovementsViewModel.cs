@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(100);
         }
 
-        protected async Task StartMovementAsync(decimal displacement)
+        protected async Task StartMovementAsync(double displacement)
         {
             try
             {

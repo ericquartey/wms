@@ -6,13 +6,13 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public decimal Correction { get; set; }
+        public double Correction { get; set; }
 
         public MovementProfileType Name { get; set; }
 
         public IEnumerable<StepMovementParameters> Steps { get; set; }
 
-        public decimal TotalDistance { get; set; }
+        public double TotalDistance { get; set; }
 
         #endregion
     }

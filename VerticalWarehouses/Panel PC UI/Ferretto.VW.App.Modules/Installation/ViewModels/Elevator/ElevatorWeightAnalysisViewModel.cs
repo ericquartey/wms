@@ -33,17 +33,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
 
-        private decimal? averageCurrent;
+        private double? averageCurrent;
 
         private bool canInputNetWeight;
 
-        private decimal? currentPosition;
+        private double? currentPosition;
 
-        private decimal? inputDisplacement;
+        private double? inputDisplacement;
 
         private string inputLoadingUnitCode;
 
-        private decimal? inputNetWeight;
+        private double? inputNetWeight;
 
         private bool isExecutingProcedure;
 
@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? AverageCurrent
+        public double? AverageCurrent
         {
             get => this.averageCurrent;
             private set => this.SetProperty(ref this.averageCurrent, value);
@@ -116,7 +116,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.canInputNetWeight, value);
         }
 
-        public decimal? CurrentPosition
+        public double? CurrentPosition
         {
             get => this.currentPosition;
             protected set => this.SetProperty(ref this.currentPosition, value);
@@ -126,7 +126,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
           Environment.NewLine,
           this[nameof(this.InputDisplacement)]);
 
-        public decimal? InputDisplacement
+        public double? InputDisplacement
         {
             get => this.inputDisplacement;
             set
@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputNetWeight
+        public double? InputNetWeight
         {
             get => this.inputNetWeight;
             set

@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         // TODO: avoid hardcoding constants in code
-        private const decimal ChainLength = 2850.0M;
+        private const double ChainLength = 2850;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -62,12 +62,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SearchHorizontalZero()
         {
             var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
-            var actualSpeed = horizontalAxis.EmptyLoadMovement.Speed * this.horizontalManualMovements.FeedRateHM;
+            var actualSpeed = horizontalAxis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM;
 
-            decimal[] speed = { actualSpeed };
-            decimal[] acceleration = { horizontalAxis.EmptyLoadMovement.Acceleration };
-            decimal[] deceleration = { horizontalAxis.EmptyLoadMovement.Deceleration };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { actualSpeed };
+            var acceleration = new[] { horizontalAxis.EmptyLoadMovement.Acceleration };
+            var deceleration = new[] { horizontalAxis.EmptyLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

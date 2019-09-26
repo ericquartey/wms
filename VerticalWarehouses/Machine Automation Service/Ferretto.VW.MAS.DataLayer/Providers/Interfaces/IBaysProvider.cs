@@ -9,14 +9,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IBaysProvider
     {
-        #region Properties
-
-        int BayInverterPosition { get; }
-
-        int ShutterInverterPosition { get; }
-
-        #endregion
-
         #region Methods
 
         Bay Activate(BayNumber bayIndex);
@@ -41,13 +33,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayIndex);
 
-        List<InverterIndex> GetInverterList(BayNumber bayIndex);
-
         IoIndex GetIoDevice(BayNumber bayIndex);
 
         Bay SetCurrentOperation(BayNumber bayIndex, BayOperation newOperation);
 
-        Bay UpdatePosition(BayNumber bayIndex, int position, decimal height);
+        Bay UpdatePosition(BayNumber bayIndex, int position, double height);
 
         #endregion
     }

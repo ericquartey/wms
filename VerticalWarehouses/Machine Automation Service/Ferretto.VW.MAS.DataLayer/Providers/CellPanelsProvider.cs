@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .ToArray();
         }
 
-        public CellPanel UpdateHeight(int cellId, decimal newHeight)
+        public CellPanel UpdateHeight(int cellId, double newHeight)
         {
             var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
             if (cell is null)

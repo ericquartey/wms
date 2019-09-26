@@ -6,19 +6,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        int ConvertMillimetersToPulses(decimal millimeters, Orientation orientation);
+        double ComputeBeltDisplacement(double targetPosition);
 
-        decimal ConvertPulsesToMillimeters(int pulses, Orientation orientation);
+        int ConvertMillimetersToPulses(double millimeters, Orientation orientation);
+
+        double ConvertPulsesToMillimeters(int pulses, Orientation orientation);
 
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
 
-        decimal GetMaximumLoadOnBoard();
+        double GetMaximumLoadOnBoard();
 
         ElevatorAxis GetVerticalAxis();
 
-        void UpdateVerticalOffset(decimal newOffset);
+        void UpdateVerticalOffset(double newOffset);
 
         void UpdateVerticalResolution(decimal newResolution);
 

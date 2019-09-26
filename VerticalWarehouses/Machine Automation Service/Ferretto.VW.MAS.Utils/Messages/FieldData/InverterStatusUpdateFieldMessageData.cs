@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis CurrentAxis { get; }
 
-        public decimal? CurrentPosition { get; }
+        public double? CurrentPosition { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Performance",

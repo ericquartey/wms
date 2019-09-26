@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     partial class AutomationService
     {
-
-
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)

@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public decimal? GetHorizontalPosition(BayNumber requestingBay)
+        public double? GetHorizontalPosition(BayNumber requestingBay)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
@@ -110,19 +110,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition ?? 0;
         }
 
-        public decimal GetVerticalPosition(BayNumber bayNumber)
+        public double GetVerticalPosition(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
             void PublishAction()
             {
                 this.PublishCommand(
-messageData,
-"Request vertical position",
-MessageActor.FiniteStateMachines,
-MessageType.RequestPosition,
-bayNumber,
-BayNumber.ElevatorBay);
+                    messageData,
+                    "Request vertical position",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.RequestPosition,
+                    bayNumber,
+                    BayNumber.ElevatorBay);
             }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
@@ -213,18 +213,17 @@ BayNumber.ElevatorBay);
             var setupStatus = this.setupStatusProvider.Get();
 
             var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
-                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
+                ? (double)this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
+                : (double)this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { movementParameters.Speed * (double)this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -250,7 +249,7 @@ BayNumber.ElevatorBay);
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(decimal targetPosition, DataModels.FeedRateCategory feedRateCategory, BayNumber bayNumber)
+        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
@@ -274,10 +273,10 @@ BayNumber.ElevatorBay);
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed * feedRate };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -308,14 +307,14 @@ BayNumber.ElevatorBay);
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
 
-            decimal feedRate;
-            decimal targetPosition;
+            double feedRate;
+            double targetPosition;
 
             // INFO Absolute movement using the min and max reachable positions for limits
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (homingDone)
             {
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                 movementType = MovementType.Absolute;
 
                 targetPosition = direction == VerticalMovementDirection.Up
@@ -326,19 +325,19 @@ BayNumber.ElevatorBay);
             // INFO Before homing relative movements step by step
             else
             {
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
+                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
 
                 targetPosition = direction == VerticalMovementDirection.Up
-                    ? this.verticalManualMovementsDataLayer.PositiveTargetDirection
-                    : -this.verticalManualMovementsDataLayer.NegativeTargetDirection;
+                    ? (double)this.verticalManualMovementsDataLayer.PositiveTargetDirection
+                    : (double)-this.verticalManualMovementsDataLayer.NegativeTargetDirection;
             }
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed * feedRate };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -364,7 +363,7 @@ BayNumber.ElevatorBay);
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(decimal distance, BayNumber bayNumber, decimal feedRate = 1)
+        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, double feedRate = 1)
         {
             if (distance == 0)
             {
@@ -381,10 +380,10 @@ BayNumber.ElevatorBay);
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed * feedRate };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var direction = distance > 0
                 ? HorizontalMovementDirection.Forwards
@@ -414,7 +413,7 @@ BayNumber.ElevatorBay);
                 BayNumber.ElevatorBay);
         }
 
-        public void RepeatVerticalMovement(decimal upperBoundPosition, decimal lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber bayNumber)
+        public void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber bayNumber)
         {
             if (totalTestCycleCount <= 0)
             {
@@ -455,10 +454,10 @@ BayNumber.ElevatorBay);
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { movementParameters.Speed };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var data = new PositioningMessageData(
                 Axis.Vertical,
@@ -484,7 +483,7 @@ BayNumber.ElevatorBay);
                 BayNumber.ElevatorBay);
         }
 
-        public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay)
+        public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
             if (displacement <= 0)
             {
@@ -501,10 +500,10 @@ BayNumber.ElevatorBay);
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            decimal[] speed = { movementParameters.Speed * this.verticalManualMovementsDataLayer.FeedRateAfterZero };
-            decimal[] acceleration = { movementParameters.Acceleration };
-            decimal[] deceleration = { movementParameters.Deceleration };
-            decimal[] switchPosition = { 0 };
+            double[] speed = { movementParameters.Speed * (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero };
+            double[] acceleration = { movementParameters.Acceleration };
+            double[] deceleration = { movementParameters.Deceleration };
+            double[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -546,45 +545,45 @@ BayNumber.ElevatorBay);
                 BayNumber.ElevatorBay);
         }
 
-        private decimal GetFeedRate(DataModels.FeedRateCategory feedRateCategory)
+        private double GetFeedRate(FeedRateCategory feedRateCategory)
         {
-            decimal feedRate;
+            double feedRate;
             switch (feedRateCategory)
             {
                 case DataModels.FeedRateCategory.VerticalManualMovements:
-                    feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
+                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
                     break;
 
                 case DataModels.FeedRateCategory.VerticalManualMovementsAfterZero:
-                    feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                     break;
 
                 case DataModels.FeedRateCategory.HorizontalManualMovements:
-                    feedRate = this.horizontalManualMovementsDataLayer.FeedRateHM;
+                    feedRate = (double)this.horizontalManualMovementsDataLayer.FeedRateHM;
                     break;
 
                 case DataModels.FeedRateCategory.VerticalResolutionCalibration:
-                    feedRate = this.resolutionCalibrationDataLayer.FeedRate;
+                    feedRate = (double)this.resolutionCalibrationDataLayer.FeedRate;
                     break;
 
                 case DataModels.FeedRateCategory.VerticalOffsetCalibration:
-                    feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
+                    feedRate = (double)this.offsetCalibrationDataLayer.FeedRateOC;
                     break;
 
                 case DataModels.FeedRateCategory.CellHeightCheck:
-                    feedRate = this.cellControlDataLayer.FeedRateCC;
+                    feedRate = (double)this.cellControlDataLayer.FeedRateCC;
                     break;
 
                 case DataModels.FeedRateCategory.PanelHeightCheck:
-                    feedRate = this.panelControlDataLayer.FeedRatePC;
+                    feedRate = (double)this.panelControlDataLayer.FeedRatePC;
                     break;
 
                 case DataModels.FeedRateCategory.LoadingUnitWeight:
-                    feedRate = this.weightControl.FeedRateWC;
+                    feedRate = (double)this.weightControl.FeedRateWC;
                     break;
 
                 case DataModels.FeedRateCategory.BayHeight:
-                    feedRate = this.bayPositionControl.FeedRateBP;
+                    feedRate = (double)this.bayPositionControl.FeedRateBP;
                     break;
 
                 case DataModels.FeedRateCategory.LoadFirstDrawer:

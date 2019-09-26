@@ -55,20 +55,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Helper property used to identify Chain/Carouser inverter in Inverter list
-        /// </summary>
-        public int BayInverterPosition => 1;
-
-        /// <summary>
-        /// Helper property used to identify Shutter inverter in Inverter list
-        /// </summary>
-        public int ShutterInverterPosition => 0;
-
-        #endregion
-
         #region Methods
 
         public Bay Activate(BayNumber bayIndex)
@@ -76,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByNumber(bayIndex);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex);
+                throw new EntityNotFoundException(bayIndex.ToString());
             }
 
             bay.IsActive = true;
@@ -105,7 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByNumber(bayIndex);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex);
+                throw new EntityNotFoundException(bayIndex.ToString());
             }
 
             bay.CurrentMissionId = missionId;
@@ -133,7 +119,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByNumber(bayIndex);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex);
+                throw new EntityNotFoundException(bayIndex.ToString());
             }
 
             bay.IsActive = false;
@@ -250,9 +236,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .Include(b => b.Shutter)
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(b => b.Number == bayNumber);
+
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayNumber);
+                throw new EntityNotFoundException(bayNumber.ToString());
             }
 
             return bay;
@@ -321,46 +308,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
-        public List<InverterIndex> GetInverterList(BayNumber bayIndex)
-        {
-            var returnValue = new List<InverterIndex>();
-
-            var bay = this.GetByNumber(bayIndex);
-
-            switch (bay.Type)
-            {
-                case BayType.Elevator:
-                    if (this.machineProvider.IsOneTonMachine())
-                    {
-                        returnValue.Add(InverterIndex.MainInverter);
-                        returnValue.Add(InverterIndex.Slave1);
-                    }
-                    else
-                    {
-                        returnValue.Add(InverterIndex.MainInverter);
-                    }
-
-                    break;
-
-                case BayType.Single:
-                case BayType.Double:
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
-                    if (bay.IsExternal)
-                    {
-                        returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
-                    }
-
-                    break;
-
-                case BayType.Carousel:
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2).ToString()));
-                    returnValue.Add(Enum.Parse<InverterIndex>(((int)bayIndex * 2 + 1).ToString()));
-                    break;
-            }
-
-            return returnValue;
-        }
-
         public IoIndex GetIoDevice(BayNumber bayIndex)
         {
             var returnValue = IoIndex.None;
@@ -389,7 +336,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var bay = this.GetByNumber(targetBay);
             if (bay is null)
             {
-                throw new EntityNotFoundException(targetBay);
+                throw new EntityNotFoundException(targetBay.ToString());
             }
 
             bay.Operation = newOperation;
@@ -399,7 +346,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return bay;
         }
 
-        public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, decimal height)
+        public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)
         {
             var bay = this.GetByNumber(bayNumber);
             if (positionIndex < 0 || positionIndex > bay.Positions.Count() - 1)

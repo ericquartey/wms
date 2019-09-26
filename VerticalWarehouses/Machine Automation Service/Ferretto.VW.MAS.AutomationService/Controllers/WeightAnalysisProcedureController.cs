@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class WeightAnalysisProcedureController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IElevatorProvider elevatorProvider;
@@ -35,15 +34,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal displacement, decimal netWeight, int? loadingUnitId)
+        public IActionResult Start(double displacement, double netWeight, int? loadingUnitId)
         {
             try
             {
