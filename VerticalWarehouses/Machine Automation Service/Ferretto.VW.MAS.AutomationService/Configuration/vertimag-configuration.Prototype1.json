@@ -18,8 +18,8 @@
     "MaxGrossWeight": 50000,
     "MaxDrawerGrossWeight": 800,
     "BaysQuantity": 2,
-    "Bay1Type": 4,
-    "Bay2Type": 2,
+    "Bay1Type": 3,
+    "Bay2Type": 1,
     "Bay3Type": 0,
     "Bay1Position1": 744.00,
     //"Bay1Height1":,
@@ -122,7 +122,7 @@
   },
   "HorizontalMovementShorterProfile": {
     "TotalSteps": 5,
-    "TotalMovement": 1414.0,
+    "TotalMovement": 1310.0,
     "MovementCorrection": 20.0,
     //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
@@ -131,27 +131,27 @@
     "P1Quote": 100.0,
     "P1Acceleration": 1000.0,
     "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 250.0,
+    "P1SpeedV2": 500.0,
+    "P2Quote": 400.0,
     "P2Acceleration": 1000.0,
     "P2Deceleration": 1000.0,
     "P2SpeedV3": 500.0,
-    "P3Quote": 600.0,
+    "P3Quote": 1100.0,
     "P3Acceleration": 1000.0,
     "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
-    "P4Quote": 985.00,
+    "P4Quote": 1185.00,
     "P4Acceleration": 1000.0,
     "P4Deceleration": 1000.0,
     "P4SpeedV5": 200.0,
-    "P5Quote": 1414.0
+    "P5Quote": 1310.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
   },
   "HorizontalMovementLongerProfile": {
     "TotalSteps": 5,
-    "TotalMovement": 1420.0,
+    "TotalMovement": 1310.0,
     "MovementCorrection": 20.0,
     //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
@@ -161,19 +161,19 @@
     "P1Acceleration": 1000.0,
     "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
-    "P2Quote": 250.0,
+    "P2Quote": 200.0,
     "P2Acceleration": 1000.0,
     "P2Deceleration": 1000.0,
     "P2SpeedV3": 500.0,
-    "P3Quote": 600.0,
+    "P3Quote": 300.0,
     "P3Acceleration": 1000.0,
     "P3Deceleration": 1000.0,
-    "P3SpeedV4": 100.0,
+    "P3SpeedV4": 500.0,
     "P4Quote": 985.00,
     "P4Acceleration": 1000.0,
     "P4Deceleration": 1000.0,
     "P4SpeedV5": 200.0,
-    "P5Quote": 1420.0
+    "P5Quote": 1310.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
@@ -192,7 +192,7 @@
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
-    "MinSpeed": 50.0,
+    "MinSpeed": 2500.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
     "HigherDistance": 467.0,
