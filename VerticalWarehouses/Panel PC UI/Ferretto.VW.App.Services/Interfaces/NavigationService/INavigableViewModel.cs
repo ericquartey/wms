@@ -8,8 +8,6 @@ namespace Ferretto.VW.App.Services.Interfaces
     {
         #region Methods
 
-        void Appear();
-
         bool CanClose();
 
         void Disappear();

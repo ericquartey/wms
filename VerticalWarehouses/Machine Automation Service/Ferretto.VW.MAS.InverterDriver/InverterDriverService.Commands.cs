@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterStatuses.Count == 0)
+            if (this.inverterService.StatusesCount == 0)
             {
                 this.logger.LogError("4:Inverter Driver not configured for this message Type");
 

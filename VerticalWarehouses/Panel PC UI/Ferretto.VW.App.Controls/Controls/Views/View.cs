@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class View : UserControl
+    public class View : UserControl, INavigableView
     {
         #region Constructors
 

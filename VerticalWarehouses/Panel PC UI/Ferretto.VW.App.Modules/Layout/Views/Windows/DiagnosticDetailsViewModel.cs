@@ -1,8 +1,14 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
@@ -25,6 +31,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         private string currentStateInverter;
 
         private string currentStateIODriver;
+
+        private ICommand showDevicesCommand;
 
         private SubscriptionToken updateMachneStateActive;
 
@@ -70,6 +78,12 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public bool IsOpen { get; set; }
 
+        public ICommand ShowDevicesCommand =>
+                        this.showDevicesCommand
+                        ??
+                        (this.showDevicesCommand = new DelegateCommand(
+                            this.ShowDevices));
+
         #endregion
 
 
@@ -107,6 +121,14 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Unsubscribe(this.updateMachneStateActive);
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Unsubscribe(this.updateStateActive);
             this.IsOpen = false;
+        }
+
+        private void ShowDevices()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            dialogService.Show(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Devices.DEVICES);
         }
 
         private void UpdateMachneStateActive(MessageActor messageActor, string messageType)

@@ -21,5 +21,10 @@
     <Resource Include="Images\*.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Remove="Icons\device.png" />
+    <Resource Remove="Icons\inverter.png" />
+  </ItemGroup>
+
 </Project>
 
