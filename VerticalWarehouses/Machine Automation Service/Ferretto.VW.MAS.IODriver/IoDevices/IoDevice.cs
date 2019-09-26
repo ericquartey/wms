@@ -195,6 +195,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
 
                     this.ioCommandQueue.Enqueue(message);
+                    this.forceIoStatusPublish = true;
                 }
 
                 // socket connected

@@ -70,7 +70,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.CalibrateAxis:
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                        receivedMessage.Status == MessageStatus.OperationError)
+                        receivedMessage.Status == MessageStatus.OperationError ||
+                        receivedMessage.Status == MessageStatus.OperationStop)
                     {
                         this.logger.LogTrace($"CalibrateAxis Deallocating {messageCurrentStateMachine?.GetType()} state machine");
 
@@ -82,27 +83,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
                         }
-                    }
-                    if (receivedMessage.Status == MessageStatus.OperationStop)
-                    {
-                        if (messageCurrentStateMachine is CalibrateAxisStateMachine)
-                        {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
-                        }
-                        else
-                        {
-                            this.logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
-                        }
-
-                        // Enqueue a message to execute the Stop states machine
-                        var stopMessage = new FieldCommandMessage(
-                            null,
-                            "Stop inverter",
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageType.InverterStop,
-                            receivedMessage.DeviceIndex);
-                        this.commandQueue.Enqueue(stopMessage);
                     }
 
                     break;
