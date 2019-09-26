@@ -46,7 +46,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (this.stopRequested)
             {
-                this.Inverter.PositionControlWord.NewSetPoint = false;
+                this.ParentStateMachine.PublishNotificationEvent(
+                    new FieldNotificationMessage(
+                        null,
+                        "Message",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStop,
+                        MessageStatus.OperationEnd,
+                        this.InverterStatus.SystemIndex));
             }
 
             this.ParentStateMachine.PublishNotificationEvent(

@@ -41,7 +41,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.Positioning:
                     {
                         if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                            receivedMessage.Status == MessageStatus.OperationError)
+                            receivedMessage.Status == MessageStatus.OperationError ||
+                            receivedMessage.Status == MessageStatus.OperationStop)
                         {
                             this.logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
 
@@ -62,37 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
 
                             this.logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
-                        }
-
-                        if (receivedMessage.Status == MessageStatus.OperationStop)
-                        {
-                            this.logger.LogDebug($"5:Deallocation SM {messageCurrentStateMachine?.GetType()}");
-
-                            if (messageCurrentStateMachine is PositioningStateMachine)
-                            {
-                                this.currentStateMachines.Remove(messageDeviceIndex);
-                            }
-                            else if (messageCurrentStateMachine is PositioningTableStateMachine)
-                            {
-                                this.currentStateMachines.Remove(messageDeviceIndex);
-                            }
-                            else
-                            {
-                                this.logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
-                            }
-
-                            this.logger.LogTrace("4: Stop the timer for update shaft position");
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
-
-                            // Enqueue a message to execute the Stop states machine
-                            var stopMessage = new FieldCommandMessage(
-                                null,
-                                "Stop inverter",
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageType.InverterStop,
-                                receivedMessage.DeviceIndex);
-                            this.commandQueue.Enqueue(stopMessage);
                         }
 
                         break;
