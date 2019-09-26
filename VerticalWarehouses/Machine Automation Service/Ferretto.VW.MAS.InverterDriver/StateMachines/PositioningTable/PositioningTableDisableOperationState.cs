@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Positioning Table Disable operation");
+            this.Logger.LogDebug($"Positioning Table Disable operation. StopRequested = {this.stopRequested}");
             if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.EnableOperation = false;

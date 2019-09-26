@@ -1,13 +1,12 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
-
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
-    internal class ShutterPositioningSwitchOnState : InverterStateBase
+    internal class ShutterPositioningStopState : InverterStateBase
     {
         #region Fields
 
@@ -17,7 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningSwitchOnState(
+        public ShutterPositioningStopState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             IInverterShutterPositioningFieldMessageData shutterPositionData,
@@ -31,31 +30,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Shutter positioning Switch On");
-            this.InverterStatus.CommonControlWord.SwitchOn = true;
+            this.Logger.LogDebug($"Shutter Positioning Stop");
+            this.InverterStatus.CommonControlWord.QuickStop = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.ControlWordParam,
+                    this.InverterStatus.CommonControlWord.Value));
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogDebug("1:Shutter Positioning Stop requested");
-
-            this.ParentStateMachine.ChangeState(
-                new ShutterPositioningStopState(
-                    this.ParentStateMachine,
-                    this.InverterStatus,
-                    this.shutterPositionData,
-                    this.Logger));
+            this.Logger.LogTrace("1:Stop process already active");
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
@@ -63,6 +57,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             return true;
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             var returnValue = false;
@@ -75,12 +70,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
                 {
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                    this.ParentStateMachine.ChangeState(
+                        new ShutterPositioningDisableOperationState(
+                            this.ParentStateMachine,
+                            this.InverterStatus,
+                            this.shutterPositionData,
+                            this.Logger,
+                            true));
+
                     returnValue = true;
                 }
             }
+
             return returnValue;
         }
 
