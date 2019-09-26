@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.DTOs;
+﻿using System;
+using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -14,7 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CarouselController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
@@ -43,32 +43,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<CarouselController> logger)
             : base(eventAggregator)
         {
-            if(verticalAxisDataLayer is null)
+            if (verticalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
             }
 
-            if(verticalManualMovementsDataLayer is null)
+            if (verticalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             }
 
-            if(horizontalAxisDataLayer is null)
+            if (horizontalAxisDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
             }
 
-            if(horizontalManualMovementsDataLayer is null)
+            if (horizontalManualMovementsDataLayer is null)
             {
                 throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if(setupStatusProvider is null)
+            if (setupStatusProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            if(logger is null)
+            if (logger is null)
             {
                 throw new System.ArgumentNullException(nameof(logger));
             }
@@ -83,20 +83,88 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpGet("position")]
-        public ActionResult<decimal> GetVerticalPosition()
+        public ActionResult<decimal> GetPosition()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var position = this.GetPositionController(this.BayNumber);
+                return this.Ok(position);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<decimal>(ex);
+            }
         }
 
         [HttpPost("move")]
-        public void Move([FromBody]CarouselMovementParameters parameters)
+        public void Move(HorizontalMovementDirection direction)
         {
-            throw new System.NotImplementedException();
+            var targetPosition = this.horizontalAxis.CarouselDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+
+            decimal[] speed = { this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+        }
+
+        [HttpPost("move-manual")]
+        public void MoveManual(HorizontalMovementDirection direction)
+        {
+            var targetPosition = this.horizontalAxis.CarouselDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+
+            decimal[] speed = { this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxis.MaxFullAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxFullDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
         }
 
         [HttpPost("stop")]
@@ -112,6 +180,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
+        }
+
+        private decimal GetPositionController(BayNumber bayNumber)
+        {
+            var messageData = new RequestPositionMessageData(Axis.Horizontal, (int)bayNumber);
+
+            void publishAction()
+            {
+                this.PublishCommand(
+                messageData,
+                "Request shutter position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+            }
+
+            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
+                MessageType.Positioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting,
+                publishAction);
+            return notifyData.CurrentPosition ?? 0;
         }
 
         #endregion

@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public decimal AntiClockWiseRun => this.GetDecimalConfigurationValue(HorizontalAxis.AntiClockWiseRun, ConfigurationCategory.HorizontalAxis);
 
+        public decimal CarouselDistance => this.GetDecimalConfigurationValue(HorizontalAxis.CarouselDistance, ConfigurationCategory.HorizontalAxis);
+
         public decimal ClockWiseRun => this.GetDecimalConfigurationValue(HorizontalAxis.ClockWiseRun, ConfigurationCategory.HorizontalAxis);
 
         public bool HomingExecutedHA => this.GetBoolConfigurationValue(HorizontalAxis.HomingExecuted, ConfigurationCategory.HorizontalAxis);

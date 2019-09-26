@@ -1,14 +1,13 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
-
     public class MachineSensorsStatus : IMachineSensorsStatus
     {
-
         #region Fields
 
         private const int INVERTER_INPUTS = 8;
@@ -37,8 +36,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
-
-
         #region Events
 
         public event EventHandler<StatusUpdateEventArgs> FaultStateChanged;
@@ -46,8 +43,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
 
         #endregion
-
-
 
         #region Properties
 
@@ -61,7 +56,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
-        public bool IsDrawerInBay1Up => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+        public bool IsDrawerInBay1Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+
+        public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerInBay2Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+
+        public bool IsDrawerInBay2Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+
+        public bool IsDrawerInBay3Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+
+        public bool IsDrawerInBay3Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
@@ -74,6 +79,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
+        public bool IsSensorZeroOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S3IND];
+
+        public bool IsSensorZeroOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S3IND];
+
+        public bool IsSensorZeroOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S3IND];
+
         public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
@@ -82,9 +93,55 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
-
-
         #region Methods
+
+        public bool IsDrawerInBayBottom(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return !this.IsDrawerInBay1Bottom;
+
+                case BayNumber.BayTwo:
+                    return !this.IsDrawerInBay2Bottom;
+
+                case BayNumber.BayThree:
+                    return !this.IsDrawerInBay3Bottom;
+            }
+        }
+
+        public bool IsDrawerInBayTop(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return !this.IsDrawerInBay1Top;
+
+                case BayNumber.BayTwo:
+                    return !this.IsDrawerInBay2Top;
+
+                case BayNumber.BayThree:
+                    return !this.IsDrawerInBay3Top;
+            }
+        }
+
+        public bool IsSensorZeroOnBay(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsSensorZeroOnBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsSensorZeroOnBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsSensorZeroOnBay3;
+            }
+        }
 
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
@@ -94,36 +151,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                 var requiredUpdate = false;
                 var updateDone = false;
 
-                if(newSensorStatus == null)
+                if (newSensorStatus == null)
                 {
                     return false;
                 }
 
-                if(messageActor == FieldMessageActor.IoDriver)
+                if (messageActor == FieldMessageActor.IoDriver)
                 {
-                    if(ioIndex > 2)
+                    if (ioIndex > 2)
                     {
                         return false;
                     }
 
-                    for(var index = 0; index < REMOTEIO_INPUTS; index++)
+                    for (var index = 0; index < REMOTEIO_INPUTS; index++)
                     {
-                        if(this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
+                        if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if(requiredUpdate)
+                    if (requiredUpdate)
                     {
-                        if(ioIndex == 0)
+                        if (ioIndex == 0)
                         {
-                            if(this.sensorStatus[(int)IOMachineSensors.RunningState] !=
+                            if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
                                 newSensorStatus[(int)IOMachineSensors.RunningState])
                             {
                                 //During Fault Handling running status will be set off. This prevents double firing the power off procedure
-                                if(!this.IsInverterInFault)
+                                if (!this.IsInverterInFault)
                                 {
                                     StatusUpdateEventArgs args = new StatusUpdateEventArgs();
                                     args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
@@ -131,7 +188,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                                 }
                             }
 
-                            if(this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
+                            if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
                                 newSensorStatus[(int)IOMachineSensors.InverterInFault1])
                             {
                                 StatusUpdateEventArgs args = new StatusUpdateEventArgs();
@@ -147,18 +204,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 requiredUpdate = false;
 
-                if(messageActor == FieldMessageActor.InverterDriver)
+                if (messageActor == FieldMessageActor.InverterDriver)
                 {
-                    for(var index = 0; index < INVERTER_INPUTS; index++)
+                    for (var index = 0; index < INVERTER_INPUTS; index++)
                     {
-                        if(this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
+                        if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
                         {
                             requiredUpdate = true;
                             break;
                         }
                     }
 
-                    if(requiredUpdate)
+                    if (requiredUpdate)
                     {
                         Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
                         updateDone = true;
@@ -167,7 +224,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 return updateDone;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Console.WriteLine($@"{exc}");
                 return false;

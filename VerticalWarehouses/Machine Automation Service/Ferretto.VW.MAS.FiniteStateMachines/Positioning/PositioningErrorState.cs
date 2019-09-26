@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+            var inverterIndex = this.machineData.CurrentInverterIndex;
             var description = this.machineData.MessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
                 null,
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)

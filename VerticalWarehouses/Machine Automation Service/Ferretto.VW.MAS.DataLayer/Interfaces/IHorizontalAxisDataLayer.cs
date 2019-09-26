@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal AntiClockWiseRun { get; }
 
+        decimal CarouselDistance { get; }
+
         decimal ClockWiseRun { get; }
 
         bool HomingExecutedHA { get; }

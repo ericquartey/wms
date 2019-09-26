@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
     internal class HomingErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IHomingMachineData machineData;
@@ -33,8 +32,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -46,7 +43,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if(message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
@@ -84,7 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if(this.machineData.IsOneKMachine)
+            if (this.machineData.IsOneKMachine)
             {
                 inverterMessage = new FieldCommandMessage(
                     inverterDataMessage,
@@ -126,7 +123,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

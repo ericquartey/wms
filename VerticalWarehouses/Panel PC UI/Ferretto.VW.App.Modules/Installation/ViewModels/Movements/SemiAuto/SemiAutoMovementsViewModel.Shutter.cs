@@ -110,7 +110,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(this.BayNumber, ShutterPosition.Closed);
+                await this.shuttersService.MoveToAsync(ShutterPosition.Closed);
             }
             catch (System.Exception ex)
             {
@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(this.BayNumber, ShutterPosition.Half);
+                await this.shuttersService.MoveToAsync(ShutterPosition.Half);
             }
             catch (System.Exception ex)
             {
@@ -146,7 +146,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(this.BayNumber, ShutterPosition.Opened);
+                await this.shuttersService.MoveToAsync(ShutterPosition.Opened);
             }
             catch (System.Exception ex)
             {

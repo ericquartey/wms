@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
-
-
         #region Methods
 
         public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
@@ -199,6 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case HorizontalAxis.MaxFullDeceleration:
                 case HorizontalAxis.Offset:
                 case HorizontalAxis.Resolution:
+                case HorizontalAxis.CarouselDistance:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
