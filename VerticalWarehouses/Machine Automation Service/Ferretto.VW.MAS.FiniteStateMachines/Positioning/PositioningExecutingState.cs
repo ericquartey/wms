@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             FieldCommandMessage commandMessage = null;
-            var inverterIndex = this.machineData.CurrentInverterIndex;
+            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
             var statusWordPollingInterval = DefaultStatusWordPollingInterval;
 
@@ -144,14 +144,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
                         statusWordPollingInterval = 500;
-
+                        this.Logger.LogInformation($"************+ torque sampling {inverterIndex}");
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
                             $"Start torque current sampling",
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
-                            FieldMessageType.TorqueCurrentSampling,
-                            (byte)inverterIndex);
+                            FieldMessageType.Positioning,
+                            inverterIndex);
                     }
                     break;
 
@@ -176,7 +176,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
-                            (byte)this.machineData.CurrentInverterIndex);
+                            inverterIndex);
                     }
                     break;
 
@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
-                            (byte)this.machineData.CurrentInverterIndex);
+                            inverterIndex);
                     }
                     break;
 
