@@ -65,10 +65,11 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                     pos++;
                 }
 
+                pos = 0;
                 var outputs = new List<BitInfo>();
                 foreach (var outputData in status.OutputData)
                 {
-                    outputs.Add(new BitInfo(string.Empty, outputData, string.Empty));
+                    outputs.Add(new BitInfo((pos++).ToString(), outputData, string.Empty));                    
                 }
 
                 var device = new IoDevice();

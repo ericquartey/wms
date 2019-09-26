@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -33,12 +35,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
         public ActionResult<(IEnumerable<InverterDevice>, IEnumerable<IoDevice>)> GetAll()
         {
+            try
+            {
                 var invertersStatuses = this.inverterProvider.GetStatuses;
                 var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
                 var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
                 return this.Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = Resources.General.InternalServerErrorTitle,
+                    Detail = exception.Message
+                });
+            }
         }
 
         #endregion

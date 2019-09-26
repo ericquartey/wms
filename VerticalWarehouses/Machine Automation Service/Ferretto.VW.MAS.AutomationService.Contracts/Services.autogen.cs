@@ -2065,13 +2065,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
+                        if (status_ == "500") 
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
                         }
-            
-                        return default(ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice);
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
                     }
                     finally
                     {
