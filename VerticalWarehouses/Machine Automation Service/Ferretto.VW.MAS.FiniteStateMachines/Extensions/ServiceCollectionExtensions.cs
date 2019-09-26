@@ -1,10 +1,14 @@
 ﻿using System;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public static class ServiceCollectionExtensions
     {
+
+
         #region Methods
 
         public static IServiceCollection AddFiniteStateMachines(this IServiceCollection services)
@@ -15,6 +19,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
 
             services.AddHostedService<FiniteStateMachines>();
+
+            services.AddTransient<IMachineControlProvider, MachineControlProvider>();
 
             return services;
         }

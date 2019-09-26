@@ -1,8 +1,12 @@
 ﻿// ReSharper disable ArrangeThisQualifier
 using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
@@ -10,6 +14,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
     {
 
         #region Fields
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IServiceScope serviceScope;
 
         private bool hasEntered;
 
@@ -21,9 +29,20 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Constructors
 
-        protected StateBase(ILogger<StateBase> logger)
+        protected StateBase(
+            IEventAggregator eventAggregator,
+            ILogger<StateBase> logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -31,6 +50,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
 
         #region Properties
+
+        public NotificationMessage ErrorMessage { get; set; }
+
+        public StopRequestReason StopRequestReason { get; set; }
 
         protected ILogger<StateBase> Logger { get; }
 
@@ -47,7 +70,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Dispose()
         {
-            if(!this.isDisposed)
+            if (!this.isDisposed)
             {
                 this.OnDisposing();
                 this.isDisposed = true;
@@ -56,7 +79,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Enter(CommandMessage message)
         {
-            if(this.hasEntered)
+            if (this.hasEntered)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already entered.");
             }
@@ -70,7 +93,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Exit()
         {
-            if(this.hasExited)
+            if (this.hasExited)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already exited.");
             }
@@ -85,6 +108,34 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         public virtual IState NotificationReceived(NotificationMessage notificationMessage)
         {
             return this.OnNotificationReceived(notificationMessage);
+        }
+
+        protected IState GetState<TState>() where TState : IState
+        {
+            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
+        }
+
+        protected void NotifyCommandError(CommandMessage commandMessage, string description)
+        {
+            if (commandMessage is null)
+            {
+                throw new ArgumentNullException(nameof(commandMessage));
+            }
+
+            this.Logger.LogDebug($"Notifying Mission Manager service error caused by message {commandMessage.Type}");
+
+            var message = new NotificationMessage(
+                commandMessage.Data,
+                description,
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.MissionManagerException,
+                commandMessage.RequestingBay,
+                commandMessage.TargetBay,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         protected virtual IState OnCommandReceived(CommandMessage commandMessage)

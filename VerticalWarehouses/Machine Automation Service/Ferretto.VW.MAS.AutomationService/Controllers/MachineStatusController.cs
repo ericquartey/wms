@@ -1,9 +1,9 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.MissionsManager.Providers;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -13,12 +13,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class MachineStatusController : BaseAutomationController
     {
 
+        #region Fields
+
+        private readonly IRunningStateProvider runningStateProvider;
+
+        #endregion
 
         #region Constructors
 
-        public MachineStatusController(IEventAggregator eventAggregator)
+        public MachineStatusController(
+            IRunningStateProvider runningStateProvider,
+            IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
+            this.runningStateProvider = runningStateProvider ?? throw new ArgumentNullException(nameof(runningStateProvider));
         }
 
         #endregion
@@ -30,25 +38,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("power-off")]
         public void PowerOff()
         {
-            var powerEnableMessageData = new PowerEnableMessageData(false);
+            this.runningStateProvider.SetRunningState(false, this.BayNumber, MessageActor.AutomationService);
 
-            this.PublishCommand(
-                powerEnableMessageData,
-                "Power Disable Command",
-                MessageActor.AutomationService,
-                MessageType.PowerEnable);
+            //var powerEnableMessageData = new PowerEnableMessageData(false);
+
+            //this.PublishCommand(
+            //    powerEnableMessageData,
+            //    "Power Disable Command",
+            //    MessageActor.MissionsManager,
+            //    MessageType.PowerEnable);
         }
 
         [HttpPost("power-on")]
         public void PowerOn()
         {
-            var powerEnableMessageData = new PowerEnableMessageData(true);
+            this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
 
-            this.PublishCommand(
-                powerEnableMessageData,
-                "Power Enable Command",
-                MessageActor.AutomationService,
-                MessageType.PowerEnable);
+            //var powerEnableMessageData = new PowerEnableMessageData(true);
+
+            //this.PublishCommand(
+            //    powerEnableMessageData,
+            //    "Power Enable Command",
+            //    MessageActor.MissionsManager,
+            //    MessageType.PowerEnable);
+        }
+
+        [HttpPost("stop")]
+        public void Stop()
+        {
+            this.runningStateProvider.Stop(this.BayNumber, MessageActor.AutomationService);
         }
 
         #endregion

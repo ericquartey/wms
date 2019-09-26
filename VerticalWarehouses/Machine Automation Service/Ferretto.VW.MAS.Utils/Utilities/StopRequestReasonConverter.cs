@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     returnValue = MessageStatus.OperationStop;
                     break;
 
+                case StopRequestReason.Error:
+                    returnValue = MessageStatus.OperationError;
+                    break;
+
                 case StopRequestReason.FaultStateChanged:
                     returnValue = MessageStatus.OperationFaultStop;
                     break;

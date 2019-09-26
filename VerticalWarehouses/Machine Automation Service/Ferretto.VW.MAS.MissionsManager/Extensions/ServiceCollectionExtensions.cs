@@ -1,6 +1,7 @@
-﻿using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.PowerEnable;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.PowerEnable.States;
+﻿using System;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.WeightAcquisition;
 using Ferretto.VW.MAS.MissionsManager.Providers;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,28 +16,33 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
 
         public static IServiceCollection AddMissionsManager(this IServiceCollection services)
         {
-            if(!(services is null))
+            if (services == null)
             {
-                services.AddHostedService<BackgroundServices.MissionsManagerService>();
-
-                services
-                    .AddTransient<IWeightAnalysisMissionProvider, WeightAnalysisMissionProvider>()
-                    .AddTransient<IWeightCheckMissionProvider, WeightCheckMissionProvider>();
-
-                services
-                    .AddTransient<IWeightAcquisitionStateMachine, WeightAcquisitionStateMachine>()
-                    .AddTransient<IWeightAcquisitionMoveToStartPositionState, WeightAcquisitionMoveToStartPositionState>()
-                    .AddTransient<IWeightAcquisitionInPlaceSamplingState, WeightAcquisitionInPlaceSamplingState>()
-                    .AddTransient<IWeightAcquisitionInMotionSamplingState, WeightAcquisitionInMotionSamplingState>()
-                    .AddTransient<IWeightAcquisitionMoveBackToStartPositionState, WeightAcquisitionMoveBackToStartPositionState>();
-
-                services
-                    .AddTransient<IPowerEnableStateMachine, PowerEnableStateMachine>()
-                    .AddTransient<IPowerEnableStartState, PowerEnableStartState>();
-                return services;
+                throw new ArgumentNullException(nameof(services));
             }
 
-            return null;
+            services.AddHostedService<BackgroundServices.MissionsManagerService>();
+
+            services
+                .AddTransient<IWeightAnalysisMissionProvider, WeightAnalysisMissionProvider>()
+                .AddTransient<IWeightCheckMissionProvider, WeightCheckMissionProvider>()
+                .AddTransient<IRunningStateProvider, RunningStateProvider>();
+
+            services
+                .AddTransient<IWeightAcquisitionStateMachine, WeightAcquisitionStateMachine>()
+                .AddTransient<IWeightAcquisitionMoveToStartPositionState, WeightAcquisitionMoveToStartPositionState>()
+                .AddTransient<IWeightAcquisitionInPlaceSamplingState, WeightAcquisitionInPlaceSamplingState>()
+                .AddTransient<IWeightAcquisitionInMotionSamplingState, WeightAcquisitionInMotionSamplingState>()
+                .AddTransient<IWeightAcquisitionMoveBackToStartPositionState, WeightAcquisitionMoveBackToStartPositionState>();
+
+            services
+                .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()
+                .AddTransient<IChangeRunningStateStartState, ChangeRunningStateStartState>()
+                .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
+                .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
+                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
+
+            return services;
         }
 
         #endregion

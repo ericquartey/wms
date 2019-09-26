@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     internal partial class FiniteStateMachines
     {
+
+
         #region Methods
 
         private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
@@ -76,38 +78,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
             return result;
         }
-
-        /// <summary>
-        /// This routine contains all conditions to be satisfied before to do an homing operation.
-        /// </summary>
-        //TEMP
-        //private bool IsHomingToExecute(out ConditionToCheckType condition)
-        //{
-        //    //TEMP The following conditions must be checked in order to execute an homing operation
-
-        //    condition = ConditionToCheckType.MachineIsInEmergencyState;
-        //    if (this.EvaluateCondition(condition))
-        //    {
-        //        this.logger.LogTrace("1:MachineIsInEmergencyState");
-        //        return false;
-        //    }
-
-        //    condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
-        //    if (this.EvaluateCondition(condition))
-        //    {
-        //        this.logger.LogTrace("1:DrawerIsPartiallyOnCradle");
-        //        return false;
-        //    }
-
-        //    //TEMP This condition does not satisfied by the Bender machine
-        //    //condition = ConditionToCheckType.SensorInZeroOnCradle;
-        //    //if (!this.EvaluateCondition(condition))
-        //    //{
-        //    //    return false;
-        //    //}
-
-        //    return true;
-        //}
 
         private void ProcessCheckConditionMessage(CommandMessage message)
         {

@@ -88,6 +88,8 @@
 
         WeightAcquisitionCommand,
 
-        MissionManagerException
+        MissionManagerException,
+
+        ChangeRunningState
     }
 }

@@ -4,19 +4,20 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class PowerEnableMessageData : IPowerEnableMessageData
+    public class ChangeRunningStateMessageData : IChangeRunningStateMessageData
     {
 
 
         #region Constructors
 
-        public PowerEnableMessageData()
+        public ChangeRunningStateMessageData()
         {
         }
 
-        public PowerEnableMessageData(bool enable, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ChangeRunningStateMessageData(bool enable, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Enable = enable;
+            this.CommandAction = commandAction;
             this.Verbosity = verbosity;
         }
 
@@ -25,6 +26,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
 
         #region Properties
+
+        public CommandAction CommandAction { get; }
 
         public bool Enable { get; }
 

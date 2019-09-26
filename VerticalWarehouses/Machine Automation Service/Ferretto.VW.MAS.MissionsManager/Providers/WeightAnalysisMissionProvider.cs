@@ -65,7 +65,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                    NetWeight = netWeight,
                },
                "Start Weight Acquisition Procedure",
-               MessageType.WeightAcquisitionCommand);
+               MessageActor.Any,
+               MessageType.WeightAcquisitionCommand,
+               BayNumber.None);
         }
 
         public void Stop()
@@ -76,7 +78,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                   CommandAction = CommandAction.Abort,
               },
               "Abort Weight Acquisition Procedure",
-              MessageType.WeightAcquisitionCommand);
+              MessageActor.Any,
+              MessageType.WeightAcquisitionCommand,
+              BayNumber.None);
         }
 
         #endregion

@@ -28,23 +28,23 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message)
         {
-            switch(message.Type)
+            switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                this.OnMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
-                break;
+                    this.OnMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
+                    break;
 
                 case MessageType.BayOperationalStatusChanged:
-                this.OnBayOperationalStatusChanged();
-                break;
+                    this.OnBayOperationalStatusChanged();
+                    break;
 
                 case MessageType.NewMissionAvailable:
-                this.OnNewMissionAvailable();
-                break;
+                    this.OnNewMissionAvailable();
+                    break;
 
                 case MessageType.DataLayerReady:
-                this.OnDataLayerReady();
-                break;
+                    this.OnDataLayerReady();
+                    break;
             }
 
             return Task.CompletedTask;
@@ -62,22 +62,23 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException(nameof(e));
             }
 
-            using(var scope = this.serviceScopeFactory.CreateScope())
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                var bayProvider = ServiceProviderServiceExtensions.GetRequiredService<IBaysProvider>(scope.ServiceProvider);
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
                 var bay = bayProvider.GetAll()
                     .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
                     .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
 
-                if(bay != null)
+                if (bay != null && bay.CurrentMissionId != null)
                 {
                     bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
+
                     LoggerExtensions.LogDebug(this.Logger, $"Bay#{bay.Number}: operation competed.");
 
                     this.bayStatusChangedEvent.Set();

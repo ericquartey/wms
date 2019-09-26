@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         {
             base.Dispose();
 
-            if(!this.isDisposed)
+            if (!this.isDisposed)
             {
                 this.serviceScope.Dispose();
 

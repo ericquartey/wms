@@ -4,7 +4,9 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 {
@@ -21,8 +23,10 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         public WeightAcquisitionInMotionSamplingState(
             IElevatorProvider elevatorProvider,
+            IEventAggregator eventAggregator,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<StateBase> logger)
-            : base(logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.elevatorProvider = elevatorProvider;
         }
@@ -35,7 +39,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines
 
         protected override void OnEnter(CommandMessage commandMessage)
         {
-            if(commandMessage is WeightAcquisitionCommandMessageData messageData)
+            if (commandMessage.Data is WeightAcquisitionCommandMessageData messageData)
             {
                 this.elevatorProvider.RunInMotionCurrentSampling(messageData.Displacement, messageData.NetWeight, BayNumber.ElevatorBay);
             }

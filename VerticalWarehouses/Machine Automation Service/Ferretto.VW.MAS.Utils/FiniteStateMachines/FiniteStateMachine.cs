@@ -58,19 +58,19 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
-            if(eventAggregator is null)
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if(serviceScopeFactory is null)
+            if (serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            this.InstanceId = new Guid();
+            this.InstanceId = Guid.NewGuid();
 
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
@@ -96,18 +96,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             get => this.activeState;
             private set
             {
-                if(this.activeState != value)
+                if (this.activeState != value)
                 {
                     this.activeState?.Exit();
 
-                    if(this.activeState is IDisposable disposable)
+                    if (this.activeState is IDisposable disposable)
                     {
                         disposable.Dispose();
                     }
 
                     this.activeState = value;
 
-                    this.activeState.Enter(this.StartData);
+                    this.activeState?.Enter(this.StartData);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         /// </summary>
         public void Dispose()
         {
-            if(!this.isDisposed)
+            if (!this.isDisposed)
             {
                 this.commandEventSubscriptionToken?.Dispose();
                 this.commandEventSubscriptionToken = null;
@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
-            if(this.isStarted)
+            if (this.isStarted)
             {
                 throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
@@ -222,21 +222,21 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     this.ActiveState = this.OnCommandReceived(commandMessage);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     return;
                 }
-                catch(ThreadAbortException)
+                catch (ThreadAbortException)
                 {
                     return;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     this.NotifyError(ex);
 
                     return;
                 }
-            } while(!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -251,21 +251,21 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     this.ActiveState = this.OnNotificationReceived(notificationMessage);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     return;
                 }
-                catch(ThreadAbortException)
+                catch (ThreadAbortException)
                 {
                     return;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     this.NotifyError(ex);
 
                     return;
                 }
-            } while(!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
