@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
+        private readonly bool stopRequested;
+
         #endregion
 
         #region Constructors
@@ -21,10 +23,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             IInverterShutterPositioningFieldMessageData shutterPositionData,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.shutterPositionData = shutterPositionData;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -33,8 +37,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Shutter positioning Disable Operation. StopRequested = {this.stopRequested}");
             this.InverterStatus.CommonControlWord.EnableOperation = false;
-            this.Logger.LogDebug("Disable Operation");
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
@@ -46,9 +50,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            if (this.stopRequested)
+            {
+                this.Logger.LogTrace("1:Stop process already active");
+            }
+            else
+            {
+                this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
+                this.ParentStateMachine.ChangeState(
+                    new ShutterPositioningStopState(
+                        this.ParentStateMachine,
+                        this.InverterStatus,
+                        this.shutterPositionData,
+                        this.Logger));
+            }
         }
 
         /// <inheritdoc/>
@@ -75,7 +91,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                     {
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, this.stopRequested));
                         returnValue = true;
                     }
                 }

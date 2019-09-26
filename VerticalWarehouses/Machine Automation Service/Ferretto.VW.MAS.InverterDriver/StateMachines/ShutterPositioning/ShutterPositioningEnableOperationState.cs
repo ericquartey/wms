@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     internal class ShutterPositioningEnableOperationState : InverterStateBase
     {
-
         #region Fields
 
         private readonly ShutterPosition shutterDestination;
@@ -42,6 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Shutter positioning Enable Operation");
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
@@ -58,9 +58,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new ShutterPositioningStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.shutterPositionData,
+                    this.Logger));
         }
 
         /// <inheritdoc/>

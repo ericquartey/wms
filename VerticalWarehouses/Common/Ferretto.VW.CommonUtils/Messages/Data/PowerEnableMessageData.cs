@@ -13,10 +13,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public PowerEnableMessageData(bool enable, List<BayNumber> configuredBays = null, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public PowerEnableMessageData(bool enable, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Enable = enable;
-            this.ConfiguredBays = configuredBays;
             this.CommandAction = commandAction;
             this.Verbosity = verbosity;
         }
@@ -26,8 +25,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Properties
 
         public CommandAction CommandAction { get; }
-
-        public List<BayNumber> ConfiguredBays { get; }
 
         public bool Enable { get; }
 

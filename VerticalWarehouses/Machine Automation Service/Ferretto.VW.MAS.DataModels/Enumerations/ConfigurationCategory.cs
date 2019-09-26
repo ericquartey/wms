@@ -12,9 +12,9 @@
 
         HorizontalAxis = 5L,
 
-        HorizontalMovementLongerProfile = 6L,
+        HorizontalMovementLongerPickup = 6L,
 
-        HorizontalMovementShorterProfile = 7L,
+        HorizontalMovementShorterPickup = 7L,
 
         VerticalManualMovements = 8L,
 
@@ -38,6 +38,10 @@
 
         LoadFirstDrawer = 18L,
 
-        ShutterManualMovements = 19L
+        ShutterManualMovements = 19L,
+
+        HorizontalMovementLongerDeposit = 20L,
+
+        HorizontalMovementShorterDeposit = 21L,
     }
 }
