@@ -4,4 +4,8 @@
     <TargetFrameworks>netcoreapp2.2;net471</TargetFrameworks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />    
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DevicesController : BaseAutomationController
+    public class DevicesController : ControllerBase
     {
         #region Fields
 
@@ -23,7 +23,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public DevicesController(IEventAggregator eventAggregator,
                                  IInverterProvider inverterProvider,
                                  IIoDeviceProvider ioDeviceProvider)
-                : base(eventAggregator)
         {
             this.inverterProvider = inverterProvider;
             this.ioDeviceProvider = ioDeviceProvider;

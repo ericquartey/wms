@@ -5,6 +5,7 @@ using System.Reflection;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;

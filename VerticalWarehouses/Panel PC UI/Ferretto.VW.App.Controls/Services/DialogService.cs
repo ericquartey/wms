@@ -47,10 +47,8 @@ namespace Ferretto.VW.App.Services
                 var viewName = MvvmNaming.GetViewNameFromViewModelName(viewModelName);
 
                 var winView = ServiceLocator.Current.GetInstance<INavigableView>(viewName);
-
-                //var ppcMessagePopup = new PpcDialogView();
-                //ppcMessagePopup.Content = view;
-                PpcMessagePopup.ShowDialog(winView, false, false);
+                
+                PpcMessagePopup.ShowDialog(winView, true, false);
             }
             catch (Exception ex)
             {

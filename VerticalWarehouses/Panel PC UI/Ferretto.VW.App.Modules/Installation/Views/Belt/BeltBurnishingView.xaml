@@ -57,8 +57,7 @@
                              VerticalAlignment="Top"
                              InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCycles}"
-                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}"/>
+                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="1"
@@ -66,8 +65,8 @@
                              VerticalAlignment="Top"
                              InputText="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
-                           SpinEditStyle="{DynamicResource SpinEditIntegerStyle}"/>
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
+
         <StackPanel Grid.Row="3"
                     Grid.Column="1"
                     Orientation="Horizontal">

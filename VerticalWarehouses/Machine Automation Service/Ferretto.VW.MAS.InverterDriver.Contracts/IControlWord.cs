@@ -1,7 +1,6 @@
-namespace Ferretto.VW.MAS.InverterDriver.Contracts
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public interface IControlWord
     {
