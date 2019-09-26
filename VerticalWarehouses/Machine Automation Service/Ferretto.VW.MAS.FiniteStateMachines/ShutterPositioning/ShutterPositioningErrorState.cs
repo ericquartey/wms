@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Shutter Positioning Stopped for an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = StopRequestReason.Stop;
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));

@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
     internal class ResetSecurityEndState : StateBase
     {
-
         #region Fields
 
         private readonly IResetSecurityMachineData machineData;
@@ -41,24 +40,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -66,7 +63,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             var notificationMessage = new NotificationMessage(
                 null,
                 "Reset Security Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.ResetSecurity,
                 this.machineData.RequestingBay,
@@ -80,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)

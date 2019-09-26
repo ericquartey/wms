@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
@@ -59,7 +60,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Inverter Fault reset completed for bay {this.machineData.TargetBay}",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.InverterFaultReset,
                 this.machineData.RequestingBay,
@@ -71,6 +72,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)

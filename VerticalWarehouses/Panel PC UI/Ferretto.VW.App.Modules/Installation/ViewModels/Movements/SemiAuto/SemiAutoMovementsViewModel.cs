@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private bool isZeroChain;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken sensorsToken;
@@ -45,6 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineSensorsService machineSensorsService,
             IMachineShuttersService shuttersService,
             IMachineServiceService machineServiceService,
+            IMachineCarouselService machineCarouselService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -83,6 +86,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(machineServiceService));
             }
 
+            if (machineCarouselService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineCarouselService));
+            }
+
             this.machineSensorsService = machineSensorsService;
             this.machineElevatorService = machineElevatorService;
             this.machineCellsService = machineCellsService;
@@ -90,6 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManagerService = bayManagerService;
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
+            this.machineCarouselService = machineCarouselService;
 
             this.shutterSensors = new ShutterSensors(this.BayNumber);
 
@@ -122,7 +131,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking
-                || this.IsTuningChain;
+                || this.IsTuningChain
+                || this.IsCarouselMoving;
+
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
         public bool IsWaitingForResponse
         {
@@ -189,6 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
                             this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
@@ -258,6 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorDisembarking = false;
                 this.IsElevatorEmbarking = false;
                 this.IsTuningChain = false;
+                this.IsCarouselMoving = false;
             }
         }
 
@@ -293,6 +307,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
 
                         break;
                     }
@@ -306,6 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        this.IsCarouselMoving = false;
 
                         this.ShowNotification(
                             VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -318,7 +337,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed;
+            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed && !this.shutterSensors.MidWay;
 
             this.CanInputCellId = this.Cells != null
                &&
@@ -351,6 +370,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
+            this.carouselDownCommand?.RaiseCanExecuteChanged();
+            this.carouselUpCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

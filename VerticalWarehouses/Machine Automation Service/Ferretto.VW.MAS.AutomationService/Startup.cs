@@ -1,10 +1,18 @@
 ﻿using System.Globalization;
 using Ferretto.VW.MAS.AutomationService.Filters;
+using Ferretto.VW.MAS.AutomationService.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Provider;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.FiniteStateMachines;
 using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.InverterDriver.Extensions;
 using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.InverterDriver.Interface.Services;
+using Ferretto.VW.MAS.InverterDriver.Services;
 using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.IODriver.Interface.Services;
+using Ferretto.VW.MAS.IODriver.Services;
+using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.VW.MAS.MissionsManager.Extensions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -146,6 +154,9 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             });
 
+            services.AddIODriver();
+            services.AddInverterDriver();
+
             services.AddHostedService<HostedIoDriver>();
 
             services.AddHostedService<InverterDriverService>();
@@ -155,6 +166,9 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddMissionsManager();
 
             services.AddHostedService<AutomationService>();
+
+            services.AddTransient<IInverterProvider, InverterProvider>();
+            services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
         }
 
         private void InitialiseWmsInterfaces(IServiceCollection services)

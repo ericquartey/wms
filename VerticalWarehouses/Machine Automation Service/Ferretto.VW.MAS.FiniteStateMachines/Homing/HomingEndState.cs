@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
                 this.machineData.RequestingBay,
@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

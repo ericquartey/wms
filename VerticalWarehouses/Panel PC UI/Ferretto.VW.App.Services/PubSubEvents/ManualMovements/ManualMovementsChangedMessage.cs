@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Services
 {
-    public class ManualMovementshangedMessage
+    public class ManualMovementsChangedMessage
     {
         #region Constructors
 
-        public ManualMovementshangedMessage(string viewModelName)
+        public ManualMovementsChangedMessage(string viewModelName)
         {
             this.ViewModelName = viewModelName;
         }

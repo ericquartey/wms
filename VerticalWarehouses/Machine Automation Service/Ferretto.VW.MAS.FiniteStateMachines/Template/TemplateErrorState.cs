@@ -2,13 +2,13 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     internal class TemplateErrorState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -52,7 +50,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Template Error State Notification with {this.machineData.Message} and {this.stateData.Message}. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 this.machineData.RequestingBay,
@@ -65,16 +63,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

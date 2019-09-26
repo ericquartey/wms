@@ -103,18 +103,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineCarouselService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync();
+        System.Threading.Tasks.Task<decimal> GetPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<decimal> GetPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(CarouselMovementParameters parameters);
+        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(CarouselMovementParameters parameters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -167,6 +174,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, decimal height, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineDevicesService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice> GetAllAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -448,11 +467,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineShuttersService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync();
@@ -462,25 +481,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ShutterTestParameters> GetTestParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction);
+        System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(int bayNumber, ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RunTestAsync(int bayNumber, int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -934,44 +953,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CarouselMovementParameters 
-    {
-        [Newtonsoft.Json.JsonProperty("displacement", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Displacement { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("movementType", Required = Newtonsoft.Json.Required.Always)]
-        public MovementType MovementType { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("speedPercentage", Required = Newtonsoft.Json.Required.Always)]
-        public int SpeedPercentage { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static CarouselMovementParameters FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CarouselMovementParameters>(data);
-        }
-    
-    }
-    
-    /// <summary>0 = Absolute
-    /// 1 = Relative
-    /// 2 = TableTarget</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MovementType
-    {
-        Absolute = 0,
-    
-        Relative = 1,
-    
-        TableTarget = 2,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellPanel 
     {
         [Newtonsoft.Json.JsonProperty("cells", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1051,6 +1032,120 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static CellStatusStatistics FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatusStatistics>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice 
+    {
+        [Newtonsoft.Json.JsonProperty("item1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<InverterDevice> Item1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("item2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<IoDevice> Item2 { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class InverterDevice : DeviceBase
+    {
+        [Newtonsoft.Json.JsonProperty("controlWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> ControlWords { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("digitalInputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> DigitalInputs { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> StatusWords { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static InverterDevice FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterDevice>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BitInfo 
+    {
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isUsed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsUsed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        public bool Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static BitInfo FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BitInfo>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class DeviceBase 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static DeviceBase FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DeviceBase>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class IoDevice : DeviceBase
+    {
+        [Newtonsoft.Json.JsonProperty("inputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> Inputs { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ioStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> IoStatuses { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("outputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<BitInfo> Outputs { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static IoDevice FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDevice>(data);
         }
     
     }
@@ -1258,11 +1353,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>100032 = CradleNotCompletelyLoaded</summary>
+    /// <summary>100032 = CradleNotCompletelyLoaded
+    /// 100033 = ConditionsNotMetForPositioning</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrors
     {
         CradleNotCompletelyLoaded = 100032,
+    
+        ConditionsNotMetForPositioning = 100033,
     
     }
     

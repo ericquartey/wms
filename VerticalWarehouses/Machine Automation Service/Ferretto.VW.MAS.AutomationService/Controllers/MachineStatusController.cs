@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpPost("power-off")]

@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     internal class MoveDrawerCradleState : StateBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -49,8 +48,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -61,61 +58,61 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             //TODO when Inverter Driver notifies completion of Positioning of the drawer move to next state
-            if(message.Type == FieldMessageType.Positioning)
+            if (message.Type == FieldMessageType.Positioning)
             {
-                switch(message.Status)
+                switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
 
-                    // TEMP Check sensors' status
-                    // NOTE: Comment the line about the sensor check, if you use it with Bender
-                    if(!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOnCradle)
-                    {
-                        var notificationMessage = new NotificationMessage(
-                            null,
-                            "Cradle is not completely loaded",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.DrawerOperation,
-                            this.machineData.RequestingBay,
-                            this.machineData.TargetBay,
-                            MessageStatus.OperationError,
-                            ErrorLevel.Error,
-                            MessageVerbosity.Error);
-
-                        using(var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                        // TEMP Check sensors' status
+                        // NOTE: Comment the line about the sensor check, if you use it with Bender
+                        if (!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOnCradle)
                         {
-                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                            var notificationMessage = new NotificationMessage(
+                                null,
+                                "Cradle is not completely loaded",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.DrawerOperation,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Error,
+                                MessageVerbosity.Error);
 
-                            errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
+                            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                            {
+                                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
+                            }
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                            this.stateData.FieldMessage = message;
+                            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+
+                            return;
                         }
 
-                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
+                            this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
+                        }
 
-                        this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                        if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
+                            this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                        }
 
-                        return;
-                    }
-
-                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
-                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
-                    {
-                        this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
-                    }
-
-                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
-                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
-                    {
-                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
-                    }
-
-                    break;
+                        break;
 
                     case MessageStatus.OperationError:
-                    this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
-                    break;
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                        break;
                 }
             }
         }
@@ -166,18 +163,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 
@@ -216,7 +214,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    target = +150;
             //}
 
-            if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+            if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
             {
                 target = this.machineData.DrawerOperationData.SourceHorizontalPosition;
             }

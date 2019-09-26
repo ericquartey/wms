@@ -1,6 +1,11 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -16,6 +21,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly IPowerEnableMachineData machineData;
 
         private bool disposed;
@@ -25,7 +32,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Constructors
 
         public PowerEnableStateMachine(
-                    CommandMessage receivedMessage,
+            CommandMessage receivedMessage,
+            IMachineSensorsStatus machineSensorsStatus,
+            IBaysProvider baysProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory
@@ -34,9 +43,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.CurrentState = new EmptyState(this.Logger);
 
+            this.baysProvider = baysProvider;
+
             if(receivedMessage.Data is IPowerEnableMessageData data)
             {
-                this.machineData = new PowerEnableMachineData(data.Enable, receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
+                this.machineData = new PowerEnableMachineData(data.Enable,
+                    receivedMessage.RequestingBay,
+                    receivedMessage.TargetBay,
+                    machineSensorsStatus,
+                    eventAggregator,
+                    logger,
+                    serviceScopeFactory);
             }
         }
 
@@ -73,7 +90,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             lock(this.CurrentState)
             {
                 var stateData = new PowerEnableStateData(this, this.machineData);
-                this.CurrentState = new PowerEnableStartState(stateData);
+                if(this.machineData.Enable)
+                {
+                    if(!this.IsMarchPossible(out string errorText))
+                    {
+                        var notificationMessage = new NotificationMessage(
+                            null,
+                            errorText,
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.InverterException,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
+                            MessageStatus.OperationStart);
+
+                        this.PublishNotificationMessage(notificationMessage);
+
+                        this.Logger.LogError(errorText);
+
+                        this.CurrentState = new PowerEnableErrorState(stateData);
+                    }
+                    else
+                    {
+                        this.CurrentState = new PowerEnableStartState(stateData);
+                    }
+                }
+                else
+                {
+                    this.CurrentState = new PowerEnableStartState(stateData);
+                }
                 this.CurrentState?.Start();
             }
 
@@ -103,6 +148,77 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
             this.disposed = true;
             base.Dispose(disposing);
+        }
+
+        private bool IsMarchPossible(out string errorText)
+        {
+            bool isMarchPossible = true;
+            var reason = new StringBuilder();
+            foreach(var bay in this.baysProvider.GetAll())
+            {
+                switch(bay.Index)
+                {
+                    case BayNumber.BayOne:
+                    if(this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Emergency Active Bay1; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSideBay1])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay1 Left; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSideBay1])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay1 Right; ");
+                    }
+                    break;
+
+                    case BayNumber.BayTwo:
+                    if(this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Emergency Active Bay2; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSideBay2])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay2 Left; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSideBay2])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay2 Right; ");
+                    }
+                    break;
+
+                    case BayNumber.BayThree:
+                    if(this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Emergency Active Bay3; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSideBay3])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay3 Left; ");
+                    }
+                    if(!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSideBay3])
+                    {
+                        isMarchPossible = false;
+                        reason.Append("Micro Carter Active Bay3 Right; ");
+                    }
+                    break;
+
+                    default:
+                    break;
+                }
+            }
+
+            errorText = reason.ToString();
+            return isMarchPossible;
         }
 
         #endregion

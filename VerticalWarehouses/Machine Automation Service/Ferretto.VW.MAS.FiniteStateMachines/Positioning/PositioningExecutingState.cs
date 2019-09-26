@@ -118,15 +118,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             FieldCommandMessage commandMessage = null;
-            var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                ? InverterIndex.Slave1
-                : InverterIndex.MainInverter;
+            var inverterIndex = this.machineData.CurrentInverterIndex;
 
             var statusWordPollingInterval = DefaultStatusWordPollingInterval;
 
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.BayChain:
+                case MovementMode.BayChainManual:
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
 
@@ -217,7 +217,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             // stop timer
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
@@ -291,8 +291,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
         }
 
+        private bool IsBracketSensorError()
+        {
+            return !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+        }
+
         private bool IsLoadingErrorDuringPickup()
         {
+            return false;
             if (!this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -331,6 +337,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
+            return false;
             if (this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -369,6 +376,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool IsZeroSensorError()
         {
+            return false;
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
                 && this.machineData.MessageData.MovementType == MovementType.TableTarget
                 && this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle == this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
@@ -385,7 +393,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                 {
-                    var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                    var inverterIndex = this.machineData.CurrentInverterIndex;
                     var commandMessage = new FieldCommandMessage(
                         null,
                         $"Stop Operation due to zero position reached",
@@ -480,17 +488,40 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     this.machineData.ExecutedSteps = this.numberExecutedSteps;
                     this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                     break;
+
+                case MovementMode.BayChain:
+                    if (this.IsBracketSensorError())
+                    {
+                        this.Logger.LogError($"Bracket sensor error");
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                    }
+                    break;
+
+                case MovementMode.BayChainManual:
+                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                    break;
             }
         }
 
         private void ProcessEndStop()
         {
-            if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+            if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle ||
+                this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle ||
+                this.machineData.MessageData.MovementMode == MovementMode.BayChain ||
+                this.machineData.MessageData.MovementMode == MovementMode.BayChainManual
+                )
             {
                 this.machineData.ExecutedSteps = this.numberExecutedSteps;
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
             }
-            else
+            else if (
+                this.machineData.MessageData.MovementMode == MovementMode.Position ||       // TODO: could we remove this line???? please??
+                this.machineData.MessageData.MovementMode == MovementMode.FindZero
+                )
             {
                 decimal[] switchPosition = { 0 };
                 decimal[] speed = { this.machineData.MessageData.TargetSpeed[0] / 2 };

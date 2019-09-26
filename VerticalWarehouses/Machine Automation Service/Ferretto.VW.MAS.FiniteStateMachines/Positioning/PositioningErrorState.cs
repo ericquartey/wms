@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     internal class PositioningErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IPositioningMachineData machineData;
@@ -43,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -56,12 +53,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if(message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
+            if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
                     this.machineData.RequestingBay,
@@ -80,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+            var inverterIndex = this.machineData.CurrentInverterIndex;
             var description = this.machineData.MessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
                 null,
@@ -90,7 +87,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageType.InverterStop,
                 (byte)inverterIndex);
 
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.Logger.LogDebug($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -134,7 +131,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 this.machineData.RequestingBay,
@@ -146,17 +143,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

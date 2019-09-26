@@ -42,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -60,7 +58,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 var notificationMessage = new NotificationMessage(
                     this.machineData.DrawerOperationData,
                     $"{FieldMessageType.InverterStop} Error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
                     this.machineData.RequestingBay,
@@ -95,7 +93,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             var notificationMessage = new NotificationMessage(
                 this.machineData.DrawerOperationData,
                 $"{MessageType.DrawerOperation} Error",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 this.machineData.RequestingBay,
@@ -107,7 +105,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)

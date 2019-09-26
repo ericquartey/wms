@@ -9,7 +9,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -30,8 +29,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -55,8 +52,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                $"Power Enable Stopped due to an error. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.Any,
+                $"Power Enable Stopped due to an error. Filed message: {this.stateData.FieldMessage?.Description ?? string.Empty}",
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.PowerEnable,
                 this.machineData.RequestingBay,
@@ -69,17 +66,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

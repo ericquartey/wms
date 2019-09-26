@@ -49,8 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -135,7 +133,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
-            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+                this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
@@ -173,6 +171,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
         }

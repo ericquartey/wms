@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -348,7 +348,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 100032, "Cassetto non caricato completamente", "Il cassetto potrebbe essersi incastrato.", 0 });
+                values: new object[] { 100032, "Cassetto non caricato completamente.", "Il cassetto potrebbe essersi incastrato.", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100033, "Condizioni per il posizionamento non soddisfatte.", "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.", 0 });
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
@@ -358,7 +363,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 20, 8, 34, 2, 465, DateTimeKind.Local).AddTicks(3908), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 24, 13, 23, 47, 223, DateTimeKind.Local).AddTicks(772), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -379,6 +384,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 100032, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100033, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bays_IpAddress",

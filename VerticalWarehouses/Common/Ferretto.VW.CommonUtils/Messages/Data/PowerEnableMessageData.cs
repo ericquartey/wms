@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
@@ -6,8 +7,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PowerEnableMessageData : IPowerEnableMessageData
     {
-
-
         #region Constructors
 
         public PowerEnableMessageData()
@@ -21,8 +20,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         #endregion
-
-
 
         #region Properties
 

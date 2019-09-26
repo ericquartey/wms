@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             if (this.stopRequested)
             {
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IPositioningInverterStatus currentStatus)
                 {
                     currentStatus.TableTravelControlWord.StartMotionBlock = false;
                 }

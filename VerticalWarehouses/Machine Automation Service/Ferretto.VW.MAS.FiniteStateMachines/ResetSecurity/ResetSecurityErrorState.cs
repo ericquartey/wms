@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 var notificationMessage = new NotificationMessage(
                     null,
                     "Reset Security Stopped due to an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.ResetSecurity,
                     this.machineData.RequestingBay,
@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion
