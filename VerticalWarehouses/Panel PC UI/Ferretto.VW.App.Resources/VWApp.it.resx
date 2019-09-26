@@ -159,4 +159,22 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Numero Seriale: {0}</value>
   </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Nome Utente</value>
+  </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Visto</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} giorni fa</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0:0} ore fa</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} minuti fa</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Adesso</value>
+  </data>
 </root>

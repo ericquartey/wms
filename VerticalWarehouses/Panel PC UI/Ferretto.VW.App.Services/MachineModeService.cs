@@ -3,15 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
     public sealed class MachineModeService : IMachineModeService, IDisposable
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -20,13 +21,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsService machineSensorsService;
 
-        private readonly MAS.AutomationService.Contracts.IMachineMachineStatusService machineStatusService;
-
-        private bool disposedValue;
+        private readonly IMachineMachineStatusService machineStatusService;
 
         private SubscriptionToken healthSubscriptionToken;
+
+        private bool isDisposed;
 
         private MachinePowerState machinePower;
 
@@ -39,8 +40,8 @@ namespace Ferretto.VW.App.Services
         public MachineModeService(
             IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
-            MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService,
-            MAS.AutomationService.Contracts.IMachineMachineStatusService machineStatusService)
+            IMachineSensorsService machineSensorsService,
+            IMachineMachineStatusService machineStatusService)
         {
             if (eventAggregator is null)
             {
@@ -83,6 +84,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Properties
 
         public MachineMode MachineMode { get; }
@@ -105,6 +108,8 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -141,31 +146,21 @@ namespace Ferretto.VW.App.Services
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (this.isDisposed)
             {
-                if (disposing)
-                {
-                    if (this.sensorsSubscriptionToken == null)
-                    {
-                        this.eventAggregator
-                            .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                            .Unsubscribe(this.sensorsSubscriptionToken);
-
-                        this.sensorsSubscriptionToken = null;
-                    }
-
-                    if (this.healthSubscriptionToken == null)
-                    {
-                        this.eventAggregator
-                            .GetEvent<HealthStatusChangedPubSubEvent>()
-                            .Unsubscribe(this.healthSubscriptionToken);
-
-                        this.healthSubscriptionToken = null;
-                    }
-                }
-
-                this.disposedValue = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.sensorsSubscriptionToken?.Dispose();
+                this.sensorsSubscriptionToken = null;
+
+                this.healthSubscriptionToken?.Dispose();
+                this.healthSubscriptionToken = null;
+            }
+
+            this.isDisposed = true;
         }
 
         private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -195,7 +190,7 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
-            var sensorIndex = (int)IOMachineSensors.NormalState;
+            var sensorIndex = (int)IOMachineSensors.RunningState;
 
             if (sensorsStates.Length > sensorIndex)
             {

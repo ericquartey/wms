@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.HigherDistance = decimal.ToInt32(shutterPositioningFieldMessageData.HigherDistance);
             this.LowerDistance = decimal.ToInt32(shutterPositioningFieldMessageData.LowerDistance);
             this.MovementType = shutterPositioningFieldMessageData.MovementType;
+            this.HighSpeedPercent = decimal.ToInt32(shutterPositioningFieldMessageData.HighSpeedPercent);
+            this.LowerSpeed = decimal.ToInt32(shutterPositioningFieldMessageData.LowerSpeed);
         }
 
         #endregion
@@ -27,7 +29,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int HigherDistance { get; set; }
 
+        public int HighSpeedPercent { get; set; }
+
         public int LowerDistance { get; set; }
+
+        public int LowerSpeed { get; set; }
 
         public MovementType MovementType { get; }
 

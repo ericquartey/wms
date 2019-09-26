@@ -1,24 +1,33 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IPositioningMessageData : IMessageData
     {
+
+
         #region Properties
 
         Axis AxisMovement { get; }
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        decimal CurrentPosition { get; set; }
+        decimal? CurrentPosition { get; set; }
 
         int Delay { get; set; }
 
-        int Direction { get; set; }
+        HorizontalMovementDirection Direction { get; set; }
 
         int ExecutedCycles { get; set; }
 
         bool IsOneKMachine { get; set; }
+
+        bool IsStartedOnBoard { get; set; }
+
+        decimal? LoadedNetWeight { get; }
+
+        int? LoadingUnitId { get; }
 
         decimal LowerBound { get; }
 
@@ -37,6 +46,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal[] TargetSpeed { get; }
+
+        DataSample TorqueCurrentSample { get; set; }
 
         decimal UpperBound { get; }
 

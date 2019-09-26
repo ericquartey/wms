@@ -63,14 +63,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public DateTime GetDateTimeConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
             where TEnum : Enum
         {
-            if (!this.IsReady)
-            {
-                var message = "Data layer is not yet ready.";
-
-                this.Logger.LogError(message);
-                throw new DataLayerException(message);
-            }
-
             if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Date))
             {
                 this.Logger.LogCritical($"1:Exception: get DateTime for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -102,14 +94,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public decimal GetDecimalConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
             where TEnum : Enum
         {
-            if (!this.IsReady)
-            {
-                var message = "Data layer is not yet ready.";
-
-                this.Logger.LogError(message);
-                throw new DataLayerException(message);
-            }
-
             if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Float))
             {
                 this.Logger.LogCritical($"1:Exception: get Decimal for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -140,14 +124,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public int GetIntegerConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
             where TEnum : Enum
         {
-            if (!this.IsReady)
-            {
-                var message = "Data layer is not yet ready.";
-
-                this.Logger.LogError(message);
-                throw new DataLayerException(message);
-            }
-
             if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.Integer))
             {
                 this.Logger.LogCritical($"1:Exception: get Integer for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -179,14 +155,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public IPAddress GetIpAddressConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
             where TEnum : Enum
         {
-            if (!this.IsReady)
-            {
-                var message = "Data layer is not yet ready.";
-
-                this.Logger.LogError(message);
-                throw new DataLayerException(message);
-            }
-
             if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
                 this.Logger.LogCritical($"1:Exception: get IP Address for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
@@ -215,14 +183,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public string GetStringConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
             where TEnum : Enum
         {
-            if (!this.IsReady)
-            {
-                var message = "Data layer is not yet ready.";
-
-                this.Logger.LogError(message);
-                throw new DataLayerException(message);
-            }
-
             if (!this.CheckConfigurationDataType((long)(object)configurationValueEnum, category, ConfigurationDataType.String))
             {
                 this.Logger.LogCritical($"1:Exception: get string for '{category}.{configurationValueEnum}' variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");

@@ -103,15 +103,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #endregion
 
-        #region Destructors
-
-        ~IoDevice()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         private IIoStateMachine CurrentStateMachine
@@ -124,7 +115,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.currentStateMachine = value;
                 }
 
-                string objectName = string.Empty;
+                var objectName = string.Empty;
                 if (this.currentStateMachine != null)
                 {
                     objectName = this.currentStateMachine.GetType().Name;
@@ -137,6 +128,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -175,7 +168,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     }
                     catch (IoDriverException ex)
                     {
-                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException}");
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
                     }
@@ -239,6 +232,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 catch (IoDriverException ex)
                 {
                     // connection error
+                    this.logger.LogError($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
                     this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     continue;
                 }
@@ -509,7 +503,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             catch (IoDriverException ex)
             {
-                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException}");
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
@@ -552,7 +546,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void StartPollingIoMessage()
         {
-            this.logger.LogDebug($"1:Create Timer to poll data");
+            this.logger.LogTrace($"1:Create Timer to poll data");
 
             this.pollIoTimer?.Dispose();
 

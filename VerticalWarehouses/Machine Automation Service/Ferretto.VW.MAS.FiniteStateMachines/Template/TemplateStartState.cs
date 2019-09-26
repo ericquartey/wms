@@ -1,19 +1,21 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateStartState : StateBase
+    internal class TemplateStartState : StateBase
     {
 
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
+
+        private readonly ITemplateStateData stateData;
 
         private bool disposed;
 
@@ -21,21 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Constructors
 
-        public TemplateStartState(
-            IStateMachine parentMachine,
-            ITemplateData machineData)
-            : base(parentMachine, machineData.Logger)
+        public TemplateStartState(ITemplateStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
@@ -44,39 +36,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if (message.Type == FieldMessageType.NoType)
+            if(message.Type == FieldMessageType.NoType)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData));
-                        break;
+                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.machineData, message));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -99,18 +76,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
             var notificationMessage = new NotificationMessage(
                 null,
-                "Template Start State Notification",
+                $"Template Start State Notification with {this.machineData.Message}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData, true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

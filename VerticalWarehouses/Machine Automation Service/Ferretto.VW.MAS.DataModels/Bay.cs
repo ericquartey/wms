@@ -5,6 +5,8 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public class Bay
     {
+
+
         #region Properties
 
         public int? CurrentMissionId { get; set; }
@@ -12,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
         public int? CurrentMissionOperationId { get; set; }
 
         public int ExternalId { get; set; }
+
+        public BayNumber Index { get; set; }
 
         public string IpAddress { get; set; }
 
@@ -22,6 +26,8 @@ namespace Ferretto.VW.MAS.DataModels
         public int? LoadingUnitId { get; set; }
 
         public int Number { get; set; }
+
+        public BayOperation Operation { get; set; }
 
         public IEnumerable<decimal> Positions { get; set; }
 

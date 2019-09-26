@@ -3,7 +3,11 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,17 +16,11 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
-    public class ShutterPositioningStateMachine : StateMachineBase
+    internal class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly Timer delayTimer;
-
-        private readonly InverterIndex inverterIndex;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+        private readonly IShutterPositioningMachineData machineData;
 
         private bool disposed;
 
@@ -31,24 +29,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(
-            IEventAggregator eventAggregator,
-            IShutterPositioningMessageData shutterPositioningMessageData,
+            IShutterPositioningMessageData positioningMessageData,
+            BayNumber requestingBay,
+            BayNumber targetBay,
             InverterIndex inverterIndex,
-            ILogger logger,
-            IServiceScopeFactory serviceScopeFactory,
             IMachineSensorsStatus machineSensorsStatus,
-            Timer delayTimer)
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
+
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.inverterIndex = inverterIndex;
-
-            this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            this.machineSensorsStatus = machineSensorsStatus;
-
-            this.delayTimer = delayTimer;
+            this.machineData = new ShutterPositioningMachineData(positioningMessageData, requestingBay, targetBay, inverterIndex, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -63,17 +57,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         #endregion
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -120,16 +103,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                if (!this.machineSensorsStatus.IsMachineInNormalState ||
-                    this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                    !(this.shutterPositioningMessageData.MovementMode == MovementMode.Position || this.shutterPositioningMessageData.MovementMode == MovementMode.TestLoop)
+                var stateData = new ShutterPositioningStateData(this, this.machineData);
+                if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState ||
+                    this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+                    !(this.machineData.PositioningMessageData.MovementMode == MovementMode.Position || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                     )
                 {
-                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, this.inverterIndex, this.machineSensorsStatus, null, this.Logger);
+                    this.Logger.LogError($"Invalid conditions before moving shutter");
+                    this.CurrentState = new ShutterPositioningErrorState(stateData);
+                }
+                else if (this.machineData.PositioningMessageData.SpeedRate == 0)
+                {
+                    this.Logger.LogError($"SpeedRate cannot be zero");
+                    this.CurrentState = new ShutterPositioningErrorState(stateData);
                 }
                 else
                 {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.inverterIndex, this.Logger, this.machineSensorsStatus, this.delayTimer);
+                    this.CurrentState = new ShutterPositioningStartState(stateData);
                 }
 
                 this.CurrentState?.Start();
@@ -138,14 +128,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

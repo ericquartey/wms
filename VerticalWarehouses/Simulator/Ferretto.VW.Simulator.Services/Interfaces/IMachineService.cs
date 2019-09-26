@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Models;
 
 namespace Ferretto.VW.Simulator.Services.Interfaces
 {
     public interface IMachineService
     {
+
+
         #region Properties
 
         ObservableCollection<InverterModel> Inverters { get; set; }
@@ -37,12 +38,14 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 
         #endregion
 
+
+
         #region Methods
 
         Task ProcessStartSimulatorAsync();
 
         Task ProcessStopSimulatorAsync();
-        
+
         #endregion
     }
 }

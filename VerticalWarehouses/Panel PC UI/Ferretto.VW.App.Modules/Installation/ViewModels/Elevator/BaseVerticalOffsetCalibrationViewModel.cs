@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -139,7 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
-            await base.OnNavigatedAsync();            
+            await base.OnNavigatedAsync();
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()

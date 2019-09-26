@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class VerticalOriginProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -29,7 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IConfigurationValueManagmentDataLayer configurationProvider)
             : base(eventAggregator)
         {
-            if (configurationProvider is null)
+            if(configurationProvider is null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -62,7 +65,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start()
         {
-            var homingData = new HomingMessageData(Axis.Both);
+            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical);
 
             this.PublishCommand(
                 homingData,
@@ -78,8 +81,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop);

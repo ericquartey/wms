@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IGeneralInfoConfigurationDataLayer
     {
+
+
         #region Properties
 
         public string Address => this.GetStringConfigurationValue(GeneralInfo.Address, ConfigurationCategory.GeneralInfo);

@@ -18,8 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
-                    b.Property<int>("Number")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Index");
 
                     b.Property<int?>("CurrentMissionId");
 
@@ -33,9 +32,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("LoadingUnitId");
 
+                    b.Property<int>("Number");
+
+                    b.Property<int>("Operation");
+
                     b.Property<int>("Type");
 
-                    b.HasKey("Number");
+                    b.HasKey("Index");
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
@@ -97,6 +100,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("BayNumber");
+
                     b.Property<int>("Code");
 
                     b.Property<DateTime>("OccurrenceDate");
@@ -130,8 +135,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100032,
-                            Description = "Cassetto non caricato completamente",
+                            Description = "Cassetto non caricato completamente.",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Code = 100033,
+                            Description = "Condizioni per il posizionamento non soddisfatte.",
+                            Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
                         });
                 });
@@ -150,6 +162,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100032,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100033,
                             TotalErrors = 0
                         });
                 });
@@ -210,6 +227,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("CellId")
                         .IsUnique();
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.ToTable("LoadingUnits");
                 });
 
@@ -217,6 +237,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BayNumber");
 
                     b.Property<string>("Data");
 
@@ -326,7 +348,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 5, 15, 2, 36, 548, DateTimeKind.Local).AddTicks(5220),
+                            InstallationDate = new DateTime(2016, 11, 24, 13, 23, 47, 223, DateTimeKind.Local).AddTicks(772),
                             ServiceStatus = 86
                         });
                 });
@@ -424,6 +446,40 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("LoadedNetWeight");
+
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TorqueCurrentMeasurementSessions");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("MeasurementSessionId");
+
+                    b.Property<DateTime>("RequestTimeStamp");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasurementSessionId");
+
+                    b.ToTable("TorqueCurrentSamples");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.User", b =>
                 {
                     b.Property<string>("Name")
@@ -500,6 +556,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("LoadingUnit")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", "MeasurementSession")
+                        .WithMany("DataSamples")
+                        .HasForeignKey("MeasurementSessionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -4,9 +4,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IRequestPositionMessageData : IMessageData
     {
-        #region Properties
 
-        int BayNumber { get; }
+
+        #region Properties
 
         Axis CurrentAxis { get; }
 

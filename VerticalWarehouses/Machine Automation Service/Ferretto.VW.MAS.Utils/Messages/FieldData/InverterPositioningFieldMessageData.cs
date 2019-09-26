@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             int targetPosition,
             int[] targetSpeed,
             int[] switchPosition,
+            int direction,
             bool refreshAll,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -27,6 +28,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = targetSpeed;
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
+            this.Direction = direction;
+
+            this.IsTorqueCurrentSamplingEnabled = positioningFieldMessageData.IsTorqueCurrentSamplingEnabled;
+            this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
+            this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
         }
 
         #endregion
@@ -36,6 +42,12 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public Axis AxisMovement { get; set; }
 
         public int Direction { get; set; }
+
+        public bool IsTorqueCurrentSamplingEnabled { get; set; }
+
+        public decimal? LoadedNetWeight { get; }
+
+        public int? LoadingUnitId { get; set; }
 
         public MovementType MovementType { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -10,9 +10,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 {
-    public class TemplateStartState : InverterStateBase
+    internal class TemplateStartState : InverterStateBase
     {
-
         #region Fields
 
         private readonly ITemplateData templateData;
@@ -33,22 +32,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
         #endregion
 
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -59,7 +43,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessage = new FieldNotificationMessage(
                 null,
@@ -99,15 +83,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+            else
             {
-                this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                {
+                    this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.templateData, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             //True means I got the expected response. Do not request more status words
             return returnValue;
         }

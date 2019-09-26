@@ -1,21 +1,20 @@
-﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
-    public class ResetFaultStateMachine : InverterStateMachineBase
+    internal class ResetFaultStateMachine : InverterStateMachineBase
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
-
         private readonly InverterIndex inverterIndex;
 
-        private bool disposed;
+        private readonly IInverterStatusBase inverterStatus;
 
         #endregion
 
@@ -24,24 +23,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         public ResetFaultStateMachine(
             IInverterStatusBase inverterStatus,
             InverterIndex inverterIndex,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
+            if (inverterStatus is null)
+            {
+                throw new System.ArgumentNullException(nameof(inverterStatus));
+            }
 
             this.inverterStatus = inverterStatus;
             this.inverterIndex = inverterIndex;
-            this.Logger.LogDebug("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetFaultStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -51,7 +45,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         /// <inheritdoc />
         public override void Start()
         {
-
             this.CurrentState = new ResetFaultStartState(this, this.inverterStatus, this.inverterIndex, this.Logger);
             this.CurrentState?.Start();
         }
@@ -59,22 +52,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

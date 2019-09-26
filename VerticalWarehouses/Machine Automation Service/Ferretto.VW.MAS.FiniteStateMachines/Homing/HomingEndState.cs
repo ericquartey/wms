@@ -3,39 +3,35 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingEndState : StateBase
+    internal class HomingEndState : StateBase
     {
+
         #region Fields
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
 
-        private readonly bool stopRequested;
-
-        private bool disposed;
+        private readonly IHomingStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public HomingEndState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            ILogger logger,
-            bool stopRequested = false)
-            : base(parentMachine, logger)
+        public HomingEndState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.homingOperation = homingOperation;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
         }
 
         #endregion
@@ -49,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -60,21 +58,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            switch (message.Type)
+            switch(message.Type)
             {
                 case FieldMessageType.InverterPowerOff:
                 case FieldMessageType.CalibrateAxis:
-                    switch (message.Status)
-                    {
-                        case MessageStatus.OperationStop:
-                        case MessageStatus.OperationEnd:
-                            break;
-
-                        case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
-                            break;
-                    }
+                switch(message.Status)
+                {
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationEnd:
                     break;
+
+                    case MessageStatus.OperationError:
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                    break;
+                }
+                break;
             }
         }
 
@@ -96,11 +95,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.homingOperation.IsOneKMachine)
+            if(this.machineData.IsOneKMachine)
             {
                 inverterMessage = new FieldCommandMessage(
                     inverterDataMessage,
@@ -110,43 +107,40 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageType.InverterSetTimer,
                     (byte)InverterIndex.Slave1);
 
-                this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
-            if (this.stopRequested)
+            if(this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
-                var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                var data = new InverterStopFieldMessageData();
-
+                var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                 var stopMessage = new FieldCommandMessage(
-                    data,
+                    null,
                     "Homing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)inverterIndex);
+                    (byte)targetInverter);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
 
-            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
+
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
-
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (!this.stopRequested)
+            if(this.stateData.StopRequestReason == StopRequestReason.NoReason)
             {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                using(var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                 {
                     var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
@@ -155,24 +149,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

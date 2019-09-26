@@ -1,11 +1,11 @@
 ﻿using System;
-using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -38,15 +38,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("{bayNumber}/activate")]
+        [HttpPost("{bayIndex}/activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(int bayNumber)
+        public ActionResult<Bay> ActivateAsync(BayNumber bayIndex)
         {
             try
             {
-                var bay = this.baysProvider.Activate(bayNumber);
+                var bay = this.baysProvider.Activate(bayIndex);
 
                 return this.Ok(bay);
             }
@@ -56,15 +56,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpPost("{bayNumber}/deactivate")]
+        [HttpPost("{bayIndex}/deactivate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(int bayNumber)
+        public ActionResult<Bay> DeactivateAsync(BayNumber bayIndex)
         {
             try
             {
-                var bay = this.baysProvider.Deactivate(bayNumber);
+                var bay = this.baysProvider.Deactivate(bayIndex);
 
                 return this.Ok(bay);
             }
@@ -74,15 +74,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [HttpGet("{bayNumber}")]
+        [HttpGet("{bayIndex}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber(int bayNumber)
+        public ActionResult<Bay> GetByNumber(BayNumber bayIndex)
         {
             try
             {
-                var bay = this.baysProvider.GetByNumber(bayNumber);
+                var bay = this.baysProvider.GetByIndex(bayIndex);
 
                 return this.Ok(bay);
             }
@@ -101,16 +101,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("{bayNumber}/height")]
+        [HttpPost("{bayIndex}/height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+        public ActionResult<Bay> UpdateHeightAsync(BayNumber bayIndex, int position, decimal height)
         {
             try
             {
-                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+                var bay = this.baysProvider.UpdatePosition(bayIndex, position, height);
 
                 return this.Ok(bay);
             }

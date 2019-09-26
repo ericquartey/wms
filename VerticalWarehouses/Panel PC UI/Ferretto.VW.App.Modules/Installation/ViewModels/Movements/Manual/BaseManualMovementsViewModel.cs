@@ -42,12 +42,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (machineElevatorService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorService));
             }
 
             if (bayManagerService is null)
             {
-                throw new System.ArgumentNullException(nameof(bayManagerService));
+                throw new ArgumentNullException(nameof(bayManagerService));
             }
 
             this.MachineElevatorService = machineElevatorService;
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var name = this.GetType().ToString();
             this.EventAggregator
               .GetEvent<ManualMovementsChangedPubSubEvent>()
-              .Publish(new ManualMovementshangedMessage(name));
+              .Publish(new ManualMovementsChangedMessage(name));
         }
 
         public override void Disappear()
@@ -117,10 +117,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.EventAggregator
                .GetEvent<ManualMovementsChangedPubSubEvent>()
-               .Publish(new ManualMovementshangedMessage(null));
+               .Publish(new ManualMovementsChangedMessage(null));
         }
 
-        public virtual void EnabledChanged(ManualMovementshangedMessage message)
+        public virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
             if (string.IsNullOrEmpty(message.ViewModelName))
             {
@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
                 this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -204,7 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.CurrentVerticalPosition = message.Data.CurrentPosition;
                     break;
 
-                case CommonUtils.Messages.Enumerations.Axis.Both:
+                case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:
                     break;
 
                 default:

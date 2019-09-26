@@ -1,14 +1,17 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class CalibrateAxisStateMachine : InverterStateMachineBase
+    internal class CalibrateAxisStateMachine : InverterStateMachineBase
     {
+
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -17,8 +20,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private Axis currentAxis;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -26,27 +27,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStateMachine(
             Axis axisToCalibrate,
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
 
-        #region Destructors
 
-        ~CalibrateAxisStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
 
         #region Methods
 
@@ -57,7 +50,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             switch (this.axisToCalibrate)
             {
-                case Axis.Both:
+                case Axis.HorizontalAndVertical:
                 case Axis.Horizontal:
                     this.currentAxis = Axis.Horizontal;
                     break;
@@ -75,23 +68,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

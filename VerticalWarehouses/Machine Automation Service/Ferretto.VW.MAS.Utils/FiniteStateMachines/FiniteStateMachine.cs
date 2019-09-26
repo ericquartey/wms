@@ -1,0 +1,309 @@
+﻿using System;
+using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS.Utils
+{
+    public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
+        where TStartState : IState
+    {
+
+        #region Fields
+
+        private readonly CommandEvent commandEvent;
+
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+        private readonly NotificationEvent notificationEvent;
+
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+        private readonly BayNumber requestingBay;
+
+        private readonly IServiceScope serviceScope;
+
+        private IState activeState;
+
+        private SubscriptionToken commandEventSubscriptionToken;
+
+        private Thread commandsDequeuingThread;
+
+        /// <summary>
+        /// To detect redundant calls.
+        /// </summary>
+        private bool isDisposed;
+
+        private bool isStarted;
+
+        private SubscriptionToken notificationEventSubscriptionToken;
+
+        private Thread notificationsDequeuingThread;
+
+        #endregion
+
+        #region Constructors
+
+        protected FiniteStateMachine(
+            BayNumber requestingBay,
+            IEventAggregator eventAggregator,
+            ILogger<StateBase> logger,
+            IServiceScopeFactory serviceScopeFactory)
+        {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            this.Logger = logger;
+
+            this.requestingBay = requestingBay;
+            this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
+            this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.serviceScope = serviceScopeFactory.CreateScope();
+        }
+
+        #endregion
+
+
+
+        #region Events
+
+        public event EventHandler Completed;
+
+        #endregion
+
+
+
+        #region Properties
+
+        public IState ActiveState
+        {
+            get => this.activeState;
+            private set
+            {
+                if (this.activeState != value)
+                {
+                    this.activeState?.Exit();
+
+                    if (this.activeState is IDisposable disposable)
+                    {
+                        disposable.Dispose();
+                    }
+
+                    this.activeState = value;
+
+                    this.activeState.Enter(this.StartData);
+                }
+            }
+        }
+
+        protected ILogger<StateBase> Logger { get; }
+
+        protected IMessageData StartData { get; private set; }
+
+        #endregion
+
+
+
+        #region Methods
+
+        /// <summary>
+        /// This code added is to correctly implement the disposable pattern.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.commandEventSubscriptionToken?.Dispose();
+                this.commandEventSubscriptionToken = null;
+
+                this.notificationEventSubscriptionToken?.Dispose();
+                this.notificationEventSubscriptionToken = null;
+
+                this.serviceScope.Dispose();
+
+                this.OnDisposing();
+
+                this.isDisposed = true;
+            }
+        }
+
+        public void Start(IMessageData data, CancellationToken cancellationToken)
+        {
+            if (this.isStarted)
+            {
+                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
+            }
+
+            this.isStarted = true;
+
+            this.StartData = data;
+
+            this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
+            {
+                Name = $"FSM Commands {this.GetType().Name}"
+            };
+
+            this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
+            {
+                Name = $"FSM Notifications {this.GetType().Name}"
+            };
+
+            this.commandsDequeuingThread.Start(cancellationToken);
+            this.notificationsDequeuingThread.Start(cancellationToken);
+
+            this.InitializeSubscriptions();
+
+            this.ActiveState = this.GetState<TStartState>();
+        }
+
+        protected abstract bool FilterCommand(CommandMessage command);
+
+        protected abstract bool FilterNotification(NotificationMessage notification);
+
+        protected IState GetState<TState>() where TState : IState
+        {
+            return this.serviceScope.ServiceProvider.GetRequiredService<TStartState>();
+        }
+
+        protected virtual IState OnCommandReceived(CommandMessage command)
+        {
+            this.Logger.LogDebug($"{this.GetType()}: received command {command.Type}, {command.Description}");
+
+            return this.ActiveState;
+        }
+
+        protected virtual void OnDisposing()
+        {
+            // do nothing
+            // derived classes can customize the behaviour of this method
+        }
+
+        protected virtual IState OnNotificationReceived(NotificationMessage notification)
+        {
+            this.Logger.LogDebug($"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
+
+            return this.ActiveState;
+        }
+
+        protected void RaiseCompleted()
+        {
+            this.Completed?.Invoke(this, null);
+        }
+
+        private void DequeueCommands(object cancellationTokenObject)
+        {
+            var cancellationToken = (CancellationToken)cancellationTokenObject;
+
+            do
+            {
+                try
+                {
+                    this.commandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var commandMessage);
+
+                    this.ActiveState = this.OnCommandReceived(commandMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    this.NotifyError(ex);
+
+                    return;
+                }
+            } while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+        }
+
+        private void DequeueNotifications(object cancellationTokenObject)
+        {
+            var cancellationToken = (CancellationToken)cancellationTokenObject;
+
+            do
+            {
+                try
+                {
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var notificationMessage);
+
+                    this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    this.NotifyError(ex);
+
+                    return;
+                }
+            } while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+        }
+
+        private void InitializeSubscriptions()
+        {
+            this.commandEventSubscriptionToken = this.commandEvent
+                .Subscribe(
+                    command => this.commandQueue.Enqueue(command),
+                    ThreadOption.PublisherThread,
+                    false,
+                    command => this.FilterCommand(command));
+
+            this.notificationEventSubscriptionToken = this.notificationEvent
+                .Subscribe(
+                    notification => this.notificationQueue.Enqueue(notification),
+                    ThreadOption.PublisherThread,
+                    false,
+                    notification => this.FilterNotification(notification));
+        }
+
+        private void NotifyError(Exception ex)
+        {
+            this.Logger.LogDebug($"Notifying error: {ex.Message}");
+
+            var msg = new NotificationMessage(
+                new FsmExceptionMessageData(ex, string.Empty, 0),
+                "FSM Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.FsmException,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.notificationEvent.Publish(msg);
+        }
+
+        #endregion
+    }
+}

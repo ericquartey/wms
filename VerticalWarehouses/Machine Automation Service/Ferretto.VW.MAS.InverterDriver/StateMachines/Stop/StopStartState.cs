@@ -1,17 +1,16 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
-    public class StopStartState : InverterStateBase
+    internal class StopStartState : InverterStateBase
     {
         #region Constructors
 
@@ -25,20 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         #endregion
 
-        #region Destructors
-
-        ~StopStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -48,13 +34,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
-            var notificationMessageData = new InverterStopFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
+                null,
                 $"Stop Inverter {inverterIndex}",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -83,21 +68,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+            else
             {
-                this.ParentStateMachine.ChangeState(new StopDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                {
+                    this.ParentStateMachine.ChangeState(new StopDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

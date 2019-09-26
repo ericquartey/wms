@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningTableEndState : InverterStateBase
+    internal class PositioningTableEndState : InverterStateBase
     {
         #region Fields
 
@@ -31,27 +31,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningTableEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         /// <inheritdoc />
         public override void Start()
         {
             if (this.stopRequested)
             {
-                if (this.InverterStatus is AngInverterStatus currentStatus)
+                if (this.InverterStatus is IPositioningInverterStatus currentStatus)
                 {
                     currentStatus.TableTravelControlWord.StartMotionBlock = false;
                 }

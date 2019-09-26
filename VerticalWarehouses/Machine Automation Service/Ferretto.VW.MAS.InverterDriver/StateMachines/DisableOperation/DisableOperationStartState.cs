@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -9,10 +8,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    public class DisableOperationStartState : InverterStateBase
+    internal class DisableOperationStartState : InverterStateBase
     {
-
-
         #region Constructors
 
         public DisableOperationStartState(
@@ -25,22 +22,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         #endregion
 
-        #region Destructors
-
-        ~DisableOperationStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -51,7 +33,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessage = new FieldNotificationMessage(
                 null,
@@ -91,13 +73,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new DisableOperationErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            else
             {
-                this.ParentStateMachine.ChangeState(new DisableOperationEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                {
+                    this.ParentStateMachine.ChangeState(new DisableOperationEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
 
             //True means I got the expected response. Do not request more status words

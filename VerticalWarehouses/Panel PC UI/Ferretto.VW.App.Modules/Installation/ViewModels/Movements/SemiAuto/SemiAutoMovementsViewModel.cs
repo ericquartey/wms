@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -30,6 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? inputLoadingUnitCode;
 
         private bool isWaitingForResponse;
+
+        private bool isZeroChain;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
@@ -94,6 +93,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersService = shuttersService;
             this.machineServiceService = machineServiceService;
 
+            this.shutterSensors = new ShutterSensors(this.BayNumber);
+
             this.SelectBayPosition1();
         }
 
@@ -122,7 +123,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+                || this.IsElevatorEmbarking
+                || this.IsTuningChain;
+
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
         public bool IsWaitingForResponse
         {
@@ -161,6 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.subscriptionToken = null;
             }
+
             if (this.sensorsToken != null)
             {
                 this.EventAggregator
@@ -188,16 +193,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message =>
                         {
                             this.sensors.Update(message?.Data?.SensorsStates);
+                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+                            this.shutterSensors.Update(message?.Data?.SensorsStates);
                             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                             this.RaiseCanExecuteChanged();
                         },
                     ThreadOption.UIThread,
                     false);
+
             try
             {
                 var sensorsStates = await this.machineSensorsService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)
             {
@@ -240,7 +249,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnElevatorPositionChanged(CommonUtils.Messages.NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            // reset all status if stop machine
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsElevatorMovingToCell = false;
+                this.IsElevatorMovingToHeight = false;
+                this.IsElevatorMovingToLoadingUnit = false;
+                this.IsElevatorMovingToBay = false;
+                this.IsElevatorDisembarking = false;
+                this.IsElevatorEmbarking = false;
+                this.IsTuningChain = false;
+            }
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
             {
@@ -297,6 +323,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed && !this.shutterSensors.MidWay;
+
             this.CanInputCellId = this.Cells != null
                &&
                !this.IsElevatorMoving

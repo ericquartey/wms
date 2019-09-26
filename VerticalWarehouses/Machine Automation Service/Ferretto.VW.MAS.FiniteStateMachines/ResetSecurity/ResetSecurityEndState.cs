@@ -1,17 +1,21 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityEndState : StateBase
+    internal class ResetSecurityEndState : StateBase
     {
+
         #region Fields
 
-        private readonly bool stopRequested;
+        private readonly IResetSecurityMachineData machineData;
+
+        private readonly IResetSecurityStateData stateData;
 
         private bool disposed;
 
@@ -19,13 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityEndState(
-            IStateMachine parentMachine,
-            ILogger logger,
-            bool stopRequested = false )
-            : base( parentMachine, logger )
+        public ResetSecurityEndState(IResetSecurityStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IResetSecurityMachineData;
         }
 
         #endregion
@@ -34,27 +36,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         ~ResetSecurityEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
+
+
         #region Methods
 
-        public override void ProcessCommandMessage( CommandMessage message )
+        public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
-        public override void ProcessNotificationMessage( NotificationMessage message )
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -62,34 +66,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             var notificationMessage = new NotificationMessage(
                 null,
                 "Reset Security Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.ResetSecurity,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-            this.Logger.LogTrace( $"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

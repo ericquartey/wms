@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -30,6 +31,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.eventAggregator = eventAggregator;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -90,7 +97,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         description,
                         receiver,
                         MessageActor.WebApi,
-                        messageType));
+                        messageType,
+                        this.BayNumber));
         }
 
         protected void PublishNotification(
@@ -99,6 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             MessageActor receiver,
             MessageType type,
             MessageStatus status,
+            BayNumber targetBay = BayNumber.None,
             ErrorLevel level = ErrorLevel.NoError)
         {
             this.eventAggregator
@@ -110,6 +119,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         receiver,
                         MessageActor.WebApi,
                         type,
+                        this.BayNumber,
+                        targetBay,
                         status,
                         level));
         }

@@ -17,7 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public DrawerLoadingUnloadingTestViewModel() : base(Services.PresentationMode.Installer)
+        public DrawerLoadingUnloadingTestViewModel()
+            : base(Services.PresentationMode.Installer)
         {
         }
 

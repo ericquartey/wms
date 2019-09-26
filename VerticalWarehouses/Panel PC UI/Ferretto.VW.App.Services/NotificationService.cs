@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
 using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
@@ -14,6 +13,7 @@ namespace Ferretto.VW.App.Services
 {
     internal class NotificationService : INotificationService
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Methods
 
         private void HandlePositioningMessageData(NotificationMessageUI<PositioningMessageData> vp)
@@ -53,7 +55,7 @@ namespace Ferretto.VW.App.Services
                 var actionType = ActionType.None;
                 switch (positioningData.AxisMovement)
                 {
-                    case Axis.Both:
+                    case Axis.HorizontalAndVertical:
                         actionType = ActionType.Homing;
                         break;
 
@@ -80,7 +82,7 @@ namespace Ferretto.VW.App.Services
 
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(message);
 
-            if (!dataSensors[(int)IOMachineSensors.NormalState])
+            if (!dataSensors[(int)IOMachineSensors.RunningState])
             {
                 this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
                     new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));

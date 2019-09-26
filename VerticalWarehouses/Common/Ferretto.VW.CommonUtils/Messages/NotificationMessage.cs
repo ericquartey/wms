@@ -8,6 +8,7 @@ namespace Ferretto.VW.CommonUtils.Messages
 {
     public class NotificationMessage
     {
+
         #region Fields
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -30,6 +31,8 @@ namespace Ferretto.VW.CommonUtils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
+            BayNumber requestingBay,
+            BayNumber targetBay = BayNumber.None,
             MessageStatus status = MessageStatus.NoStatus,
             ErrorLevel level = ErrorLevel.NoError,
             MessageVerbosity verbosity = MessageVerbosity.Info)
@@ -39,21 +42,25 @@ namespace Ferretto.VW.CommonUtils.Messages
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
+            this.RequestingBay = requestingBay;
+            this.TargetBay = targetBay;
             this.Status = status;
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
 
             if (Logger?.IsTraceEnabled ?? false)
             {
-                var st = new StackTrace();
-                var sf = st.GetFrame(1);
-                var trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
+                StackTrace st = new StackTrace();
+                StackFrame sf = st.GetFrame(1);
+                string trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
 
-                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" status:{status} [{data?.ToString()}][{trace}]");
+                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" status:{status} [{data}][{trace}]");
             }
         }
 
         #endregion
+
+
 
         #region Properties
 
@@ -65,9 +72,13 @@ namespace Ferretto.VW.CommonUtils.Messages
 
         public ErrorLevel ErrorLevel { get; set; }
 
+        public BayNumber RequestingBay { get; set; }
+
         public MessageActor Source { get; set; }
 
         public MessageStatus Status { get; set; }
+
+        public BayNumber TargetBay { get; }
 
         public MessageType Type { get; set; }
 

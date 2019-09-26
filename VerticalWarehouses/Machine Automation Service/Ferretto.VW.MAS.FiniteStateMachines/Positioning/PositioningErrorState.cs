@@ -1,8 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -11,15 +10,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
-    public class PositioningErrorState : StateBase
+    internal class PositioningErrorState : StateBase
     {
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IPositioningMachineData machineData;
 
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IPositioningStateData stateData;
 
         private bool disposed;
 
@@ -27,17 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningErrorState(
-            IStateMachine parentMachine,
-            IMachineSensorsStatus machineSensorsStatus,
-            IPositioningMessageData positioningMessageData,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public PositioningErrorState(IPositioningStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.positioningMessageData = positioningMessageData;
-            this.machineSensorsStatus = machineSensorsStatus;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IPositioningMachineData;
         }
 
         #endregion
@@ -64,27 +55,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
-                var notificationMessageData = new PositioningMessageData(
-                    this.positioningMessageData.AxisMovement,
-                    this.positioningMessageData.MovementType,
-                    this.positioningMessageData.MovementMode,
-                    this.positioningMessageData.TargetPosition,
-                    this.positioningMessageData.TargetSpeed,
-                    this.positioningMessageData.TargetAcceleration,
-                    this.positioningMessageData.TargetDeceleration,
-                    0,
-                    this.positioningMessageData.LowerBound,
-                    this.positioningMessageData.UpperBound,
-                    0,
-                    this.positioningMessageData.SwitchPosition,
-                    MessageVerbosity.Error);
-
                 var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burnishing Stopped due to an error",
-                    MessageActor.Any,
+                    this.machineData.MessageData,
+                    $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -99,17 +77,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            var inverterIndex = (this.positioningMessageData.IsOneKMachine && this.positioningMessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-            var description = this.positioningMessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
+            var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+            var description = this.machineData.MessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
                 null,
-                    description,
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop,
+                description,
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStop,
                 (byte)inverterIndex);
 
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.Logger.LogDebug($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -145,38 +123,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)inverterIndex);
+                (byte)this.machineData.CurrentInverterIndex);
             this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new PositioningMessageData(
-                this.positioningMessageData.AxisMovement,
-                this.positioningMessageData.MovementType,
-                this.positioningMessageData.MovementMode,
-                this.positioningMessageData.TargetPosition,
-                this.positioningMessageData.TargetSpeed,
-                this.positioningMessageData.TargetAcceleration,
-                this.positioningMessageData.TargetDeceleration,
-                0,
-                this.positioningMessageData.LowerBound,
-                this.positioningMessageData.UpperBound,
-                0,
-                this.positioningMessageData.SwitchPosition,
-                MessageVerbosity.Info);
-
             var notificationMessage = new NotificationMessage(
-                                    notificationMessageData,
-                                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Error" : "Belt Burnishing Error",
-                                    MessageActor.Any,
-                                    MessageActor.FiniteStateMachines,
-                                    MessageType.Positioning,
-                                    MessageStatus.OperationError);
+                this.machineData.MessageData,
+                $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
+                MessageActor.FiniteStateMachines,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

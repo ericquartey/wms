@@ -1,20 +1,22 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerEndState : StateBase
+    internal class MoveDrawerEndState : StateBase
     {
+
         #region Fields
 
-        private readonly IDrawerOperationMessageData drawerOperationData;
+        private readonly IMoveDrawerMachineData machineData;
 
-        private readonly bool stopRequested;
+        private readonly IMoveDrawerStateData stateData;
 
         private bool disposed;
 
@@ -22,15 +24,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #region Constructors
 
-        public MoveDrawerEndState(
-            IStateMachine parentMachine,
-            IDrawerOperationMessageData drawerOperationData,
-            ILogger logger,
-            bool stopRequested = false)
-            : base(parentMachine, logger)
+        public MoveDrawerEndState(IMoveDrawerStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.drawerOperationData = drawerOperationData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IMoveDrawerMachineData;
         }
 
         #endregion
@@ -43,6 +41,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -66,31 +66,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             // Send a notification message about the completion of operation
             var notificationMessage = new NotificationMessage(
-                this.drawerOperationData,
+                this.machineData.DrawerOperationData,
                 $"{MessageType.DrawerOperation} end",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.Logger.LogDebug($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 

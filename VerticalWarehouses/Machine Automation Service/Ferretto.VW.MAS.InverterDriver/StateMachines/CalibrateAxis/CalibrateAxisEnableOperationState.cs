@@ -1,13 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class CalibrateAxisEnableOperationState : InverterStateBase
+    internal class CalibrateAxisEnableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -29,34 +29,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #endregion
 
-        #region Destructors
-
-        ~CalibrateAxisEnableOperationState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void Start()
         {
             this.Logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;
+            this.InverterStatus.CommonControlWord.HorizontalAxis =
+                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                ? false
+                : this.axisToCalibrate == Axis.Horizontal;
+
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(
+                this.InverterStatus.SystemIndex,
+                (short)InverterParameterId.ControlWordParam,
+                this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -77,19 +70,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            else
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
-                returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new CalibrateAxisStartHomingState(
+                            this.ParentStateMachine,
+                            this.axisToCalibrate,
+                            this.InverterStatus as IHomingInverterStatus,
+                            this.Logger));
+
+                    returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
+                }
             }
 
             return returnValue;

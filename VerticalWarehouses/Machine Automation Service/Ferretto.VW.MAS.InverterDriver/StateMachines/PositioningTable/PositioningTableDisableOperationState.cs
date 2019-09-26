@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningTableDisableOperationState : InverterStateBase
+    internal class PositioningTableDisableOperationState : InverterStateBase
     {
         #region Constructors
 
@@ -21,25 +20,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningTableDisableOperationState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.InverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.EnableOperation = false;
                 currentStatus.TableTravelControlWord.SequenceMode = false;
@@ -50,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         /// <inheritdoc />
@@ -72,21 +58,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            else
             {
-                this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                {
+                    this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

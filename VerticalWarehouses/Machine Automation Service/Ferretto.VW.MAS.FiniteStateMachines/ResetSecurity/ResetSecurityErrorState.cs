@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -8,12 +8,14 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 {
-    public class ResetSecurityErrorState : StateBase
+    internal class ResetSecurityErrorState : StateBase
     {
 
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IResetSecurityMachineData machineData;
+
+        private readonly IResetSecurityStateData stateData;
 
         private bool disposed;
 
@@ -21,13 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityErrorState(
-            IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public ResetSecurityErrorState(IResetSecurityStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IResetSecurityMachineData;
         }
 
         #endregion
@@ -45,21 +45,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Methods
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -69,14 +54,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
+            if(message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessage = new NotificationMessage(
                     null,
                     "Reset Security Stopped due to an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.ResetSecurity,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -105,7 +92,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogTrace("1:Method Start");
         }

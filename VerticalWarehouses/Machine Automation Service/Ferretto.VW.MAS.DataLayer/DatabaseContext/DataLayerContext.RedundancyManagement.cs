@@ -10,6 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
     public partial class DataLayerContext : IRedundancyDbContext<DataLayerContext>
     {
+
         #region Fields
 
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
@@ -33,11 +34,15 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #endregion
 
+
+
         #region Properties
 
         public DbContextOptions<DataLayerContext> Options { get; }
 
         #endregion
+
+
 
         #region Methods
 
@@ -57,13 +62,13 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                     affectedRecordsCount = base.SaveChanges();
                 }
             }
-            catch
+            catch (Exception ex)
             // Swap is handled in diagnostic interceptor:
             // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             {
                 System.Diagnostics.Debug.Assert(
                       this.Options == this.redundancyService.StandbyDbContextOptions,
-                      "This channel (previously was active) is now standby.");
+                      $"This channel (previously was active) is now standby because {ex.Message}");
 
                 if (this.redundancyService.IsActiveDbInhibited)
                 {

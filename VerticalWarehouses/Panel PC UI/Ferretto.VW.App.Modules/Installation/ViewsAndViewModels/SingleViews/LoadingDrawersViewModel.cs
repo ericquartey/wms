@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.App.Controls;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -7,7 +6,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public LoadingDrawersViewModel() : base(Services.PresentationMode.Installer)
+        public LoadingDrawersViewModel()
+            : base(Services.PresentationMode.Installer)
         {
         }
 

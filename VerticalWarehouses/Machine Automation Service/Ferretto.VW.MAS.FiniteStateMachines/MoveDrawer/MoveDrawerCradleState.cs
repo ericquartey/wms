@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,19 +14,14 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerCradleState : StateBase
+    internal class MoveDrawerCradleState : StateBase
     {
+
         #region Fields
 
-        private readonly IDrawerOperationMessageData drawerOperationData;
+        private readonly IMoveDrawerMachineData machineData;
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
+        private readonly IMoveDrawerStateData stateData;
 
         private bool disposed;
 
@@ -37,21 +31,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #region Constructors
 
-        public MoveDrawerCradleState(
-            IStateMachine parentMachine,
-            IDrawerOperationMessageData drawerOperationData,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
-            IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
-            IMachineSensorsStatus machineSensorsStatus,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public MoveDrawerCradleState(IMoveDrawerStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.drawerOperationData = drawerOperationData;
-            this.generalInfoDataLayer = generalInfoDataLayer;
-            this.verticalAxis = verticalAxis;
-            this.horizontalAxis = horizontalAxis;
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IMoveDrawerMachineData;
         }
 
         #endregion
@@ -65,6 +49,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
+
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -75,84 +61,61 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             //TODO when Inverter Driver notifies completion of Positioning of the drawer move to next state
-            if (message.Type == FieldMessageType.Positioning)
+            if(message.Type == FieldMessageType.Positioning)
             {
-                switch (message.Status)
+                switch(message.Status)
                 {
                     case MessageStatus.OperationEnd:
 
-                        // TEMP Check sensors' status
-                        // NOTE: Comment the line about the sensor check, if you use it with Bender
-                        if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    // TEMP Check sensors' status
+                    // NOTE: Comment the line about the sensor check, if you use it with Bender
+                    if(!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        var notificationMessage = new NotificationMessage(
+                            null,
+                            "Cradle is not completely loaded",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.DrawerOperation,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Error,
+                            MessageVerbosity.Error);
+
+                        using(var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                         {
-                            var notificationMessage = new NotificationMessage(
-                                null,
-                                "Cradle is not completely loaded",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.DrawerOperation,
-                                MessageStatus.OperationError,
-                                ErrorLevel.Error,
-                                MessageVerbosity.Error);
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                            {
-                                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
-                            }
-
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                            this.ParentStateMachine.ChangeState(
-                                new MoveDrawerErrorState(
-                                    this.ParentStateMachine,
-                                    message,
-                                    this.drawerOperationData,
-                                    Axis.Horizontal,
-                                    this.Logger));
-
-                            return;
+                            errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
                         }
 
-                        if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
-                            this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
-                        {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
-                                    this.ParentStateMachine,
-                                    this.drawerOperationData,
-                                    this.Logger));
-                        }
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                        if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
-                            this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
-                        {
-                            if (this.drawerOperationData.Operation == DrawerOperation.Pickup)
-                            {
-                                this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
-                                        this.ParentStateMachine,
-                                        this.drawerOperationData,
-                                        this.Logger));
-                            }
-                            else
-                            {
-                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
-                                    this.ParentStateMachine,
-                                    Axis.Vertical,
-                                    this.drawerOperationData,
-                                    this.generalInfoDataLayer,
-                                    this.verticalAxis,
-                                    this.horizontalAxis,
-                                    this.machineSensorsStatus,
-                                    this.Logger));
-                        }
-                        }
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
 
-                        break;
+                        return;
+                    }
+
+                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell ||
+                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
+                    }
+
+                    if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay ||
+                        this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+                    {
+                        this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(this.stateData));
+                    }
+
+                    break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, Axis.Horizontal, this.Logger));
-                        break;
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.stateData));
+                    break;
                 }
             }
         }
@@ -167,7 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //TODO Send horizontal Positioning to inverter driver, loading positioning data from data layer, based on current drawer position read from sensors
             this.GetParameters();
 
-            this.Logger.LogDebug($"Started Positioning to {this.drawerOperationData.Source}");
+            this.Logger.LogDebug($"Started Positioning to {this.machineData.DrawerOperationData.Source}");
 
             var positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
 
@@ -185,8 +148,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             // Send a notification message about the start operation for move elevator of MessageType.DrawerOperation
             var notificationMessageData = new DrawerOperationMessageData(
-                this.drawerOperationData.Operation,
-                this.drawerOperationData.Step,
+                this.machineData.DrawerOperationData.Operation,
+                this.machineData.DrawerOperationData.Step,
                 MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
@@ -194,30 +157,27 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
-
-            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
-                this.ParentStateMachine,
-                this.drawerOperationData,
-                this.Logger,
-                true));
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if(this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if(disposing)
             {
             }
 
@@ -256,19 +216,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    target = +150;
             //}
 
-            if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
+            if(this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
             {
-                target = this.drawerOperationData.SourceHorizontalPosition;
+                target = this.machineData.DrawerOperationData.SourceHorizontalPosition;
             }
             else
             {
-                target = this.drawerOperationData.DestinationHorizontalPosition;
+                target = this.machineData.DrawerOperationData.DestinationHorizontalPosition;
             }
 
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
-            var maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-            decimal[] maxAcceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] maxDeceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            var maxSpeed = this.machineData.HorizontalAxis.MaxEmptySpeedHA;
+            decimal[] maxAcceleration = { this.machineData.HorizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] maxDeceleration = { this.machineData.HorizontalAxis.MaxEmptyDecelerationHA };
             decimal[] switchPosition = { 0 };
             var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 
@@ -286,7 +246,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                (target >= 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
         }
 
         #endregion

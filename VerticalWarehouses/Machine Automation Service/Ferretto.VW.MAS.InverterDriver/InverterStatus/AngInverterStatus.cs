@@ -1,19 +1,17 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
-    public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
+    public class AngInverterStatus : InverterStatusBase, IAngInverterStatus, IPositioningInverterStatus, IHomingInverterStatus
     {
         #region Fields
-
-        public bool[] angInverterInputs;
 
         private const int TOTAL_SENSOR_INPUTS = 8;
 
@@ -30,7 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public AngInverterStatus(byte systemIndex)
         {
             this.SystemIndex = systemIndex;
-            this.angInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
+            this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
             this.InverterType = InverterType.Ang;
         }
 
@@ -38,34 +36,34 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         //INFO ANG Inputs
 
-        //public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
+        //public bool ANG_BarrierCalibration => this.Inputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
 
-        //public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+        //public bool ANG_ElevatorMotorTemprature => this.Inputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
 
         #region Properties
 
-        public bool ANG_EncoderChannelACradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelACradle] ?? false;
+        public bool ANG_EncoderChannelACradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelACradle] ?? false;
 
-        public bool ANG_EncoderChannelBCradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelBCradle] ?? false;
+        public bool ANG_EncoderChannelBCradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelBCradle] ?? false;
 
-        public bool ANG_EncoderChannelZCradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelZCradle] ?? false;
+        public bool ANG_EncoderChannelZCradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelZCradle] ?? false;
 
-        public bool ANG_HardwareSensorSS1 => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
+        public bool ANG_HardwareSensorSS1 => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
 
-        public bool ANG_HardwareSensorSTO => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTO] ?? false;
+        public bool ANG_HardwareSensorSTO => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSTO] ?? false;
 
-        public bool ANG_OverrunElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
+        public bool ANG_OverrunElevatorSensor => this.Inputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
 
-        public bool ANG_ZeroCradleSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
+        public bool ANG_ZeroCradleSensor => this.Inputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
 
-        public bool ANG_ZeroElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
-        //public bool ANG_HardwareSensorSTOB => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOB] ?? false;
+        public bool ANG_ZeroElevatorSensor => this.Inputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
+        //public bool ANG_HardwareSensorSTOB => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSTOB] ?? false;
 
-        //public bool ANG_OpticalMeasuringBarrier => this.angInverterInputs?[(int)InverterSensors.ANG_OpticalMeasuringBarrier] ?? false;
+        //public bool ANG_OpticalMeasuringBarrier => this.Inputs?[(int)InverterSensors.ANG_OpticalMeasuringBarrier] ?? false;
 
-        //public bool ANG_PresenceDrawerOnCradleMachineSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDrawerOnCradleMachineSide] ?? false;
+        //public bool ANG_PresenceDrawerOnCradleMachineSide => this.Inputs?[(int)InverterSensors.ANG_PresenceDrawerOnCradleMachineSide] ?? false;
 
-        //public bool ANG_PresenceDraweronCradleOperatoreSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDraweronCradleOperatoreSide] ?? false;
+        //public bool ANG_PresenceDraweronCradleOperatoreSide => this.Inputs?[(int)InverterSensors.ANG_PresenceDraweronCradleOperatoreSide] ?? false;
         public int CurrentPositionAxisHorizontal => this.currentPositionAxisHorizontal;
 
         public int CurrentPositionAxisVertical => this.currentPositionAxisVertical;
@@ -105,8 +103,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Homing Mode");
             }
         }
-
-        public bool[] Inputs => this.angInverterInputs;
 
         public IPositionControlWord PositionControlWord
         {
@@ -202,13 +198,49 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Methods
 
-        public bool UpdateANGInverterCurrentPosition(Axis axisToMove, int position)
+        public override bool UpdateInputsStates(bool[] newInputStates)
+        {
+            if (newInputStates == null)
+            {
+                return false;
+            }
+
+            var updateRequired = false;
+            for (var index = 0; index < newInputStates.Length; index++)
+            {
+                if (index > TOTAL_SENSOR_INPUTS)
+                {
+                    break;
+                }
+
+                if (this.Inputs[index] != newInputStates[index])
+                {
+                    updateRequired = true;
+                    break;
+                }
+            }
+            try
+            {
+                if (updateRequired)
+                {
+                    Array.Copy(newInputStates, 0, this.Inputs, 0, newInputStates.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception {ex.Message} while updating ANG Inputs status");
+            }
+
+            return updateRequired;
+        }
+
+        public bool UpdateInverterCurrentPosition(Axis axisToMove, int position)
         {
             var updateRequired = false;
 
             switch (axisToMove)
             {
-                case Axis.Both:
+                case Axis.HorizontalAndVertical:
                 case Axis.Vertical:
                     if (this.currentPositionAxisVertical != position)
                     {
@@ -227,42 +259,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
                 case Axis.None:
                     break;
-            }
-
-            return updateRequired;
-        }
-
-        public bool UpdateANGInverterInputsStates(bool[] newInputStates)
-        {
-            if (newInputStates == null)
-            {
-                return false;
-            }
-
-            var updateRequired = false;
-            for (var index = 0; index < newInputStates.Length; index++)
-            {
-                if (index > TOTAL_SENSOR_INPUTS)
-                {
-                    break;
-                }
-
-                if (this.angInverterInputs[index] != newInputStates[index])
-                {
-                    updateRequired = true;
-                    break;
-                }
-            }
-            try
-            {
-                if (updateRequired)
-                {
-                    Array.Copy(newInputStates, 0, this.angInverterInputs, 0, newInputStates.Length);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException($"Exception {ex.Message} while updating ANG Inputs status");
             }
 
             return updateRequired;

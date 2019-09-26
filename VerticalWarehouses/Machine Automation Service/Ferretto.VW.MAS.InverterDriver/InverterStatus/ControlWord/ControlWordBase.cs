@@ -1,7 +1,6 @@
-﻿// ReSharper disable ArrangeThisQualifier
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 
-using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
-
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 {
     public class ControlWordBase : IControlWord
@@ -144,10 +143,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool HorizontalAxis
         {
-            get
-            {
-                return (this.Value & 0x8000) > 0;
-            }
+            get => (this.Value & 0x8000) > 0;
             set
             {
                 if (value)

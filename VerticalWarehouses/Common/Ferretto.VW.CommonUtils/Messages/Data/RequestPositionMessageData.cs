@@ -14,8 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public RequestPositionMessageData(Axis currentAxis, int bayNumber, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.BayNumber = bayNumber;
             this.CurrentAxis = currentAxis;
+            this.BayNumber = bayNumber;
             this.Verbosity = verbosity;
         }
 

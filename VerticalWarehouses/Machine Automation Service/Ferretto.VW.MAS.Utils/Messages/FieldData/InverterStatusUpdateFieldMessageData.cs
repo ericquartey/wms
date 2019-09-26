@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
@@ -8,6 +9,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
     public class InverterStatusUpdateFieldMessageData : FieldMessageData, IInverterStatusUpdateFieldMessageData
     {
         #region Constructors
+
+        public InverterStatusUpdateFieldMessageData(
+            DataSample torqueCurrent,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
+        {
+            this.TorqueCurrent = torqueCurrent;
+        }
 
         public InverterStatusUpdateFieldMessageData(
             Axis currentAxis,
@@ -46,13 +55,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis CurrentAxis { get; }
 
-        public int CurrentPosition { get; }
+        public decimal? CurrentPosition { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Performance",
             "CA1819:Properties should not return arrays",
             Justification = "Review the code to see if it is really necessary to return a plain array.")]
         public bool[] CurrentSensorStatus { get; }
+
+        public DataSample TorqueCurrent { get; }
 
         #endregion
 

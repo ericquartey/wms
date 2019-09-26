@@ -16,7 +16,7 @@
     "Serial": "Not applicable",
     "Height": 4.563,
     "MaxGrossWeight": 50000,
-    "MaxDrawerGrossWeight": 800,
+    "MaxDrawerGrossWeight": 990,
     "BaysQuantity": 2,
     "Bay1Type": 4,
     "Bay2Type": 2,
@@ -27,7 +27,7 @@
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
     "Shutter1Type": 1,
-    "Shutter2Type": 1,
+    "Shutter2Type": 2,
     "LaserBay1": false,
     "LaserBay2": false,
     "LaserBay3": false,
@@ -69,6 +69,7 @@
     "InverterIndexShutter1": 2,
     "InverterIndexBay1": 3,
     "InverterIndexShutter2": 4,
+    "InverterIndexBay2": 5,
     "IOExpansion1Installed": true,
     "IOExpansion2Installed": true,
     "IOExpansion3Installed": false,
@@ -117,58 +118,58 @@
   },
   "HorizontalMovementShorterProfile": {
     "TotalSteps": 5,
-    "TotalMovement": 1235.9,
+    "TotalMovement": 1414.0,
     "MovementCorrection": 20.0,
     //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
     "P0Deceleration": 0.0,
     "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    "P1Acceleration": 0.0,
+    "P1Acceleration": 1000.0,
     "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
     "P2Acceleration": 1000.0,
-    "P2Deceleration": 0.0,
+    "P2Deceleration": 1000.0,
     "P2SpeedV3": 500.0,
     "P3Quote": 600.0,
-    "P3Acceleration": 0.0,
+    "P3Acceleration": 1000.0,
     "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
     "P4Quote": 985.00,
     "P4Acceleration": 1000.0,
     "P4Deceleration": 1000.0,
     "P4SpeedV5": 200.0,
-    "P5Quote": 1235.0
+    "P5Quote": 1414.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
   },
   "HorizontalMovementLongerProfile": {
     "TotalSteps": 5,
-    "TotalMovement": 1241.0,
+    "TotalMovement": 1420.0,
     "MovementCorrection": 20.0,
     //"P0Quote": 0.0,
     "P0Acceleration": 1000.0,
-    "P0Deceleration": 0.0,
+    "P0Deceleration": 1000.0,
     "P0SpeedV1": 200.0,
     "P1Quote": 100.0,
-    "P1Acceleration": 0.0,
+    "P1Acceleration": 1000.0,
     "P1Deceleration": 1000.0,
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
     "P2Acceleration": 1000.0,
-    "P2Deceleration": 0.0,
+    "P2Deceleration": 1000.0,
     "P2SpeedV3": 500.0,
     "P3Quote": 600.0,
-    "P3Acceleration": 0.0,
+    "P3Acceleration": 1000.0,
     "P3Deceleration": 1000.0,
     "P3SpeedV4": 100.0,
     "P4Quote": 985.00,
     "P4Acceleration": 1000.0,
     "P4Deceleration": 1000.0,
     "P4SpeedV5": 200.0,
-    "P5Quote": 1241.0
+    "P5Quote": 1420.0
     //"P5Acceleration":
     //"P5Deceleration":
     //"P5Speed":
@@ -190,8 +191,9 @@
     "MinSpeed": 50.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
-    "HigherDistance": 2000.0,
-    "LowerDistance": 2100.0
+    "HigherDistance": 467.0,
+    "LowerDistance": 472.0,
+    "HighSpeedPercent": 90.0
   },
   "BeltBurnishing": {
     "CycleQuantity": 200

@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public abstract class StateMachineBase : IStateMachine
+    internal abstract class StateMachineBase : IStateMachine
     {
         #region Fields
 
@@ -24,22 +24,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         protected StateMachineBase(
             IEventAggregator eventAggregator,
-            ILogger logger,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (serviceScopeFactory == null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.Logger = logger;
-            this.ServiceScopeFactory = serviceScopeFactory;
-            this.EventAggregator = eventAggregator;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion
@@ -55,13 +45,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Properties
 
+        public IEventAggregator EventAggregator { get; }
+
+        public ILogger<FiniteStateMachines> Logger { get; }
+
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
         protected IState CurrentState { get; set; }
-
-        protected IEventAggregator EventAggregator { get; }
-
-        protected ILogger Logger { get; }
 
         #endregion
 
@@ -77,6 +67,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.MachineStateActive,
+                BayNumber.None,
+                BayNumber.None,
                 MessageStatus.OperationStart);
 
             this.PublishNotificationMessage(notificationMessage);
@@ -141,7 +133,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <inheritdoc />
         public abstract void Start();
 
-        public abstract void Stop();
+        public abstract void Stop(StopRequestReason reason);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -162,6 +154,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -175,6 +169,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.MachineStateActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);

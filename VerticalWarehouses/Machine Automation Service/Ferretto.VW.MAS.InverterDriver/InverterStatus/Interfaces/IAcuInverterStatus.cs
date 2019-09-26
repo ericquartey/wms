@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
-    public class SwitchOnEndState : InverterStateBase
+    internal class SwitchOnEndState : InverterStateBase
     {
         #region Fields
 
@@ -32,20 +32,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         #endregion
 
-        #region Destructors
-
-        ~SwitchOnEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {

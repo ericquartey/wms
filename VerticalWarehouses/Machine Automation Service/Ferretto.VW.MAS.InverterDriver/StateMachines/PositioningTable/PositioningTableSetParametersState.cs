@@ -1,19 +1,19 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    public class PositioningTableSetParametersState : InverterStateBase
+    internal class PositioningTableSetParametersState : InverterStateBase
     {
         #region Fields
 
         private readonly IInverterPositioningFieldMessageData data;
 
         private int parameterId;
+
+        private InverterTableIndex tableIndex;
 
         #endregion
 
@@ -33,28 +33,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningTableSetParametersState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         /// <inheritdoc />
         public override void Start()
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition, InverterDataset.TableTravelP7));
-            this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
+            this.tableIndex = InverterTableIndex.TableTravelP7;
+            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
             this.parameterId = 0;
         }
 
@@ -69,103 +57,117 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            this.Logger.LogTrace($"2:message={message}:ID Parametro={message.ParameterId}");
-
-            InverterDataset dataset;
-
-            switch (message.ParameterId)
+            else
             {
-                case InverterParameterId.TableTravelTargetPosition:
-                    this.parameterId = 0;
-                    dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                    if (this.data.RefreshAll)
-                    {
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}");
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
-                    }
-                    break;
+                this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
 
-                case InverterParameterId.TableTravelTargetSpeeds:
-                    if (++this.parameterId < this.data.TargetSpeed.Length)
-                    {
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}");
-                    }
-                    else
-                    {
-                        this.parameterId = 0;
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}");
-                    }
-                    break;
+                switch (message.ParameterId)
+                {
+                    case InverterParameterId.TableTravelTableIndex:
+                        switch (this.tableIndex)
+                        {
+                            case InverterTableIndex.TableTravelP7:
+                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
+                                this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
+                                break;
 
-                case InverterParameterId.TableTravelTargetAccelerations:
-                    if (++this.parameterId < this.data.TargetAcceleration.Length)
-                    {
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}");
-                    }
-                    else
-                    {
-                        this.parameterId = 0;
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Deceleration: {this.data.TargetDeceleration}");
-                    }
-                    break;
+                            case InverterTableIndex.TableTravelSet1:
+                            case InverterTableIndex.TableTravelSet2:
+                            case InverterTableIndex.TableTravelSet3:
+                            case InverterTableIndex.TableTravelSet4:
+                            case InverterTableIndex.TableTravelSet5:
+                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId]));
+                                this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}: table index {this.tableIndex}");
+                                break;
 
-                case InverterParameterId.TableTravelTargetDecelerations:
-                    if (++this.parameterId < this.data.TargetDeceleration.Length)
-                    {
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetDeceleration[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Deceleration: {this.data.TargetDeceleration}");
-                    }
-                    else
-                    {
-                        this.parameterId = 0;
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
-                    }
-                    break;
+                            case InverterTableIndex.TableTravelP1:
+                            case InverterTableIndex.TableTravelP2:
+                            case InverterTableIndex.TableTravelP3:
+                            case InverterTableIndex.TableTravelP4:
+                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.SwitchPosition[this.parameterId]));
+                                this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: table index {this.tableIndex}");
+                                break;
+                        }
+                        break;
 
-                case InverterParameterId.TableTravelSwitchPositions:
-                    if (++this.parameterId < this.data.SwitchPosition.Length)
-                    {
-                        dataset = (InverterDataset)((int)InverterDataset.TableTravelSet1 + this.parameterId);
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelSwitchPositions, this.data.SwitchPosition[this.parameterId], dataset));
-                        this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}");
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, this.data.Direction, InverterDataset.TableTravelP7));
-                        this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
-                    }
-                    break;
+                    case InverterParameterId.TableTravelTargetPosition:
+                        if (this.tableIndex == InverterTableIndex.TableTravelDirection)
+                        {
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, (short)this.data.Direction));
+                            this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
+                        }
+                        else if (++this.parameterId < this.data.SwitchPosition.Length - 1)
+                        {
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(
+                                new PositioningTableEnableOperationState(
+                                    this.ParentStateMachine,
+                                    this.data,
+                                    this.InverterStatus as IPositioningInverterStatus,
+                                    this.Logger));
+                        }
+                        break;
 
-                case InverterParameterId.TableTravelDirection:
-                    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
-                    break;
+                    case InverterParameterId.TableTravelDirection:
+                        if (!this.data.RefreshAll)
+                        {
+                            this.ParentStateMachine.ChangeState(
+                                new PositioningTableEnableOperationState(
+                                    this.ParentStateMachine,
+                                    this.data,
+                                    this.InverterStatus as IPositioningInverterStatus,
+                                    this.Logger));
+                        }
+                        else
+                        {
+                            this.parameterId = 0;
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        }
+                        break;
+
+                    case InverterParameterId.TableTravelTargetSpeeds:
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId]));
+                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
+
+                        break;
+
+                    case InverterParameterId.TableTravelTargetAccelerations:
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetAcceleration[this.parameterId]));
+                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
+
+                        break;
+
+                    case InverterParameterId.TableTravelTargetDecelerations:
+                        if (++this.parameterId < this.data.SwitchPosition.Length)
+                        {
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        }
+                        else
+                        {
+                            this.parameterId = 0;
+                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        }
+                        break;
+                }
             }
-
             return returnValue;
         }
 

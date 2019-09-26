@@ -1,16 +1,21 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Template.Models;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
-    public class TemplateStateMachine : StateMachineBase
+    internal class TemplateStateMachine : StateMachineBase
     {
 
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
 
         private bool disposed;
 
@@ -19,21 +24,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(
-            ITemplateData machineData)
-            : base(machineData.EventAggregator, machineData.Logger, machineData.ServiceScopeFactory)
+                    CommandMessage receivedMessage,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(machineData.Logger);
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = machineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~TemplateStateMachine()
-        {
-            this.Dispose(false);
+            this.machineData = new TemplateMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -41,21 +40,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
 
         #region Methods
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -75,22 +59,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         }
 
         /// <inheritdoc/>
-        /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
-                this.CurrentState = new TemplateStartState(this, this.machineData);
+                var stateData = new TemplateStateData(this, this.machineData);
+                this.CurrentState = new TemplateStartState(stateData);
                 this.CurrentState?.Start();
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            lock (this.CurrentState)
+            lock(this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(this.disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

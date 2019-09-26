@@ -5,7 +5,6 @@ using System.Windows;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Services;
-using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.Utils;
 using Prism.Events;
@@ -17,6 +16,7 @@ namespace Ferretto.VW.App.Services
 {
     public class NavigationService : INavigationService
     {
+
         #region Fields
 
         private readonly IUnityContainer container;
@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+
+
         #region Properties
 
         public bool IsBusy
@@ -103,6 +105,8 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
+
+
 
         #region Methods
 

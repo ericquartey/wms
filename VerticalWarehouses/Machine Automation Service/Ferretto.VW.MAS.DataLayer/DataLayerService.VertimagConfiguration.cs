@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case InverterIndex.Slave1:
                         setupNetworkInverterIndex = SetupNetwork.InverterIndexChain;
-                        inverterType = InverterType.Ang; //TEMP Verify
+                        inverterType = InverterType.Acu; //TEMP Verify
                         break;
 
                     case InverterIndex.Slave2:
@@ -80,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogDebug($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"Setup Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
@@ -130,7 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.Logger.LogTrace($"SetUp Network parameter not found: {isExpansionInstalledIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"Setup Network parameter not found: {isExpansionInstalledIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {

@@ -4,6 +4,8 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,23 +14,12 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
-    public class MoveDrawerStateMachine : StateMachineBase
+    internal class MoveDrawerStateMachine : StateMachineBase
     {
+
         #region Fields
 
-        private readonly IDrawerOperationMessageData drawerOperationData;
-
-        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
-        private readonly ILogger logger;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
+        private readonly IMoveDrawerMachineData machineData;
 
         private bool disposed;
 
@@ -37,26 +28,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         #region Constructors
 
         public MoveDrawerStateMachine(
-            IEventAggregator eventAggregator,
+            bool isOneKMachine,
+            BayNumber requestingBay,
             ISetupStatusProvider setupStatusProvider,
             IMachineSensorsStatus machineSensorsStatus,
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
             IHorizontalAxisDataLayer horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
-            ILogger logger,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.setupStatusProvider = setupStatusProvider;
-            this.logger = logger;
-            this.machineSensorsStatus = machineSensorsStatus;
-            this.generalInfoDataLayer = generalInfoDataLayer;
-            this.verticalAxis = verticalAxis;
-            this.horizontalAxis = horizontalAxis;
-            this.drawerOperationData = drawerOperationData;
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.CurrentState = new EmptyState(logger);
+            this.machineData = new MoveDrawerMachineData(isOneKMachine,
+                setupStatusProvider,
+                machineSensorsStatus,
+                generalInfoDataLayer,
+                verticalAxis,
+                horizontalAxis,
+                drawerOperationData,
+                requestingBay,
+                eventAggregator,
+                logger,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -70,13 +67,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-        #region Methods
 
-        /// <inheritdoc/>
-        public override void ChangeState(IState newState, CommandMessage message = null)
-        {
-            base.ChangeState(newState, message);
-        }
+
+        #region Methods
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -105,15 +98,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         }
 
         /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            base.PublishNotificationMessage(message);
-        }
-
-        /// <inheritdoc/>
         public override void Start()
         {
-            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            var homingDone = this.machineData.SetupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
                 var notificationMessage = new NotificationMessage(
@@ -122,6 +109,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -130,7 +119,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 return;
             }
 
-            if (!this.machineSensorsStatus.IsSensorZeroOnCradle)
+            if (!this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle)
             {
                 var notificationMessage = new NotificationMessage(
                     null,
@@ -138,6 +127,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -146,7 +137,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 return;
             }
 
-            if (this.drawerOperationData.Operation != DrawerOperation.Deposit && !this.machineSensorsStatus.IsDrawerCompletelyOffCradle)
+            if (!this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle)
             {
                 var notificationMessage = new NotificationMessage(
                     null,
@@ -154,6 +145,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -163,12 +156,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             }
 
             var bayCheckOk = false;
-            switch (this.drawerOperationData.Source)
+            switch (this.machineData.DrawerOperationData.Source)
             {
                 case DrawerDestination.CarouselBay1Up:
                 case DrawerDestination.ExternalBay1Up:
                 case DrawerDestination.InternalBay1Up:
-                    bayCheckOk = this.machineSensorsStatus.IsDrawerInBay1Up;
+                    bayCheckOk = this.machineData.MachineSensorsStatus.IsDrawerInBay1Up;
                     break;
             }
 
@@ -180,6 +173,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error,
                     MessageVerbosity.Error);
@@ -190,25 +185,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             lock (this.CurrentState)
             {
-                this.drawerOperationData.Step = DrawerOperationStep.None;
+                this.machineData.DrawerOperationData.Step = DrawerOperationStep.None;
 
-                this.CurrentState = new MoveDrawerStartState(
-                    this,
-                    this.drawerOperationData,
-                    this.generalInfoDataLayer,
-                    this.verticalAxis,
-                    this.horizontalAxis,
-                    this.machineSensorsStatus,
-                    this.Logger);
+                var state = new MoveDrawerStateData(this, this.machineData);
+                this.CurrentState = new MoveDrawerStartState(state);
                 this.CurrentState?.Start();
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 

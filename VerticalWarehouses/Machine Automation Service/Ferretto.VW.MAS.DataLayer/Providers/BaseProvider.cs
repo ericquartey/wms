@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.AspNetCore.Http;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
@@ -38,7 +37,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IMessageData messageData,
             string description,
             MessageActor receiver,
-            MessageType messageType)
+            MessageType messageType,
+            BayNumber requestingBay,
+            BayNumber targetBay)
         {
             this.eventAggregator
                 .GetEvent<CommandEvent>()
@@ -48,7 +49,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         description,
                         receiver,
                         MessageActor.WebApi,
-                        messageType));
+                        messageType,
+                        requestingBay,
+                        targetBay));
         }
 
         protected TData WaitForResponseEventAsync<TData>(

@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
-using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public partial class MachineStatusController : BaseAutomationController
+    public class MachineStatusController : BaseAutomationController
     {
         #region Constructors
 
@@ -27,8 +28,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.PublishCommand(
                 powerEnableMessageData,
-                "Power Enable Command",
-                MessageActor.FiniteStateMachines,
+                "Power Disable Command",
+                MessageActor.AutomationService,
                 MessageType.PowerEnable);
         }
 
@@ -40,18 +41,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.PublishCommand(
                 powerEnableMessageData,
                 "Power Enable Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.AutomationService,
                 MessageType.PowerEnable);
-        }
-
-        [HttpPost("reset-security")]
-        public void ResetSecurity()
-        {
-            this.PublishCommand(
-                null,
-                "Reset Security Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.ResetSecurity);
         }
 
         #endregion

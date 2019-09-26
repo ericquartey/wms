@@ -58,9 +58,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineErrorsService>(
                 new InjectionFactory(c => new MachineErrorsService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineErrorsService>(
-                new InjectionFactory(c => new MachineErrorsService(urlString, resolveFunction(c))));
-
             container.GetContainer().RegisterType<IMachineIdentityService>(
                 new InjectionFactory(c => new MachineIdentityService(urlString, resolveFunction(c))));
 
@@ -91,9 +88,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineStatisticsService>(
                 new InjectionFactory(c => new MachineStatisticsService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineTestService>(
-                new InjectionFactory(c => new MachineTestService(urlString, resolveFunction(c))));
-
             container.GetContainer().RegisterType<IMachineUsersService>(
                 new InjectionFactory(c => new MachineUsersService(urlString, resolveFunction(c))));
 
@@ -108,7 +102,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.GetContainer().RegisterType<IMachineDevicesService>(
                 new InjectionFactory(c => new MachineDevicesService(urlString, resolveFunction(c))));
-            
+
+            container.GetContainer().RegisterType<IMachineWeightAnalysisProcedureService>(
+                new InjectionFactory(c => new MachineWeightAnalysisProcedureService(urlString, resolveFunction(c))));
 
             return container;
         }

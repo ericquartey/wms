@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ResolutionCalibrationProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -63,6 +64,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 

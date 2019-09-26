@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -86,8 +87,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-                      Environment.NewLine,
-              this[nameof(this.Displacement)]);
+            Environment.NewLine,
+            this[nameof(this.Displacement)]);
 
         public decimal InputStepValue
         {
@@ -217,6 +218,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+            }
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMovingUp = false;
+                this.IsElevatorMovingDown = false;
             }
         }
 

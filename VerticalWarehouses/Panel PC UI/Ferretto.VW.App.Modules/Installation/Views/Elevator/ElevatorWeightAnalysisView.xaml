@@ -1,0 +1,147 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ElevatorWeightAnalysisView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid Margin="130,30,130,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.WeightAnalysis}" />
+
+        <controls:PpcTextBox Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
+
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputScope="Number"
+                             InputText="{Binding InputNetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding CanInputNetWeight}"
+                             LabelText="{x:Static res:InstallationApp.NetWeight}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding LoadingUnit.Tare}"
+                                 LabelText="{x:Static res:InstallationApp.TrayTare}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentPosition}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
+        <controls:PpcTextBox Grid.Row="2"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputScope="Number"
+                             InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.Displacement}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding AverageCurrent, StringFormat={}{0:N4}}"
+                                 LabelText="Corrente Media [A]" />
+
+        <controls:PpcButton Grid.Row="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding MoveToBayCommand}"
+                            Content="Sposta a posizione elevatore" />
+
+
+        <dxc:ChartControl Grid.Row="3"
+                          Grid.ColumnSpan="3"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          BorderThickness="0">
+            <dxc:XYDiagram2D>
+
+                <dxc:XYDiagram2D.DefaultPane>
+                    <dxc:Pane Background="Transparent" />
+                </dxc:XYDiagram2D.DefaultPane>
+                <dxc:XYDiagram2D.AxisY>
+                    <dxc:AxisY2D GridLinesMinorVisible="True"
+                                 GridLinesVisible="True"
+                                 Interlaced="False"
+                                 Visible="True">
+                        <dxc:AxisY2D.Label>
+                            <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+                        </dxc:AxisY2D.Label>
+                        <dxc:AxisY2D.Title>
+                            <dxc:AxisTitle Content="Corrente [A]"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+                        </dxc:AxisY2D.Title>
+                    </dxc:AxisY2D>
+                </dxc:XYDiagram2D.AxisY>
+                <dxc:XYDiagram2D.AxisX>
+                    <dxc:AxisX2D GridLinesMinorVisible="True"
+                                 GridLinesVisible="True"
+                                 Interlaced="False"
+                                 Visible="True">
+                        <dxc:AxisX2D.DateTimeScaleOptions>
+                            <dxc:ContinuousDateTimeScaleOptions GridAlignment="Second" />
+                        </dxc:AxisX2D.DateTimeScaleOptions>
+                        <dxc:AxisX2D.Label>
+                            <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+                        </dxc:AxisX2D.Label>
+                        <dxc:AxisX2D.Title>
+                            <dxc:AxisTitle Content="Tempo [s]"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+                        </dxc:AxisX2D.Title>
+                    </dxc:AxisX2D>
+                </dxc:XYDiagram2D.AxisX>
+                <dxc:XYDiagram2D.Series>
+
+                    <dxc:PointSeries2D ArgumentDataMember="TimeStamp"
+                                       Brush="{DynamicResource FerrettoBlue}"
+                                       DataSource="{Binding MeasuredSamples}"
+                                       MarkerSize="5"
+                                       ValueDataMember="Value" />
+                </dxc:XYDiagram2D.Series>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+    </Grid>
+</ctrls:View>

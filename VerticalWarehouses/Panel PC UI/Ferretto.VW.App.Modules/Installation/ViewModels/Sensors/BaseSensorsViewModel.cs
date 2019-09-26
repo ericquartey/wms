@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.CommonUtils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     public class BaseSensorsViewModel : BaseMainViewModel, IBaseSensorsViewModel
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
 
         private readonly MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService;
 
@@ -27,7 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseSensorsViewModel(
-            MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService)
+            IMachineSensorsService machineSensorsService,
+            IBayManager bayManager)
             : base(Services.PresentationMode.Installer)
         {
             if (machineSensorsService is null)
@@ -35,8 +39,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
             }
 
-            this.machineSensorsService = machineSensorsService;
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
+            }
 
+            this.machineSensorsService = machineSensorsService;
+            this.bayManager = bayManager;
             this.InitializeNavigationMenu();
         }
 
@@ -45,6 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public override EnableMask EnableMask => EnableMask.None;
+
+        public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 

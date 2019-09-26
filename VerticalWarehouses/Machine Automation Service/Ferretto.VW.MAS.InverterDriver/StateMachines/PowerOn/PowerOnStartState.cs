@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
-    public class PowerOnStartState : InverterStateBase
+    internal class PowerOnStartState : InverterStateBase
     {
         #region Constructors
 
@@ -25,20 +25,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         #endregion
 
-        #region Destructors
-
-        ~PowerOnStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
-
-        public override void Release()
-        {
-        }
 
         public override void Start()
         {
@@ -49,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessageData = new InverterPowerOnFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
@@ -82,24 +69,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.Logger.LogError($"1:message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
-                this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
-                this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
-                )
+            else
             {
-                this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                returnValue = true;
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
+                    this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
+                    )
+                {
+                    this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-
             return returnValue;
         }
 

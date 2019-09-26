@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
@@ -7,21 +8,27 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        decimal GetHorizontalPosition();
+        decimal? GetHorizontalPosition(BayNumber requestingBay);
 
-        decimal GetVerticalPosition();
+        decimal GetVerticalPosition(BayNumber requestingBay);
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isOnBoard);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
 
-        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory);
+        void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory, BayNumber requestingBay);
 
-        void MoveVertical(VerticalMovementDirection direction);
+        void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay);
 
-        void MoveVerticalOfDistance(decimal distance);
+        void MoveVerticalOfDistance(decimal distance, BayNumber requestingBay);
 
-        void Stop();
+        void RunInMotionCurrentSampling(decimal displacement, decimal netWeight, BayNumber requestingBay);
+
+        void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight, BayNumber requestingBay);
+
+        void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay);
+
+        void Stop(BayNumber requestingBay);
 
         void UpdateResolution(decimal newResolution);
 

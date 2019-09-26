@@ -1,21 +1,21 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
-    public class SwitchOnStateMachine : InverterStateMachineBase
+    internal class SwitchOnStateMachine : InverterStateMachineBase
     {
         #region Fields
 
         private readonly Axis axisToSwitchOn;
 
         private readonly IInverterStatusBase inverterStatus;
-
-        private bool disposed;
 
         #endregion
 
@@ -24,24 +24,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         public SwitchOnStateMachine(
             Axis axisToSwitchOn,
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(logger, eventAggregator, inverterCommandQueue)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.inverterStatus = inverterStatus;
             this.axisToSwitchOn = axisToSwitchOn;
-
-            this.Logger.LogDebug("1:Method Start");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~SwitchOnStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -58,22 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

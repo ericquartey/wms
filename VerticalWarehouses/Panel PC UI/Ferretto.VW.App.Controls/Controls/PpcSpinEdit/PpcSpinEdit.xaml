@@ -14,10 +14,17 @@
                    Style="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
                    Text="{Binding LabelText}" />
         <dxe:SpinEdit Name="InnerSpinEdit"
-                      Width="250"
+                      Width="{Binding WidthNumber, FallbackValue=250}"
                       Margin="0,3,5,5"
                       AllowDefaultButton="False"
+                      Increment="1"
+                      IsEnabled="{Binding IsEnabled}"
                       KeyDown="OnKeyDownHandler"
+                      Mask="{Binding Mask}"
+                      MaskType="Simple"
+                      MaskUseAsDisplayFormat="True"
+                      PreviewMouseDown="OnPreviewEventDown"
+                      PreviewTouchDown="OnPreviewEventDown"
                       Style="{StaticResource VWAPP_PpcTextBox_SpinEditDecimalStyle}"
                       Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 

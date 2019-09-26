@@ -7,6 +7,7 @@ using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
@@ -14,6 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class DiagnosticDetailsViewModel : BaseViewModel
     {
+
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -58,6 +60,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #endregion
 
+
+
         #region Properties
 
         public string CurrentMachineStatusFSM { get => this.currentMachineStatusFSM; set => this.SetProperty(ref this.currentMachineStatusFSM, value); }
@@ -81,6 +85,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                             this.ShowDevices));
 
         #endregion
+
+
 
         #region Methods
 

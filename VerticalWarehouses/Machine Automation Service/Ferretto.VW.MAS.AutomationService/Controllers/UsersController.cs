@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class UsersController : BaseWmsProxyBaseController
     {
         #region Fields
+
+        private readonly ILogger<UsersController> logger;
 
         private readonly IUsersDataService usersDataService;
 
@@ -23,7 +26,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public UsersController(
             IUsersDataService usersDataService,
-            IUsersProvider usersProvider)
+            IUsersProvider usersProvider,
+            ILogger<UsersController> logger)
         {
             if (usersDataService is null)
             {
@@ -35,8 +39,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(usersProvider));
             }
 
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.usersDataService = usersDataService;
             this.usersProvider = usersProvider;
+            this.logger = logger;
         }
 
         #endregion
@@ -53,14 +63,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
+                this.logger.LogInformation($"Login requested for user '{userName}'. Forwarding authentication request to WMS ...");
                 return this.Ok(await this.usersDataService
                     .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
             }
             catch
             {
+                this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS. Using local credentials.");
+
                 var accessLevel = this.usersProvider.Authenticate(userName, password);
                 if (!accessLevel.HasValue)
                 {
+                    this.logger.LogWarning($"Login for '{userName}' failed.");
                     return this.Unauthorized();
                 }
 

@@ -43,8 +43,15 @@
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition, FallbackValue='999,99'}"
+                                 ContentText="{Binding CurrentVerticalPosition, FallbackValue='999,99'}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentHorizontalPosition, FallbackValue='999,99'}"
+                                 LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"
@@ -56,7 +63,7 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding Resolution, StringFormat='{}{0:0.000000}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
                                  LabelText="{x:Static res:InstallationApp.Resolution}" />
 
         <controls:PpcLabeledText Grid.Row="3"
@@ -78,7 +85,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            IsBusy="{Binding IsExecutingProcedure}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{x:Static res:InstallationApp.Start}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
     </Grid>
 </ctrls:View>

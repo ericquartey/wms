@@ -2,13 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-
 using Prism.Commands;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

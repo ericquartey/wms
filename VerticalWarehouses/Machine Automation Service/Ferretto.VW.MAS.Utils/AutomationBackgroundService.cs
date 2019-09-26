@@ -1,21 +1,20 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService : BackgroundService
     {
+
         #region Fields
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -38,12 +37,12 @@ namespace Ferretto.VW.MAS.Utils
             IEventAggregator eventAggregator,
             ILogger logger)
         {
-            if (eventAggregator == null)
+            if(eventAggregator == null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (logger == null)
+            if(logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -53,27 +52,31 @@ namespace Ferretto.VW.MAS.Utils
 
             this.commandReceiveTask = new Task(async () => await this.DequeueCommandsAsync());
             this.notificationReceiveTask = new Task(async () => await this.DequeueNotificationsAsync());
+
+            this.InitializeSubscriptions();
         }
 
         #endregion
 
+
+
         #region Properties
+
+        protected CancellationToken CancellationToken { get; private set; }
 
         protected IEventAggregator EventAggregator { get; }
 
         protected ILogger Logger { get; }
 
-        protected CancellationToken StoppingToken { get; private set; }
-
         #endregion
+
+
 
         #region Methods
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            this.InitializeSubscriptions();
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -91,16 +94,16 @@ namespace Ferretto.VW.MAS.Utils
             await base.StopAsync(cancellationToken);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            this.StoppingToken = stoppingToken;
+            this.CancellationToken = cancellationToken;
 
             try
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception("An error occurred while starting service threads.", ex);
             }
@@ -120,22 +123,21 @@ namespace Ferretto.VW.MAS.Utils
         {
             do
             {
-                CommandMessage command;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out command);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command);
                     this.Logger.LogTrace(
                         $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
+
+                    await this.OnCommandReceivedAsync(command);
                 }
-                catch (OperationCanceledException)
+                catch(OperationCanceledException)
                 {
                     this.Logger.LogTrace("Operation Canceled.");
                     return;
                 }
-
-                await this.OnCommandReceivedAsync(command);
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while(!this.CancellationToken.IsCancellationRequested);
         }
 
         private async Task DequeueNotificationsAsync()
@@ -144,24 +146,24 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out var notification);
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification);
                     this.Logger.LogTrace(
                         $"Dequeued notification '{notification.Type}', status {notification.Status} (from '{notification.Source}' to '{notification.Destination}').");
 
                     await this.OnNotificationReceivedAsync(notification);
                 }
-                catch (OperationCanceledException)
+                catch(OperationCanceledException)
                 {
                     this.Logger.LogDebug("Operation canceled.");
 
                     return;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     this.Logger.LogError(ex, "Error while processing the notification.");
                 }
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while(!this.CancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

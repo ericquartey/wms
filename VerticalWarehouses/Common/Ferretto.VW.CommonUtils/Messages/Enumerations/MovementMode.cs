@@ -12,6 +12,8 @@
 
         FindZero = 4,
 
-        TestLoop = 5,
+        ShutterTest = 5,
+
+        TorqueCurrentSampling = 6,
     }
 }

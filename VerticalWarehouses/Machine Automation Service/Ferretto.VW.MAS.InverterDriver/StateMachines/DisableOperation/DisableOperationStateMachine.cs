@@ -1,18 +1,18 @@
-﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    public class DisableOperationStateMachine : InverterStateMachineBase
+    internal class DisableOperationStateMachine : InverterStateMachineBase
     {
         #region Fields
 
         private readonly IInverterStatusBase inverterStatus;
-
-        private bool disposed;
 
         #endregion
 
@@ -20,23 +20,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         public DisableOperationStateMachine(
             IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            ILogger logger,
             IEventAggregator eventAggregator,
-            ILogger logger )
-            : base( logger, eventAggregator, inverterCommandQueue )
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.inverterStatus = inverterStatus;
-
-            this.Logger.LogTrace( "1:Method Start" );
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~DisableOperationStateMachine()
-        {
-            this.Dispose( false );
         }
 
         #endregion
@@ -46,29 +36,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new DisableOperationStartState( this, this.inverterStatus, this.Logger );
+            this.CurrentState = new DisableOperationStartState(this, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 
         public override void Stop()
         {
             this.CurrentState?.Stop();
-        }
-
-        protected override void Dispose( bool disposing )
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose( disposing );
         }
 
         #endregion

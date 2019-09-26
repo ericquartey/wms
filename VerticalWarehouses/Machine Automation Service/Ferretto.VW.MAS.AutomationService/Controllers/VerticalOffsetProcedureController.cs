@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
@@ -17,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class VerticalOffsetProcedureController : BaseAutomationController
     {
+
         #region Fields
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -152,7 +154,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 0,
                 0,
                 0,
-                switchPosition);
+                switchPosition,
+                (displacement > 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
 
             this.PublishCommand(
                 messageData,

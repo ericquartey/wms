@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -14,45 +14,34 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 {
-    public class HomingStateMachine : StateMachineBase
+    internal class HomingStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly Axis calibrateAxis;
+        private readonly Axis axisToCalibrate;
 
-        private readonly bool isOneKMachine;
-
-        private readonly ILogger logger;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private bool disposed;
-
-        private HomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
 
         #endregion
 
         #region Constructors
 
         public HomingStateMachine(
+            Axis axisToCalibrate,
+            bool isOneKMachine,
+            BayNumber requestingBay,
+            BayNumber targetBay,
             IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
-            IHomingMessageData calibrateMessageData,
-            bool isOneKMachine,
-            ILogger logger,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.CurrentState = new EmptyState(logger);
+            this.axisToCalibrate = axisToCalibrate;
 
-            this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
-
-            this.isOneKMachine = isOneKMachine;
-
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, targetBay, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
@@ -71,7 +60,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
@@ -81,31 +70,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.CalibrateAxis)
             {
                 if (message.Status == MessageStatus.OperationExecuting)
                 {
-                    var notificationMessageData = new CalibrateAxisMessageData(this.homingOperation.AxisToCalibrate, this.homingOperation.NumberOfExecutedSteps + 1, this.homingOperation.MaximumSteps, MessageVerbosity.Info);
+                    var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps + 1, this.machineData.MaximumSteps, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
-                        $"{this.homingOperation.AxisToCalibrate} axis calibration executing",
+                        $"{this.machineData.AxisToCalibrate} axis calibration executing",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CalibrateAxis,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationExecuting);
-
-                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                     this.PublishNotificationMessage(notificationMessage);
                 }
 
                 if (message.Status == MessageStatus.OperationEnd)
                 {
-                    this.homingOperation.NumberOfExecutedSteps++;
-                    this.homingOperation.AxisToCalibrate =
-                        (this.homingOperation.AxisToCalibrate == Axis.Vertical) ?
+                    this.machineData.NumberOfExecutedSteps++;
+                    this.machineData.AxisToCalibrate =
+                        (this.machineData.AxisToCalibrate == Axis.Vertical) ?
                             Axis.Horizontal :
                             Axis.Vertical;
                 }
@@ -114,15 +103,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             if (message.Type == FieldMessageType.InverterStatusUpdate &&
                 message.Status == MessageStatus.OperationExecuting)
             {
-                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                if (message.Data is InverterStatusUpdateFieldMessageData data &&
+                    data.CurrentPosition.HasValue)
                 {
-                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition.Value);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"Current Encoder position: {data.CurrentPosition}",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.CurrentPosition,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationExecuting);
 
                     this.PublishNotificationMessage(notificationMessage);
@@ -138,7 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -149,7 +141,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void PublishNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             base.PublishNotificationMessage(message);
         }
@@ -159,91 +151,85 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             bool checkConditions;
 
-            this.logger.LogTrace("1:Method Start");
-            switch (this.calibrateAxis)
+            this.Logger.LogTrace("1:Method Start");
+            switch (this.axisToCalibrate)
             {
-                case Axis.Both:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3, this.isOneKMachine);
+                case Axis.HorizontalAndVertical:
+                    this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 3;
                     break;
 
                 case Axis.Horizontal:
-                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1, this.isOneKMachine);
+                    this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:
-                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1, this.isOneKMachine);
+                    this.machineData.AxisToCalibrate = Axis.Vertical;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
             }
 
             lock (this.CurrentState)
             {
+                var stateData = new HomingStateData(this, this.machineData);
+
                 //INFO Check the Horizontal and Vertical conditions for Positioning
                 checkConditions = this.CheckConditions();
                 if (!checkConditions)
                 {
                     var notificationMessage = new NotificationMessage(
                         null,
-                        "Conditions not verified for positioning",
+                        "Conditions not verified for homing",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.InverterException,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationStart);
 
                     this.PublishNotificationMessage(notificationMessage);
 
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                        errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                    }
+
                     this.Logger.LogError($"Conditions not verified for homing");
 
-                    this.CurrentState = new HomingErrorState(
-                        this,
-                        this.homingOperation,
-                        null,
-                        this.logger);
+                    this.CurrentState = new HomingErrorState(stateData);
                 }
                 else
                 {
-                    this.CurrentState = new HomingStartState(
-                        this,
-                        this.homingOperation,
-                        this.logger);
+                    this.CurrentState = new HomingStartState(stateData);
                 }
-
                 this.CurrentState.Start();
             }
 
-            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         private bool CheckConditions()
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && !this.machineSensorsStatus.IsSensorZeroOnCradle) ||
-                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle);
+            var checkConditions = ((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) ||
+                                    this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle);
 
             return checkConditions;
         }

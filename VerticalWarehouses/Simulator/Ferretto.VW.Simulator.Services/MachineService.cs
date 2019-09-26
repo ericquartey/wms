@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using NLog;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.Simulator.Services
         private const int DELAY_IO_CLIENT = 5;
 
         private const int IMPULSES_ENCODER_PER_ROUND = 77;
+
+        private readonly static Random random = new Random();
 
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
@@ -47,19 +50,19 @@ namespace Ferretto.VW.Simulator.Services
 
         public MachineService()
         {
-            this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
-            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
-            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 4 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 5, Enabled = false });
-            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 6, Enabled = false }); //da sistemare
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 7, Enabled = false }); //da sistemare
-
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
+
+            this.Inverters = new ObservableCollection<InverterModel>();
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1 });
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3 });
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5 });
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
         }
 
         #endregion
@@ -201,14 +204,14 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues)
+        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues, bool isError = false)
         {
             int byteLength;
             byte[] byteMessage;
             byteLength = 0x04 + inputValues.Length;
             byteMessage = new byte[byteLength + 2];
-            byteMessage[0] = 0x00;
-            byteMessage[1] = (byte)(byteLength);
+            byteMessage[0] = (byte)(isError ? (message[0] | 0x40) : 0x00);
+            byteMessage[1] = (byte)byteLength;
             byteMessage[2] = (byte)systemIndex;
             byteMessage[3] = dataSetIndex;
             byteMessage[4] = message[4];
@@ -266,183 +269,19 @@ namespace Ferretto.VW.Simulator.Services
             return value * IMPULSES_ENCODER_PER_ROUND;
         }
 
-        private void ReplyInverter(TcpClient client, byte[] message)
+        private void ReplyInverter(TcpClient client, byte[] incomingBytes)
         {
             const int headerLenght = 6;
-            this.Buffer = this.Buffer.AppendArrays(message, message.Length);
+            this.Buffer = this.Buffer.AppendArrays(incomingBytes, incomingBytes.Length);
             if (this.Buffer.Length >= headerLenght && this.Buffer.Length >= this.Buffer[1] + 2)
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.Buffer, 4, 1, 2);
 
                 foreach (var extractedMessage in extractedMessages)
                 {
-                    var isWriteMessage = (extractedMessage[0] & 0x80) > 0;
-                    var isError = (extractedMessage[0] & 0x40) > 0;
-                    var payloadLength = extractedMessage[1] - 4;
-                    var systemIndex = (InverterRole)extractedMessage[2];
-                    var dataSetIndex = extractedMessage[3];
-                    var parameterId = BitConverter.ToInt16(extractedMessage, 4);
+                    var message = InverterMessage.FromBytes(extractedMessage);
 
-                    var inverter = this.Inverters.First(x => x.InverterRole == systemIndex);
-
-                    byte[] payload = null;
-                    ushort ushortPayload = 0;
-                    uint uintPayload = 0;
-                    if (extractedMessage.Length >= headerLenght + payloadLength)
-                    {
-                        payload = new byte[payloadLength];
-                        Array.Copy(extractedMessage, headerLenght, payload, 0, payloadLength);
-
-                        if (payload.Length == 2)
-                        {
-                            ushortPayload = BitConverter.ToUInt16(payload, 0);
-                        }
-                        else if (payload.Length == 4)
-                        {
-                            uintPayload = BitConverter.ToUInt32(payload, 0);
-                        }
-                    }
-
-                    var result = 0;
-                    switch ((InverterParameterId)parameterId)
-                    {
-                        case InverterParameterId.ControlWordParam:
-                            inverter.ControlWord = ushortPayload;
-                            inverter.RefreshControlWordArray();
-                            this.UpdateInverter(inverter);
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.DigitalInputsOutputs:
-                            var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
-                            var inputValues = $" {string.Join(" ", values)} ";
-                            var ioStatusMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
-                            result = client.Client.Send(ioStatusMessage);
-                            break;
-
-                        case InverterParameterId.SetOperatingModeParam:
-                            inverter.OperationMode = (InverterOperationMode)ushortPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.HomingCreepSpeedParam:
-                        case InverterParameterId.HomingFastSpeedParam:
-                        case InverterParameterId.HomingAcceleration:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.PositionAccelerationParam:
-                            inverter.TargetAcceleration[inverter.CurrentAxis] = (int)uintPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.PositionDecelerationParam:
-                            inverter.TargetDeceleration[inverter.CurrentAxis] = (int)uintPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.PositionTargetPositionParam:
-                            inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
-                            inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.PositionTargetSpeedParam:
-                            inverter.TargetSpeed[inverter.CurrentAxis] = (int)uintPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.ShutterTargetVelocityParam:
-                            inverter.SpeedRate = (int)uintPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.StatusWordParam:
-                            this.UpdateInverter(inverter);
-                            switch (inverter.OperationMode)
-                            {
-                                case InverterOperationMode.Homing:
-                                    inverter.BuildHomingStatusWord();
-                                    break;
-
-                                case InverterOperationMode.Position:
-                                    inverter.BuildPositionStatusWord();
-                                    break;
-
-                                case InverterOperationMode.Velocity:
-                                case InverterOperationMode.ProfileVelocity:
-                                    inverter.BuildVelocityStatusWord();
-                                    break;
-
-                                case InverterOperationMode.TableTravel:
-                                    inverter.BuildTableTravelStatusWord();
-                                    break;
-
-                                default:
-                                    if (System.Diagnostics.Debugger.IsAttached)
-                                    {
-                                        System.Diagnostics.Debugger.Break();
-                                    }
-                                    break;
-                            }
-                            var statusWordMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
-                            result = client.Client.Send(statusWordMessage);
-                            break;
-
-                        case InverterParameterId.ActualPositionShaft:
-                            var impulses = this.Millimeters2Impulses(inverter.AxisPosition);
-                            var actualPositionMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(impulses));
-                            result = client.Client.Send(actualPositionMessage);
-                            break;
-
-                        case InverterParameterId.StatusDigitalSignals:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.ShutterTargetPosition:
-                            inverter.TargetShutterPosition = (int)ushortPayload;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelTargetPosition:
-                            inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
-                            inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelTargetSpeeds:
-                            inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)uintPayload, inverter.TargetSpeed[inverter.CurrentAxis]);
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelTargetAccelerations:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelTargetDecelerations:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelSwitchPositions:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.TableTravelDirection:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        case InverterParameterId.ShutterAbsoluteEnable:
-                        case InverterParameterId.ShutterAbsoluteRevs:
-                            result = client.Client.Send(extractedMessage);
-                            break;
-
-                        default:
-                            if (System.Diagnostics.Debugger.IsAttached)
-                            {
-                                System.Diagnostics.Debugger.Break();
-                            }
-                            break;
-                    }
+                    this.ReplyToInverterMessage(client, message);
 
                     Thread.Sleep(DELAY_INVERTER_CLIENT);
                 }
@@ -522,6 +361,176 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
+        private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
+        {
+            var inverter = this.Inverters.First(x => x.InverterRole == (InverterRole)message.SystemIndex);
+
+            var result = 0;
+            switch (message.ParameterId)
+            {
+                case InverterParameterId.ControlWordParam:
+                    inverter.ControlWord = message.UShortPayload;
+                    inverter.RefreshControlWordArray();
+                    this.UpdateInverter(inverter);
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.DigitalInputsOutputs:
+                    var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
+                    var inputValues = $" {string.Join(" ", values)} ";
+                    var ioStatusMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(inputValues));
+                    result = client.Client.Send(ioStatusMessage);
+                    break;
+
+                case InverterParameterId.SetOperatingModeParam:
+                    inverter.OperationMode = (InverterOperationMode)message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.HomingCreepSpeedParam:
+                case InverterParameterId.HomingFastSpeedParam:
+                case InverterParameterId.HomingAcceleration:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.PositionAccelerationParam:
+                    inverter.TargetAcceleration[inverter.CurrentAxis] = (int)message.UIntPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.PositionDecelerationParam:
+                    inverter.TargetDeceleration[inverter.CurrentAxis] = (int)message.UIntPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TorqueCurrent:
+                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(20, 29)));
+                    result = client.Client.Send(torqueMessage);
+                    break;
+
+                case InverterParameterId.PositionTargetPositionParam:
+                    inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                    inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.PositionTargetSpeedParam:
+                    inverter.TargetSpeed[inverter.CurrentAxis] = (int)message.UIntPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.ShutterTargetVelocityParam:
+                    inverter.SpeedRate = (int)message.UIntPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.StatusWordParam:
+                    this.UpdateInverter(inverter);
+                    switch (inverter.OperationMode)
+                    {
+                        case InverterOperationMode.Homing:
+                            inverter.BuildHomingStatusWord();
+                            break;
+
+                        case InverterOperationMode.Position:
+                            inverter.BuildPositionStatusWord();
+                            break;
+
+                        case InverterOperationMode.Velocity:
+                        case InverterOperationMode.ProfileVelocity:
+                            inverter.BuildVelocityStatusWord();
+                            break;
+
+                        case InverterOperationMode.TableTravel:
+                            inverter.BuildTableTravelStatusWord();
+                            break;
+
+                        default:
+                            if (System.Diagnostics.Debugger.IsAttached)
+                            {
+                                System.Diagnostics.Debugger.Break();
+                            }
+                            break;
+                    }
+                    var statusWordMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
+                    result = client.Client.Send(statusWordMessage);
+                    break;
+
+                case InverterParameterId.ActualPositionShaft:
+                    var impulses = this.Millimeters2Impulses(inverter.AxisPosition);
+                    var actualPositionMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(impulses));
+                    result = client.Client.Send(actualPositionMessage);
+                    break;
+
+                case InverterParameterId.StatusDigitalSignals:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.ShutterTargetPosition:
+                    inverter.TargetShutterPosition = message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TableTravelTargetPosition:
+                    if (inverter.TableIndex < (int)InverterTableIndex.TableTravelP1)
+                    {
+                        inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                        inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                        inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
+                            && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                    }
+                    else
+                    {
+                        var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelP1;
+                        inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
+                    }
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TableTravelTargetSpeeds:
+                    inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)message.UIntPayload, inverter.TargetSpeed[inverter.CurrentAxis]);
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TableTravelTargetAccelerations:
+                    {
+                        var replyMessage = message.ToBytes();
+                        if (message.UIntPayload == 0)
+                        {
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(1), true);
+                        }
+
+                        result = client.Client.Send(replyMessage);
+                    }
+                    break;
+
+                case InverterParameterId.TableTravelTargetDecelerations:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TableTravelTableIndex:
+                    inverter.TableIndex = (short)message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.TableTravelDirection:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.ShutterLowVelocity:
+                case InverterParameterId.ShutterHighVelocityDuration:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
+            }
+        }
+
         private void UpdateInverter(InverterModel inverter)
         {
             if ((inverter.ControlWord & 0x0100) > 0)       // Halt
@@ -558,13 +567,17 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
-            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
+            inverter.CurrentAxis = (!inverter.IsHorizontalAxis && inverter.Id == 0) ? Axis.Vertical : Axis.Horizontal;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
             // Logic
-            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
+            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
+                !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value
+                )
             {
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);

@@ -9,7 +9,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public CellsSideControlViewModel() : base(Services.PresentationMode.Installer)
+        public CellsSideControlViewModel()
+            : base(Services.PresentationMode.Installer)
         {
         }
 

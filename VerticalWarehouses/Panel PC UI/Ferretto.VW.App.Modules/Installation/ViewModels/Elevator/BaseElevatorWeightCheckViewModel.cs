@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Prism.Events;
 using Prism.Regions;
@@ -46,13 +45,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-        }
-
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-
-            this.IsBackNavigationAllowed = true;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
