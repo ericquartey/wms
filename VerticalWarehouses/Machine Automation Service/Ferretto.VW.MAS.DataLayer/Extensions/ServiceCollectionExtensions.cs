@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-
-
         #region Methods
 
         public static IServiceCollection AddDataLayer(
@@ -42,8 +40,10 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IGeneralInfoConfigurationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalAxisDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterProfileDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementLongerProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterPickupDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementLongerPickupDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementShorterDepositDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementLongerDepositDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)

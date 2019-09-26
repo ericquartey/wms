@@ -449,12 +449,22 @@ namespace Ferretto.VW.MAS.DataLayer
                         actualParameterType = this.CheckConfigurationValueType((HorizontalAxis)parameter);
                         break;
                     }
-                case ConfigurationCategory.HorizontalMovementLongerProfile:
+                case ConfigurationCategory.HorizontalMovementLongerPickup:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementLongerProfile)parameter);
                         break;
                     }
-                case ConfigurationCategory.HorizontalMovementShorterProfile:
+                case ConfigurationCategory.HorizontalMovementShorterPickup:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementShorterProfile)parameter);
+                        break;
+                    }
+                case ConfigurationCategory.HorizontalMovementLongerDeposit:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementLongerProfile)parameter);
+                        break;
+                    }
+                case ConfigurationCategory.HorizontalMovementShorterDeposit:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementShorterProfile)parameter);
                         break;
