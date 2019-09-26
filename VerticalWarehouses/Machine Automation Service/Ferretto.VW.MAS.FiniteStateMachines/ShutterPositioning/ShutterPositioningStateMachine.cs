@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 var stateData = new ShutterPositioningStateData(this, this.machineData);
                 if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState ||
                     this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                    !(this.machineData.PositioningMessageData.MovementMode == MovementMode.Position || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                    !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                     )
                 {
                     this.Logger.LogError($"Invalid conditions before moving shutter");

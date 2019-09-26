@@ -12,8 +12,16 @@
 
         FindZero = 4,
 
-        ShutterTest = 5,
+        TorqueCurrentSampling = 5,
 
-        TorqueCurrentSampling = 6,
+        ShutterPosition = 6,
+
+        ShutterTest = 7,
+
+        BayChain = 8,
+
+        BayChainManual = 9,
+
+        BayTest = 10,
     }
 }

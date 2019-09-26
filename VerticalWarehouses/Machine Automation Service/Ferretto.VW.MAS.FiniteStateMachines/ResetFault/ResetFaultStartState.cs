@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
@@ -125,6 +126,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
         }

@@ -11,6 +11,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface.Services;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -39,11 +40,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue;
 
+        private readonly IIoDeviceService ioDeviceService;
+
         private readonly Task ioReceiveTask;
 
         private readonly Task ioSendTask;
-
-        private readonly IoStatus ioStatus;
 
         private readonly IIoTransport ioTransport;
 
@@ -71,11 +72,19 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #region Constructors
 
-        public IoDevice(IEventAggregator eventAggregator, IIoTransport shdTransport, IPAddress ipAddress, int port, IoIndex index, ILogger logger, CancellationToken cancellationToken)
+        public IoDevice(IEventAggregator eventAggregator,
+                        IIoDeviceService ioDeviceService,
+                        IIoTransport shdTransport,
+                        IPAddress ipAddress,
+                        int port,
+                        IoIndex index,
+                        ILogger logger,
+                        CancellationToken cancellationToken)
         {
             logger.LogTrace("1:Method Start");
 
             this.eventAggregator = eventAggregator;
+            this.ioDeviceService = ioDeviceService;
             this.ipAddress = ipAddress;
             this.port = port;
             this.deviceIndex = index;
@@ -83,14 +92,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
 
-            this.ioStatus = new IoStatus();
-
             this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
+
+            this.ioDeviceService.AddIoStatus(index);
         }
 
         #endregion
@@ -187,13 +196,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                     this.writeEnableEvent.Set();
 
-                    var message = new IoWriteMessage(
-                        this.ioStatus.ComunicationTimeOut,
-                        this.ioStatus.UseSetupOutputLines,
-                        this.ioStatus.SetupOutputLines,
-                        this.ioStatus.DebounceInput);
+                    var ioStatus = this.ioDeviceService.GetStatus(this.deviceIndex);
 
-                    this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
+                    var message = new IoWriteMessage(
+                        ioStatus.ComunicationTimeOut,
+                        ioStatus.UseSetupOutputLines,
+                        ioStatus.SetupOutputLines,
+                        ioStatus.DebounceInput);
+
+                    this.logger.LogDebug($"1: ConfigurationMessage [comTout={ioStatus.ComunicationTimeOut} ms - debounceTime={ioStatus.DebounceInput} ms]");
 
                     this.ioCommandQueue.Enqueue(message);
                 }
@@ -297,9 +308,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     }
 
                     // message ok
-                    lock (this.ioStatus)
+                    lock (this.ioDeviceService.GetStatus(this.deviceIndex))
                     {
-                        this.ioStatus.FwRelease = fwRelease;
+                        this.ioDeviceService.GetStatus(this.deviceIndex).FwRelease = fwRelease;
                     }
 
                     switch (formatDataOperation)
@@ -313,7 +324,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             //INFO The sensor presence in lower bay must be inverted (NOT for BIG: to do)
                             inputData[(int)IoPorts.LoadingUnitInLowerBay] = !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
-                            if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
+                            if (this.ioDeviceService.UpdateInputStates(inputData, this.deviceIndex) || this.forceIoStatusPublish)
                             {
                                 var data = new SensorsChangedFieldMessageData();
                                 data.SensorsStates = inputData;
@@ -398,7 +409,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 case ShdCodeOperation.Data:
                                     if (shdMessage.ValidOutputs)
                                     {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        telegram = shdMessage.BuildSendTelegram(this.ioDeviceService.GetStatus(this.deviceIndex).FwRelease);
                                         result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                         this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
@@ -407,7 +418,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                                 case ShdCodeOperation.Configuration:
                                     {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        telegram = shdMessage.BuildSendTelegram(this.ioDeviceService.GetStatus(this.deviceIndex).FwRelease);
                                         result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                         this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
@@ -455,7 +466,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         {
             if (!this.ioCommandQueue.Any(x => x.CodeOperation == ShdCodeOperation.Data))
             {
-                var message = new IoWriteMessage(this.ioStatus.OutputData);
+                var message = new IoWriteMessage(this.ioDeviceService.GetStatus(this.deviceIndex).OutputData);
 
                 this.ioCommandQueue.Enqueue(message);
             }

@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                         break;
 
                     case MessageStatus.OperationStart:
-                        if (this.machineData.PositioningMessageData.MovementMode == MovementMode.Position)
+                        if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition)
                         {
                             this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.stateData));
                         }
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
             ShutterPositioningFieldMessageData messageData;
-            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.Position)
+            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition)
             {
                 // Absolute positioning: not all starting positions are allowed
                 if (this.machineData.PositioningMessageData.MovementType == MovementType.Absolute &&
@@ -260,7 +260,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));

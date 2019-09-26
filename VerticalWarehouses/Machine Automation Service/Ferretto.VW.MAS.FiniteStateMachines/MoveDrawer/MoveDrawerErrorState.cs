@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     internal class MoveDrawerErrorState : StateBase
     {
-
         #region Fields
 
         private readonly IMoveDrawerMachineData machineData;
@@ -43,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         #endregion
 
-
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -56,7 +53,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             this.Logger.LogTrace($"1:Process FieldNotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if(message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
+            if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
                 var notificationMessage = new NotificationMessage(
                     this.machineData.DrawerOperationData,
@@ -108,17 +105,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

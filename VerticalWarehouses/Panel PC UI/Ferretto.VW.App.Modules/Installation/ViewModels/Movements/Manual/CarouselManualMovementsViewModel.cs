@@ -114,7 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(-100);
+            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
         public async Task OpenCarouselAsync()
@@ -124,20 +124,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(100);
+            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
-        protected async Task StartMovementAsync(double displacement)
+        protected async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
             try
             {
-                await this.machineCarouselService.MoveAsync(
-                    new CarouselMovementParameters
-                    {
-                        MovementType = MovementType.Absolute,
-                        SpeedPercentage = 50,
-                        Displacement = displacement,
-                    });
+                await this.machineCarouselService.MoveManualAsync(direction);
             }
             catch (System.Exception ex)
             {

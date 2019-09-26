@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
@@ -6,20 +6,28 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelA)]
         bool ACU_EncoderChannelA { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelB)]
         bool ACU_EncoderChannelB { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_EncoderChannelZ)]
         bool ACU_EncoderChannelZ { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_FreeSensor1)]
         bool ACU_FreeSensor1 { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_FreeSensor2)]
         bool ACU_FreeSensor2 { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_HardwareSensorSS1)]
         bool ACU_HardwareSensorSS1 { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_HardwareSensorSTO)]
         bool ACU_HardwareSensorSTO { get; }
 
+        [Column(Order = (int)InverterSensors.ACU_ZeroSensor)]
         bool ACU_ZeroSensor { get; }
 
         #endregion

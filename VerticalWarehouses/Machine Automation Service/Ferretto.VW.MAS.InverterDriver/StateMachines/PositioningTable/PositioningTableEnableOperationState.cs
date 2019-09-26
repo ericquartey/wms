@@ -47,10 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Inverter.TableTravelControlWord.EnableOperation = true;
             this.Inverter.TableTravelControlWord.Resume = false;
-            this.Inverter.TableTravelControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
-                ? false
-                : this.data.AxisMovement == Axis.Horizontal;
+            this.Inverter.TableTravelControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(

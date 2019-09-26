@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));

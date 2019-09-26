@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 case DrawerDestination.CarouselBay1Up:
                 case DrawerDestination.ExternalBay1Up:
                 case DrawerDestination.InternalBay1Up:
-                    bayCheckOk = this.machineData.MachineSensorsStatus.IsDrawerInBay1Up;
+                    bayCheckOk = this.machineData.MachineSensorsStatus.IsDrawerInBay1Top;
                     break;
             }
 

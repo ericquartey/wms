@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 speedRate,
                 0,
                 0,
-                MovementMode.Position,
+                MovementMode.ShutterPosition,
                 MovementType.Relative,
                 0,
                 0,
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 speedRate,
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
-                MovementMode.Position,
+                MovementMode.ShutterPosition,
                 MovementType.Relative,//MovementType.Absolute,
                 0,
                 0,
@@ -270,11 +270,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private ShutterPosition GetShutterPositionController(BayNumber bayNumber)
         {
-            if (bayNumber == BayNumber.None)
-            {
-                return ShutterPosition.None;
-            }
-
             var messageData = new RequestPositionMessageData(Axis.None, (int)bayNumber);
 
             void publishAction()

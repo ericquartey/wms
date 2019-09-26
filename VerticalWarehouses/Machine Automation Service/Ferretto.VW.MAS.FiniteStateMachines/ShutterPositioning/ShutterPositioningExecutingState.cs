@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             // stop timer
             this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.DTOs;
+﻿using System;
+using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -71,15 +72,85 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("position")]
-        public ActionResult<decimal> GetVerticalPosition()
+        public ActionResult<decimal> GetPosition()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var position = this.GetPositionController(this.BayNumber);
+                return this.Ok(position);
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse<decimal>(ex);
+            }
         }
 
         [HttpPost("move")]
-        public void Move([FromBody]CarouselMovementParameters parameters)
+        public void Move(HorizontalMovementDirection direction)
         {
-            throw new System.NotImplementedException();
+            var targetPosition = this.horizontalAxis.CarouselDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+
+            decimal[] speed = { this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+        }
+
+        [HttpPost("move-manual")]
+        public void MoveManual(HorizontalMovementDirection direction)
+        {
+            var targetPosition = this.horizontalAxis.CarouselDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+
+            decimal[] speed = { this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM / 10 };
+            decimal[] acceleration = { this.horizontalAxis.MaxFullAccelerationHA };
+            decimal[] deceleration = { this.horizontalAxis.MaxFullDecelerationHA };
+            decimal[] switchPosition = { 0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
         }
 
         [HttpPost("stop")]
@@ -95,6 +166,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
+        }
+
+        private decimal GetPositionController(BayNumber bayNumber)
+        {
+            var messageData = new RequestPositionMessageData(Axis.Horizontal, (int)bayNumber);
+
+            void publishAction()
+            {
+                this.PublishCommand(
+                messageData,
+                "Request shutter position",
+                MessageActor.FiniteStateMachines,
+                MessageType.RequestPosition);
+            }
+
+            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
+                MessageType.Positioning,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.OperationExecuting,
+                publishAction);
+            return notifyData.CurrentPosition ?? 0;
         }
 
         #endregion

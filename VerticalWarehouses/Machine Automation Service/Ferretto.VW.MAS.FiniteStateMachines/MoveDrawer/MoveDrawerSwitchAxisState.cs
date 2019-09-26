@@ -249,6 +249,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.stateData));
         }

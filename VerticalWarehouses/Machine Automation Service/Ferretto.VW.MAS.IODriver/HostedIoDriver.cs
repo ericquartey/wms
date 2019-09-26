@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface.Services;
 using Ferretto.VW.MAS.IODriver.IoDevices;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -39,6 +40,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IIoDeviceService iIoDeviceService;
+
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
         private readonly ILogger logger;
@@ -56,6 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
         public HostedIoDriver(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IIoDeviceService iIoDeviceService,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
@@ -65,7 +69,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.eventAggregator = eventAggregator
                 ?? throw new ArgumentNullException(nameof(eventAggregator));
-
+            this.iIoDeviceService = iIoDeviceService;
             this.digitalDevicesDataProvider = digitalDevicesDataProvider
                 ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
 
@@ -174,6 +178,7 @@ namespace Ferretto.VW.MAS.IODriver
                     ioDevice.Index,
                     new IoDevice(
                         this.eventAggregator,
+                        this.iIoDeviceService,
                         transport,
                         ioDevice.IpAddress,
                         ioDevice.TcpPort,

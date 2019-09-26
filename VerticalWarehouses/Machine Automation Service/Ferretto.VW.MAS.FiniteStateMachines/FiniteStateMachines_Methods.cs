@@ -309,7 +309,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                    this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
+                    this.currentStateMachines.Add(targetBay, currentStateMachine);
 
                     try
                     {

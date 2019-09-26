@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
@@ -51,7 +52,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
-        public bool IsDrawerInBay1Up => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+        public bool IsDrawerInBay1Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+
+        public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerInBay2Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+
+        public bool IsDrawerInBay2Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+
+        public bool IsDrawerInBay3Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+
+        public bool IsDrawerInBay3Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
@@ -64,6 +75,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
+        public bool IsSensorZeroOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S3IND];
+
+        public bool IsSensorZeroOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S3IND];
+
+        public bool IsSensorZeroOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S3IND];
+
         public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
@@ -73,6 +90,54 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         #endregion
 
         #region Methods
+
+        public bool IsDrawerInBayBottom(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return !this.IsDrawerInBay1Bottom;
+
+                case BayNumber.BayTwo:
+                    return !this.IsDrawerInBay2Bottom;
+
+                case BayNumber.BayThree:
+                    return !this.IsDrawerInBay3Bottom;
+            }
+        }
+
+        public bool IsDrawerInBayTop(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return !this.IsDrawerInBay1Top;
+
+                case BayNumber.BayTwo:
+                    return !this.IsDrawerInBay2Top;
+
+                case BayNumber.BayThree:
+                    return !this.IsDrawerInBay3Top;
+            }
+        }
+
+        public bool IsSensorZeroOnBay(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsSensorZeroOnBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsSensorZeroOnBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsSensorZeroOnBay3;
+            }
+        }
 
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)

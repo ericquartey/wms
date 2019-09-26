@@ -140,9 +140,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
 
-            var inverterIndex = (this.machineData.MessageData.IsOneKMachine && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                ? InverterIndex.Slave1
-                : InverterIndex.MainInverter;
+            var inverterIndex = this.machineData.CurrentInverterIndex;
 
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.MessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -183,7 +181,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));

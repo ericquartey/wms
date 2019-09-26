@@ -9,7 +9,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task inverterSendTask;
 
-        private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
+        private readonly IInverterService inverterService;
 
         private readonly ILogger logger;
 
@@ -128,6 +128,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IInverterService inverterService,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
@@ -140,10 +141,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
-
             this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
-
+            this.inverterService = inverterService;
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
