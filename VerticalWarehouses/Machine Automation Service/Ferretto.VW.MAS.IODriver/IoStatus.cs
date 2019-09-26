@@ -70,8 +70,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         [Column(Order = (int)IoPorts.AntiIntrusionBarrierBay)]
         public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
-
-        [Column(Order = (int)IoPorts.CradleMotor)]
+        
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
         
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
@@ -84,7 +83,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
-        [Column(Order = (int)IoPorts.ElevatorMotor)]
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
         [Column(Order = (int)IoPorts.ElevatorMotorFeedback)]
@@ -103,8 +101,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         [Column(Order = (int)IoPorts.LoadingUnitInBay)]
         public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
-
-        [Column(Order = (int)IoPorts.ResetSecurity)]
+        
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
@@ -120,8 +117,7 @@ namespace Ferretto.VW.MAS.IODriver
         public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public bool[] OutputData => this.outputs;
-
-        [Column(Order = (int)IoPorts.ResetSecurity)]
+        
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
