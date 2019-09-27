@@ -23,11 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer configurationValueManagement;
-
         private readonly DataLayerContext dataContext;
-
-        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -43,16 +39,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
-            IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IElevatorDataProvider elevatorDataProvider,
-            IConfigurationValueManagmentDataLayer configurationValueManagement)
+            IElevatorDataProvider elevatorDataProvider)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.configurationValueManagement = configurationValueManagement ?? throw new ArgumentNullException(nameof(configurationValueManagement));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
@@ -61,12 +53,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public Bay Activate(BayNumber bayIndex)
+        public Bay Activate(BayNumber bayNumber)
         {
-            var bay = this.GetByNumber(bayIndex);
+            var bay = this.GetByNumber(bayNumber);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex.ToString());
+                throw new EntityNotFoundException(bayNumber.ToString());
             }
 
             bay.IsActive = true;
@@ -90,12 +82,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.SaveChanges();
         }
 
-        public Bay AssignMissionOperation(BayNumber bayIndex, int? missionId, int? missionOperationId)
+        public Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId)
         {
-            var bay = this.GetByNumber(bayIndex);
+            var bay = this.GetByNumber(bayNumber);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex.ToString());
+                throw new EntityNotFoundException(bayNumber.ToString());
             }
 
             bay.CurrentMissionId = missionId;
@@ -118,12 +110,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.SaveChanges();
         }
 
-        public Bay Deactivate(BayNumber bayIndex)
+        public Bay Deactivate(BayNumber bayNumber)
         {
-            var bay = this.GetByNumber(bayIndex);
+            var bay = this.GetByNumber(bayNumber);
             if (bay is null)
             {
-                throw new EntityNotFoundException(bayIndex.ToString());
+                throw new EntityNotFoundException(bayNumber.ToString());
             }
 
             bay.IsActive = false;
@@ -140,62 +132,37 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
         {
-            var returnValue = BayNumber.None;
+            var bay = this.dataContext.Bays.SingleOrDefault(b =>
+                b.Inverter.Index == inverterIndex
+                ||
+                b.Shutter.Inverter.Index == inverterIndex);
 
-            switch (inverterIndex)
+            if (bay is null)
             {
-                case InverterIndex.MainInverter:
-                case InverterIndex.Slave1:
-                    returnValue = BayNumber.ElevatorBay;
-                    break;
-
-                case InverterIndex.Slave2:
-                case InverterIndex.Slave3:
-                    returnValue = BayNumber.BayOne;
-                    break;
-
-                case InverterIndex.Slave4:
-                case InverterIndex.Slave5:
-                    returnValue = BayNumber.BayTwo;
-                    break;
-
-                case InverterIndex.Slave6:
-                case InverterIndex.Slave7:
-                    returnValue = BayNumber.BayThree;
-                    break;
+                if (this.dataContext.ElevatorAxes.Any(a => a.Inverter.Index == inverterIndex))
+                {
+                    return BayNumber.ElevatorBay;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException($"No inverter with index {inverterIndex} is configured.");
+                }
             }
 
-            return returnValue;
+            return bay.Number;
         }
 
         public BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType)
         {
-            var returnValue = BayNumber.None;
-
             // Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
             if (messageType == FieldMessageType.SwitchAxis)
             {
-                returnValue = BayNumber.ElevatorBay;
-            }
-            else
-            {
-                switch (ioIndex)
-                {
-                    case IoIndex.IoDevice1:
-                        returnValue = BayNumber.BayOne;
-                        break;
-
-                    case IoIndex.IoDevice2:
-                        returnValue = BayNumber.BayTwo;
-                        break;
-
-                    case IoIndex.IoDevice3:
-                        returnValue = BayNumber.BayThree;
-                        break;
-                }
+                return BayNumber.ElevatorBay;
             }
 
-            return returnValue;
+            return this.dataContext.Bays
+                .Single(b => b.IoDevice.Index == ioIndex)
+                .Number;
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)
@@ -251,11 +218,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return bay;
         }
 
-        public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayIndex)
+        public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
 
-            switch (bayIndex)
+            switch (bayNumber)
             {
                 case BayNumber.ElevatorBay:
                     switch (data.MovementMode)
@@ -301,13 +268,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         case MovementMode.ShutterTest:
                         case MovementMode.ShutterPosition:
-                            returnValue = this.GetByNumber(bayIndex).Shutter.Inverter.Index;
+                            returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
                             break;
 
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
-                            returnValue = this.GetByNumber(bayIndex).Inverter.Index;
+                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;
 
                         default:
@@ -323,11 +290,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
-        public IoIndex GetIoDevice(BayNumber bayIndex)
+        public IoIndex GetIoDevice(BayNumber bayNumber)
         {
             var returnValue = IoIndex.None;
 
-            switch (bayIndex)
+            switch (bayNumber)
             {
                 case BayNumber.ElevatorBay:
                 case BayNumber.BayOne:

@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         #region Constructors
 
         public BayStatusChangedEventArgs(
-            CommonUtils.Messages.Enumerations.BayNumber bayIndex,
+            CommonUtils.Messages.Enumerations.BayNumber bayNumber,
             CommonUtils.Messages.Enumerations.BayType bayType,
             CommonUtils.Messages.Enumerations.BayStatus bayStatus,
             int pendingMissionsCount,
             int? currentMissionOperation)
         {
-            this.Index = bayIndex;
+            this.Index = bayNumber;
             this.BayType = bayType;
             this.BayStatus = bayStatus;
             this.PendingMissionsCount = pendingMissionsCount;

@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return summary;
         }
 
-        public Error RecordNew(MachineErrors code, BayNumber bayIndex)
+        public Error RecordNew(MachineErrors code, BayNumber bayNumber)
         {
             var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null);
             if (existingUnresolvedError != null)
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorCreation(newError, bayIndex);
+            this.NotifyErrorCreation(newError, bayNumber);
 
             return newError;
         }
@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return error;
         }
 
-        private void NotifyErrorCreation(Error error, BayNumber bayIndex)
+        private void NotifyErrorCreation(Error error, BayNumber bayNumber)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -160,12 +160,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                bayIndex);
+                bayNumber);
 
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error, BayNumber bayIndex)
+        private void NotifyErrorResolution(Error error, BayNumber bayNumber)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                bayIndex);
+                bayNumber);
 
             this.notificationEvent.Publish(message);
         }

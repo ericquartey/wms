@@ -39,25 +39,30 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public double ComputeBeltDisplacement(double targetPosition)
+        /// <summary>
+        /// Computes the elevator displacement due to belt and shaft mechanical distorsions.
+        /// </summary>
+        /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
+        /// <returns>The vertical position displacement, in millimeters.</returns>
+        public double ComputeDisplacement(double targetPosition)
         {
-            var loadingUnitOnBoard = this.GetLoadingUnitOnBoard();
-            if (loadingUnitOnBoard is null)
+            var loadingUnit = this.GetLoadingUnitOnBoard();
+            if (loadingUnit is null)
             {
                 return 0;
             }
 
-            var weight = (double)loadingUnitOnBoard.GrossWeight;
-
-            var shaftTorsion = this.ComputeShaftTorsion(weight);
-            var beltElongation = this.ComputeBeltElongation(weight, targetPosition);
+            var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
+            var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
             return beltElongation + shaftTorsion;
         }
 
         public int ConvertMillimetersToPulses(double millimeters, Orientation orientation)
         {
-            return (int)(this.GetAxis(orientation).Resolution * (decimal)millimeters);
+            var axis = this.GetAxis(orientation);
+
+            return (int)(axis.Resolution * (decimal)millimeters);
         }
 
         public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
@@ -67,15 +72,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentOutOfRangeException("Pulses must be different from zero.", nameof(pulses));
             }
 
-            var resolution = this.GetAxis(orientation).Resolution;
+            var axis = this.GetAxis(orientation);
 
-            if (resolution == 0)
+            if (axis.Resolution == 0)
             {
                 throw new InvalidOperationException(
                     $"Configured {orientation} axis resolution is zero, therefore it is not possible to convert pulses to millimeters.");
             }
 
-            return (double)(pulses / resolution);
+            return (double)(pulses / axis.Resolution);
         }
 
         public ElevatorAxis GetHorizontalAxis()
@@ -128,28 +133,43 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.setupStatusProvider.CompleteVerticalResolution();
         }
 
-        private double ComputeBeltElongation(double weight, double targetPosition)
+        /// <summary>
+        /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
+        /// </summary>
+        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
+        /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
+        /// <returns>The vertical position displacement, in millimeters.</returns>
+        private double ComputeBeltElongation(double grossWeight, double targetPosition)
         {
             var machineHeight = this.dataContext.Machines.Single().Height;
 
-            var pulleysDistance = machineHeight - ElevatorStructuralProperties.PulleysMargin;
+            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000;
 
             var properties = this.dataContext.ElevatorStructuralProperties.Single();
 
+            var beltSpacingMeters = properties.BeltSpacing / 1000;
+
+            var targetPositionMeters = targetPosition / 1000;
+
             return
-                5000 * weight
+                5000 * grossWeight
                 /
-                ((properties.BeltRigidity / ((2 * pulleysDistance) - properties.BeltSpacing - targetPosition)) + (properties.BeltRigidity / targetPosition));
+                ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
         }
 
-        private double ComputeShaftTorsion(double weight)
+        /// <summary>
+        /// Computes the vertical position displacement due to the shaft torsion.
+        /// </summary>
+        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
+        /// <returns>The vertical position displacement, in millimeters.</returns>
+        private double ComputeShaftTorsion(double grossWeight)
         {
             var properties = this.dataContext.ElevatorStructuralProperties.Single();
 
             const double m = 10.0 / 3;
 
             return
-                64 * (m + 1) * (weight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
+                64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
