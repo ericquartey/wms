@@ -4,19 +4,15 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager
 {
     internal partial class MissionsManagerService
     {
-
-
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -78,7 +74,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 if (bay != null)
                 {
-                    bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
+                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
                     this.Logger.LogDebug($"Bay#{bay.Number}: operation competed.");
 
                     this.bayStatusChangedEvent.Set();

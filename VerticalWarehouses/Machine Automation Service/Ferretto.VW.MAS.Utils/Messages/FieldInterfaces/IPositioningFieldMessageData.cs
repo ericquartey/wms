@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool IsTorqueCurrentSamplingEnabled { get; }
 
-        decimal? LoadedNetWeight { get; set; }
+        double? LoadedNetWeight { get; set; }
 
         int? LoadingUnitId { get; }
 
@@ -21,15 +21,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int NumberCycles { get; }
 
-        decimal[] SwitchPosition { get; set; }
+        double[] SwitchPosition { get; set; }
 
-        decimal[] TargetAcceleration { get; set; }
+        double[] TargetAcceleration { get; set; }
 
-        decimal[] TargetDeceleration { get; set; }
+        double[] TargetDeceleration { get; set; }
 
-        decimal TargetPosition { get; set; }
+        double TargetPosition { get; set; }
 
-        decimal[] TargetSpeed { get; set; }
+        double[] TargetSpeed { get; set; }
 
         DataSample TorqueCurrentSample { get; set; }
 

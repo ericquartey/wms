@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
@@ -13,7 +14,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ErrorsProvider : IErrorsProvider
+    internal sealed class ErrorsProvider : IErrorsProvider
     {
         #region Fields
 
@@ -65,8 +66,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         Code = e.Code,
                         Description = e.Definition.Description,
                         Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity
-                    }
+                        Severity = e.Definition.Severity,
+                    },
                 })
                 .FirstOrDefault();
         }
@@ -84,7 +85,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             Code = s.Code,
                             Description = s.Error.Description,
                             Total = s.TotalErrors,
-                            RatioTotal = s.TotalErrors * 100.0 / totalErrors
+                            RatioTotal = s.TotalErrors * 100.0 / totalErrors,
                         }),
             };
 

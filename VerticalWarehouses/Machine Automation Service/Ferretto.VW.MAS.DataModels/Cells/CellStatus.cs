@@ -8,6 +8,6 @@
 
         Occupied,
 
-        Unusable
+        Unusable,
     }
 }

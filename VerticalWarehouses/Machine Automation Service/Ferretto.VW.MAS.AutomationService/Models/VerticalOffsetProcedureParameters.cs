@@ -6,9 +6,9 @@
 
         public int ReferenceCellId { get; set; }
 
-        public decimal StepValue { get; set; }
+        public double StepValue { get; set; }
 
-        public decimal VerticalOffset { get; set; }
+        public double VerticalOffset { get; set; }
 
         #endregion
     }

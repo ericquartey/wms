@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class User
+    public sealed class User : DataModel
     {
         #region Properties
 

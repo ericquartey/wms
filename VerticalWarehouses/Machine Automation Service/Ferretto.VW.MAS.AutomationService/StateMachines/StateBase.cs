@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
 {
     public abstract class StateBase : IState
     {
-
         #region Fields
 
         private bool disposed;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
 
         #endregion
 
-
-
         #region Properties
 
         public ILogger<AutomationService> Logger { get; }
@@ -54,8 +51,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
         protected IStateMachine ParentStateMachine { get; }
 
         #endregion
-
-
 
         #region Methods
 

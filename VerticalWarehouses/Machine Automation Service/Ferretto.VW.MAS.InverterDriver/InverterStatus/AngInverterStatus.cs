@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
@@ -25,11 +26,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Constructors
 
-        public AngInverterStatus(byte systemIndex)
+        public AngInverterStatus(InverterIndex systemIndex)
+            : base(systemIndex)
         {
-            this.SystemIndex = systemIndex;
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
-            this.InverterType = InverterType.Ang;
+            this.Type = InverterType.Ang;
         }
 
         #endregion

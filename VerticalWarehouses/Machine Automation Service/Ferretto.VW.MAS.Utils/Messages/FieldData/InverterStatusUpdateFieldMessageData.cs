@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public Axis CurrentAxis { get; }
 
-        public decimal? CurrentPosition { get; }
+        public double? CurrentPosition { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Performance",
@@ -79,8 +79,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
                 {
                     sb.AppendFormat("{0:x2};", b);
                 }
+
                 currentSensorStatus = sb.ToString();
             }
+
             return $"CurrentAxis:{this.CurrentAxis} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{currentSensorStatus}";
         }
 

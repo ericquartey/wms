@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -30,27 +31,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly Task commandReceiveTask;
 
-        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines;
+        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
+
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
         private readonly Task fieldNotificationReceiveTask;
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
         private readonly ILogger<FiniteStateMachines> logger;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly Task notificationReceiveTask;
 
@@ -58,17 +57,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
         private bool forceInverterIoStatusPublish;
 
         private bool forceRemoteIoStatusPublish;
 
-        private List<IoIndex> ioIndexDeviceList;
-
-        private bool isDataLayerReady;
+        private IEnumerable<IoDevice> ioDevices;
 
         private bool isDisposed;
 
@@ -84,47 +77,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             ISetupStatusProvider setupStatusProvider,
-            IVertimagConfigurationDataLayer vertimagConfiguration,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
-            IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
-
-            this.vertimagConfiguration = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
-
-            this.generalInfoDataLayer = generalInfoDataLayer ?? throw new ArgumentNullException(nameof(generalInfoDataLayer));
-
-            this.verticalAxis = verticalAxis ?? throw new ArgumentNullException(nameof(verticalAxis));
-
-            this.horizontalAxis = horizontalAxis ?? throw new ArgumentNullException(nameof(horizontalAxis));
-
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-
-            this.machineConfigurationProvider = machineConfigurationProvider ?? throw new ArgumentNullException(nameof(machineConfigurationProvider));
-
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(this.NotificationReceiveTaskFunction);
             this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
-
-            this.logger.LogTrace("1:Subscription Command");
 
             this.InitializeMethodSubscriptions();
         }
@@ -325,7 +293,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                BayNumber messageBayBayIndex = BayNumber.None;
+                var messageBayBayIndex = BayNumber.None;
                 if (receivedMessage.Source is FieldMessageActor.IoDriver)
                 {
                     var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
@@ -483,6 +451,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void InitializeMethodSubscriptions()
         {
+            this.logger.LogTrace("1:Subscription Command");
+
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(
                 message =>
@@ -648,11 +618,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void RetrieveIoDevicesConfigurationAsync()
         {
-            this.isDataLayerReady = true;
+            this.ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
 
-            this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
-
-            this.machineSensorsStatus = new MachineSensorsStatus(this.machineConfigurationProvider.IsOneKMachine());
+            this.machineSensorsStatus = new MachineSensorsStatus(this.machineProvider.IsOneTonMachine());
 
             this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
             this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class ErrorDefinition
+    public sealed class ErrorDefinition : DataModel
     {
         #region Properties
 

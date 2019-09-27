@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.MissionsManager
 {
     public static class ServiceCollectionExtensions
     {
-
-
         #region Methods
 
         public static IServiceCollection AddMissionsManager(this IServiceCollection services)
@@ -22,15 +20,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             services.AddHostedService<MissionsManagerService>();
 
             services
-                .AddTransient<IWeightAnalysisMissionProvider, WeightAnalysisMissionProvider>()
                 .AddTransient<IWeightCheckMissionProvider, WeightCheckMissionProvider>();
-
-            services
-                .AddTransient<IWeightAcquisitionStateMachine, WeightAcquisitionStateMachine>()
-                .AddTransient<IWeightAcquisitionMoveToStartPositionState, WeightAcquisitionMoveToStartPositionState>()
-                .AddTransient<IWeightAcquisitionInPlaceSamplingState, WeightAcquisitionInPlaceSamplingState>()
-                .AddTransient<IWeightAcquisitionInMotionSamplingState, WeightAcquisitionInMotionSamplingState>()
-                .AddTransient<IWeightAcquisitionMoveBackToStartPositionState, WeightAcquisitionMoveBackToStartPositionState>();
 
             services
                 .AddTransient<IChangePowerStatusStateMachine, ChangePowerStatusStateMachine>()

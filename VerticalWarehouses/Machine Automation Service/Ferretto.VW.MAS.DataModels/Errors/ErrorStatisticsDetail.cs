@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class ErrorStatisticsDetail
+    public sealed class ErrorStatisticsDetail
     {
         #region Properties
 

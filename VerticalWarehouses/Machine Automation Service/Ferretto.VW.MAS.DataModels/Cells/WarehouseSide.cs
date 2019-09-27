@@ -6,6 +6,6 @@
 
         Front,
 
-        Back
+        Back,
     }
 }

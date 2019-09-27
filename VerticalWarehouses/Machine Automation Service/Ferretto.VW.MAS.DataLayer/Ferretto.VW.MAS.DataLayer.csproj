@@ -28,7 +28,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
-
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -57,15 +60,6 @@
       <DependentUpon>appsettings.json</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="DataLayerService - Copy.HorizontalMovementLongerProfile.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService - Copy.HorizontalMovementShorterProfile.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

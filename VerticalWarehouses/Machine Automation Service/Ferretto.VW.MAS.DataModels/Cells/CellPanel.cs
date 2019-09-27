@@ -2,13 +2,11 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class CellPanel
+    public sealed class CellPanel : DataModel
     {
         #region Properties
 
         public IEnumerable<Cell> Cells { get; set; }
-
-        public int Id { get; set; }
 
         public WarehouseSide Side { get; set; }
 

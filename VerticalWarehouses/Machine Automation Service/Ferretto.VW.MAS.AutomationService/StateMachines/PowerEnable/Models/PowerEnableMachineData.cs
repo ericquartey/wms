@@ -7,16 +7,19 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable.Models
 {
     public class PowerEnableMachineData : IPowerEnableMachineData
     {
-
-
         #region Constructors
 
-        public PowerEnableMachineData(bool requestedPowerState, BayNumber requestingBay, List<Bay> ConfiguredBays, IEventAggregator eventAggregator, ILogger<AutomationService> logger, IServiceScopeFactory serviceScopeFactory)
+        public PowerEnableMachineData(
+            bool requestedPowerState,
+            BayNumber requestingBay,
+            List<Bay> ConfiguredBays,
+            IEventAggregator eventAggregator,
+            ILogger<AutomationService> logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.RequestedPowerState = requestedPowerState;
             this.RequestingBay = requestingBay;
@@ -27,8 +30,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

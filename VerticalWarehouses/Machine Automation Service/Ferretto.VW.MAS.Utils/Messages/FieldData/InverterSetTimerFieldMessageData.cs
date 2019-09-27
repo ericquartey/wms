@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public bool Enable { get; }
 
-        public InverterIndex inverterIndex { get; set; }
+        public InverterIndex InverterIndex { get; set; }
 
         public InverterTimer InverterTimer { get; }
 

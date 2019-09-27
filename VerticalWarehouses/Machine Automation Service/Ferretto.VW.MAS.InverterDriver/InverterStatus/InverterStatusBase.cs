@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -13,24 +14,19 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
     {
         #region Fields
 
-        protected IControlWord controlWord;
+        protected IControlWord controlWord = new ControlWordBase();
 
-        protected IStatusWord statusWord;
-
-        private InverterType inverterType;
+        protected IStatusWord statusWord = new StatusWordBase();
 
         private ushort operatingMode;
-
-        private byte systemIndex;
 
         #endregion
 
         #region Constructors
 
-        protected InverterStatusBase()
+        protected InverterStatusBase(InverterIndex systemIndex)
         {
-            this.controlWord = new ControlWordBase();
-            this.statusWord = new StatusWordBase();
+            this.SystemIndex = (byte)systemIndex;
         }
 
         #endregion
@@ -42,12 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public IStatusWord CommonStatusWord => this.statusWord;
 
         public bool[] Inputs { get; protected set; }
-
-        public InverterType InverterType
-        {
-            get => this.inverterType;
-            protected set => this.inverterType = value;
-        }
 
         public ushort OperatingMode
         {
@@ -80,11 +70,9 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
-        public byte SystemIndex
-        {
-            get => this.systemIndex;
-            protected set => this.systemIndex = value;
-        }
+        public byte SystemIndex { get; }
+
+        public InverterType Type { get; protected set; }
 
         #endregion
 

@@ -18,6 +18,6 @@
 
         LowerDistance = 8L,
 
-        HighSpeedPercent = 9L
+        HighSpeedPercent = 9L,
     }
 }

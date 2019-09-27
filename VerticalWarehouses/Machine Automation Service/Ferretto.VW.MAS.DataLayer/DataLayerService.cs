@@ -26,7 +26,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
-
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -53,15 +52,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
-
-
         #region Properties
 
         public bool IsReady { get; private set; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -123,8 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Status = message.Status.ToString(),
             };
 
-            this.SaveEntryToDb(logEntry);
-
+            // this.SaveEntryToDb(logEntry);
             return Task.CompletedTask;
         }
 
@@ -181,17 +175,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
 
-                    scope.ServiceProvider
-                        .GetRequiredService<ICellsProvider>()
-                        .LoadFrom(configuration.GetCellsConfigurationFile());
-
                     await scope.ServiceProvider
                        .GetRequiredService<ILoadingUnitsProvider>()
                        .LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
-
-                    scope.ServiceProvider
-                        .GetRequiredService<IBaysConfigurationProvider>()
-                        .LoadFromConfiguration();
                 }
                 catch (Exception ex)
                 {

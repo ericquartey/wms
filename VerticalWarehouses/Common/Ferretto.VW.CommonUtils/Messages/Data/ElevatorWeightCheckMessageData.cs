@@ -9,7 +9,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public MessageVerbosity Verbosity { get; set; }
 
-        public decimal? Weight { get; set; }
+        public double? Weight { get; set; }
 
         #endregion
 

@@ -12,10 +12,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public PositioningFieldMessageData(
             Axis axisMovement,
             MovementType movementType,
-            decimal target,
-            decimal[] speed,
-            decimal[] acceleration,
-            decimal[] deceleration,
+            double target,
+            double[] speed,
+            double[] acceleration,
+            double[] deceleration,
             int numberCycles,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public bool IsTorqueCurrentSamplingEnabled { get; }
 
-        public decimal? LoadedNetWeight { get; set; }
+        public double? LoadedNetWeight { get; set; }
 
         public int? LoadingUnitId { get; }
 
@@ -72,15 +72,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int NumberCycles { get; }
 
-        public decimal[] SwitchPosition { get; set; }
+        public double[] SwitchPosition { get; set; }
 
-        public decimal[] TargetAcceleration { get; set; }
+        public double[] TargetAcceleration { get; set; }
 
-        public decimal[] TargetDeceleration { get; set; }
+        public double[] TargetDeceleration { get; set; }
 
-        public decimal TargetPosition { get; set; }
+        public double TargetPosition { get; set; }
 
-        public decimal[] TargetSpeed { get; set; }
+        public double[] TargetSpeed { get; set; }
 
         public DataSample TorqueCurrentSample { get; set; }
 

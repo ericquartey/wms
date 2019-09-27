@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldCommandMessage
     {
-
         #region Fields
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -58,8 +57,6 @@ namespace Ferretto.VW.MAS.Utils.Messages
         }
 
         #endregion
-
-
 
         #region Properties
 
