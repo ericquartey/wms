@@ -552,7 +552,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
             else if (isLongerDistance && !isStartedOnBoard)
             {
-                return MovementProfileType.LongPickUp;
+                return MovementProfileType.LongPickup;
             }
             else if (!isLongerDistance && isStartedOnBoard)
             {
@@ -560,7 +560,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
             else
             {
-                return MovementProfileType.ShortPickUp;
+                return MovementProfileType.ShortPickup;
             }
         }
 

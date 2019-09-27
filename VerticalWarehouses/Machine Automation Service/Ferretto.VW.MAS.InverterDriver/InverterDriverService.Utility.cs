@@ -392,8 +392,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.logger.LogTrace("1:Start Heart beat timer");
 
-            this.heartBeatTimer?.Dispose();
-
             try
             {
                 //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));

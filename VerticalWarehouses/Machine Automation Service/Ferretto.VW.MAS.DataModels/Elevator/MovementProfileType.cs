@@ -4,12 +4,12 @@
     {
         Undefined,
 
-        ShortPickUp,
+        ShortPickup,
 
         ShortDeposit,
 
         LongDeposit,
 
-        LongPickUp,
+        LongPickup,
     }
 }

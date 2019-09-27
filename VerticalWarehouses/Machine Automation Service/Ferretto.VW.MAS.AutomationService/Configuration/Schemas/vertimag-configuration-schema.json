@@ -41,7 +41,7 @@
             "properties": {
               "AlphaNumericBar": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/AlphaNumericBar",
-                "type": "null",
+                "type": [ "object", "null" ],
                 "title": "The Alphanumericbar Schema",
                 "default": null,
                 "examples": [
@@ -52,6 +52,7 @@
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter",
                 "type": "object",
                 "title": "The Inverter Schema",
+                "description": "The inverter installed on the bay.",
                 "required": [
                   "Type",
                   "Index"
@@ -210,10 +211,7 @@
                 "type": "string",
                 "title": "The Type Schema",
                 "default": "",
-                "examples": [
-                  "double"
-                ],
-                "pattern": "^(.*)$"
+                "enum": [ "Carousel", "Single", "Double" ]
               }
             }
           }
@@ -240,15 +238,13 @@
                   "Orientation",
                   "Resolution",
                   "Offset",
-                  "UpperBound",
-                  "LowerBound",
                   "MaximumLoadMovement",
                   "EmptyLoadMovement"
                 ],
                 "properties": {
                   "Inverter": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter",
-                    "type": "object",
+                    "type": [ "object", "null" ],
                     "title": "The Inverter Schema",
                     "required": [
                       "Index",
@@ -556,10 +552,7 @@
                 "type": "string",
                 "title": "The Side Schema",
                 "default": "",
-                "examples": [
-                  "front"
-                ],
-                "pattern": "^(.*)$"
+                "enum": [ "front", "back" ]
               },
               "cells": {
                 "$id": "#/properties/Machine/properties/Panels/items/properties/cells",

@@ -1,252 +1,2796 @@
 {
-  "GeneralInfo": {
-    "Order": "190001",
-    "ClientCode": "12015400",
-    "ClientName": "Ferretto",
-    "Address": "Strada Padana verso Verona, 101",
-    "Zip": "36100",
-    "City": "Vicenza",
-    "Province": "Vicenza",
-    "Country": "Italia",
-    "Latitude": "45.528305393050246",
-    "Longitude": "11.498999179729909",
-    "ProductionDate": "2011-04-01T19:43:37+0100",
-    "InstallationDate": "2011-05-01T19:43:37+0100",
-    "Model": "Vertimag 800kg",
-    "Serial": "Prototype #1",
-    "Height": 4.563,
+  "$schema": "./schemas/vertimag-configuration-schema.json",
+  "Machine": {
+    "Bays": [
+      {
+        "AlphaNumericBar": null,
+        "Inverter": {
+          "Type": "Acu",
+          "Index": 3
+        },
+        "IoDevice": {
+          "Index": 0,
+          "IpAddress": "192.168.0.1",
+          "TcpPort": 19550
+        },
+        "IsExternal": true,
+        "Number": 1,
+        "Positions": [ { "Height": 645 } ],
+        "Shutter": {
+          "Inverter": {
+            "Type": "Agl",
+            "Index": 2
+          },
+          "Type": "TwoSensors"
+        },
+        "Type": "Single"
+      },
+      {
+        "Inverter": {
+          "Type": "Acu",
+          "Index": 5
+        },
+        "IoDevice": {
+          "Index": 1,
+          "IpAddress": "192.168.0.2",
+          "TcpPort": 19550
+        },
+        "IsExternal": false,
+        "LaserPointer": {
+          "Heights": [ 680, 1080 ]
+        },
+        "Number": 2,
+        "Positions": [
+          { "Height": 645 },
+          { "Height": 1143 }
+        ],
+        "Shutter": {
+          "Type": "ThreeSensors",
+          "Inverter": {
+            "Type": "Agl",
+            "Index": 4
+          }
+        },
+        "Type": "Double"
+      }
+    ],
+    "Elevator": {
+      "Axes": [
+        {
+          "Inverter": {
+            "Index": 0,
+            "Type": "Ang",
+            "IpAddress": "192.168.0.100",
+            "TcpPort": 17221
+          },
+          "Orientation": "Vertical",
+          "Resolution": 77.61182,
+          "Offset": 350,
+          "UpperBound": 4000,
+          "LowerBound": 350,
+          "EmptyLoadMovement": {
+            "Acceleration": 1000,
+            "Deceleration": 1000,
+            "Speed": 770
+          },
+          "MaximumLoadMovement": {
+            "Acceleration": 400,
+            "Deceleration": 400,
+            "Speed": 550
+          }
+        },
+        {
+          "Orientation": "Horizontal",
+          "Resolution": 77.6722,
+          "Offset": 0,
+          "Inverter": null,
+          "MaximumLoadMovement": {
+            "Acceleration": 350,
+            "Deceleration": 350,
+            "Speed": 55
+          },
+          "EmptyLoadMovement": {
+            "Acceleration": 1500,
+            "Deceleration": 1500,
+            "Speed": 730
+          },
+          "Profiles": [
+            {
+              "Name": "ShortPickup",
+              "TotalDistance": 1415,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 500,
+                  "Deceleration": 1000,
+                  "Position": 200,
+                  "Speed": 100,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 550,
+                  "Speed": 500,
+                  "Number": 2
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 950,
+                  "Speed": 250,
+                  "Number": 3
+                },
+                {
+                  "Acceleration": 800,
+                  "Deceleration": 1000,
+                  "Position": 1350,
+                  "Speed": 50,
+                  "Number": 4
+                },
+                {
+                  "Position": 1415,
+                  "Number": 5
+                }
+              ]
+            },
+            {
+              "Name": "ShortDeposit",
+              "TotalDistance": 1415,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 500,
+                  "Deceleration": 1000,
+                  "Position": 200,
+                  "Speed": 100,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 550,
+                  "Speed": 500,
+                  "Number": 2
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 950,
+                  "Speed": 250,
+                  "Number": 3
+                },
+                {
+                  "Acceleration": 800,
+                  "Deceleration": 1000,
+                  "Position": 1350,
+                  "Speed": 50,
+                  "Number": 4
+                },
+                {
+                  "Position": 1415,
+                  "Number": 5
+                }
+              ]
+            },
+            {
+              "Name": "LongPickup",
+              "TotalDistance": 1310,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Speed": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 100,
+                  "Speed": 100,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 200,
+                  "Speed": 500,
+                  "Number": 2
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 300,
+                  "Speed": 500,
+                  "Number": 3
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 985,
+                  "Speed": 200,
+                  "Number": 4
+                },
+                {
+                  "Position": 1310,
+                  "Number": 5
+                }
+              ]
+            },
+            {
+              "Name": "LongDeposit",
+              "TotalDistance": 1310,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Speed": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 100,
+                  "Speed": 100,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 200,
+                  "Speed": 500,
+                  "Number": 2
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 300,
+                  "Speed": 500,
+                  "Number": 3
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 1000,
+                  "Position": 985,
+                  "Speed": 200,
+                  "Number": 4
+                },
+                {
+                  "Position": 1310,
+                  "Number": 5
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "StructuralProperties": {
+        "BeltRigidity": 7000000,
+        "BeltSpacing": 300,
+        "HalfShaftLength": 1784,
+        "MaximumLoadOnBoard": 800,
+        "PulleyDiameter": 160,
+        "PulleysDistance": 9292,
+        "ShaftDiameter": 45,
+        "ShaftElasticity": 210000
+      }
+    },
+    "Height": 4563,
     "MaxGrossWeight": 50000,
-    "MaxDrawerGrossWeight": 800,
-    "BaysQuantity": 2,
-    "Bay1Type": 3,
-    "Bay2Type": 1,
-    "Bay3Type": 0,
-    "Bay1Position1": 645.00, //744.00,
-    //"Bay1Height1":,
-    //"Bay1Position2":,
-    //"Bay1Height2":,
-    "Bay2Position1": 645.00,
-    "Bay2Height1": 1080.0,
-    "Bay2Position2": 1143.0,
-    "Bay2Height2": 680.0,
-    //"Bay3Position1": ,
-    //"Bay3Height1": ,
-    //"Bay3Position2": ,
-    //"Bay3Height2": ,
-    "Shutter1Type": 1,
-    "Shutter2Type": 2,
-    //"Shutter3Type": ,
-    "LaserBay1": false,
-    "LaserBay2": false,
-    "LaserBay3": false,
-    "AlfaNumBay1": false,
-    "AlfaNumBay2": false,
-    "AlfaNumBay3": false,
-    "Barrier1Height": 30,
-    "Barrier2Height": 30
-    //"Barrier3Height":
-    //"MaxAcceptedBai1Height": ,
-    //"MaxAcceptedBai2Height": ,
-    //"MaxAcceptedBai3Height":
+    "ModelName": "Vertimag 800kg",
+    "Panels": [
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 1,
+            "position": 268,
+            "priority": 1,
+            "status": "free"
+          },
+          {
+            "id": 3,
+            "position": 319,
+            "priority": 3,
+            "status": "free"
+          },
+          {
+            "id": 5,
+            "position": 368,
+            "priority": 5,
+            "status": "free"
+          },
+          {
+            "id": 7,
+            "position": 418,
+            "priority": 7,
+            "status": "free"
+          },
+          {
+            "id": 9,
+            "position": 468,
+            "priority": 9,
+            "status": "free"
+          },
+          {
+            "id": 11,
+            "position": 518,
+            "priority": 11,
+            "status": "free"
+          },
+          {
+            "id": 13,
+            "position": 568,
+            "priority": 13,
+            "status": "free"
+          },
+          {
+            "id": 15,
+            "position": 618,
+            "priority": 15,
+            "status": "free"
+          },
+          {
+            "id": 17,
+            "position": 668,
+            "priority": 17,
+            "status": "free"
+          },
+          {
+            "id": 19,
+            "position": 718,
+            "priority": 19,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 21,
+            "position": 768,
+            "priority": 21,
+            "status": "free"
+          },
+          {
+            "id": 23,
+            "position": 818,
+            "priority": 23,
+            "status": "free"
+          },
+          {
+            "id": 25,
+            "position": 868,
+            "priority": 25,
+            "status": "free"
+          },
+          {
+            "id": 27,
+            "position": 918,
+            "priority": 27,
+            "status": "free"
+          },
+          {
+            "id": 29,
+            "position": 968,
+            "priority": 29,
+            "status": "free"
+          },
+          {
+            "id": 31,
+            "position": 1018,
+            "priority": 31,
+            "status": "free"
+          },
+          {
+            "id": 33,
+            "position": 1068,
+            "priority": 33,
+            "status": "free"
+          },
+          {
+            "id": 35,
+            "position": 1118,
+            "priority": 35,
+            "status": "free"
+          },
+          {
+            "id": 37,
+            "position": 1168,
+            "priority": 37,
+            "status": "free"
+          },
+          {
+            "id": 39,
+            "position": 1218,
+            "priority": 39,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 41,
+            "position": 1268,
+            "priority": 41,
+            "status": "free"
+          },
+          {
+            "id": 43,
+            "position": 1318,
+            "priority": 43,
+            "status": "free"
+          },
+          {
+            "id": 45,
+            "position": 1368,
+            "priority": 45,
+            "status": "free"
+          },
+          {
+            "id": 47,
+            "position": 1418,
+            "priority": 47,
+            "status": "free"
+          },
+          {
+            "id": 49,
+            "position": 1468,
+            "priority": 49,
+            "status": "free"
+          },
+          {
+            "id": 51,
+            "position": 1518,
+            "priority": 51,
+            "status": "free"
+          },
+          {
+            "id": 53,
+            "position": 1568,
+            "priority": 53,
+            "status": "free"
+          },
+          {
+            "id": 55,
+            "position": 1618,
+            "priority": 55,
+            "status": "free"
+          },
+          {
+            "id": 57,
+            "position": 1668,
+            "priority": 57,
+            "status": "free"
+          },
+          {
+            "id": 59,
+            "position": 1718,
+            "priority": 59,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 61,
+            "position": 1768,
+            "priority": 61,
+            "status": "free"
+          },
+          {
+            "id": 63,
+            "position": 1818,
+            "priority": 63,
+            "status": "free"
+          },
+          {
+            "id": 65,
+            "position": 1868,
+            "priority": 65,
+            "status": "free"
+          },
+          {
+            "id": 67,
+            "position": 1918,
+            "priority": 67,
+            "status": "free"
+          },
+          {
+            "id": 69,
+            "position": 1968,
+            "priority": 69,
+            "status": "free"
+          },
+          {
+            "id": 71,
+            "position": 2018,
+            "priority": 71,
+            "status": "free"
+          },
+          {
+            "id": 73,
+            "position": 2068,
+            "priority": 73,
+            "status": "free"
+          },
+          {
+            "id": 75,
+            "position": 2118,
+            "priority": 75,
+            "status": "free"
+          },
+          {
+            "id": 77,
+            "position": 2168,
+            "priority": 77,
+            "status": "free"
+          },
+          {
+            "id": 79,
+            "position": 2218,
+            "priority": 79,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 81,
+            "position": 2268,
+            "priority": 81,
+            "status": "free"
+          },
+          {
+            "id": 83,
+            "position": 2318,
+            "priority": 83,
+            "status": "free"
+          },
+          {
+            "id": 85,
+            "position": 2368,
+            "priority": 85,
+            "status": "free"
+          },
+          {
+            "id": 87,
+            "position": 2418,
+            "priority": 87,
+            "status": "free"
+          },
+          {
+            "id": 89,
+            "position": 2468,
+            "priority": 89,
+            "status": "free"
+          },
+          {
+            "id": 91,
+            "position": 2518,
+            "priority": 91,
+            "status": "free"
+          },
+          {
+            "id": 93,
+            "position": 2568,
+            "priority": 93,
+            "status": "free"
+          },
+          {
+            "id": 95,
+            "position": 2618,
+            "priority": 95,
+            "status": "free"
+          },
+          {
+            "id": 97,
+            "position": 2668,
+            "priority": 97,
+            "status": "free"
+          },
+          {
+            "id": 99,
+            "position": 2718,
+            "priority": 99,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 101,
+            "position": 2768,
+            "priority": 101,
+            "status": "free"
+          },
+          {
+            "id": 103,
+            "position": 2818,
+            "priority": 103,
+            "status": "free"
+          },
+          {
+            "id": 105,
+            "position": 2868,
+            "priority": 105,
+            "status": "free"
+          },
+          {
+            "id": 107,
+            "position": 2918,
+            "priority": 107,
+            "status": "free"
+          },
+          {
+            "id": 109,
+            "position": 2968,
+            "priority": 109,
+            "status": "free"
+          },
+          {
+            "id": 111,
+            "position": 3018,
+            "priority": 111,
+            "status": "free"
+          },
+          {
+            "id": 113,
+            "position": 3068,
+            "priority": 113,
+            "status": "free"
+          },
+          {
+            "id": 115,
+            "position": 3118,
+            "priority": 115,
+            "status": "free"
+          },
+          {
+            "id": 117,
+            "position": 3168,
+            "priority": 117,
+            "status": "free"
+          },
+          {
+            "id": 119,
+            "position": 3218,
+            "priority": 119,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 121,
+            "position": 3268,
+            "priority": 121,
+            "status": "free"
+          },
+          {
+            "id": 123,
+            "position": 3318,
+            "priority": 123,
+            "status": "free"
+          },
+          {
+            "id": 125,
+            "position": 3368,
+            "priority": 125,
+            "status": "free"
+          },
+          {
+            "id": 127,
+            "position": 3418,
+            "priority": 127,
+            "status": "free"
+          },
+          {
+            "id": 129,
+            "position": 3468,
+            "priority": 129,
+            "status": "free"
+          },
+          {
+            "id": 131,
+            "position": 3518,
+            "priority": 131,
+            "status": "free"
+          },
+          {
+            "id": 133,
+            "position": 3568,
+            "priority": 133,
+            "status": "free"
+          },
+          {
+            "id": 135,
+            "position": 3618,
+            "priority": 135,
+            "status": "free"
+          },
+          {
+            "id": 137,
+            "position": 3668,
+            "priority": 137,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 139,
+            "position": 3718,
+            "priority": 139,
+            "status": "free"
+          },
+          {
+            "id": 141,
+            "position": 3768,
+            "priority": 141,
+            "status": "free"
+          },
+          {
+            "id": 143,
+            "position": 3818,
+            "priority": 143,
+            "status": "free"
+          },
+          {
+            "id": 145,
+            "position": 3868,
+            "priority": 145,
+            "status": "free"
+          },
+          {
+            "id": 147,
+            "position": 3918,
+            "priority": 147,
+            "status": "free"
+          },
+          {
+            "id": 149,
+            "position": 3968,
+            "priority": 149,
+            "status": "free"
+          },
+          {
+            "id": 151,
+            "position": 4018,
+            "priority": 151,
+            "status": "free"
+          },
+          {
+            "id": 153,
+            "position": 4068,
+            "priority": 153,
+            "status": "free"
+          },
+          {
+            "id": 155,
+            "position": 4118,
+            "priority": 155,
+            "status": "free"
+          },
+          {
+            "id": 157,
+            "position": 4168,
+            "priority": 157,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 159,
+            "position": 4218,
+            "priority": 159,
+            "status": "free"
+          },
+          {
+            "id": 161,
+            "position": 4268,
+            "priority": 161,
+            "status": "free"
+          },
+          {
+            "id": 163,
+            "position": 4318,
+            "priority": 163,
+            "status": "free"
+          },
+          {
+            "id": 165,
+            "position": 4368,
+            "priority": 165,
+            "status": "free"
+          },
+          {
+            "id": 167,
+            "position": 4418,
+            "priority": 167,
+            "status": "free"
+          },
+          {
+            "id": 169,
+            "position": 4468,
+            "priority": 169,
+            "status": "free"
+          },
+          {
+            "id": 171,
+            "position": 4518,
+            "priority": 171,
+            "status": "free"
+          },
+          {
+            "id": 173,
+            "position": 4568,
+            "priority": 173,
+            "status": "free"
+          },
+          {
+            "id": 175,
+            "position": 4618,
+            "priority": 175,
+            "status": "free"
+          },
+          {
+            "id": 177,
+            "position": 4668,
+            "priority": 177,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 179,
+            "position": 4718,
+            "priority": 179,
+            "status": "free"
+          },
+          {
+            "id": 181,
+            "position": 4768,
+            "priority": 181,
+            "status": "free"
+          },
+          {
+            "id": 183,
+            "position": 4818,
+            "priority": 183,
+            "status": "free"
+          },
+          {
+            "id": 185,
+            "position": 4868,
+            "priority": 185,
+            "status": "free"
+          },
+          {
+            "id": 187,
+            "position": 4918,
+            "priority": 187,
+            "status": "free"
+          },
+          {
+            "id": 189,
+            "position": 4968,
+            "priority": 189,
+            "status": "free"
+          },
+          {
+            "id": 191,
+            "position": 5018,
+            "priority": 191,
+            "status": "free"
+          },
+          {
+            "id": 193,
+            "position": 5068,
+            "priority": 193,
+            "status": "free"
+          },
+          {
+            "id": 195,
+            "position": 5118,
+            "priority": 195,
+            "status": "free"
+          },
+          {
+            "id": 197,
+            "position": 5168,
+            "priority": 197,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 199,
+            "position": 5218,
+            "priority": 199,
+            "status": "free"
+          },
+          {
+            "id": 201,
+            "position": 5268,
+            "priority": 201,
+            "status": "free"
+          },
+          {
+            "id": 203,
+            "position": 5318,
+            "priority": 203,
+            "status": "free"
+          },
+          {
+            "id": 205,
+            "position": 5368,
+            "priority": 205,
+            "status": "free"
+          },
+          {
+            "id": 207,
+            "position": 5418,
+            "priority": 207,
+            "status": "free"
+          },
+          {
+            "id": 209,
+            "position": 5468,
+            "priority": 209,
+            "status": "free"
+          },
+          {
+            "id": 211,
+            "position": 5518,
+            "priority": 211,
+            "status": "free"
+          },
+          {
+            "id": 213,
+            "position": 5568,
+            "priority": 213,
+            "status": "free"
+          },
+          {
+            "id": 215,
+            "position": 5618,
+            "priority": 215,
+            "status": "free"
+          },
+          {
+            "id": 217,
+            "position": 5668,
+            "priority": 217,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 219,
+            "position": 5718,
+            "priority": 219,
+            "status": "free"
+          },
+          {
+            "id": 221,
+            "position": 5768,
+            "priority": 221,
+            "status": "free"
+          },
+          {
+            "id": 223,
+            "position": 5818,
+            "priority": 223,
+            "status": "free"
+          },
+          {
+            "id": 225,
+            "position": 5868,
+            "priority": 225,
+            "status": "free"
+          },
+          {
+            "id": 227,
+            "position": 5918,
+            "priority": 227,
+            "status": "free"
+          },
+          {
+            "id": 229,
+            "position": 5968,
+            "priority": 229,
+            "status": "free"
+          },
+          {
+            "id": 231,
+            "position": 6018,
+            "priority": 231,
+            "status": "free"
+          },
+          {
+            "id": 233,
+            "position": 6068,
+            "priority": 233,
+            "status": "free"
+          },
+          {
+            "id": 235,
+            "position": 6118,
+            "priority": 235,
+            "status": "free"
+          },
+          {
+            "id": 237,
+            "position": 6168,
+            "priority": 237,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 239,
+            "position": 6218,
+            "priority": 239,
+            "status": "free"
+          },
+          {
+            "id": 241,
+            "position": 6268,
+            "priority": 241,
+            "status": "free"
+          },
+          {
+            "id": 243,
+            "position": 6318,
+            "priority": 243,
+            "status": "free"
+          },
+          {
+            "id": 245,
+            "position": 6368,
+            "priority": 245,
+            "status": "free"
+          },
+          {
+            "id": 247,
+            "position": 6418,
+            "priority": 247,
+            "status": "free"
+          },
+          {
+            "id": 249,
+            "position": 6468,
+            "priority": 249,
+            "status": "free"
+          },
+          {
+            "id": 251,
+            "position": 6518,
+            "priority": 251,
+            "status": "free"
+          },
+          {
+            "id": 253,
+            "position": 6568,
+            "priority": 253,
+            "status": "free"
+          },
+          {
+            "id": 255,
+            "position": 6618,
+            "priority": 255,
+            "status": "free"
+          },
+          {
+            "id": 257,
+            "position": 6668,
+            "priority": 257,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 259,
+            "position": 6718,
+            "priority": 259,
+            "status": "free"
+          },
+          {
+            "id": 261,
+            "position": 6768,
+            "priority": 261,
+            "status": "free"
+          },
+          {
+            "id": 263,
+            "position": 6818,
+            "priority": 263,
+            "status": "free"
+          },
+          {
+            "id": 265,
+            "position": 6868,
+            "priority": 265,
+            "status": "free"
+          },
+          {
+            "id": 267,
+            "position": 6918,
+            "priority": 267,
+            "status": "free"
+          },
+          {
+            "id": 269,
+            "position": 6968,
+            "priority": 269,
+            "status": "free"
+          },
+          {
+            "id": 271,
+            "position": 7018,
+            "priority": 271,
+            "status": "free"
+          },
+          {
+            "id": 273,
+            "position": 7068,
+            "priority": 273,
+            "status": "free"
+          },
+          {
+            "id": 275,
+            "position": 7118,
+            "priority": 275,
+            "status": "free"
+          },
+          {
+            "id": 277,
+            "position": 7168,
+            "priority": 277,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 279,
+            "position": 7218,
+            "priority": 279,
+            "status": "free"
+          },
+          {
+            "id": 281,
+            "position": 7268,
+            "priority": 281,
+            "status": "free"
+          },
+          {
+            "id": 283,
+            "position": 7318,
+            "priority": 283,
+            "status": "free"
+          },
+          {
+            "id": 285,
+            "position": 7368,
+            "priority": 285,
+            "status": "free"
+          },
+          {
+            "id": 287,
+            "position": 7418,
+            "priority": 287,
+            "status": "free"
+          },
+          {
+            "id": 289,
+            "position": 7468,
+            "priority": 289,
+            "status": "free"
+          },
+          {
+            "id": 291,
+            "position": 7518,
+            "priority": 291,
+            "status": "free"
+          },
+          {
+            "id": 293,
+            "position": 7568,
+            "priority": 293,
+            "status": "free"
+          },
+          {
+            "id": 295,
+            "position": 7618,
+            "priority": 295,
+            "status": "free"
+          },
+          {
+            "id": 297,
+            "position": 7668,
+            "priority": 297,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 299,
+            "position": 7718,
+            "priority": 299,
+            "status": "free"
+          },
+          {
+            "id": 301,
+            "position": 7768,
+            "priority": 301,
+            "status": "free"
+          },
+          {
+            "id": 303,
+            "position": 7818,
+            "priority": 303,
+            "status": "free"
+          },
+          {
+            "id": 305,
+            "position": 7868,
+            "priority": 305,
+            "status": "free"
+          },
+          {
+            "id": 307,
+            "position": 7918,
+            "priority": 307,
+            "status": "free"
+          },
+          {
+            "id": 309,
+            "position": 7968,
+            "priority": 309,
+            "status": "free"
+          },
+          {
+            "id": 311,
+            "position": 8018,
+            "priority": 311,
+            "status": "free"
+          },
+          {
+            "id": 313,
+            "position": 8068,
+            "priority": 313,
+            "status": "free"
+          },
+          {
+            "id": 315,
+            "position": 8118,
+            "priority": 315,
+            "status": "free"
+          },
+          {
+            "id": 317,
+            "position": 8168,
+            "priority": 317,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 319,
+            "position": 8218,
+            "priority": 319,
+            "status": "free"
+          },
+          {
+            "id": 321,
+            "position": 8268,
+            "priority": 321,
+            "status": "free"
+          },
+          {
+            "id": 323,
+            "position": 8318,
+            "priority": 323,
+            "status": "free"
+          },
+          {
+            "id": 325,
+            "position": 8368,
+            "priority": 325,
+            "status": "free"
+          },
+          {
+            "id": 327,
+            "position": 8418,
+            "priority": 327,
+            "status": "free"
+          },
+          {
+            "id": 329,
+            "position": 8468,
+            "priority": 329,
+            "status": "free"
+          },
+          {
+            "id": 331,
+            "position": 8518,
+            "priority": 331,
+            "status": "free"
+          },
+          {
+            "id": 333,
+            "position": 8568,
+            "priority": 333,
+            "status": "free"
+          },
+          {
+            "id": 335,
+            "position": 8618,
+            "priority": 335,
+            "status": "free"
+          },
+          {
+            "id": 337,
+            "position": 8668,
+            "priority": 337,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 339,
+            "position": 8718,
+            "priority": 339,
+            "status": "free"
+          },
+          {
+            "id": 341,
+            "position": 8768,
+            "priority": 341,
+            "status": "free"
+          },
+          {
+            "id": 343,
+            "position": 8818,
+            "priority": 343,
+            "status": "free"
+          },
+          {
+            "id": 345,
+            "position": 8868,
+            "priority": 345,
+            "status": "free"
+          },
+          {
+            "id": 347,
+            "position": 8918,
+            "priority": 347,
+            "status": "free"
+          },
+          {
+            "id": 349,
+            "position": 8968,
+            "priority": 349,
+            "status": "free"
+          },
+          {
+            "id": 351,
+            "position": 9018,
+            "priority": 351,
+            "status": "free"
+          },
+          {
+            "id": 353,
+            "position": 9068,
+            "priority": 353,
+            "status": "free"
+          },
+          {
+            "id": 355,
+            "position": 9118,
+            "priority": 355,
+            "status": "free"
+          },
+          {
+            "id": 357,
+            "position": 9168,
+            "priority": 357,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "front",
+        "cells": [
+          {
+            "id": 359,
+            "position": 9218,
+            "priority": 359,
+            "status": "free"
+          },
+          {
+            "id": 361,
+            "position": 9268,
+            "priority": 361,
+            "status": "free"
+          },
+          {
+            "id": 363,
+            "position": 9318,
+            "priority": 363,
+            "status": "free"
+          },
+          {
+            "id": 365,
+            "position": 9368,
+            "priority": 365,
+            "status": "free"
+          },
+          {
+            "id": 367,
+            "position": 9418,
+            "priority": 367,
+            "status": "free"
+          },
+          {
+            "id": 369,
+            "position": 9468,
+            "priority": 369,
+            "status": "free"
+          },
+          {
+            "id": 371,
+            "position": 9518,
+            "priority": 371,
+            "status": "free"
+          },
+          {
+            "id": 373,
+            "position": 9568,
+            "priority": 373,
+            "status": "free"
+          },
+          {
+            "id": 375,
+            "position": 9618,
+            "priority": 375,
+            "status": "free"
+          },
+          {
+            "id": 377,
+            "position": 9668,
+            "priority": 377,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 2,
+            "position": 317,
+            "priority": 2,
+            "status": "free"
+          },
+          {
+            "id": 4,
+            "position": 367,
+            "priority": 4,
+            "status": "free"
+          },
+          {
+            "id": 6,
+            "position": 418,
+            "priority": 6,
+            "status": "free"
+          },
+          {
+            "id": 8,
+            "position": 468,
+            "priority": 8,
+            "status": "free"
+          },
+          {
+            "id": 10,
+            "position": 518,
+            "priority": 10,
+            "status": "free"
+          },
+          {
+            "id": 12,
+            "position": 568,
+            "priority": 12,
+            "status": "free"
+          },
+          {
+            "id": 14,
+            "position": 618,
+            "priority": 14,
+            "status": "free"
+          },
+          {
+            "id": 16,
+            "position": 668,
+            "priority": 16,
+            "status": "free"
+          },
+          {
+            "id": 18,
+            "position": 718,
+            "priority": 18,
+            "status": "free"
+          },
+          {
+            "id": 20,
+            "position": 768,
+            "priority": 20,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 22,
+            "position": 818,
+            "priority": 22,
+            "status": "free"
+          },
+          {
+            "id": 24,
+            "position": 868,
+            "priority": 24,
+            "status": "free"
+          },
+          {
+            "id": 26,
+            "position": 918,
+            "priority": 26,
+            "status": "free"
+          },
+          {
+            "id": 28,
+            "position": 968,
+            "priority": 28,
+            "status": "free"
+          },
+          {
+            "id": 30,
+            "position": 1018,
+            "priority": 30,
+            "status": "free"
+          },
+          {
+            "id": 32,
+            "position": 1068,
+            "priority": 32,
+            "status": "free"
+          },
+          {
+            "id": 34,
+            "position": 1118,
+            "priority": 34,
+            "status": "free"
+          },
+          {
+            "id": 36,
+            "position": 1168,
+            "priority": 36,
+            "status": "free"
+          },
+          {
+            "id": 38,
+            "position": 1218,
+            "priority": 38,
+            "status": "free"
+          },
+          {
+            "id": 40,
+            "position": 1268,
+            "priority": 40,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 42,
+            "position": 1318,
+            "priority": 42,
+            "status": "free"
+          },
+          {
+            "id": 44,
+            "position": 1368,
+            "priority": 44,
+            "status": "free"
+          },
+          {
+            "id": 46,
+            "position": 1418,
+            "priority": 46,
+            "status": "free"
+          },
+          {
+            "id": 48,
+            "position": 1468,
+            "priority": 48,
+            "status": "free"
+          },
+          {
+            "id": 50,
+            "position": 1518,
+            "priority": 50,
+            "status": "free"
+          },
+          {
+            "id": 52,
+            "position": 1568,
+            "priority": 52,
+            "status": "free"
+          },
+          {
+            "id": 54,
+            "position": 1618,
+            "priority": 54,
+            "status": "free"
+          },
+          {
+            "id": 56,
+            "position": 1668,
+            "priority": 56,
+            "status": "free"
+          },
+          {
+            "id": 58,
+            "position": 1718,
+            "priority": 58,
+            "status": "free"
+          },
+          {
+            "id": 60,
+            "position": 1768,
+            "priority": 60,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 62,
+            "position": 1818,
+            "priority": 62,
+            "status": "free"
+          },
+          {
+            "id": 64,
+            "position": 1868,
+            "priority": 64,
+            "status": "free"
+          },
+          {
+            "id": 66,
+            "position": 1918,
+            "priority": 66,
+            "status": "free"
+          },
+          {
+            "id": 68,
+            "position": 1968,
+            "priority": 68,
+            "status": "free"
+          },
+          {
+            "id": 70,
+            "position": 2018,
+            "priority": 70,
+            "status": "free"
+          },
+          {
+            "id": 72,
+            "position": 2068,
+            "priority": 72,
+            "status": "free"
+          },
+          {
+            "id": 74,
+            "position": 2118,
+            "priority": 74,
+            "status": "free"
+          },
+          {
+            "id": 76,
+            "position": 2168,
+            "priority": 76,
+            "status": "free"
+          },
+          {
+            "id": 78,
+            "position": 2218,
+            "priority": 78,
+            "status": "free"
+          },
+          {
+            "id": 80,
+            "position": 2268,
+            "priority": 80,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 82,
+            "position": 2318,
+            "priority": 82,
+            "status": "free"
+          },
+          {
+            "id": 84,
+            "position": 2368,
+            "priority": 84,
+            "status": "free"
+          },
+          {
+            "id": 86,
+            "position": 2418,
+            "priority": 86,
+            "status": "free"
+          },
+          {
+            "id": 88,
+            "position": 2468,
+            "priority": 88,
+            "status": "free"
+          },
+          {
+            "id": 90,
+            "position": 2518,
+            "priority": 90,
+            "status": "free"
+          },
+          {
+            "id": 92,
+            "position": 2568,
+            "priority": 92,
+            "status": "free"
+          },
+          {
+            "id": 94,
+            "position": 2618,
+            "priority": 94,
+            "status": "free"
+          },
+          {
+            "id": 96,
+            "position": 2668,
+            "priority": 96,
+            "status": "free"
+          },
+          {
+            "id": 98,
+            "position": 2718,
+            "priority": 98,
+            "status": "free"
+          },
+          {
+            "id": 100,
+            "position": 2768,
+            "priority": 100,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 102,
+            "position": 2818,
+            "priority": 102,
+            "status": "free"
+          },
+          {
+            "id": 104,
+            "position": 2868,
+            "priority": 104,
+            "status": "free"
+          },
+          {
+            "id": 106,
+            "position": 2918,
+            "priority": 106,
+            "status": "free"
+          },
+          {
+            "id": 108,
+            "position": 2968,
+            "priority": 108,
+            "status": "free"
+          },
+          {
+            "id": 110,
+            "position": 3018,
+            "priority": 110,
+            "status": "free"
+          },
+          {
+            "id": 112,
+            "position": 3068,
+            "priority": 112,
+            "status": "free"
+          },
+          {
+            "id": 114,
+            "position": 3118,
+            "priority": 114,
+            "status": "free"
+          },
+          {
+            "id": 116,
+            "position": 3168,
+            "priority": 116,
+            "status": "free"
+          },
+          {
+            "id": 118,
+            "position": 3218,
+            "priority": 118,
+            "status": "free"
+          },
+          {
+            "id": 120,
+            "position": 3268,
+            "priority": 120,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 122,
+            "position": 3318,
+            "priority": 122,
+            "status": "free"
+          },
+          {
+            "id": 124,
+            "position": 3368,
+            "priority": 124,
+            "status": "free"
+          },
+          {
+            "id": 126,
+            "position": 3418,
+            "priority": 126,
+            "status": "free"
+          },
+          {
+            "id": 128,
+            "position": 3468,
+            "priority": 128,
+            "status": "free"
+          },
+          {
+            "id": 130,
+            "position": 3518,
+            "priority": 130,
+            "status": "free"
+          },
+          {
+            "id": 132,
+            "position": 3568,
+            "priority": 132,
+            "status": "free"
+          },
+          {
+            "id": 134,
+            "position": 3618,
+            "priority": 134,
+            "status": "free"
+          },
+          {
+            "id": 136,
+            "position": 3668,
+            "priority": 136,
+            "status": "free"
+          },
+          {
+            "id": 138,
+            "position": 3718,
+            "priority": 138,
+            "status": "free"
+          },
+          {
+            "id": 140,
+            "position": 3768,
+            "priority": 140,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 142,
+            "position": 3818,
+            "priority": 142,
+            "status": "free"
+          },
+          {
+            "id": 144,
+            "position": 3868,
+            "priority": 144,
+            "status": "free"
+          },
+          {
+            "id": 146,
+            "position": 3918,
+            "priority": 146,
+            "status": "free"
+          },
+          {
+            "id": 148,
+            "position": 3968,
+            "priority": 148,
+            "status": "free"
+          },
+          {
+            "id": 150,
+            "position": 4018,
+            "priority": 150,
+            "status": "free"
+          },
+          {
+            "id": 152,
+            "position": 4068,
+            "priority": 152,
+            "status": "free"
+          },
+          {
+            "id": 154,
+            "position": 4118,
+            "priority": 154,
+            "status": "free"
+          },
+          {
+            "id": 156,
+            "position": 4168,
+            "priority": 156,
+            "status": "free"
+          },
+          {
+            "id": 158,
+            "position": 4218,
+            "priority": 158,
+            "status": "free"
+          },
+          {
+            "id": 160,
+            "position": 4268,
+            "priority": 160,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 162,
+            "position": 4318,
+            "priority": 162,
+            "status": "free"
+          },
+          {
+            "id": 164,
+            "position": 4368,
+            "priority": 164,
+            "status": "free"
+          },
+          {
+            "id": 166,
+            "position": 4418,
+            "priority": 166,
+            "status": "free"
+          },
+          {
+            "id": 168,
+            "position": 4468,
+            "priority": 168,
+            "status": "free"
+          },
+          {
+            "id": 170,
+            "position": 4518,
+            "priority": 170,
+            "status": "free"
+          },
+          {
+            "id": 172,
+            "position": 4568,
+            "priority": 172,
+            "status": "free"
+          },
+          {
+            "id": 174,
+            "position": 4618,
+            "priority": 174,
+            "status": "free"
+          },
+          {
+            "id": 176,
+            "position": 4668,
+            "priority": 176,
+            "status": "free"
+          },
+          {
+            "id": 178,
+            "position": 4718,
+            "priority": 178,
+            "status": "free"
+          },
+          {
+            "id": 180,
+            "position": 4768,
+            "priority": 180,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 182,
+            "position": 4818,
+            "priority": 182,
+            "status": "free"
+          },
+          {
+            "id": 184,
+            "position": 4868,
+            "priority": 184,
+            "status": "free"
+          },
+          {
+            "id": 186,
+            "position": 4918,
+            "priority": 186,
+            "status": "free"
+          },
+          {
+            "id": 188,
+            "position": 4968,
+            "priority": 188,
+            "status": "free"
+          },
+          {
+            "id": 190,
+            "position": 5018,
+            "priority": 190,
+            "status": "free"
+          },
+          {
+            "id": 192,
+            "position": 5068,
+            "priority": 192,
+            "status": "free"
+          },
+          {
+            "id": 194,
+            "position": 5118,
+            "priority": 194,
+            "status": "free"
+          },
+          {
+            "id": 196,
+            "position": 5168,
+            "priority": 196,
+            "status": "free"
+          },
+          {
+            "id": 198,
+            "position": 5218,
+            "priority": 198,
+            "status": "free"
+          },
+          {
+            "id": 200,
+            "position": 5268,
+            "priority": 200,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 202,
+            "position": 5318,
+            "priority": 202,
+            "status": "free"
+          },
+          {
+            "id": 204,
+            "position": 5368,
+            "priority": 204,
+            "status": "free"
+          },
+          {
+            "id": 206,
+            "position": 5418,
+            "priority": 206,
+            "status": "free"
+          },
+          {
+            "id": 208,
+            "position": 5468,
+            "priority": 208,
+            "status": "free"
+          },
+          {
+            "id": 210,
+            "position": 5518,
+            "priority": 210,
+            "status": "free"
+          },
+          {
+            "id": 212,
+            "position": 5568,
+            "priority": 212,
+            "status": "free"
+          },
+          {
+            "id": 214,
+            "position": 5618,
+            "priority": 214,
+            "status": "free"
+          },
+          {
+            "id": 216,
+            "position": 5668,
+            "priority": 216,
+            "status": "free"
+          },
+          {
+            "id": 218,
+            "position": 5718,
+            "priority": 218,
+            "status": "free"
+          },
+          {
+            "id": 220,
+            "position": 5768,
+            "priority": 220,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 222,
+            "position": 5818,
+            "priority": 222,
+            "status": "free"
+          },
+          {
+            "id": 224,
+            "position": 5868,
+            "priority": 224,
+            "status": "free"
+          },
+          {
+            "id": 226,
+            "position": 5918,
+            "priority": 226,
+            "status": "free"
+          },
+          {
+            "id": 228,
+            "position": 5968,
+            "priority": 228,
+            "status": "free"
+          },
+          {
+            "id": 230,
+            "position": 6018,
+            "priority": 230,
+            "status": "free"
+          },
+          {
+            "id": 232,
+            "position": 6068,
+            "priority": 232,
+            "status": "free"
+          },
+          {
+            "id": 234,
+            "position": 6118,
+            "priority": 234,
+            "status": "free"
+          },
+          {
+            "id": 236,
+            "position": 6168,
+            "priority": 236,
+            "status": "free"
+          },
+          {
+            "id": 238,
+            "position": 6218,
+            "priority": 238,
+            "status": "free"
+          },
+          {
+            "id": 240,
+            "position": 6268,
+            "priority": 240,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 242,
+            "position": 6318,
+            "priority": 242,
+            "status": "free"
+          },
+          {
+            "id": 244,
+            "position": 6368,
+            "priority": 244,
+            "status": "free"
+          },
+          {
+            "id": 246,
+            "position": 6418,
+            "priority": 246,
+            "status": "free"
+          },
+          {
+            "id": 248,
+            "position": 6468,
+            "priority": 248,
+            "status": "free"
+          },
+          {
+            "id": 250,
+            "position": 6518,
+            "priority": 250,
+            "status": "free"
+          },
+          {
+            "id": 252,
+            "position": 6568,
+            "priority": 252,
+            "status": "free"
+          },
+          {
+            "id": 254,
+            "position": 6618,
+            "priority": 254,
+            "status": "free"
+          },
+          {
+            "id": 256,
+            "position": 6668,
+            "priority": 256,
+            "status": "free"
+          },
+          {
+            "id": 258,
+            "position": 6718,
+            "priority": 258,
+            "status": "free"
+          },
+          {
+            "id": 260,
+            "position": 6768,
+            "priority": 260,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 262,
+            "position": 6818,
+            "priority": 262,
+            "status": "free"
+          },
+          {
+            "id": 264,
+            "position": 6868,
+            "priority": 264,
+            "status": "free"
+          },
+          {
+            "id": 266,
+            "position": 6918,
+            "priority": 266,
+            "status": "free"
+          },
+          {
+            "id": 268,
+            "position": 6968,
+            "priority": 268,
+            "status": "free"
+          },
+          {
+            "id": 270,
+            "position": 7018,
+            "priority": 270,
+            "status": "free"
+          },
+          {
+            "id": 272,
+            "position": 7068,
+            "priority": 272,
+            "status": "free"
+          },
+          {
+            "id": 274,
+            "position": 7118,
+            "priority": 274,
+            "status": "free"
+          },
+          {
+            "id": 276,
+            "position": 7168,
+            "priority": 276,
+            "status": "free"
+          },
+          {
+            "id": 278,
+            "position": 7218,
+            "priority": 278,
+            "status": "free"
+          },
+          {
+            "id": 280,
+            "position": 7268,
+            "priority": 280,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 282,
+            "position": 7318,
+            "priority": 282,
+            "status": "free"
+          },
+          {
+            "id": 284,
+            "position": 7368,
+            "priority": 284,
+            "status": "free"
+          },
+          {
+            "id": 286,
+            "position": 7418,
+            "priority": 286,
+            "status": "free"
+          },
+          {
+            "id": 288,
+            "position": 7468,
+            "priority": 288,
+            "status": "free"
+          },
+          {
+            "id": 290,
+            "position": 7518,
+            "priority": 290,
+            "status": "free"
+          },
+          {
+            "id": 292,
+            "position": 7568,
+            "priority": 292,
+            "status": "free"
+          },
+          {
+            "id": 294,
+            "position": 7618,
+            "priority": 294,
+            "status": "free"
+          },
+          {
+            "id": 296,
+            "position": 7668,
+            "priority": 296,
+            "status": "free"
+          },
+          {
+            "id": 298,
+            "position": 7718,
+            "priority": 298,
+            "status": "free"
+          },
+          {
+            "id": 300,
+            "position": 7768,
+            "priority": 300,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 302,
+            "position": 7818,
+            "priority": 302,
+            "status": "free"
+          },
+          {
+            "id": 304,
+            "position": 7868,
+            "priority": 304,
+            "status": "free"
+          },
+          {
+            "id": 306,
+            "position": 7918,
+            "priority": 306,
+            "status": "free"
+          },
+          {
+            "id": 308,
+            "position": 7968,
+            "priority": 308,
+            "status": "free"
+          },
+          {
+            "id": 310,
+            "position": 8018,
+            "priority": 310,
+            "status": "free"
+          },
+          {
+            "id": 312,
+            "position": 8068,
+            "priority": 312,
+            "status": "free"
+          },
+          {
+            "id": 314,
+            "position": 8118,
+            "priority": 314,
+            "status": "free"
+          },
+          {
+            "id": 316,
+            "position": 8168,
+            "priority": 316,
+            "status": "free"
+          },
+          {
+            "id": 318,
+            "position": 8218,
+            "priority": 318,
+            "status": "free"
+          },
+          {
+            "id": 320,
+            "position": 8268,
+            "priority": 320,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 322,
+            "position": 8318,
+            "priority": 322,
+            "status": "free"
+          },
+          {
+            "id": 324,
+            "position": 8368,
+            "priority": 324,
+            "status": "free"
+          },
+          {
+            "id": 326,
+            "position": 8418,
+            "priority": 326,
+            "status": "free"
+          },
+          {
+            "id": 328,
+            "position": 8468,
+            "priority": 328,
+            "status": "free"
+          },
+          {
+            "id": 330,
+            "position": 8518,
+            "priority": 330,
+            "status": "free"
+          },
+          {
+            "id": 332,
+            "position": 8568,
+            "priority": 332,
+            "status": "free"
+          },
+          {
+            "id": 334,
+            "position": 8618,
+            "priority": 334,
+            "status": "free"
+          },
+          {
+            "id": 336,
+            "position": 8668,
+            "priority": 336,
+            "status": "free"
+          },
+          {
+            "id": 338,
+            "position": 8718,
+            "priority": 338,
+            "status": "free"
+          },
+          {
+            "id": 340,
+            "position": 8768,
+            "priority": 340,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 342,
+            "position": 8818,
+            "priority": 342,
+            "status": "free"
+          },
+          {
+            "id": 344,
+            "position": 8868,
+            "priority": 344,
+            "status": "free"
+          },
+          {
+            "id": 346,
+            "position": 8918,
+            "priority": 346,
+            "status": "free"
+          },
+          {
+            "id": 348,
+            "position": 8968,
+            "priority": 348,
+            "status": "free"
+          },
+          {
+            "id": 350,
+            "position": 9018,
+            "priority": 350,
+            "status": "free"
+          },
+          {
+            "id": 352,
+            "position": 9068,
+            "priority": 352,
+            "status": "free"
+          },
+          {
+            "id": 354,
+            "position": 9118,
+            "priority": 354,
+            "status": "free"
+          },
+          {
+            "id": 356,
+            "position": 9168,
+            "priority": 356,
+            "status": "free"
+          },
+          {
+            "id": 358,
+            "position": 9218,
+            "priority": 358,
+            "status": "free"
+          },
+          {
+            "id": 360,
+            "position": 9268,
+            "priority": 360,
+            "status": "free"
+          }
+        ]
+      },
+      {
+        "side": "back",
+        "cells": [
+          {
+            "id": 362,
+            "position": 9318,
+            "priority": 362,
+            "status": "free"
+          },
+          {
+            "id": 364,
+            "position": 9368,
+            "priority": 364,
+            "status": "free"
+          },
+          {
+            "id": 366,
+            "position": 9418,
+            "priority": 366,
+            "status": "free"
+          },
+          {
+            "id": 368,
+            "position": 9468,
+            "priority": 368,
+            "status": "free"
+          },
+          {
+            "id": 370,
+            "position": 9518,
+            "priority": 370,
+            "status": "free"
+          },
+          {
+            "id": 372,
+            "position": 9568,
+            "priority": 372,
+            "status": "free"
+          },
+          {
+            "id": 374,
+            "position": 9618,
+            "priority": 374,
+            "status": "free"
+          },
+          {
+            "id": 376,
+            "position": 9668,
+            "priority": 376,
+            "status": "free"
+          },
+          {
+            "id": 378,
+            "position": 9718,
+            "priority": 378,
+            "status": "free"
+          }
+        ]
+      }
+    ],
+    "ProductionDate": "2011-05-01T19:43:37+0100",
+    "SerialNumber": "Prototype #1"
   },
-
-  //"SetupNetwork": {
-  //  "Inverter1": "192.168.0.100",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "192.168.0.1",
-  //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2,
-  //  "InverterIndexBay1": 3,
-  //  "InverterIndexShutter2": 4,
-  //  "PPC1MasterIPAddress": "::1",
-  //  "PPC2SlaveIPAddress": "::2",
-  //  "PPC3SlaveIPAddress": "::3"
-  //},
-
-  //production in Vicenza
-  "SetupNetwork": {
-    "MachineNumber": 1,
-    "WMS_ON": true,
-    "Inverter1": "192.168.0.100",
-    "Inverter1Port": 17221,
-    "InverterIndexMaster": 0,
-    "InverterIndexShutter1": 2,
-    "InverterIndexBay1": 3,
-    "InverterIndexShutter2": 4,
-    "IOExpansion1Installed": true,
-    "IOExpansion2Installed": true,
-    "IOExpansion3Installed": false,
-    "IOExpansion1IPAddress": "192.168.0.1",
-    "IOExpansion1Port": 19550,
-    "IOExpansion2IPAddress": "192.168.0.2",
-    "IOExpansion2Port": 19550,
-    "PPC1MasterIPAddress": "::1",
-    "PPC2SlaveIPAddress": "198.168.0.2",
-    "PPC3SlaveIPAddress": "198.168.0.3"
+  "BayPositionControl": {
+    "StepValue": 0.5,
+    "FeedRate": 0.20
   },
-
-  "VerticalAxis": {
-    "MaxEmptySpeed": 770.0,
-    "MaxEmptyAcceleration": 1000.0,
-    "MaxEmptyDeceleration": 1000.0,
-    "MinFullSpeed": 550.0,
-    "MaxFullAcceleration": 400.0,
-    "MaxFullDeceleration": 400.0,
-    "HomingSearchDirection": false,
-    "HomingSearchSpeed": 100.0,
-    "HomingSearchAcceleration": 750.0,
-    "HomingSearchDeceleration": 750.0,
-    "HomingExitSpeed": 50.0,
-    "HomingExitAcceleration": 750.0,
-    "HomingExitDeceleration": 750.0,
-    "Resolution": 77.61182,
-    "Offset": 350.0,
-    "UpperBound": 4000.0,
-    "LowerBound": 350.0,
-    "TakingOffset": 0.0,
-    "DepositOffset": 0.0
+  "BeltBurnishing": {
+    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+    "CycleQuantity": 5
   },
-  "HorizontalAxis": {
-    "MaxEmptySpeed": 730.0,
-    "MaxEmptyAcceleration": 1500.0,
-    "MaxEmptyDeceleration": 1500.0,
-    "MaxFullSpeed": 55.0,
-    "MaxFullAcceleration": 350.00,
-    "MaxFullDeceleration": 350.00,
-    //"HomingExecuted":false,
-    "Resolution": 77.6722,
-    "Offset": 0.0,
-    "ClockWiseRun": 1235.0,
-    "AntiClockWiseRun": 1241.0,
-    "CarouselDistance": 300.0
-  },
-  "HorizontalMovementShorterPickup": {
-    "TotalSteps": 5,
-    "TotalMovement": 1415.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
-    "P0Acceleration": 1000.0,
-    "P0Deceleration": 0.0,
-    "P0SpeedV1": 200.0,
-    "P1Quote": 200.0,
-    "P1Acceleration": 500.0,
-    "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 550.0,
-    "P2Acceleration": 1000.0,
-    "P2Deceleration": 1000.0,
-    "P2SpeedV3": 500.0,
-    "P3Quote": 950.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 250.0,
-    "P4Quote": 1350.00,
-    "P4Acceleration": 800.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 50.0,
-    "P5Quote": 1415.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "HorizontalMovementLongerPickup": {
-    "TotalSteps": 5,
-    "TotalMovement": 1310.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
-    "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 200.0,
-    "P1Quote": 100.0,
-    "P1Acceleration": 1000.0,
-    "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 200.0,
-    "P2Acceleration": 1000.0,
-    "P2Deceleration": 1000.0,
-    "P2SpeedV3": 500.0,
-    "P3Quote": 300.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 500.0,
-    "P4Quote": 985.00,
-    "P4Acceleration": 1000.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 200.0,
-    "P5Quote": 1310.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "HorizontalMovementShorterDeposit": {
-    "TotalSteps": 5,
-    "TotalMovement": 1415.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
-    "P0Acceleration": 1000.0,
-    "P0Deceleration": 0.0,
-    "P0SpeedV1": 200.0,
-    "P1Quote": 200.0,
-    "P1Acceleration": 500.0,
-    "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 550.0,
-    "P2Acceleration": 1000.0,
-    "P2Deceleration": 1000.0,
-    "P2SpeedV3": 500.0,
-    "P3Quote": 950.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 250.0,
-    "P4Quote": 1350.00,
-    "P4Acceleration": 800.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 50.0,
-    "P5Quote": 1415.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "HorizontalMovementLongerDeposit": {
-    "TotalSteps": 5,
-    "TotalMovement": 1310.0,
-    "MovementCorrection": 20.0,
-    //"P0Quote": 0.0,
-    "P0Acceleration": 1000.0,
-    "P0Deceleration": 1000.0,
-    "P0SpeedV1": 200.0,
-    "P1Quote": 100.0,
-    "P1Acceleration": 1000.0,
-    "P1Deceleration": 1000.0,
-    "P1SpeedV2": 100.0,
-    "P2Quote": 200.0,
-    "P2Acceleration": 1000.0,
-    "P2Deceleration": 1000.0,
-    "P2SpeedV3": 500.0,
-    "P3Quote": 300.0,
-    "P3Acceleration": 1000.0,
-    "P3Deceleration": 1000.0,
-    "P3SpeedV4": 500.0,
-    "P4Quote": 985.00,
-    "P4Acceleration": 1000.0,
-    "P4Deceleration": 1000.0,
-    "P4SpeedV5": 200.0,
-    "P5Quote": 1310.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
-  },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
+  "CellControl": {
+    "StepValue": 0.5,
+    "FeedRate": 0.20
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.30,
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 200.0
+  },
+  "LoadFirstDrawer": {
+    "FeedRate": 0.20
+  },
+
+  "OffsetCalibration": {
+    "ReferenceCell": 50, //TEMP Temporary value for software test
+    "StepValue": 0.5,
+    "FeedRate": 0.20
+  },
+  "PanelControl": {
+    "FeedRate": 0.20
+  },
+  "ResolutionCalibration": {
+    "InitialPosition": 1000.0, //TEMP Temporary value for software test
+    "FinalPosition": 5500.0, //TEMP Temporary value for software test
+    "FeedRate": 0.20
+  },
+  "ShutterHeightControl": {
+    "FeedRate": 0.10
   },
   "ShutterManualMovements": {
     "FeedRate": 0.20,
@@ -258,38 +2802,13 @@
     "LowerDistance": 472.0,
     "HighSpeedPercent": 90.0
   },
-  "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
+  "VerticalManualMovements": {
+    "FeedRate": 0.10,
+    "PositiveTargetDirection": 30.0,
+    "NegativeTargetDirection": 30.0,
+    "FeedRateAfterZero": 0.15
   },
   "WeightControl": {
     "FeedRate": 0.10
-  },
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
   }
 }

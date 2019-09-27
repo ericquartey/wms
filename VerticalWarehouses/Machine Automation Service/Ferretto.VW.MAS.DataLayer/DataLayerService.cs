@@ -119,7 +119,6 @@ namespace Ferretto.VW.MAS.DataLayer
             };
 
             // this.SaveEntryToDb(logEntry);
-
             return Task.CompletedTask;
         }
 

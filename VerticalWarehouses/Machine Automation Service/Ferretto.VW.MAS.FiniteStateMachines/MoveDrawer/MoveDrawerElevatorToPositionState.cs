@@ -19,11 +19,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IMoveDrawerMachineData machineData;
 
+        private readonly PositioningMessageData positioningMessageData;
+
         private readonly IMoveDrawerStateData stateData;
 
         private bool disposed;
-
-        private PositioningMessageData positioningMessageData;
 
         #endregion
 

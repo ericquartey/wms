@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Configurations>Debug;Release;Debug (no autogen)</Configurations>
+    <Configurations>Debug;Release;Debug_no_autogen</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

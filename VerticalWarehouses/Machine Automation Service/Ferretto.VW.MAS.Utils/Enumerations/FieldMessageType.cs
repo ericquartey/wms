@@ -54,6 +54,6 @@
 
         InverterStatusWord,
 
-        InverterSetTimer
+        InverterSetTimer,
     }
 }

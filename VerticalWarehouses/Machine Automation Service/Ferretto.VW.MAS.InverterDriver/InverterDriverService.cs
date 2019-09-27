@@ -63,8 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-        private readonly Timer heartBeatTimer;
-
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly Task inverterReceiveTask;
@@ -171,7 +169,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (disposing)
             {
-                this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
 
                 foreach (var timer in this.axisPositionUpdateTimer)
