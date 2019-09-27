@@ -656,7 +656,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.TorqueCurrentSampling,
+                MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
         }
