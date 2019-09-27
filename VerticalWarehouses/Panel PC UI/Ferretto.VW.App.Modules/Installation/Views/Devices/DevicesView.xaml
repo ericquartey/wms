@@ -13,7 +13,7 @@
                      MinWidth="800"
                      MinHeight="635"
                      ShowTitle="True"
-                     WindowState="Maximized"                     
+                     WindowState="Maximized"
                      mc:Ignorable="d">
 
     <ctrls:PpcDialogView.DataContext>
@@ -139,7 +139,7 @@
 
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
-                                      ItemsSource="{Binding IoStatuses}">
+                                      ItemsSource="{Binding Inputs}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" />
