@@ -842,9 +842,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             if (axis.Orientation == Orientation.Vertical)
                             {
-                                var beltDisplacement = this.elevatorDataProvider.ComputeBeltDisplacement((double)positioningData.TargetPosition);
+                                var beltDisplacement = this.elevatorDataProvider.ComputeDisplacement(positioningData.TargetPosition);
                                 this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
-                                // TO UNCOMMENT position -= beltDisplacement;
+                                position -= beltDisplacement;
                             }
                         }
 
@@ -877,14 +877,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         var positioningFieldData = new InverterPositioningFieldMessageData(
-                        positioningData,
-                        targetAcceleration,
-                        targetDeceleration,
-                        targetPosition,
-                        targetSpeed,
-                        switchPosition,
-                        direction,
-                        this.refreshTargetTable);
+                            positioningData,
+                            targetAcceleration,
+                            targetDeceleration,
+                            targetPosition,
+                            targetSpeed,
+                            switchPosition,
+                            direction,
+                            this.refreshTargetTable);
 
                         // TODO: why this comment? remove if not necessary!
                         //this.refreshTargetTable = false;

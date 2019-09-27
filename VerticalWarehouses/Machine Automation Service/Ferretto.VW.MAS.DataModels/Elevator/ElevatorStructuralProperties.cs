@@ -5,7 +5,7 @@
         #region Fields
 
         /// <summary>
-        /// The sum of the distances between the belt pulleys and the top and bottom parts of the machine.
+        /// The sum of the distances, in millimeters, between the belt pulleys and the top and bottom parts of the machine.
         /// </summary>
         public const double PulleysMargin = 308;
 
@@ -19,7 +19,7 @@
         public int BeltRigidity { get; set; }
 
         /// <summary>
-        /// Gets or sets the spacing between the upper and lower attachments of the elevator to the belt.
+        /// Gets or sets the spacing, in millimeters, between the upper and lower attachments of the elevator to the belt.
         /// </summary>
         public double BeltSpacing { get; set; }
 
@@ -29,7 +29,7 @@
         public double HalfShaftLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum weight that can be loaded on the cradle.
+        /// Gets or sets the maximum weight, in kilograms, that can be loaded on the cradle.
         /// </summary>
         public double MaximumLoadOnBoard { get; set; }
 

@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        double ComputeBeltDisplacement(double targetPosition);
+        double ComputeDisplacement(double targetPosition);
 
         int ConvertMillimetersToPulses(double millimeters, Orientation orientation);
 

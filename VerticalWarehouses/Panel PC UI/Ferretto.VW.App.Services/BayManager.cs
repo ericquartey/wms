@@ -137,9 +137,9 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            var bayIndex = ConfigurationManager.AppSettings.GetBayNumber();
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)bayIndex);
+            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)bayNumber);
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
@@ -154,23 +154,23 @@ namespace Ferretto.VW.App.Services
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
             //TODO Review Implementation avoid using numbers to identify bays
-            var bayIndex = MAS.AutomationService.Contracts.BayNumber.None;
+            var bayNumber = MAS.AutomationService.Contracts.BayNumber.None;
             switch (e.BayNumber)
             {
                 case 1:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayOne;
                     break;
 
                 case 2:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayTwo;
                     break;
 
                 case 3:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayThree;
                     break;
             }
 
-            if (this.Bay.Number == bayIndex)
+            if (this.Bay.Number == bayNumber)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        Bay Activate(BayNumber bayIndex);
+        Bay Activate(BayNumber bayNumber);
 
         void AddElevatorPseudoBay();
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void Create(Bay bay);
 
-        Bay Deactivate(BayNumber bayIndex);
+        Bay Deactivate(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
 
@@ -29,15 +29,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         BayNumber GetByMovementType(IPositioningMessageData data);
 
-        Bay GetByNumber(BayNumber bayIndex);
+        Bay GetByNumber(BayNumber bayNumber);
 
-        InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayIndex);
+        InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
 
-        IoIndex GetIoDevice(BayNumber bayIndex);
+        IoIndex GetIoDevice(BayNumber bayNumber);
 
-        Bay SetCurrentOperation(BayNumber bayIndex, BayOperation newOperation);
+        Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
-        Bay UpdatePosition(BayNumber bayIndex, int position, double height);
+        Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 
         #endregion
     }

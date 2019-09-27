@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         ErrorStatisticsSummary GetStatistics();
 
-        Error RecordNew(MachineErrors code, BayNumber bayIndex);
+        Error RecordNew(MachineErrors code, BayNumber bayNumber);
 
         Error Resolve(int id);
 

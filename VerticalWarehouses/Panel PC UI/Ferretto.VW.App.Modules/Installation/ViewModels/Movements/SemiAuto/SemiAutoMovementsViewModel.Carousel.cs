@@ -71,8 +71,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsElevatorMoving
               &&
               !this.IsWaitingForResponse;
-            //&&
-            //(this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
+
+            // &&
+            // (this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
         }
 
         private bool CanExecuteCarouselUpCommand()
@@ -80,6 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsElevatorMoving
               &&
               !this.IsWaitingForResponse;
+
             // &&
             // IoStatus.LoadingUnitInLowerBay;
         }
