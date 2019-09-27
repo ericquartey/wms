@@ -876,15 +876,22 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // TODO: what is '2' and '4'? Please replace with named constants.
                         var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
 
+                        this.logger.LogDebug($"Direction: {positioningData.Direction}");
+                        this.logger.LogDebug($"Position:");
+                        for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
+                        {
+                            this.logger.LogDebug($"{positioningData.SwitchPosition[i]} mm");
+                        }
+
                         var positioningFieldData = new InverterPositioningFieldMessageData(
-                            positioningData,
-                            targetAcceleration,
-                            targetDeceleration,
-                            targetPosition,
-                            targetSpeed,
-                            switchPosition,
-                            direction,
-                            this.refreshTargetTable);
+                        positioningData,
+                        targetAcceleration,
+                        targetDeceleration,
+                        targetPosition,
+                        targetSpeed,
+                        switchPosition,
+                        direction,
+                        this.refreshTargetTable);
 
                         // TODO: why this comment? remove if not necessary!
                         //this.refreshTargetTable = false;

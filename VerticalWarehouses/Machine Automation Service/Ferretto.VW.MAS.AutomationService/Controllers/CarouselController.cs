@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 var targetPosition = bay.Carousel.ElevatorDistance;
 
-                targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+                targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
 
                 var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 var targetPosition = bay.Carousel.ElevatorDistance;
 
-                targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
                 var axis = this.elevatorDataProvider.GetHorizontalAxis();
                 var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };

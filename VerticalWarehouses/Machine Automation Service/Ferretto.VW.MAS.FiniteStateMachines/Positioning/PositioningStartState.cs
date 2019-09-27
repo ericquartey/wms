@@ -104,7 +104,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            if (!this.machineData.MessageData.IsOneKMachine)
+            if (!this.machineData.MessageData.IsOneKMachine &&
+                this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.MessageData.AxisMovement);
                 var ioCommandMessage = new FieldCommandMessage(

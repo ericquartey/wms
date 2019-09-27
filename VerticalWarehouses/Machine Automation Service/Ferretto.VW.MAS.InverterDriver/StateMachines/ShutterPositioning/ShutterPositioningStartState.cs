@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Shutter positioning Start state");
 
             if (this.InverterStatus is IAglInverterStatus aglStatus)
             {
@@ -99,9 +99,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Stop");
+            this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new ShutterPositioningStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.shutterPositionData,
+                    this.Logger));
         }
 
         /// <inheritdoc/>

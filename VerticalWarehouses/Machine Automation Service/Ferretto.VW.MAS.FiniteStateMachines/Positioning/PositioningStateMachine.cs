@@ -184,12 +184,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
             else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
             {
-                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
                         !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
                         !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
                 if (!ok)
                 {
-                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
                             $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
                             $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
                 }

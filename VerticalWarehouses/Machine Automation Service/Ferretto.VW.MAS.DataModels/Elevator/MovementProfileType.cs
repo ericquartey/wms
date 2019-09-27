@@ -4,8 +4,12 @@
     {
         Undefined,
 
-        ShortProfile,
+        ShortPickUpProfile,
 
-        LongProfile,
+        ShortDepositProfile,
+
+        LongDepositProfile,
+
+        LongPickUpProfile,
     }
 }

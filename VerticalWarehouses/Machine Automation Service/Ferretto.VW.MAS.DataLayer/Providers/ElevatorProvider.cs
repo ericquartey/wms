@@ -158,23 +158,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            // execute command
             var position = this.GetHorizontalPosition(requestingBay).Value;
 
-            // if direction is Forwards height increments, else is decremented
+            var profileType = SelectProfileType(direction, isStartedOnBoard);
 
-            // the total length is splitted in two unequal distances
-            var isLongerDistance =
-                (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards)
-                ||
-                (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
-
-            var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
-            var profileSteps = horizontalAxis.Profiles
-                .Single(p => p.Name == (isLongerDistance ? MovementProfileType.LongProfile : MovementProfileType.ShortProfile))
+            var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
+                .Single(p => p.Name == profileType)
                 .Steps
                 .OrderBy(s => s.Number);
 
+            // if direction is Forwards height increments, else is decremented
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var speed = profileSteps.Select(s => s.Speed).ToArray();
@@ -543,6 +536,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.Stop,
                 bayNumber,
                 BayNumber.ElevatorBay);
+        }
+
+        private static MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool isStartedOnBoard)
+        {
+            // the total length is splitted in two unequal distances
+            var isLongerDistance =
+                (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards)
+                ||
+                (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
+
+            if (isLongerDistance && isStartedOnBoard)
+            {
+                return MovementProfileType.LongDepositProfile;
+            }
+            else if (isLongerDistance && !isStartedOnBoard)
+            {
+                return MovementProfileType.LongPickUpProfile;
+            }
+            else if (!isLongerDistance && isStartedOnBoard)
+            {
+                return MovementProfileType.ShortDepositProfile;
+            }
+            else
+            {
+                return MovementProfileType.ShortPickUpProfile;
+            }
         }
 
         private double GetFeedRate(FeedRateCategory feedRateCategory)
