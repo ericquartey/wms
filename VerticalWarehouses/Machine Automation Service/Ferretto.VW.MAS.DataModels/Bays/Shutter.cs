@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
+        public int TotalCycles { get; set; }
+
         public ShutterType Type { get; set; }
 
         #endregion

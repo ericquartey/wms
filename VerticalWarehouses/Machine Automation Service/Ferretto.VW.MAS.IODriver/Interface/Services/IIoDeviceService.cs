@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver.Interface.Services
 {

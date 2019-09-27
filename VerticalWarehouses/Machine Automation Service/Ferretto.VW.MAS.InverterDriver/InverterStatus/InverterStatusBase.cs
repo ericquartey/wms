@@ -20,15 +20,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private ushort operatingMode;
 
-        private byte systemIndex;
-
         #endregion
 
         #region Constructors
 
         protected InverterStatusBase(InverterIndex systemIndex)
         {
-            this.systemIndex = (byte)systemIndex;
+            this.SystemIndex = (byte)systemIndex;
         }
 
         #endregion

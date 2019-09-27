@@ -36,34 +36,30 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override void Start()
         {
-            if (this.InverterStatus == null)
-            {
-                this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, null, this.inverterIndex, this.Logger));
-            }
-            else
-            {
-                this.InverterStatus.CommonControlWord.FaultReset = true;
+            this.InverterStatus.CommonControlWord.FaultReset = true;
 
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(
+                this.InverterStatus.SystemIndex,
+                (short)InverterParameterId.ControlWordParam,
+                this.InverterStatus.CommonControlWord.Value);
 
-                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-                var notificationMessageData = new InverterFaultFieldMessageData();
-                var notificationMessage = new FieldNotificationMessage(
-                    notificationMessageData,
-                    $"Fault Reset Inverter {this.inverterIndex}",
-                    FieldMessageActor.Any,
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageType.InverterFaultReset,
-                    MessageStatus.OperationStart,
-                    this.InverterStatus.SystemIndex);
+            var notificationMessageData = new InverterFaultFieldMessageData();
+            var notificationMessage = new FieldNotificationMessage(
+                notificationMessageData,
+                $"Fault Reset Inverter {this.inverterIndex}",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterFaultReset,
+                MessageStatus.OperationStart,
+                this.InverterStatus.SystemIndex);
 
-                this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-                this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
-            }
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
         /// <inheritdoc />

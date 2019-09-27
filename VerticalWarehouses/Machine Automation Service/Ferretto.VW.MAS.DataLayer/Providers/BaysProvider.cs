@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IMachineProvider machineProvider;
@@ -41,11 +43,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer configurationValueManagement)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.configurationValueManagement = configurationValueManagement ?? throw new ArgumentNullException(nameof(configurationValueManagement));
@@ -234,6 +238,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .Include(b => b.Inverter)
                 .Include(b => b.Positions)
                 .Include(b => b.Shutter)
+                .ThenInclude(s => s.Inverter)
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(b => b.Number == bayNumber);
 
@@ -294,13 +299,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         case MovementMode.ShutterTest:
                         case MovementMode.ShutterPosition:
-                            returnValue = this.GetInverterList(bayIndex)[this.ShutterInverterPosition];
+                            returnValue = this.GetByNumber(bayIndex).Shutter.Inverter.Index;
                             break;
 
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
-                            returnValue = this.GetInverterList(bayIndex)[this.BayInverterPosition];
+                            returnValue = this.GetByNumber(bayIndex).Inverter.Index;
                             break;
 
                         default:

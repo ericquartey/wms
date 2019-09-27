@@ -50,6 +50,9 @@
             "Index": 4
           }
         },
+        "Carousel": {
+          "ElevatorDistance": 300
+        },
         "Type": "carousel"
       }
     ],

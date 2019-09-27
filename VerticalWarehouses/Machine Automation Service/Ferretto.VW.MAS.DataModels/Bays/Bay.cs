@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public Carousel Carousel { get; set; }
+
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }

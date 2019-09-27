@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<Carousel> Carousels { get; set; }
+
         public DbSet<CellPanel> CellPanels { get; set; }
 
         public DbSet<Cell> Cells { get; set; }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190926092405_Initial")]
+    [Migration("20190926154105_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CarouselId");
 
                     b.Property<int?>("CurrentMissionId");
 
@@ -48,6 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarouselId");
 
                     b.HasIndex("InverterId");
 
@@ -79,6 +83,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("BayId");
 
                     b.ToTable("BayPosition");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("ElevatorDistance");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carousels");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
@@ -459,12 +475,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<TimeSpan>("TotalPowerOnTime");
 
-                    b.Property<int>("TotalShutter1Cycles");
-
-                    b.Property<int>("TotalShutter2Cycles");
-
-                    b.Property<int>("TotalShutter3Cycles");
-
                     b.Property<int>("TotalVerticalAxisCycles");
 
                     b.Property<double>("TotalVerticalAxisKilometers");
@@ -478,21 +488,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            TotalAutomaticTime = new TimeSpan(130, 0, 0, 0, 0),
-                            TotalBeltCycles = 12352,
-                            TotalMissionTime = new TimeSpan(30, 0, 0, 0, 0),
-                            TotalMovedTrays = 534,
-                            TotalMovedTraysInBay1 = 123,
-                            TotalMovedTraysInBay2 = 456,
-                            TotalMovedTraysInBay3 = 789,
-                            TotalPowerOnTime = new TimeSpan(190, 0, 0, 0, 0),
-                            TotalShutter1Cycles = 321,
-                            TotalShutter2Cycles = 654,
-                            TotalShutter3Cycles = 987,
-                            TotalVerticalAxisCycles = 5232,
-                            TotalVerticalAxisKilometers = 34.0,
-                            WeightCapacityPercentage = 60.0
+                            Id = -1,
+                            TotalAutomaticTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalBeltCycles = 0,
+                            TotalMissionTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalMovedTrays = 0,
+                            TotalMovedTraysInBay1 = 0,
+                            TotalMovedTraysInBay2 = 0,
+                            TotalMovedTraysInBay3 = 0,
+                            TotalPowerOnTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalVerticalAxisCycles = 0,
+                            TotalVerticalAxisKilometers = 0.0,
+                            WeightCapacityPercentage = 0.0
                         });
                 });
 
@@ -558,7 +565,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 26, 11, 24, 4, 244, DateTimeKind.Local).AddTicks(5083),
+                            InstallationDate = new DateTime(2016, 11, 26, 17, 41, 4, 695, DateTimeKind.Local).AddTicks(9060),
                             ServiceStatus = 86
                         });
                 });
@@ -663,6 +670,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("InverterId");
 
+                    b.Property<int>("TotalCycles");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
@@ -766,6 +775,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
+                        .WithMany()
+                        .HasForeignKey("CarouselId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
