@@ -76,14 +76,8 @@
 
         PositioningTable,
 
-        CurrentSamplingInMotionNotification,
-
-        CurrentSamplingInPlaceNotification,
-
         InverterFaultReset,
 
         ResetSecurity,
-
-        WeightAcquisitionCommand
     }
 }

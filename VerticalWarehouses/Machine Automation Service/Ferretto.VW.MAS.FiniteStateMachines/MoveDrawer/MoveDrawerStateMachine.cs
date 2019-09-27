@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -31,9 +30,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             BayNumber requestingBay,
             ISetupStatusProvider setupStatusProvider,
             IMachineSensorsStatus machineSensorsStatus,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
-            IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
@@ -45,9 +41,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.machineData = new MoveDrawerMachineData(isOneKMachine,
                 setupStatusProvider,
                 machineSensorsStatus,
-                generalInfoDataLayer,
-                verticalAxis,
-                horizontalAxis,
                 drawerOperationData,
                 requestingBay,
                 eventAggregator,

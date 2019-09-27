@@ -28,6 +28,6 @@
 
         WrongAxisException = 109,
 
-        SaveData = 1001
+        SaveData = 1001,
     }
 }

@@ -13,31 +13,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IMachinesDataService machinesDataService;
+        private readonly IMachineProvider machineProvider;
 
-        private readonly IMachineStatisticsProvider machineStatisticsProvider;
+        private readonly IMachinesDataService machinesDataService;
 
         #endregion
 
         #region Constructors
 
         public StatisticsController(
-            IMachineStatisticsProvider machineStatisticsProvider,
+            IMachineProvider machineProvider,
             IMachinesDataService machinesDataService)
         {
-            if (machineStatisticsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(machineStatisticsProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new ArgumentNullException(nameof(machinesDataService));
-            }
-
-            this.machineStatisticsProvider = machineStatisticsProvider;
-            this.machinesDataService = machinesDataService;
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
         }
+
+        #endregion
+
+        #region Properties
+
+        public IMachineProvider MachineStatisticsProvider => this.machineProvider;
 
         #endregion
 
@@ -46,7 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public async Task<ActionResult<MachineStatistics>> GetAsync()
         {
-            var statics = this.machineStatisticsProvider.GetMachineStatistics();
+            var statics = this.MachineStatisticsProvider.GetStatistics();
 
             try
             {

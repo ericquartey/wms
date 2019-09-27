@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -40,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         {
             this.InverterStatus.CommonControlWord.SwitchOn = true;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
                 ? false
                 : this.axisToSwitchOn == Axis.Horizontal;
 

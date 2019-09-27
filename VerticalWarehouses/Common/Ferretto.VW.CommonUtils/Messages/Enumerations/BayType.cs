@@ -8,12 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         Carousel = 2,
 
-        ExternalSingle = 3,
-
-        ExternalDouble = 4,
-
-        ExternalCarousel = 5,
-
         Elevator = 6
     }
 }

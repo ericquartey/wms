@@ -27,25 +27,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? completedCycles;
 
-        private decimal? currentPosition;
+        private double? currentPosition;
 
         private int initialCycles;
 
         private int inputDelay;
 
-        private decimal? inputLowerBound;
+        private double? inputLowerBound;
 
         private int? inputRequiredCycles;
 
-        private decimal? inputUpperBound;
+        private double? inputUpperBound;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
-        private decimal? machineLowerBound;
+        private double? machineLowerBound;
 
-        private decimal? machineUpperBound;
+        private double? machineUpperBound;
 
         private SubscriptionToken receivedActionUpdateToken;
 
@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.completedCycles, value);
         }
 
-        public decimal? CurrentPosition
+        public double? CurrentPosition
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);
@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputLowerBound
+        public double? InputLowerBound
         {
             get => this.inputLowerBound;
             set
@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputUpperBound
+        public double? InputUpperBound
         {
             get => this.inputUpperBound;
             set

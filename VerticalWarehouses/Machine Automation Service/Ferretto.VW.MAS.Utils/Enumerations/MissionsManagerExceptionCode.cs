@@ -2,6 +2,6 @@
 {
     public enum MissionsManagerExceptionCode
     {
-        StartMessageTasks
+        StartMessageTasks,
     }
 }

@@ -4,7 +4,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class SensorsProvider : BaseProvider, ISensorsProvider
+    internal sealed class SensorsProvider : BaseProvider, ISensorsProvider
     {
         #region Constructors
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public bool[] GetAll(BayNumber requestingBay)
         {
-            void publishAction()
+            void PublishAction()
             {
                 this.PublishCommand(
                     null,
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageType.SensorsChanged,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             return messageData.SensorsStates;
         }

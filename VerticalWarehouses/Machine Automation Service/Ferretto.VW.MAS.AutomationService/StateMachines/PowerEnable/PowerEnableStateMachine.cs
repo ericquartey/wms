@@ -14,7 +14,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
     public class PowerEnableStateMachine : StateMachineBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -55,8 +54,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         #endregion
 
-
-
         #region Methods
 
         /// <inheritdoc/>
@@ -74,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
         /// <inheritdoc/>
         public override void Start()
         {
-            lock(this.CurrentState)
+            lock (this.CurrentState)
             {
                 var stateData = new PowerEnableStateData(this, this.machineData);
                 stateData.StopRequestReason = this.stopRequestReason;
@@ -85,7 +82,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            lock(this.CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState.Stop(reason);
             }
@@ -93,12 +90,12 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 
         protected override void Dispose(bool disposing)
         {
-            if(this.disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            if(disposing)
+            if (disposing)
             {
             }
 

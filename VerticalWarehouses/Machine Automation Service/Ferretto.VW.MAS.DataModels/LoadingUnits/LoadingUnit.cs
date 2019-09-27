@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class LoadingUnit
+    public sealed class LoadingUnit : DataModel
     {
         #region Properties
 
@@ -14,21 +14,19 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
-        public decimal GrossWeight { get; set; }
+        public double GrossWeight { get; set; }
 
-        public decimal Height { get; set; }
-
-        public int Id { get; set; }
+        public double Height { get; set; }
 
         public bool IsIntoMachine { get; set; }
 
-        public decimal MaxNetWeight { get; set; }
+        public double MaxNetWeight { get; set; }
 
         public int MissionsCount { get; set; }
 
         public LoadingUnitStatus Status { get; set; }
 
-        public decimal Tare { get; set; }
+        public double Tare { get; set; }
 
         #endregion
     }

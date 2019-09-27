@@ -27,14 +27,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public ICommand CarouselDownCommand =>
-                    this.carouselDownCommand
+            this.carouselDownCommand
             ??
             (this.carouselDownCommand = new DelegateCommand(
                 async () => await this.CarouselDownAsync(),
                 this.CanExecuteCarouselDownCommand));
 
         public ICommand CarouselUpCommand =>
-                    this.carouselUpCommand
+            this.carouselUpCommand
             ??
             (this.carouselUpCommand = new DelegateCommand(
                 async () => await this.CarouselUpAsync(),
@@ -45,9 +45,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get
             {
                 var bay = this.bayManagerService.Bay;
-                return bay.Type == BayType.Carousel
-                        ||
-                       bay.Type == BayType.ExternalCarousel;
+                return bay.Type == BayType.Carousel;
             }
         }
 
@@ -73,8 +71,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsElevatorMoving
               &&
               !this.IsWaitingForResponse;
-            //&&
-            //(this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
+
+            // &&
+            // (this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
         }
 
         private bool CanExecuteCarouselUpCommand()
@@ -82,6 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsElevatorMoving
               &&
               !this.IsWaitingForResponse;
+
             // &&
             // IoStatus.LoadingUnitInLowerBay;
         }

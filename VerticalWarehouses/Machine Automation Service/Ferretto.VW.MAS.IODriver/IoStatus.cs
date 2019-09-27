@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
@@ -11,6 +12,8 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
+        public const int TOTAL_INPUTS = 16;
+
         private const short COMTOUT_DEFAULT = 20000;
 
         private const byte DEBOUNCE_INPUT_DEFAULT = 0x32; // 50 ms
@@ -20,8 +23,6 @@ namespace Ferretto.VW.MAS.IODriver
         private const byte RELEASE_FW_11 = 0x11;
 
         private const byte SETUP_OUTPUTLINES_DEFAULT = 0x00;
-
-        public const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
 
@@ -70,9 +71,9 @@ namespace Ferretto.VW.MAS.IODriver
 
         [Column(Order = (int)IoPorts.AntiIntrusionBarrierBay)]
         public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
-        
+
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
-        
+
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
 
         [Column(Order = (int)IoPorts.CradleMotor)]
@@ -101,7 +102,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         [Column(Order = (int)IoPorts.LoadingUnitInBay)]
         public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
-        
+
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
@@ -117,7 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
         public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public bool[] OutputData => this.outputs;
-        
+
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }

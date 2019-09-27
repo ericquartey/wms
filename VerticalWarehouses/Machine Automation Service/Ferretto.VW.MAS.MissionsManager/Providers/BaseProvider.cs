@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.AspNetCore.Http;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class BaseProvider
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -32,8 +29,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 

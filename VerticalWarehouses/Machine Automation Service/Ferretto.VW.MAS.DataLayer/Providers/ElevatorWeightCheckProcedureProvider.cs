@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
+    public sealed class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
     {
         #region Fields
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public void Start(int loadingUnitId, decimal runToTest, decimal weight)
+        public void Start(int loadingUnitId, double displacement, double weight)
         {
             var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
@@ -38,9 +38,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new Exceptions.EntityNotFoundException(loadingUnitId);
             }
 
-            if (runToTest < 0)
+            if (displacement < 0)
             {
-                throw new ArgumentOutOfRangeException($"LoadingUnit {loadingUnitId}, runToTest must be positive.");
+                throw new ArgumentOutOfRangeException($"LoadingUnit {loadingUnitId}, displacement must be positive.");
             }
 
             if (weight <= 0)

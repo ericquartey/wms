@@ -2,14 +2,12 @@
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 {
     internal class MoveDrawerMachineData : IMoveDrawerMachineData
@@ -20,9 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
             bool isOneKMachine,
             ISetupStatusProvider setupStatusProvider,
             IMachineSensorsStatus machineSensorsStatus,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
-            IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
             BayNumber requestingBay,
             IEventAggregator eventAggregator,
@@ -32,9 +27,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
             this.IsOneKMachine = isOneKMachine;
             this.SetupStatusProvider = setupStatusProvider;
             this.MachineSensorsStatus = machineSensorsStatus;
-            this.GeneralInfoDataLayer = generalInfoDataLayer;
-            this.VerticalAxis = verticalAxis;
-            this.HorizontalAxis = horizontalAxis;
             this.DrawerOperationData = drawerOperationData;
             this.RequestingBay = requestingBay;
             this.EventAggregator = eventAggregator;
@@ -50,10 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 
         public IEventAggregator EventAggregator { get; }
 
-        public IGeneralInfoConfigurationDataLayer GeneralInfoDataLayer { get; }
-
-        public IHorizontalAxisDataLayer HorizontalAxis { get; }
-
         public bool IsOneKMachine { get; }
 
         public ILogger<FiniteStateMachines> Logger { get; }
@@ -67,8 +55,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
         public ISetupStatusProvider SetupStatusProvider { get; }
 
         public BayNumber TargetBay { get; }
-
-        public IVerticalAxisDataLayer VerticalAxis { get; }
 
         #endregion
     }

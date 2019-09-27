@@ -10,6 +10,6 @@
 
         NegativeTargetDirection = 3L,
 
-        FeedRateAfterZero = 4L
+        FeedRateAfterZero = 4L,
     }
 }

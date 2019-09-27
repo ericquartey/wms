@@ -10,19 +10,15 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager
 {
     internal partial class MissionsManagerService
     {
-
         #region Fields
 
         private IFiniteStateMachine activeStateMachine;
 
         #endregion
-
-
 
         #region Properties
 
@@ -54,8 +50,6 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         #endregion
 
-
-
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)
@@ -70,13 +64,6 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             switch (command.Type)
             {
-                case MessageType.WeightAcquisitionCommand:
-                    {
-                        this.OnWeightAcquisitionProcedureCommandReceived(
-                            command.Data as WeightAcquisitionCommandMessageData);
-                        break;
-                    }
-
                 case MessageType.PowerEnable:
                     {
                         this.OnPowerEnableCommandReceived(command.Data as PowerEnableMessageData);
@@ -102,22 +89,6 @@ namespace Ferretto.VW.MAS.MissionsManager
             if (data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
             {
                 this.ActiveStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangePowerStatusStateMachine>();
-                this.ActiveStateMachine.Start(data, this.CancellationToken);
-            }
-        }
-
-        private void OnWeightAcquisitionProcedureCommandReceived(
-                    WeightAcquisitionCommandMessageData data)
-        {
-            if (data is null)
-            {
-                return;
-            }
-
-            // TODO we shall create a FSM manager to handle multiple concurrent requests
-            if (data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
-            {
-                this.ActiveStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IWeightAcquisitionStateMachine>();
                 this.ActiveStateMachine.Start(data, this.CancellationToken);
             }
         }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class UsersProvider : Interfaces.IUsersProvider
+    internal sealed class UsersProvider : Interfaces.IUsersProvider
     {
         #region Fields
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 AccessLevel = accessLevel,
                 Name = userName,
                 PasswordSalt = salt,
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
             };
 
             this.dataContext.Users.Add(user);

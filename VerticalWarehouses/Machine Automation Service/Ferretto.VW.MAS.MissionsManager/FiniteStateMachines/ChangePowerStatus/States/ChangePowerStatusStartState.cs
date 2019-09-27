@@ -7,7 +7,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus.
 {
     internal class ChangePowerStatusStartState : StateBase, IChangePowerStatusStartState
     {
-
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -25,8 +24,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus.
         }
 
         #endregion
-
-
 
         #region Methods
 

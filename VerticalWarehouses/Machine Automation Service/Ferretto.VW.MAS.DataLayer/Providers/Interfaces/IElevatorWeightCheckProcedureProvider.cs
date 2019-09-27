@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void Start(int loadingUnitId, decimal runToTest, decimal weight);
+        void Start(int loadingUnitId, double displacement, double weight);
 
         void Stop();
 

@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool Enable { get; }
 
-        InverterIndex inverterIndex { get; set; }
+        InverterIndex InverterIndex { get; set; }
 
         InverterTimer InverterTimer { get; }
 

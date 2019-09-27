@@ -30,6 +30,6 @@
 
         RequestReadOnWriteOnlyParameter,
 
-        RequerstWriteOnReadOnlyParameter
+        RequerstWriteOnReadOnlyParameter,
     }
 }
