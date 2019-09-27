@@ -20,7 +20,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly Timer delayTimer;
+        private readonly Timer delayTimerDown;
+
+        private readonly Timer delayTimerUp;
 
         private readonly IShutterPositioningMachineData machineData;
 
@@ -41,7 +43,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
-            this.delayTimer = new Timer(this.DelayTimerMethod, null, -1, Timeout.Infinite);
+            this.delayTimerDown = new Timer(this.DelayTimerMethodDown, null, -1, Timeout.Infinite);
+            this.delayTimerUp = new Timer(this.DelayTimerMethodUp, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -84,14 +87,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                     }
                                     else
                                     {
-                                        this.StartPositioning(messageData.ShutterPosition, ShutterMovementDirection.Down);
+                                        if (this.machineData.PositioningMessageData.Delay > 0)
+                                        {
+                                            this.delayTimerUp.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                                        }
+                                        else
+                                        {
+                                            this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
+                                        }
                                     }
                                 }
                                 else if (messageData.ShutterPosition == ShutterPosition.Closed)
                                 {
                                     if (this.machineData.PositioningMessageData.Delay > 0)
                                     {
-                                        this.delayTimer.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                                        this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
                                     }
                                     else
                                     {
@@ -158,7 +168,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             // stop timer
-            this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            this.delayTimerDown.Change(Timeout.Infinite, Timeout.Infinite);
+            this.delayTimerUp.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
@@ -173,7 +184,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             if (disposing)
             {
-                this.delayTimer?.Dispose();
+                this.delayTimerDown?.Dispose();
+                this.delayTimerUp?.Dispose();
             }
 
             this.disposed = true;
@@ -181,13 +193,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             base.Dispose(disposing);
         }
 
-        private void DelayTimerMethod(object state)
+        private void DelayTimerMethodDown(object state)
         {
             // stop timer
-            this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            this.delayTimerDown.Change(Timeout.Infinite, Timeout.Infinite);
 
             // delay expired
             this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
+        }
+
+        private void DelayTimerMethodUp(object state)
+        {
+            // stop timer
+            this.delayTimerUp.Change(Timeout.Infinite, Timeout.Infinite);
+
+            // delay expired
+            this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
         }
 
         private void StartPositioning(ShutterPosition position, ShutterMovementDirection direction)
@@ -210,17 +231,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 }
             }
             // speed is negative to go up
-            var speedRate = this.machineData.PositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1);
-
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
                 this.machineData.PositioningMessageData.ShutterType,
-                speedRate,
+                this.machineData.PositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1),
                 this.machineData.PositioningMessageData.HigherDistance,
                 this.machineData.PositioningMessageData.LowerDistance,
-                this.machineData.PositioningMessageData.HighSpeedPercent,
-                this.machineData.PositioningMessageData.LowerSpeed,
+                this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                this.machineData.PositioningMessageData.LowerSpeed * ((direction == ShutterMovementDirection.Up) ? -1 : 1),
                 this.machineData.PositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(

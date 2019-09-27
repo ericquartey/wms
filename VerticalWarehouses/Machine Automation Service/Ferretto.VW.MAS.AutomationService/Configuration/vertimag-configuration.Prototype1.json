@@ -34,7 +34,7 @@
     //"Bay3Position2": ,
     //"Bay3Height2": ,
     "Shutter1Type": 1,
-    "Shutter2Type": 2,
+    "Shutter2Type": 1,
     //"Shutter3Type": ,
     "LaserBay1": false,
     "LaserBay2": false,
@@ -250,13 +250,14 @@
   },
   "ShutterManualMovements": {
     "FeedRate": 0.20,
-    "MaxSpeed": 500.0,
-    "MinSpeed": 2500.0,
+    "MaxSpeed": 40000.0,
+    "MinSpeed": 5000.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0,
     "HigherDistance": 467.0,
     "LowerDistance": 472.0,
-    "HighSpeedPercent": 90.0
+    "HighSpeedDurationOpen": 15.0,
+    "HighSpeedDurationClose": 15.0
   },
   "BeltBurnishing": {
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much

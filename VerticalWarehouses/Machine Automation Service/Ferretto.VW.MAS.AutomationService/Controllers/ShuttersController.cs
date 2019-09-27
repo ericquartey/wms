@@ -129,6 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 0,
                 0,
                 0,
+                0,
                 0);
 
             this.PublishCommand(
@@ -232,10 +233,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
                 MovementMode.ShutterPosition,
-                MovementType.Relative,//MovementType.Absolute,
+                MovementType.Absolute,
                 0,
                 0,
-                this.shutterManualMovementsDataLayer.HighSpeedPercent,
+                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
+                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
                 lowSpeed);
 
             this.PublishCommand(
@@ -303,10 +305,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.shutterManualMovementsDataLayer.HigherDistance,
                 this.shutterManualMovementsDataLayer.LowerDistance,
                 MovementMode.ShutterTest,
-                MovementType.Relative, //MovementType.Absolute,
+                MovementType.Absolute,
                 testCycleCount,
                 delayInMilliseconds,
-                this.shutterManualMovementsDataLayer.HighSpeedPercent,
+                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
+                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
                 lowSpeed);
 
             this.PublishCommand(

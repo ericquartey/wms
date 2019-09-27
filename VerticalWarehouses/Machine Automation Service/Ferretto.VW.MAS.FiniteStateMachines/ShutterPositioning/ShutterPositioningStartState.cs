@@ -79,8 +79,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         -this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HigherDistance,
                                         this.machineData.PositioningMessageData.LowerDistance,
-                                        this.machineData.PositioningMessageData.HighSpeedPercent,
-                                        this.machineData.PositioningMessageData.LowerSpeed,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                                        -this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
                                     var commandMessage = new FieldCommandMessage(
@@ -116,7 +117,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HigherDistance,
                                         this.machineData.PositioningMessageData.LowerDistance,
-                                        this.machineData.PositioningMessageData.HighSpeedPercent,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationClose,
                                         this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
@@ -221,8 +223,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     -this.machineData.PositioningMessageData.SpeedRate,
                     this.machineData.PositioningMessageData.HigherDistance,
                     this.machineData.PositioningMessageData.LowerDistance,
-                    this.machineData.PositioningMessageData.HighSpeedPercent,
-                    this.machineData.PositioningMessageData.LowerSpeed,
+                    this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                    this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                    -this.machineData.PositioningMessageData.LowerSpeed,
                     this.machineData.PositioningMessageData.MovementType);
             }
 
