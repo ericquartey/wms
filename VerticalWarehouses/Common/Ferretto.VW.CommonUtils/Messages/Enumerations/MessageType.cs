@@ -76,8 +76,6 @@
 
         PositioningTable,
 
-        TorqueCurrentSampling,
-
         InverterFaultReset,
 
         ResetSecurity,

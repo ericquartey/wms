@@ -21,7 +21,7 @@
     "Bay1Type": 2,
     "Bay2Type": 2,
     "Bay3Type": 0,
-    "Bay1Position1": 746.00,
+    "Bay1Position1": 752.00,
     //"Bay1Height1":,
     //"Bay1Position2":,
     //"Bay1Height2":,
@@ -246,7 +246,7 @@
     "FeedRateAfterZero": 0.15
   },
   "HorizontalManualMovements": {
-    "FeedRate": 0.10,
+    "FeedRate": 0.30,
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 200.0
   },

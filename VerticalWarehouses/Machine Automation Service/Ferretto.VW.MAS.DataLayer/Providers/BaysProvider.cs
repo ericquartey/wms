@@ -205,6 +205,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 case MovementMode.BeltBurnishing:
                 case MovementMode.FindZero:
+                case MovementMode.TorqueCurrentSampling:
                     targetBay = BayNumber.ElevatorBay;
                     break;
 
@@ -277,6 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             break;
 
                         case MovementMode.BeltBurnishing:
+                        case MovementMode.TorqueCurrentSampling:
                             returnValue = InverterIndex.MainInverter;
                             break;
 

@@ -54,8 +54,6 @@
 
         InverterStatusWord,
 
-        InverterSetTimer,
-
-        TorqueCurrentSampling,
+        InverterSetTimer
     }
 }

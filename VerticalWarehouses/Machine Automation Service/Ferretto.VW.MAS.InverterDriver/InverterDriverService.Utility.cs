@@ -774,7 +774,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.logger.LogError("2:Inverter status not configured for requested inverter Type");
+                    this.logger.LogError($"2:Inverter status index={currentInverter} not configured for requested inverter Type");
 
                     this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterSwitchOn);
                 }
