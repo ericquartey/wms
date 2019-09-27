@@ -540,11 +540,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (currentInverter > InverterIndex.Slave7)
-            {
-                return;
-            }
-
             if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
             {
                 var currentStateMachine = new ResetFaultStateMachine(
@@ -833,7 +828,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             currentPosition = currentACUStatus.CurrentPosition;
                         }
 
-                        var position = (double)positioningData.TargetPosition;
+                        var position = positioningData.TargetPosition;
                         if (positioningData.MovementType == MovementType.Absolute)
                         {
                             var axis = positioningData.AxisMovement == Axis.Horizontal
@@ -842,7 +837,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             position -= axis.Offset;
 
-                            if (position < axis.LowerBound)
+                            if (position < 0)
                             {
                                 throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
                             }
@@ -851,7 +846,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 var beltDisplacement = this.elevatorDataProvider.ComputeBeltDisplacement((double)positioningData.TargetPosition);
                                 this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
-                                position -= beltDisplacement;
+                                // TO UNCOMMENT position -= beltDisplacement;
                             }
                         }
 

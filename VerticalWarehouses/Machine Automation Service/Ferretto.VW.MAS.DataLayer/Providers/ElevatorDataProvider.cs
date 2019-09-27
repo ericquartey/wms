@@ -95,7 +95,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public double GetMaximumLoadOnBoard()
         {
-            var elevator = this.dataContext.Elevators.Single();
+            var elevator = this.dataContext.Elevators
+                .Include(e => e.StructuralProperties)
+                .Single();
 
             return elevator.StructuralProperties.MaximumLoadOnBoard;
         }

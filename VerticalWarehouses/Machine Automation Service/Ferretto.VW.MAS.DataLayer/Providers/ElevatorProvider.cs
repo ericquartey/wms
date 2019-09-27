@@ -548,19 +548,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             if (isLongerDistance && isStartedOnBoard)
             {
-                return MovementProfileType.LongDepositProfile;
+                return MovementProfileType.LongDeposit;
             }
             else if (isLongerDistance && !isStartedOnBoard)
             {
-                return MovementProfileType.LongPickUpProfile;
+                return MovementProfileType.LongPickUp;
             }
             else if (!isLongerDistance && isStartedOnBoard)
             {
-                return MovementProfileType.ShortDepositProfile;
+                return MovementProfileType.ShortDeposit;
             }
             else
             {
-                return MovementProfileType.ShortPickUpProfile;
+                return MovementProfileType.ShortPickUp;
             }
         }
 
@@ -624,22 +624,28 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-            var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
-
-            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetMaximumLoadOnBoard();
 
             var axis = orientation == Orientation.Horizontal
                 ? this.elevatorDataProvider.GetHorizontalAxis()
                 : this.elevatorDataProvider.GetVerticalAxis();
 
-            var fullLoadMovement = axis.MaximumLoadMovement;
+            if (loadingUnit is null)
+            {
+                return axis.EmptyLoadMovement;
+            }
+
+            var maximumLoadMovement = axis.MaximumLoadMovement;
             var emptyLoadMovement = axis.EmptyLoadMovement;
+
+            var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
+
+            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetMaximumLoadOnBoard();
 
             return new MovementParameters
             {
-                Speed = (fullLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor,
-                Acceleration = (fullLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor,
-                Deceleration = (fullLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor,
+                Speed = emptyLoadMovement.Speed + ((maximumLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor),
+                Acceleration = emptyLoadMovement.Acceleration + ((maximumLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = emptyLoadMovement.Deceleration + ((maximumLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor),
             };
         }
 

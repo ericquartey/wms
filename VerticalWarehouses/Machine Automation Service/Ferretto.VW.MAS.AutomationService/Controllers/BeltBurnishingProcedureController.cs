@@ -51,15 +51,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<BeltBurnishingParameters> GetParameters()
         {
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+
             var parameters = new BeltBurnishingParameters
             {
-                UpperBound = this.elevatorDataProvider.GetVerticalAxis().UpperBound,
+                UpperBound = verticalAxis.UpperBound,
 
-                LowerBound = this.elevatorDataProvider.GetVerticalAxis().LowerBound,
+                LowerBound = verticalAxis.LowerBound,
 
                 RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
                     BeltBurnishing.CycleQuantity,
-                     ConfigurationCategory.BeltBurnishing),
+                    ConfigurationCategory.BeltBurnishing),
             };
 
             return this.Ok(parameters);

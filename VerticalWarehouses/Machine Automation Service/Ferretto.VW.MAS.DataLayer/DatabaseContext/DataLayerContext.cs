@@ -132,6 +132,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 .ApplyConfiguration(new IoDevicesConfiguration())
                 .ApplyConfiguration(new LoadingUnitsConfiguration())
                 .ApplyConfiguration(new MachineStatisticsConfiguration())
+                .ApplyConfiguration(new MovementProfilesConfiguration())
                 .ApplyConfiguration(new ServicingInfoConfiguration())
                 .ApplyConfiguration(new SetupStatusConfiguration())
                 .ApplyConfiguration(new ShuttersConfiguration())

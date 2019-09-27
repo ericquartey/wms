@@ -531,13 +531,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ElevatorAxisId");
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("TotalDistance");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ElevatorAxisId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("MovementProfiles");
                 });
@@ -563,7 +568,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 26, 17, 41, 4, 695, DateTimeKind.Local).AddTicks(9060),
+                            InstallationDate = new DateTime(2016, 11, 27, 10, 11, 36, 636, DateTimeKind.Local).AddTicks(4663),
                             ServiceStatus = 86
                         });
                 });

@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     continue;
                 }
-                else if (jsonCategory.Key == "ServicingProcedures")
+                else if (jsonCategory.Key == "$schema")
                 {
                     continue;
                 }

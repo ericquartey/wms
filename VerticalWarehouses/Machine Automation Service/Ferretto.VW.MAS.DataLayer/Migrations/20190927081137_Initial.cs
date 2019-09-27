@@ -498,7 +498,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Correction = table.Column<double>(nullable: false),
-                    Name = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     TotalDistance = table.Column<double>(nullable: false),
                     ElevatorAxisId = table.Column<int>(nullable: true)
                 },
@@ -596,7 +596,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 26, 17, 41, 4, 695, DateTimeKind.Local).AddTicks(9060), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 11, 27, 10, 11, 36, 636, DateTimeKind.Local).AddTicks(4663), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -754,6 +754,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_MovementProfiles_ElevatorAxisId",
                 table: "MovementProfiles",
                 column: "ElevatorAxisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovementProfiles_Name",
+                table: "MovementProfiles",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shutter_InverterId",
