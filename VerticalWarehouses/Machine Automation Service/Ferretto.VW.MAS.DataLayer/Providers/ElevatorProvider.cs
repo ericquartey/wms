@@ -25,9 +25,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
-        private readonly IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer;
+        private readonly IHorizontalMovementLongerDepositDataLayer horizontalMovementLongerDepositDataLayer;
 
-        private readonly IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer;
+        private readonly IHorizontalMovementLongerPickupDataLayer horizontalMovementLongerPickupDataLayer;
+
+        private readonly IHorizontalMovementShorterDepositDataLayer horizontalMovementShorterDepositDataLayer;
+
+        private readonly IHorizontalMovementShorterPickupDataLayer horizontalMovementShorterPickupDataLayer;
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
@@ -58,8 +62,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IEventAggregator eventAggregator,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer,
-            IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer,
+            IHorizontalMovementShorterDepositDataLayer horizontalMovementShorterDepositDataLayer,
+            IHorizontalMovementLongerDepositDataLayer horizontalMovementLongerDepositDataLayer,
+            IHorizontalMovementShorterPickupDataLayer horizontalMovementShorterPickupDataLayer,
+            IHorizontalMovementLongerPickupDataLayer horizontalMovementLongerPickupDataLayer,
             IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
@@ -89,14 +95,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (horizontalMovementShorterProfileDataLayer is null)
+            if (horizontalMovementShorterPickupDataLayer is null)
             {
-                throw new ArgumentNullException(nameof(horizontalMovementShorterProfileDataLayer));
+                throw new ArgumentNullException(nameof(horizontalMovementShorterPickupDataLayer));
             }
 
-            if (horizontalMovementLongerProfileDataLayer is null)
+            if (horizontalMovementLongerPickupDataLayer is null)
             {
-                throw new ArgumentNullException(nameof(horizontalMovementLongerProfileDataLayer));
+                throw new ArgumentNullException(nameof(horizontalMovementLongerPickupDataLayer));
+            }
+
+            if (horizontalMovementShorterDepositDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(horizontalMovementShorterDepositDataLayer));
+            }
+
+            if (horizontalMovementLongerDepositDataLayer is null)
+            {
+                throw new ArgumentNullException(nameof(horizontalMovementLongerDepositDataLayer));
             }
 
             if (horizontalAxisDataLayer is null)
@@ -162,8 +178,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext = dataContext;
             this.panelControlDataLayer = panelControlDataLayer;
             this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
-            this.horizontalMovementShorterProfileDataLayer = horizontalMovementShorterProfileDataLayer;
-            this.horizontalMovementLongerProfileDataLayer = horizontalMovementLongerProfileDataLayer;
+            this.horizontalMovementShorterPickupDataLayer = horizontalMovementShorterPickupDataLayer;
+            this.horizontalMovementLongerPickupDataLayer = horizontalMovementLongerPickupDataLayer;
+            this.horizontalMovementShorterDepositDataLayer = horizontalMovementShorterDepositDataLayer;
+            this.horizontalMovementLongerDepositDataLayer = horizontalMovementLongerDepositDataLayer;
             this.horizontalAxisDataLayer = horizontalAxisDataLayer;
             this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
             this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
@@ -259,42 +277,116 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 ||
                 (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
 
-            decimal[] speed =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0SpeedV1Longer : this.horizontalMovementShorterProfileDataLayer.P0SpeedV1Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1SpeedV2Longer : this.horizontalMovementShorterProfileDataLayer.P1SpeedV2Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2SpeedV3Longer : this.horizontalMovementShorterProfileDataLayer.P2SpeedV3Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3SpeedV4Longer : this.horizontalMovementShorterProfileDataLayer.P3SpeedV4Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4SpeedV5Longer : this.horizontalMovementShorterProfileDataLayer.P4SpeedV5Shorter
-            };
-
-            decimal[] acceleration =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4AccelerationShorter
-            };
-
-            decimal[] deceleration =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter
-            };
+            decimal[] speed = new decimal[5];
+            decimal[] acceleration = new decimal[5];
+            decimal[] deceleration = new decimal[5];
+            decimal[] switchPosition = new decimal[5];
 
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
-            decimal[] switchPosition =
+            if (isLongerDistance && isStartedOnBoard)
             {
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P1QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * directionMultiplier
-            };
+                speed[0] = this.horizontalMovementLongerDepositDataLayer.P0SpeedV1LongerDeposit;
+                speed[1] = this.horizontalMovementLongerDepositDataLayer.P1SpeedV2LongerDeposit;
+                speed[2] = this.horizontalMovementLongerDepositDataLayer.P2SpeedV3LongerDeposit;
+                speed[3] = this.horizontalMovementLongerDepositDataLayer.P3SpeedV4LongerDeposit;
+                speed[4] = this.horizontalMovementLongerDepositDataLayer.P4SpeedV5LongerDeposit;
+
+                acceleration[0] = this.horizontalMovementLongerDepositDataLayer.P0AccelerationLongerDeposit;
+                acceleration[1] = this.horizontalMovementLongerDepositDataLayer.P1AccelerationLongerDeposit;
+                acceleration[2] = this.horizontalMovementLongerDepositDataLayer.P2AccelerationLongerDeposit;
+                acceleration[3] = this.horizontalMovementLongerDepositDataLayer.P3AccelerationLongerDeposit;
+                acceleration[4] = this.horizontalMovementLongerDepositDataLayer.P4AccelerationLongerDeposit;
+
+                deceleration[0] = this.horizontalMovementLongerDepositDataLayer.P0DecelerationLongerDeposit;
+                deceleration[1] = this.horizontalMovementLongerDepositDataLayer.P1DecelerationLongerDeposit;
+                deceleration[2] = this.horizontalMovementLongerDepositDataLayer.P2DecelerationLongerDeposit;
+                deceleration[3] = this.horizontalMovementLongerDepositDataLayer.P3DecelerationLongerDeposit;
+                deceleration[4] = this.horizontalMovementLongerDepositDataLayer.P4DecelerationLongerDeposit;
+
+                switchPosition[0] = position + this.horizontalMovementLongerDepositDataLayer.P1QuoteLongerDeposit * directionMultiplier;
+                switchPosition[1] = position + this.horizontalMovementLongerDepositDataLayer.P2QuoteLongerDeposit * directionMultiplier;
+                switchPosition[2] = position + this.horizontalMovementLongerDepositDataLayer.P3QuoteLongerDeposit * directionMultiplier;
+                switchPosition[3] = position + this.horizontalMovementLongerDepositDataLayer.P4QuoteLongerDeposit * directionMultiplier;
+                switchPosition[4] = position + this.horizontalMovementLongerDepositDataLayer.P5QuoteLongerDeposit * directionMultiplier;
+            }
+            else if (isLongerDistance && !isStartedOnBoard)
+            {
+                speed[0] = this.horizontalMovementLongerPickupDataLayer.P0SpeedV1LongerPickup;
+                speed[1] = this.horizontalMovementLongerPickupDataLayer.P1SpeedV2LongerPickup;
+                speed[2] = this.horizontalMovementLongerPickupDataLayer.P2SpeedV3LongerPickup;
+                speed[3] = this.horizontalMovementLongerPickupDataLayer.P3SpeedV4LongerPickup;
+                speed[4] = this.horizontalMovementLongerPickupDataLayer.P4SpeedV5LongerPickup;
+
+                acceleration[0] = this.horizontalMovementLongerPickupDataLayer.P0AccelerationLongerPickup;
+                acceleration[1] = this.horizontalMovementLongerPickupDataLayer.P1AccelerationLongerPickup;
+                acceleration[2] = this.horizontalMovementLongerPickupDataLayer.P2AccelerationLongerPickup;
+                acceleration[3] = this.horizontalMovementLongerPickupDataLayer.P3AccelerationLongerPickup;
+                acceleration[4] = this.horizontalMovementLongerPickupDataLayer.P4AccelerationLongerPickup;
+
+                deceleration[0] = this.horizontalMovementLongerPickupDataLayer.P0DecelerationLongerPickup;
+                deceleration[1] = this.horizontalMovementLongerPickupDataLayer.P1DecelerationLongerPickup;
+                deceleration[2] = this.horizontalMovementLongerPickupDataLayer.P2DecelerationLongerPickup;
+                deceleration[3] = this.horizontalMovementLongerPickupDataLayer.P3DecelerationLongerPickup;
+                deceleration[4] = this.horizontalMovementLongerPickupDataLayer.P4DecelerationLongerPickup;
+
+                switchPosition[0] = position + this.horizontalMovementLongerPickupDataLayer.P1QuoteLongerPickup * directionMultiplier;
+                switchPosition[1] = position + this.horizontalMovementLongerPickupDataLayer.P2QuoteLongerPickup * directionMultiplier;
+                switchPosition[2] = position + this.horizontalMovementLongerPickupDataLayer.P3QuoteLongerPickup * directionMultiplier;
+                switchPosition[3] = position + this.horizontalMovementLongerPickupDataLayer.P4QuoteLongerPickup * directionMultiplier;
+                switchPosition[4] = position + this.horizontalMovementLongerPickupDataLayer.P5QuoteLongerPickup * directionMultiplier;
+            }
+            else if (!isLongerDistance && isStartedOnBoard)
+            {
+                speed[0] = this.horizontalMovementShorterDepositDataLayer.P0SpeedV1ShorterDeposit;
+                speed[1] = this.horizontalMovementShorterDepositDataLayer.P1SpeedV2ShorterDeposit;
+                speed[2] = this.horizontalMovementShorterDepositDataLayer.P2SpeedV3ShorterDeposit;
+                speed[3] = this.horizontalMovementShorterDepositDataLayer.P3SpeedV4ShorterDeposit;
+                speed[4] = this.horizontalMovementShorterDepositDataLayer.P4SpeedV5ShorterDeposit;
+
+                acceleration[0] = this.horizontalMovementShorterDepositDataLayer.P0AccelerationShorterDeposit;
+                acceleration[1] = this.horizontalMovementShorterDepositDataLayer.P1AccelerationShorterDeposit;
+                acceleration[2] = this.horizontalMovementShorterDepositDataLayer.P2AccelerationShorterDeposit;
+                acceleration[3] = this.horizontalMovementShorterDepositDataLayer.P3AccelerationShorterDeposit;
+                acceleration[4] = this.horizontalMovementShorterDepositDataLayer.P4AccelerationShorterDeposit;
+
+                deceleration[0] = this.horizontalMovementShorterDepositDataLayer.P0DecelerationShorterDeposit;
+                deceleration[1] = this.horizontalMovementShorterDepositDataLayer.P1DecelerationShorterDeposit;
+                deceleration[2] = this.horizontalMovementShorterDepositDataLayer.P2DecelerationShorterDeposit;
+                deceleration[3] = this.horizontalMovementShorterDepositDataLayer.P3DecelerationShorterDeposit;
+                deceleration[4] = this.horizontalMovementShorterDepositDataLayer.P4DecelerationShorterDeposit;
+
+                switchPosition[0] = position + this.horizontalMovementShorterDepositDataLayer.P1QuoteShorterDeposit * directionMultiplier;
+                switchPosition[1] = position + this.horizontalMovementShorterDepositDataLayer.P2QuoteShorterDeposit * directionMultiplier;
+                switchPosition[2] = position + this.horizontalMovementShorterDepositDataLayer.P3QuoteShorterDeposit * directionMultiplier;
+                switchPosition[3] = position + this.horizontalMovementShorterDepositDataLayer.P4QuoteShorterDeposit * directionMultiplier;
+                switchPosition[4] = position + this.horizontalMovementShorterDepositDataLayer.P5QuoteShorterDeposit * directionMultiplier;
+            }
+            else
+            {
+                speed[0] = this.horizontalMovementShorterPickupDataLayer.P0SpeedV1ShorterPickup;
+                speed[1] = this.horizontalMovementShorterPickupDataLayer.P1SpeedV2ShorterPickup;
+                speed[2] = this.horizontalMovementShorterPickupDataLayer.P2SpeedV3ShorterPickup;
+                speed[3] = this.horizontalMovementShorterPickupDataLayer.P3SpeedV4ShorterPickup;
+                speed[4] = this.horizontalMovementShorterPickupDataLayer.P4SpeedV5ShorterPickup;
+
+                acceleration[0] = this.horizontalMovementShorterPickupDataLayer.P0AccelerationShorterPickup;
+                acceleration[1] = this.horizontalMovementShorterPickupDataLayer.P1AccelerationShorterPickup;
+                acceleration[2] = this.horizontalMovementShorterPickupDataLayer.P2AccelerationShorterPickup;
+                acceleration[3] = this.horizontalMovementShorterPickupDataLayer.P3AccelerationShorterPickup;
+                acceleration[4] = this.horizontalMovementShorterPickupDataLayer.P4AccelerationShorterPickup;
+
+                deceleration[0] = this.horizontalMovementShorterPickupDataLayer.P0DecelerationShorterPickup;
+                deceleration[1] = this.horizontalMovementShorterPickupDataLayer.P1DecelerationShorterPickup;
+                deceleration[2] = this.horizontalMovementShorterPickupDataLayer.P2DecelerationShorterPickup;
+                deceleration[3] = this.horizontalMovementShorterPickupDataLayer.P3DecelerationShorterPickup;
+                deceleration[4] = this.horizontalMovementShorterPickupDataLayer.P4DecelerationShorterPickup;
+
+                switchPosition[0] = position + this.horizontalMovementShorterPickupDataLayer.P1QuoteShorterPickup * directionMultiplier;
+                switchPosition[1] = position + this.horizontalMovementShorterPickupDataLayer.P2QuoteShorterPickup * directionMultiplier;
+                switchPosition[2] = position + this.horizontalMovementShorterPickupDataLayer.P3QuoteShorterPickup * directionMultiplier;
+                switchPosition[3] = position + this.horizontalMovementShorterPickupDataLayer.P4QuoteShorterPickup * directionMultiplier;
+                switchPosition[4] = position + this.horizontalMovementShorterPickupDataLayer.P5QuoteShorterPickup * directionMultiplier;
+            }
 
             var targetPosition = switchPosition.Last();
 

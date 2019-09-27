@@ -91,23 +91,43 @@ namespace Ferretto.VW.MAS.DataLayer
 
                             break;
 
-                        case ConfigurationCategory.HorizontalMovementLongerProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerProfileData))
+                        case ConfigurationCategory.HorizontalMovementLongerPickup:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerPickupData))
                             {
                                 throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                             }
 
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerProfileData, jsonData.Value);
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerPickupData, jsonData.Value);
 
                             break;
 
-                        case ConfigurationCategory.HorizontalMovementShorterProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterProfileData))
+                        case ConfigurationCategory.HorizontalMovementShorterPickup:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterPickupData))
                             {
                                 throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                             }
 
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterProfileData, jsonData.Value);
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterPickupData, jsonData.Value);
+
+                            break;
+
+                        case ConfigurationCategory.HorizontalMovementLongerDeposit:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerDepositData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
+
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerDepositData, jsonData.Value);
+
+                            break;
+
+                        case ConfigurationCategory.HorizontalMovementShorterDeposit:
+                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterDepositData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
+
+                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterDepositData, jsonData.Value);
 
                             break;
 

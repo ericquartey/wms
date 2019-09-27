@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Calibrate error state axis {this.axisToCalibrate}");
             var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
 
             var errorNotification = new FieldNotificationMessage(
@@ -55,7 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop ignored in error state");
         }
 
         /// <inheritdoc />

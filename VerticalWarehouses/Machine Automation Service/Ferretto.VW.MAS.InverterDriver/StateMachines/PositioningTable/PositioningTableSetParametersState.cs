@@ -38,8 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
-
             this.tableIndex = InverterTableIndex.TableTravelP7;
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
@@ -49,9 +47,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningTableStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

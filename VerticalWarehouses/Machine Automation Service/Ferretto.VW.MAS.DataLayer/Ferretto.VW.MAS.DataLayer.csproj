@@ -59,4 +59,13 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="DataLayerService - Copy.HorizontalMovementLongerProfile.cs">
+      <DependentUpon>DataLayerService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="DataLayerService - Copy.HorizontalMovementShorterProfile.cs">
+      <DependentUpon>DataLayerService.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

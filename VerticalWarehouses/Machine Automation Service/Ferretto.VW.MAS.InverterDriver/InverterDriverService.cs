@@ -367,6 +367,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     else
                     {
                         this.logger.LogInformation($"3:Connection OK ipAddress={this.inverterAddress}:Port={this.inverterPort}");
+                        this.forceStatusPublish = true;
                     }
 
                     this.writeEnableEvent.Set();

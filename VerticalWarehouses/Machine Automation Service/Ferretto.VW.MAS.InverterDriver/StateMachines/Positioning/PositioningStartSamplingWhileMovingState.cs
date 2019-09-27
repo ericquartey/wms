@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private TorqueCurrentMeasurementSession measurementSession;
 
-        private bool stopRequested;
-
         #endregion
 
         #region Constructors
@@ -78,14 +76,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public override void Stop()
         {
-            if (this.stopRequested)
-            {
-                throw new InvalidOperationException($"State {this.GetType().Name} was already stopped.");
-            }
+            this.Logger.LogDebug("1:Positioning Stop requested");
 
-            base.Stop();
-
-            this.stopRequested = true;
+            this.ParentStateMachine.ChangeState(
+                new PositioningStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger));
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -102,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 this.NotifyNewSample(sample);
 
-                if (!this.stopRequested && !this.TargetPositionReached)
+                if (!this.TargetPositionReached)
                 {
                     this.RequestSample();
                 }

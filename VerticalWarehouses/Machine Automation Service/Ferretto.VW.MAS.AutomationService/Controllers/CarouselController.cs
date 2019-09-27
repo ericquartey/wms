@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var targetPosition = this.horizontalAxis.CarouselDistance;
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
             decimal[] speed = { this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM / 10 };
             decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var targetPosition = this.horizontalAxis.CarouselDistance;
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
             decimal[] speed = { this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM / 10 };
             decimal[] acceleration = { this.horizontalAxis.MaxFullAccelerationHA };

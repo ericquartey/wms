@@ -75,6 +75,12 @@
     <None Update="Controls\PpcSpinEdit\PpcSpinEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Controls\Sensor\Sensor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\Sensor\SensorSquare.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Skins\Palette.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -82,6 +88,12 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Styles\DevExpress\SpinEdit\SpinEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\Sensor\SensorSquareStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\Sensor\SensorStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Styles\Styles.xaml">

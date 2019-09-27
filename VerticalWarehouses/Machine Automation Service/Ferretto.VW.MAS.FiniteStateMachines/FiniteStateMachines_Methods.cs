@@ -27,36 +27,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Methods
 
-        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
-        {
-            if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
-            {
-                this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                this.currentStateMachines.Remove(BayNumber.BayOne);
-            }
-
-            currentStateMachine = new PowerEnableStateMachine(null,
-                this.machineSensorsStatus,
-                this.baysProvider,
-                this.eventAggregator,
-                this.logger,
-                this.serviceScopeFactory);
-            this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
-
-            this.logger.LogTrace($"3:Starting FSM PowerEnableSTateMachine: Enable {data.Enable}");
-
-            try
-            {
-                currentStateMachine.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError($"4:Exception: {ex.Message} during the FSM start");
-
-                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-        }
-
         private bool EvaluateCondition(ConditionToCheckType condition)
         {
             var result = false;
