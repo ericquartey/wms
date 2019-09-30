@@ -929,7 +929,7 @@
   <data name="Elevator" xml:space="preserve">
     <value>Elevatore</value>
   </data>
-  <data name="EmbarkedTray" xml:space="preserve">
+  <data name="LoadedTray" xml:space="preserve">
     <value>Cassetto Imbarcato</value>
   </data>
   <data name="Disembark" xml:space="preserve">

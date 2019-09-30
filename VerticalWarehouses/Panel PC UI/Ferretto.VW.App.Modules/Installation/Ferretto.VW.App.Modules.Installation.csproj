@@ -53,12 +53,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Bays\DepositAndPickUpView.xaml" />
+    <None Remove="Views\Bays\DepositAndPickUpTestView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Bays\DepositAndPickUpView.xaml.cs">
-      <DependentUpon>DepositAndPickUpView.xaml</DependentUpon>
+    <Compile Update="Views\Bays\DepositAndPickUpTestView.xaml.cs">
+      <DependentUpon>DepositAndPickUpTestView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

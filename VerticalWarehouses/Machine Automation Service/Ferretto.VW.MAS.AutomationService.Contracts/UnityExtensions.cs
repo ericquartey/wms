@@ -106,6 +106,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineWeightAnalysisProcedureService>(
                 new InjectionFactory(c => new MachineWeightAnalysisProcedureService(urlString, resolveFunction(c))));
 
+            container.GetContainer().RegisterType<IMachineDepositPickupProcedureService>(
+                new InjectionFactory(c => new MachineDepositPickupProcedureService(urlString, resolveFunction(c))));             
+
             return container;
         }
 

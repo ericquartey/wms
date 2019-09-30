@@ -84,7 +84,7 @@
                 <TextBlock Grid.Row="3"
                            Grid.Column="0"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.EmbarkedTray}" />
+                           Text="{x:Static res:InstallationApp.LoadedTray}" />
                 <TextBlock Grid.Row="3"
                            Grid.Column="1"
                            Foreground="White"
@@ -254,6 +254,7 @@
                                LabelText="{x:Static res:InstallationApp.Position}"
                                Mask="####0"
                                WidthNumber="210" />
+            
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="0"
                                 Margin="5,0,5,5"
@@ -272,6 +273,7 @@
                                LabelText="{x:Static res:InstallationApp.CellNumber}"
                                Mask="##0"
                                WidthNumber="210" />
+            
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="5,0,5,5"
@@ -290,6 +292,7 @@
                                LabelText="NUMERO CASSETTO"
                                Mask="#0"
                                WidthNumber="210" />
+            
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"

@@ -753,7 +753,7 @@
     <value>Embark / Disembark test</value>
   </data>
   <data name="DLUTestHeader" xml:space="preserve">
-    <value>Embark / Disembark in bay test</value>
+    <value>Deposit / Pickup in bay test</value>
   </data>
   <data name="DLUTestFeedRate" xml:space="preserve">
     <value>Feed rate %</value>
@@ -990,8 +990,8 @@
   <data name="Elevator" xml:space="preserve">
     <value>Elevator</value>
   </data>
-  <data name="EmbarkedTray" xml:space="preserve">
-    <value>Embarked Tray</value>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Loaded Tray</value>
   </data>
   <data name="Disembark" xml:space="preserve">
     <value>Disembark</value>

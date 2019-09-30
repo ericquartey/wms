@@ -22,7 +22,7 @@
         <controls:PpcTextBox Margin="200,270,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=0,5}"
+                             InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0,5'}"
                              LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
 
 

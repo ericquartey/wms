@@ -1,26 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class DepositAndPickUpTestViewModel : BaseMainViewModel, IDataErrorInfo
+    public partial class DepositAndPickUpTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
-        private readonly IMachineBeltBurnishingProcedureService beltBurnishingService;
+        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+
+        private readonly IMachineSensorsService machineSensorsService;
+
+        private readonly Sensors sensors = new Sensors();
+
+        private int? inputLoadingUnitCode;
+
+        private bool isWaitingForResponse;
+
+        private bool isZeroChain;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken sensorsToken;
+
+        private SubscriptionToken subscriptionToken;
+
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineSetupStatusService machineSetupStatusService;
+        private readonly IMachineDepositPickupProcedureService machineDepositPickupProcedureService;
 
         private int? completedCycles;
 
@@ -33,12 +55,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? inputRequiredCycles;
 
         private bool isExecutingProcedure;
-
-        private bool isWaitingForResponse;
-
-        private decimal? machineLowerBound;
-
-        private decimal? machineUpperBound;
 
         private SubscriptionToken receivedActionUpdateToken;
 
@@ -57,29 +73,64 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public DepositAndPickUpTestViewModel(
             IEventAggregator eventAggregator,
             IMachineSetupStatusService machineSetupStatusService,
-            IMachineBeltBurnishingProcedureService beltBurnishingService)
-            : base(Services.PresentationMode.Installer)
+            IMachineDepositPickupProcedureService machineDepositPickupProcedure,
+            IMachineElevatorService machineElevatorService,
+            IMachineLoadingUnitsService machineLoadingUnitsService,
+            IMachineSensorsService machineSensorsService,
+            IMachineServiceService machineServiceService,
+            IBayManager bayManagerService)
+            : base(PresentationMode.Installer)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (beltBurnishingService is null)
+            if (machineDepositPickupProcedure == null)
             {
-                throw new ArgumentNullException(nameof(beltBurnishingService));
+                throw new ArgumentNullException(nameof(machineDepositPickupProcedure));
+            }
+
+            if (machineElevatorService is null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
+            if (machineLoadingUnitsService is null)
+            {
+                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
+            }
+
+            if (bayManagerService is null)
+            {
+                throw new ArgumentNullException(nameof(bayManagerService));
+            }
+
+            if (machineSensorsService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
+
+            if (machineServiceService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineServiceService));
             }
 
             this.eventAggregator = eventAggregator;
+            this.machineSensorsService = machineSensorsService;
+            this.machineElevatorService = machineElevatorService;
+            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.bayManagerService = bayManagerService;
+
             this.machineSetupStatusService = machineSetupStatusService;
-            this.beltBurnishingService = beltBurnishingService;
+            this.machineDepositPickupProcedureService = machineDepositPickupProcedure;
             this.inputDelay = 0;
+            this.SelectBayPosition1();
         }
 
         #endregion
 
         #region Properties
-
         public int? CompletedCycles
         {
             get => this.completedCycles;
@@ -133,23 +184,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            private set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public ICommand ResetCommand =>
                         this.resetCommand
                         ??
@@ -177,9 +211,56 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.totalCompletedCycles, value);
         }
 
+
+        public int? InputLoadingUnitCode
+        {
+            get => this.inputLoadingUnitCode;
+            set
+            {
+                if (this.SetProperty(ref this.inputLoadingUnitCode, value)
+                    &&
+                    this.LoadingUnits != null)
+                {
+                    this.LoadingUnitInBay = value == null
+                        ? null
+                        : this.LoadingUnits.SingleOrDefault(l => l.Id == value);
+                }
+            }
+        }
+
+        public bool IsElevatorMoving =>
+                this.IsElevatorMovingToBay
+                || this.IsElevatorDisembarking
+                || this.IsElevatorEmbarking
+                || this.IsTuningChain;
+
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
+
+        public Sensors Sensors => this.sensors;
+
         #endregion
 
-        #region Indexers
+        #region Methods
+
 
         public string this[string columnName]
         {
@@ -213,13 +294,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        #endregion
-
-        #region Methods
-
         public override void Disappear()
         {
             base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+
+            if (this.sensorsToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.sensorsToken);
+
+                this.sensorsToken = null;
+            }
 
             if (this.receivedActionUpdateToken != null)
             {
@@ -229,22 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.receivedActionUpdateToken = null;
             }
-        }
-
-        public async Task GetParameterValuesAsync()
-        {
-            try
-            {
-                var procedureParameters = await this.beltBurnishingService.GetParametersAsync();
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
-
-                await this.InitializeTotalCycles();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
+    }
 
         public override async Task OnNavigatedAsync()
         {
@@ -254,22 +334,166 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            await this.GetParameterValuesAsync();
-
             this.receivedActionUpdateToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                     async message => await this.UpdateCompletion(message),
                     ThreadOption.UIThread,
                     false);
+
+            this.subscriptionToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<PositioningMessageData>>()
+              .Subscribe(
+                  message => this.OnElevatorPositionChanged(message),
+                  ThreadOption.UIThread,
+                  false);
+
+            this.sensorsToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message =>
+                        {
+                            this.sensors.Update(message?.Data?.SensorsStates);
+                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+                            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+                            this.RaiseCanExecuteChanged();
+                        },
+                    ThreadOption.UIThread,
+                    false);
+
+            try
+            {
+                var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
+
+            await this.GetParameterValuesAsync();
+
+            await this.RetrieveElevatorPositionAsync();
+
+            await this.RetrieveLoadingUnitsAsync();
+
+            await base.OnNavigatedAsync();
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            this.RetrieveElevatorPositionAsync();
+        }
+
+        public async Task RetrieveLoadingUnitsAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             base.OnMachineModeChanged(e);
+
+            // reset all status if stop machine
             if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
             {
+                this.IsElevatorMovingToBay = false;
+                this.IsElevatorDisembarking = false;
+                this.IsElevatorEmbarking = false;
                 this.IsExecutingProcedure = false;
+                this.IsTuningChain = false;
+            }
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
+                    {
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                        }
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                        }
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsElevatorDisembarking = false;
+                        this.IsElevatorEmbarking = false;
+                        this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.IsElevatorDisembarking = false;
+                        this.IsElevatorEmbarking = false;
+                        this.IsElevatorMovingToBay = false;
+                        this.IsTuningChain = false;
+
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                            Services.Models.NotificationSeverity.Warning);
+
+                        break;
+                    }
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+            this.tuningChainCommand?.RaiseCanExecuteChanged();
+            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+            this.resetCommand.RaiseCanExecuteChanged();
+        }
+
+        public async Task GetParameterValuesAsync()
+        {
+            try
+            {
+                var procedureParameters = await this.machineDepositPickupProcedureService.GetParametersAsync();
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+
+                await this.InitializeTotalCycles();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 
@@ -296,15 +520,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task InitializeTotalCycles()
         {
             var setupStatus = await this.machineSetupStatusService.GetAsync();
-            this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
+            // TODO get completed cycles.
+            // this.initialCycles = setupStatus.DepositPickup.CompletedCycles;
             this.TotalCompletedCycles = this.initialCycles;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
-            this.resetCommand.RaiseCanExecuteChanged();
         }
 
         private async Task ResetAsync()
@@ -313,7 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.beltBurnishingService.ResetAsync();
+                await this.machineDepositPickupProcedureService.ResetAsync();
 
                 await this.GetParameterValuesAsync();
 
@@ -334,6 +552,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                await this.StartMovementAsync(this.direction ? MAS.AutomationService.Contracts.HorizontalMovementDirection.Backwards : MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards, this.embarkedLoadingUnit != null);
+                this.direction = !this.direction;
+
                 if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
                 {
                     this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
@@ -342,10 +563,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
-
-                await this.beltBurnishingService.StartAsync(
-                    this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value,
-                    this.InputDelay);
 
                 await this.InitializeTotalCycles();
             }
@@ -365,7 +582,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.beltBurnishingService.StopAsync();
+                await this.machineDepositPickupProcedureService.StopAsync();
             }
             catch (Exception ex)
             {
@@ -399,7 +616,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationStop:
                     this.IsExecutingProcedure = false;
 
-                    await this.beltBurnishingService.MarkAsCompletedAsync();
+                    await this.machineDepositPickupProcedureService.MarkAsCompletedAsync();
                     break;
 
                 case MessageStatus.OperationError:

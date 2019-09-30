@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        public DepositAndPickUpTestView)
+        public DepositAndPickUpTestView()
         {
             this.InitializeComponent();
         }

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -691,7 +691,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Embark / Disembark in bay test.
+        ///   Looks up a localized string similar to Deposit / Pickup in bay test.
         /// </summary>
         public static string DLUTestHeader {
             get {
@@ -831,15 +831,6 @@ namespace Ferretto.VW.App.Resources {
         public static string EmbarkBackwards {
             get {
                 return ResourceManager.GetString("EmbarkBackwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Embarked Tray.
-        /// </summary>
-        public static string EmbarkedTray {
-            get {
-                return ResourceManager.GetString("EmbarkedTray", resourceCulture);
             }
         }
         
@@ -1335,6 +1326,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Laser3Done {
             get {
                 return ResourceManager.GetString("Laser3Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded Tray.
+        /// </summary>
+        public static string LoadedTray {
+            get {
+                return ResourceManager.GetString("LoadedTray", resourceCulture);
             }
         }
         
