@@ -489,10 +489,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     (byte)ioDevice.Index);
 
                 this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
+                this.forceRemoteIoStatusPublish[(int)ioDevice.Index] = true;
             }
 
             this.forceInverterIoStatusPublish = true;
-            this.forceRemoteIoStatusPublish = true;
         }
 
         private void ProcessShutterPositioningMessage(CommandMessage message)
