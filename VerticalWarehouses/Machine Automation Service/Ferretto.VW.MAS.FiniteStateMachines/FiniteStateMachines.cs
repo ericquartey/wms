@@ -319,7 +319,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                         case FieldMessageType.SensorsChanged:
 
-                            this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                            this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
                             if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                             {
                                 var ioIndex = receivedMessage.DeviceIndex;
@@ -328,6 +328,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 {
                                     var msgData = new SensorsChangedMessageData();
                                     msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+                                    this.logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
                                     var msg = new NotificationMessage(
                                         msgData,
