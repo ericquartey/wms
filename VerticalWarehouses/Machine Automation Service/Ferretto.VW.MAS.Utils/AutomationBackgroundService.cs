@@ -37,12 +37,12 @@ namespace Ferretto.VW.MAS.Utils
             IEventAggregator eventAggregator,
             ILogger logger)
         {
-            if(eventAggregator == null)
+            if (eventAggregator == null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if(logger == null)
+            if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.Utils
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("An error occurred while starting service threads.", ex);
             }
@@ -116,6 +116,8 @@ namespace Ferretto.VW.MAS.Utils
         protected abstract bool FilterNotification(NotificationMessage notification);
 
         protected abstract void NotifyCommandError(CommandMessage notificationData);
+
+        protected abstract void NotifyError(NotificationMessage notificationData);
 
         protected abstract Task OnCommandReceivedAsync(CommandMessage command);
 
@@ -133,13 +135,13 @@ namespace Ferretto.VW.MAS.Utils
 
                     await this.OnCommandReceivedAsync(command);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     this.Logger.LogTrace("Operation Canceled.");
                     return;
                 }
             }
-            while(!this.CancellationToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         private async Task DequeueNotificationsAsync()
@@ -154,18 +156,18 @@ namespace Ferretto.VW.MAS.Utils
 
                     await this.OnNotificationReceivedAsync(notification);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     this.Logger.LogDebug("Operation canceled.");
 
                     return;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     this.Logger.LogError(ex, "Error while processing the notification.");
                 }
             }
-            while(!this.CancellationToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

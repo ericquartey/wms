@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
@@ -174,6 +173,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.InitializeSubscriptions();
 
             this.ActiveState = this.GetState<TStartState>();
+        }
+
+        public void Stop(StopRequestReason reason)
+        {
+            this.ActiveState = this.ActiveState.Stop(reason);
         }
 
         protected abstract bool FilterCommand(CommandMessage command);

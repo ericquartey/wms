@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IChangeRunningStateMessageData : IMessageData
     {
@@ -9,6 +11,8 @@
         CommandAction CommandAction { get; }
 
         bool Enable { get; }
+
+        StopRequestReason StopReason { get; }
 
         #endregion
     }

@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.DataLayer
             ILogger<DataLayerService> logger)
             : base(eventAggregator, logger)
         {
-            if(serviceScopeFactory == null)
+            if (serviceScopeFactory == null)
             {
                 this.SendErrorMessage(
                     new DLExceptionMessageData(
@@ -101,6 +101,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
+        protected override void NotifyError(NotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Task OnCommandReceivedAsync(CommandMessage command)
         {
             this.Logger.LogTrace($"2:command={command}");
@@ -151,27 +156,27 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             try
             {
-                using(var scope = this.serviceScopeFactory.CreateScope())
+                using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var redundancyService = scope.ServiceProvider
                         .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
 
                     redundancyService.IsEnabled = false;
 
-                    using(var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                    using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
                         var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
-                        if(pendingMigrations.Count() > 0)
+                        if (pendingMigrations.Count() > 0)
                         {
                             this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
                             await activeDbContext.Database.MigrateAsync();
                         }
                     }
 
-                    using(var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
+                    using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
                         var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
-                        if(pendingMigrations.Count() > 0)
+                        if (pendingMigrations.Count() > 0)
                         {
                             this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
                             await standbyDbContext.Database.MigrateAsync();
@@ -181,7 +186,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     redundancyService.IsEnabled = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.Logger.LogError(ex, "Error while migating databases.");
                 this.SendErrorMessage(new DLExceptionMessageData(ex));
@@ -192,7 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             await this.ApplyMigrationsAsync();
 
-            using(var scope = this.serviceScopeFactory.CreateScope())
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
@@ -212,7 +217,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .GetRequiredService<IBaysConfigurationProvider>()
                         .LoadFromConfiguration();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     this.Logger.LogError(ex, "Error while loading configuration values.");
                     this.SendErrorMessage(new DLExceptionMessageData(ex));

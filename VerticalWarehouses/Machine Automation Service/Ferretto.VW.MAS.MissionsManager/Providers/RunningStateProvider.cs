@@ -25,8 +25,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         {
             this.SendCommandToMissionManager(
                 new ChangeRunningStateMessageData(
-                    requestedState
-                    ),
+                    requestedState,
+                    CommandAction.Start,
+                    requestedState ? StopRequestReason.NoReason : StopRequestReason.RunningStateChanged),
                 $"Bay {requestingBay} requested setting Running State to {requestedState}",
                 sender,
                 MessageType.ChangeRunningState,

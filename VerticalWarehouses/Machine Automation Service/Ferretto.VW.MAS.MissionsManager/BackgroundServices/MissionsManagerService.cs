@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +21,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         #region Fields
 
-        private readonly List<IFiniteStateMachine> activeStateMachines;
-
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
 
         private readonly IMachinesDataService machinesDataService;
@@ -31,6 +28,8 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         private readonly Task missionManagementTask;
 
         private readonly IMissionsDataService missionsDataService;
+
+        private readonly IMissionsProvider missionsProvider;
 
         private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
 
@@ -48,6 +47,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             IEventAggregator eventAggregator,
             ILogger<MissionsManagerService> logger,
             IMachinesDataService machinesDataService,
+            IMissionsProvider missionsProvider,
             IMissionsDataService missionsDataService,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
@@ -55,8 +55,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.activeStateMachines = new List<IFiniteStateMachine>();
+            this.missionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
 
             this.serviceScope = serviceScopeFactory.CreateScope();
 
@@ -86,11 +85,29 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
 
-            this.Logger.LogDebug($"Notifying Mission Manager service error");
+            this.Logger.LogDebug($"Notifying Mission Manager service command error");
 
             var msg = new NotificationMessage(
                 notificationData?.Data,
-                "MM Error",
+                "MM Command Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.MissionManagerException,
+                notificationData?.RequestingBay ?? BayNumber.None,
+                notificationData?.TargetBay ?? BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        protected override void NotifyError(NotificationMessage notificationData)
+        {
+            this.Logger.LogDebug($"Notifying Mission Manager service notification error");
+
+            var msg = new NotificationMessage(
+                notificationData?.Data,
+                "MM Notification Error",
                 MessageActor.Any,
                 MessageActor.MissionsManager,
                 MessageType.MissionManagerException,

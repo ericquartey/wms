@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
                 {
                     this.requestedState = false;
 
-                    var newMessageData = new StopMessageData(StopRequestReason.Stop);
+                    var newMessageData = new StopMessageData(messageData.StopReason);
                     this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);
                 }
             }

@@ -1,10 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -45,6 +49,11 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 case MessageType.DataLayerReady:
                     this.OnDataLayerReady();
                     break;
+
+                case MessageType.FaultStateChanged:
+                case MessageType.RunningStateChanged:
+                    this.OnMachineRunningStatusChange(message);
+                    break;
             }
 
             return Task.CompletedTask;
@@ -58,6 +67,52 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         private void OnDataLayerReady()
         {
             this.missionManagementTask.Start();
+        }
+
+        private void OnMachineRunningStatusChange(NotificationMessage message)
+        {
+            if (message is null)
+            {
+                return;
+            }
+
+            if (message.Data is IStateChangedMessageData messageData)
+            {
+                StopRequestReason reason = StopRequestReason.NoReason;
+
+                if (message.Type == MessageType.FaultStateChanged && messageData.CurrentState)
+                {
+                    reason = StopRequestReason.FaultStateChanged;
+                }
+
+                if (message.Type == MessageType.RunningStateChanged && !messageData.CurrentState)
+                {
+                    reason = StopRequestReason.RunningStateChanged;
+                }
+
+                if (reason != StopRequestReason.NoReason)
+                {
+
+                    var newMessageData = new ChangeRunningStateMessageData(false, CommandAction.Stop, reason);
+                    var command = new CommandMessage(
+                        newMessageData,
+                        message.Description,
+                        message.Destination,
+                        message.Source,
+                        MessageType.ChangeRunningState,
+                        message.RequestingBay);
+
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
+                    {
+                        this.missionsProvider.StartMachineMission(missionId, command);
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.NotifyCommandError(command);
+                    }
+                }
+            }
         }
 
         private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)

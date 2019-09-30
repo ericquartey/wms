@@ -78,7 +78,9 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<ISensorsProvider, SensorsProvider>()
                 .AddTransient<IMachineConfigurationProvider, MachineConfigurationProvider>();
 
-            services.AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();
+            services
+                .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
+                .AddSingleton<IMissionsProvider, MissionsProvider>();
 
             return services;
         }

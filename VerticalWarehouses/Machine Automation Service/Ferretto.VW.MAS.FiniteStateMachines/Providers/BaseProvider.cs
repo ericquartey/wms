@@ -24,12 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         protected BaseProvider(IEventAggregator eventAggregator)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion

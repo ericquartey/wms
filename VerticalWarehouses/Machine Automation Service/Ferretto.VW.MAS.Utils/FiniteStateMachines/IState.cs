@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         IState NotificationReceived(NotificationMessage notificationMessage);
 
+        IState Stop(StopRequestReason reason);
+
         #endregion
     }
 }

@@ -14,10 +14,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public ChangeRunningStateMessageData(bool enable, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ChangeRunningStateMessageData(bool enable, CommandAction commandAction = CommandAction.Start, StopRequestReason stopReason = StopRequestReason.NoReason, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Enable = enable;
             this.CommandAction = commandAction;
+            this.StopReason = stopReason;
             this.Verbosity = verbosity;
         }
 
@@ -30,6 +31,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public CommandAction CommandAction { get; }
 
         public bool Enable { get; }
+
+        public StopRequestReason StopReason { get; }
 
         public MessageVerbosity Verbosity { get; }
 

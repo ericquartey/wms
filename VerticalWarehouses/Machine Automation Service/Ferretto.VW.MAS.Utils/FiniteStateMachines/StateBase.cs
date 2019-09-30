@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private bool hasExited;
 
+        private bool hasStopped;
+
         private bool isDisposed;
 
         #endregion
@@ -110,6 +112,20 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.OnNotificationReceived(notificationMessage);
         }
 
+        public IState Stop(StopRequestReason reason)
+        {
+            if (this.hasStopped)
+            {
+                throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+            }
+
+            this.hasStopped = true;
+
+            this.Logger.LogDebug($"Stopping state {this.GetType()}.");
+
+            return this.OnStop(reason);
+        }
+
         protected IState GetState<TState>() where TState : IState
         {
             return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
@@ -160,6 +176,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         }
 
         protected virtual IState OnNotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this;
+        }
+
+        protected virtual IState OnStop(StopRequestReason reason)
         {
             return this;
         }

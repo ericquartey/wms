@@ -1,17 +1,12 @@
-﻿// ReSharper disable ArrangeThisQualifier
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.WeightAcquisition;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
@@ -48,29 +43,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             return Task.CompletedTask;
         }
 
-        private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)
-        {
-            var stateMachine = this.activeStateMachines.FirstOrDefault(fsm => fsm.InstanceId.Equals(eventArgs.InstanceId));
-            if (stateMachine != null)
-            {
-                if (stateMachine is IDisposable disposableMachine)
-                {
-                    disposableMachine.Dispose();
-                }
-
-                stateMachine.Completed -= this.OnActiveStateMachineCompleted;
-
-                this.activeStateMachines.Remove(stateMachine);
-
-                this.EventAggregator.GetEvent<NotificationEvent>().Publish(eventArgs.NotificationMessage);
-            }
-            else
-            {
-                var commandMessage = (sender as IFiniteStateMachine)?.StartData;
-                this.NotifyCommandError(commandMessage);
-            }
-        }
-
         private void OnChangeRunningStateCommandReceived(CommandMessage command)
         {
             if (command is null)
@@ -81,17 +53,14 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             switch (((ChangeRunningStateMessageData)command.Data).CommandAction)
             {
                 case CommandAction.Start:
-                    if (this.activeStateMachines.Any(asm => asm.GetType() == typeof(IChangeRunningStateStateMachine)))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
                     {
-                        this.NotifyCommandError(command);
+                        this.missionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
-                        var newStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>();
-                        newStateMachine.Completed += this.OnActiveStateMachineCompleted;
-                        this.activeStateMachines.Add(newStateMachine);
-
-                        newStateMachine.Start(command, this.CancellationToken);
+                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.NotifyCommandError(command);
                     }
 
                     break;
@@ -108,17 +77,14 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             switch (((WeightAcquisitionCommandMessageData)command.Data).CommandAction)
             {
                 case CommandAction.Start:
-                    if (this.activeStateMachines.Any(asm => asm.GetType() == typeof(IWeightAcquisitionStateMachine)))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.WeightAcquisition, out var missionId))
                     {
-                        this.NotifyCommandError(command);
+                        this.missionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
-                        var newStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IWeightAcquisitionStateMachine>();
-                        newStateMachine.Completed += this.OnActiveStateMachineCompleted;
-                        this.activeStateMachines.Add(newStateMachine);
-
-                        newStateMachine.Start(command, this.CancellationToken);
+                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.NotifyCommandError(command);
                     }
 
                     break;

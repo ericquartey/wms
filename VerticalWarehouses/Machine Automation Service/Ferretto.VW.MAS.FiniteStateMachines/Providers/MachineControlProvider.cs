@@ -1,6 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
-
-using System;
+﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -10,6 +8,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
     public class MachineControlProvider : BaseProvider, IMachineControlProvider
@@ -66,9 +65,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             {
                 foreach (var bay in this.baysProvider.GetAll())
                 {
+                    var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Index}";
                     this.PublishCommand(
                         null,
-                        $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Index}",
+                        description,
                         MessageActor.FiniteStateMachines,
                         sender,
                         MessageType.InverterFaultReset,

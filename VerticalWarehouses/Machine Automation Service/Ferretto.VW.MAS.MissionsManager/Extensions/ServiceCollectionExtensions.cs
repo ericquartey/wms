@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.WeightAcquisition;
 using Ferretto.VW.MAS.MissionsManager.Providers;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.MissionsManager.Extensions
