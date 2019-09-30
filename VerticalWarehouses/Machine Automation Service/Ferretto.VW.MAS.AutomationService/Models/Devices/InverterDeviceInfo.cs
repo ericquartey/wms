@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.AutomationService.Models
 {
-    public class InverterDevice : DeviceBase
+    public class InverterDeviceInfo : DeviceBase
     {
         #region Properties
 

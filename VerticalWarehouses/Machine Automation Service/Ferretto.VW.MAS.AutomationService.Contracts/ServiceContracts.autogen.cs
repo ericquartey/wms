@@ -181,11 +181,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineDevicesService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice> GetAllAsync();
+        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice> GetAllAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1373,28 +1373,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice 
+    public partial class ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo 
     {
         [Newtonsoft.Json.JsonProperty("item1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<InverterDevice> Item1 { get; set; }
+        public System.Collections.Generic.IEnumerable<InverterDeviceInfo> Item1 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("item2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<IoDevice2> Item2 { get; set; }
+        public System.Collections.Generic.IEnumerable<IoDeviceInfo> Item2 { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice FromJson(string data)
+        public static ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ValueTupleOfIEnumerableOfInverterDeviceAndIEnumerableOfIoDevice>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class InverterDevice : DeviceBase
+    public partial class InverterDeviceInfo : DeviceBase
     {
         [Newtonsoft.Json.JsonProperty("controlWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> ControlWords { get; set; }
@@ -1410,9 +1410,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static InverterDevice FromJson(string data)
+        public static InverterDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterDevice>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterDeviceInfo>(data);
         }
     
     }
@@ -1463,7 +1463,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class IoDevice2 : DeviceBase
+    public partial class IoDeviceInfo : DeviceBase
     {
         [Newtonsoft.Json.JsonProperty("inputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> Inputs { get; set; }
@@ -1479,9 +1479,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static IoDevice2 FromJson(string data)
+        public static IoDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDevice2>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDeviceInfo>(data);
         }
     
     }

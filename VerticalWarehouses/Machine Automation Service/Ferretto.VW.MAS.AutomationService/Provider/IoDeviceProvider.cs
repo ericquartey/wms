@@ -28,15 +28,15 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Properties
 
-        public IEnumerable<IoDevice> GetStatuses => this.GetIoDevices(this.ioDeviceService.GetStatuses);
+        public IEnumerable<IoDeviceInfo> GetStatuses => this.GetIoDevices(this.ioDeviceService.GetStatuses);
 
         #endregion
 
         #region Methods
 
-        private IEnumerable<IoDevice> GetIoDevices(IEnumerable<IoStatus> ioStatuses)
+        private IEnumerable<IoDeviceInfo> GetIoDevices(IEnumerable<IoStatus> ioStatuses)
         {
-            var ioDevices = new List<IoDevice>();
+            var ioDevices = new List<IoDeviceInfo>();
             var properties = typeof(IoStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             foreach (var status in ioStatuses)
             {
@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                     outputs.Add(new BitInfo((pos++).ToString(), outputData, string.Empty));
                 }
 
-                var device = new IoDevice();
+                var device = new IoDeviceInfo();
                 device.Id = (int)status.IoIndex;
                 device.IoStatuses = bits;
                 device.Inputs = inputs;
