@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.AutomationService.Models;
 
 namespace Ferretto.VW.MAS.AutomationService.Models
 {
-    public class IoDevice : DeviceBase
+    public class IoDeviceInfo : DeviceBase
     {
         #region Properties
 
