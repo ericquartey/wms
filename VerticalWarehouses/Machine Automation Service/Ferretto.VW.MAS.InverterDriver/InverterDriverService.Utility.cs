@@ -1108,19 +1108,36 @@ namespace Ferretto.VW.MAS.InverterDriver
                     return;
                 }
 
-                this.logger.LogTrace("4:Starting ShutterPositioning FSM");
+                if (this.IsInverterStarted(inverterStatus))
+                {
+                    this.logger.LogTrace("4:Starting ShutterPositioning FSM");
 
-                var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
-                var currentStateMachine = new ShutterPositioningStateMachine(
-                    convertedShutterPositioningData,
-                    inverterStatus,
-                    this.logger,
-                    this.eventAggregator,
-                    this.inverterCommandQueue,
-                    this.serviceScopeFactory);
+                    var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
+                    var currentStateMachine = new ShutterPositioningStateMachine(
+                        convertedShutterPositioningData,
+                        inverterStatus,
+                        this.logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.serviceScopeFactory);
 
-                this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                currentStateMachine.Start();
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+                else
+                {
+                    this.logger.LogError("5:Inverter is not ready. Powering up the inverter");
+
+                    var currentStateMachine = new PowerOnStateMachine(
+                        inverterStatus,
+                        this.logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.serviceScopeFactory,
+                        receivedMessage);
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
+                }
             }
             else
             {
@@ -1238,13 +1255,18 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!encodedWord.Equals("\0"))
                 {
-                    var values = short.Parse(encodedWord);
-
-                    var dataByte = inverterIndex % 2;
-
-                    for (var index = 8 * dataByte; index < 8 + (8 * dataByte); index++)
+                    if (short.TryParse(encodedWord, out short values))
                     {
-                        returnValue[index - (8 * dataByte)] = (values & (0x0001 << index)) > 0;
+                        var dataByte = inverterIndex % 2;
+
+                        for (var index = 8 * dataByte; index < 8 + (8 * dataByte); index++)
+                        {
+                            returnValue[index - (8 * dataByte)] = (values & (0x0001 << index)) > 0;
+                        }
+                    }
+                    else
+                    {
+                        this.logger.LogError(currentMessageStringPayload);
                     }
                 }
             }
