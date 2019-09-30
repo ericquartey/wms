@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Properties
 
-        public IEnumerable<InverterDevice> GetStatuses => this.GetInvertersStatuses(this.inverterService.GetStatuses);
+        public IEnumerable<InverterDeviceInfo> GetStatuses => this.GetInvertersStatuses(this.inverterService.GetStatuses);
 
         #endregion
 
@@ -84,14 +84,14 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             return this.GetBits(inverterInputsProperties, status, TOTAL_INPUTS, SKIP_CHARS_FROM_NAME);
         }
 
-        private IEnumerable<InverterDevice> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
+        private IEnumerable<InverterDeviceInfo> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
         {
-            var inverterDevices = new List<InverterDevice>();
+            var inverterDevices = new List<InverterDeviceInfo>();
             var controlWordProperties = typeof(IControlWord).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             var statusWordProperties = typeof(IStatusWord).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             foreach (var status in inverterStatuses)
             {
-                var device = new InverterDevice();
+                var device = new InverterDeviceInfo();
                 device.Id = (int)status.SystemIndex;
                 device.ControlWords = this.GetBits(controlWordProperties, status.CommonControlWord, WORD_DIMENSION);
                 device.StatusWords = this.GetBits(statusWordProperties, status.CommonStatusWord, WORD_DIMENSION);

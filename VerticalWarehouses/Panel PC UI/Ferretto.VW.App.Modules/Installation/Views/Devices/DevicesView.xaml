@@ -61,7 +61,7 @@
             <Setter Property="Padding" Value="0" />
         </Style>
 
-        <DataTemplate DataType="{x:Type device:IoDevice}">
+        <DataTemplate DataType="{x:Type device:IoDeviceInfo}">
             <Border Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
                 <Grid Margin="-1"
                       Background="{StaticResource FerrettoMediumGray}">
@@ -166,7 +166,7 @@
             </Border>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type device:InverterDevice}">
+        <DataTemplate DataType="{x:Type device:InverterDeviceInfo}">
             <Border Style="{StaticResource ResourceKey=VWSIM_Border_Inverter}">
                 <Grid Margin="-1"
                       Background="{StaticResource FerrettoMediumGray}">

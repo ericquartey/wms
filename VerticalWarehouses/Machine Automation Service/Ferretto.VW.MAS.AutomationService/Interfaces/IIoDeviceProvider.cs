@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS.AutomationService.Interfaces
     {
         #region Properties
 
-        IEnumerable<IoDevice> GetStatuses { get; }
+        IEnumerable<IoDeviceInfo> GetStatuses { get; }
 
         #endregion
     }
