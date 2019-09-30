@@ -53,13 +53,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Bays\DepositAndPickUpTestView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\Bays\DepositAndPickUpTestView.xaml.cs">
-      <DependentUpon>DepositAndPickUpTestView.xaml</DependentUpon>
-    </Compile>
+    <None Update="Views\Bays\DepositAndPickUpTestView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

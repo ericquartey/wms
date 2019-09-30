@@ -44,9 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineSetupStatusService machineSetupStatusService;
         private readonly IMachineDepositPickupProcedureService machineDepositPickupProcedureService;
 
-        private int? completedCycles;
-
-        private decimal? currentPosition;
+        private int? completedCycles;        
 
         private int initialCycles;
 
@@ -135,12 +133,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.completedCycles;
             private set => this.SetProperty(ref this.completedCycles, value);
-        }
-
-        public decimal? CurrentPosition
-        {
-            get => this.currentPosition;
-            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public string Error => string.Join(
@@ -334,17 +326,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.receivedActionUpdateToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    async message => await this.UpdateCompletion(message),
-                    ThreadOption.UIThread,
-                    false);
-
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
               .Subscribe(
-                  message => this.OnElevatorPositionChanged(message),
+                  async message => await this.OnElevatorPositionChanged(message),
                   ThreadOption.UIThread,
                   false);
 
@@ -423,16 +408,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        private async Task OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
             {
                 return;
             }
 
+            this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
+            this.CompletedCycles = message.Data.ExecutedCycles;
+
             switch (message.Status)
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
+                case MessageStatus.OperationStart:
+                    this.IsExecutingProcedure = true;
+                    break;
+
+                case MessageStatus.OperationExecuting:
                     {
                         if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         {
@@ -446,22 +438,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
                     }
 
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                case MessageStatus.OperationEnd:
                     {
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        this.IsExecutingProcedure = false;
+
+                        await this.machineDepositPickupProcedureService.MarkAsCompletedAsync();
 
                         break;
                     }
 
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                case MessageStatus.OperationStop:
                     {
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        this.IsExecutingProcedure = false;
 
                         this.ShowNotification(
                             VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -469,6 +465,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         break;
                     }
+
+                case MessageStatus.OperationError:
+                    this.IsExecutingProcedure = false;
+                    break;
             }
         }
 
@@ -600,28 +600,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message is null)
             {
                 return;
-            }
-
-            this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
-            this.CompletedCycles = message.Data.ExecutedCycles;
-            this.CurrentPosition = message.Data.CurrentPosition;
-
-            switch (message.Status)
-            {
-                case MessageStatus.OperationStart:
-                    this.IsExecutingProcedure = true;
-                    break;
-
-                case MessageStatus.OperationEnd:
-                case MessageStatus.OperationStop:
-                    this.IsExecutingProcedure = false;
-
-                    await this.machineDepositPickupProcedureService.MarkAsCompletedAsync();
-                    break;
-
-                case MessageStatus.OperationError:
-                    this.IsExecutingProcedure = false;
-                    break;
             }
         }
 
