@@ -68,8 +68,7 @@ namespace Ferretto.VW.MAS.IODriver.Services
             {
                 if (this.ioStatuses.ContainsKey(deviceIndex))
                 {
-                    this.ioStatuses[deviceIndex].UpdateInputStates(inputData);
-                    return true;
+                    return this.ioStatuses[deviceIndex].UpdateInputStates(inputData);
                 }
             }
 

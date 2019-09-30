@@ -92,9 +92,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (this.InverterStatus is AglInverterStatus currentStatus)
                     {
-                        if (this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
-                            (currentStatus.ProfileVelocityStatusWord.TargetReached
-                                && currentStatus.CurrentShutterPosition == this.shutterDestination
+                        if (//this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
+                            (//currentStatus.ProfileVelocityStatusWord.TargetReached &&
+                                currentStatus.CurrentShutterPosition == this.shutterDestination
                                 )
                             )
                         {
