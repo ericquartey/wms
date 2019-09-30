@@ -2,8 +2,6 @@
 {
     public interface IInverterPowerOffFieldMessageData : IFieldMessageData
     {
-
-
         #region Properties
 
         FieldCommandMessage NextCommandMessage { get; set; }

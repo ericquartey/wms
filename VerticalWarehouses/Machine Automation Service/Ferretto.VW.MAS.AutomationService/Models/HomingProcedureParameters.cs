@@ -4,13 +4,13 @@
     {
         #region Properties
 
-        public decimal LowerBound { get; set; }
+        public double LowerBound { get; set; }
 
-        public decimal Offset { get; set; }
+        public double Offset { get; set; }
 
         public decimal Resolution { get; set; }
 
-        public decimal UpperBound { get; set; }
+        public double UpperBound { get; set; }
 
         #endregion
     }

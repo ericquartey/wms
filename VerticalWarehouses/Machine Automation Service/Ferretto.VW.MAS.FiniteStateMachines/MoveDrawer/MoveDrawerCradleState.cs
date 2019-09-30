@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
+
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -84,7 +85,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                             {
                                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
+                                errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCompletelyLoaded, this.machineData.RequestingBay);
                             }
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -187,7 +188,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         //TEMP Check this code
         private void GetParameters()
         {
-            decimal target = 0;
+            var target = this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell
+                ? (double)this.machineData.DrawerOperationData.SourceHorizontalPosition
+                : (double)this.machineData.DrawerOperationData.DestinationHorizontalPosition;
 
             ////TEMP: Remove the hardcoded value (used only for test)
             //if (this.drawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay) //(this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
@@ -214,38 +217,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    target = +150;
             //}
 
-            if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromBay || this.machineData.DrawerOperationData.Step == DrawerOperationStep.LoadingDrawerFromCell)
-            {
-                target = this.machineData.DrawerOperationData.SourceHorizontalPosition;
-            }
-            else
-            {
-                target = this.machineData.DrawerOperationData.DestinationHorizontalPosition;
-            }
-
             //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
-            var maxSpeed = this.machineData.HorizontalAxis.MaxEmptySpeedHA;
-            decimal[] maxAcceleration = { this.machineData.HorizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] maxDeceleration = { this.machineData.HorizontalAxis.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
-            var feedRate = 0.10; // TEMP: remove this code line (used only for test)
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            {
+                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                var horizontalAxis = elevatorDataProvider.GetHorizontalAxis();
 
-            decimal[] speed = { maxSpeed * (decimal)feedRate };
+                var maxSpeed = horizontalAxis.EmptyLoadMovement.Speed;
+                var maxAcceleration = new[] { horizontalAxis.EmptyLoadMovement.Acceleration };
+                var maxDeceleration = new[] { horizontalAxis.EmptyLoadMovement.Deceleration };
+                var switchPosition = new[] { 0.0 };
+                var feedRate = 0.10; // TEMP: remove this code line (used only for test)
 
-            this.positioningMessageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.Position,
-                target,
-                speed,
-                maxAcceleration,
-                maxDeceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                (target >= 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
+                var speed = new[] { maxSpeed * feedRate };
+
+                this.positioningMessageData = new PositioningMessageData(
+                    Axis.Horizontal,
+                    MovementType.Relative,
+                    MovementMode.Position,
+                    target,
+                    speed,
+                    maxAcceleration,
+                    maxDeceleration,
+                    0,
+                    0,
+                    0,
+                    0,
+                    switchPosition,
+                    (target >= 0 ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
+            }
         }
 
         #endregion

@@ -20,6 +20,6 @@
 
         All = 0x10,
 
-        None = 0xFF
+        None = 0xFF,
     }
 }

@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -30,27 +31,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly Task commandReceiveTask;
 
-        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines;
+        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
+
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
         private readonly Task fieldNotificationReceiveTask;
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
-
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
-
         private readonly ILogger<FiniteStateMachines> logger;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly Task notificationReceiveTask;
 
@@ -58,17 +57,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
         private bool forceInverterIoStatusPublish;
 
         private bool forceRemoteIoStatusPublish;
 
-        private List<IoIndex> ioIndexDeviceList;
-
-        private bool isDataLayerReady;
+        private IEnumerable<IoDevice> ioDevices;
 
         private bool isDisposed;
 
@@ -84,47 +77,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             ISetupStatusProvider setupStatusProvider,
-            IVertimagConfigurationDataLayer vertimagConfiguration,
-            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
-            IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
-
-            this.vertimagConfiguration = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
-
-            this.generalInfoDataLayer = generalInfoDataLayer ?? throw new ArgumentNullException(nameof(generalInfoDataLayer));
-
-            this.verticalAxis = verticalAxis ?? throw new ArgumentNullException(nameof(verticalAxis));
-
-            this.horizontalAxis = horizontalAxis ?? throw new ArgumentNullException(nameof(horizontalAxis));
-
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-
-            this.machineConfigurationProvider = machineConfigurationProvider ?? throw new ArgumentNullException(nameof(machineConfigurationProvider));
-
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(this.NotificationReceiveTaskFunction);
             this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
-
-            this.logger.LogTrace("1:Subscription Command");
 
             this.InitializeMethodSubscriptions();
         }
@@ -249,7 +217,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
-                    case MessageType.TorqueCurrentSampling:
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
 
@@ -304,186 +271,192 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void FieldNotificationReceiveTaskFunction()
         {
-            do
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                FieldNotificationMessage receivedMessage;
-                try
+                var scopedBaysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+                do
                 {
-                    this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    FieldNotificationMessage receivedMessage;
+                    try
+                    {
+                        this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"1:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogError($"2:Exception: {ex.Message}");
+                        this.logger.LogTrace($"1:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError($"2:Exception: {ex.Message}");
 
-                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
-                    return;
-                }
+                        return;
+                    }
 
-                BayNumber messageBayBayIndex = BayNumber.None;
-                if (receivedMessage.Source is FieldMessageActor.IoDriver)
-                {
-                    var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                    messageBayBayIndex = this.baysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
-                }
+                    var messageBayBayIndex = BayNumber.None;
+                    if (receivedMessage.Source is FieldMessageActor.IoDriver)
+                    {
+                        var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        messageBayBayIndex = scopedBaysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                    }
 
-                if (receivedMessage.Source is FieldMessageActor.InverterDriver)
-                {
-                    var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-                    messageBayBayIndex = this.baysProvider.GetByInverterIndex(messageInverterIndex);
-                }
+                    if (receivedMessage.Source is FieldMessageActor.InverterDriver)
+                    {
+                        var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+                        messageBayBayIndex = scopedBaysProvider.GetByInverterIndex(messageInverterIndex);
+                    }
 
-                this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
+                    this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
 
-                switch (receivedMessage.Type)
-                {
-                    case FieldMessageType.CalibrateAxis:
-                    case FieldMessageType.InverterPowerOff:
-                        break;
+                    switch (receivedMessage.Type)
+                    {
+                        case FieldMessageType.CalibrateAxis:
+                        case FieldMessageType.InverterPowerOff:
+                            break;
 
-                    case FieldMessageType.SensorsChanged:
+                        case FieldMessageType.SensorsChanged:
 
-                        this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
-                        {
-                            var ioIndex = receivedMessage.DeviceIndex;
-
-                            if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
+                            this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                            if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                             {
-                                var msgData = new SensorsChangedMessageData();
-                                msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+                                var ioIndex = receivedMessage.DeviceIndex;
 
-                                var msg = new NotificationMessage(
-                                    msgData,
-                                    "IO sensors status",
-                                    MessageActor.Any,
-                                    MessageActor.FiniteStateMachines,
-                                    MessageType.SensorsChanged,
-                                    messageBayBayIndex,
-                                    messageBayBayIndex,
-                                    MessageStatus.OperationExecuting);
-
-                                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
-
-                                this.forceRemoteIoStatusPublish = false;
-                            }
-                        }
-                        break;
-
-                    case FieldMessageType.InverterStatusUpdate:
-
-                        this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
-                        {
-                            var inverterIndex = receivedMessage.DeviceIndex;
-
-                            //TEMP Update X, Y axis positions
-                            if (dataInverters.CurrentAxis == Axis.Vertical)
-                            {
-                                lock (this.machineSensorsStatus)
+                                if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                                 {
-                                    this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition.Value;
+                                    var msgData = new SensorsChangedMessageData();
+                                    msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+
+                                    var msg = new NotificationMessage(
+                                        msgData,
+                                        "IO sensors status",
+                                        MessageActor.Any,
+                                        MessageActor.FiniteStateMachines,
+                                        MessageType.SensorsChanged,
+                                        messageBayBayIndex,
+                                        messageBayBayIndex,
+                                        MessageStatus.OperationExecuting);
+
+                                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
+
+                                    this.forceRemoteIoStatusPublish = false;
                                 }
                             }
-                            else if (dataInverters.CurrentAxis == Axis.Horizontal)
+                            break;
+
+                        case FieldMessageType.InverterStatusUpdate:
+
+                            this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                            if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
                             {
-                                lock (this.machineSensorsStatus)
+                                var inverterIndex = receivedMessage.DeviceIndex;
+
+                                //TEMP Update X, Y axis positions
+                                if (dataInverters.CurrentAxis == Axis.Vertical)
                                 {
-                                    this.machineSensorsStatus.AxisXPosition = dataInverters.CurrentPosition.Value;
+                                    lock (this.machineSensorsStatus)
+                                    {
+                                        this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition.Value;
+                                    }
+                                }
+                                else if (dataInverters.CurrentAxis == Axis.Horizontal)
+                                {
+                                    lock (this.machineSensorsStatus)
+                                    {
+                                        this.machineSensorsStatus.AxisXPosition = dataInverters.CurrentPosition.Value;
+                                    }
+                                }
+
+                                if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                                {
+                                    var msgData = new SensorsChangedMessageData
+                                    {
+                                        SensorsStates = this.machineSensorsStatus.DisplayedInputs
+                                    };
+
+                                    var msg1 = new NotificationMessage(
+                                        msgData,
+                                        "IO sensors status",
+                                        MessageActor.Any,
+                                        MessageActor.FiniteStateMachines,
+                                        MessageType.SensorsChanged,
+                                        messageBayBayIndex,
+                                        messageBayBayIndex,
+                                        MessageStatus.OperationExecuting);
+                                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg1);
+
+                                    this.forceInverterIoStatusPublish = false;
                                 }
                             }
+                            break;
 
-                            if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                        case FieldMessageType.InverterStatusWord:
+                            this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                            if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
                             {
-                                var msgData = new SensorsChangedMessageData
-                                {
-                                    SensorsStates = this.machineSensorsStatus.DisplayedInputs
-                                };
-
-                                var msg1 = new NotificationMessage(
-                                    msgData,
-                                    "IO sensors status",
-                                    MessageActor.Any,
-                                    MessageActor.FiniteStateMachines,
-                                    MessageType.SensorsChanged,
-                                    messageBayBayIndex,
-                                    messageBayBayIndex,
-                                    MessageStatus.OperationExecuting);
-                                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg1);
-
-                                this.forceInverterIoStatusPublish = false;
+                                var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
+                                var msg2 = new NotificationMessage(
+                                msgData,
+                                "Inverter Status Word",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.InverterStatusWord,
+                                messageBayBayIndex,
+                                messageBayBayIndex,
+                                MessageStatus.OperationExecuting);
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg2);
                             }
-                        }
-                        break;
+                            break;
 
-                    case FieldMessageType.InverterStatusWord:
-                        this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
-                        {
-                            var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
-                            var msg2 = new NotificationMessage(
-                            msgData,
-                            "Inverter Status Word",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.InverterStatusWord,
-                            messageBayBayIndex,
-                            messageBayBayIndex,
-                            MessageStatus.OperationExecuting);
-                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg2);
-                        }
-                        break;
+                        // INFO Catch Exception from Inverter, to forward to the AS
+                        case FieldMessageType.InverterException:
+                        case FieldMessageType.InverterError:
+                            var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
-                    // INFO Catch Exception from Inverter, to forward to the AS
-                    case FieldMessageType.InverterException:
-                    case FieldMessageType.InverterError:
-                        var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
+                            var msg4 = new NotificationMessage(
+                                exceptionMessage,
+                                "Inverter Exception",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.InverterException,
+                                messageBayBayIndex,
+                                messageBayBayIndex,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Critical);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg4);
 
-                        var msg4 = new NotificationMessage(
-                            exceptionMessage,
-                            "Inverter Exception",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.InverterException,
-                            messageBayBayIndex,
-                            messageBayBayIndex,
-                            MessageStatus.OperationError,
-                            ErrorLevel.Critical);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg4);
+                            break;
 
-                        break;
+                        // INFO Catch Exception from IoDriver, to forward to the AS
+                        case FieldMessageType.IoDriverException:
+                            var ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
 
-                    // INFO Catch Exception from IoDriver, to forward to the AS
-                    case FieldMessageType.IoDriverException:
-                        var ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
+                            var msg5 = new NotificationMessage(
+                                ioExceptionMessage,
+                                "Io Driver Exception",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.IoDriverException,
+                                messageBayBayIndex,
+                                messageBayBayIndex,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Critical);
+                            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg5);
 
-                        var msg5 = new NotificationMessage(
-                            ioExceptionMessage,
-                            "Io Driver Exception",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.IoDriverException,
-                            messageBayBayIndex,
-                            messageBayBayIndex,
-                            MessageStatus.OperationError,
-                            ErrorLevel.Critical);
-                        this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg5);
-
-                        break;
+                            break;
+                    }
+                    messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
                 }
-                messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+                while (!this.stoppingToken.IsCancellationRequested);
             }
-            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
         {
+            this.logger.LogTrace("1:Subscription Command");
+
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(
                 message =>
@@ -649,11 +622,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void RetrieveIoDevicesConfigurationAsync()
         {
-            this.isDataLayerReady = true;
+            this.ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
 
-            this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
-
-            this.machineSensorsStatus = new MachineSensorsStatus(this.machineConfigurationProvider.IsOneKMachine());
+            this.machineSensorsStatus = new MachineSensorsStatus(this.machineProvider.IsOneTonMachine());
 
             this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
             this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;

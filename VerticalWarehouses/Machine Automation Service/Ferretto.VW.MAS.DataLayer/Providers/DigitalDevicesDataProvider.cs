@@ -1,0 +1,89 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Microsoft.EntityFrameworkCore;
+
+namespace Ferretto.VW.MAS.DataLayer.Providers
+{
+    internal sealed class DigitalDevicesDataProvider : IDigitalDevicesDataProvider
+    {
+        #region Fields
+
+        private readonly DataLayerContext dataContext;
+
+        #endregion
+
+        #region Constructors
+
+        public DigitalDevicesDataProvider(DataLayerContext dataContext)
+        {
+            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
+        }
+
+        #endregion
+
+        #region Methods
+
+        public IEnumerable<Inverter> GetAllInverters()
+        {
+            return this.dataContext.Inverters.ToArray();
+        }
+
+        public IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber)
+        {
+            if (bayNumber == BayNumber.ElevatorBay)
+            {
+                return this.dataContext.Elevators
+                    .Include(e => e.Axes)
+                    .ThenInclude(a => a.Inverter)
+                    .Single()
+                    .Axes
+                    .Select(a => a.Inverter)
+                    .ToList();
+            }
+
+            var bay = this.dataContext.Bays
+                .Include(b => b.Inverter)
+                .Include(b => b.Shutter)
+                .ThenInclude(s => s.Inverter)
+                .SingleOrDefault(b => b.Number == bayNumber);
+
+            var inverters = new List<Inverter>();
+
+            if (bay.Shutter != null && bay.Shutter.Inverter != null)
+            {
+                inverters.Add(bay.Shutter.Inverter);
+            }
+
+            if (bay.Inverter != null)
+            {
+                inverters.Add(bay.Inverter);
+            }
+
+            return inverters;
+        }
+
+        public IEnumerable<IoDevice> GetAllIoDevices()
+        {
+            return this.dataContext.IoDevices.ToArray();
+        }
+
+        public Inverter GetInverterByIndex(InverterIndex index)
+        {
+            var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == index);
+            if (inverter is null)
+            {
+                throw new EntityNotFoundException((int)index);
+            }
+
+            return inverter;
+        }
+
+        #endregion
+    }
+}

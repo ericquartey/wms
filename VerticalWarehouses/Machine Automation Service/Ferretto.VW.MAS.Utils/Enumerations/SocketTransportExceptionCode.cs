@@ -18,6 +18,6 @@
 
         NetworkStreamReadFailure,
 
-        NetworkStreamWriteFailure
+        NetworkStreamWriteFailure,
     }
 }

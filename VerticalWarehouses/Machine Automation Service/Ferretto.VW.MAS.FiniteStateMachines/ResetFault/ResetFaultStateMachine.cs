@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public ResetFaultStateMachine(
             CommandMessage receivedMessage,
-            List<InverterIndex> bayInverters,
+            IEnumerable<DataModels.Inverter> bayInverters,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -35,7 +35,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new ResetFaultMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, bayInverters, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new ResetFaultMachineData(
+                receivedMessage.RequestingBay,
+                receivedMessage.TargetBay,
+                bayInverters,
+                eventAggregator,
+                logger,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -75,7 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             {
                 var stateData = new ResetFaultStateData(this, this.machineData);
                 this.CurrentState = new ResetFaultStartState(stateData);
-                this.CurrentState?.Start();
+                this.CurrentState.Start();
             }
         }
 

@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
 {
     public abstract class StateMachineBase : IStateMachine
     {
-
         #region Fields
 
         private bool disposed;
@@ -45,8 +44,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
 
         #endregion
 
-
-
         #region Properties
 
         public IEventAggregator EventAggregator { get; }
@@ -61,14 +58,11 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines
 
         #endregion
 
-
-
         #region Methods
 
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-
             lock (this.CurrentState)
             {
                 this.CurrentState = newState;

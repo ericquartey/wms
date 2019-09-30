@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineResolutionCalibrationProcedureService resolutionCalibrationService;
 
-        private decimal? currentPosition;
+        private double? currentPosition;
 
         private decimal? currentResolution;
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentPosition
+        public double? CurrentPosition
         {
             get => this.currentPosition;
             protected set => this.SetProperty(ref this.currentPosition, value);

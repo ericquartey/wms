@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.IODriver.Interface;
+﻿using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 

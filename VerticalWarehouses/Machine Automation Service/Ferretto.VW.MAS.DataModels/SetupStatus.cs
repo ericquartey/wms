@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class SetupStatus
+    public sealed class SetupStatus : DataModel
     {
         #region Properties
 
@@ -47,8 +47,6 @@
         public System.DateTime? CompletedDate { get; set; }
 
         public bool HorizontalHoming { get; set; }
-
-        public int Id { get; set; }
 
         public bool PanelsCheck { get; set; }
 

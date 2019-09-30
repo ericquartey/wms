@@ -4,8 +4,6 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public static class StopRequestReasonConverter
     {
-
-
         #region Methods
 
         public static MessageStatus GetMessageStatusFromReason(StopRequestReason reason)

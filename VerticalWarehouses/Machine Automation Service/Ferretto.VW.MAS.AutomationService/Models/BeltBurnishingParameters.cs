@@ -4,11 +4,11 @@
     {
         #region Properties
 
-        public decimal LowerBound { get; set; }
+        public double LowerBound { get; set; }
 
         public int RequiredCycles { get; set; }
 
-        public decimal UpperBound { get; set; }
+        public double UpperBound { get; set; }
 
         #endregion
     }

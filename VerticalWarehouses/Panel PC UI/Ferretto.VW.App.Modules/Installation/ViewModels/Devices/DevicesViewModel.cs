@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class DevicesViewModel : BaseMainViewModel
+    public class DevicesViewModel : BaseNavigationViewModel
     {
         #region Fields
 
@@ -46,7 +46,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public DevicesViewModel()
-               : base(Services.PresentationMode.None)
         {
             this.devices = new List<DeviceBase>();
         }
@@ -103,13 +102,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = true;
                 this.devices.Clear();
                 var result = await this.machineDevicesServices.GetAllAsync();
-                this.devices.AddRange(result.Item1);
                 this.devices.AddRange(result.Item2);
+                this.devices.AddRange(result.Item1);
                 this.RaisePropertyChanged(nameof(this.Devices));
             }
-            catch (Exception ex)
+            catch
             {
-                this.ShowNotification(ex);
             }
             finally
             {

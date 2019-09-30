@@ -16,34 +16,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
     {
         #region Fields
 
-        private readonly Dictionary<InverterIndex, MessageStatus> inverterresponses;
+        private readonly Dictionary<InverterIndex, MessageStatus> inverterResponses = new Dictionary<InverterIndex, MessageStatus>();
 
         private readonly IResetFaultMachineData machineData;
 
         private readonly IResetFaultStateData stateData;
-
-        private bool disposed;
 
         #endregion
 
         #region Constructors
 
         public ResetFaultStartState(IResetFaultStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+            : base(stateData?.ParentMachine, stateData?.MachineData?.Logger)
         {
-            this.stateData = stateData;
-            this.machineData = stateData.MachineData as IResetFaultMachineData;
-
-            this.inverterresponses = new Dictionary<InverterIndex, MessageStatus>();
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetFaultStartState()
-        {
-            this.Dispose(false);
+            this.stateData = stateData ?? throw new ArgumentNullException(nameof(stateData));
+            this.machineData = stateData.MachineData as IResetFaultMachineData ?? throw new ArgumentNullException(nameof(stateData));
         }
 
         #endregion
@@ -56,35 +43,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if (message.Type == FieldMessageType.InverterFaultReset)
+            if (message.Type != FieldMessageType.InverterFaultReset)
             {
-                Enum.TryParse(typeof(InverterIndex), message.DeviceIndex.ToString(), out var messageInverterIndex);
+                return;
+            }
 
-                if (message.Status != MessageStatus.OperationStart &&
-                    message.Status != MessageStatus.OperationExecuting)
+            Enum.TryParse(typeof(InverterIndex), message.DeviceIndex.ToString(), out var messageInverterIndex);
+
+            if (message.Status != MessageStatus.OperationStart &&
+                message.Status != MessageStatus.OperationExecuting)
+            {
+                if (this.inverterResponses.TryGetValue((InverterIndex)messageInverterIndex, out var inverterResponse))
                 {
-                    if (this.inverterresponses.TryGetValue((InverterIndex)messageInverterIndex, out var inverterResponse))
-                    {
-                        inverterResponse = message.Status;
-                        this.inverterresponses[(InverterIndex)messageInverterIndex] = inverterResponse;
-                    }
-                    else
-                    {
-                        this.inverterresponses.Add((InverterIndex)messageInverterIndex, message.Status);
-                    }
+                    inverterResponse = message.Status;
+                    this.inverterResponses[(InverterIndex)messageInverterIndex] = inverterResponse;
                 }
-
-                if (this.inverterresponses.Values.Count == this.machineData.BayInverters.Count)
+                else
                 {
-                    if (this.inverterresponses.Values.Any(r => r != MessageStatus.OperationEnd))
-                    {
-                        this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.stateData));
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
-                    }
+                    this.inverterResponses.Add((InverterIndex)messageInverterIndex, message.Status);
+                }
+            }
+
+            if (this.inverterResponses.Values.Count == this.machineData.BayInverters.Count())
+            {
+                if (this.inverterResponses.Values.Any(r => r != MessageStatus.OperationEnd))
+                {
+                    this.stateData.FieldMessage = message;
+                    this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.stateData));
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
                 }
             }
         }
@@ -106,7 +95,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             foreach (var bayInverter in this.machineData.BayInverters)
             {
                 var newCommandMessage = new FieldCommandMessage(commandMessage);
-                newCommandMessage.DeviceIndex = (byte)bayInverter;
+                newCommandMessage.DeviceIndex = (byte)bayInverter.Index;
 
                 this.ParentStateMachine.PublishFieldCommandMessage(newCommandMessage);
             }
@@ -129,22 +118,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
             this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

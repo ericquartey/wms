@@ -22,13 +22,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly INavigationService navigationService;
 
-        private decimal? inputWeight;
+        private double? inputWeight;
 
         private bool isWorking;
 
         private int? loadingUnitId;
 
-        private decimal? measuredWeight;
+        private double? measuredWeight;
 
         private string noteText;
 
@@ -38,9 +38,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-        private decimal testToRun;
+        private double testToRun;
 
-        private decimal weightTolerance;
+        private double weightTolerance;
 
         #endregion
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this[nameof(this.InputWeight)],
                         this[nameof(this.WeightTolerance)]);
 
-        public decimal? InputWeight
+        public double? InputWeight
         {
             get => this.inputWeight;
             set
@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isWorking, value);
         }
 
-        public decimal? MeasuredWeight
+        public double? MeasuredWeight
         {
             get => this.measuredWeight;
             set
@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     async () => await this.StopWeightCheckAsync(),
                     this.CanStopWeightCheck));
 
-        public decimal TestToRun
+        public double TestToRun
         {
             get => this.testToRun;
             set
@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal WeightTolerance
+        public double WeightTolerance
         {
             get => this.weightTolerance;
             set

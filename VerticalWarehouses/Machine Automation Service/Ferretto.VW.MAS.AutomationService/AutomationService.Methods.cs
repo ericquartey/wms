@@ -154,14 +154,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataLayerReady()
         {
+            this.baysProvider.AddElevatorPseudoBay();
+
             this.configuredBays = this.baysProvider.GetAll().ToList();
-
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var baysConfigurationProvider = scope.ServiceProvider.GetRequiredService<IBaysConfigurationProvider>();
-
-                baysConfigurationProvider.LoadFromConfiguration();
-            }
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
@@ -207,7 +202,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             if (receivedMessage.Data is IStateChangedMessageData messageData)
             {
-                StopRequestReason reason = StopRequestReason.NoReason;
+                var reason = StopRequestReason.NoReason;
 
                 if (receivedMessage.Type == MessageType.FaultStateChanged && messageData.CurrentState)
                 {
@@ -221,7 +216,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 if (reason != StopRequestReason.NoReason)
                 {
-                    this.currentStateMachine = new PowerEnableStateMachine(false, BayNumber.BayOne, reason, this.configuredBays, this.eventAggregator, this.logger, this.serviceScopeFactory);
+                    this.currentStateMachine = new PowerEnableStateMachine(
+                        false,
+                        BayNumber.BayOne,
+                        reason,
+                        this.configuredBays,
+                        this.EventAggregator,
+                        this.Logger as ILogger<AutomationService>,
+                        this.serviceScopeFactory);
+
                     this.currentStateMachine.Start();
                 }
             }

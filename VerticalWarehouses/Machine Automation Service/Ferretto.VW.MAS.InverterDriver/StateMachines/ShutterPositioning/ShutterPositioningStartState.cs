@@ -48,7 +48,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
             if (this.InverterStatus is IAglInverterStatus aglStatus)
             {
-                if (this.shutterPositionData.ShutterType == ShutterType.Shutter2Type && this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
+                if (this.shutterPositionData.ShutterType == ShutterType.TwoSensors
+                    &&
+                    this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
                 {
                     this.Logger.LogError($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
 

@@ -4,24 +4,19 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService.StateMachines
 {
     public class EmptyState : StateBase
     {
-
-
         #region Constructors
 
         public EmptyState(ILogger<AutomationService> logger)
             : base(null, BayNumber.None, logger)
         {
-            logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
-
-
 
         #region Methods
 

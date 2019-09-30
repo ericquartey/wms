@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class ConfigurationValue
+    public sealed class ConfigurationValue
     {
         #region Properties
 

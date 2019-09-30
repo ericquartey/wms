@@ -5,16 +5,17 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService.StateMachines.Template.Models
 {
     public class TemplateMachineData : ITemplateMachineData
     {
-
-
         #region Constructors
 
-        public TemplateMachineData(BayNumber requestingBay, IEventAggregator eventAggregator, ILogger<AutomationService> logger, IServiceScopeFactory serviceScopeFactory)
+        public TemplateMachineData(
+            BayNumber requestingBay,
+            IEventAggregator eventAggregator,
+            ILogger<AutomationService> logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.RequestingBay = requestingBay;
             this.EventAggregator = eventAggregator;
@@ -25,8 +26,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.Template.Models
         }
 
         #endregion
-
-
 
         #region Properties
 

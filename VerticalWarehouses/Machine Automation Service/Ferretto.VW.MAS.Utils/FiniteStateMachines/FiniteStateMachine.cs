@@ -10,14 +10,13 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
     {
-
         #region Fields
 
         private readonly CommandEvent commandEvent;
@@ -84,15 +83,11 @@ namespace Ferretto.VW.MAS.Utils
 
         #endregion
 
-
-
         #region Events
 
         public event EventHandler Completed;
 
         #endregion
-
-
 
         #region Properties
 
@@ -122,8 +117,6 @@ namespace Ferretto.VW.MAS.Utils
         protected IMessageData StartData { get; private set; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -161,12 +154,12 @@ namespace Ferretto.VW.MAS.Utils
 
             this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
             {
-                Name = $"FSM Commands {this.GetType().Name}"
+                Name = $"FSM Commands {this.GetType().Name}",
             };
 
             this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
             {
-                Name = $"FSM Notifications {this.GetType().Name}"
+                Name = $"FSM Notifications {this.GetType().Name}",
             };
 
             this.commandsDequeuingThread.Start(cancellationToken);
@@ -181,7 +174,8 @@ namespace Ferretto.VW.MAS.Utils
 
         protected abstract bool FilterNotification(NotificationMessage notification);
 
-        protected IState GetState<TState>() where TState : IState
+        protected IState GetState<TState>()
+            where TState : IState
         {
             return this.serviceScope.ServiceProvider.GetRequiredService<TStartState>();
         }
@@ -237,7 +231,8 @@ namespace Ferretto.VW.MAS.Utils
 
                     return;
                 }
-            } while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            }
+            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -266,7 +261,8 @@ namespace Ferretto.VW.MAS.Utils
 
                     return;
                 }
-            } while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            }
+            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

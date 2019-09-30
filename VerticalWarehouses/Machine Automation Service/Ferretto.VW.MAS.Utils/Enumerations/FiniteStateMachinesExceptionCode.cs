@@ -2,6 +2,6 @@
 {
     public enum FiniteStateMachinesExceptionCode
     {
-        ServiceTaskStartFailure
+        ServiceTaskStartFailure,
     }
 }

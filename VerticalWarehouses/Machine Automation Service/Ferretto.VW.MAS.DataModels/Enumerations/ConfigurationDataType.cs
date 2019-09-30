@@ -14,6 +14,6 @@
 
         IPAddress,
 
-        Undefined
+        Undefined,
     }
 }

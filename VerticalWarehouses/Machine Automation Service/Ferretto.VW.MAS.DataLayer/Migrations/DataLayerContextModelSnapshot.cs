@@ -18,34 +18,81 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
-                    b.Property<int>("Index");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CarouselId");
 
                     b.Property<int?>("CurrentMissionId");
 
                     b.Property<int?>("CurrentMissionOperationId");
 
-                    b.Property<int>("ExternalId");
+                    b.Property<int?>("InverterId");
 
-                    b.Property<string>("IpAddress");
+                    b.Property<int?>("IoDeviceId");
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<bool>("IsExternal");
+
                     b.Property<int?>("LoadingUnitId");
+
+                    b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
 
                     b.Property<int>("Operation");
 
+                    b.Property<int?>("ShutterId");
+
                     b.Property<int>("Type");
 
-                    b.HasKey("Index");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IpAddress")
-                        .IsUnique();
+                    b.HasIndex("CarouselId");
+
+                    b.HasIndex("InverterId");
+
+                    b.HasIndex("IoDeviceId");
 
                     b.HasIndex("LoadingUnitId");
 
+                    b.HasIndex("MachineId");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
+
+                    b.HasIndex("ShutterId");
+
                     b.ToTable("Bays");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BayId");
+
+                    b.Property<double>("Height");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BayId");
+
+                    b.ToTable("BayPosition");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("ElevatorDistance");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carousels");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
@@ -55,11 +102,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("PanelId");
 
-                    b.Property<decimal>("Position");
+                    b.Property<double>("Position");
 
                     b.Property<int>("Priority");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -73,9 +122,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Side");
+                    b.Property<int?>("MachineId");
+
+                    b.Property<string>("Side")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MachineId");
 
                     b.ToTable("CellPanels");
                 });
@@ -95,6 +150,86 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("ConfigurationValues");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.Property<int?>("StructuralPropertiesId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoadingUnitId");
+
+                    b.HasIndex("StructuralPropertiesId");
+
+                    b.ToTable("Elevators");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ElevatorId");
+
+                    b.Property<int?>("EmptyLoadMovementId");
+
+                    b.Property<int?>("InverterId");
+
+                    b.Property<double>("LowerBound");
+
+                    b.Property<int?>("MaximumLoadMovementId");
+
+                    b.Property<double>("Offset");
+
+                    b.Property<int>("Orientation");
+
+                    b.Property<double>("Position");
+
+                    b.Property<decimal>("Resolution");
+
+                    b.Property<double>("UpperBound");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElevatorId");
+
+                    b.HasIndex("EmptyLoadMovementId");
+
+                    b.HasIndex("InverterId");
+
+                    b.HasIndex("MaximumLoadMovementId");
+
+                    b.ToTable("ElevatorAxes");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorStructuralProperties", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BeltRigidity");
+
+                    b.Property<double>("BeltSpacing");
+
+                    b.Property<double>("HalfShaftLength");
+
+                    b.Property<double>("MaximumLoadOnBoard");
+
+                    b.Property<double>("PulleyDiameter");
+
+                    b.Property<double>("ShaftDiameter");
+
+                    b.Property<double>("ShaftElasticity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ElevatorStructuralProperties");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
                 {
                     b.Property<int>("Id")
@@ -110,15 +245,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Errors");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Code");
 
                     b.Property<string>("Description")
                         .IsRequired();
@@ -127,13 +265,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Severity");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("ErrorDefinitions");
 
                     b.HasData(
                         new
                         {
+                            Id = 100032,
                             Code = 100032,
                             Description = "Cassetto non caricato completamente.",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
@@ -141,6 +283,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100033,
                             Code = 100033,
                             Description = "Condizioni per il posizionamento non soddisfatte.",
                             Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
@@ -171,30 +314,48 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
                 {
-                    b.Property<int>("FreeBlockId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BlockSize");
+                    b.Property<byte>("Index");
 
-                    b.Property<int>("BookedCellsNumber");
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
 
-                    b.Property<int>("LoadingUnitId");
+                    b.Property<int>("TcpPort");
 
-                    b.Property<decimal>("Position");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("Priority");
+                    b.HasKey("Id");
 
-                    b.Property<int>("Side");
+                    b.HasIndex("Index")
+                        .IsUnique();
 
-                    b.Property<int>("StartCell");
+                    b.ToTable("Inverters");
+                });
 
-                    b.HasKey("FreeBlockId");
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.IoDevice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.HasIndex("LoadingUnitId");
+                    b.Property<byte>("Index");
 
-                    b.ToTable("FreeBlocks");
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TcpPort");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Index")
+                        .IsUnique();
+
+                    b.ToTable("IoDevices");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
@@ -208,19 +369,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<decimal>("GrossWeight");
+                    b.Property<double>("GrossWeight");
 
-                    b.Property<decimal>("Height");
+                    b.Property<double>("Height");
 
                     b.Property<bool>("IsIntoMachine");
 
-                    b.Property<decimal>("MaxNetWeight");
+                    b.Property<double>("MaxNetWeight");
 
                     b.Property<int>("MissionsCount");
 
                     b.Property<long>("Status");
 
-                    b.Property<decimal>("Tare");
+                    b.Property<double>("Tare");
 
                     b.HasKey("Id");
 
@@ -269,6 +430,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("LogEntries");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ElevatorId");
+
+                    b.Property<double>("Height");
+
+                    b.Property<double>("MaxGrossWeight");
+
+                    b.Property<string>("ModelName");
+
+                    b.Property<string>("SerialNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElevatorId");
+
+                    b.ToTable("Machines");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineStatistics", b =>
                 {
                     b.Property<int>("Id")
@@ -290,12 +473,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<TimeSpan>("TotalPowerOnTime");
 
-                    b.Property<int>("TotalShutter1Cycles");
-
-                    b.Property<int>("TotalShutter2Cycles");
-
-                    b.Property<int>("TotalShutter3Cycles");
-
                     b.Property<int>("TotalVerticalAxisCycles");
 
                     b.Property<double>("TotalVerticalAxisKilometers");
@@ -309,22 +486,65 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            TotalAutomaticTime = new TimeSpan(130, 0, 0, 0, 0),
-                            TotalBeltCycles = 12352,
-                            TotalMissionTime = new TimeSpan(30, 0, 0, 0, 0),
-                            TotalMovedTrays = 534,
-                            TotalMovedTraysInBay1 = 123,
-                            TotalMovedTraysInBay2 = 456,
-                            TotalMovedTraysInBay3 = 789,
-                            TotalPowerOnTime = new TimeSpan(190, 0, 0, 0, 0),
-                            TotalShutter1Cycles = 321,
-                            TotalShutter2Cycles = 654,
-                            TotalShutter3Cycles = 987,
-                            TotalVerticalAxisCycles = 5232,
-                            TotalVerticalAxisKilometers = 34.0,
-                            WeightCapacityPercentage = 60.0
+                            Id = -1,
+                            TotalAutomaticTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalBeltCycles = 0,
+                            TotalMissionTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalMovedTrays = 0,
+                            TotalMovedTraysInBay1 = 0,
+                            TotalMovedTraysInBay2 = 0,
+                            TotalMovedTraysInBay3 = 0,
+                            TotalPowerOnTime = new TimeSpan(0, 0, 0, 0, 0),
+                            TotalVerticalAxisCycles = 0,
+                            TotalVerticalAxisKilometers = 0.0,
+                            WeightCapacityPercentage = 0.0
                         });
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Acceleration");
+
+                    b.Property<double>("Deceleration");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<double>("Speed");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MovementParameters");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("MovementParameters");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Correction");
+
+                    b.Property<int?>("ElevatorAxisId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("TotalDistance");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElevatorAxisId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("MovementProfiles");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
@@ -348,7 +568,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 24, 13, 23, 47, 223, DateTimeKind.Local).AddTicks(772),
+                            InstallationDate = new DateTime(2016, 11, 27, 10, 11, 36, 636, DateTimeKind.Local).AddTicks(4663),
                             ServiceStatus = 86
                         });
                 });
@@ -446,12 +666,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Shutter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("InverterId");
+
+                    b.Property<int>("TotalCycles");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InverterId");
+
+                    b.ToTable("Shutter");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("LoadedNetWeight");
+                    b.Property<double>("LoadedNetWeight");
 
                     b.Property<int?>("LoadingUnitId");
 
@@ -471,7 +711,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<decimal>("Value");
+                    b.Property<double>("Value");
 
                     b.HasKey("Id");
 
@@ -482,10 +722,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.User", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessLevel");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired();
@@ -493,32 +735,79 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("PasswordSalt")
                         .IsRequired();
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Name = "installer",
+                            Id = -1,
                             AccessLevel = 0,
+                            Name = "installer",
                             PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
                             PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A=="
                         },
                         new
                         {
-                            Name = "operator",
+                            Id = -2,
                             AccessLevel = 2,
+                            Name = "operator",
                             PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                             PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
+
+                    b.Property<int?>("MovementProfileId");
+
+                    b.Property<int>("Number");
+
+                    b.Property<double>("Position");
+
+                    b.HasIndex("MovementProfileId");
+
+                    b.HasDiscriminator().HasValue("StepMovementParameters");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
+                        .WithMany()
+                        .HasForeignKey("CarouselId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
+                        .WithMany()
+                        .HasForeignKey("InverterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.IoDevice", "IoDevice")
+                        .WithMany()
+                        .HasForeignKey("IoDeviceId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
+                        .WithMany("Bays")
+                        .HasForeignKey("MachineId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Shutter", "Shutter")
+                        .WithMany()
+                        .HasForeignKey("ShutterId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
+                        .WithMany("Positions")
+                        .HasForeignKey("BayId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
@@ -527,6 +816,43 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany("Cells")
                         .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CellPanel", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
+                        .WithMany("Panels")
+                        .HasForeignKey("MachineId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany()
+                        .HasForeignKey("LoadingUnitId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorStructuralProperties", "StructuralProperties")
+                        .WithMany()
+                        .HasForeignKey("StructuralPropertiesId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxis", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Elevator")
+                        .WithMany("Axes")
+                        .HasForeignKey("ElevatorId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("EmptyLoadMovementId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
+                        .WithMany()
+                        .HasForeignKey("InverterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "MaximumLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("MaximumLoadMovementId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
@@ -543,19 +869,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany()
-                        .HasForeignKey("LoadingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("LoadingUnit")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Elevator", "Elevator")
+                        .WithMany()
+                        .HasForeignKey("ElevatorId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis")
+                        .WithMany("Profiles")
+                        .HasForeignKey("ElevatorAxisId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Shutter", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
+                        .WithMany()
+                        .HasForeignKey("InverterId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
@@ -564,6 +903,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany("DataSamples")
                         .HasForeignKey("MeasurementSessionId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementProfile")
+                        .WithMany("Steps")
+                        .HasForeignKey("MovementProfileId");
                 });
 #pragma warning restore 612, 618
         }
