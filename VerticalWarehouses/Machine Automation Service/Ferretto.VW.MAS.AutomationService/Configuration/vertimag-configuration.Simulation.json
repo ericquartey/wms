@@ -8,6 +8,7 @@
           "Type": "Acu",
           "Index": 3
         },
+        "Side": "Front",
         "IoDevice": {
           "Index": 0,
           "IpAddress": "127.0.0.1",
@@ -30,6 +31,7 @@
           "Type": "Acu",
           "Index": 5
         },
+        "Side": "Back",
         "IoDevice": {
           "Index": 1,
           "IpAddress": "127.0.0.1",
