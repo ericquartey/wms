@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Shutter Positioning Stop");
-            this.InverterStatus.CommonControlWord.QuickStop = false;
+            this.Logger.LogDebug($"Shutter Positioning Switch Off Inverter");
+            this.InverterStatus.CommonControlWord.SwitchOn = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(
                         new ShutterPositioningDisableOperationState(

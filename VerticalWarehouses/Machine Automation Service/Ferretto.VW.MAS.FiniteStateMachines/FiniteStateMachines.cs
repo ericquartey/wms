@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -59,7 +60,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private bool forceInverterIoStatusPublish;
 
-        private bool forceRemoteIoStatusPublish;
+        private bool[] forceRemoteIoStatusPublish;
 
         private IEnumerable<IoDevice> ioDevices;
 
@@ -323,12 +324,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                             {
                                 var ioIndex = receivedMessage.DeviceIndex;
-
-                                if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
+                                if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                                 {
                                     var msgData = new SensorsChangedMessageData();
                                     msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
-                                    this.logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                                    this.logger.LogDebug($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
                                     var msg = new NotificationMessage(
                                         msgData,
@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
-                                    this.forceRemoteIoStatusPublish = false;
+                                    this.forceRemoteIoStatusPublish[ioIndex] = false;
                                 }
                             }
                             break;
@@ -624,6 +624,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private void RetrieveIoDevicesConfigurationAsync()
         {
             this.ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
+
+            this.forceRemoteIoStatusPublish = new bool[this.ioDevices.Count()];
 
             this.machineSensorsStatus = new MachineSensorsStatus(this.machineProvider.IsOneTonMachine());
 

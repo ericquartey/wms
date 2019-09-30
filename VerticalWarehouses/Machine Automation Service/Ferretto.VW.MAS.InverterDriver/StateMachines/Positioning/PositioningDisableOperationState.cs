@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     if (this.stopRequested)
                     {
                         this.ParentStateMachine.ChangeState(
-                            new PositioningSwitchOffState(
+                            new PositioningQuickStopState(
                                 this.ParentStateMachine,
                                 this.Inverter,
                                 this.Logger));
