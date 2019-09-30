@@ -9,7 +9,9 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
@@ -44,6 +46,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var jsonObject = JObject.Parse(fileContents);
+
+            var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
+
+            jsonObject.Validate(schema);
 
             foreach (var jsonCategory in jsonObject)
             {

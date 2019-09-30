@@ -16,10 +16,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder
-                .HasIndex(e => e.Code)
-                .IsUnique();
-
-            builder
                 .Property(m => m.OccurrenceDate)
                 .IsRequired();
 
