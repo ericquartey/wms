@@ -14,7 +14,7 @@
         #region Properties
 
         /// <summary>
-        /// Gets or sets the belt rigidity.
+        /// Gets or sets the belt rigidity, in Newton.
         /// </summary>
         public int BeltRigidity { get; set; }
 
@@ -44,7 +44,7 @@
         public double ShaftDiameter { get; set; }
 
         /// <summary>
-        /// Gets or sets the shaft elasticity.
+        /// Gets or sets the elasticity module of the shaft, in MPa.
         /// </summary>
         public double ShaftElasticity { get; set; }
 

@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Shutter Shutter { get; set; }
 
+        public WarehouseSide Side { get; set; }
+
         public BayStatus Status
         {
             get

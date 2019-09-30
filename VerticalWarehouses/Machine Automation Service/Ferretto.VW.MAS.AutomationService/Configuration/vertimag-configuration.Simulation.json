@@ -8,6 +8,7 @@
           "Type": "Acu",
           "Index": 3
         },
+        "Side": "Front",
         "IoDevice": {
           "Index": 0,
           "IpAddress": "127.0.0.1",
@@ -30,6 +31,7 @@
           "Type": "Acu",
           "Index": 5
         },
+        "Side": "Back",
         "IoDevice": {
           "Index": 1,
           "IpAddress": "127.0.0.1",
@@ -276,7 +278,7 @@
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
         "HalfShaftLength": 1784,
-        "MaximumLoadOnBoard": 990,
+        "MaximumLoadOnBoard": 800,
         "PulleyDiameter": 160,
         "PulleysDistance": 9292,
         "ShaftDiameter": 45,

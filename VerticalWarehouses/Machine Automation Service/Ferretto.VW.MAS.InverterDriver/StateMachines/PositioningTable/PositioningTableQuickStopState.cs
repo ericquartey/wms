@@ -1,30 +1,28 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class CalibrateAxisSwitchOffState : InverterStateBase
+    internal class PositioningTableQuickStopState : InverterStateBase
     {
-        #region Fields
-
-        private readonly Axis axisToCalibrate;
-
-        #endregion
-
         #region Constructors
 
-        public CalibrateAxisSwitchOffState(
+        public PositioningTableQuickStopState(
             IInverterStateMachine parentStateMachine,
-            Axis axisToCalibrate,
-            IInverterStatusBase inverterStatus,
+            IPositioningInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.axisToCalibrate = axisToCalibrate;
+            this.Inverter = inverterStatus;
         }
+
+        #endregion
+
+        #region Properties
+
+        public IPositioningInverterStatus Inverter { get; }
 
         #endregion
 
@@ -33,17 +31,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Calibrate Switch Off axis {this.axisToCalibrate}");
-            if (this.InverterStatus is IHomingInverterStatus currentStatus)
-            {
-                currentStatus.HomingControlWord.SwitchOn = false;
+            this.Logger.LogDebug($"Positioning table Quick Stop");
+            this.Inverter.PositionControlWord.QuickStop = false;
+            this.Inverter.PositionControlWord.EnableVoltage = false;
 
-                this.ParentStateMachine.EnqueueCommandMessage(
+            this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWordParam,
-                    currentStatus.HomingControlWord.Value));
-            }
+                    this.InverterStatus.CommonControlWord.Value));
         }
 
         /// <inheritdoc />
@@ -68,18 +64,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
                 {
                     this.ParentStateMachine.ChangeState(
-                        new CalibrateAxisEndState(
+                        new PositioningTableEndState(
                             this.ParentStateMachine,
-                            this.axisToCalibrate,
-                            this.InverterStatus,
+                            this.Inverter,
                             this.Logger,
                             true));
 
