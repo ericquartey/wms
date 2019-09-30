@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     {
                         if (this.stopRequested)
                         {
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningSwitchOffState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningQuickStopState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                         }
                         else
                         {

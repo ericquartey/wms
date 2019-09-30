@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningTableSwitchOffState : InverterStateBase
+    internal class PositioningQuickStopState : InverterStateBase
     {
         #region Constructors
 
-        public PositioningTableSwitchOffState(
+        public PositioningQuickStopState(
             IInverterStateMachine parentStateMachine,
             IPositioningInverterStatus inverterStatus,
             ILogger logger)
@@ -31,8 +31,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Positioning table Switch Off");
-            this.Inverter.TableTravelControlWord.SwitchOn = false;
+            this.Logger.LogDebug($"Positioning Quick Stop");
+            this.Inverter.PositionControlWord.QuickStop = false;
+            this.Inverter.PositionControlWord.EnableVoltage = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
@@ -63,15 +64,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
                 {
                     this.ParentStateMachine.ChangeState(
-                        new PositioningTableEndState(
+                        new PositioningEndState(
                             this.ParentStateMachine,
                             this.Inverter,
                             this.Logger,

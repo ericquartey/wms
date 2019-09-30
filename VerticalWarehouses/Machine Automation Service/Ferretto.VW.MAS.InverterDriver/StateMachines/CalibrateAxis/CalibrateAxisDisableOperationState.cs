@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 {
                     if (this.stopRequested)
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisSwitchOffState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
                     }
                     else
                     {
