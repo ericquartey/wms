@@ -22,6 +22,12 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder
                 .Ignore(b => b.Status);
+
+            builder.Property(b => b.Side)
+           .HasColumnType("text")
+           .HasConversion(
+               enumValue => enumValue.ToString(),
+               stringValue => System.Enum.Parse<WarehouseSide>(stringValue));
         }
 
         #endregion
