@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal class CalibrateAxisStateMachine : InverterStateMachineBase
     {
-
         #region Fields
 
         private readonly Axis axisToCalibrate;
@@ -38,8 +37,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
@@ -22,13 +23,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Constructors
 
-        public AglInverterStatus(byte systemIndex)
+        public AglInverterStatus(InverterIndex systemIndex)
+            : base(systemIndex)
         {
-            this.SystemIndex = systemIndex;
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-            this.InverterType = InverterType.Agl;
+            this.Type = InverterType.Agl;
         }
 
         #endregion

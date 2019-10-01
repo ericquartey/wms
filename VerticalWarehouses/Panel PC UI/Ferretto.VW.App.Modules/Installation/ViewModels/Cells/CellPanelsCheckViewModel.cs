@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Cell currentCell;
 
-        private decimal? currentHeight;
+        private double? currentHeight;
 
         private CellPanel currentPanel;
 
@@ -50,11 +50,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveUpCommand;
 
-        private decimal? panelCorrection;
+        private double? panelCorrection;
 
         private IEnumerable<CellPanel> panels;
 
-        private decimal? stepValue;
+        private double? stepValue;
 
         private SubscriptionToken subscriptionToken;
 
@@ -105,7 +105,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? CurrentHeight
+        public double? CurrentHeight
         {
             get => this.currentHeight;
             private set => this.SetProperty(ref this.currentHeight, value);
@@ -192,7 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.MoveUp,
                this.CanMoveUpOrDown));
 
-        public decimal? PanelCorrection
+        public double? PanelCorrection
         {
             get => this.panelCorrection;
             private set => this.SetProperty(ref this.panelCorrection, value);
@@ -212,7 +212,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? StepValue
+        public double? StepValue
         {
             get => this.stepValue;
             set => this.SetProperty(ref this.stepValue, value);

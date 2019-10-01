@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogDebug($"1:Axis to calibrate={this.axisToCalibrate}");
 
             this.InverterStatus.CommonControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
+                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
                 ? false
                 : this.axisToCalibrate == Axis.Horizontal;
 

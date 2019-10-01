@@ -69,7 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.Positioning:
-                case FieldMessageType.TorqueCurrentSampling:
                     this.ProcessPositioningMessage(receivedMessage);
                     break;
 

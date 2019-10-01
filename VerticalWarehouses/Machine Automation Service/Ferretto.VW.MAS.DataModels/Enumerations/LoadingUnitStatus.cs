@@ -2,6 +2,8 @@
 {
     public enum LoadingUnitStatus : long
     {
+        Undefined,
+
         InBay,
 
         OnMovementToLocation,

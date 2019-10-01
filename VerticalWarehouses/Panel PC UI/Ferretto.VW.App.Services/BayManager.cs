@@ -11,7 +11,6 @@ namespace Ferretto.VW.App.Services
 {
     internal class BayManager : IBayManager
     {
-
         #region Fields
 
         private readonly IMachineIdentityService identityService;
@@ -85,15 +84,11 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-
         #region Events
 
         public event EventHandler NewMissionOperationAvailable;
 
         #endregion
-
-
 
         #region Properties
 
@@ -124,8 +119,6 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-
         #region Methods
 
         public void CompleteCurrentMission()
@@ -144,20 +137,14 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            var bayIndex = ConfigurationManager.AppSettings.GetBayNumber();
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)bayIndex);
-        }
-
-       public async Task<Bay> UpdateHeightAsync(MAS.AutomationService.Contracts.BayNumber bayIndex, int position, decimal height)
-        {
-            this.bay = await this.machineBaysService.UpdateHeightAsync(bayIndex, position, height);
-            return this.bay;
+            this.bay = await this.machineBaysService.GetByNumberAsync((Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)bayNumber);
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Index == (Ferretto.VW.MAS.AutomationService.Contracts.BayNumber)e.Index)
+            if (this.Bay != null && this.Bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -167,23 +154,23 @@ namespace Ferretto.VW.App.Services
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
             //TODO Review Implementation avoid using numbers to identify bays
-            MAS.AutomationService.Contracts.BayNumber bayIndex = MAS.AutomationService.Contracts.BayNumber.None;
+            var bayNumber = MAS.AutomationService.Contracts.BayNumber.None;
             switch (e.BayNumber)
             {
                 case 1:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayOne;
                     break;
 
                 case 2:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayTwo;
                     break;
 
                 case 3:
-                    bayIndex = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayThree;
                     break;
             }
 
-            if (this.Bay.Index == bayIndex)
+            if (this.Bay.Number == bayNumber)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

@@ -4,11 +4,11 @@ using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class CellPanelsProvider : Interfaces.ICellPanelsProvider
+    internal sealed class CellPanelsProvider : Interfaces.ICellPanelsProvider
     {
         #region Fields
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .ToArray();
         }
 
-        public CellPanel UpdateHeight(int cellId, decimal newHeight)
+        public CellPanel UpdateHeight(int cellId, double newHeight)
         {
             var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
             if (cell is null)

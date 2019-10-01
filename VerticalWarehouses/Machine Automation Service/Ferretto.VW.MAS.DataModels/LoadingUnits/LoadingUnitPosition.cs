@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class LoadingUnitPosition
+    public sealed class LoadingUnitPosition
     {
         #region Properties
 
-        public decimal LoadingUnitCoord { get; set; }
+        public double LoadingUnitCoord { get; set; }
 
         public WarehouseSide LoadingUnitSide { get; set; }
 

@@ -10,13 +10,12 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus
 {
     internal class ChangePowerStatusStateMachine : FiniteStateMachine<IChangePowerStatusStartState>, IChangePowerStatusStateMachine
     {
-
         #region Fields
 
         private readonly List<Bay> configuredBays;
@@ -33,13 +32,10 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus
             IServiceScopeFactory serviceScopeFactory)
             : base(requestingBay, eventAggregator, logger, serviceScopeFactory)
         {
-
             this.configuredBays = configuredBays;
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -69,6 +65,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus
                         break;
                 }
             }
+
             return newState;
         }
 

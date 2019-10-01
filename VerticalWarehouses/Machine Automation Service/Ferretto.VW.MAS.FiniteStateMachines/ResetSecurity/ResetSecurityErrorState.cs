@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -16,8 +17,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         private readonly IResetSecurityStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -27,15 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IResetSecurityMachineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetSecurityErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion

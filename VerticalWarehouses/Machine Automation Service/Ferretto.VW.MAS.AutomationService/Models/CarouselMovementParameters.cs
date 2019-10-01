@@ -6,7 +6,7 @@ namespace Ferretto.VW.CommonUtils.DTOs
     {
         #region Properties
 
-        public decimal Displacement { get; set; }
+        public double Displacement { get; set; }
 
         public MovementType MovementType { get; set; }
 

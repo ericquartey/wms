@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Cell> cells;
 
-        private decimal? currentPosition;
+        private double? currentPosition;
 
         private bool isWaitingForResponse;
 
@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentPosition
+        public double? CurrentPosition
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);

@@ -9,11 +9,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<Cell> GetAll();
 
-        CellStatisticsSummary GetStatistics();
+        Models.CellStatisticsSummary GetStatistics();
 
-        void LoadFrom(string fileNamePath);
-
-        Cell UpdateHeight(int cellId, decimal height);
+        Cell UpdateHeight(int cellId, double height);
 
         #endregion
     }

@@ -13,13 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager
 {
     internal partial class MissionsManagerService
     {
-
-
         #region Methods
 
         private async Task ExecuteNextMissionAsync()
@@ -45,7 +42,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                             .Where(m =>
                                 m.BayId.HasValue
                                 &&
-                                m.BayId.Value == bay.ExternalId
+                                m.BayId.Value == (int)bay.Number
                                 &&
                                 m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed
                                 &&
@@ -55,7 +52,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         await this.ExecuteNextMissionAsync(bay, pendingMissionsOnBay);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     // do nothing
                     this.Logger.LogWarning("Unable to load missions from WMS service.");
@@ -103,7 +100,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                         if (missionOperation != null)
                         {
-                            bayProvider.AssignMissionOperation(bay.Index, mission.Id, missionOperation.Id);
+                            bayProvider.AssignMissionOperation(bay.Number, mission.Id, missionOperation.Id);
 
                             this.Logger.LogDebug($"Bay #{bay.Number}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
 
@@ -111,7 +108,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         }
                         else
                         {
-                            bayProvider.AssignMissionOperation(bay.Index, null, null);
+                            bayProvider.AssignMissionOperation(bay.Number, null, null);
 
                             this.Logger.LogDebug($"Bay #{bay.Number}: no more operations available for mission id='{mission.Id}'.");
                         }
@@ -139,7 +136,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 MessageActor.AutomationService,
                 MessageActor.MissionsManager,
                 MessageType.NewMissionOperationAvailable,
-                bay.Index);
+                bay.Number);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()

@@ -33,10 +33,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Calibrate Stop axis {this.axisToCalibrate}");
+            this.Logger.LogDebug($"Calibrate Switch Off axis {this.axisToCalibrate}");
             if (this.InverterStatus is IHomingInverterStatus currentStatus)
             {
-                currentStatus.HomingControlWord.QuickStop = false;
+                currentStatus.HomingControlWord.SwitchOn = false;
 
                 this.ParentStateMachine.EnqueueCommandMessage(
                     new InverterMessage(
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(
                         new CalibrateAxisDisableOperationState(

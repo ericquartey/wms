@@ -9,18 +9,15 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 {
     public class BayNumberFilter : IAsyncActionFilter
     {
-
-
         #region Methods
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-
             if (context.Controller is BaseAutomationController baseController)
             {
-                var bayIndexHeaders = context.HttpContext.Request.Headers["Bay-Number"];
+                var bayNumberHeaders = context.HttpContext.Request.Headers["Bay-Number"];
 
-                if (bayIndexHeaders.Count == 0)
+                if (bayNumberHeaders.Count == 0)
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
@@ -30,7 +27,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 }
                 else
                 {
-                    if (Enum.TryParse<BayNumber>(bayIndexHeaders[0], out var bayNumber))
+                    if (Enum.TryParse<BayNumber>(bayNumberHeaders[0], out var bayNumber))
                     {
                         baseController.BayNumber = bayNumber;
                     }

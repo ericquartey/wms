@@ -23,19 +23,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
-        private decimal? currentHorizontalPosition;
+        private double? currentHorizontalPosition;
 
-        private decimal? currentVerticalPosition;
+        private double? currentVerticalPosition;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
-        private decimal lowerBound;
+        private double lowerBound;
 
         private string noteString;
 
-        private decimal offset;
+        private double offset;
 
         private SubscriptionToken receivedCalibrateAxisUpdateToken;
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken updateCurrentPositionToken;
 
-        private decimal upperBound;
+        private double upperBound;
 
         private bool verticalOperation;
 
@@ -84,13 +84,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentHorizontalPosition
+        public double? CurrentHorizontalPosition
         {
             get => this.currentHorizontalPosition;
             private set => this.SetProperty(ref this.currentHorizontalPosition, value);
         }
 
-        public decimal? CurrentVerticalPosition
+        public double? CurrentVerticalPosition
         {
             get => this.currentVerticalPosition;
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal LowerBound
+        public double LowerBound
         {
             get => this.lowerBound;
             set => this.SetProperty(ref this.lowerBound, value);
@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.noteString, value);
         }
 
-        public decimal Offset
+        public double Offset
         {
             get => this.offset;
             set => this.SetProperty(ref this.offset, value);
@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
-        public decimal UpperBound
+        public double UpperBound
         {
             get => this.upperBound;
             set => this.SetProperty(ref this.upperBound, value);

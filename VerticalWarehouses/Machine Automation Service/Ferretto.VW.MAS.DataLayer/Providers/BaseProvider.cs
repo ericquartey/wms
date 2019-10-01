@@ -5,11 +5,11 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class BaseProvider
+    internal class BaseProvider
     {
         #region Fields
 
@@ -70,7 +70,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .GetEvent<NotificationEvent>();
 
             var subscriptionToken = notificationEvent.Subscribe(
-                    m => { messageData = m.Data as TData; semaphore.Release(); },
+                    m =>
+                    {
+                        messageData = m.Data as TData;
+                        semaphore.Release();
+                    },
                     ThreadOption.PublisherThread,
                     false,
                     message =>

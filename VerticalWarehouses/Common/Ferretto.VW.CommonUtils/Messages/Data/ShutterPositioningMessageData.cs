@@ -23,7 +23,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             MovementType movementType,
             int requestedCycles,
             int delay,
-            decimal highSpeedPercent,
+            decimal highSpeedDurationOpen,
+            decimal highSpeedDurationClose,
             decimal lowerSpeed,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
@@ -37,7 +38,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.MovementType = movementType;
             this.RequestedCycles = requestedCycles;
             this.Delay = delay;
-            this.HighSpeedPercent = highSpeedPercent;
+            this.HighSpeedDurationOpen = highSpeedDurationOpen;
+            this.HighSpeedDurationClose = highSpeedDurationClose;
             this.LowerSpeed = lowerSpeed;
             this.Verbosity = verbosity;
         }
@@ -59,7 +61,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.MovementType = shutterPositioningMessageData.MovementType;
             this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
             this.Delay = shutterPositioningMessageData.Delay;
-            this.HighSpeedPercent = shutterPositioningMessageData.HighSpeedPercent;
+            this.HighSpeedDurationOpen = shutterPositioningMessageData.HighSpeedDurationOpen;
+            this.HighSpeedDurationClose = shutterPositioningMessageData.HighSpeedDurationClose;
             this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
@@ -74,7 +77,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal HigherDistance { get; }
 
-        public decimal HighSpeedPercent { get; set; }
+        public decimal HighSpeedDurationClose { get; }
+
+        public decimal HighSpeedDurationOpen { get; }
 
         public decimal LowerDistance { get; }
 

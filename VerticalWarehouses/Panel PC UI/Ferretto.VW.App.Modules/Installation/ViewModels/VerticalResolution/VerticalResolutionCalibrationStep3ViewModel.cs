@@ -19,19 +19,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand applyCorrectionCommand;
 
-        private decimal? finalPosition;
+        private double? finalPosition;
 
-        private decimal? initialPosition;
+        private double? initialPosition;
 
-        private decimal? inputMeasuredFinalPosition;
+        private double? inputMeasuredFinalPosition;
 
         private bool isProcedureCompleted;
 
         private bool isRetrievingNewResolution;
 
-        private decimal? measuredDistance;
+        private double? measuredDistance;
 
-        private decimal? measuredInitialPosition;
+        private double? measuredInitialPosition;
 
         private DelegateCommand moveToInitialPositionCommand;
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this[nameof(this.InputMeasuredFinalPosition)],
             this[nameof(this.NewResolution)]);
 
-        public decimal? FinalPosition
+        public double? FinalPosition
         {
             get => this.finalPosition;
             set
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InitialPosition
+        public double? InitialPosition
         {
             get => this.initialPosition;
             set
@@ -95,7 +95,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputMeasuredFinalPosition
+        public double? InputMeasuredFinalPosition
         {
             get => this.inputMeasuredFinalPosition;
             set
@@ -127,13 +127,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isRetrievingNewResolution, value);
         }
 
-        public decimal? MeasuredDistance
+        public double? MeasuredDistance
         {
             get => this.measuredDistance;
             set => this.SetProperty(ref this.measuredDistance, value);
         }
 
-        public decimal? MeasuredInitialPosition
+        public double? MeasuredInitialPosition
         {
             get => this.measuredInitialPosition;
             set
@@ -271,7 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.UpdateResolutionAsync(this.NewResolution.Value);
+                await this.MachineElevatorService.UpdateVerticalResolutionAsync(this.NewResolution.Value);
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.VerticalAxisResolutionUpdated,

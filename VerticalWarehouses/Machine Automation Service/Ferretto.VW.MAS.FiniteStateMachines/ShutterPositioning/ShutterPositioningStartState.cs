@@ -79,8 +79,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         -this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HigherDistance,
                                         this.machineData.PositioningMessageData.LowerDistance,
-                                        this.machineData.PositioningMessageData.HighSpeedPercent,
-                                        this.machineData.PositioningMessageData.LowerSpeed,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                                        -this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
                                     var commandMessage = new FieldCommandMessage(
@@ -105,7 +106,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                     // first step: close shutter
                                     ShutterPosition shutterPositionTarget;
                                     shutterPositionTarget = ShutterPosition.Closed;
-                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type)
+                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors)
                                     {
                                         shutterPositionTarget = ShutterPosition.Half;
                                     }
@@ -116,7 +117,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                                         this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HigherDistance,
                                         this.machineData.PositioningMessageData.LowerDistance,
-                                        this.machineData.PositioningMessageData.HighSpeedPercent,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedDurationClose,
                                         this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
@@ -177,7 +179,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-            var inverterStatus = new AglInverterStatus((byte)this.machineData.InverterIndex);
+            var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -200,7 +202,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             {
                 // TestLoop:
                 // not all starting positions are allowed
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type &&
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors &&
                     (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
                     )
                 {
@@ -209,7 +211,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     return;
                 }
                 var destination = ShutterPosition.Opened;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.Shutter3Type && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
                 {
                     destination = ShutterPosition.Half;
                 }
@@ -221,8 +223,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     -this.machineData.PositioningMessageData.SpeedRate,
                     this.machineData.PositioningMessageData.HigherDistance,
                     this.machineData.PositioningMessageData.LowerDistance,
-                    this.machineData.PositioningMessageData.HighSpeedPercent,
-                    this.machineData.PositioningMessageData.LowerSpeed,
+                    this.machineData.PositioningMessageData.HighSpeedDurationOpen,
+                    this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                    -this.machineData.PositioningMessageData.LowerSpeed,
                     this.machineData.PositioningMessageData.MovementType);
             }
 
@@ -239,7 +242,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             var notificationMessageData1 = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-            var inverterStatus1 = new AglInverterStatus((byte)this.machineData.InverterIndex);
+            var inverterStatus1 = new AglInverterStatus(this.machineData.InverterIndex);
             int sensorStart1 = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus1.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart1, inverterStatus1.Inputs, 0, inverterStatus1.Inputs.Length);
             notificationMessageData1.ShutterPosition = inverterStatus1.CurrentShutterPosition;
