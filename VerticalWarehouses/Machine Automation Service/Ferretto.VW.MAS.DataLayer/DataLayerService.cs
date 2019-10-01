@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Type = command.Type.ToString(),
             };
 
-            this.SaveEntryToDb(logEntry);
+            //    this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
         }

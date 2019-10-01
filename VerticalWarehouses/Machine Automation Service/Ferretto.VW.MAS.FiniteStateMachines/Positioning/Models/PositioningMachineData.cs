@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
         public PositioningMachineData(BayNumber requestingBay,
             BayNumber targetBay,
             IPositioningMessageData messageData,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             InverterIndex currentInverterIndex,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MessageData = messageData;
-            this.MachineSensorStatus = machineSensorsStatus;
+            this.MachineSensorStatus = machineResourcesProvider;
             this.CurrentInverterIndex = currentInverterIndex;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public IMachineSensorsStatus MachineSensorStatus { get; }
+        public IMachineResourcesProvider MachineSensorStatus { get; }
 
         public IPositioningMessageData MessageData { get; set; }
 

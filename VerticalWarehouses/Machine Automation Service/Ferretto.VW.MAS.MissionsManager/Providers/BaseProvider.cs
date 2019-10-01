@@ -49,6 +49,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                         BayNumber.None));
         }
 
+        #endregion
+
+        /*
         protected TData WaitForResponseEventAsync<TData>(
             MessageType messageType,
             MessageActor messageSource = MessageActor.Any,
@@ -94,7 +97,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
             return messageData;
         }
-
-        #endregion
+        */
     }
 }
