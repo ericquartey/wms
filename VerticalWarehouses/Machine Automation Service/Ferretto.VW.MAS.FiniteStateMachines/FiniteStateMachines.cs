@@ -10,6 +10,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -40,6 +41,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
+        private readonly IElevatorProvider elevatorProvider;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
@@ -49,6 +52,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly IMachineProvider machineProvider;
+
+        private readonly IMachineResourcesProvider machineResourcesProvider;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
@@ -66,8 +71,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private bool isDisposed;
 
-        private MachineSensorsStatus machineSensorsStatus;
-
         private CancellationToken stoppingToken;
 
         #endregion
@@ -81,16 +84,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IMachineProvider machineProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysProvider baysProvider,
+            IMachineResourcesProvider machineResourcesProvider,
+            IElevatorProvider elevatorProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(this.NotificationReceiveTaskFunction);
             this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
@@ -181,7 +187,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
                     && receivedMessage.Type != MessageType.PowerEnable
-                    && receivedMessage.Type != MessageType.RequestPosition
                     )
                 {
                     var errorNotification = new NotificationMessage(
@@ -239,10 +244,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.InverterStop:
                         this.ProcessInverterStopMessage();
-                        break;
-
-                    case MessageType.RequestPosition:
-                        this.ProcessRequestPositionMessage(receivedMessage);
                         break;
 
                     case MessageType.InverterFaultReset:
@@ -324,10 +325,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                             {
                                 var ioIndex = receivedMessage.DeviceIndex;
-                                if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
+                                if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                                 {
                                     var msgData = new SensorsChangedMessageData();
-                                    msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+                                    msgData.SensorsStates = this.machineResourcesProvider.DisplayedInputs;
                                     this.logger.LogDebug($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
                                     var msg = new NotificationMessage(
@@ -357,24 +358,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 //TEMP Update X, Y axis positions
                                 if (dataInverters.CurrentAxis == Axis.Vertical)
                                 {
-                                    lock (this.machineSensorsStatus)
+                                    lock (this.machineResourcesProvider)
                                     {
-                                        this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition.Value;
+                                        this.elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
                                     }
                                 }
                                 else if (dataInverters.CurrentAxis == Axis.Horizontal)
                                 {
-                                    lock (this.machineSensorsStatus)
+                                    lock (this.machineResourcesProvider)
                                     {
-                                        this.machineSensorsStatus.AxisXPosition = dataInverters.CurrentPosition.Value;
+                                        this.elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                                     }
                                 }
 
-                                if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                                if (this.machineResourcesProvider.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                                 {
                                     var msgData = new SensorsChangedMessageData
                                     {
-                                        SensorsStates = this.machineSensorsStatus.DisplayedInputs
+                                        SensorsStates = this.machineResourcesProvider.DisplayedInputs
                                     };
 
                                     var msg1 = new NotificationMessage(
@@ -627,10 +628,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.forceRemoteIoStatusPublish = new bool[this.ioDevices.Count()];
 
-            this.machineSensorsStatus = new MachineSensorsStatus(this.machineProvider.IsOneTonMachine());
-
-            this.machineSensorsStatus.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
-            this.machineSensorsStatus.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
+            this.machineResourcesProvider.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
+            this.machineResourcesProvider.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
         }
 
         private void SendCleanDebug()

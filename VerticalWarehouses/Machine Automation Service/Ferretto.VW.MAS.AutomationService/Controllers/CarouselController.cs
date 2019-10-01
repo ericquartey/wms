@@ -58,8 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                var position = this.GetPositionController(this.BayNumber);
-                return this.Ok(position);
+                throw new NotImplementedException("Carousel positioning not implemented");
             }
             catch (Exception ex)
             {
@@ -184,28 +183,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
-        }
-
-        private double GetPositionController(BayNumber bayNumber)
-        {
-            var messageData = new RequestPositionMessageData(Axis.Horizontal, (int)bayNumber);
-
-            void publishAction()
-            {
-                this.PublishCommand(
-                messageData,
-                "Request shutter position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
-            }
-
-            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
-                MessageType.Positioning,
-                MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting,
-                publishAction);
-
-            return notifyData.CurrentPosition ?? 0;
         }
 
         #endregion

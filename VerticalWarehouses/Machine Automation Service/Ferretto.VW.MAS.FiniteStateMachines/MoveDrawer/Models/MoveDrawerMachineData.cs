@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
         public MoveDrawerMachineData(
             bool isOneKMachine,
             ISetupStatusProvider setupStatusProvider,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IDrawerOperationMessageData drawerOperationData,
             BayNumber requestingBay,
             IEventAggregator eventAggregator,
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
         {
             this.IsOneKMachine = isOneKMachine;
             this.SetupStatusProvider = setupStatusProvider;
-            this.MachineSensorsStatus = machineSensorsStatus;
+            this.MachineSensorsStatus = machineResourcesProvider;
             this.DrawerOperationData = drawerOperationData;
             this.RequestingBay = requestingBay;
             this.EventAggregator = eventAggregator;
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Models
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public IMachineSensorsStatus MachineSensorsStatus { get; }
+        public IMachineResourcesProvider MachineSensorsStatus { get; }
 
         public BayNumber RequestingBay { get; }
 

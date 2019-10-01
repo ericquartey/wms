@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             bool isOneKMachine,
             BayNumber requestingBay,
             BayNumber targetBay,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.axisToCalibrate = axisToCalibrate;
 
-            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, targetBay, machineSensorsStatus, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, targetBay, machineResourcesProvider, eventAggregator, logger, serviceScopeFactory);
         }
 
         #endregion
