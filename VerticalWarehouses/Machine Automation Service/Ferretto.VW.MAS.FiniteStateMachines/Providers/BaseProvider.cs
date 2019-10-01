@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
     internal class BaseProvider
     {

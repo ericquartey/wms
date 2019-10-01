@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Interfaces
 
         bool Enable { get; }
 
-        IMachineSensorsStatus MachineSensorStatus { get; }
+        IMachineResourcesProvider MachineSensorStatus { get; }
 
         #endregion
     }

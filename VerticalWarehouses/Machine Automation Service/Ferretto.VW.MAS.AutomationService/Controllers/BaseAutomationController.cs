@@ -125,6 +125,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         level));
         }
 
+        #endregion
+
+        /*
         protected TData WaitForResponseEventAsync<TData>(
             MessageType messageType,
             MessageActor messageSource = MessageActor.Any,
@@ -165,7 +168,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             return messageData;
         }
-
-        #endregion
+        */
     }
 }

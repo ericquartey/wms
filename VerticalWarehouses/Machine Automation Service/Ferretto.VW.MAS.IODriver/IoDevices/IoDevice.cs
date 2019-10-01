@@ -151,12 +151,12 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         {
             this.logger.LogTrace("1:Method Start");
 
+            const int N_BYTES_16 = 16;
+            const int N_BYTES_8 = 8;
+
             var formatDataOperation = ShdFormatDataOperation.Data;
             byte fwRelease = 0x00;
             byte errorCode = 0x00;
-            var inputData = new bool[16];
-            var outputData = new bool[8];
-            var configurationData = new byte[25];
 
             do
             {
@@ -275,6 +275,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.writeEnableEvent.Set();
                 }
 
+                var inputData = new bool[N_BYTES_16];
+                var outputData = new bool[N_BYTES_8];
+                byte[] configurationData;
                 foreach (var extractedMessage in extractedMessages)
                 {
                     if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))    // length is not valid  for new release

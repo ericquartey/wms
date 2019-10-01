@@ -1,15 +1,21 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
-    public interface IMachineSensorsStatus
+    internal interface IMachineResourcesProvider
     {
+        #region Events
+
+        event EventHandler<StatusUpdateEventArgs> FaultStateChanged;
+
+        event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
+
+        #endregion
+
         #region Properties
-
-        double AxisXPosition { get; set; }
-
-        double AxisYPosition { get; set; }
 
         bool[] DisplayedInputs { get; }
 

@@ -8,6 +8,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.Extensions.DependencyInjection;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -158,9 +160,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             lock (this.machineData.MachineSensorStatus)
             {
-                this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                    ? this.machineData.MachineSensorStatus.AxisYPosition
-                    : this.machineData.MachineSensorStatus.AxisXPosition;
+                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                {
+                    var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+                    this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
+                    ? elevatorProvider.VerticalPosition
+                    : elevatorProvider.HorizontalPosition;
+                }
             }
 
             this.machineData.MessageData.ExecutedCycles = 0;
