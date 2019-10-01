@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 {
                                     var msgData = new SensorsChangedMessageData();
                                     msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
-                                    this.logger.LogDebug($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                                    this.logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
                                     var msg = new NotificationMessage(
                                         msgData,
@@ -466,7 +466,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.commandQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
@@ -477,7 +477,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.notificationQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var fieldNotificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
@@ -488,7 +488,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.fieldNotificationQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 message => message.Destination == FieldMessageActor.FiniteStateMachines || message.Destination == FieldMessageActor.Any);
         }
 

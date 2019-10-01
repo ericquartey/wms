@@ -37,13 +37,15 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly bool refreshTargetTable = true;
+        private readonly bool refreshTargetTable = false;
 
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
 
         private readonly object syncStatusTimer = new object();
+
+        private IInverterPositioningFieldMessageData dataOld;
 
         private IPAddress inverterAddress;
 
@@ -419,7 +421,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.commandQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
 
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
@@ -429,7 +431,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.notificationQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
         }
 
@@ -948,6 +950,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     {
                                         var currentStateMachine = new PositioningTableStateMachine(
                                             positioningFieldData,
+                                            this.dataOld,
                                             inverterStatus,
                                             this.logger,
                                             this.eventAggregator,

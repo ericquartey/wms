@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.IODriver
             commandEvent.Subscribe(
                 commandMessage => { this.commandQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
 
             this.logger.LogTrace("1:Notifications Subscription");
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.IODriver
             notificationEvent.Subscribe(
                 notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
         }
 

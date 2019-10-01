@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             if (this.ioDeviceService.UpdateInputStates(inputData, this.deviceIndex) || this.forceIoStatusPublish)
                             {
                                 var data = new SensorsChangedFieldMessageData();
-                                data.SensorsStates = inputData;
+                                data.SensorsStates = inputData.ToArray();
                                 var notificationMessage = new FieldNotificationMessage(
                                     data,
                                     "Update IO sensors",
@@ -338,7 +338,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                     MessageStatus.OperationExecuting,
                                     (byte)this.deviceIndex);
                                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-                                this.logger.LogDebug($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
+                                this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
 
                                 this.forceIoStatusPublish = false;
                             }
