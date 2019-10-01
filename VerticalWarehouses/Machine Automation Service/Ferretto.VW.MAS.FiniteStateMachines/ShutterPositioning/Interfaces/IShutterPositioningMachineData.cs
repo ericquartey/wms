@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Interfaces
 
         InverterIndex InverterIndex { get; }
 
-        IMachineSensorsStatus MachineSensorsStatus { get; }
+        IMachineResourcesProvider MachineSensorsStatus { get; }
 
         IShutterPositioningMessageData PositioningMessageData { get; }
 

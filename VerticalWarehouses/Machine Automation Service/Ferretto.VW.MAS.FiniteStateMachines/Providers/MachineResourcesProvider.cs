@@ -1,12 +1,15 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
-    public class MachineSensorsStatus : IMachineSensorsStatus
+    public class MachineResourcesProvider : IMachineResourcesProvider, ISensorsProvider
     {
         #region Fields
 
@@ -14,7 +17,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private const int REMOTEIO_INPUTS = 16;
 
-        private readonly bool isOneKMachine;
+        private readonly IBaysProvider baysProvider;
+
+        private readonly IMachineProvider machineProvider;
 
         private readonly bool[] sensorStatus;
 
@@ -22,12 +27,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #region Constructors
 
-        public MachineSensorsStatus(bool isOneKMachine)
+        public MachineResourcesProvider(
+            IMachineProvider machineProvider,
+            IBaysProvider baysProvider)
         {
             //INFO hp: the sensorStatus array contains the Remote IO sensor status between index 0 and 47
             // followed by the Inverter sensor between index 48 and 111
             this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
-            this.isOneKMachine = isOneKMachine;
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
         #endregion
@@ -41,10 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         #endregion
 
         #region Properties
-
-        public double AxisXPosition { get; set; }
-
-        public double AxisYPosition { get; set; }
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
@@ -81,15 +85,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsSensorZeroOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S3IND];
 
-        public bool IsSensorZeroOnCradle => (this.isOneKMachine ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
+        public bool IsSensorZeroOnCradle => (this.machineProvider.IsOneTonMachine() ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
-
-        public bool[] Sensors => this.sensorStatus;
 
         #endregion
 
         #region Methods
+
+        public bool[] GetAll()
+        {
+            return (bool[])this.sensorStatus.Clone();
+        }
+
+        public ShutterPosition GetShutterPosition(BayNumber bayNumber)
+        {
+            var inverterStatus = new AglInverterStatus(
+                this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index);
+
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+
+            Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
+
+            return inverterStatus.CurrentShutterPosition;
+        }
 
         public bool IsDrawerInBayBottom(BayNumber bayNumber)
         {

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ISensorsProvider sensorsProvider;
+
         private readonly IShutterManualMovementsDataLayer shutterManualMovementsDataLayer;
 
         private readonly IShutterTestParametersProvider shutterTestParametersProvider;
@@ -31,7 +34,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IShutterTestParametersProvider shutterTestParametersProvider,
             IShutterManualMovementsDataLayer shutterManualMovementsDataLayer,
-            IBaysProvider baysProvider)
+            IBaysProvider baysProvider,
+            ISensorsProvider sensorsProvider)
             : base(eventAggregator)
         {
             if (shutterTestParametersProvider is null)
@@ -49,7 +53,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(baysProvider));
             }
 
+            if (sensorsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(sensorsProvider));
+            }
+
             this.baysProvider = baysProvider;
+            this.sensorsProvider = sensorsProvider;
             this.shutterTestParametersProvider = shutterTestParametersProvider;
             this.shutterManualMovementsDataLayer = shutterManualMovementsDataLayer;
         }
@@ -61,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("shutters/position")]
         public ActionResult<ShutterPosition> GetShutterPosition()
         {
-            return this.Ok(this.GetShutterPositionController(this.BayNumber));
+            return this.Ok(this.sensorsProvider.GetShutterPosition(this.BayNumber));
         }
 
         [HttpGet]
@@ -115,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveTo(ShutterPosition targetPosition)
         {
             var direction = ShutterMovementDirection.None;
-            var position = this.GetShutterPositionController(this.BayNumber);
+            var position = this.sensorsProvider.GetShutterPosition(this.BayNumber);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
@@ -269,27 +279,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
-        }
-
-        private ShutterPosition GetShutterPositionController(BayNumber bayNumber)
-        {
-            var messageData = new RequestPositionMessageData(Axis.None, (int)bayNumber);
-
-            void publishAction()
-            {
-                this.PublishCommand(
-                messageData,
-                "Request shutter position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition);
-            }
-
-            var notifyData = this.WaitForResponseEventAsync<ShutterPositioningMessageData>(
-                MessageType.ShutterPositioning,
-                MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting,
-                publishAction);
-            return notifyData.ShutterPosition;
         }
 
         #endregion

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -71,8 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                var position = this.elevatorProvider.GetHorizontalPosition(this.BayNumber);
-                return this.Ok(position);
+                return this.Ok(this.elevatorProvider.HorizontalPosition);
             }
             catch (Exception ex)
             {
@@ -85,8 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                var position = this.elevatorProvider.GetVerticalPosition(this.BayNumber);
-                return this.Ok(position);
+                return this.Ok(this.elevatorProvider.VerticalPosition);
             }
             catch (Exception ex)
             {

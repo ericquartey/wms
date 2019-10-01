@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces
 
         bool IsOneKMachine { get; }
 
-        IMachineSensorsStatus MachineSensorsStatus { get; }
+        IMachineResourcesProvider MachineSensorsStatus { get; }
 
         ISetupStatusProvider SetupStatusProvider { get; }
 

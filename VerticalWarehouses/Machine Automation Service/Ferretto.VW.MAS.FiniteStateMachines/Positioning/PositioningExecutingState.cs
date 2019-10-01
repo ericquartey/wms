@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -24,9 +25,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
+        private readonly IElevatorProvider elevatorProvider;
+
         private readonly double fullPosition;
 
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -57,6 +62,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.fullPosition = this.machineData.MessageData.SwitchPosition[3];
                 this.fullPosition += (this.machineData.MessageData.SwitchPosition[4] - this.machineData.MessageData.SwitchPosition[3]) / 2;
             }
+
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+
+            this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
         }
 
         #endregion
@@ -144,7 +153,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
                         statusWordPollingInterval = 500;
-                        this.Logger.LogInformation($"************+ torque sampling {inverterIndex}");
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
                             $"Start torque current sampling",
@@ -237,6 +245,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             if (disposing)
             {
                 this.delayTimer?.Dispose();
+                this.scope.Dispose();
             }
 
             this.isDisposed = true;
@@ -305,14 +314,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.machineData.MachineSensorStatus.AxisXPosition > this.machineData.MessageData.SwitchPosition[1]
-                        && this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1]
+                        && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
                         )
                     {
                         return true;
                     }
-                    if (this.machineData.MachineSensorStatus.AxisXPosition > this.fullPosition
+                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                     {
                         return true;
@@ -320,14 +329,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[1]
-                        && this.machineData.MachineSensorStatus.AxisXPosition >= this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1]
+                        && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
                         )
                     {
                         return true;
                     }
-                    if (this.machineData.MachineSensorStatus.AxisXPosition < this.fullPosition
+                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                     {
                         return true;
@@ -344,14 +353,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.machineData.MachineSensorStatus.AxisXPosition > this.machineData.MessageData.SwitchPosition[1]
-                        && this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1]
+                        && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
                         )
                     {
                         return true;
                     }
-                    if (this.machineData.MachineSensorStatus.AxisXPosition > this.fullPosition
+                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
                         return true;
@@ -359,14 +368,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.machineData.MachineSensorStatus.AxisXPosition < this.machineData.MessageData.SwitchPosition[1]
-                        && this.machineData.MachineSensorStatus.AxisXPosition >= this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1]
+                        && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
                         )
                     {
                         return true;
                     }
-                    if (this.machineData.MachineSensorStatus.AxisXPosition < this.fullPosition
+                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
                         return true;
