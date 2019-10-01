@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<CellPanel> GetAll();
 
-        CellPanel UpdateHeight(int cellId, decimal newHeight);
+        CellPanel UpdateHeight(int cellId, double newHeight);
 
         #endregion
     }

@@ -17,17 +17,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
+        private readonly IBaysProvider baysProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
-
-        private readonly ILogger logger;
-
-        private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
-
-        private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
         #endregion
 
@@ -35,50 +29,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CarouselController(
             IEventAggregator eventAggregator,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
-            IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            ISetupStatusProvider setupStatusProvider,
-            ILogger<CarouselController> logger)
+            IElevatorDataProvider elevatorDataProvider,
+            IBaysProvider baysProvider,
+            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer)
             : base(eventAggregator)
         {
-            if (verticalAxisDataLayer is null)
+            if (baysProvider is null)
             {
-                throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
-            if (verticalManualMovementsDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
-            }
-
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
+                throw new ArgumentNullException(nameof(baysProvider));
             }
 
             if (horizontalManualMovementsDataLayer is null)
             {
-                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+                throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
             }
 
-            if (setupStatusProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(setupStatusProvider));
-            }
-
-            if (logger is null)
-            {
-                throw new System.ArgumentNullException(nameof(logger));
-            }
-
-            this.verticalAxis = verticalAxisDataLayer;
-            this.verticalManualMovements = verticalManualMovementsDataLayer;
-            this.horizontalAxis = horizontalAxisDataLayer;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.baysProvider = baysProvider;
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
-            this.setupStatusProvider = setupStatusProvider;
-            this.logger = logger;
         }
 
         #endregion
@@ -100,71 +68,107 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("move")]
-        public void Move(HorizontalMovementDirection direction)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult Move(HorizontalMovementDirection direction)
         {
-            var targetPosition = this.horizontalAxis.CarouselDistance;
+            try
+            {
+                var bay = this.baysProvider.GetByNumber(this.BayNumber);
+                if (bay.Type != BayType.Carousel)
+                {
+                    throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
+                }
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+                var targetPosition = bay.Carousel.ElevatorDistance;
 
-            decimal[] speed = { this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM / 10 };
-            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
+                targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
 
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.BayChain,
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                direction);
+                var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                // TODO: scale movement speed by weight
+                var speed = new[] { axis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+                var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
+                var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
+                var switchPosition = new[] { 0.0 };
+
+                var messageData = new PositioningMessageData(
+                    Axis.Horizontal,
+                    MovementType.Relative,
+                    MovementMode.BayChain,
+                    targetPosition,
+                    speed,
+                    acceleration,
+                    deceleration,
+                    0,
+                    0,
+                    0,
+                    0,
+                    switchPosition,
+                    direction);
+
+                this.PublishCommand(
+                    messageData,
+                    $"Execute {Axis.Horizontal} Positioning Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning);
+
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
         }
 
         [HttpPost("move-manual")]
-        public void MoveManual(HorizontalMovementDirection direction)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult MoveManual(HorizontalMovementDirection direction)
         {
-            var targetPosition = this.horizontalAxis.CarouselDistance;
+            try
+            {
+                var bay = this.baysProvider.GetByNumber(this.BayNumber);
+                if (bay.Type != BayType.Carousel)
+                {
+                    throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
+                }
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+                var targetPosition = bay.Carousel.ElevatorDistance;
 
-            decimal[] speed = { this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM / 10 };
-            decimal[] acceleration = { this.horizontalAxis.MaxFullAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxis.MaxFullDecelerationHA };
-            decimal[] switchPosition = { 0 };
+                targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.BayChainManual,
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                direction);
+                var axis = this.elevatorDataProvider.GetHorizontalAxis();
+                var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+                var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
+                var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
+                var switchPosition = new[] { 0.0 };
 
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+                var messageData = new PositioningMessageData(
+                    Axis.Horizontal,
+                    MovementType.Relative,
+                    MovementMode.BayChainManual,
+                    targetPosition,
+                    speed,
+                    acceleration,
+                    deceleration,
+                    0,
+                    0,
+                    0,
+                    0,
+                    switchPosition,
+                    direction);
+
+                this.PublishCommand(
+                    messageData,
+                    $"Execute {Axis.Horizontal} Positioning Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning);
+
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
         }
 
         [HttpPost("stop")]
@@ -182,7 +186,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        private decimal GetPositionController(BayNumber bayNumber)
+        private double GetPositionController(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, (int)bayNumber);
 
@@ -200,6 +204,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
                 publishAction);
+
             return notifyData.CurrentPosition ?? 0;
         }
 

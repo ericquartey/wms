@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class LoadingUnitSpaceStatistics
+    public sealed class LoadingUnitSpaceStatistics
     {
         #region Properties
 
-        public decimal? AreaFillPercentage { get; set; }
+        public double? AreaFillPercentage { get; set; }
 
         public string Code { get; set; }
 

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -32,15 +33,19 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 100;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 300
+        private const int HEARTBEAT_TIMEOUT = 300;
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
-        private readonly Stopwatch axisIntervalStopwatch;
+        private readonly Stopwatch axisIntervalStopwatch = new Stopwatch();
+
+        private readonly InverterDiagnosticsData AxisIntervalTimeData = new InverterDiagnosticsData();
 
         private readonly Timer[] axisPositionUpdateTimer;
 
-        private readonly Stopwatch axisStopwatch;
+        private readonly Stopwatch axisStopwatch = new Stopwatch();
+
+        private readonly InverterDiagnosticsData AxisTimeData = new InverterDiagnosticsData();
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
@@ -50,19 +55,19 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
-        private readonly IResolutionConversionDataLayer dataLayerResolutionConversion;
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue;
+        private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly Task inverterReceiveTask;
 
         private readonly Task inverterSendTask;
-
-        //private readonly Dictionary<InverterIndex, IInverterStatusBase> inverterStatuses;
 
         private readonly IInverterService inverterService;
 
@@ -72,15 +77,23 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly Stopwatch readSpeedStopwatch;
+        private readonly Stopwatch readSpeedStopwatch = new Stopwatch();
 
-        private readonly Stopwatch readWaitStopwatch;
+        private readonly InverterDiagnosticsData ReadSpeedTimeData = new InverterDiagnosticsData();
 
-        private readonly Stopwatch roundTripStopwatch;
+        private readonly Stopwatch readWaitStopwatch = new Stopwatch();
 
-        private readonly Stopwatch sensorIntervalStopwatch;
+        private readonly InverterDiagnosticsData ReadWaitTimeData = new InverterDiagnosticsData();
 
-        private readonly Stopwatch sensorStopwatch;
+        private readonly Stopwatch roundTripStopwatch = new Stopwatch();
+
+        private readonly Stopwatch sensorIntervalStopwatch = new Stopwatch();
+
+        private readonly InverterDiagnosticsData SensorIntervalTimeData = new InverterDiagnosticsData();
+
+        private readonly Stopwatch sensorStopwatch = new Stopwatch();
+
+        private readonly InverterDiagnosticsData SensorTimeData = new InverterDiagnosticsData();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -88,17 +101,15 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Timer[] statusWordUpdateTimer;
 
-        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
-
         private readonly ManualResetEventSlim writeEnableEvent;
+
+        private readonly InverterDiagnosticsData WriteRoundtripTimeData = new InverterDiagnosticsData();
 
         private Axis currentAxis;
 
         private bool disposed;
 
         private bool forceStatusPublish;
-
-        private Timer heartBeatTimer;
 
         private byte[] receiveBuffer;
 
@@ -113,69 +124,23 @@ namespace Ferretto.VW.MAS.InverterDriver
         public InverterDriverService(
             ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IElevatorDataProvider elevatorDataProvider,
             IInverterService inverterService,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfigurationDataLayer vertimagConfiguration,
-            IResolutionConversionDataLayer dataLayerResolutionConversion)
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.socketTransport = socketTransport;
-            this.eventAggregator = eventAggregator;
-            this.inverterService = inverterService;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-            this.dataLayerResolutionConversion = dataLayerResolutionConversion;
-            this.vertimagConfiguration = vertimagConfiguration;
-            this.logger = logger;
-            this.serviceScopeFactory = serviceScopeFactory;
-            this.readWaitStopwatch = new Stopwatch();
-
-            this.readSpeedStopwatch = new Stopwatch();
-
-            this.roundTripStopwatch = new Stopwatch();
-
-            this.axisStopwatch = new Stopwatch();
-
-            this.axisIntervalStopwatch = new Stopwatch();
-
-            this.sensorStopwatch = new Stopwatch();
-
-            this.sensorIntervalStopwatch = new Stopwatch();
-
-            this.ReadWaitTimeData = new InverterDiagnosticsData();
-
-            this.ReadSpeedTimeData = new InverterDiagnosticsData();
-
-            this.WriteRoundtripTimeData = new InverterDiagnosticsData();
-
-            this.AxisTimeData = new InverterDiagnosticsData();
-
-            this.AxisIntervalTimeData = new InverterDiagnosticsData();
-
-            this.SensorTimeData = new InverterDiagnosticsData();
-
-            this.SensorIntervalTimeData = new InverterDiagnosticsData();
+            this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
+            this.elevatorDataProvider = elevatorDataProvider;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
-
-            this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
-            this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-
+            this.inverterService = inverterService;
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
@@ -193,24 +158,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
-        #region Properties
-
-        public InverterDiagnosticsData AxisIntervalTimeData { get; }
-
-        public InverterDiagnosticsData AxisTimeData { get; }
-
-        public InverterDiagnosticsData ReadSpeedTimeData { get; }
-
-        public InverterDiagnosticsData ReadWaitTimeData { get; }
-
-        public InverterDiagnosticsData SensorIntervalTimeData { get; }
-
-        public InverterDiagnosticsData SensorTimeData { get; }
-
-        public InverterDiagnosticsData WriteRoundtripTimeData { get; }
-
-        #endregion
-
         #region Methods
 
         public void Dispose(bool disposing)
@@ -222,7 +169,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (disposing)
             {
-                this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
 
                 foreach (var timer in this.axisPositionUpdateTimer)
@@ -367,6 +313,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     else
                     {
                         this.logger.LogInformation($"3:Connection OK ipAddress={this.inverterAddress}:Port={this.inverterPort}");
+                        this.forceStatusPublish = true;
                     }
 
                     this.writeEnableEvent.Set();

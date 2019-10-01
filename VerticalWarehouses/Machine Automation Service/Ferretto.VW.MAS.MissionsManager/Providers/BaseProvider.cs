@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class BaseProvider
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -25,8 +24,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 

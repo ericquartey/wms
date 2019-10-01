@@ -1,13 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class CommandMessage
     {
-
-
         #region Constructors
 
         public CommandMessage()
@@ -47,8 +45,6 @@ namespace Ferretto.VW.MAS.Utils.Messages
         }
 
         #endregion
-
-
 
         #region Properties
 

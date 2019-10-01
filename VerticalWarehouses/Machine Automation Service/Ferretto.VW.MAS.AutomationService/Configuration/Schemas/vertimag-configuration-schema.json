@@ -1,0 +1,633 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for my JSON file format",
+  "type": "object",
+
+  "required": [
+    "Machine"
+  ],
+  "properties": {
+    "Machine": {
+      "$id": "#/properties/Machine",
+      "type": "object",
+      "title": "The Machine Schema",
+      "required": [
+        "Bays",
+        "Elevator",
+        "Height",
+        "MaxGrossWeight",
+        "ModelName",
+        "Panels",
+        "ProductionDate",
+        "SerialNumber"
+      ],
+      "properties": {
+        "Bays": {
+          "$id": "#/properties/Machine/properties/Bays",
+          "type": "array",
+          "title": "The Bays Schema",
+          "items": {
+            "$id": "#/properties/Machine/properties/Bays/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "Inverter",
+              "IoDevice",
+              "IsExternal",
+              "Number",
+              "Side",
+              "Positions",
+              "Type"
+            ],
+            "properties": {
+              "AlphaNumericBar": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/AlphaNumericBar",
+                "type": [ "object", "null" ],
+                "title": "The Alphanumericbar Schema",
+                "default": null,
+                "examples": [
+                  null
+                ]
+              },
+              "Inverter": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter",
+                "type": "object",
+                "title": "The Inverter Schema",
+                "description": "The inverter installed on the bay.",
+                "required": [
+                  "Type",
+                  "Index"
+                ],
+                "properties": {
+                  "Type": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter/properties/Type",
+                    "type": "string",
+                    "title": "The Type Schema",
+                    "default": "Ang",
+                    "enum": [ "Acu", "Agl", "Ang" ]
+                  },
+                  "Index": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter/properties/Index",
+                    "type": "integer",
+                    "title": "The Index Schema",
+                    "default": 0,
+                    "examples": [
+                      3
+                    ]
+                  }
+                }
+              },
+              "IoDevice": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice",
+                "type": "object",
+                "title": "The Iodevice Schema",
+                "required": [
+                  "Index",
+                  "IpAddress",
+                  "TcpPort"
+                ],
+                "properties": {
+                  "Index": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/Index",
+                    "type": "integer",
+                    "title": "The Index Schema",
+                    "default": 0,
+                    "examples": [
+                      0
+                    ]
+                  },
+                  "IpAddress": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/IpAddress",
+                    "type": "string",
+                    "title": "The Ipaddress Schema",
+                    "default": "",
+                    "examples": [
+                      "127.0.0.1"
+                    ],
+                    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+                  },
+                  "TcpPort": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/TcpPort",
+                    "type": "integer",
+                    "title": "The Tcpport Schema",
+                    "default": 0,
+                    "examples": [
+                      19550
+                    ]
+                  }
+                }
+              },
+              "IsExternal": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/IsExternal",
+                "type": "boolean",
+                "title": "The Isexternal Schema",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              },
+              "Number": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
+                "type": "integer",
+                "title": "The Number Schema",
+                "default": 0,
+                "examples": [
+                  1
+                ]
+              },
+              "Positions": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Positions",
+                "type": "array",
+                "title": "The Positions Schema",
+                "items": {
+                  "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items",
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "Height"
+                  ],
+                  "properties": {
+                    "Height": {
+                      "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items/properties/Height",
+                      "type": "integer",
+                      "title": "The Height Schema",
+                      "default": 0,
+                      "examples": [
+                        500
+                      ]
+                    }
+                  }
+                }
+              },
+              "Shutter": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter",
+                "type": "object",
+                "title": "The Shutter Schema",
+                "required": [
+                  "Inverter",
+                  "Type"
+                ],
+                "properties": {
+                  "Inverter": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Inverter",
+                    "type": "object",
+                    "title": "The Inverter Schema",
+                    "required": [
+                      "Type",
+                      "Index"
+                    ],
+                    "properties": {
+                      "Type": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Inverter/properties/Type",
+                        "type": "string",
+                        "title": "The Type Schema",
+                        "default": "",
+                        "enum": [ "Acu", "Agl", "Ang" ]
+                      },
+                      "Index": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Inverter/properties/Index",
+                        "type": "integer",
+                        "title": "The Index Schema",
+                        "default": 0,
+                        "examples": [
+                          2
+                        ]
+                      }
+                    }
+                  },
+                  "Type": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Type",
+                    "type": "string",
+                    "title": "The Type Schema",
+                    "default": "",
+                    "examples": [
+                      "TwoSensors"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              },
+              "Type": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Type",
+                "type": "string",
+                "title": "The Type Schema",
+                "default": "",
+                "enum": [ "Carousel", "Single", "Double" ]
+              },
+              "Side": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Side",
+                "type": "string",
+                "title": "The Type Schema",
+                "default": "Front",
+                "enum": [ "Front", "Back" ]
+              }
+            }
+          }
+        },
+        "Elevator": {
+          "$id": "#/properties/Machine/properties/Elevator",
+          "type": "object",
+          "title": "The Elevator Schema",
+          "required": [
+            "Axes",
+            "StructuralProperties"
+          ],
+          "properties": {
+            "Axes": {
+              "$id": "#/properties/Machine/properties/Elevator/properties/Axes",
+              "type": "array",
+              "title": "The Axes Schema",
+              "items": {
+                "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items",
+                "type": "object",
+                "title": "The Items Schema",
+                "required": [
+                  "Inverter",
+                  "Orientation",
+                  "Resolution",
+                  "Offset",
+                  "MaximumLoadMovement",
+                  "EmptyLoadMovement"
+                ],
+                "properties": {
+                  "Inverter": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter",
+                    "type": [ "object", "null" ],
+                    "title": "The Inverter Schema",
+                    "required": [
+                      "Index",
+                      "Type"
+                    ],
+                    "properties": {
+                      "Index": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Index",
+                        "type": "integer",
+                        "title": "The Index Schema",
+                        "default": 0,
+                        "examples": [
+                          0
+                        ]
+                      },
+                      "Type": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Type",
+                        "type": "string",
+                        "title": "The Type Schema",
+                        "default": "",
+                        "enum": [ "Acu", "Agl", "Ang" ]
+                      },
+                      "IpAddress": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/IpAddress",
+                        "type": "string",
+                        "title": "The Ipaddress Schema",
+                        "default": "",
+                        "examples": [
+                          "127.0.0.1"
+                        ],
+                        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+                      },
+                      "TcpPort": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/TcpPort",
+                        "type": "integer",
+                        "title": "The Tcpport Schema",
+                        "default": 0,
+                        "examples": [
+                          17221
+                        ]
+                      }
+                    }
+                  },
+                  "Orientation": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Orientation",
+                    "type": "string",
+                    "title": "The Orientation Schema",
+                    "default": "",
+                    "enum": [ "Vertical", "Horizontal" ]
+                  },
+                  "Resolution": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Resolution",
+                    "type": "number",
+                    "title": "The Resolution Schema",
+                    "default": 0.0,
+                    "examples": [
+                      77.61182
+                    ]
+                  },
+                  "Offset": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Offset",
+                    "type": "integer",
+                    "title": "The Offset Schema",
+                    "default": 0,
+                    "examples": [
+                      300
+                    ]
+                  },
+                  "UpperBound": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/UpperBound",
+                    "type": "integer",
+                    "title": "The Upperbound Schema",
+                    "default": 0,
+                    "examples": [
+                      4000
+                    ]
+                  },
+                  "LowerBound": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/LowerBound",
+                    "type": "integer",
+                    "title": "The Lowerbound Schema",
+                    "default": 0,
+                    "examples": [
+                      350
+                    ]
+                  },
+                  "MaximumLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement",
+                    "type": "object",
+                    "title": "The Maximumloadmovement Schema",
+                    "required": [
+                      "Acceleration",
+                      "Deceleration",
+                      "Speed"
+                    ],
+                    "properties": {
+                      "Acceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Acceleration",
+                        "type": "integer",
+                        "title": "The Acceleration Schema",
+                        "default": 0,
+                        "examples": [
+                          1000
+                        ]
+                      },
+                      "Deceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Deceleration",
+                        "type": "integer",
+                        "title": "The Deceleration Schema",
+                        "default": 0,
+                        "examples": [
+                          1000
+                        ]
+                      },
+                      "Speed": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Speed",
+                        "type": "integer",
+                        "title": "The Speed Schema",
+                        "default": 0,
+                        "examples": [
+                          770
+                        ]
+                      }
+                    }
+                  },
+                  "EmptyLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement",
+                    "type": "object",
+                    "title": "The Emptyloadmovement Schema",
+                    "required": [
+                      "Acceleration",
+                      "Deceleration",
+                      "Speed"
+                    ],
+                    "properties": {
+                      "Acceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Acceleration",
+                        "type": "integer",
+                        "title": "The Acceleration Schema",
+                        "default": 0,
+                        "examples": [
+                          400
+                        ]
+                      },
+                      "Deceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Deceleration",
+                        "type": "integer",
+                        "title": "The Deceleration Schema",
+                        "default": 0,
+                        "examples": [
+                          400
+                        ]
+                      },
+                      "Speed": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Speed",
+                        "type": "integer",
+                        "title": "The Speed Schema",
+                        "default": 0,
+                        "examples": [
+                          550
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "StructuralProperties": {
+              "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties",
+              "type": "object",
+              "title": "The Structuralproperties Schema",
+              "required": [
+                "BeltRigidity",
+                "BeltSpacing",
+                "HalfShaftLength",
+                "MaximumLoadOnBoard",
+                "PulleyDiameter",
+                "ShaftDiameter",
+                "ShaftElasticity"
+              ],
+              "properties": {
+                "BeltRigidity": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/BeltRigidity",
+                  "type": "integer",
+                  "title": "The Beltrigidity Schema",
+                  "default": 0,
+                  "examples": [
+                    7000000
+                  ]
+                },
+                "BeltSpacing": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/BeltSpacing",
+                  "type": "integer",
+                  "title": "The Beltspacing Schema",
+                  "default": 0,
+                  "examples": [
+                    300
+                  ]
+                },
+                "HalfShaftLength": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/HalfShaftLength",
+                  "type": "integer",
+                  "title": "The Halfshaftlength Schema",
+                  "default": 0,
+                  "examples": [
+                    1784
+                  ]
+                },
+                "MaximumLoadOnBoard": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/MaximumLoadOnBoard",
+                  "type": "integer",
+                  "title": "The Maximumloadonboard Schema",
+                  "default": 0,
+                  "examples": [
+                    990
+                  ]
+                },
+                "PulleyDiameter": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/PulleyDiameter",
+                  "type": "integer",
+                  "title": "The Pulleydiameter Schema",
+                  "default": 0,
+                  "examples": [
+                    160
+                  ]
+                },
+                "ShaftDiameter": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ShaftDiameter",
+                  "type": "integer",
+                  "title": "The Shaftdiameter Schema",
+                  "default": 0,
+                  "examples": [
+                    45
+                  ]
+                },
+                "ShaftElasticity": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ShaftElasticity",
+                  "type": "integer",
+                  "title": "The Shaftelasticity Schema",
+                  "default": 0,
+                  "examples": [
+                    210000
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "Height": {
+          "$id": "#/properties/Machine/properties/Height",
+          "type": "integer",
+          "title": "The Height Schema",
+          "default": 0,
+          "examples": [
+            4563
+          ]
+        },
+        "MaxGrossWeight": {
+          "$id": "#/properties/Machine/properties/MaxGrossWeight",
+          "type": "integer",
+          "title": "The Maxgrossweight Schema",
+          "default": 0,
+          "examples": [
+            50000
+          ]
+        },
+        "ModelName": {
+          "$id": "#/properties/Machine/properties/ModelName",
+          "type": "string",
+          "title": "The Modelname Schema",
+          "default": "",
+          "examples": [
+            "Simulated VertiMAG"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "Panels": {
+          "$id": "#/properties/Machine/properties/Panels",
+          "type": "array",
+          "title": "The Panels Schema",
+          "items": {
+            "$id": "#/properties/Machine/properties/Panels/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "side",
+              "cells"
+            ],
+            "properties": {
+              "side": {
+                "$id": "#/properties/Machine/properties/Panels/items/properties/side",
+                "type": "string",
+                "title": "The Side Schema",
+                "default": "",
+                "enum": [ "front", "back" ]
+              },
+              "cells": {
+                "$id": "#/properties/Machine/properties/Panels/items/properties/cells",
+                "type": "array",
+                "title": "The Cells Schema",
+                "items": {
+                  "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items",
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "id",
+                    "position",
+                    "priority",
+                    "status"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/id",
+                      "type": "integer",
+                      "title": "The Id Schema",
+                      "default": 0,
+                      "examples": [
+                        1
+                      ]
+                    },
+                    "position": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
+                      "type": "integer",
+                      "title": "The Position Schema",
+                      "default": 0,
+                      "examples": [
+                        268
+                      ]
+                    },
+                    "priority": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/priority",
+                      "type": "integer",
+                      "title": "The Priority Schema",
+                      "default": 0,
+                      "examples": [
+                        1
+                      ]
+                    },
+                    "status": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/status",
+                      "type": "string",
+                      "title": "The Status Schema",
+                      "default": "",
+                      "examples": [
+                        "free"
+                      ],
+                      "pattern": "^(.*)$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ProductionDate": {
+          "$id": "#/properties/Machine/properties/ProductionDate",
+          "type": "string",
+          "title": "The Productiondate Schema",
+          "default": "",
+          "examples": [
+            "2011-05-01T19:43:37+0100"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "SerialNumber": {
+          "$id": "#/properties/Machine/properties/SerialNumber",
+          "type": "string",
+          "title": "The Serialnumber Schema",
+          "default": "",
+          "examples": [
+            "Not applicable"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    }
+  }
+}

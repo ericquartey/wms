@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                 foreach (var configuredBay in this.machineData.ConfiguredBays)
                 {
                     var newCommandMessage = new CommandMessage(commandMessage);
-                    newCommandMessage.TargetBay = configuredBay.Index;
+                    newCommandMessage.TargetBay = configuredBay.Number;
 
                     this.ParentStateMachine.PublishCommandMessage(newCommandMessage);
                 }

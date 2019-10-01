@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,9 +18,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         // TODO: avoid hardcoding constants in code
-        private const decimal ChainLength = 2850.0M;
+        private const double ChainLength = 2850;
 
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
@@ -31,16 +32,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ServiceController(
             IEventAggregator eventAggregator,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
+            IElevatorDataProvider elevatorDataProvider,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ILogger<ServiceController> logger)
             : base(eventAggregator)
         {
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
-            }
-
             if (horizontalManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
@@ -52,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.logger = logger;
-            this.horizontalAxis = horizontalAxisDataLayer;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
         }
 
@@ -65,12 +61,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
+            var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
+            var actualSpeed = horizontalAxis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM;
 
-            decimal[] speed = { actualSpeed };
-            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
+            var speed = new[] { actualSpeed };
+            var acceleration = new[] { horizontalAxis.EmptyLoadMovement.Acceleration };
+            var deceleration = new[] { horizontalAxis.EmptyLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

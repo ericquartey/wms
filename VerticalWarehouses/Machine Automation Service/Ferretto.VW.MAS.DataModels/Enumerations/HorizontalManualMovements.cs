@@ -8,6 +8,6 @@
 
         InitialTargetPosition = 2L,
 
-        RecoveryTargetPosition = 3L
+        RecoveryTargetPosition = 3L,
     }
 }

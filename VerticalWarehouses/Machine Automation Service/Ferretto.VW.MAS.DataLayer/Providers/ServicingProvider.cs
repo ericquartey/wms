@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ServicingProvider : Interfaces.IServicingProvider
+    internal sealed class ServicingProvider : Interfaces.IServicingProvider
     {
         #region Fields
 

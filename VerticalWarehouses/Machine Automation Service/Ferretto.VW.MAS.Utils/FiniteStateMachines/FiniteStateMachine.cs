@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
     public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
     {
-
         #region Fields
 
         private readonly CommandEvent commandEvent;
@@ -78,15 +77,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #endregion
 
-
-
         #region Events
 
         public event EventHandler<FiniteStateMachinesEventArgs> Completed;
 
         #endregion
-
-
 
         #region Properties
 
@@ -118,8 +113,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         protected ILogger<StateBase> Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -184,7 +177,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected abstract bool FilterNotification(NotificationMessage notification);
 
-        protected IState GetState<TState>() where TState : IState
+        protected IState GetState<TState>()
+            where TState : IState
         {
             return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
         }

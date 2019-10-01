@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable.Interfaces
 {
     public interface IPowerEnableMachineData : IMachineData
     {
-
-
         #region Properties
 
         List<Bay> ConfiguredBays { get; }

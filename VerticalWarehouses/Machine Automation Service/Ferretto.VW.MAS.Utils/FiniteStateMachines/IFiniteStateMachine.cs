@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public interface IFiniteStateMachine
     {
-
-
         #region Events
 
         event EventHandler<FiniteStateMachinesEventArgs> Completed;
@@ -24,8 +22,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         CommandMessage StartData { get; }
 
         #endregion
-
-
 
         #region Methods
 

@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
+            this.Logger.LogDebug($"Positioning Table Start");
+
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.TableTravel;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
@@ -64,9 +66,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningTableStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

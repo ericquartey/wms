@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class VerticalOriginProcedureController : BaseAutomationController
     {
-
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         #endregion
 
@@ -27,34 +27,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public VerticalOriginProcedureController(
             IEventAggregator eventAggregator,
-            IConfigurationValueManagmentDataLayer configurationProvider)
+            IElevatorDataProvider elevatorDataProvider)
             : base(eventAggregator)
         {
-            if(configurationProvider is null)
-            {
-                throw new ArgumentNullException(nameof(configurationProvider));
-            }
-
-            this.configurationProvider = configurationProvider;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
         }
 
         #endregion
-
-
 
         #region Methods
 
         [HttpGet("parameters")]
         public ActionResult<HomingProcedureParameters> GetParameters()
         {
-            var category = ConfigurationCategory.VerticalAxis;
+            var axis = this.elevatorDataProvider.GetVerticalAxis();
 
             var parameters = new HomingProcedureParameters
             {
-                UpperBound = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.UpperBound, category),
-                LowerBound = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.LowerBound, category),
-                Offset = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.Offset, category),
-                Resolution = this.configurationProvider.GetDecimalConfigurationValue(VerticalAxis.Resolution, category),
+                UpperBound = axis.UpperBound,
+                LowerBound = axis.LowerBound,
+                Offset = axis.Offset,
+                Resolution = axis.Resolution,
             };
 
             return this.Ok(parameters);

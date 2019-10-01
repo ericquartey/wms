@@ -19,11 +19,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IMoveDrawerMachineData machineData;
 
+        private readonly PositioningMessageData positioningMessageData;
+
         private readonly IMoveDrawerStateData stateData;
 
         private bool disposed;
-
-        private PositioningMessageData positioningMessageData;
 
         #endregion
 
@@ -155,8 +155,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         //TEMP Check this code
         private void GetParameters()
         {
-            decimal target = 0;
-
             //if (this.drawerOperationData.Step == DrawerOperationStep.None) //(this.drawerOperationStep == DrawerOperationStep.None)
             //{
             //    if (this.drawerOperationData.Source == DrawerDestination.Cell)
@@ -236,16 +234,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //    }
             //}
 
-            if (this.machineData.DrawerOperationData.Step == DrawerOperationStep.None)
-            {
-                target = this.machineData.DrawerOperationData.SourceVerticalPosition;
-            }
-            else
-            {
-                target = this.machineData.DrawerOperationData.DestinationVerticalPosition;
-            }
+            var target = this.machineData.DrawerOperationData.Step == DrawerOperationStep.None
+               ? this.machineData.DrawerOperationData.SourceVerticalPosition
+               : this.machineData.DrawerOperationData.DestinationVerticalPosition;
 
-            //TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
+            // TEMP: The acceleration and speed parameters are provided by the vertimagConfiguration file (used only for test)
+            /*
+             *
+             *
+             *
+
             var maxSpeed = this.machineData.VerticalAxis.MaxEmptySpeed;
             decimal[] maxAcceleration = { this.machineData.VerticalAxis.MaxEmptyAcceleration };
             decimal[] maxDeceleration = { this.machineData.VerticalAxis.MaxEmptyDeceleration };
@@ -253,6 +251,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             var feedRate = 0.10;  // TEMP: remove this code line (used only for test)
 
             decimal[] speed = { maxSpeed * (decimal)feedRate };
+
+            var direction = target > this.machineData.DrawerOperationData.SourceHorizontalPosition
+                ? HorizontalMovementDirection.Forwards
+                : HorizontalMovementDirection.Backwards;
 
             this.positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -267,7 +269,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 0,
                 0,
                 switchPosition,
-                (target > this.machineData.DrawerOperationData.SourceHorizontalPosition ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards));
+                direction);
+
+             */
         }
 
         #endregion

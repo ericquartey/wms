@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+using Ferretto.VW.MAS.DataModels;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
@@ -103,7 +104,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            if (!this.machineData.MessageData.IsOneKMachine)
+            if (!this.machineData.MessageData.IsOneKMachine &&
+                this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.MessageData.AxisMovement);
                 var ioCommandMessage = new FieldCommandMessage(

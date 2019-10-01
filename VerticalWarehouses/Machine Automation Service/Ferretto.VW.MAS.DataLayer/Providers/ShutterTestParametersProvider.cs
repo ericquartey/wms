@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Models;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ShutterTestParametersProvider : Interfaces.IShutterTestParametersProvider
+    internal sealed class ShutterTestParametersProvider : Interfaces.IShutterTestParametersProvider
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return new ShutterTestParameters // TODO retrieve data from database
             {
                 RequiredCycles = 200,
-                DelayBetweenCycles = 5
+                DelayBetweenCycles = 5,
             };
         }
 

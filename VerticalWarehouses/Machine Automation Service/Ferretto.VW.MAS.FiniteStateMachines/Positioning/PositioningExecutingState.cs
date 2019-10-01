@@ -4,8 +4,8 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
-        private readonly decimal fullPosition;
+        private readonly double fullPosition;
 
         private readonly IPositioningMachineData machineData;
 
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             FieldCommandMessage commandMessage = null;
-            var inverterIndex = this.machineData.CurrentInverterIndex;
+            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
             var statusWordPollingInterval = DefaultStatusWordPollingInterval;
 
@@ -144,14 +144,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
                         statusWordPollingInterval = 500;
-
+                        this.Logger.LogInformation($"************+ torque sampling {inverterIndex}");
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
                             $"Start torque current sampling",
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
-                            FieldMessageType.TorqueCurrentSampling,
-                            (byte)inverterIndex);
+                            FieldMessageType.Positioning,
+                            inverterIndex);
                     }
                     break;
 
@@ -176,7 +176,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
-                            (byte)this.machineData.CurrentInverterIndex);
+                            inverterIndex);
                     }
                     break;
 
@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
-                            (byte)this.machineData.CurrentInverterIndex);
+                            inverterIndex);
                     }
                     break;
 
@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (this.isDisposed)
             {
@@ -240,6 +240,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             }
 
             this.isDisposed = true;
+
+            base.Dispose(disposing);
         }
 
         private void DelayElapsed(object state)
@@ -523,8 +525,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.machineData.MessageData.MovementMode == MovementMode.FindZero
                 )
             {
-                decimal[] switchPosition = { 0 };
-                decimal[] speed = { this.machineData.MessageData.TargetSpeed[0] / 2 };
+                var switchPosition = new[] { 0.0 };
+                var speed = new[] { this.machineData.MessageData.TargetSpeed[0] / 2 };
                 var newPositioningMessageData = new PositioningMessageData(
                     Axis.Horizontal,
                     MovementType.Relative,

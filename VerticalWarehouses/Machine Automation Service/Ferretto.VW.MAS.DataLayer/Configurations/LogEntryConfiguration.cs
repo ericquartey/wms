@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    internal class LogEntriesConfiguration : IEntityTypeConfiguration<LogEntry>
+    internal class LogEntryConfiguration : IEntityTypeConfiguration<LogEntry>
     {
         #region Methods
 

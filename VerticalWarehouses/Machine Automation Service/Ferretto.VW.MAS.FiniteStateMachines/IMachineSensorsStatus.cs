@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Properties
 
-        decimal AxisXPosition { get; set; }
+        double AxisXPosition { get; set; }
 
-        decimal AxisYPosition { get; set; }
+        double AxisYPosition { get; set; }
 
         bool[] DisplayedInputs { get; }
 

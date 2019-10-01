@@ -12,7 +12,9 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal HigherDistance { get; }
 
-        decimal HighSpeedPercent { get; }
+        decimal HighSpeedDurationClose { get; }
+
+        decimal HighSpeedDurationOpen { get; }
 
         decimal LowerDistance { get; }
 

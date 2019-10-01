@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.Interface
 {
     public interface IMachineData
     {
-
-
         #region Properties
 
         IEventAggregator EventAggregator { get; }

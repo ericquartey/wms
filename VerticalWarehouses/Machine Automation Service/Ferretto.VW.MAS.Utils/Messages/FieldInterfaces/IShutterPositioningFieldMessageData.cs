@@ -8,7 +8,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         decimal HigherDistance { get; }
 
-        decimal HighSpeedPercent { get; set; }
+        decimal HighSpeedDurationClose { get; }
+
+        decimal HighSpeedDurationOpen { get; }
 
         decimal LowerDistance { get; }
 

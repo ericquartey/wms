@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.Template
 {
     public class TemplateErrorState : StateBase
     {
-
         #region Fields
 
         private readonly ITemplateMachineData machineData;
@@ -38,8 +37,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.Template
         }
 
         #endregion
-
-
 
         #region Methods
 

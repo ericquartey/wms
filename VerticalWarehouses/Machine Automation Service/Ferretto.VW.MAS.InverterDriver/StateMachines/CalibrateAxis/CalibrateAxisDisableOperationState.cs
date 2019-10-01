@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly bool stopRequested;
+
         #endregion
 
         #region Constructors
@@ -20,10 +22,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
             IInverterStatusBase inverterStatus,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -34,6 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             if (this.InverterStatus is IHomingInverterStatus currentStatus)
             {
+                this.Logger.LogDebug($"Calibrate Disable Operation axis {this.axisToCalibrate}. StopRequested = {this.stopRequested}");
                 currentStatus.HomingControlWord.HomingOperation = false;
                 currentStatus.HomingControlWord.EnableOperation = false;
 
@@ -48,9 +53,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            if (this.stopRequested)
+            {
+                this.Logger.LogTrace("1:Stop process already active");
+            }
+            else
+            {
+                this.Logger.LogDebug("1:Calibrate Axis Stop requested");
 
-            this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger, true));
+                this.ParentStateMachine.ChangeState(
+                    new CalibrateAxisStopState(
+                        this.ParentStateMachine,
+                        this.axisToCalibrate,
+                        this.InverterStatus,
+                        this.Logger));
+            }
         }
 
         /// <inheritdoc />
@@ -75,7 +92,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                    if (this.stopRequested)
+                    {
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                    }
                     returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                 }
             }

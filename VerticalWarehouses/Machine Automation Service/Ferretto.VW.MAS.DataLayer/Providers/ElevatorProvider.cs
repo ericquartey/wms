@@ -3,15 +3,16 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ElevatorProvider : BaseProvider, IElevatorProvider
+    internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider
     {
         #region Fields
 
@@ -19,19 +20,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly ICellControlDataLayer cellControlDataLayer;
 
-        private readonly DataLayerContext dataContext;
+        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
-        private readonly IHorizontalAxisDataLayer horizontalAxisDataLayer;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
-        private readonly IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer;
-
-        private readonly IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer;
-
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
 
@@ -43,8 +40,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private readonly IVerticalAxisDataLayer verticalAxisDataLayer;
-
         private readonly IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer;
 
         private readonly IWeightControlDataLayer weightControl;
@@ -54,172 +49,87 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #region Constructors
 
         public ElevatorProvider(
-            DataLayerContext dataContext,
             IEventAggregator eventAggregator,
+            IElevatorDataProvider elevatorDataProvider,
+            IConfigurationValueManagmentDataLayer configurationProvider,
             IPanelControlDataLayer panelControlDataLayer,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            IHorizontalMovementShorterProfileDataLayer horizontalMovementShorterProfileDataLayer,
-            IHorizontalMovementLongerProfileDataLayer horizontalMovementLongerProfileDataLayer,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
             IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
             IBayPositionControlDataLayer bayPositionControl,
             ICellControlDataLayer cellControlDataLayer,
             ISetupStatusProvider setupStatusProvider,
             IWeightControlDataLayer weightControl,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IMachineProvider machineProvider,
             ISensorsProvider sensorsProvider,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
             ILoadingUnitsProvider loadingUnitsProvider)
             : base(eventAggregator)
         {
-            if (dataContext is null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            if (panelControlDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(panelControlDataLayer));
-            }
-
-            if (horizontalManualMovementsDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            }
-
-            if (horizontalMovementShorterProfileDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalMovementShorterProfileDataLayer));
-            }
-
-            if (horizontalMovementLongerProfileDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalMovementLongerProfileDataLayer));
-            }
-
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
-            }
-
-            if (resolutionCalibrationDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(resolutionCalibrationDataLayer));
-            }
-
-            if (offsetCalibrationDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
-            }
-
-            if (verticalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
-            if (bayPositionControl is null)
-            {
-                throw new ArgumentNullException(nameof(bayPositionControl));
-            }
-
-            if (cellControlDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(cellControlDataLayer));
-            }
-
-            if (setupStatusProvider is null)
-            {
-                throw new ArgumentNullException(nameof(setupStatusProvider));
-            }
-
-            if (weightControl is null)
-            {
-                throw new ArgumentNullException(nameof(weightControl));
-            }
-
-            if (machineConfigurationProvider is null)
-            {
-                throw new ArgumentNullException(nameof(machineConfigurationProvider));
-            }
-
-            if (sensorsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(sensorsProvider));
-            }
-
-            if (verticalManualMovementsDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
-            }
-
-            if (loadingUnitsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(loadingUnitsProvider));
-            }
-
-            this.dataContext = dataContext;
-            this.panelControlDataLayer = panelControlDataLayer;
-            this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer;
-            this.horizontalMovementShorterProfileDataLayer = horizontalMovementShorterProfileDataLayer;
-            this.horizontalMovementLongerProfileDataLayer = horizontalMovementLongerProfileDataLayer;
-            this.horizontalAxisDataLayer = horizontalAxisDataLayer;
-            this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer;
-            this.offsetCalibrationDataLayer = offsetCalibrationDataLayer;
-            this.verticalAxisDataLayer = verticalAxisDataLayer;
-            this.bayPositionControl = bayPositionControl;
-            this.cellControlDataLayer = cellControlDataLayer;
-            this.setupStatusProvider = setupStatusProvider;
-            this.weightControl = weightControl;
-            this.machineConfigurationProvider = machineConfigurationProvider;
-            this.sensorsProvider = sensorsProvider;
-            this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer;
-            this.loadingUnitsProvider = loadingUnitsProvider;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
+            this.panelControlDataLayer = panelControlDataLayer ?? throw new ArgumentNullException(nameof(panelControlDataLayer));
+            this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer ?? throw new ArgumentNullException(nameof(resolutionCalibrationDataLayer));
+            this.offsetCalibrationDataLayer = offsetCalibrationDataLayer ?? throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
+            this.bayPositionControl = bayPositionControl ?? throw new ArgumentNullException(nameof(bayPositionControl));
+            this.cellControlDataLayer = cellControlDataLayer ?? throw new ArgumentNullException(nameof(cellControlDataLayer));
+            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
+            this.weightControl = weightControl ?? throw new ArgumentNullException(nameof(weightControl));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
 
         #endregion
 
         #region Methods
 
-        public decimal? GetHorizontalPosition(BayNumber requestingBay)
+        public double? GetHorizontalPosition(BayNumber requestingBay)
         {
             var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
 
-            void publishAction() => this.PublishCommand(
-                messageData,
-                "Request Horizontal position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition,
-                requestingBay,
-                BayNumber.ElevatorBay);
+            void PublishAction()
+            {
+                this.PublishCommand(
+                    messageData,
+                    "Request Horizontal position",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.RequestPosition,
+                    requestingBay,
+                    BayNumber.ElevatorBay);
+            }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             return notifyData.CurrentPosition ?? 0;
         }
 
-        public decimal GetVerticalPosition(BayNumber bayNumber)
+        public double GetVerticalPosition(BayNumber bayNumber)
         {
             var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
 
-            void publishAction() => this.PublishCommand(
-                messageData,
-                "Request vertical position",
-                MessageActor.FiniteStateMachines,
-                MessageType.RequestPosition,
-                bayNumber,
-                BayNumber.ElevatorBay);
+            void PublishAction()
+            {
+                this.PublishCommand(
+                    messageData,
+                    "Request vertical position",
+                    MessageActor.FiniteStateMachines,
+                    MessageType.RequestPosition,
+                    bayNumber,
+                    BayNumber.ElevatorBay);
+            }
 
             var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
                 MessageType.Positioning,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.OperationExecuting,
-                publishAction);
+                PublishAction);
 
             return notifyData.CurrentPosition ?? 0;
         }
@@ -239,7 +149,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     "Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
             }
 
-            var zeroSensor = this.machineConfigurationProvider.IsOneKMachine()
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
@@ -248,53 +158,22 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            // execute command
             var position = this.GetHorizontalPosition(requestingBay).Value;
 
+            var profileType = SelectProfileType(direction, isStartedOnBoard);
+
+            var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+
             // if direction is Forwards height increments, else is decremented
-
-            // the total length is splitted in two unequal distances
-            var isLongerDistance =
-                (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards)
-                ||
-                (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
-
-            decimal[] speed =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0SpeedV1Longer : this.horizontalMovementShorterProfileDataLayer.P0SpeedV1Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1SpeedV2Longer : this.horizontalMovementShorterProfileDataLayer.P1SpeedV2Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2SpeedV3Longer : this.horizontalMovementShorterProfileDataLayer.P2SpeedV3Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3SpeedV4Longer : this.horizontalMovementShorterProfileDataLayer.P3SpeedV4Shorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4SpeedV5Longer : this.horizontalMovementShorterProfileDataLayer.P4SpeedV5Shorter
-            };
-
-            decimal[] acceleration =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3AccelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4AccelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4AccelerationShorter
-            };
-
-            decimal[] deceleration =
-            {
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P0DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P0DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P1DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P2DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P3DecelerationShorter,
-                isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4DecelerationLonger : this.horizontalMovementShorterProfileDataLayer.P4DecelerationShorter
-            };
-
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
-            decimal[] switchPosition =
-            {
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P1QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P1QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P2QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P2QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P3QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P3QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P4QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P4QuoteShorter) * directionMultiplier,
-                position + (isLongerDistance ? this.horizontalMovementLongerProfileDataLayer.P5QuoteLonger : this.horizontalMovementShorterProfileDataLayer.P5QuoteShorter) * directionMultiplier
-            };
+
+            var speed = profileSteps.Select(s => s.Speed).ToArray();
+            var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
+            var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
+            var switchPosition = profileSteps.Select(s => position + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
 
@@ -327,15 +206,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var setupStatus = this.setupStatusProvider.Get();
 
             var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
-                : this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
+                ? (double)this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
+                : (double)this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            decimal[] speed = { this.horizontalAxisDataLayer.MaxEmptySpeedHA * this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
-            decimal[] acceleration = { this.horizontalAxisDataLayer.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxisDataLayer.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed * (double)this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -361,10 +242,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
+        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
         {
-            var lowerBound = Math.Max(this.verticalAxisDataLayer.LowerBound, this.verticalAxisDataLayer.Offset);
-            var upperBound = this.verticalAxisDataLayer.UpperBound;
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
+            var upperBound = verticalAxis.UpperBound;
 
             if (targetPosition < lowerBound || targetPosition > upperBound)
             {
@@ -382,10 +264,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             var feedRate = this.GetFeedRate(feedRateCategory);
 
-            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * feedRate };
-            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -413,35 +297,40 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber)
         {
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
 
-            decimal feedRate;
-            decimal targetPosition;
+            double feedRate;
+            double targetPosition;
 
-            //INFO Absolute movement using the min and max reachable positions for limits
+            // INFO Absolute movement using the min and max reachable positions for limits
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (homingDone)
             {
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                 movementType = MovementType.Absolute;
 
                 targetPosition = direction == VerticalMovementDirection.Up
-                    ? this.verticalAxisDataLayer.UpperBound
-                    : this.verticalAxisDataLayer.LowerBound;
+                    ? verticalAxis.UpperBound
+                    : verticalAxis.LowerBound;
             }
-            else //INFO Before homing relative movements step by step
+
+            // INFO Before homing relative movements step by step
+            else
             {
-                feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
+                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
 
                 targetPosition = direction == VerticalMovementDirection.Up
-                    ? this.verticalManualMovementsDataLayer.PositiveTargetDirection
-                    : -this.verticalManualMovementsDataLayer.NegativeTargetDirection;
+                    ? (double)this.verticalManualMovementsDataLayer.PositiveTargetDirection
+                    : (double)-this.verticalManualMovementsDataLayer.NegativeTargetDirection;
             }
 
-            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * feedRate };
-            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -467,7 +356,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(decimal distance, BayNumber bayNumber)
+        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, double feedRate = 1)
         {
             if (distance == 0)
             {
@@ -482,10 +371,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * this.verticalManualMovementsDataLayer.FeedRateAfterZero };
-            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed * feedRate };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var direction = distance > 0
+                ? HorizontalMovementDirection.Forwards
+                : HorizontalMovementDirection.Backwards;
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -500,7 +395,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 0,
                 0,
                 switchPosition,
-                HorizontalMovementDirection.Forwards);
+                direction);
 
             this.PublishCommand(
                 messageData,
@@ -511,17 +406,77 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void RunInMotionCurrentSampling(decimal displacement, decimal netWeight, BayNumber requestingBay)
+        public void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber bayNumber)
         {
-            throw new NotImplementedException();
+            if (totalTestCycleCount <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive,
+                    nameof(totalTestCycleCount));
+            }
+
+            if (upperBoundPosition <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive,
+                    nameof(upperBoundPosition));
+            }
+
+            if (upperBoundPosition <= lowerBoundPosition)
+            {
+                throw new ArgumentOutOfRangeException(
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition,
+                    nameof(lowerBoundPosition));
+            }
+
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+
+            if (upperBoundPosition > verticalAxis.UpperBound)
+            {
+                throw new ArgumentOutOfRangeException(
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange,
+                    nameof(upperBoundPosition));
+            }
+
+            if (lowerBoundPosition < verticalAxis.LowerBound)
+            {
+                throw new ArgumentOutOfRangeException(
+                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange,
+                    nameof(lowerBoundPosition));
+            }
+
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var data = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.BeltBurnishing,
+                upperBoundPosition,
+                speed,
+                acceleration,
+                deceleration,
+                totalTestCycleCount,
+                lowerBoundPosition,
+                upperBoundPosition,
+                delayStart,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.PublishCommand(
+                data,
+                "Execute Belt Burnishing Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.ElevatorBay);
         }
 
-        public void RunInPlaceCurrentSampling(TimeSpan inPlaceSamplingDuration, decimal netWeight, BayNumber requestingBay)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RunTorqueCurrentSampling(decimal displacement, decimal netWeight, int? loadingUnitId, BayNumber requestingBay)
+        public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
             if (displacement <= 0)
             {
@@ -536,10 +491,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            decimal[] speed = { this.verticalAxisDataLayer.MaxEmptySpeed * this.verticalManualMovementsDataLayer.FeedRateAfterZero };
-            decimal[] acceleration = { this.verticalAxisDataLayer.MaxEmptyAcceleration };
-            decimal[] deceleration = { this.verticalAxisDataLayer.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            double[] speed = { movementParameters.Speed * (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero };
+            double[] acceleration = { movementParameters.Acceleration };
+            double[] deceleration = { movementParameters.Deceleration };
+            double[] switchPosition = { 0 };
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -557,14 +514,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 HorizontalMovementDirection.Forwards)
             {
                 LoadedNetWeight = netWeight,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
 
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
-                MessageType.TorqueCurrentSampling,
+                MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
         }
@@ -581,73 +538,115 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void UpdateResolution(decimal newResolution)
+        private static MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool isStartedOnBoard)
         {
-            if (newResolution <= 0)
+            // the total length is splitted in two unequal distances
+            var isLongerDistance =
+                (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards)
+                ||
+                (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
+
+            if (isLongerDistance && isStartedOnBoard)
             {
-                throw new ArgumentOutOfRangeException(nameof(newResolution));
+                return MovementProfileType.LongDeposit;
             }
-
-            this.verticalAxisDataLayer.Resolution = newResolution;
-
-            this.setupStatusProvider.CompleteVerticalResolution();
+            else if (isLongerDistance && !isStartedOnBoard)
+            {
+                return MovementProfileType.LongPickup;
+            }
+            else if (!isLongerDistance && isStartedOnBoard)
+            {
+                return MovementProfileType.ShortDeposit;
+            }
+            else
+            {
+                return MovementProfileType.ShortPickup;
+            }
         }
 
-        private decimal GetFeedRate(FeedRateCategory feedRateCategory)
+        private double GetFeedRate(FeedRateCategory feedRateCategory)
         {
-            decimal feedRate;
+            double feedRate;
             switch (feedRateCategory)
             {
-                case FeedRateCategory.VerticalManualMovements:
-                    feedRate = this.verticalManualMovementsDataLayer.FeedRateVM;
+                case DataModels.FeedRateCategory.VerticalManualMovements:
+                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
                     break;
 
-                case FeedRateCategory.VerticalManualMovementsAfterZero:
-                    feedRate = this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                case DataModels.FeedRateCategory.VerticalManualMovementsAfterZero:
+                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
                     break;
 
-                case FeedRateCategory.HorizontalManualMovements:
-                    feedRate = this.horizontalManualMovementsDataLayer.FeedRateHM;
+                case DataModels.FeedRateCategory.HorizontalManualMovements:
+                    feedRate = (double)this.horizontalManualMovementsDataLayer.FeedRateHM;
                     break;
 
-                case FeedRateCategory.VerticalResolutionCalibration:
-                    feedRate = this.resolutionCalibrationDataLayer.FeedRate;
+                case DataModels.FeedRateCategory.VerticalResolutionCalibration:
+                    feedRate = (double)this.resolutionCalibrationDataLayer.FeedRate;
                     break;
 
-                case FeedRateCategory.VerticalOffsetCalibration:
-                    feedRate = this.offsetCalibrationDataLayer.FeedRateOC;
+                case DataModels.FeedRateCategory.VerticalOffsetCalibration:
+                    feedRate = (double)this.offsetCalibrationDataLayer.FeedRateOC;
                     break;
 
-                case FeedRateCategory.CellHeightCheck:
-                    feedRate = this.cellControlDataLayer.FeedRateCC;
+                case DataModels.FeedRateCategory.CellHeightCheck:
+                    feedRate = (double)this.cellControlDataLayer.FeedRateCC;
                     break;
 
-                case FeedRateCategory.PanelHeightCheck:
-                    feedRate = this.panelControlDataLayer.FeedRatePC;
+                case DataModels.FeedRateCategory.PanelHeightCheck:
+                    feedRate = (double)this.panelControlDataLayer.FeedRatePC;
                     break;
 
-                case FeedRateCategory.LoadingUnitWeight:
-                    feedRate = this.weightControl.FeedRateWC;
+                case DataModels.FeedRateCategory.LoadingUnitWeight:
+                    feedRate = (double)this.weightControl.FeedRateWC;
                     break;
 
-                case FeedRateCategory.BayHeight:
-                    feedRate = this.bayPositionControl.FeedRateBP;
+                case DataModels.FeedRateCategory.BayHeight:
+                    feedRate = (double)this.bayPositionControl.FeedRateBP;
                     break;
 
-                case FeedRateCategory.LoadFirstDrawer:
-                    throw new NotImplementedException(nameof(FeedRateCategory.LoadFirstDrawer));
+                case DataModels.FeedRateCategory.LoadFirstDrawer:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.LoadFirstDrawer));
 
-                case FeedRateCategory.ShutterManualMovements:
-                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterManualMovements));
+                case DataModels.FeedRateCategory.ShutterManualMovements:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterManualMovements));
 
-                case FeedRateCategory.ShutterHeightCheck:
-                    throw new NotImplementedException(nameof(FeedRateCategory.ShutterHeightCheck));
+                case DataModels.FeedRateCategory.ShutterHeightCheck:
+                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterHeightCheck));
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(feedRateCategory));
             }
 
             return feedRate;
+        }
+
+        private MovementParameters ScaleMovementsByWeight(Orientation orientation)
+        {
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+
+            var axis = orientation == Orientation.Horizontal
+                ? this.elevatorDataProvider.GetHorizontalAxis()
+                : this.elevatorDataProvider.GetVerticalAxis();
+
+            if (loadingUnit is null)
+            {
+                return axis.EmptyLoadMovement;
+            }
+
+            var maximumLoadMovement = axis.MaximumLoadMovement;
+            var emptyLoadMovement = axis.EmptyLoadMovement;
+
+            var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
+
+            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetMaximumLoadOnBoard();
+
+            return new MovementParameters
+            {
+                Speed = emptyLoadMovement.Speed + ((maximumLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor),
+                Acceleration = emptyLoadMovement.Acceleration + ((maximumLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = emptyLoadMovement.Deceleration + ((maximumLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor),
+            };
         }
 
         #endregion

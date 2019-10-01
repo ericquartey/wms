@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
 {
     public class PowerEnableResetFaultState : StateBase
     {
-
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -45,8 +44,6 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -105,7 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable
                 foreach (var configuredBay in this.machineData.ConfiguredBays)
                 {
                     var newCommandMessage = new CommandMessage(commandMessage);
-                    newCommandMessage.TargetBay = configuredBay.Index;
+                    newCommandMessage.TargetBay = configuredBay.Number;
 
                     this.ParentStateMachine.PublishCommandMessage(newCommandMessage);
                 }

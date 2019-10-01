@@ -11,9 +11,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
     {
         #region Fields
 
-        private const string CONNECTION_STRING_NAME = "AutomationService";
+        private const string ConnectionStringName = "AutomationService";
 
-        private const string DEFAULT_APPLICATION_SETTINGS_FILE = "appsettings.json";
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
 
         #endregion
 
@@ -35,11 +35,19 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<Carousel> Carousels { get; set; }
+
         public DbSet<CellPanel> CellPanels { get; set; }
 
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
+        public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
+
+        public DbSet<Elevator> Elevators { get; set; }
+
+        public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
 
         public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
@@ -47,13 +55,21 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
 
-        public DbSet<FreeBlock> FreeBlocks { get; set; }
+        public DbSet<Inverter> Inverters { get; set; }
+
+        public DbSet<IoDevice> IoDevices { get; set; }
 
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
         public DbSet<LogEntry> LogEntries { get; set; }
 
+        public DbSet<Machine> Machines { get; set; }
+
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
+
+        public DbSet<MovementParameters> MovementParameters { get; set; }
+
+        public DbSet<MovementProfile> MovementProfiles { get; set; }
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 
@@ -83,14 +99,14 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
                 .Build();
 
-            var connectionString = configurationBuilder.GetConnectionString(CONNECTION_STRING_NAME);
+            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException($"Unable to locate the connection string '{CONNECTION_STRING_NAME}'.");
+                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
             optionsBuilder.UseSqlite(connectionString);
@@ -103,20 +119,25 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new BaysConfiguration());
-            modelBuilder.ApplyConfiguration(new PanelsConfiguration());
-            modelBuilder.ApplyConfiguration(new CellsConfiguration());
-            modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new TorqueCurrentSampleConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-            modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-            modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
-            modelBuilder.ApplyConfiguration(new SetupStatusConfiguration());
-            modelBuilder.ApplyConfiguration(new TorqueCurrentMeasurementSessionConfiguration());
-            modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            modelBuilder
+                .ApplyConfiguration(new BaysConfiguration())
+                .ApplyConfiguration(new PanelsConfiguration())
+                .ApplyConfiguration(new CellsConfiguration())
+                .ApplyConfiguration(new ConfigurationValuesConfiguration())
+                .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
+                .ApplyConfiguration(new ErrorDefinitionConfiguration())
+                .ApplyConfiguration(new ErrorConfiguration())
+                .ApplyConfiguration(new ErrorStatisticConfiguration())
+                .ApplyConfiguration(new InvertersConfiguration())
+                .ApplyConfiguration(new IoDevicesConfiguration())
+                .ApplyConfiguration(new LoadingUnitsConfiguration())
+                .ApplyConfiguration(new MachineStatisticsConfiguration())
+                .ApplyConfiguration(new MovementProfilesConfiguration())
+                .ApplyConfiguration(new ServicingInfoConfiguration())
+                .ApplyConfiguration(new SetupStatusConfiguration())
+                .ApplyConfiguration(new ShuttersConfiguration())
+                .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
+                .ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

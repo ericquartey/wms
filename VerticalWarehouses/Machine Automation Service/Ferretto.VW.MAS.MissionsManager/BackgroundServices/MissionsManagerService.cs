@@ -18,7 +18,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService : AutomationBackgroundService
     {
-
         #region Fields
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
@@ -65,8 +64,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         }
 
         #endregion
-
-
 
         #region Methods
 

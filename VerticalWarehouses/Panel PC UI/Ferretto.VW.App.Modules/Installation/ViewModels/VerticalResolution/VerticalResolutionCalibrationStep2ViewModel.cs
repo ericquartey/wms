@@ -16,11 +16,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private decimal? initialPosition;
+        private double? initialPosition;
 
-        private decimal? inputFinalPosition;
+        private double? inputFinalPosition;
 
-        private decimal? inputMeasuredInitialPosition;
+        private double? inputMeasuredInitialPosition;
 
         private bool isOperationCompleted;
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
               this[nameof(this.InputFinalPosition)],
               this[nameof(this.InputMeasuredInitialPosition)]);
 
-        public decimal? InitialPosition
+        public double? InitialPosition
         {
             get => this.initialPosition;
             set
@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputFinalPosition
+        public double? InputFinalPosition
         {
             get => this.inputFinalPosition;
             set
@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputMeasuredInitialPosition
+        public double? InputMeasuredInitialPosition
         {
             get => this.inputMeasuredInitialPosition;
             set

@@ -4,11 +4,14 @@ using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
@@ -24,13 +27,17 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="configurationFilePath">Configuration parameters to load</param>
         private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
-            var dataContext = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<DataLayerContext>();
+            var dataContext = this.serviceScopeFactory
+                .CreateScope()
+                .ServiceProvider
+                .GetRequiredService<DataLayerContext>();
+
             if (dataContext.ConfigurationValues.Any())
             {
                 return;
             }
 
-            this.Logger.LogInformation($"First run: loading machine configration from external file '{configurationFilePath}' ...");
+            this.Logger.LogInformation($"First run: loading machine configration from external JSON file ...");
 
             string fileContents = null;
             using (var streamReader = new StreamReader(configurationFilePath))
@@ -40,8 +47,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var jsonObject = JObject.Parse(fileContents);
 
+            var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
+
+            jsonObject.Validate(schema);
+
             foreach (var jsonCategory in jsonObject)
             {
+                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
+                {
+                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    settings.Converters.Add(new IPAddressConverter());
+
+                    var machine = Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString(), settings);
+
+                    dataContext.Machines.Add(machine);
+                    dataContext.SaveChanges();
+
+                    continue;
+                }
+                else if (jsonCategory.Key == "$schema")
+                {
+                    continue;
+                }
+
                 if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
                 {
                     throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
@@ -51,66 +79,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     switch (jsonElementCategory)
                     {
-                        case ConfigurationCategory.GeneralInfo:
-                            if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.SetupNetwork:
-                            if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.VerticalAxis:
-                            if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalAxis:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalMovementLongerProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementLongerProfile horizontalMovementLongerProfileData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementLongerProfileData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalMovementShorterProfile:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementShorterProfile horizontalMovementShorterProfileData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementShorterProfileData, jsonData.Value);
-
-                            break;
-
                         case ConfigurationCategory.VerticalManualMovements:
                             if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
                             {
@@ -283,8 +251,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             &&
                             (stringValue.Count(c => c == ':') >= 2
                             ||
-                            stringValue.Count(c => c == '.') == 3)
-                            )
+                            stringValue.Count(c => c == '.') == 3))
                         {
                             this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
                         }
@@ -300,7 +267,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
-                //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                // TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
                 this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty));
             }
         }

@@ -2,11 +2,9 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class TorqueCurrentSample
+    public sealed class TorqueCurrentSample : DataModel
     {
         #region Properties
-
-        public int Id { get; set; }
 
         public TorqueCurrentMeasurementSession MeasurementSession { get; set; }
 
@@ -16,7 +14,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public DateTime TimeStamp { get; set; }
 
-        public decimal Value { get; set; }
+        public double Value { get; set; }
 
         #endregion
     }

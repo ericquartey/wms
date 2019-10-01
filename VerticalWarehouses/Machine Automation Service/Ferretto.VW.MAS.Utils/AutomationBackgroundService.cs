@@ -8,13 +8,12 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService : BackgroundService
     {
-
         #region Fields
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -58,8 +57,6 @@ namespace Ferretto.VW.MAS.Utils
 
         #endregion
 
-
-
         #region Properties
 
         protected CancellationToken CancellationToken { get; private set; }
@@ -69,8 +66,6 @@ namespace Ferretto.VW.MAS.Utils
         protected ILogger Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 

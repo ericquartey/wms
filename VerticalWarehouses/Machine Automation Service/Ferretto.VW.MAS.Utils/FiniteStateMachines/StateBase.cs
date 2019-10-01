@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class StateBase : IState, IDisposable
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -49,8 +48,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #endregion
 
-
-
         #region Properties
 
         public NotificationMessage ErrorMessage { get; set; }
@@ -60,8 +57,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         protected ILogger<StateBase> Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 

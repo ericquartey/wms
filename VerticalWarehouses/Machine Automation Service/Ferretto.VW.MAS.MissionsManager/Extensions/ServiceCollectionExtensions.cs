@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-
-
         #region Methods
 
         public static IServiceCollection AddMissionsManager(this IServiceCollection services)
