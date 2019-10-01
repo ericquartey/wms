@@ -120,13 +120,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(eventArgs.InstanceId));
             if (mission != null)
             {
-                mission.Dispose();
-
-                mission.MissionMachine.Completed -= this.OnActiveStateMachineCompleted;
 
                 mission.EndMachine();
 
                 this.machineMissions.Remove(mission);
+
+                mission.MissionMachine.Completed -= this.OnActiveStateMachineCompleted;
+
+                mission.Dispose();
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(eventArgs.NotificationMessage);
             }

@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
     internal class PowerEnableStartState : StateBase
     {
+
         #region Fields
 
         private readonly IPowerEnableMachineData machineData;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         }
 
         #endregion
+
+
 
         #region Methods
 
@@ -73,6 +76,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
+            this.machineData.MachineSensorStatus.EnableNotification(this.machineData.Enable);
+
             var commandMessageData = new PowerEnableFieldMessageData(this.machineData.Enable);
 
             //TODO define a procedure to avoid hard coding IoIndex values even if enable/disable machine power is always done through IoDevice1

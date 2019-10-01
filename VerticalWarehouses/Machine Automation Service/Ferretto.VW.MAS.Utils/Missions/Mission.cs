@@ -10,7 +10,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
 {
     public abstract class Mission : IDisposable
     {
-
         #region Fields
 
         protected readonly CancellationTokenSource cancellationTokenSource;
@@ -34,8 +33,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
         }
 
         #endregion
-
-
 
         #region Methods
 

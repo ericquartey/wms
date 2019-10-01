@@ -8,6 +8,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
     public class MachineSensorsStatus : IMachineSensorsStatus
     {
+
         #region Fields
 
         private const int INVERTER_INPUTS = 8;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         private readonly bool isOneKMachine;
 
         private readonly bool[] sensorStatus;
+
+        private bool enableNotificatons;
 
         #endregion
 
@@ -32,6 +35,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
+
+
         #region Events
 
         public event EventHandler<StatusUpdateEventArgs> FaultStateChanged;
@@ -39,6 +44,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
 
         #endregion
+
+
 
         #region Properties
 
@@ -89,7 +96,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
+
+
         #region Methods
+
+        public void EnableNotification(bool enable)
+        {
+            this.enableNotificatons = enable;
+        }
 
         public bool IsDrawerInBayBottom(BayNumber bayNumber)
         {
@@ -170,7 +184,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                     if (requiredUpdate)
                     {
-                        if (ioIndex == 0)
+                        if (ioIndex == 0 && this.enableNotificatons)
                         {
                             if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
                                 newSensorStatus[(int)IOMachineSensors.RunningState])

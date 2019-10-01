@@ -103,6 +103,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     this.activeState?.Enter(this.StartData);
                 }
+
+                // These code lines MUST be the last in the Setter
+                if (this.activeState is IEndState endState && endState.IsCompleted)
+                {
+                    var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    this.RaiseCompleted(eventArgs);
+                }
             }
         }
 
@@ -170,7 +177,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Stop(StopRequestReason reason)
         {
-            this.ActiveState = this.ActiveState.Stop(reason);
+            this.OnStop(reason);
         }
 
         protected abstract bool FilterCommand(CommandMessage command);
@@ -201,6 +208,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.Logger.LogDebug($"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
 
             return this.ActiveState;
+        }
+
+        protected virtual void OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
+        {
+            // do nothing
+        }
+
+        protected virtual void OnStop(StopRequestReason reason)
+        {
+            this.ActiveState = this.ActiveState.Stop(reason);
         }
 
         protected void RaiseCompleted(FiniteStateMachinesEventArgs eventArgs)

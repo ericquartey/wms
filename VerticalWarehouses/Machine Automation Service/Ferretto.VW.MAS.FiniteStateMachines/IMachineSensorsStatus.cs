@@ -5,6 +5,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public interface IMachineSensorsStatus
     {
+
+
         #region Properties
 
         double AxisXPosition { get; set; }
@@ -49,7 +51,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #endregion
 
+
+
         #region Methods
+
+        void EnableNotification(bool enable);
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 

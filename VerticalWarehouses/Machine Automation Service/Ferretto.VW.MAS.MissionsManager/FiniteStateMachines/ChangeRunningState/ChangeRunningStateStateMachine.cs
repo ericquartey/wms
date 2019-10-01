@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         protected override bool FilterCommand(CommandMessage command)
         {
-            return this.machineControlProvider.FilterCommands(command);
+            return command.Type == MessageType.ChangeRunningState;
         }
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -81,17 +81,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             newState = this.ActiveState.NotificationReceived(notificationMessage);
             if (newState is IChangeRunningStateEndState endState)
             {
-                var newMessage = new NotificationMessage(
-                    this.StartData.Data,
-                    this.StartData.Description,
-                    MessageActor.AutomationService,
-                    MessageActor.MissionsManager,
-                    this.StartData.Type,
-                    this.StartData.RequestingBay,
-                    this.StartData.TargetBay,
-                    StopRequestReasonConverter.GetMessageStatusFromReason(endState.StopRequestReason));
-
-                var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = newMessage };
+                var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.ErrorMessage };
                 this.RaiseCompleted(eventArgs);
             }
 

@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.VW.MAS.MissionsManager.Providers;
+using Microsoft.AspNetCore.Http;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -31,40 +32,56 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+
+
         #region Methods
 
         [HttpPost("power-off")]
-        public void PowerOff()
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult PowerOff()
         {
-            this.runningStateProvider.SetRunningState(false, this.BayNumber, MessageActor.AutomationService);
-
-            //var powerEnableMessageData = new PowerEnableMessageData(false);
-
-            //this.PublishCommand(
-            //    powerEnableMessageData,
-            //    "Power Disable Command",
-            //    MessageActor.MissionsManager,
-            //    MessageType.PowerEnable);
+            try
+            {
+                this.runningStateProvider.SetRunningState(false, this.BayNumber, MessageActor.AutomationService);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
         }
 
         [HttpPost("power-on")]
-        public void PowerOn()
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult PowerOn()
         {
-            this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
-
-            //var powerEnableMessageData = new PowerEnableMessageData(true);
-
-            //this.PublishCommand(
-            //    powerEnableMessageData,
-            //    "Power Enable Command",
-            //    MessageActor.MissionsManager,
-            //    MessageType.PowerEnable);
+            try
+            {
+                this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
         }
 
         [HttpPost("stop")]
-        public void Stop()
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Stop()
         {
-            this.runningStateProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            try
+            {
+                this.runningStateProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return this.NegativeResponse(ex);
+            }
         }
 
         #endregion

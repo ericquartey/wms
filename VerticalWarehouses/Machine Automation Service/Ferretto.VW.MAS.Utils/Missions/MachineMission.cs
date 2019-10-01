@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 
 // ReSharper disable ArrangeThisQualifier
@@ -8,7 +6,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
 {
     public class MachineMission : Mission
     {
-
         #region Fields
 
         private bool disposed;
@@ -26,8 +23,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #endregion
 
-
-
         #region Properties
 
         public Guid Id => this.id;
@@ -36,10 +31,9 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #endregion
 
-
-
         #region Methods
 
+        // TODO check if this is actually necessary
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

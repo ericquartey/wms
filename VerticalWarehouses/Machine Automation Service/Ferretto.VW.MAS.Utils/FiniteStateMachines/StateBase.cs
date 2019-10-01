@@ -50,10 +50,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Properties
 
-        public NotificationMessage ErrorMessage { get; set; }
-
-        public StopRequestReason StopRequestReason { get; set; }
-
         protected ILogger<StateBase> Logger { get; }
 
         #endregion
@@ -160,10 +156,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             // derived classes can customize the behaviour of this method
         }
 
-        protected virtual void OnEnter(CommandMessage commandMessage)
-        {
-            // do nothing
-        }
+        protected abstract void OnEnter(CommandMessage commandMessage);
 
         protected virtual void OnExit()
         {
@@ -175,10 +168,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this;
         }
 
-        protected virtual IState OnStop(StopRequestReason reason)
-        {
-            return this;
-        }
+        protected abstract IState OnStop(StopRequestReason reason);
 
         #endregion
     }

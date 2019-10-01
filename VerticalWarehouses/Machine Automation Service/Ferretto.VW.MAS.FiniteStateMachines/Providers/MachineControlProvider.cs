@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             {
                 foreach (var bay in this.baysProvider.GetAll())
                 {
-                    var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Index}";
+                    var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Number}";
                     this.PublishCommand(
                         null,
                         description,
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                         sender,
                         MessageType.InverterFaultReset,
                         requestingBay,
-                        bay.Index);
+                        bay.Number);
                 }
             }
             else
@@ -157,12 +157,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 {
                     this.PublishCommand(
                         messageData,
-                        $"Requesting operation stop from bay {requestingBay} to bay {bay.Index} for reason {messageData.StopReason}",
+                        $"Requesting operation stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
                         MessageActor.FiniteStateMachines,
                         sender,
                         MessageType.Stop,
                         requestingBay,
-                        bay.Index);
+                        bay.Number);
                 }
             }
             else

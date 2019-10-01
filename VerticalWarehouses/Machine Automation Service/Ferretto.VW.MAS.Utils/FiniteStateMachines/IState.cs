@@ -8,16 +8,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
     {
 
 
-        #region Properties
-
-        NotificationMessage ErrorMessage { get; set; }
-
-        StopRequestReason StopRequestReason { get; set; }
-
-        #endregion
-
-
-
         #region Methods
 
         IState CommandReceived(CommandMessage commandMessage);

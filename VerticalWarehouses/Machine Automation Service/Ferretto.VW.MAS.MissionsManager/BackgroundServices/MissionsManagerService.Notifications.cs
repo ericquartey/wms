@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
+
+
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -81,16 +84,14 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 {
                     reason = StopRequestReason.FaultStateChanged;
                 }
-
-                if (message.Type == MessageType.RunningStateChanged && !messageData.CurrentState)
+                else if (message.Type == MessageType.RunningStateChanged && !messageData.CurrentState)
                 {
                     reason = StopRequestReason.RunningStateChanged;
                 }
 
                 if (reason != StopRequestReason.NoReason)
                 {
-
-                    var newMessageData = new ChangeRunningStateMessageData(false, CommandAction.Stop, reason);
+                    var newMessageData = new ChangeRunningStateMessageData(false, CommandAction.Start, reason);
                     var command = new CommandMessage(
                         newMessageData,
                         message.Description,
@@ -129,7 +130,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
                 if (bay != null && bay.CurrentMissionId != null)
                 {
-                    bayProvider.AssignMissionOperation(bay.Index, bay.CurrentMissionId.Value, null);
+                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
 
                     LoggerExtensions.LogDebug(this.Logger, $"Bay#{bay.Number}: operation competed.");
 

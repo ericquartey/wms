@@ -89,8 +89,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
                     case MessageStatus.OperationError:
                         returnValue = this.GetState<IChangeRunningStateEndState>();
-                        returnValue.StopRequestReason = StopRequestReason.Error;
-                        returnValue.ErrorMessage = notification;
+                        ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
+                        ((IEndState)returnValue).ErrorMessage = notification;
                         break;
                 }
 
@@ -99,6 +99,15 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
                     returnValue = this.GetState<IChangeRunningStateResetSecurity>();
                 }
             }
+
+            return returnValue;
+        }
+
+        protected override IState OnStop(StopRequestReason reason)
+        {
+            var returnValue = this.GetState<IChangeRunningStateEndState>();
+
+            ((IEndState)returnValue).StopRequestReason = reason;
 
             return returnValue;
         }
