@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 switch (switchAxisMessageData.AxisToSwitchOn)
                 {
                     case Axis.Horizontal:
-                        if (this.ioDeviceService.GetStatus(this.deviceIndex).CradleMotorOn)
+                        if (this.ioStatus.CradleMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
@@ -48,8 +48,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         }
                         else
                         {
-                            var ioStatus = this.ioDeviceService.GetStatus(this.deviceIndex);
-                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, ioStatus.ElevatorMotorOn, this.ioCommandQueue, ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(
+                                Axis.Horizontal,
+                                this.ioStatus.ElevatorMotorOn,
+                                this.ioCommandQueue,
+                                this.ioStatus,
+                                this.deviceIndex,
+                                this.eventAggregator,
+                                this.logger);
 
                             this.logger.LogDebug("3:Method Start State Machine");
 
@@ -59,7 +65,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         break;
 
                     case Axis.Vertical:
-                        if (this.ioDeviceService.GetStatus(this.deviceIndex).ElevatorMotorOn)
+                        if (this.ioStatus.ElevatorMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
@@ -76,8 +82,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         }
                         else
                         {
-                            var ioStatus = this.ioDeviceService.GetStatus(this.deviceIndex);
-                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, ioStatus.CradleMotorOn, this.ioCommandQueue, ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(
+                                Axis.Vertical,
+                                this.ioStatus.CradleMotorOn,
+                                this.ioCommandQueue,
+                                this.ioStatus,
+                                this.deviceIndex,
+                                this.eventAggregator,
+                                this.logger);
 
                             this.logger.LogDebug("5:Method Start State Machine");
 

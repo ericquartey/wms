@@ -27,7 +27,6 @@ namespace Ferretto.VW.MAS.IODriver.Services
         #region Properties
 
         public IEnumerable<IoStatus> GetStatuses
-
         {
             get
             {
@@ -42,51 +41,21 @@ namespace Ferretto.VW.MAS.IODriver.Services
 
         #region Methods
 
-        public void AddIoStatus(IoIndex index)
+        public IoStatus AddIoStatus(IoIndex index)
         {
             lock (this.syncRoot)
             {
-                this.ioStatuses.Add(index, new IoStatus(index));
-            }
-        }
-
-        public IoStatus GetStatus(IoIndex deviceIndex)
-        {
-            lock (this.syncRoot)
-            {
-                if (this.ioStatuses.TryGetValue(deviceIndex, out var currentStatus))
+                if (this.ioStatuses.ContainsKey(index))
                 {
-                    return currentStatus;
+                    return this.ioStatuses[index];
                 }
+
+                var ioStatus = new IoStatus(index);
+
+                this.ioStatuses.Add(index, ioStatus);
+
+                return ioStatus;
             }
-            return null;
-        }
-
-        public bool UpdateInputStates(bool[] inputData, IoIndex deviceIndex)
-        {
-            lock (this.syncRoot)
-            {
-                if (this.ioStatuses.ContainsKey(deviceIndex))
-                {
-                    return this.ioStatuses[deviceIndex].UpdateInputStates(inputData);
-                }
-            }
-
-            return false;
-        }
-
-        public bool UpdateOutputStates(bool[] outputData, IoIndex deviceIndex)
-        {
-            lock (this.syncRoot)
-            {
-                if (this.ioStatuses.ContainsKey(deviceIndex))
-                {
-                    this.ioStatuses[deviceIndex].UpdateOutputStates(outputData);
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         #endregion

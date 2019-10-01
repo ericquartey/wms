@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}");
                     this.logger.LogError($"Message [{receivedMessage.Type}] will be discarded!");
 
-                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
 
@@ -303,14 +303,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         messageBayBayIndex = scopedBaysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
                     }
-
-                    if (receivedMessage.Source is FieldMessageActor.InverterDriver)
+                    else if (receivedMessage.Source is FieldMessageActor.InverterDriver)
                     {
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
                         messageBayBayIndex = scopedBaysProvider.GetByInverterIndex(messageInverterIndex);
                     }
-
-                    this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
 
                     switch (receivedMessage.Type)
                     {
@@ -326,21 +323,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 var ioIndex = receivedMessage.DeviceIndex;
                                 if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                                 {
-                                    var msgData = new SensorsChangedMessageData();
-                                    msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+                                    var msgData = new SensorsChangedMessageData
+                                    {
+                                        SensorsStates = this.machineSensorsStatus.DisplayedInputs
+                                    };
+
                                     this.logger.LogDebug($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
-                                    var msg = new NotificationMessage(
-                                        msgData,
-                                        "IO sensors status",
-                                        MessageActor.Any,
-                                        MessageActor.FiniteStateMachines,
-                                        MessageType.SensorsChanged,
-                                        messageBayBayIndex,
-                                        messageBayBayIndex,
-                                        MessageStatus.OperationExecuting);
-
-                                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
+                                    this.eventAggregator
+                                        .GetEvent<NotificationEvent>()
+                                        .Publish(
+                                            new NotificationMessage(
+                                                msgData,
+                                                "IO sensors status",
+                                                MessageActor.Any,
+                                                MessageActor.FiniteStateMachines,
+                                                MessageType.SensorsChanged,
+                                                messageBayBayIndex,
+                                                messageBayBayIndex,
+                                                MessageStatus.OperationExecuting));
 
                                     this.forceRemoteIoStatusPublish[ioIndex] = false;
                                 }
@@ -386,7 +387,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                         messageBayBayIndex,
                                         messageBayBayIndex,
                                         MessageStatus.OperationExecuting);
-                                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg1);
+                                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg1);
 
                                     this.forceInverterIoStatusPublish = false;
                                 }
@@ -416,17 +417,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         case FieldMessageType.InverterError:
                             var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
-                            var msg4 = new NotificationMessage(
-                                exceptionMessage,
-                                "Inverter Exception",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.InverterException,
-                                messageBayBayIndex,
-                                messageBayBayIndex,
-                                MessageStatus.OperationError,
-                                ErrorLevel.Critical);
-                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg4);
+                            this.eventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        exceptionMessage,
+                                        "Inverter Exception",
+                                        MessageActor.Any,
+                                        MessageActor.FiniteStateMachines,
+                                        MessageType.InverterException,
+                                        messageBayBayIndex,
+                                        messageBayBayIndex,
+                                        MessageStatus.OperationError,
+                                        ErrorLevel.Critical));
 
                             break;
 
@@ -434,20 +437,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         case FieldMessageType.IoDriverException:
                             var ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
 
-                            var msg5 = new NotificationMessage(
-                                ioExceptionMessage,
-                                "Io Driver Exception",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.IoDriverException,
-                                messageBayBayIndex,
-                                messageBayBayIndex,
-                                MessageStatus.OperationError,
-                                ErrorLevel.Critical);
-                            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg5);
+                            this.eventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        ioExceptionMessage,
+                                        "Io Driver Exception",
+                                        MessageActor.Any,
+                                        MessageActor.FiniteStateMachines,
+                                        MessageType.IoDriverException,
+                                        messageBayBayIndex,
+                                        messageBayBayIndex,
+                                        MessageStatus.OperationError,
+                                        ErrorLevel.Critical));
 
                             break;
                     }
+
+                    this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
                     messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
                 }
                 while (!this.stoppingToken.IsCancellationRequested);
@@ -592,7 +599,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         receivedMessage.Status,
                         receivedMessage.ErrorLevel);
 
-                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
 
                 switch (receivedMessage.Type)
@@ -611,7 +618,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             MessageStatus.NoStatus,
                             (byte)InverterIndex.None);
 
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);
 
                         break;
                 }
@@ -647,7 +654,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
 
             {
@@ -662,7 +669,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
         }
 

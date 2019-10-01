@@ -13,13 +13,7 @@ namespace Ferretto.VW.MAS.IODriver.Interface.Services
 
         #region Methods
 
-        void AddIoStatus(IoIndex index);
-
-        IoStatus GetStatus(IoIndex deviceIndex);
-
-        bool UpdateInputStates(bool[] inputData, IoIndex deviceIndex);
-
-        bool UpdateOutputStates(bool[] outputData, IoIndex deviceIndex);
+        IoStatus AddIoStatus(IoIndex index);
 
         #endregion
     }
