@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug($"Positioning table Quick Stop");
-            this.Inverter.PositionControlWord.QuickStop = false;
-            this.Inverter.PositionControlWord.EnableVoltage = false;
+            this.Inverter.TableTravelControlWord.QuickStop = false;
+            this.Inverter.TableTravelControlWord.EnableVoltage = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(

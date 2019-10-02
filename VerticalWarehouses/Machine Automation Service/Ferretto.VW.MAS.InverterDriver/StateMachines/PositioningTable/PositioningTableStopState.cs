@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug($"Positioning Switch Off Inverter");
-            this.Inverter.PositionControlWord.SwitchOn = false;
+            this.Inverter.TableTravelControlWord.SwitchOn = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
