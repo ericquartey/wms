@@ -234,14 +234,14 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Speed": 500,
+                  "Speed": 200,
                   "Position": 1300,
                   "Number": 3
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Speed": 200,
+                  "Speed": 500,
                   "Position": 1393,
                   "Number": 4
                 }
