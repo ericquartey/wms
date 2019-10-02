@@ -47,14 +47,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             Func<int, TimeSpan> sleepDurationProvider = count =>
             {
-                System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count})");
-                return TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count / 3.0, 2));
+                var timeout = TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count / 3.0, 2));
+
+                System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count}). Retrying in {timeout.TotalSeconds} seconds ...");
+
+                return timeout;
             };
 
             return await Policy
               .Handle<HttpRequestException>()
               .OrResult<HttpResponseMessage>(response => IsTooManyRequests(response) || IsServerError(response))
-              .WaitAndRetryAsync(this.MaximumRetries, sleepDurationProvider)
+               .WaitAndRetryAsync(0, sleepDurationProvider)
               .ExecuteAsync(async () => await base.SendAsync(CopyRequest(request), completionOption, cancellationToken));
         }
 
