@@ -333,7 +333,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                     MessageStatus.OperationExecuting,
                                     (byte)this.deviceIndex);
                                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-                                this.logger.LogDebug($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
+                                this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
 
                                 this.forceIoStatusPublish = false;
                             }

@@ -82,7 +82,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
                 {
+                    // TODO: disable EnableOperation and enable SetParameters
                     this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                    //this.ParentStateMachine.ChangeState(
+                    //    new CalibrateAxisSetParametersState(
+                    //        this.ParentStateMachine,
+                    //        this.axisToCalibrate,
+                    //        (this.axisToCalibrate == Axis.Vertical ? Calibration.FindSensor : Calibration.ResetEncoder),
+                    //        this.InverterStatus,
+                    //        this.Logger));
 
                     var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
                     var notificationMessage = new FieldNotificationMessage(
