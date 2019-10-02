@@ -24,6 +24,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         void UpdateVerticalResolution(decimal newResolution);
 
+        void IncreaseDepositAndPickUpCycleQuantity();
+
+        void ResetDepositAndPickUpCycleQuantity();
+        void SetLoadingUnitOnBoard(int? loadingUnitId);
+
         #endregion
     }
 }

@@ -27,5 +27,7 @@
         LoadFirstDrawer = 18L,
 
         ShutterManualMovements = 19L,
+
+        DepositAndPickUp = 22L,
     }
 }

@@ -18,6 +18,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public partial class DepositAndPickUpTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
+        public enum DepositAndPickUpState
+        {
+            None,
+            GotoBay,
+            Deposit,
+            GotoBayAdjusted,
+            EndLoaded,
+        }
+
         #region Fields
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
@@ -38,13 +47,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineSetupStatusService machineSetupStatusService;
-        private readonly IMachineDepositPickupProcedureService machineDepositPickupProcedureService;
 
-        private int? completedCycles;        
+        private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
+
+        private int? completedCycles;
 
         private int initialCycles;
 
@@ -71,7 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public DepositAndPickUpTestViewModel(
             IEventAggregator eventAggregator,
             IMachineSetupStatusService machineSetupStatusService,
-            IMachineDepositPickupProcedureService machineDepositPickupProcedure,
+            IMachineDepositAndPickupProcedureService machineDepositPickupProcedure,
             IMachineElevatorService machineElevatorService,
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
@@ -119,9 +128,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineElevatorService = machineElevatorService;
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
-
             this.machineSetupStatusService = machineSetupStatusService;
-            this.machineDepositPickupProcedureService = machineDepositPickupProcedure;
+            this.machineDepositAndPickupProcedureService = machineDepositPickupProcedure;
             this.inputDelay = 0;
             this.SelectBayPosition1();
         }
@@ -316,7 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.receivedActionUpdateToken = null;
             }
-    }
+        }
 
         public override async Task OnNavigatedAsync()
         {
@@ -446,7 +454,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsTuningChain = false;
                         this.IsExecutingProcedure = false;
 
-                        await this.machineDepositPickupProcedureService.MarkAsCompletedAsync();
+                        if (this.currentState == DepositAndPickUpState.EndLoaded)
+                        {
+                            await this.machineDepositAndPickupProcedureService.IncreaseCycleQuantityAsync();
+                        }
 
                         break;
                     }
@@ -486,8 +497,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.machineDepositPickupProcedureService.GetParametersAsync();
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+                this.InputRequiredCycles = await this.machineDepositAndPickupProcedureService.GetRequiredCycleQuantityAsync();
 
                 await this.InitializeTotalCycles();
             }
@@ -519,10 +529,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task InitializeTotalCycles()
         {
-            var setupStatus = await this.machineSetupStatusService.GetAsync();
-            // TODO get completed cycles.
-            // this.initialCycles = setupStatus.DepositPickup.CompletedCycles;
-            this.TotalCompletedCycles = this.initialCycles;
+            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.GetCycleQuantityAsync();
         }
 
         private async Task ResetAsync()
@@ -531,7 +538,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineDepositPickupProcedureService.ResetAsync();
+                await this.machineDepositAndPickupProcedureService.ResetAsync();
 
                 await this.GetParameterValuesAsync();
 
@@ -552,8 +559,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.StartMovementAsync(this.direction ? MAS.AutomationService.Contracts.HorizontalMovementDirection.Backwards : MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards, this.embarkedLoadingUnit != null);
-                this.direction = !this.direction;
 
                 if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
                 {
@@ -561,10 +566,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return;
                 }
 
-                this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
-
                 await this.InitializeTotalCycles();
+
+                await this.ExecuteStateAsync();
             }
             catch (Exception ex)
             {
@@ -576,13 +580,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task ExecuteStateAsync()
+        {
+            this.isExecutingProcedure = true;
+
+            do
+            {
+                switch (this.currentState)
+                {
+                    case DepositAndPickUpState.None:
+                        await this.MoveToBayHeightAsync();
+                        break;
+                    case DepositAndPickUpState.GotoBay:
+                        await this.StartMovementAsync();
+                        break;
+                    case DepositAndPickUpState.Deposit:
+                        await this.MoveToBayHeightAsync();
+                        break;
+                    case DepositAndPickUpState.GotoBayAdjusted:
+                        await this.StartMovementAsync();
+                        break;
+                    case DepositAndPickUpState.EndLoaded:
+                        await this.CheckStart();
+                        break;
+                }
+            }
+            while (this.isExecutingProcedure);
+        }
+
         private async Task StopAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineDepositPickupProcedureService.StopAsync();
+                // TODO stop moving
             }
             catch (Exception ex)
             {

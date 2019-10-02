@@ -98,6 +98,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return elevator.LoadingUnit;
         }
 
+        public void SetLoadingUnitOnBoard(int? id)
+        {
+            var elevator = this.dataContext.Elevators
+                .Include(e => e.LoadingUnit)
+                .Single();
+
+            elevator.LoadingUnitId = id;
+
+            this.dataContext.SaveChanges();
+        }
+
+
         public double GetMaximumLoadOnBoard()
         {
             var elevator = this.dataContext.Elevators
@@ -132,6 +144,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.setupStatusProvider.CompleteVerticalResolution();
         }
+
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            horizontalAxis.TotalCycles++;
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            horizontalAxis.TotalCycles = 0;
+
+            this.dataContext.SaveChanges();
+        }
+
 
         /// <summary>
         /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.

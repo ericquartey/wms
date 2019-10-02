@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
@@ -44,6 +43,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IWeightControlDataLayer weightControl;
 
+        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
+
         #endregion
 
         #region Constructors
@@ -63,7 +64,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IMachineProvider machineProvider,
             ISensorsProvider sensorsProvider,
             IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
-            ILoadingUnitsProvider loadingUnitsProvider)
+            ILoadingUnitsProvider loadingUnitsProvider,
+            IDepositAndPickUpDataLayer depositAndPickUpDataLayer)
             : base(eventAggregator)
         {
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -80,6 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.depositAndPickUpDataLayer = depositAndPickUpDataLayer ?? throw new ArgumentNullException(nameof(depositAndPickUpDataLayer));
         }
 
         #endregion
@@ -134,8 +137,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return notifyData.CurrentPosition ?? 0;
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
         {
+            this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
+
+            if (loadingUnitId.HasValue)
+            {
+                this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight);
+            }
+
             var sensors = this.sensorsProvider.GetAll(requestingBay);
 
             var isLoadingUnitOnBoard =
@@ -562,6 +572,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 return MovementProfileType.ShortPickup;
             }
+        }
+
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
+        }
+
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            return this.depositAndPickUpDataLayer.CycleQuantity;
+        }
+
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
         }
 
         private double GetFeedRate(FeedRateCategory feedRateCategory)

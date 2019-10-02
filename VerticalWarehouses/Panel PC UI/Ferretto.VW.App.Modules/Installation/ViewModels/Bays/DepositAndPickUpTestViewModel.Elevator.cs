@@ -7,15 +7,15 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     public partial class DepositAndPickUpTestViewModel
-
     {
+
         #region Fields
 
         private readonly IMachineElevatorService machineElevatorService;
 
-        private decimal? elevatorHorizontalPosition;
+        private double? elevatorHorizontalPosition;
 
-        private decimal? elevatorVerticalPosition;
+        private double? elevatorVerticalPosition;
 
         private LoadingUnit embarkedLoadingUnit;
 
@@ -29,19 +29,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand tuningChainCommand;
 
-        private bool direction;
+        private DepositAndPickUpState currentState;
 
         #endregion
 
         #region Properties
 
-        public decimal? ElevatorHorizontalPosition
+        public double? ElevatorHorizontalPosition
         {
             get => this.elevatorHorizontalPosition;
             protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
-        public decimal? ElevatorVerticalPosition
+        public double? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
             protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
@@ -124,25 +124,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        private bool CanDisembark()
-        {
-            return
-
-                // !this.IsWaitingForResponse
-                // &&
-                !this.IsElevatorMoving
-                &&
-                this.Sensors.LuPresentInMachineSideBay1
-                &&
-                this.Sensors.LuPresentInOperatorSideBay1;
-        }
-
         private bool CanEmbark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
                 !this.IsElevatorMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
@@ -191,12 +175,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StartMovementAsync(HorizontalMovementDirection direction, bool isOnBoard)
+        private async Task StartMovementAsync()
         {
             try
             {
-                this.ShowNotification(string.Empty);
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard);
+                if ((this.currentState == DepositAndPickUpState.GotoBay ||
+                     this.currentState == DepositAndPickUpState.GotoBayAdjusted) == false)
+                {
+                    this.ShowNotification($"Stato dovrebbe essere in modalità {DepositAndPickUpState.GotoBay} o {DepositAndPickUpState.GotoBayAdjusted}");
+                    return;
+                }
+
+                await this.machineElevatorService.MoveHorizontalAutoAsync(this.GetDirection(), this.embarkedLoadingUnit != null);
+
+                if (this.currentState == DepositAndPickUpState.GotoBay)
+                {
+                    this.currentState = DepositAndPickUpState.Deposit;
+                }
+                else
+                {
+                    this.currentState = DepositAndPickUpState.EndLoaded;
+                }
             }
             catch (System.Exception ex)
             {
@@ -204,9 +203,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private HorizontalMovementDirection GetDirection()
+        {
+            if (this.currentState == DepositAndPickUpState.Deposit)
+            {
+                return (this.bayManagerService.Bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+            }
+            else
+            {
+                return (this.bayManagerService.Bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+            }
+        }
+
         private async Task TuningBay()
         {
             await Task.Delay(1);
+        }
+
+        public async Task CheckStart()
+        {
+            await Task.Delay(this.inputDelay * 1000);
         }
 
         #endregion
