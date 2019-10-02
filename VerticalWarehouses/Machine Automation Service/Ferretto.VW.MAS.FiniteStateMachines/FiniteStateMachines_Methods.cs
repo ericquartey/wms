@@ -33,15 +33,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             switch (condition)
             {
                 case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.IsMachineInEmergencyStateBay1;
+                    result = this.machineResourcesProvider.IsMachineInEmergencyStateBay1;
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
+                    result = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1;
+                    result = this.machineResourcesProvider.IsDrawerPartiallyOnCradleBay1;
                     break;
 
                     //TEMP Add here other condition getters
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.machineProvider.IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         this.setupStatusProvider,
-                        this.machineSensorsStatus,
+                        this.machineResourcesProvider,
                         data,
                         this.eventAggregator,
                         this.logger,
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.machineProvider.IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
-                        this.machineSensorsStatus,
+                        this.machineResourcesProvider,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
@@ -266,13 +266,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 else
                 {
                     data.IsOneKMachine = this.machineProvider.IsOneTonMachine();
-                    data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
+                    data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                     currentStateMachine = new PositioningStateMachine(
                         message.RequestingBay,
                         targetBay,
                         data,
-                        this.machineSensorsStatus,
+                        this.machineResourcesProvider,
                         this.eventAggregator,
                         this.logger,
                         this.baysProvider,
@@ -325,13 +325,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.machineSensorsStatus.IsMachineInRunningState && !data.Enable ||
-                    !this.machineSensorsStatus.IsMachineInRunningState && data.Enable)
+                if (this.machineResourcesProvider.IsMachineInRunningState && !data.Enable ||
+                    !this.machineResourcesProvider.IsMachineInRunningState && data.Enable)
                 {
                     message.TargetBay = BayNumber.BayOne;
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
-                        this.machineSensorsStatus,
+                        this.machineResourcesProvider,
                         this.baysProvider,
                         this.eventAggregator,
                         this.logger,
@@ -352,7 +352,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
-                    this.logger.LogDebug($"Machine is already in the requested state [Actual State: {this.machineSensorsStatus.IsMachineInRunningState}] [Requested State: {data.Enable}]");
+                    this.logger.LogDebug($"Machine is already in the requested state [Actual State: {this.machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Completed",
@@ -364,53 +364,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationEnd);
 
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                }
-            }
-        }
-
-        private void ProcessRequestPositionMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IRequestPositionMessageData data)
-            {
-                if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
-                {
-                    var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
-                        ? this.machineSensorsStatus.AxisXPosition
-                        : this.machineSensorsStatus.AxisYPosition;
-
-                    var msg = new NotificationMessage(
-                        msgData,
-                        "Request Position",
-                        MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
-                        MessageType.Positioning,
-                        message.RequestingBay,
-                        message.RequestingBay,
-                        MessageStatus.OperationExecuting);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-                }
-                else if (message.RequestingBay > 0)
-                {
-                    var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus(
-                        this.baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index);
-
-                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
-                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
-                    notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
-                    var msg = new NotificationMessage(
-                        notificationMessageData,
-                        $"Request Position",
-                        MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
-                        MessageType.ShutterPositioning,
-                        message.RequestingBay,
-                        message.RequestingBay,
-                        MessageStatus.OperationExecuting);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                 }
             }
         }
@@ -515,7 +468,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         message.RequestingBay,
                         message.TargetBay,
                         this.baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
-                        this.machineSensorsStatus,
+                        this.machineResourcesProvider,
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);

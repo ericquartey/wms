@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
             BayNumber requestingBay,
             BayNumber targetBay,
             InverterIndex inverterIndex,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.InverterIndex = inverterIndex;
-            this.MachineSensorsStatus = machineSensorsStatus;
+            this.MachineSensorsStatus = machineResourcesProvider;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning.Models
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public IMachineSensorsStatus MachineSensorsStatus { get; }
+        public IMachineResourcesProvider MachineSensorsStatus { get; }
 
         public IShutterPositioningMessageData PositioningMessageData { get; }
 

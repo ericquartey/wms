@@ -477,6 +477,12 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             foreach (var value in System.Enum.GetValues(typeof(IOMachineSensors)))
             {
                 var propertyInfo = this.GetType().GetProperty(System.Enum.GetName(typeof(IOMachineSensors), value));
+
+                if (propertyInfo is null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Unable to decode {value}");
+                }
+
                 if (propertyInfo != null && (int)value < sensorStates.Length)
                 {
                     propertyInfo.SetValue(this, sensorStates[(int)value]);

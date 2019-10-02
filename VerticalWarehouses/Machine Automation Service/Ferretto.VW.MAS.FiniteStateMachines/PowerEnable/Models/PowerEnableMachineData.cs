@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
             bool enable,
             BayNumber requestingBay,
             BayNumber targetBay,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
             this.ServiceScopeFactory = serviceScopeFactory;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
-            this.MachineSensorStatus = machineSensorsStatus;
+            this.MachineSensorStatus = machineResourcesProvider;
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models
 
         public ILogger<FiniteStateMachines> Logger { get; }
 
-        public IMachineSensorsStatus MachineSensorStatus { get; }
+        public IMachineResourcesProvider MachineSensorStatus { get; }
 
         public BayNumber RequestingBay { get; set; }
 

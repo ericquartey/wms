@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const short COMTOUT_DEFAULT = 20000;
 
-        private const byte DEBOUNCE_INPUT_DEFAULT = 0x23; // 35 ms
+        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32; // 50 ms
 
         private const byte RELEASE_FW_10 = 0x10;
 
