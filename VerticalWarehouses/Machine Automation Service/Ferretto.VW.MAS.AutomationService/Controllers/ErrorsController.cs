@@ -72,16 +72,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Error> Resolve(int id)
         {
-            try
-            {
-                var resolvedError = this.errorsProvider.Resolve(id);
+            var resolvedError = this.errorsProvider.Resolve(id);
 
-                return this.Ok(resolvedError);
-            }
-            catch (System.Exception ex)
-            {
-                return this.NegativeResponse<Error>(ex);
-            }
+            return this.Ok(resolvedError);
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
