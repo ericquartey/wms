@@ -37,13 +37,15 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly bool refreshTargetTable = true;
+        private readonly bool refreshTargetTable = false;
 
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
 
         private readonly object syncStatusTimer = new object();
+
+        private IInverterPositioningFieldMessageData dataOld;
 
         private IPAddress inverterAddress;
 
@@ -148,26 +150,25 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.StatusWordParam)
             {
-                if (this.inverterService.TryGetValue(inverterIndex, out var inverterStatus))
-                {
-                    if (inverterStatus.CommonStatusWord.Value != currentMessage.UShortPayload)
-                    {
-                        var msgNotification = new FieldNotificationMessage(
-                            new InverterStatusWordFieldMessageData(currentMessage.UShortPayload),
-                            "Inverter Status Word update",
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageType.InverterStatusWord,
-                            MessageStatus.OperationExecuting,
-                            (byte)inverterIndex);
+                var inverter = this.invertersProvider.GetByIndex(inverterIndex);
 
-                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                    }
+                if (inverter.CommonStatusWord.Value != currentMessage.UShortPayload)
+                {
+                    var msgNotification = new FieldNotificationMessage(
+                        new InverterStatusWordFieldMessageData(currentMessage.UShortPayload),
+                        "Inverter Status Word update",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusWord,
+                        MessageStatus.OperationExecuting,
+                        (byte)inverterIndex);
+
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                 }
 
-                if (inverterStatus != null)
+                if (inverter != null)
                 {
-                    inverterStatus.CommonStatusWord.Value = currentMessage.UShortPayload;
+                    inverter.CommonStatusWord.Value = currentMessage.UShortPayload;
                 }
 
                 if (!currentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
@@ -190,76 +191,70 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
-                foreach (var installedInverter in this.inverterService.GetStatuses)
+                foreach (var inverter in this.invertersProvider.GetAll())
                 {
-                    var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, (int)installedInverter.SystemIndex);
+                    var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, (int)inverter.SystemIndex);
 
-                    if (this.inverterService.TryGetValue((InverterIndex)installedInverter.SystemIndex, out var inverterStatus))
+                    switch (inverter)
                     {
-                        switch (inverterStatus.Type)
-                        {
-                            case InverterType.Ang:
-                                if (inverterStatus is AngInverterStatus angInverter)
-                                {
-                                    // INFO The Overrun elevator must be inverted (WORKAROUND)
-                                    ioStatuses[6] = !ioStatuses[6];
+                        case AngInverterStatus angInverter:
 
-                                    if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
-                                    {
-                                        this.logger.LogTrace("Sensor Update");
+                            // INFO The Overrun elevator must be inverted (WORKAROUND)
+                            ioStatuses[6] = !ioStatuses[6];
 
-                                        var msgNotification = new FieldNotificationMessage(
-                                            new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
-                                            "Inverter Inputs update",
-                                            FieldMessageActor.FiniteStateMachines,
-                                            FieldMessageActor.InverterDriver,
-                                            FieldMessageType.InverterStatusUpdate,
-                                            MessageStatus.OperationExecuting,
-                                            angInverter.SystemIndex);
+                            if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            {
+                                this.logger.LogTrace("Sensor Update");
 
-                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                                    }
-                                }
-                                break;
+                                var msgNotification = new FieldNotificationMessage(
+                                    new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
+                                    "Inverter Inputs update",
+                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.InverterStatusUpdate,
+                                    MessageStatus.OperationExecuting,
+                                    angInverter.SystemIndex);
 
-                            case InverterType.Acu:
-                                if (inverterStatus is AcuInverterStatus acuInverter)
-                                {
-                                    if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
-                                    {
-                                        var msgNotification = new FieldNotificationMessage(
-                                            new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
-                                            "Inverter Inputs update",
-                                            FieldMessageActor.FiniteStateMachines,
-                                            FieldMessageActor.InverterDriver,
-                                            FieldMessageType.InverterStatusUpdate,
-                                            MessageStatus.OperationExecuting,
-                                            acuInverter.SystemIndex);
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                            }
 
-                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                                    }
-                                }
-                                break;
+                            break;
 
-                            case InverterType.Agl:
-                                if (inverterStatus is AglInverterStatus aglInverter)
-                                {
-                                    if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
-                                    {
-                                        var msgNotification = new FieldNotificationMessage(
-                                            new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
-                                            "Inverter Inputs update",
-                                            FieldMessageActor.FiniteStateMachines,
-                                            FieldMessageActor.InverterDriver,
-                                            FieldMessageType.InverterStatusUpdate,
-                                            MessageStatus.OperationExecuting,
-                                            aglInverter.SystemIndex);
+                        case AcuInverterStatus acuInverter:
 
-                                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                                    }
-                                }
-                                break;
-                        }
+                            if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            {
+                                var msgNotification = new FieldNotificationMessage(
+                                    new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
+                                    "Inverter Inputs update",
+                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.InverterStatusUpdate,
+                                    MessageStatus.OperationExecuting,
+                                    acuInverter.SystemIndex);
+
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                            }
+
+                            break;
+
+                        case AglInverterStatus aglInverter:
+
+                            if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            {
+                                var msgNotification = new FieldNotificationMessage(
+                                    new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
+                                    "Inverter Inputs update",
+                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.InverterStatusUpdate,
+                                    MessageStatus.OperationExecuting,
+                                    aglInverter.SystemIndex);
+
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                            }
+
+                            break;
                     }
                 }
                 this.forceStatusPublish = false;
@@ -271,45 +266,44 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace($"5:ActualPositionShaft.UIntPayload={currentMessage.IntPayload}");
 
-                if (this.inverterService.TryGetValue(inverterIndex, out var inverterStatus))
+                var inverter = this.invertersProvider.GetByIndex(inverterIndex);
+
+                if ((inverter is AngInverterStatus || inverter is AcuInverterStatus)
+                    && inverter is IPositioningInverterStatus positioningInverter)
                 {
-                    if ((inverterStatus.Type == InverterType.Ang || inverterStatus.Type == InverterType.Acu)
-                        && inverterStatus is IPositioningInverterStatus positioningInverter)
+                    var axis = (inverterIndex == InverterIndex.MainInverter && !inverter.CommonControlWord.HorizontalAxis)
+                        ? Axis.Vertical
+                        : Axis.Horizontal;
+
+                    if ((axis == this.currentAxis || currentStateMachine == null) &&
+                        (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish))
                     {
-                        var axis = (inverterIndex == InverterIndex.MainInverter && !inverterStatus.CommonControlWord.HorizontalAxis)
-                            ? Axis.Vertical
-                            : Axis.Horizontal;
+                        var axisOrientation = axis == Axis.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
-                        if ((axis == this.currentAxis || currentStateMachine == null) &&
-                            (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish))
+                        double currentAxisPosition = 0;
+                        if (currentMessage.IntPayload != 0)
                         {
-                            var axisOrientation = axis == Axis.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
-
-                            double currentAxisPosition = 0;
-                            if (currentMessage.IntPayload != 0)
-                            {
-                                currentAxisPosition = this.elevatorDataProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
-                            }
-
-                            var offset = axis == Axis.Horizontal
-                                ? this.elevatorDataProvider.GetHorizontalAxis().Offset
-                                : this.elevatorDataProvider.GetVerticalAxis().Offset;
-                            currentAxisPosition += offset;
-
-                            var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverterStatus.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
-                            var msgNotification = new FieldNotificationMessage(
-                                notificationData,
-                                "Inverter encoder value update",
-                                FieldMessageActor.FiniteStateMachines,
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageType.InverterStatusUpdate,
-                                MessageStatus.OperationExecuting,
-                                (byte)inverterIndex);
-
-                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-
-                            this.forceStatusPublish = false;
+                            currentAxisPosition = this.elevatorDataProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
                         }
+
+                        var offset = axis == Axis.Horizontal
+                            ? this.elevatorDataProvider.GetHorizontalAxis().Offset
+                            : this.elevatorDataProvider.GetVerticalAxis().Offset;
+                        currentAxisPosition += offset;
+
+                        var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
+                        var msgNotification = new FieldNotificationMessage(
+                            notificationData,
+                            "Inverter encoder value update",
+                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.InverterStatusUpdate,
+                            MessageStatus.OperationExecuting,
+                            (byte)inverterIndex);
+
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                        this.forceStatusPublish = false;
                     }
                 }
             }
@@ -324,87 +318,27 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.logger.LogTrace($"1:currentMessage={currentMessage}");
 
-            if (currentMessage.ParameterId == InverterParameterId.ControlWordParam)
+            if (currentMessage.ParameterId == InverterParameterId.ControlWordParam
+                &&
+                inverterIndex == InverterIndex.MainInverter)
             {
                 this.logger.LogTrace("2:Evaluate Control word");
 
-                if (!this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                var mainInverter = this.invertersProvider.GetMainInverter();
+
+                if (mainInverter.WaitingHeartbeatAck)
                 {
-                    this.logger.LogTrace("3:Required Inverter Status not configured");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Requested Inverter is not configured", 0), FieldMessageType.InverterError);
-
+                    mainInverter.WaitingHeartbeatAck = false;
+                    this.logger.LogTrace("5:Reset Heartbeat flag");
                     return;
                 }
-                if (inverterIndex == InverterIndex.MainInverter)
-                {
-                    if (!(inverterStatus is AngInverterStatus mainInverterStatus))
-                    {
-                        this.logger.LogTrace("4:Wrong inverter status");
-                        return;
-                    }
-
-                    if (mainInverterStatus.WaitingHeartbeatAck)
-                    {
-                        mainInverterStatus.WaitingHeartbeatAck = false;
-                        this.logger.LogTrace("5:Reset Heartbeat flag");
-                        return;
-                    }
-                }
             }
+
             if (currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
                 this.logger.LogTrace("6:Request Status word");
                 var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
                 this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-            }
-        }
-
-        private void InitializeInverterStatus()
-        {
-            var inverters = this.digitalDevicesDataProvider.GetAllInverters();
-
-            foreach (var inverter in inverters)
-            {
-                IInverterStatusBase inverterStatus = null;
-
-                switch (inverter.Type)
-                {
-                    case InverterType.Ang:
-                        inverterStatus = new AngInverterStatus(inverter.Index);
-                        break;
-
-                    case InverterType.Acu:
-                        inverterStatus = new AcuInverterStatus(inverter.Index);
-                        break;
-
-                    case InverterType.Agl:
-                        inverterStatus = new AglInverterStatus(inverter.Index);
-                        break;
-
-                    default:
-                        throw new Exception();
-                }
-
-                this.inverterService.AddStatus((InverterIndex)inverter.Index, inverterStatus);
-            }
-
-            this.logger.LogTrace("1:Start Heart beat timer");
-
-            try
-            {
-                //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
-                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
-                //this.statusWordUpdateTimer?.Change(STATUS_WORD_UPDATE_INTERVAL, STATUS_WORD_UPDATE_INTERVAL);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"3:Exception: {ex.Message} while starting heartBeat update timer");
-
-                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Exception while starting heartBeat update timer", 0), FieldMessageType.InverterException);
-
-                //TODO: try to re-create the timer and start once again
             }
         }
 
@@ -433,39 +367,31 @@ namespace Ferretto.VW.MAS.InverterDriver
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
         }
 
-        private bool IsInverterPoweredOn(IInverterStatusBase inverterStatus)
+        private void InitializeTimers()
         {
-            return inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                   inverterStatus.CommonStatusWord.IsSwitchedOn;   //TODO: check this
+            try
+            {
+                //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                //this.statusWordUpdateTimer?.Change(STATUS_WORD_UPDATE_INTERVAL, STATUS_WORD_UPDATE_INTERVAL);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"3:Exception: {ex.Message} while starting heartBeat update timer");
+
+                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, "Exception while starting heartBeat update timer", 0), FieldMessageType.InverterException);
+
+                //TODO: try to re-create the timer and start once again
+            }
         }
 
-        private bool IsInverterStarted(IInverterStatusBase inverterStatus)
+        private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
-            return inverterStatus.CommonStatusWord.IsReadyToSwitchOn &
-                   inverterStatus.CommonStatusWord.IsSwitchedOn &
-                   inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                   inverterStatus.CommonStatusWord.IsQuickStopTrue;
-        }
-
-        private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
-        {
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-
             if (receivedMessage.Data is ICalibrateAxisFieldMessageData calibrateData)
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-                {
-                    this.logger.LogError("2:Required Inverter Status not configured");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Requested Inverter is not configured", 0), FieldMessageType.CalibrateAxis);
-
-                    return;
-                }
-
-                if (this.IsInverterStarted(inverterStatus))
+                if (inverter.IsStarted)
                 {
                     this.logger.LogTrace("3:Starting Calibrate Axis FSM");
 
@@ -474,13 +400,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentAxis = calibrateData.AxisToCalibrate;
                     var currentStateMachine = new CalibrateAxisStateMachine(
                         this.currentAxis,
-                        inverterStatus,
+                        inverter,
                         this.logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
                         this.serviceScopeFactory);
 
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
                 }
                 else
@@ -488,14 +414,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("4:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
-                        inverterStatus,
+                        inverter,
                         this.logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
                         this.serviceScopeFactory,
                         receivedMessage);
 
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
                 }
             }
@@ -504,96 +430,81 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.logger.LogError("5:Wrong message Data data type");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.CalibrateAxis);
+                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.CalibrateAxis);
             }
         }
 
-        private void ProcessDisableMessage(FieldCommandMessage receivedMessage)
+        private void ProcessDisableMessage(IInverterStatusBase inverter)
         {
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-
-            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
+            try
             {
                 var currentStateMachine = new SwitchOffStateMachine(
-                    inverterStatus,
-                    this.logger,
-                    this.eventAggregator,
-                    this.inverterCommandQueue,
-                    this.serviceScopeFactory);
+                   inverter,
+                   this.logger,
+                   this.eventAggregator,
+                   this.inverterCommandQueue,
+                   this.serviceScopeFactory);
 
-                this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                 currentStateMachine.Start();
             }
-            else
+            catch (Exception ex)
             {
-                this.logger.LogError("2:Inverter status not configured for requested inverter Type");
-
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterDisable);
+                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterDisable);
             }
         }
 
-        private void ProcessFaultResetMessage(FieldCommandMessage receivedMessage)
+        private void ProcessFaultResetMessage(IInverterStatusBase inverter)
         {
             this.logger.LogTrace("1:Method Start");
 
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            var currentStateMachine = new ResetFaultStateMachine(
+                inverter,
+                inverter.SystemIndex,
+                this.logger,
+                this.eventAggregator,
+                this.inverterCommandQueue,
+                this.serviceScopeFactory);
 
-            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-            {
-                var currentStateMachine = new ResetFaultStateMachine(
-                    inverterStatus,
-                    currentInverter,
-                    this.logger,
-                    this.eventAggregator,
-                    this.inverterCommandQueue,
-                    this.serviceScopeFactory);
-
-                this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                currentStateMachine.Start();
-            }
-            else
-            {
-                this.logger.LogError($"3:Inverter number {currentInverter} is not configured for this machine");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0), FieldMessageType.InverterStop);
-            }
+            this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+            currentStateMachine.Start();
         }
 
         private async Task<bool> ProcessHeartbeat()
         {
-            if (this.heartbeatQueue.Dequeue(out var message))
+            if (this.heartbeatQueue.Dequeue(out _))
             {
                 try
                 {
-                    if (this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
-                    {
-                        var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-                        this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
+                    var inverter = this.invertersProvider.GetMainInverter();
 
-                        this.roundTripStopwatch.Reset();
-                        this.roundTripStopwatch.Start();
+                    var newMessage = new InverterMessage(
+                        InverterIndex.MainInverter,
+                        (short)InverterParameterId.ControlWordParam,
+                        inverter.CommonControlWord.Value);
 
-                        var heartbeat = newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue);
-                        return await this.socketTransport.WriteAsync(heartbeat, this.stoppingToken) == heartbeat.Length;
-                    }
-                    else
-                    {
-                        this.logger.LogError("3:Invalid message data for ProcessHeartbeat message Type");
+                    this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
 
-                        var ex = new Exception();
-                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
-                    }
+                    this.roundTripStopwatch.Reset();
+                    this.roundTripStopwatch.Start();
+
+                    var heartbeat = newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue);
+                    return await this.socketTransport.WriteAsync(heartbeat, this.stoppingToken) == heartbeat.Length;
                 }
                 catch (InverterDriverException ex)
                 {
                     this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"Exception {ex.Message}");
                 }
             }
             else if (Debugger.IsAttached)
             {
                 Debugger.Break();
             }
+
             return false;
         }
 
@@ -636,14 +547,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             return result;
         }
 
-        private void ProcessInverterSetTimerMessage(FieldCommandMessage receivedMessage)
+        private void ProcessInverterSetTimerMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-
             this.logger.LogTrace("1:Method Start");
             if (receivedMessage.Data is IInverterSetTimerFieldMessageData updateData)
             {
-                updateData.InverterIndex = currentInverter;
+                updateData.InverterIndex = inverter.SystemIndex;
                 this.ConfigureTimer(updateData);
             }
             else
@@ -651,39 +560,27 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.logger.LogError("2:Wrong message Data data type");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.InverterStatusUpdate);
+                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.InverterStatusUpdate);
             }
         }
 
-        private void ProcessInverterSwitchOffMessage(FieldCommandMessage receivedMessage)
+        private void ProcessInverterSwitchOffMessage(IInverterStatusBase inverter)
         {
             this.logger.LogTrace("1:Method Start");
 
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            var currentStateMachine = new SwitchOffStateMachine(
+                inverter,
+                this.logger,
+                this.eventAggregator,
+                this.inverterCommandQueue,
+                this.serviceScopeFactory);
 
-            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-            {
-                var currentStateMachine = new SwitchOffStateMachine(
-                    inverterStatus,
-                    this.logger,
-                    this.eventAggregator,
-                    this.inverterCommandQueue,
-                    this.serviceScopeFactory);
+            this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
 
-                this.currentStateMachines.Add(currentInverter, currentStateMachine);
-
-                currentStateMachine.Start();
-            }
-            else
-            {
-                this.logger.LogError("2:Inverter status not configured for requested inverter Type");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterSwitchOff);
-            }
+            currentStateMachine.Start();
         }
 
-        private void ProcessInverterSwitchOnMessage(FieldCommandMessage receivedMessage)
+        private void ProcessInverterSwitchOnMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -691,64 +588,42 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (receivedMessage.Data is IInverterSwitchOnFieldMessageData switchOnData)
             {
-                if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
+                if (inverter.CommonStatusWord.IsReadyToSwitchOn &
+                    inverter.CommonStatusWord.IsVoltageEnabled &
+                    inverter.CommonStatusWord.IsQuickStopTrue)
                 {
-                    if (inverterStatus.CommonStatusWord.IsReadyToSwitchOn &
-                        inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                        inverterStatus.CommonStatusWord.IsQuickStopTrue)
+                    if (inverter.CommonControlWord.HorizontalAxis == (switchOnData.AxisToSwitchOn == Axis.Horizontal))
                     {
-                        if (inverterStatus.CommonControlWord.HorizontalAxis == (switchOnData.AxisToSwitchOn == Axis.Horizontal))
+                        if (inverter.CommonStatusWord.IsSwitchedOn)
                         {
-                            if (inverterStatus.CommonStatusWord.IsSwitchedOn)
-                            {
-                                this.logger.LogDebug($"Inverter Already active on selected axis {switchOnData.AxisToSwitchOn}");
+                            this.logger.LogDebug($"Inverter Already active on selected axis {switchOnData.AxisToSwitchOn}");
 
-                                var notificationMessageData = new InverterSwitchOnFieldMessageData(switchOnData.AxisToSwitchOn);
-                                var notificationMessage = new FieldNotificationMessage(
-                                    notificationMessageData,
-                                    $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
-                                    FieldMessageActor.FiniteStateMachines,
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageType.InverterSwitchOn,
-                                    MessageStatus.OperationEnd,
-                                    (byte)currentInverter);
+                            var notificationMessageData = new InverterSwitchOnFieldMessageData(switchOnData.AxisToSwitchOn);
+                            var notificationMessage = new FieldNotificationMessage(
+                                notificationMessageData,
+                                $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.InverterSwitchOn,
+                                MessageStatus.OperationEnd,
+                                (byte)currentInverter);
 
-                                this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+                            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-                            }
-                            else
-                            {
-                                this.logger.LogDebug("3: Switch On the inverter state machine");
-                                this.logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn}");
-
-                                var currentStateMachine = new SwitchOnStateMachine(
-                                    switchOnData.AxisToSwitchOn,
-                                    inverterStatus,
-                                    this.logger,
-                                    this.eventAggregator,
-                                    this.inverterCommandQueue,
-                                    this.serviceScopeFactory);
-
-                                this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                                currentStateMachine.Start();
-                            }
+                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
                         }
                         else
                         {
-                            this.logger.LogDebug("4: Switch Off the inverter state machine");
+                            this.logger.LogDebug("3: Switch On the inverter state machine");
+                            this.logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn}");
 
-                            inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
-
-                            this.logger.LogDebug($"Inverter requires Switch axis {switchOnData.AxisToSwitchOn}");
-
-                            var currentStateMachine = new SwitchOffStateMachine(
-                                inverterStatus,
+                            var currentStateMachine = new SwitchOnStateMachine(
+                                switchOnData.AxisToSwitchOn,
+                                inverter,
                                 this.logger,
                                 this.eventAggregator,
                                 this.inverterCommandQueue,
-                                this.serviceScopeFactory,
-                                receivedMessage);
+                                this.serviceScopeFactory);
 
                             this.currentStateMachines.Add(currentInverter, currentStateMachine);
                             currentStateMachine.Start();
@@ -756,10 +631,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     else
                     {
-                        inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
+                        this.logger.LogDebug("4: Switch Off the inverter state machine");
 
-                        var currentStateMachine = new PowerOnStateMachine(
-                            inverterStatus,
+                        inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
+
+                        this.logger.LogDebug($"Inverter requires Switch axis {switchOnData.AxisToSwitchOn}");
+
+                        var currentStateMachine = new SwitchOffStateMachine(
+                            inverter,
                             this.logger,
                             this.eventAggregator,
                             this.inverterCommandQueue,
@@ -772,9 +651,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.logger.LogError($"2:Inverter status index={currentInverter} not configured for requested inverter Type");
+                    inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterSwitchOn);
+                    var currentStateMachine = new PowerOnStateMachine(
+                        inverter,
+                        this.logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.serviceScopeFactory,
+                        receivedMessage);
+
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
                 }
             }
             else
@@ -785,24 +673,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-                {
-                    this.logger.LogError("2:Required Inverter Status not configured");
-
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Required Inverter Status not configured", 0), FieldMessageType.Positioning);
-
-                    return;
-                }
-
-                if (this.IsInverterStarted(inverterStatus))
+                if (inverter.IsStarted)
                 {
                     this.currentAxis = positioningData.AxisMovement;
 
@@ -815,15 +692,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                             : Orientation.Vertical;
 
                         var currentPosition = 0;
-                        if (inverterStatus is AngInverterStatus currentStatus)
+                        if (inverter is AngInverterStatus angInverter)
                         {
                             currentPosition = this.currentAxis == Axis.Vertical
-                                ? currentStatus.CurrentPositionAxisVertical
-                                : currentStatus.CurrentPositionAxisHorizontal;
+                                ? angInverter.CurrentPositionAxisVertical
+                                : angInverter.CurrentPositionAxisHorizontal;
                         }
-                        else if (inverterStatus is AcuInverterStatus currentACUStatus)
+                        else if (inverter is AcuInverterStatus acuInverter)
                         {
-                            currentPosition = currentACUStatus.CurrentPosition;
+                            currentPosition = acuInverter.CurrentPosition;
                         }
 
                         var position = positioningData.TargetPosition;
@@ -844,7 +721,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 var beltDisplacement = this.elevatorDataProvider.ComputeDisplacement(positioningData.TargetPosition);
                                 this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
-                                position -= beltDisplacement;
+                                position += beltDisplacement;
                             }
                         }
 
@@ -906,22 +783,22 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.Positioning,
                                         MessageStatus.OperationEnd,
-                                        (byte)currentInverter);
+                                        inverter.SystemIndex);
 
                                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                     var currentStateMachine = new PositioningStateMachine(
                                         positioningFieldData,
-                                        inverterStatus,
+                                        inverter,
                                         this.logger,
                                         this.eventAggregator,
                                         this.inverterCommandQueue,
                                         this.serviceScopeFactory);
 
-                                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                     currentStateMachine.Start();
                                 }
                                 break;
@@ -937,37 +814,38 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.Positioning,
                                         MessageStatus.OperationEnd,
-                                        (byte)currentInverter);
+                                        inverter.SystemIndex);
 
                                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)currentInverter]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                     if (positioningData.MovementType == MovementType.TableTarget)
                                     {
                                         var currentStateMachine = new PositioningTableStateMachine(
                                             positioningFieldData,
-                                            inverterStatus,
+                                            this.dataOld,
+                                            inverter,
                                             this.logger,
                                             this.eventAggregator,
                                             this.inverterCommandQueue,
                                             this.serviceScopeFactory);
 
-                                        this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                        this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                         currentStateMachine.Start();
                                     }
                                     else
                                     {
                                         var currentStateMachine = new PositioningStateMachine(
                                             positioningFieldData,
-                                            inverterStatus,
+                                            inverter,
                                             this.logger,
                                             this.eventAggregator,
                                             this.inverterCommandQueue,
                                             this.serviceScopeFactory);
 
-                                        this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                                        this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                         currentStateMachine.Start();
                                     }
                                 }
@@ -977,7 +855,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     catch (Exception ex)
                     {
                         this.logger.LogError($"Exception {ex.Message}");
-                        this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
+                        this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
                     }
                 }
                 else
@@ -985,13 +863,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogError("5:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
-                        inverterStatus,
+                        inverter,
                         this.logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
                         this.serviceScopeFactory,
                         receivedMessage);
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
                 }
             }
@@ -1000,29 +878,21 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.logger.LogError("6:Wrong message Data data type");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.Positioning);
+                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.Positioning);
             }
         }
 
-        private void ProcessPowerOffMessage(FieldCommandMessage receivedMessage)
+        private void ProcessPowerOffMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
             this.logger.LogTrace("1:Parse Message Data");
 
-            if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-            {
-                this.logger.LogError("2:Required Inverter Status not configured");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Required Inverter Status not configured", 0), FieldMessageType.InverterPowerOff);
-            }
-
-            if (this.IsInverterStarted(inverterStatus))
+            if (inverter.IsStarted)
             {
                 this.logger.LogTrace("3:Starting Power Off FSM");
                 var currentStateMachine = new PowerOffStateMachine(
-                    inverterStatus,
+                    inverter,
                     this.logger,
                     this.eventAggregator,
                     this.inverterCommandQueue,
@@ -1047,21 +917,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessPowerOnMessage(FieldCommandMessage receivedMessage)
+        private void ProcessPowerOnMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
             this.logger.LogTrace("1:Parse Message Data");
 
-            if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-            {
-                this.logger.LogError("2:Required Inverter Status not configured");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Required Inverter Status not configured", 0), FieldMessageType.InverterPowerOn);
-            }
-
-            if (this.IsInverterStarted(inverterStatus))
+            if (inverter.IsStarted)
             {
                 this.logger.LogTrace("3:Inverter already powered on. Just notify operation completed");
                 var endNotification = new FieldNotificationMessage(
@@ -1079,7 +941,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("4:Starting Power On FSM");
                 var currentStateMachine = new PowerOnStateMachine(
-                    inverterStatus,
+                    inverter,
                     this.logger,
                     this.eventAggregator,
                     this.inverterCommandQueue,
@@ -1090,7 +952,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage)
+        private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
@@ -1098,24 +960,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                if (!this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-                {
-                    this.logger.LogError("2:Required Inverter Status not configured");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Required Inverter Status not configured", 0), FieldMessageType.ShutterPositioning);
-
-                    return;
-                }
-
-                if (this.IsInverterStarted(inverterStatus))
+                if (inverter.IsStarted)
                 {
                     this.logger.LogTrace("4:Starting ShutterPositioning FSM");
 
                     var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
                     var currentStateMachine = new ShutterPositioningStateMachine(
                         convertedShutterPositioningData,
-                        inverterStatus,
+                        inverter,
                         this.logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
@@ -1129,7 +981,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogError("5:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
-                        inverterStatus,
+                        inverter,
                         this.logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
@@ -1148,31 +1000,19 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessStopMessage(FieldCommandMessage receivedMessage)
+        private void ProcessStopMessage(IInverterStatusBase inverter)
         {
             this.logger.LogTrace("1:Method Start");
 
-            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            var currentStateMachine = new StopStateMachine(
+                inverter,
+                this.logger,
+                this.eventAggregator,
+                this.inverterCommandQueue,
+                this.serviceScopeFactory);
 
-            if (this.inverterService.TryGetValue(currentInverter, out var inverterStatus))
-            {
-                var currentStateMachine = new StopStateMachine(
-                    inverterStatus,
-                    this.logger,
-                    this.eventAggregator,
-                    this.inverterCommandQueue,
-                    this.serviceScopeFactory);
-
-                this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                currentStateMachine.Start();
-            }
-            else
-            {
-                this.logger.LogError("2:Inverter status not configured for requested inverter Type");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, $"Inverter status not configured for requested inverter {currentInverter}", 0), FieldMessageType.InverterStop);
-            }
+            this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+            currentStateMachine.Start();
         }
 
         private void RequestAxisPositionUpdate(object state)
@@ -1278,22 +1118,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (this.socketTransport.IsConnected)
             {
-                if (!this.inverterService.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
-                {
-                    this.logger.LogTrace("1:Inverter status not configured for Main Inverter");
+                var mainInverter = this.invertersProvider.GetMainInverter();
 
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for Main Inverter", 0), FieldMessageType.InverterError);
+                mainInverter.CommonControlWord.HeartBeat = !mainInverter.CommonControlWord.HeartBeat;
+                mainInverter.WaitingHeartbeatAck = true;
 
-                    return;
-                }
+                var message = new InverterMessage(
+                    InverterIndex.MainInverter,
+                    (short)InverterParameterId.ControlWordParam,
+                    mainInverter.CommonControlWord.Value);
 
-                inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
-                if (inverterStatus is AngInverterStatus mainInverterStatus)
-                {
-                    mainInverterStatus.WaitingHeartbeatAck = true;
-                }
-                var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
                 this.heartbeatQueue.Enqueue(message);
             }
         }

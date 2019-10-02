@@ -25,7 +25,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             : base(systemIndex)
         {
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
-            this.Type = InverterType.Acu;
         }
 
         #endregion

@@ -82,39 +82,36 @@
                   "Acceleration": 1000,
                   "Deceleration": 0,
                   "Speed": 200,
-                  "Number": 0
+                  "Number": 0,
+                  "Position": 200
                 },
                 {
                   "Acceleration": 500,
                   "Deceleration": 1000,
-                  "Position": 200,
                   "Speed": 100,
-                  "Number": 1
+                  "Number": 1,
+                  "Position": 550
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Position": 550,
                   "Speed": 500,
-                  "Number": 2
+                  "Number": 2,
+                  "Position": 950
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Position": 950,
                   "Speed": 250,
-                  "Number": 3
+                  "Number": 3,
+                  "Position": 1350
                 },
                 {
                   "Acceleration": 800,
                   "Deceleration": 1000,
-                  "Position": 1350,
                   "Speed": 50,
-                  "Number": 4
-                },
-                {
-                  "Position": 1415,
-                  "Number": 5
+                  "Number": 4,
+                  "Position": 1415
                 }
               ]
             },
@@ -127,39 +124,36 @@
                   "Acceleration": 1000,
                   "Deceleration": 0,
                   "Speed": 200,
-                  "Number": 0
+                  "Number": 0,
+                  "Position": 200
                 },
                 {
                   "Acceleration": 500,
                   "Deceleration": 1000,
-                  "Position": 200,
                   "Speed": 100,
-                  "Number": 1
+                  "Number": 1,
+                  "Position": 550
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Position": 550,
                   "Speed": 500,
-                  "Number": 2
+                  "Number": 2,
+                  "Position": 950
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Position": 950,
                   "Speed": 250,
-                  "Number": 3
+                  "Number": 3,
+                  "Position": 1350
                 },
                 {
                   "Acceleration": 800,
                   "Deceleration": 1000,
-                  "Position": 1350,
                   "Speed": 50,
-                  "Number": 4
-                },
-                {
-                  "Position": 1415,
-                  "Number": 5
+                  "Number": 4,
+                  "Position": 1415
                 }
               ]
             },
@@ -234,14 +228,14 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Speed": 500,
+                  "Speed": 200,
                   "Position": 1300,
                   "Number": 3
                 },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Speed": 200,
+                  "Speed": 500,
                   "Position": 1393,
                   "Number": 4
                 }

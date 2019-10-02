@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 
         bool IsOneKMachine { get; }
 
-        IMachineSensorsStatus MachineSensorStatus { get; }
+        IMachineResourcesProvider MachineSensorStatus { get; }
 
         int MaximumSteps { get; set; }
 

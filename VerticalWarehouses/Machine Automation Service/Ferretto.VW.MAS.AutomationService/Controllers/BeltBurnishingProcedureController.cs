@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -90,16 +91,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart)
         {
-            try
-            {
-                this.elevatorProvider.RepeatVerticalMovement(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, this.BayNumber);
+            this.elevatorProvider.RepeatVerticalMovement(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, this.BayNumber);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         [HttpPost("stop")]

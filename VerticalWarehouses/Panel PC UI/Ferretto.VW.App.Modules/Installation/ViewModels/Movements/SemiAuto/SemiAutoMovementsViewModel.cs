@@ -214,6 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
+                this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
                 this.shutterSensors.Update(sensorsStates.ToArray());
             }
             catch (System.Exception ex)

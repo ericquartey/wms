@@ -9,5 +9,7 @@
         ShutterAbsoluteHalf = 7,
 
         ShutterAbsoluteClose = 8,
+
+        HomingCalibration = 7,
     }
 }

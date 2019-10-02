@@ -20,6 +20,6 @@
 
         HighSpeedDurationOpen = 9L,
 
-        HighSpeedDurationClose = 10L
+        HighSpeedDurationClose = 10L,
     }
 }

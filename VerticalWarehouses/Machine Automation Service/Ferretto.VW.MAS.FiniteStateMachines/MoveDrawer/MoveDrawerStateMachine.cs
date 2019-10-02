@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             bool isOneKMachine,
             BayNumber requestingBay,
             ISetupStatusProvider setupStatusProvider,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IDrawerOperationMessageData drawerOperationData,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             this.machineData = new MoveDrawerMachineData(isOneKMachine,
                 setupStatusProvider,
-                machineSensorsStatus,
+                machineResourcesProvider,
                 drawerOperationData,
                 requestingBay,
                 eventAggregator,

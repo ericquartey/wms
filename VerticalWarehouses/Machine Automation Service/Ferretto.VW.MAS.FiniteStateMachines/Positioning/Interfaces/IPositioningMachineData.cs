@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces
 
         int ExecutedSteps { get; set; }
 
-        IMachineSensorsStatus MachineSensorStatus { get; }
+        IMachineResourcesProvider MachineSensorStatus { get; }
 
         IPositioningMessageData MessageData { get; set; }
 

@@ -160,9 +160,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return BayNumber.ElevatorBay;
             }
 
-            return this.dataContext.Bays
-                .Single(b => b.IoDevice.Index == ioIndex)
-                .Number;
+            var bay = this.dataContext.Bays
+                .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(ioIndex.ToString());
+            }
+
+            return bay.Number;
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)

@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
+        private IInverterPositioningFieldMessageData dataOld;
+
         #endregion
 
         #region Constructors
@@ -24,11 +26,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public PositioningTableStartState(
             IInverterStateMachine parentStateMachine,
             IInverterPositioningFieldMessageData data,
+            IInverterPositioningFieldMessageData dataOld,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
+            this.dataOld = dataOld;
         }
 
         #endregion
@@ -89,7 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningTableSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PositioningTableSetParametersState(this.ParentStateMachine, this.data, this.dataOld, this.InverterStatus, this.Logger));
                 }
             }
             return false;

@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
-    internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider
+    internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider, IDisposable
     {
         #region Fields
 
@@ -35,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IResolutionCalibrationDataLayer resolutionCalibrationDataLayer;
 
+        private readonly IServiceScope scope;
+
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupStatusProvider setupStatusProvider;
@@ -43,6 +49,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IWeightControlDataLayer weightControl;
 
+        private bool disposedValue = false;
+
         private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
 
         #endregion
@@ -50,103 +58,58 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #region Constructors
 
         public ElevatorProvider(
-            IEventAggregator eventAggregator,
-            IElevatorDataProvider elevatorDataProvider,
-            IConfigurationValueManagmentDataLayer configurationProvider,
-            IPanelControlDataLayer panelControlDataLayer,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
-            IResolutionCalibrationDataLayer resolutionCalibrationDataLayer,
-            IOffsetCalibrationDataLayer offsetCalibrationDataLayer,
-            IBayPositionControlDataLayer bayPositionControl,
-            ICellControlDataLayer cellControlDataLayer,
-            ISetupStatusProvider setupStatusProvider,
-            IWeightControlDataLayer weightControl,
-            IMachineProvider machineProvider,
-            ISensorsProvider sensorsProvider,
-            IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer,
-            ILoadingUnitsProvider loadingUnitsProvider,
-            IDepositAndPickUpDataLayer depositAndPickUpDataLayer)
+                    IEventAggregator eventAggregator,
+                    IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator)
         {
-            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
-            this.panelControlDataLayer = panelControlDataLayer ?? throw new ArgumentNullException(nameof(panelControlDataLayer));
-            this.horizontalManualMovementsDataLayer = horizontalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            this.resolutionCalibrationDataLayer = resolutionCalibrationDataLayer ?? throw new ArgumentNullException(nameof(resolutionCalibrationDataLayer));
-            this.offsetCalibrationDataLayer = offsetCalibrationDataLayer ?? throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
-            this.bayPositionControl = bayPositionControl ?? throw new ArgumentNullException(nameof(bayPositionControl));
-            this.cellControlDataLayer = cellControlDataLayer ?? throw new ArgumentNullException(nameof(cellControlDataLayer));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
-            this.weightControl = weightControl ?? throw new ArgumentNullException(nameof(weightControl));
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.verticalManualMovementsDataLayer = verticalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(verticalManualMovementsDataLayer));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
-            this.depositAndPickUpDataLayer = depositAndPickUpDataLayer ?? throw new ArgumentNullException(nameof(depositAndPickUpDataLayer));
+            this.scope = serviceScopeFactory.CreateScope();
+            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+            this.configurationProvider = this.scope.ServiceProvider.GetRequiredService<IConfigurationValueManagmentDataLayer>();
+            this.panelControlDataLayer = this.scope.ServiceProvider.GetRequiredService<IPanelControlDataLayer>();
+            this.horizontalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IHorizontalManualMovementsDataLayer>();
+            this.resolutionCalibrationDataLayer = this.scope.ServiceProvider.GetRequiredService<IResolutionCalibrationDataLayer>();
+            this.offsetCalibrationDataLayer = this.scope.ServiceProvider.GetRequiredService<IOffsetCalibrationDataLayer>();
+            this.bayPositionControl = this.scope.ServiceProvider.GetRequiredService<IBayPositionControlDataLayer>();
+            this.cellControlDataLayer = this.scope.ServiceProvider.GetRequiredService<ICellControlDataLayer>();
+            this.setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+            this.weightControl = this.scope.ServiceProvider.GetRequiredService<IWeightControlDataLayer>();
+            this.machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+            this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
+            this.verticalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IVerticalManualMovementsDataLayer>();
+            this.loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+            this.depositAndPickUpDataLayer = this.scope.ServiceProvider.GetRequiredService<IDepositAndPickUpDataLayer>();
         }
+
+        #endregion
+
+        #region Properties
+
+        public double HorizontalPosition { get; set; }
+
+        public double VerticalPosition { get; set; }
 
         #endregion
 
         #region Methods
 
-        public double? GetHorizontalPosition(BayNumber requestingBay)
+        /// <summary>
+        ///   This code added to correctly implement the disposable pattern.
+        /// </summary>
+        public void Dispose()
         {
-            var messageData = new RequestPositionMessageData(Axis.Horizontal, 0);
-
-            void PublishAction()
-            {
-                this.PublishCommand(
-                    messageData,
-                    "Request Horizontal position",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.RequestPosition,
-                    requestingBay,
-                    BayNumber.ElevatorBay);
-            }
-
-            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
-                MessageType.Positioning,
-                MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting,
-                PublishAction);
-
-            return notifyData.CurrentPosition ?? 0;
-        }
-
-        public double GetVerticalPosition(BayNumber bayNumber)
-        {
-            var messageData = new RequestPositionMessageData(Axis.Vertical, 0);
-
-            void PublishAction()
-            {
-                this.PublishCommand(
-                    messageData,
-                    "Request vertical position",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.RequestPosition,
-                    bayNumber,
-                    BayNumber.ElevatorBay);
-            }
-
-            var notifyData = this.WaitForResponseEventAsync<PositioningMessageData>(
-                MessageType.Positioning,
-                MessageActor.FiniteStateMachines,
-                MessageStatus.OperationExecuting,
-                PublishAction);
-
-            return notifyData.CurrentPosition ?? 0;
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
         {
+            var sensors = this.sensorsProvider.GetAll();
             this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
 
             if (loadingUnitId.HasValue)
             {
                 this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight);
             }
-
-            var sensors = this.sensorsProvider.GetAll(requestingBay);
 
             var isLoadingUnitOnBoard =
                 sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
@@ -168,8 +131,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            var position = this.GetHorizontalPosition(requestingBay).Value;
-
             var profileType = SelectProfileType(direction, isStartedOnBoard);
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
@@ -183,7 +144,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var speed = profileSteps.Select(s => s.Speed).ToArray();
             var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
             var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
-            var switchPosition = profileSteps.Select(s => position + (s.Position * directionMultiplier)).ToArray();
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
 
@@ -574,6 +535,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.scope.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+
         public void ResetDepositAndPickUpCycleQuantity()
         {
             this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
@@ -675,5 +649,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
+
+        // To detect redundant calls
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ElevatorProvider()
+        // {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
     }
 }

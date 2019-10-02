@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IIoDeviceService iIoDeviceService;
+        private readonly IIoDevicesProvider iIoDeviceService;
 
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
         public HostedIoDriver(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IIoDeviceService iIoDeviceService,
+            IIoDevicesProvider iIoDeviceService,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.IODriver
             commandEvent.Subscribe(
                 commandMessage => { this.commandQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
 
             this.logger.LogTrace("1:Notifications Subscription");
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.IODriver
             notificationEvent.Subscribe(
                 notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
-                false,
+                true,
                 notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
         }
 

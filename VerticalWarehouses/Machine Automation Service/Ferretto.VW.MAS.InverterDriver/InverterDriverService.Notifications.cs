@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.DataLayerReady:
 
                     await this.StartHardwareCommunications();
-                    this.InitializeInverterStatus();
+                    this.InitializeTimers();
 
                     break;
 
@@ -50,8 +50,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 this.currentStateMachines.Remove(messageDeviceIndex);
                             }
-                            else if (messageCurrentStateMachine is PositioningTableStateMachine)
+                            else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
                             {
+                                this.dataOld = currentPositioning.data;
                                 this.currentStateMachines.Remove(messageDeviceIndex);
                             }
                             else

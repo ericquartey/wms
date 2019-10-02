@@ -2,15 +2,19 @@
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
     public interface IElevatorProvider
     {
+        #region Properties
+
+        double HorizontalPosition { get; set; }
+
+        double VerticalPosition { get; set; }
+
+        #endregion
+
         #region Methods
-
-        double? GetHorizontalPosition(BayNumber requestingBay);
-
-        double GetVerticalPosition(BayNumber requestingBay);
 
         void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
 

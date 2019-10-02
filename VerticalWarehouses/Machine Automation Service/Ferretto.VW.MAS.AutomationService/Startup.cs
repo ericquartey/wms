@@ -15,8 +15,10 @@ using Ferretto.VW.MAS.IODriver.Services;
 using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -30,7 +32,6 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
-
         #region Fields
 
         private const string LiveHealthCheckTag = "live";
@@ -48,15 +49,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
-
-
         #region Properties
 
         public IConfiguration Configuration { get; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -85,7 +82,10 @@ namespace Ferretto.VW.MAS.AutomationService
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
-            app.UseDataHub();
+            if (this.Configuration.IsWmsEnabled())
+            {
+                app.UseDataHub();
+            }
 
             app.UseHealthChecks("/health/ready", new HealthCheckOptions()
             {
@@ -102,7 +102,6 @@ namespace Ferretto.VW.MAS.AutomationService
             app.UseMvc();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataLayer();
@@ -114,6 +113,7 @@ namespace Ferretto.VW.MAS.AutomationService
               {
                   options.Filters.Add(typeof(ReadinessFilter));
                   options.Filters.Add(typeof(BayNumberFilter));
+                  options.Filters.Add(typeof(ExceptionsFilter));
                   options.Conventions.Add(
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
@@ -172,10 +172,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void InitialiseWmsInterfaces(IServiceCollection services)
         {
-            var wmsServiceAddress = this.Configuration.GetDataServiceUrl();
+            var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
             services.AddWebApiServices(wmsServiceAddress);
 
-            var wmsServiceAddressHubsEndpoint = this.Configuration.GetDataServiceHubUrl();
+            var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
             services.AddDataHub(wmsServiceAddressHubsEndpoint);
         }
 

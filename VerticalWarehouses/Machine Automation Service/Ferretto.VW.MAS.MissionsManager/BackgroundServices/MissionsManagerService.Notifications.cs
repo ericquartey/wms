@@ -54,7 +54,10 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private void OnDataLayerReady()
         {
-            this.missionManagementTask.Start();
+            if (this.configuration.IsWmsEnabled())
+            {
+                this.missionManagementTask.Start();
+            }
         }
 
         private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)
