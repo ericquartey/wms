@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             var inverterStatus = new AglInverterStatus(
                 this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index);
 
-            var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 
             Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
 

@@ -152,10 +152,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             const int N_BYTES_16 = 16;
             const int N_BYTES_8 = 8;
 
-            var formatDataOperation = ShdFormatDataOperation.Data;
-            byte fwRelease = 0x00;
-            byte errorCode = 0x00;
-
             do
             {
                 if (!this.ioTransport.IsConnected)
@@ -301,6 +297,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             ref outputData,
                             out configurationData,
                             out errorCode);
+
+                        this.ioStatus.FwRelease = fwRelease;
                     }
                     catch (Exception ex)
                     {
@@ -310,9 +308,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         this.ioTransport.Disconnect();
                         break;
                     }
-
-                    // message ok
-                    this.ioStatus.FwRelease = fwRelease;
 
                     switch (formatDataOperation)
                     {
