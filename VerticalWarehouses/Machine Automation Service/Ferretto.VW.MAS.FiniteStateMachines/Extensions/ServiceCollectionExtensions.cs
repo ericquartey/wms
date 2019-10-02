@@ -1,6 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.FiniteStateMachines.Providers;
-using Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
@@ -20,7 +20,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             services.AddHostedService<FiniteStateMachines>();
 
-            services.AddTransient<IMachineControlProvider, MachineControlProvider>();
+            services
+                .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()
+                .AddSingleton(s => s.GetRequiredService<IMachineResourcesProvider>() as ISensorsProvider)
+                .AddSingleton<IElevatorProvider, ElevatorProvider>();
 
             return services;
         }

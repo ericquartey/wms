@@ -66,8 +66,6 @@
 
         InverterStatusWord,
 
-        RequestPosition,
-
         RunningStateChanged,
 
         FaultStateChanged,

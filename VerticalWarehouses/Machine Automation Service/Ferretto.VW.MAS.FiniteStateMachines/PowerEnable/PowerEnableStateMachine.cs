@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public PowerEnableStateMachine(
             CommandMessage receivedMessage,
-            IMachineSensorsStatus machineSensorsStatus,
+            IMachineResourcesProvider machineResourcesProvider,
             IBaysProvider baysProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 this.machineData = new PowerEnableMachineData(data.Enable,
                     receivedMessage.RequestingBay,
                     receivedMessage.TargetBay,
-                    machineSensorsStatus,
+                    machineResourcesProvider,
                     eventAggregator,
                     logger,
                     serviceScopeFactory);
