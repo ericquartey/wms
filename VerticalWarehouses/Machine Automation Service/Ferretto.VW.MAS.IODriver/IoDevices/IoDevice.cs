@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public IoDevice(
             IEventAggregator eventAggregator,
-            IIoDeviceService ioDeviceService,
+            IIoDevicesProvider ioDeviceService,
             IIoTransport shdTransport,
             IPAddress ipAddress,
             int port,
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
-            this.ioStatus = ioDeviceService.IoStatuses.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
+            this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
         }
 
         #endregion

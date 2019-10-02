@@ -4,11 +4,11 @@ using Ferretto.VW.MAS.IODriver.Interface.Services;
 
 namespace Ferretto.VW.MAS.IODriver.Services
 {
-    internal class IoDeviceService : IIoDeviceService
+    internal class IoDevicesProvider : IIoDevicesProvider
     {
         #region Constructors
 
-        public IoDeviceService()
+        public IoDevicesProvider()
         {
             var ioStatusList = new List<IoStatus>();
             foreach (var ioStatusIndex in System.Enum.GetValues(typeof(IoIndex)))
@@ -16,14 +16,14 @@ namespace Ferretto.VW.MAS.IODriver.Services
                 ioStatusList.Add(new IoStatus((IoIndex)ioStatusIndex));
             }
 
-            this.IoStatuses = ioStatusList.ToArray();
+            this.Devices = ioStatusList.ToArray();
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<IoStatus> IoStatuses { get; }
+        public IEnumerable<IoStatus> Devices { get; }
 
         #endregion
     }

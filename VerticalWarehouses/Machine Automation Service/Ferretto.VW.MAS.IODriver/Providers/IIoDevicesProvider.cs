@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.MAS.IODriver.Interface.Services
 {
-    public interface IIoDeviceService
+    public interface IIoDevicesProvider
     {
         #region Properties
 
-        IEnumerable<IoStatus> IoStatuses { get; }
+        IEnumerable<IoStatus> Devices { get; }
 
         #endregion
     }
