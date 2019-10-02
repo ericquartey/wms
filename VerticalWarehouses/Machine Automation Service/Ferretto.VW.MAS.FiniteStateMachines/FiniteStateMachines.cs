@@ -329,7 +329,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 {
                                     var msgData = new SensorsChangedMessageData();
                                     msgData.SensorsStates = this.machineResourcesProvider.DisplayedInputs;
-                                    this.logger.LogDebug($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                                    this.logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
                                     var msg = new NotificationMessage(
                                         msgData,
