@@ -178,6 +178,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             return this.dataContext.ElevatorAxes
                 .Include(a => a.Profiles)
+                .ThenInclude(a => a.Steps)
                 .Include(a => a.MaximumLoadMovement)
                 .Include(a => a.EmptyLoadMovement)
                 .Single(a => a.Orientation == orientation);
