@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Move(HorizontalMovementDirection direction)
         {
             var bay = this.baysProvider.GetByNumber(this.BayNumber);
-            if (bay.Type != BayType.Carousel)
+            if (bay.Type != BayType.Carousel || bay.Carousel == null)
             {
                 throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
             }
@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveManual(HorizontalMovementDirection direction)
         {
             var bay = this.baysProvider.GetByNumber(this.BayNumber);
-            if (bay.Type != BayType.Carousel)
+            if (bay.Type != BayType.Carousel || bay.Carousel == null)
             {
                 throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
             }
