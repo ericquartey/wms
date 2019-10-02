@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.Sta
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -17,7 +16,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 {
     internal class ChangeRunningStateStateMachine : FiniteStateMachine<IChangeRunningStateStartState>, IChangeRunningStateStateMachine
     {
-
         #region Fields
 
         private readonly IMachineControlProvider machineControlProvider;
@@ -37,8 +35,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -71,7 +67,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         protected override IState OnNotificationReceived(NotificationMessage notificationMessage)
         {
-
             var newState = base.OnNotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
@@ -79,12 +74,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             }
 
             newState = this.ActiveState.NotificationReceived(notificationMessage);
-            if (newState is IChangeRunningStateEndState endState)
-            {
-                var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.ErrorMessage };
-                this.RaiseCompleted(eventArgs);
-            }
-
             if (newState != this.ActiveState)
             {
                 return newState;

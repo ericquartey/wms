@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
     public class MachineControlProvider : BaseProvider, IMachineControlProvider
     {
-
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -32,8 +31,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #endregion
 
-
-
         #region Methods
 
         public bool FilterCommands(CommandMessage command)
@@ -46,7 +43,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             return notification.Type == MessageType.PowerEnable ||
                 notification.Type == MessageType.Stop ||
                 notification.Type == MessageType.InverterFaultReset ||
-                notification.Type == MessageType.ResetSecurity;
+                notification.Type == MessageType.ResetSecurity ||
+                notification.Status == MessageStatus.OperationFaultStop ||
+                notification.Status == MessageStatus.OperationRunningStop;
         }
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)

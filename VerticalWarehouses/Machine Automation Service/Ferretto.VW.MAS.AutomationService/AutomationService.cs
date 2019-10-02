@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
-using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
@@ -23,7 +21,6 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService : AutomationBackgroundService
     {
-
         #region Fields
 
         private readonly IApplicationLifetime applicationLifetime;
@@ -45,8 +42,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         private List<DataModels.Bay> configuredBays;
-
-        private IStateMachine currentStateMachine;
 
         #endregion
 
@@ -121,8 +116,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #endregion
 
-
-
         #region Methods
 
         public override async Task StartAsync(CancellationToken cancellationToken)
@@ -134,7 +127,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
-
             this.Logger.LogDebug($"Notifying Automation Service service error");
 
             var msg = new NotificationMessage(

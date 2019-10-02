@@ -18,7 +18,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 {
     internal class ChangeRunningStateEndState : StateBase, IChangeRunningStateEndState, IEndState
     {
-
         #region Fields
 
         private readonly IBaysProvider baysProvider;
@@ -48,8 +47,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #endregion
 
-
-
         #region Properties
 
         public NotificationMessage EndMessage { get; set; }
@@ -61,8 +58,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         public StopRequestReason StopRequestReason { get; set; }
 
         #endregion
-
-
 
         #region Methods
 
@@ -114,6 +109,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             }
 
             return returnValue;
+        }
+
+        protected override IState OnStop(StopRequestReason reason)
+        {
+            return this;
         }
 
         private void UpdateResponseList(MessageStatus status, BayNumber targetBay)

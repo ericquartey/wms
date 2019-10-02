@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
-
-
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)

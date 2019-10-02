@@ -5,12 +5,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -195,38 +191,6 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.Logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-            }
-        }
-
-        private void OnMachineRunningStatusChange(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.Data is IStateChangedMessageData messageData)
-            {
-                var reason = StopRequestReason.NoReason;
-
-                if (receivedMessage.Type == MessageType.FaultStateChanged && messageData.CurrentState)
-                {
-                    reason = StopRequestReason.FaultStateChanged;
-                }
-
-                if (receivedMessage.Type == MessageType.RunningStateChanged && !messageData.CurrentState)
-                {
-                    reason = StopRequestReason.RunningStateChanged;
-                }
-
-                if (reason != StopRequestReason.NoReason)
-                {
-                    this.currentStateMachine = new PowerEnableStateMachine(
-                        false,
-                        BayNumber.BayOne,
-                        reason,
-                        this.configuredBays,
-                        this.EventAggregator,
-                        this.Logger as ILogger<AutomationService>,
-                        this.serviceScopeFactory);
-
-                    this.currentStateMachine.Start();
-                }
             }
         }
 

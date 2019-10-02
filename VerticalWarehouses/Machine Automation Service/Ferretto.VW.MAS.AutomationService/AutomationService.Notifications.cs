@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     partial class AutomationService
@@ -88,14 +89,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.DataLayerReady:
                     this.OnDataLayerReady();
                     break;
-
-                case MessageType.FaultStateChanged:
-                case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(receivedMessage);
-                    break;
             }
-
-            this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
         }
 
         private void OnDataLayerException(NotificationMessage receivedMessage)

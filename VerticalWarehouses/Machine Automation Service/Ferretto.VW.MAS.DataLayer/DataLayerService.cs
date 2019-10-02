@@ -79,7 +79,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
-
             this.Logger.LogDebug($"Notifying Data Layer service error");
 
             var msg = new NotificationMessage(
@@ -118,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Type = command.Type.ToString(),
             };
 
-            this.SaveEntryToDb(logEntry);
+            // this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
         }

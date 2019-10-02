@@ -91,17 +91,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 {
                     if (!this.IsMarchPossible(out string errorText))
                     {
-                        var notificationMessage = new NotificationMessage(
-                            null,
-                            errorText,
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.InverterException,
-                            this.machineData.RequestingBay,
-                            this.machineData.TargetBay,
-                            MessageStatus.OperationStart);
+                        //TODO This will be double notification either remove this publish or do no enter in error state
+                        //var notificationMessage = new NotificationMessage(
+                        //    null,
+                        //    errorText,
+                        //    MessageActor.Any,
+                        //    MessageActor.FiniteStateMachines,
+                        //    MessageType.InverterException,
+                        //    this.machineData.RequestingBay,
+                        //    this.machineData.TargetBay,
+                        //    MessageStatus.OperationStart);
 
-                        this.PublishNotificationMessage(notificationMessage);
+                        //this.PublishNotificationMessage(notificationMessage);
 
                         this.Logger.LogError(errorText);
 
