@@ -474,30 +474,38 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
 
-                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                    try
                     {
-                        if (this.socketTransport.IsConnected)
+                        if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                         {
-                            this.writeEnableEvent.Reset();
-
-                            var result = false;
-
-                            switch (handleIndex)
+                            if (this.socketTransport.IsConnected)
                             {
-                                case 0:
-                                    result = await this.ProcessHeartbeat();
-                                    break;
+                                this.writeEnableEvent.Reset();
 
-                                case 1:
-                                    result = await this.ProcessInverterCommand();
-                                    break;
-                            }
+                                var result = false;
 
-                            if (!result)
-                            {
-                                this.writeEnableEvent.Set();
+                                switch (handleIndex)
+                                {
+                                    case 0:
+                                        result = await this.ProcessHeartbeat();
+                                        break;
+
+                                    case 1:
+                                        result = await this.ProcessInverterCommand();
+                                        break;
+                                }
+
+                                if (!result)
+                                {
+                                    this.writeEnableEvent.Set();
+                                }
                             }
                         }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        this.logger.LogInformation("WriteEnable wait was canceled.");
+                        break;
                     }
                 }
                 else
