@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return this.machineControlProvider.FilterNotifications(notification);
+            return this.machineControlProvider.FilterNotifications(notification, MessageActor.MissionsManager);
         }
 
         protected override IState OnCommandReceived(CommandMessage commandMessage)

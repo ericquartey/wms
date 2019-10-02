@@ -11,7 +11,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 {
-    public class MachineControlProvider : BaseProvider, IMachineControlProvider
+    internal class MachineControlProvider : BaseProvider, IMachineControlProvider
     {
         #region Fields
 
@@ -38,14 +38,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             return command.Type == MessageType.ChangeRunningState;
         }
 
-        public bool FilterNotifications(NotificationMessage notification)
+        public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
-            return notification.Type == MessageType.PowerEnable ||
+            return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
+                (notification.Type == MessageType.PowerEnable ||
                 notification.Type == MessageType.Stop ||
                 notification.Type == MessageType.InverterFaultReset ||
                 notification.Type == MessageType.ResetSecurity ||
                 notification.Status == MessageStatus.OperationFaultStop ||
-                notification.Status == MessageStatus.OperationRunningStop;
+                notification.Status == MessageStatus.OperationRunningStop);
         }
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)
@@ -139,7 +140,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Setting Vertimag power status to {messageData.Enable}",
                 MessageActor.AutomationService,
-                MessageActor.MissionsManager,
+                sender,
                 MessageType.ChangeRunningState,
                 requestingBay,
                 BayNumber.None,

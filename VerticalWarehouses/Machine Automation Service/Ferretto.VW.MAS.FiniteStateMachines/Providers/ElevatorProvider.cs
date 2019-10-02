@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.Dispose(true);
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay, MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
 
@@ -159,12 +159,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
             var setupStatus = this.setupStatusProvider.Get();
 
@@ -200,12 +201,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
+        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber, MessageActor sender)
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
@@ -253,12 +255,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 bayNumber,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber)
+        public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
@@ -314,12 +317,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 bayNumber,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, double feedRate = 1)
+        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, MessageActor sender, double feedRate = 1)
         {
             if (distance == 0)
             {
@@ -364,12 +368,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 bayNumber,
                 BayNumber.ElevatorBay);
         }
 
-        public void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber bayNumber)
+        public void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition,
+            int totalTestCycleCount, int delayStart, BayNumber bayNumber, MessageActor sender)
         {
             if (totalTestCycleCount <= 0)
             {
@@ -434,12 +440,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 data,
                 "Execute Belt Burnishing Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 bayNumber,
                 BayNumber.ElevatorBay);
         }
 
-        public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay)
+        public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId,
+            BayNumber requestingBay, MessageActor sender)
         {
             if (displacement <= 0)
             {
@@ -484,18 +492,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void Stop(BayNumber bayNumber)
+        public void Stop(BayNumber bayNumber, MessageActor sender)
         {
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
+                sender,
                 MessageType.Stop,
                 bayNumber,
                 BayNumber.ElevatorBay);

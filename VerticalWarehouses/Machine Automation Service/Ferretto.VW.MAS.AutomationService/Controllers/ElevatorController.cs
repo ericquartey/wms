@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, this.BayNumber);
+                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber);
+                this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber);
+                this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveVertical(direction, this.BayNumber);
+                this.elevatorProvider.MoveVertical(direction, this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -165,7 +165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber);
+                this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.Stop(this.BayNumber);
+                this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
                 return this.Accepted();
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -37,6 +38,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             IMessageData messageData,
             string description,
             MessageActor receiver,
+            MessageActor sender,
             MessageType messageType,
             BayNumber requestingBay,
             BayNumber targetBay)
@@ -48,10 +50,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                         messageData,
                         description,
                         receiver,
-                        MessageActor.WebApi,
+                        sender,
                         messageType,
                         requestingBay,
                         targetBay));
+        }
+
+        protected void PublishNotification(
+            IMessageData messageData,
+            string description,
+            MessageActor receiver,
+            MessageActor sender,
+            MessageType messageType,
+            BayNumber requestingBay,
+            BayNumber targetBay,
+            MessageStatus status,
+            ErrorLevel level)
+        {
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(
+                    new NotificationMessage(
+                        messageData,
+                        description,
+                        receiver,
+                        sender,
+                        messageType,
+                        requestingBay,
+                        targetBay,
+                        status,
+                        level));
         }
 
         #endregion

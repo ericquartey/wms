@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
@@ -45,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber);
+                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
                 return this.Accepted();
             }
@@ -62,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.Stop(this.BayNumber);
+                this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
 
                 return this.Accepted();
             }

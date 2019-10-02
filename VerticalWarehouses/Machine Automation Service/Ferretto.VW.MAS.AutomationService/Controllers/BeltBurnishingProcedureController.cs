@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                this.elevatorProvider.RepeatVerticalMovement(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, this.BayNumber);
+                this.elevatorProvider.RepeatVerticalMovement(upperBoundPosition, lowerBoundPosition, totalTestCycleCount, delayStart, this.BayNumber, MessageActor.AutomationService);
 
                 return this.Accepted();
             }

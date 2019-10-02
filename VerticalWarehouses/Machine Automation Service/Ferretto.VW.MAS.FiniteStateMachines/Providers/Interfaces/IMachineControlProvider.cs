@@ -7,13 +7,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces
 {
     public interface IMachineControlProvider
     {
-
-
         #region Methods
 
         bool FilterCommands(CommandMessage command);
 
-        bool FilterNotifications(NotificationMessage notification);
+        bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
         /// <summary>
         /// Check message status for power related messages
