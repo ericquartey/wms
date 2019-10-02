@@ -825,6 +825,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     {
                                         var currentStateMachine = new PositioningTableStateMachine(
                                             positioningFieldData,
+                                            this.dataOld,
                                             inverter,
                                             this.logger,
                                             this.eventAggregator,
