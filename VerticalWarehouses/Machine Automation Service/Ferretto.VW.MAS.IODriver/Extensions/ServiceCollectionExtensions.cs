@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IIoDeviceService, IoDeviceService>();
+            services.AddSingleton<IIoDevicesProvider, IoDevicesProvider>();
 
             return services;
         }

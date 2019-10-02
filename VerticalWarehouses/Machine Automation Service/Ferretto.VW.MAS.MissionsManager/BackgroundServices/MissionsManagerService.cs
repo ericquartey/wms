@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.MissionsManager
         #region Fields
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
+
+        private readonly IConfiguration configuration;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -39,27 +42,15 @@ namespace Ferretto.VW.MAS.MissionsManager
             ILogger<MissionsManagerService> logger,
             IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService,
+            IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
         {
-            if (machinesDataService == null)
-            {
-                throw new ArgumentNullException(nameof(machinesDataService));
-            }
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            if (missionsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(missionsDataService));
-            }
-
-            if (serviceScopeFactory == null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.machinesDataService = machinesDataService;
-            this.missionsDataService = missionsDataService;
-            this.serviceScopeFactory = serviceScopeFactory;
             this.serviceScope = serviceScopeFactory.CreateScope();
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 

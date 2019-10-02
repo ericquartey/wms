@@ -20,6 +20,12 @@ namespace Ferretto.VW.App.Services
             return (BayNumber)Enum.Parse(typeof(BayNumber), bayNumberString);
         }
 
+        public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
+        {
+            var valueString = appSettings.Get("AutomationService:HealthChecks:LogoutWhenUnhealthy");
+            return bool.Parse(valueString);
+        }
+
         #endregion
     }
 }

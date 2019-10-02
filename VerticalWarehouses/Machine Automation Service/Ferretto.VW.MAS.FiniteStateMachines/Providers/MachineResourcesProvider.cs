@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             var inverterStatus = new AglInverterStatus(
                 this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index);
 
-            var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 
             Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
 
@@ -197,7 +197,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                                 //During Fault Handling running status will be set off. This prevents double firing the power off procedure
                                 if (!this.IsInverterInFault)
                                 {
-                                    StatusUpdateEventArgs args = new StatusUpdateEventArgs();
+                                    var args = new StatusUpdateEventArgs();
                                     args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
                                     this.OnRunningStateChanged(args);
                                 }
@@ -206,7 +206,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                             if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
                                 newSensorStatus[(int)IOMachineSensors.InverterInFault1])
                             {
-                                StatusUpdateEventArgs args = new StatusUpdateEventArgs();
+                                var args = new StatusUpdateEventArgs();
                                 args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
                                 this.OnFaultStateChanged(args);
                             }
@@ -216,10 +216,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                         updateDone = true;
                     }
                 }
-
-                requiredUpdate = false;
-
-                if (messageActor == FieldMessageActor.InverterDriver)
+                else if (messageActor == FieldMessageActor.InverterDriver)
                 {
                     for (var index = 0; index < INVERTER_INPUTS; index++)
                     {
@@ -248,13 +245,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         protected virtual void OnFaultStateChanged(StatusUpdateEventArgs e)
         {
-            EventHandler<StatusUpdateEventArgs> handler = FaultStateChanged;
+            var handler = FaultStateChanged;
             handler?.Invoke(this, e);
         }
 
         protected virtual void OnRunningStateChanged(StatusUpdateEventArgs e)
         {
-            EventHandler<StatusUpdateEventArgs> handler = RunningStateChanged;
+            var handler = RunningStateChanged;
             handler?.Invoke(this, e);
         }
 
