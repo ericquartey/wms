@@ -44,16 +44,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync(BayNumber bayNumber)
         {
-            try
-            {
-                var bay = this.baysProvider.Activate(bayNumber);
+            var bay = this.baysProvider.Activate(bayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
         [HttpPost("{bayNumber}/deactivate")]
@@ -62,16 +55,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync(BayNumber bayNumber)
         {
-            try
-            {
-                var bay = this.baysProvider.Deactivate(bayNumber);
+            var bay = this.baysProvider.Deactivate(bayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
         [HttpGet("{bayNumber}")]
@@ -80,16 +66,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> GetByNumber(BayNumber bayNumber)
         {
-            try
-            {
-                var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysProvider.GetByNumber(bayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
         [HttpPost("move")]
@@ -108,16 +87,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> UpdateHeightAsync(BayNumber bayNumber, int position, double height)
         {
-            try
-            {
-                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+            var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
         #endregion
