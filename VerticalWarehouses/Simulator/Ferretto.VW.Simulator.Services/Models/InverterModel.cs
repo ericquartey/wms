@@ -10,6 +10,13 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
+    public enum InverterCalibrationMode : ushort
+    {
+        FindSensor = 22,
+
+        ResetEncoder = 35,
+    }
+
     public enum InverterOperationMode : ushort
     {
         Position = 1,
@@ -252,6 +259,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer targetTimer;
 
+        private InverterCalibrationMode calibrationMode;
+
         private int controlWord;
 
         private Axis currentAxis;
@@ -376,6 +385,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
 
         public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
+
+        public InverterCalibrationMode CalibrationMode
+        {
+            get => this.calibrationMode;
+            set => this.SetProperty(ref this.calibrationMode, value);
+        }
 
         public int ControlWord
         {

@@ -387,9 +387,15 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
+                case InverterParameterId.HomingCalibration:
+                    inverter.CalibrationMode = (InverterCalibrationMode)message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 case InverterParameterId.HomingCreepSpeedParam:
                 case InverterParameterId.HomingFastSpeedParam:
                 case InverterParameterId.HomingAcceleration:
+                case InverterParameterId.HomingSensor:
                     result = client.Client.Send(message.ToBytes());
                     break;
 

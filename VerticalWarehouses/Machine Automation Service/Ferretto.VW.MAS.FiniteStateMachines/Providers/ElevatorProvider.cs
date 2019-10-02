@@ -131,14 +131,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 .Steps
                 .OrderBy(s => s.Number);
 
-            // TODO: parameters to test TableTarget mode when previous method crash
-            //var profileSteps = new List<StepMovementParameters>();
-            //profileSteps.Add(new StepMovementParameters { Acceleration = 1000, Speed = 200, Position = 200 });
-            //profileSteps.Add(new StepMovementParameters { Acceleration = 500, Speed = 100, Position = 550 });
-            //profileSteps.Add(new StepMovementParameters { Acceleration = 1000, Speed = 500, Position = 950 });
-            //profileSteps.Add(new StepMovementParameters { Acceleration = 1000, Speed = 250, Position = 1350 });
-            //profileSteps.Add(new StepMovementParameters { Acceleration = 800, Speed = 50, Position = 1415 });
-
             // if direction is Forwards height increments, else is decremented
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 

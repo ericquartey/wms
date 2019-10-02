@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             var inverterMessage = new InverterMessage(
                 this.InverterStatus.SystemIndex,
                 (short)InverterParameterId.HomingCalibration,
-                (this.calibration == Calibration.FindSensor ? InverterCalibrationMode.FindSensor : InverterCalibrationMode.ResetEncoder),
+                (ushort)(this.calibration == Calibration.FindSensor ? InverterCalibrationMode.FindSensor : InverterCalibrationMode.ResetEncoder),
                 InverterDataset.HomingCalibration);
 
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
