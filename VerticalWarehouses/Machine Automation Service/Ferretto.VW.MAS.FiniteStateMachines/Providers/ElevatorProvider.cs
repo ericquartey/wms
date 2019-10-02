@@ -85,6 +85,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         public double HorizontalPosition { get; set; }
 
+        public MovementProfileType ProfileType { get; set; }
+
         public double VerticalPosition { get; set; }
 
         #endregion
@@ -124,10 +126,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            var profileType = SelectProfileType(direction, isStartedOnBoard);
+            this.ProfileType = SelectProfileType(direction, isStartedOnBoard);
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
-                .Single(p => p.Name == profileType)
+                .Single(p => p.Name == this.ProfileType)
                 .Steps
                 .OrderBy(s => s.Number);
 

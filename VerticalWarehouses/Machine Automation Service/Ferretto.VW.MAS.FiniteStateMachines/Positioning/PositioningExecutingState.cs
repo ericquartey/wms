@@ -146,6 +146,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
                             (byte)this.machineData.CurrentInverterIndex);
+
+                        if (this.machineData.MessageData.MovementType == MovementType.TableTarget)
+                        {
+                            this.Logger.LogDebug($"FSM: Table Target positioning started, ProfileType: {this.elevatorProvider.ProfileType}");
+                        }
                     }
                     break;
 
