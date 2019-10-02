@@ -15,8 +15,10 @@ using Ferretto.VW.MAS.IODriver.Services;
 using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -111,6 +113,7 @@ namespace Ferretto.VW.MAS.AutomationService
               {
                   options.Filters.Add(typeof(ReadinessFilter));
                   options.Filters.Add(typeof(BayNumberFilter));
+                  options.Filters.Add(typeof(ExceptionsFilter));
                   options.Conventions.Add(
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
