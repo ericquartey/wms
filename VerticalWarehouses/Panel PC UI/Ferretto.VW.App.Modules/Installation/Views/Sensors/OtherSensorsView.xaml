@@ -43,7 +43,7 @@
 
             <controls:PpcSensorControl Grid.Row="1"
                                        Grid.ColumnSpan="2"
-                                       SensorState="{Binding Sensors.NormalState}"
+                                       SensorState="{Binding Sensors.RunningState}"
                                        Text="{x:Static res:InstallationApp.SecurityFunctionActive}" />
 
             <StackPanel Grid.Row="2"
