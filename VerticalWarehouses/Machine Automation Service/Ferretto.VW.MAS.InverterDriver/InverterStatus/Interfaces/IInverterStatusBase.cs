@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
@@ -13,11 +12,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         bool[] Inputs { get; }
 
-        InverterType Type { get; }
+        bool IsStarted { get; }
 
         ushort OperatingMode { get; set; }
 
-        byte SystemIndex { get; }
+        InverterIndex SystemIndex { get; }
 
         #endregion
 

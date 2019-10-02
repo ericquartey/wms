@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus;
+﻿using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus.States;
 using Ferretto.VW.MAS.MissionsManager.Providers;
 using Microsoft.Extensions.DependencyInjection;

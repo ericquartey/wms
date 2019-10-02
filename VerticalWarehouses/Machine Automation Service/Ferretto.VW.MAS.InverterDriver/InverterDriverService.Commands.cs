@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -22,7 +23,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (this.inverterService.StatusesCount == 0)
+            if (!this.invertersProvider.GetAll().Any())
             {
                 this.logger.LogError("4:Inverter Driver not configured for this message Type");
 
@@ -54,51 +55,65 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
-            switch (receivedMessage.Type)
+            try
             {
-                case FieldMessageType.CalibrateAxis:
-                    this.ProcessCalibrateAxisMessage(receivedMessage);
-                    break;
+                var inverter = this.invertersProvider.GetByIndex((InverterIndex)receivedMessage.DeviceIndex);
 
-                case FieldMessageType.InverterPowerOff:
-                    this.ProcessPowerOffMessage(receivedMessage);
-                    break;
+                switch (receivedMessage.Type)
+                {
+                    case FieldMessageType.CalibrateAxis:
+                        this.ProcessCalibrateAxisMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.InverterPowerOn:
-                    this.ProcessPowerOnMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterPowerOff:
+                        this.ProcessPowerOffMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.Positioning:
-                    this.ProcessPositioningMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterPowerOn:
+                        this.ProcessPowerOnMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.ShutterPositioning:
-                    this.ProcessShutterPositioningMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.Positioning:
+                        this.ProcessPositioningMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.InverterSetTimer:
-                    this.ProcessInverterSetTimerMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.ShutterPositioning:
+                        this.ProcessShutterPositioningMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.InverterSwitchOff:
-                    this.ProcessInverterSwitchOffMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterSetTimer:
+                        this.ProcessInverterSetTimerMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.InverterSwitchOn:
-                    this.ProcessInverterSwitchOnMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterSwitchOff:
+                        this.ProcessInverterSwitchOffMessage(inverter);
+                        break;
 
-                case FieldMessageType.InverterStop:
-                    this.ProcessStopMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterSwitchOn:
+                        this.ProcessInverterSwitchOnMessage(receivedMessage, inverter);
+                        break;
 
-                case FieldMessageType.InverterFaultReset:
-                    this.ProcessFaultResetMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterStop:
+                        this.ProcessStopMessage(inverter);
+                        break;
 
-                case FieldMessageType.InverterDisable:
-                    this.ProcessDisableMessage(receivedMessage);
-                    break;
+                    case FieldMessageType.InverterFaultReset:
+                        this.ProcessFaultResetMessage(inverter);
+                        break;
+
+                    case FieldMessageType.InverterDisable:
+                        this.ProcessDisableMessage(inverter);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"3:Inverter number {receivedMessage.DeviceIndex} is not configured for this machine");
+
+                this.SendOperationErrorMessage(
+                    (InverterIndex)receivedMessage.DeviceIndex,
+                    new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0),
+                    FieldMessageType.InverterStop);
             }
 
             var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
