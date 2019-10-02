@@ -211,7 +211,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         private bool mushroomEmergencyButtonBay3;
 
-        private bool normalState;
+        private bool runningState;
 
         private bool powerOnOff;
 
@@ -441,7 +441,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         public bool MushroomEmergencyButtonBay3 { get => this.mushroomEmergencyButtonBay3; set => this.SetProperty(ref this.mushroomEmergencyButtonBay3, value); }
 
-        public bool NormalState { get => this.normalState; set => this.SetProperty(ref this.normalState, value); }
+        public bool RunningState { get => this.runningState; set => this.SetProperty(ref this.runningState, value); }
 
         public bool PowerOnOff { get => this.powerOnOff; set => this.SetProperty(ref this.powerOnOff, value); }
 
