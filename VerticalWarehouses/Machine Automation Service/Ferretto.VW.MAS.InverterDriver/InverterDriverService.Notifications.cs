@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.DataLayerReady:
 
                     await this.StartHardwareCommunications();
-                    this.InitializeInverterStatus();
+                    this.InitializeTimers();
 
                     break;
 

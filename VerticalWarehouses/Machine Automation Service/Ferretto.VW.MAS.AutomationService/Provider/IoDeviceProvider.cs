@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Properties
 
-        public IEnumerable<IoDeviceInfo> GetStatuses => this.GetIoDevices(this.ioDeviceService.GetStatuses);
+        public IEnumerable<IoDeviceInfo> GetStatuses => this.GetIoDevices(this.ioDeviceService.IoStatuses);
 
         #endregion
 

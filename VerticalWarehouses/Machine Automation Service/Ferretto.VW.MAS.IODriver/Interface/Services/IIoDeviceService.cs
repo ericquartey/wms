@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver.Interface.Services
 {
@@ -7,13 +6,7 @@ namespace Ferretto.VW.MAS.IODriver.Interface.Services
     {
         #region Properties
 
-        IEnumerable<IoStatus> GetStatuses { get; }
-
-        #endregion
-
-        #region Methods
-
-        IoStatus AddIoStatus(IoIndex index);
+        IEnumerable<IoStatus> IoStatuses { get; }
 
         #endregion
     }

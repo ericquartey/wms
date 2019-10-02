@@ -398,7 +398,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     var inverterStatus = new AglInverterStatus(
                         this.baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index);
 
-                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
+                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
                     Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                     notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
                     var msg = new NotificationMessage(

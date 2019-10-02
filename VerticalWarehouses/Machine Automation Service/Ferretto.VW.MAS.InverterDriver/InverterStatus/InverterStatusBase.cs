@@ -1,10 +1,8 @@
-﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
-using Ferretto.VW.MAS.Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier
@@ -26,7 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         protected InverterStatusBase(InverterIndex systemIndex)
         {
-            this.SystemIndex = (byte)systemIndex;
+            this.SystemIndex = systemIndex;
         }
 
         #endregion
@@ -38,6 +36,12 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public IStatusWord CommonStatusWord => this.statusWord;
 
         public bool[] Inputs { get; protected set; }
+
+        public bool IsStarted =>
+            this.CommonStatusWord.IsReadyToSwitchOn &
+            this.CommonStatusWord.IsSwitchedOn &
+            this.CommonStatusWord.IsVoltageEnabled &
+            this.CommonStatusWord.IsQuickStopTrue;
 
         public ushort OperatingMode
         {
@@ -70,9 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
-        public byte SystemIndex { get; }
-
-        public InverterType Type { get; protected set; }
+        public InverterIndex SystemIndex { get; }
 
         #endregion
 

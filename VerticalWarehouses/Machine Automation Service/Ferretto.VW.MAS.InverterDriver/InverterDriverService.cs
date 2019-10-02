@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines;
+        private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task inverterSendTask;
 
-        private readonly IInverterService inverterService;
+        private readonly IInvertersProvider invertersProvider;
 
         private readonly ILogger logger;
 
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IInverterService inverterService,
+            IInvertersProvider invertersProvider,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
@@ -139,8 +139,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            this.currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
-            this.inverterService = inverterService;
+            this.invertersProvider = invertersProvider;
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);

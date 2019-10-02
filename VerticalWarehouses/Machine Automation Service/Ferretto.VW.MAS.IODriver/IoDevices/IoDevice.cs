@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
-            this.ioStatus = ioDeviceService.AddIoStatus(index);
+            this.ioStatus = ioDeviceService.IoStatuses.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
         }
 
         #endregion

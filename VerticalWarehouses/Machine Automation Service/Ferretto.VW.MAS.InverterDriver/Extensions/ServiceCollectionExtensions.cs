@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IInverterService, InverterService>();
+            services.AddSingleton<IInvertersProvider, InvertersProvider>();
 
             return services;
         }
