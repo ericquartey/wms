@@ -33,12 +33,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.Logger.LogTrace($"Saving log entry '{logEntry.Description}' (id={logEntry.Id}) to database.");
 
-            using (var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
-            {
-                dbContext.LogEntries.Add(logEntry);
+            var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
-                dbContext.SaveChanges();
-            }
+            dbContext.LogEntries.Add(logEntry);
+
+            dbContext.SaveChanges();
         }
 
         #endregion

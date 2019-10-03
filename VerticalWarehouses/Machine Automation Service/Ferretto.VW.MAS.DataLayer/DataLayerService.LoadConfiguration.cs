@@ -27,8 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="configurationFilePath">Configuration parameters to load</param>
         private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
-            using (var dataContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
-            {
+            var dataContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
                 if (dataContext.ConfigurationValues.Any())
                 {
                     return;
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
                 }
-            }
+
         }
 
         private void SaveConfigurationData(

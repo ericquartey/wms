@@ -15,18 +15,29 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
 
+        private static ulong instanceCounter;
+
+        private static ulong instanceId;
+
         #endregion
 
         #region Constructors
 
         public DataLayerContext()
         {
+            instanceCounter++;
+            instanceId++;
+            System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceId}] - alive instances: {instanceCounter}");
         }
 
         public DataLayerContext(DbContextOptions<DataLayerContext> options)
             : base(options)
         {
-            this.Options = options;
+            this.Options = options ?? throw new ArgumentNullException(nameof(options));
+
+            instanceCounter++;
+            instanceId++;
+            System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceId}] - alive instances: {instanceCounter}");
         }
 
         #endregion
@@ -84,6 +95,13 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #endregion
 
         #region Methods
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            instanceCounter--;
+            System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceId}] disposing");
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

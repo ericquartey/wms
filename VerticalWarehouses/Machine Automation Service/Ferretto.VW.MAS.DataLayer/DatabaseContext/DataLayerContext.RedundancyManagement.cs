@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -12,6 +13,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
     {
         #region Fields
 
+        private static readonly object SyncRoot = new object();
+
+        private static int saveChangesCounter;
+
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
         #endregion
@@ -23,12 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             IDbContextRedundancyService<DataLayerContext> redundancyService)
             : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions)
         {
-            if (redundancyService == null)
-            {
-                throw new ArgumentNullException(nameof(redundancyService));
-            }
-
-            this.redundancyService = redundancyService;
+            this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion
@@ -48,30 +48,34 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 return base.SaveChanges();
             }
 
-            var affectedRecordsCount = 0;
+            var counter = saveChangesCounter++;
 
-            try
+            var affectedRecordsCount = 0;
+            lock (SyncRoot)
             {
-                lock (this.redundancyService)
+                try
                 {
+                    // System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceCounter}] Save changes start ({counter})");
                     affectedRecordsCount = base.SaveChanges();
                 }
-            }
-            catch (Exception ex)
-            {
-                // Swap is handled in diagnostic interceptor:
-                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
-                System.Diagnostics.Debug.Assert(
-                      this.Options == this.redundancyService.StandbyDbContextOptions,
-                      $"This channel (previously was active) is now standby because {ex.Message}");
-
-                if (this.redundancyService.IsActiveDbInhibited)
+                catch (Exception ex)
                 {
-                    throw new DataLayerPersistentException(
-                        DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                    // Swap is handled in diagnostic interceptor:
+                    // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+                    System.Diagnostics.Debug.Assert(
+                          this.Options == this.redundancyService.StandbyDbContextOptions,
+                          $"This channel (previously was active) is now standby because {ex.Message}");
+
+                    if (this.redundancyService.IsActiveDbInhibited)
+                    {
+                        throw new DataLayerPersistentException(
+                            DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                    }
+
+                    affectedRecordsCount = this.SaveToActiveDb();
                 }
 
-                affectedRecordsCount = this.SaveToActiveDb();
+                //System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceCounter}] Save changes end ({counter})");
             }
 
             return affectedRecordsCount;
@@ -101,26 +105,22 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         private int SaveToActiveDb()
         {
-            var dbContext = new DataLayerContext(
-                isActiveChannel: true,
-                this.redundancyService);
-
-            var affectedRecordsCount = 0;
-            try
+            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService))
             {
-                lock (this.redundancyService)
+                var affectedRecordsCount = 0;
+                try
                 {
                     affectedRecordsCount = dbContext.SaveChanges();
                 }
-            }
-            catch
-            {
-                // Do nothing.
-                // Errors are handled in diagnostic interceptor:
-                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
-            }
+                catch
+                {
+                    // Do nothing.
+                    // Errors are handled in diagnostic interceptor:
+                    // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+                }
 
-            return affectedRecordsCount;
+                return affectedRecordsCount;
+            }
         }
 
         #endregion

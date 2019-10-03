@@ -351,14 +351,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                using (var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
-                {
+                var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
                     configurationValue = dbContext.ConfigurationValues
                         .FirstOrDefault(s =>
                             s.VarName == configurationValueEnum
                             &&
                             s.CategoryName == (long)category);
-                }
+
             }
             catch
             {
@@ -372,8 +372,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void SetUpdateConfigurationValueCommon(ConfigurationValue newConfigurationValue)
         {
-            using (var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
-            {
+            var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
                 var configurationValue = dbContext.ConfigurationValues
                     .FirstOrDefault(s =>
                         s.VarName == newConfigurationValue.VarName
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     throw;
                 }
-            }
+
         }
 
         #endregion

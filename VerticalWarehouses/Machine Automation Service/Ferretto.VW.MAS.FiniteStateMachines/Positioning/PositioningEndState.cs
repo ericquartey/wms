@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly IPositioningStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors

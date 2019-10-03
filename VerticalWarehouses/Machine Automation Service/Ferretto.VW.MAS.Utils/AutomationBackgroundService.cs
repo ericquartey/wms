@@ -38,18 +38,8 @@ namespace Ferretto.VW.MAS.Utils
             IEventAggregator eventAggregator,
             ILogger logger)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            this.EventAggregator = eventAggregator;
-            this.Logger = logger;
+            this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.commandReceiveTask = new Task(async () => await this.DequeueCommandsAsync());
             this.notificationReceiveTask = new Task(async () => await this.DequeueNotificationsAsync());

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using Microsoft.Extensions.DiagnosticAdapter;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
     {
         #region Fields
+
+        private readonly ILogger<DbContext> logger;
 
         private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
@@ -23,14 +26,11 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #region Constructors
 
         public CommandListener(
-            IDbContextRedundancyService<TDbContext> redundancyService)
+            IDbContextRedundancyService<TDbContext> redundancyService,
+            ILogger<DataLayerContext> logger)
         {
-            if (redundancyService == null)
-            {
-                throw new ArgumentNullException(nameof(redundancyService));
-            }
-
-            this.redundancyService = redundancyService;
+            this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -48,17 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 DateTimeOffset startTime,
                 TimeSpan duration)
         {
-            var dbContextOptions = !this.writingOnStandby
-                ? this.redundancyService.ActiveDbContextOptions
-                : this.redundancyService.StandbyDbContextOptions;
-
-            lock (this.redundancyService)
-            {
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
-                }
-            }
+            this.logger.LogError($"Database command error: {command.CommandText}");
+            this.OnCommandOrConnectionError(exception);
         }
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
@@ -84,9 +75,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 {
                     this.writingOnStandby = true;
 
-                    var dbContext = new DataLayerContext(
+                    using(var dbContext = new DataLayerContext(
                        isActiveChannel: false,
-                       this.redundancyService as IDbContextRedundancyService<DataLayerContext>);
+                       this.redundancyService as IDbContextRedundancyService<DataLayerContext>))
+                    {
 
                     var parametersArray = new SqliteParameter[command.Parameters.Count];
                     command.Parameters.CopyTo(parametersArray, 0);
@@ -101,8 +93,24 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                     }
 
                     this.writingOnStandby = false;
+                    }
                 }
             }
+        }
+
+        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Connection.ConnectionError")]
+        public void OnConnectionError(
+               DbCommand command,
+               DbCommandMethod executeMethod,
+               Guid commandId,
+               Guid connectionId,
+               Exception exception,
+               bool async,
+               DateTimeOffset startTime,
+               TimeSpan duration)
+        {
+            this.logger.LogError($"Database connection error.");
+            this.OnCommandOrConnectionError(null);
         }
 
         private static bool IsModifyingCommand(DbCommand command)
@@ -121,6 +129,21 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         {
             var activeDbExtension = this.redundancyService.ActiveDbContextOptions.FindExtension<SqliteOptionsExtension>();
             return connectionString == activeDbExtension.ConnectionString;
+        }
+
+        private void OnCommandOrConnectionError(Exception exception)
+        {
+            lock (this.redundancyService)
+            {
+                var dbContextOptions = this.writingOnStandby
+                ? this.redundancyService.StandbyDbContextOptions
+                : this.redundancyService.ActiveDbContextOptions;
+
+                if (this.redundancyService.IsEnabled)
+                {
+                    this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+                }
+            }
         }
 
         #endregion
