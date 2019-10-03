@@ -346,7 +346,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                &&
                !this.IsWaitingForResponse;
 
-            this.CanInputQuote = !this.IsElevatorMoving
+            this.CanInputHeight = !this.IsElevatorMoving
                &&
                !this.IsWaitingForResponse;
 

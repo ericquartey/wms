@@ -7,7 +7,6 @@
              Style="{StaticResource PpcSpinEditStyle}"
              mc:Ignorable="d">
 
-
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="0,1,5,1"
@@ -20,8 +19,7 @@
                       EditValue="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Increment="1"
                       IsEnabled="{Binding IsEnabled}"
-                      NullValue="0"
-                      Style="{StaticResource SpinEditIntegerStyle}">
+                      Style="{StaticResource VWAPP_PpcTextBox_SpinEditDecimalStyle}">
             <dxe:SpinEdit.Buttons>
                 <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                 IsLeft="True"

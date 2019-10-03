@@ -42,10 +42,10 @@ namespace Ferretto.VW.App.Controls
             new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-                                            nameof(Mask),
+            nameof(Mask),
             typeof(string),
             typeof(PpcSpinEdit),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(null, new PropertyChangedCallback(OnMaskChanged)));
 
         public static readonly DependencyProperty SpinEditStyleProperty = DependencyProperty.Register(
             nameof(SpinEditStyle),
@@ -118,8 +118,8 @@ namespace Ferretto.VW.App.Controls
 
         public Style SpinEditStyle
         {
-            get => (Style)this.GetValue(BorderColorProperty);
-            set => this.SetValue(BorderColorProperty, value);
+            get => (Style)this.GetValue(SpinEditStyleProperty);
+            set => this.SetValue(SpinEditStyleProperty, value);
         }
 
         public decimal WidthNumber
@@ -139,6 +139,22 @@ namespace Ferretto.VW.App.Controls
                 e.NewValue is decimal increment)
             {
                 ppcSpinEdit.InnerSpinEdit.Increment = increment;
+            }
+        }
+
+        private static void OnMaskChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcSpinEdit ppcSpinEdit
+                &&
+                e.NewValue is string mask)
+            {
+                ppcSpinEdit.InnerSpinEdit.Mask = mask;
+                ppcSpinEdit.InnerSpinEdit.MaskUseAsDisplayFormat = true;
+            }
+            else if (d is PpcSpinEdit se)
+            {
+                se.InnerSpinEdit.Mask = string.Empty;
+                se.InnerSpinEdit.MaskUseAsDisplayFormat = false;
             }
         }
 

@@ -56,16 +56,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canInputCellId, value);
         }
 
+        public bool CanInputHeight
+        {
+            get => this.canInputHeight;
+            private set => this.SetProperty(ref this.canInputHeight, value);
+        }
+
         public bool CanInputLoadingUnitId
         {
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
-        }
-
-        public bool CanInputQuote
-        {
-            get => this.canInputHeight;
-            private set => this.SetProperty(ref this.canInputHeight, value);
         }
 
         public int? InputCellId
