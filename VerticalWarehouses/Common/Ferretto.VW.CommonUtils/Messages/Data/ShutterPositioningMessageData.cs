@@ -65,6 +65,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.HighSpeedDurationClose = shutterPositioningMessageData.HighSpeedDurationClose;
             this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
+            this.ExecutedCycles = shutterPositioningMessageData.ExecutedCycles;
         }
 
         #endregion

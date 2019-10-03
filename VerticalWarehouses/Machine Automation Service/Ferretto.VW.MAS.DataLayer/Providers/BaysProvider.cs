@@ -213,6 +213,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 .Include(b => b.Positions)
                 .Include(b => b.Shutter)
                 .ThenInclude(s => s.Inverter)
+                .Include(b => b.Carousel)
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(b => b.Number == bayNumber);
 

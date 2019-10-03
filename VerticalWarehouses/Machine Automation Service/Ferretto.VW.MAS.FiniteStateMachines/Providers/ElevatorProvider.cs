@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
@@ -30,6 +31,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
+        private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly IMachineProvider machineProvider;
 
@@ -56,11 +59,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         #region Constructors
 
         public ElevatorProvider(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator)
         {
             this.scope = serviceScopeFactory.CreateScope();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
@@ -125,6 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}");
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
                 .Single(p => p.Name == profileType)

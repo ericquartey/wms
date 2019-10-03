@@ -2734,9 +2734,9 @@
     "FeedRate": 0.20
   },
   "HorizontalManualMovements": {
-    "FeedRate": 0.10,
+    "FeedRate": 0.40,
     "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 1235.0
+    "RecoveryTargetPosition": 200.0
   },
   "LoadFirstDrawer": {
     "FeedRate": 0.20
@@ -2765,8 +2765,8 @@
     "Deceleration": 500.0,
     "HigherDistance": 467.0,
     "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 15.0,
-    "HighSpeedDurationClose": 15.0
+    "HighSpeedDurationOpen": 14.0,
+    "HighSpeedDurationClose": 13.0
   },
   "VerticalManualMovements": {
     "FeedRate": 0.10,

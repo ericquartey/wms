@@ -15,7 +15,7 @@
         },
         "IsExternal": true,
         "Number": 1,
-        "Positions": [ { "Height": 752 } ],
+        "Positions": [ { "Height": 738 } ],
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -2727,7 +2727,7 @@
     "FeedRateAfterZero": 0.15
   },
   "HorizontalManualMovements": {
-    "FeedRate": 0.30,
+    "FeedRate": 0.40, // 0.30
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 200.0
   },
@@ -2739,8 +2739,8 @@
     "Deceleration": 500.0,
     "HigherDistance": 467.0,
     "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 15.0,
-    "HighSpeedDurationClose": 15.0
+    "HighSpeedDurationOpen": 14.0,
+    "HighSpeedDurationClose": 13.0
   },
   "BeltBurnishing": {
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
