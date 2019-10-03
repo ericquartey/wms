@@ -54,6 +54,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
+
         [HttpGet("position")]
         public ActionResult<decimal> GetPosition()
         {
@@ -65,7 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Homing()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
 
             this.PublishCommand(
                 homingData,

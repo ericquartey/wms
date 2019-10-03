@@ -40,35 +40,51 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("{bayNumber}/activate")]
+        [HttpPost("activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(BayNumber bayNumber)
+        public ActionResult<Bay> ActivateAsync()
         {
-            var bay = this.baysProvider.Activate(bayNumber);
+            var bay = this.baysProvider.Activate(this.BayNumber);
 
             return this.Ok(bay);
         }
 
-        [HttpPost("{bayNumber}/deactivate")]
+        [HttpPost("deactivate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(BayNumber bayNumber)
+        public ActionResult<Bay> DeactivateAsync()
         {
-            var bay = this.baysProvider.Deactivate(bayNumber);
+            var bay = this.baysProvider.Deactivate(this.BayNumber);
 
             return this.Ok(bay);
         }
 
-        [HttpGet("{bayNumber}")]
+        [HttpPost("findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
+
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber(BayNumber bayNumber)
+        public ActionResult<Bay> GetByNumber()
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysProvider.GetByNumber(this.BayNumber);
 
             return this.Ok(bay);
         }
@@ -78,7 +94,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Homing()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
 
             this.PublishCommand(
                 homingData,
@@ -93,19 +109,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult Move(int bayNumber, HorizontalMovementDirection direction)
+        public IActionResult Move(HorizontalMovementDirection direction)
         {
             throw new NotImplementedException();
         }
 
-        [HttpPost("{bayNumber}/height")]
+        [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateHeightAsync(BayNumber bayNumber, int position, double height)
+        public ActionResult<Bay> UpdateHeightAsync(int position, double height)
         {
-            var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+            var bay = this.baysProvider.UpdatePosition(this.BayNumber, position, height);
 
             return this.Ok(bay);
         }
