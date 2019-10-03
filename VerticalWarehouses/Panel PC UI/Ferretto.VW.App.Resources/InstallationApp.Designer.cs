@@ -205,6 +205,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay calibration.
+        /// </summary>
+        public static string BayCalibration {
+            get {
+                return ResourceManager.GetString("BayCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay height [mm].
         /// </summary>
         public static string BayHeight {
@@ -331,11 +340,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carousel down.
+        /// </summary>
+        public static string CarouselDown {
+            get {
+                return ResourceManager.GetString("CarouselDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel Movements.
         /// </summary>
         public static string CarouselMovements {
             get {
                 return ResourceManager.GetString("CarouselMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel up.
+        /// </summary>
+        public static string CarouselUp {
+            get {
+                return ResourceManager.GetString("CarouselUp", resourceCulture);
             }
         }
         
@@ -462,6 +489,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CellsSideControlSelectedSide {
             get {
                 return ResourceManager.GetString("CellsSideControlSelectedSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chain calibration.
+        /// </summary>
+        public static string ChainCalibration {
+            get {
+                return ResourceManager.GetString("ChainCalibration", resourceCulture);
             }
         }
         
@@ -741,6 +777,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DrawerLoadingUnloadingTest {
             get {
                 return ResourceManager.GetString("DrawerLoadingUnloadingTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer Number.
+        /// </summary>
+        public static string DrawerNumber {
+            get {
+                return ResourceManager.GetString("DrawerNumber", resourceCulture);
             }
         }
         
@@ -1051,6 +1096,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close shutter.
+        /// </summary>
+        public static string GateClose {
+            get {
+                return ResourceManager.GetString("GateClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gates Control.
         /// </summary>
         public static string GateControl {
@@ -1074,6 +1128,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GateHeightControl {
             get {
                 return ResourceManager.GetString("GateHeightControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open shutter.
+        /// </summary>
+        public static string GateOpen {
+            get {
+                return ResourceManager.GetString("GateOpen", resourceCulture);
             }
         }
         
@@ -1105,11 +1168,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go to Bay.
+        ///   Looks up a localized string similar to Go to bay.
         /// </summary>
         public static string GoToBay {
             get {
                 return ResourceManager.GetString("GoToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to drawer.
+        /// </summary>
+        public static string GoToDrawer {
+            get {
+                return ResourceManager.GetString("GoToDrawer", resourceCulture);
             }
         }
         
@@ -1308,6 +1380,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Installer {
             get {
                 return ResourceManager.GetString("Installer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intermediate position.
+        /// </summary>
+        public static string IntermediatePosition {
+            get {
+                return ResourceManager.GetString("IntermediatePosition", resourceCulture);
             }
         }
         
@@ -1753,7 +1834,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move to Cell Height.
+        ///   Looks up a localized string similar to Move to cell height.
         /// </summary>
         public static string MoveToCellHeight {
             get {

@@ -80,6 +80,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell = value == null
                         ? null
                         : this.Cells.SingleOrDefault(c => c.Id == value);
+
+                    this.InputHeight = this.SelectedCell?.Position ?? 0;
+
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -108,6 +112,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedLoadingUnit = value == null
                         ? null
                         : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
+
+                    this.InputCellId = this.SelectedLoadingUnit?.CellId ?? 0;
+
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
