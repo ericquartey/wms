@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     .Single()
                     .Axes
                     .Select(a => a.Inverter)
+                    .Where(i => i != null)
                     .ToList();
             }
 

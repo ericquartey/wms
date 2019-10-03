@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}");
+                this.Logger.LogError($"1:StopStartState message={message}");
                 this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else

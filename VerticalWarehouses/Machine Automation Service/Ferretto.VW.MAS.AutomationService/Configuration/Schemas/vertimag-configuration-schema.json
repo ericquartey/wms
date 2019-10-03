@@ -31,7 +31,7 @@
             "type": "object",
             "title": "The Items Schema",
             "required": [
-              "Inverter",
+
               "IoDevice",
               "IsExternal",
               "Number",

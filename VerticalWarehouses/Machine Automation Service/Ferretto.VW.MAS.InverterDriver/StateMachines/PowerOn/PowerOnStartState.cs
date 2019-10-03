@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}");
+                this.Logger.LogError($"1:PowerOnStartState, message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
