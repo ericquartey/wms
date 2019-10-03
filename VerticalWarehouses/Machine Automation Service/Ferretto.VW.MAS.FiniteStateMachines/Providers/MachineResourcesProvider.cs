@@ -11,7 +11,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
     public class MachineResourcesProvider : IMachineResourcesProvider, ISensorsProvider
     {
-
         #region Fields
 
         private const int INVERTER_INPUTS = 8;
@@ -43,8 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
-
-
         #region Events
 
         public event EventHandler<StatusUpdateEventArgs> FaultStateChanged;
@@ -52,8 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
 
         #endregion
-
-
 
         #region Properties
 
@@ -86,6 +81,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
+        public bool IsMachineRunning => this.IsMachineInRunningState;
+
         public bool IsSensorZeroOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S3IND];
 
         public bool IsSensorZeroOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S3IND];
@@ -98,9 +95,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #endregion
 
-
-
         #region Methods
+
+        public void EnableNotification(bool enable)
+        {
+            this.enableNotificatons = enable;
+        }
 
         public bool[] GetAll()
         {
@@ -117,11 +117,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
 
             return inverterStatus.CurrentShutterPosition;
-        }
-
-        public void EnableNotification(bool enable)
-        {
-            this.enableNotificatons = enable;
         }
 
         public bool IsDrawerInBayBottom(BayNumber bayNumber)

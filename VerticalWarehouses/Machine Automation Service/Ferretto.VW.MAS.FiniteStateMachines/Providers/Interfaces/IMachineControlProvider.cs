@@ -9,9 +9,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces
     {
         #region Methods
 
-        bool FilterCommands(CommandMessage command);
-
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
+
+        /// <summary>
+        /// Check message status for inverter power related messages
+        /// </summary>
+        /// <param name="message">Notification message to check</param>
+        /// <returns>Status for the inverter power related message. NoStatus otherwise</returns>
+        MessageStatus InverterPowerChangeStatus(NotificationMessage message);
 
         /// <summary>
         /// Check message status for power related messages
@@ -39,6 +44,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces
         MessageStatus ResetSecurityStatus(NotificationMessage message);
 
         void StartChangePowerStatus(IChangeRunningStateMessageData messageData, MessageActor sender, BayNumber requestingBay);
+
+        void StartInverterPowerChange(IInverterPowerEnableMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay);
 
         void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay);
 

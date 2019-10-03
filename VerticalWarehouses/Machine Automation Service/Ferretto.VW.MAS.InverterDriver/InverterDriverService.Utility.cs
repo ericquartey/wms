@@ -1035,7 +1035,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.logger.LogTrace("4:Inverter already powered off. Just notify operation completed");
                 var endNotification = new FieldNotificationMessage(
-                    new InverterPowerOnFieldMessageData(),
+                    new InverterPowerOffFieldMessageData(),
                     "Inverter Started",
                     FieldMessageActor.Any,
                     FieldMessageActor.InverterDriver,

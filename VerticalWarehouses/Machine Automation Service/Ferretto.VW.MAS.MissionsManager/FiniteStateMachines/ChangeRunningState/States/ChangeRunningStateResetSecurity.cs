@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 {
     internal class ChangeRunningStateResetSecurity : StateBase, IChangeRunningStateResetSecurity
     {
-
         #region Fields
 
         private readonly IMachineControlProvider machineControlProvider;
@@ -36,8 +35,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -73,9 +70,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
                 switch (notificationStatus)
                 {
                     case MessageStatus.OperationEnd:
-                        returnValue = this.GetState<IChangeRunningStateEndState>();
-
-                        ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+                        returnValue = this.GetState<IChangeRunningStateInverterPowerSwitch>();
                         break;
 
                     case MessageStatus.OperationError:

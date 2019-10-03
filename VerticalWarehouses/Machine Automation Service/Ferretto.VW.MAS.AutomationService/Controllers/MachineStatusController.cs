@@ -13,7 +13,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class MachineStatusController : BaseAutomationController
     {
-
         #region Fields
 
         private readonly IRunningStateProvider runningStateProvider;
@@ -32,9 +31,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
+
+        [HttpGet("is-powered-on")]
+        public ActionResult<bool> IsPoweredOn()
+        {
+            return this.runningStateProvider.IsRunning;
+        }
 
         [HttpPost("power-off")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,7 +26,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault
 
         public ResetFaultStateMachine(
             CommandMessage receivedMessage,
-            IEnumerable<DataModels.Inverter> bayInverters,
+            IEnumerable<Inverter> bayInverters,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)

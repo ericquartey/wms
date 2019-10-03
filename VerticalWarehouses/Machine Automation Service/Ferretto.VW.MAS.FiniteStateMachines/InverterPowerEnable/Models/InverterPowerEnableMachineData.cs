@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
+
+namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable.Models
 {
-    internal class ResetFaultMachineData : IResetFaultMachineData
+    internal class InverterPowerEnableMachineData : IInverterPowerEnableMachineData
     {
         #region Constructors
 
-        public ResetFaultMachineData(
+        public InverterPowerEnableMachineData(
+            bool enable,
             BayNumber requestingBay,
             BayNumber targetBay,
             IEnumerable<Inverter> bayInverters,
@@ -21,6 +23,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
+            this.Enable = enable;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.BayInverters = bayInverters;
@@ -34,6 +37,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Models
         #region Properties
 
         public IEnumerable<DataModels.Inverter> BayInverters { get; }
+
+        public bool Enable { get; }
 
         public IEventAggregator EventAggregator { get; }
 

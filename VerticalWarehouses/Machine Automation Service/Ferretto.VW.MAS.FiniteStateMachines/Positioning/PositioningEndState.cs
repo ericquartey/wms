@@ -57,31 +57,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            //switch (message.Type)
-            //{
-            //    case FieldMessageType.InverterStop:
-            //        switch (message.Status)
-            //        {
-            //            case MessageStatus.OperationEnd:
-            //                var notificationMessage = new NotificationMessage(
-            //                   this.machineData.MessageData,
-            //                   this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-            //                   MessageActor.FiniteStateMachines,
-            //                   MessageActor.FiniteStateMachines,
-            //                   MessageType.Positioning,
-            //                   this.machineData.RequestingBay,
-            //                   this.machineData.TargetBay,
-            //                   MessageStatus.OperationStop);
+            switch (message.Type)
+            {
+                case FieldMessageType.Positioning:
+                    switch (message.Status)
+                    {
+                        case MessageStatus.OperationStop:
+                            var notificationMessage = new NotificationMessage(
+                                this.machineData.MessageData,
+                                this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                                MessageActor.FiniteStateMachines,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Positioning,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-            //                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            //                break;
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            break;
 
-            //            case MessageStatus.OperationError:
-            //                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
-            //                break;
-            //        }
-            //        break;
-            //}
+                        case MessageStatus.OperationError:
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                            break;
+                    }
+                    break;
+            }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -117,16 +117,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     (byte)inverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-                var notificationMessage = new NotificationMessage(
-                    this.machineData.MessageData,
-                    this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning,
-                    this.machineData.RequestingBay,
-                    this.machineData.TargetBay,
-                    StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
             else
             {

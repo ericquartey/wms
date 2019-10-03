@@ -82,6 +82,8 @@
 
         MissionManagerException,
 
-        ChangeRunningState
+        ChangeRunningState,
+
+        InverterPowerEnable
     }
 }

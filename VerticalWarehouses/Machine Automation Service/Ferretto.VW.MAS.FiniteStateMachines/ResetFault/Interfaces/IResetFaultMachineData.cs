@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetFault.Interfaces
     {
         #region Properties
 
-        IEnumerable<DataModels.Inverter> BayInverters { get; }
+        IEnumerable<Inverter> BayInverters { get; }
 
         #endregion
     }

@@ -4,7 +4,11 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     public interface IRunningStateProvider
     {
+        #region Properties
 
+        bool IsRunning { get; }
+
+        #endregion
 
         #region Methods
 

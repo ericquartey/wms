@@ -148,6 +148,25 @@ namespace Ferretto.VW.MAS.AutomationService
                 .BayStatusChanged(messageData);
         }
 
+        private void OnChangeRunningState(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.ChangeRunningState(message);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.Logger.LogTrace($"7:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogTrace($"8:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
         private void OnDataLayerReady()
         {
             this.baysProvider.AddElevatorPseudoBay();

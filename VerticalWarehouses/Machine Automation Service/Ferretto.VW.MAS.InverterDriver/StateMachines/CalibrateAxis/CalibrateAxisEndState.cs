@@ -41,19 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogDebug($"Notify Positioning End axis {this.axisToCalibrate}. StopRequested = {this.stopRequested}");
 
-            if (this.stopRequested)
-            {
-                this.ParentStateMachine.PublishNotificationEvent(
-                    new FieldNotificationMessage(
-                        null,
-                        "Message",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStop,
-                        MessageStatus.OperationEnd,
-                        this.InverterStatus.SystemIndex));
-            }
-
             var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
             var endNotification = new FieldNotificationMessage(
                 messageData,

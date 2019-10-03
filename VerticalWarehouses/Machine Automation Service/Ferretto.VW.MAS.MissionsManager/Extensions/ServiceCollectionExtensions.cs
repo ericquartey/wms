@@ -9,8 +9,6 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-
-
         #region Methods
 
         public static IServiceCollection AddMissionsManager(this IServiceCollection services)
@@ -31,6 +29,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
                 .AddTransient<IChangeRunningStateStartState, ChangeRunningStateStartState>()
                 .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
                 .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
+                .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
                 .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
 
             return services;

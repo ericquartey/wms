@@ -1,5 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
@@ -13,10 +12,11 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States
 {
-    internal class ChangeRunningStateStartState : StateBase, IChangeRunningStateStartState
+    internal class ChangeRunningStateInverterPowerSwitch : StateBase, IChangeRunningStateInverterPowerSwitch
     {
         #region Fields
 
@@ -26,13 +26,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
-        private bool requestedState;
-
         #endregion
 
         #region Constructors
 
-        public ChangeRunningStateStartState(
+        public ChangeRunningStateInverterPowerSwitch(
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IEventAggregator eventAggregator,
@@ -42,7 +40,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
-            this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
+            this.machineControlProvider = machineControlProvider ??
+                throw new ArgumentNullException(nameof(machineControlProvider));
 
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
@@ -55,24 +54,13 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         {
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
-                if (messageData.Enable)
-                {
-                    this.requestedState = true;
-
-                    this.machineControlProvider.StartChangePowerStatus(messageData, MessageActor.MissionsManager, commandMessage.RequestingBay);
-                }
-                else
-                {
-                    this.requestedState = false;
-
-                    var newMessageData = new StopMessageData(messageData.StopReason);
-                    this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);
-                }
+                var inverterMessageData = new InverterPowerEnableMessageData(messageData.Enable);
+                this.machineControlProvider.StartInverterPowerChange(inverterMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
                 // TODO Define a cleanup pattern for State Machine after this error
-                this.NotifyCommandError(commandMessage, $"Power Enable Start State received wrong initialization data ({commandMessage.Data.GetType()})");
+                this.NotifyCommandError(commandMessage, $"Power Enable Reset Fault State received wrong initialization data ({commandMessage.Data.GetType()})");
             }
         }
 
@@ -80,48 +68,27 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         {
             IState returnValue = this;
 
-            var notificationStatus = this.machineControlProvider.PowerStatusChangeStatus(notification);
-
+            var notificationStatus = this.machineControlProvider.InverterPowerChangeStatus(notification);
             if (notificationStatus != MessageStatus.NoStatus)
             {
                 switch (notificationStatus)
                 {
                     case MessageStatus.OperationEnd:
-                        returnValue = this.requestedState ? this.GetState<IChangeRunningStateResetFaultState>() : this.GetState<IChangeRunningStateInverterPowerSwitch>();
+                        this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
 
                     case MessageStatus.OperationError:
                         returnValue = this.GetState<IChangeRunningStateEndState>();
-
                         ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                         ((IEndState)returnValue).ErrorMessage = notification;
                         break;
                 }
-            }
-            else
-            {
-                notificationStatus = this.machineControlProvider.StopOperationStatus(notification);
-                if (notificationStatus != MessageStatus.NoStatus)
+
+                if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
                 {
-                    switch (notificationStatus)
-                    {
-                        case MessageStatus.OperationEnd:
-                            this.UpdateResponseList(notificationStatus, notification.TargetBay);
-                            break;
+                    returnValue = this.GetState<IChangeRunningStateEndState>();
 
-                        case MessageStatus.OperationError:
-                            returnValue = this.GetState<IChangeRunningStateEndState>();
-
-                            ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
-                            ((IEndState)returnValue).ErrorMessage = notification;
-                            break;
-                    }
-
-                    if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
-                    {
-                        var messageData = new ChangeRunningStateMessageData(this.requestedState);
-                        this.machineControlProvider.StartChangePowerStatus(messageData, MessageActor.MissionsManager, notification.RequestingBay);
-                    }
+                    ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
                 }
             }
 

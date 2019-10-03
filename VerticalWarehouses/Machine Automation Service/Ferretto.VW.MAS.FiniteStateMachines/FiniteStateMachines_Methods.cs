@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -25,8 +24,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     internal partial class FiniteStateMachines
     {
-
-
         #region Methods
 
         private bool EvaluateCondition(ConditionToCheckType condition)
@@ -199,6 +196,44 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 catch (Exception ex)
                 {
                     this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+
+                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                }
+            }
+        }
+
+        private void ProcessInverterPowerEnable(CommandMessage receivedMessage)
+        {
+            this.logger.LogTrace("1:ProcessInverterPowerEnable Start");
+
+            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            {
+                this.logger.LogTrace($"2:FSM {currentStateMachine?.GetType()} still active on target bay {receivedMessage.TargetBay}");
+                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting InverterPowerEnable state machine. Operation  {currentStateMachine?.GetType()} already in progress on {receivedMessage.TargetBay}",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var inverterList = this.digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
+
+                currentStateMachine = new InverterPowerEnableStateMachine(
+                    receivedMessage,
+                    inverterList,
+                    this.eventAggregator,
+                    this.logger,
+                    this.serviceScopeFactory);
+
+                this.logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType()}");
+                this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
+
+                try
+                {
+                    currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }

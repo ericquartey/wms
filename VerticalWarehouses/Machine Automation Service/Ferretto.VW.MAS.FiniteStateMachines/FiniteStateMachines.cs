@@ -253,6 +253,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     case MessageType.ResetSecurity:
                         this.ProcessResetSecurityMessage(receivedMessage);
                         break;
+
+                    case MessageType.InverterPowerEnable:
+                        this.ProcessInverterPowerEnable(receivedMessage);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, receivedMessage.Type.ToString(), MessageVerbosity.Info);
@@ -575,6 +579,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         case MessageType.DrawerOperation:
                         case MessageType.PowerEnable:
                         case MessageType.InverterFaultReset:
+                        case MessageType.InverterPowerEnable:
                         case MessageType.ResetSecurity:
                             this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
                             this.currentStateMachines.Remove(receivedMessage.TargetBay);

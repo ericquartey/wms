@@ -1,6 +1,8 @@
-﻿using Ferretto.VW.CommonUtils;
+﻿using System;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
@@ -8,16 +10,29 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 {
     internal class RunningStateProvider : BaseProvider, IRunningStateProvider
     {
+        #region Fields
 
-
-        #region Constructors
-
-        public RunningStateProvider(IEventAggregator eventAggregator)
-            : base(eventAggregator) { }
+        private readonly ISensorsProvider sensorsProvider;
 
         #endregion
 
+        #region Constructors
 
+        public RunningStateProvider(
+            ISensorsProvider sensorsProvider,
+            IEventAggregator eventAggregator)
+            : base(eventAggregator)
+        {
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+        }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsRunning => this.sensorsProvider.IsMachineRunning;
+
+        #endregion
 
         #region Methods
 

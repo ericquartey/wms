@@ -5,7 +5,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -33,20 +32,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #region Methods
 
-        public bool FilterCommands(CommandMessage command)
-        {
-            return command.Type == MessageType.ChangeRunningState;
-        }
-
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.PowerEnable ||
                 notification.Type == MessageType.Stop ||
                 notification.Type == MessageType.InverterFaultReset ||
+                notification.Type == MessageType.InverterPowerEnable ||
                 notification.Type == MessageType.ResetSecurity ||
                 notification.Status == MessageStatus.OperationFaultStop ||
                 notification.Status == MessageStatus.OperationRunningStop);
+        }
+
+        public MessageStatus InverterPowerChangeStatus(NotificationMessage message)
+        {
+            if (message.Type == MessageType.InverterPowerEnable)
+            {
+                return message.Status;
+            }
+
+            return MessageStatus.NoStatus;
         }
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)
@@ -147,6 +152,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 MessageStatus.OperationStart,
                 ErrorLevel.NoError
                 );
+        }
+
+        public void StartInverterPowerChange(IInverterPowerEnableMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
+        {
+            if (targetBay == BayNumber.All)
+            {
+                foreach (var bay in this.baysProvider.GetAll())
+                {
+                    this.PublishCommand(
+                        messageData,
+                        $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {bay.Number}",
+                        MessageActor.FiniteStateMachines,
+                        sender,
+                        MessageType.InverterPowerEnable,
+                        requestingBay,
+                        bay.Number);
+                }
+            }
+            else
+            {
+                this.PublishCommand(
+                    messageData,
+                    $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {targetBay}",
+                    MessageActor.FiniteStateMachines,
+                    sender,
+                    MessageType.InverterPowerEnable,
+                    requestingBay,
+                    targetBay);
+            }
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)

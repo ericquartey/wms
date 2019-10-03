@@ -6,13 +6,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ChangeRunningStateMessageData : IChangeRunningStateMessageData
     {
-
-
         #region Constructors
-
-        public ChangeRunningStateMessageData()
-        {
-        }
 
         public ChangeRunningStateMessageData(bool enable, CommandAction commandAction = CommandAction.Start, StopRequestReason stopReason = StopRequestReason.NoReason, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
@@ -23,8 +17,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         #endregion
-
-
 
         #region Properties
 
