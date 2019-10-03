@@ -316,6 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
                     }
 
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.IsElevatorDisembarking = false;
@@ -327,12 +328,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsTuningChain = false;
                         this.IsCarouselMoving = false;
 
-                        this.ShowNotification(
-                            VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                            Services.Models.NotificationSeverity.Warning);
-
+                        if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationError)
+                        {
+                            this.ShowNotification(
+                                message.Description,
+                                Services.Models.NotificationSeverity.Error);
+                        }
+                        else
+                        {
+                            this.ShowNotification(
+                                VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                                Services.Models.NotificationSeverity.Warning);
+                        }
                         break;
                     }
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
         }
 
