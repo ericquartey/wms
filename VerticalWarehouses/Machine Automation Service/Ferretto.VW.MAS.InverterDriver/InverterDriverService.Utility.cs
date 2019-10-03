@@ -493,11 +493,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"Exception {ex.Message}");
+                    this.logger.LogError(ex, "An exception was thrown.");
                 }
             }
             else if (Debugger.IsAttached)
@@ -527,7 +527,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
 
                 if (result)
@@ -854,7 +854,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"Exception {ex.Message}");
+                        this.logger.LogError(ex, $"Exception {ex.Message}");
                         this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
                     }
                 }

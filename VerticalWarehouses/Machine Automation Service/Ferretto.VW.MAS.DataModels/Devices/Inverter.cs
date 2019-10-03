@@ -21,5 +21,14 @@ namespace Ferretto.VW.MAS.DataModels
         public InverterType Type { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Index: {this.Index}, Type: {this.Type}";
+        }
+
+        #endregion
     }
 }

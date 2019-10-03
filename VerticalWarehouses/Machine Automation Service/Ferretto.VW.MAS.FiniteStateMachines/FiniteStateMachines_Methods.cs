@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(
+                        this.logger.LogError(ex,
                             $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex,
@@ -189,7 +189,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                    this.logger.LogError(ex, $"3:Exception: during the FSM {currentStateMachine.GetType()} start");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
@@ -345,7 +345,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
@@ -407,7 +407,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                 this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
@@ -482,7 +482,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
