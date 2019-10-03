@@ -209,13 +209,15 @@
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.ShutterMidWay}" />
+                           Text="{x:Static res:InstallationApp.ShutterMidWay}"
+                           Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}" />
                 <controls:PpcSensorControl Grid.Row="18"
                                            Grid.Column="1"
                                            Margin="0"
                                            VerticalAlignment="Center"
                                            SensorState="{Binding ShutterSensors.MidWay}"
-                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                           Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}" />
 
                 <TextBlock Grid.Row="19"
                            Grid.Column="0"
@@ -352,7 +354,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningChainCommand}"
                                 Content="{x:Static res:InstallationApp.ChainCalibration}"
-                                IsBusy="{Binding IsElevatorEmbarking}" />
+                                IsBusy="{Binding IsTuningChain}" />
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="1"
@@ -360,7 +362,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningBayCommand}"
                                 Content="{x:Static res:InstallationApp.BayCalibration}"
-                                IsBusy="{Binding IsElevatorEmbarking}"  />
+                                IsBusy="{Binding IsTuningBay}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Grid.Column="0"

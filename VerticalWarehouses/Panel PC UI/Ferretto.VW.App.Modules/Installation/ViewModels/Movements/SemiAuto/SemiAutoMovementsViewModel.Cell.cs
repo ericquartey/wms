@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -140,7 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -153,7 +153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -238,13 +238,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                this.IsZeroChain;
         }
 
         private bool CanMoveToHeight()
@@ -253,13 +249,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                this.IsZeroChain;
         }
 
         private bool CanMoveToLoadingUnitHeight()
@@ -268,13 +260,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                this.IsZeroChain;
         }
 
         private async Task MoveToCellHeightAsync()
