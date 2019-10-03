@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 ? InverterIndex.Slave1
                 : InverterIndex.MainInverter;
 
-            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate);
+            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType);
             var commandMessage = new FieldCommandMessage(
                 calibrateAxisData,
                 $"Homing {this.machineData.AxisToCalibrate} State Started",

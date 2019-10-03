@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 
         Axis AxisToCalibrated { get; }
 
+        Calibration CalibrationType { get; set; }
+
         bool IsOneKMachine { get; }
 
         IMachineResourcesProvider MachineSensorStatus { get; }
