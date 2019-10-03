@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -10,14 +11,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 {
     internal class HomingMachineData : IHomingMachineData
     {
-        #region Fields
-
-        private Axis axisToCalibrate;
-
-        private Axis axisToCalibrated;
-
-        #endregion
-
         #region Constructors
 
         public HomingMachineData(
@@ -25,6 +18,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
+            InverterIndex inverterIndex,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -33,6 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MachineSensorStatus = machineResourcesProvider;
+            this.CurrentInverterIndex = inverterIndex;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -42,25 +37,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         #region Properties
 
-        public Axis AxisToCalibrate
-        {
-            get => this.axisToCalibrate;
-            set
-            {
-                // set old axis
-                if (this.axisToCalibrate != value)
-                {
-                    this.axisToCalibrated = this.axisToCalibrate;
-                }
-                this.axisToCalibrate = value;
-            }
-        }
-
-        public Axis AxisToCalibrated { get => this.axisToCalibrated; set => this.axisToCalibrated = value; }
+        public Axis AxisToCalibrate { get; set; }
 
         public Calibration CalibrationType { get; set; }
 
+        public InverterIndex CurrentInverterIndex { get; set; }
+
         public IEventAggregator EventAggregator { get; }
+
+        public InverterIndex InverterIndexOld { get; set; }
 
         public bool IsOneKMachine { get; }
 

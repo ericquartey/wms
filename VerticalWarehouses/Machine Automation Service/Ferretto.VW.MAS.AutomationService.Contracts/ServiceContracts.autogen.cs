@@ -16,25 +16,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineBaysService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> ActivateAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<Bay> ActivateAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> ActivateAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> ActivateAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> DeactivateAsync(BayNumber bayNumber);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> DeactivateAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<Bay> DeactivateAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> DeactivateAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task HomingAsync();
@@ -44,18 +51,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction);
+        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(int bayNumber, HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(BayNumber bayNumber, int position, double height);
+        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(BayNumber bayNumber, int position, double height, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -109,6 +116,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCarouselService
     {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetPositionAsync();
     
@@ -206,6 +220,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineElevatorService
     {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetHorizontalPositionAsync();
     

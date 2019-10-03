@@ -15,11 +15,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         // TODO move following parameters into configuration
         private const int HIGH_SPEED = 2000;
 
-        private const short HORIZONTAL_SENSOR = 1807;
+        private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
         private const int LOW_SPEED = 500;
 
-        private const short VERTICAL_SENSOR = 527;
+        private const short VERTICAL_SENSOR = 527;      // S3IND
 
         private readonly Axis axisToCalibrate;
 
