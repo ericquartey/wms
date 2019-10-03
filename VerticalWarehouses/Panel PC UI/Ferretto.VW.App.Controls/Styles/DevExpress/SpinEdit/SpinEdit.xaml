@@ -48,10 +48,10 @@
     </Style>
 
     <Style x:Key="SpinEditBaseStyle"
-           TargetType="dxe:SpinEdit">
+           TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
         <Setter Property="AllowNullInput" Value="True" />
-        <Setter Property="ValidateOnTextInput" Value="False" />
+        <Setter Property="ValidateOnTextInput" Value="True" />
         <Setter Property="MinValue" Value="0" />
         <Setter Property="ShowError" Value="False" />
         <Setter Property="ValidationErrorTemplate" Value="{x:Null}" />
@@ -70,23 +70,26 @@
     </Style>
 
 
-    <Style x:Key="SpinEditIntegerStyle"
+    <Style x:Key="VWAPP_PpcTextBox_SpinEditIntegerStyle"
            BasedOn="{StaticResource SpinEditBaseStyle}"
            TargetType="{x:Type dxe:SpinEdit}">
-        <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
+        <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
         <Setter Property="MaskType" Value="Numeric" />
         <Setter Property="Mask" Value="N0" />
+        <Setter Property="MaskUseAsDisplayFormat" Value="True" />
+        <Setter Property="NullValue" Value="0" />
         <Setter Property="Increment" Value="5" />
     </Style>
 
     <Style x:Key="VWAPP_PpcTextBox_SpinEditDecimalStyle"
            BasedOn="{StaticResource SpinEditBaseStyle}"
-           TargetType="dxe:SpinEdit">
+           TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:Decimal}" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
         <Setter Property="Increment" Value="0.5" />
+        <Setter Property="NullValue" Value="0.0" />
         <Setter Property="MaskType" Value="Numeric" />
-        <Setter Property="Mask" Value="N1" />
+        <Setter Property="Mask" Value="N2" />
     </Style>
 
     <!--  SpinEdit  -->

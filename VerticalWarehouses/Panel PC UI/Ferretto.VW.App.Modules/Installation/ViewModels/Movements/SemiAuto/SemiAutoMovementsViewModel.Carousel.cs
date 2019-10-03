@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteCarouselDownCommand()
         {
-            return !this.IsElevatorMoving
+            return !this.IsMoving
               &&
               !this.IsWaitingForResponse;
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteCarouselUpCommand()
         {
-            return !this.IsElevatorMoving
+            return !this.IsMoving
               &&
               !this.IsWaitingForResponse;
 

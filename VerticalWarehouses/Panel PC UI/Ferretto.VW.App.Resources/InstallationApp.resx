@@ -937,7 +937,7 @@
     <value>Cell Side</value>
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
-    <value>Move to Cell Height</value>
+    <value>Move to cell height</value>
   </data>
   <data name="BayPosition1" xml:space="preserve">
     <value>Position 1</value>
@@ -979,7 +979,7 @@
     <value>Tray in Bay</value>
   </data>
   <data name="GoToBay" xml:space="preserve">
-    <value>Go to Bay</value>
+    <value>Go to bay</value>
   </data>
   <data name="Cells" xml:space="preserve">
     <value>Cells</value>
@@ -1096,5 +1096,32 @@
   </data>
   <data name="ConfirmationOperation" xml:space="preserve">
     <value>Confirmation operation?</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Bay calibration</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Carousel down</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Carousel up</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Chain calibration</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Drawer Number</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Close shutter</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Open shutter</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Go to drawer</value>
+  </data>
+  <data name="IntermediatePosition" xml:space="preserve">
+    <value>Intermediate position</value>
   </data>
 </root>
