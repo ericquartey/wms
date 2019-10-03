@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 // ReSharper disable ParameterHidesMember
@@ -447,6 +448,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
                 case InverterParameterId.ShutterTargetPosition:
+                case InverterParameterId.HomingCalibration:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
@@ -501,6 +503,12 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case "String":
                     this.payload = Encoding.ASCII.GetBytes((string)payload);
                     break;
+
+                default:
+                    if (Debugger.IsAttached) Debugger.Break();
+                    this.payload = new byte[0];
+                    this.payloadLength = 0;
+                    return;
             }
 
             this.payloadLength = this.payload.Length;

@@ -56,118 +56,97 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<decimal> GetPosition()
         {
-            try
-            {
-                throw new NotImplementedException("Carousel positioning not implemented");
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<decimal>(ex);
-            }
+            throw new NotImplementedException("Carousel positioning not implemented");
         }
 
         [HttpPost("move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(HorizontalMovementDirection direction)
         {
-            try
+            var bay = this.baysProvider.GetByNumber(this.BayNumber);
+            if (bay.Type != BayType.Carousel || bay.Carousel == null)
             {
-                var bay = this.baysProvider.GetByNumber(this.BayNumber);
-                if (bay.Type != BayType.Carousel)
-                {
-                    throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
-                }
-
-                var targetPosition = bay.Carousel.ElevatorDistance;
-
-                targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
-
-                var axis = this.elevatorDataProvider.GetHorizontalAxis();
-
-                // TODO: scale movement speed by weight
-                var speed = new[] { axis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
-                var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
-                var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
-                var switchPosition = new[] { 0.0 };
-
-                var messageData = new PositioningMessageData(
-                    Axis.Horizontal,
-                    MovementType.Relative,
-                    MovementMode.BayChain,
-                    targetPosition,
-                    speed,
-                    acceleration,
-                    deceleration,
-                    0,
-                    0,
-                    0,
-                    0,
-                    switchPosition,
-                    direction);
-
-                this.PublishCommand(
-                    messageData,
-                    $"Execute {Axis.Horizontal} Positioning Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning);
-
-                return this.Accepted();
+                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
             }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+
+            var targetPosition = bay.Carousel.ElevatorDistance;
+
+            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
+
+            var axis = this.elevatorDataProvider.GetHorizontalAxis();
+
+            // TODO: scale movement speed by weight
+            var speed = new[] { axis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
+            var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            return this.Accepted();
         }
 
         [HttpPost("move-manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(HorizontalMovementDirection direction)
         {
-            try
+            var bay = this.baysProvider.GetByNumber(this.BayNumber);
+            if (bay.Type != BayType.Carousel || bay.Carousel == null)
             {
-                var bay = this.baysProvider.GetByNumber(this.BayNumber);
-                if (bay.Type != BayType.Carousel)
-                {
-                    throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
-                }
-
-                var targetPosition = bay.Carousel.ElevatorDistance;
-
-                targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
-
-                var axis = this.elevatorDataProvider.GetHorizontalAxis();
-                var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
-                var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
-                var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
-                var switchPosition = new[] { 0.0 };
-
-                var messageData = new PositioningMessageData(
-                    Axis.Horizontal,
-                    MovementType.Relative,
-                    MovementMode.BayChainManual,
-                    targetPosition,
-                    speed,
-                    acceleration,
-                    deceleration,
-                    0,
-                    0,
-                    0,
-                    0,
-                    switchPosition,
-                    direction);
-
-                this.PublishCommand(
-                    messageData,
-                    $"Execute {Axis.Horizontal} Positioning Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning);
-
-                return this.Accepted();
+                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
             }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+
+            var targetPosition = bay.Carousel.ElevatorDistance;
+
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
+
+            var axis = this.elevatorDataProvider.GetHorizontalAxis();
+            var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
+            var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.BayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                0,
+                0,
+                0,
+                0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            return this.Accepted();
         }
 
         [HttpPost("stop")]

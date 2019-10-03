@@ -29,7 +29,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-            this.Type = InverterType.Agl;
         }
 
         #endregion

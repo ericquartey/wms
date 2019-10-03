@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 case Axis.HorizontalAndVertical:
                     this.machineData.AxisToCalibrate = Axis.Horizontal;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 3;
+                    this.machineData.MaximumSteps = 2;
                     break;
 
                 case Axis.Horizontal:
@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
                     }
 
-                    this.Logger.LogError($"Conditions not verified for homing");
+                    this.Logger.LogError($"Conditions not verified for homing: Missing Zero sensor with empty elevator OR Zero sensor active with full elevator");
 
                     this.CurrentState = new HomingErrorState(stateData);
                 }

@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
     {
         #region Fields
 
-        private readonly IIoDeviceService ioDeviceService;
+        private readonly IIoDevicesProvider ioDeviceService;
 
         #endregion
 
         #region Constructors
 
-        public IoDeviceProvider(IIoDeviceService ioDeviceService)
+        public IoDeviceProvider(IIoDevicesProvider ioDeviceService)
         {
             this.ioDeviceService = ioDeviceService;
         }
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         #region Properties
 
-        public IEnumerable<IoDeviceInfo> GetStatuses => this.GetIoDevices(this.ioDeviceService.GetStatuses);
+        public IEnumerable<IoDeviceInfo> GetStatuses => this.GetIoDevices(this.ioDeviceService.Devices);
 
         #endregion
 

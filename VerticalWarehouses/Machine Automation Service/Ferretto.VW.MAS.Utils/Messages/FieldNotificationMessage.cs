@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
@@ -48,6 +49,19 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.DeviceIndex = deviceIndex;
             this.Status = status;
             this.ErrorLevel = level;
+        }
+
+        public FieldNotificationMessage(
+            IFieldMessageData data,
+            string description,
+            FieldMessageActor destination,
+            FieldMessageActor source,
+            FieldMessageType type,
+            MessageStatus status,
+            InverterIndex inverterIndex,
+            ErrorLevel level = ErrorLevel.NoError)
+            : this(data, description, destination, source, type, status, (byte)inverterIndex, level)
+        {
         }
 
         #endregion

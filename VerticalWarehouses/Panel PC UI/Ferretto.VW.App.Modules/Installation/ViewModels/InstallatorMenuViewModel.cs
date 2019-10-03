@@ -46,27 +46,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (setupStatusService is null)
-            {
-                throw new ArgumentNullException(nameof(setupStatusService));
-            }
-
-            if (machineModeService is null)
-            {
-                throw new ArgumentNullException(nameof(machineModeService));
-            }
-
             if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            this.setupStatusService = setupStatusService;
+            this.setupStatusService = setupStatusService ?? throw new ArgumentNullException(nameof(setupStatusService));
+            this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
 
             // TODO Review Implementation avoid using numbers to identify bays
             this.bayNumber = (int)bayManager.Bay.Number;
-
-            this.machineModeService = machineModeService;
 
             this.InitializeData();
         }
@@ -215,6 +204,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     menuItem.IsEnabled = itemStatus.CanBePerformed;
                     menuItem.IsActive = itemStatus.IsCompleted;
                 }
+
+                this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
             }
             catch (Exception ex)
             {

@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.DataLayerReady:
 
                     await this.StartHardwareCommunications();
-                    this.InitializeInverterStatus();
+                    this.InitializeTimers();
 
                     break;
 
@@ -47,18 +47,19 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         this.logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
 
-                        if (messageCurrentStateMachine is PositioningStateMachine)
-                        {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
-                        }
-                        else if (messageCurrentStateMachine is PositioningTableStateMachine)
-                        {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
-                        }
-                        else
-                        {
-                            this.logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
-                        }
+                            if (messageCurrentStateMachine is PositioningStateMachine)
+                            {
+                                this.currentStateMachines.Remove(messageDeviceIndex);
+                            }
+                            else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
+                            {
+                                this.dataOld = currentPositioning.data;
+                                this.currentStateMachines.Remove(messageDeviceIndex);
+                            }
+                            else
+                            {
+                                this.logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
 
                         this.logger.LogTrace("4: Stop the timer for update shaft position");
                         this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);

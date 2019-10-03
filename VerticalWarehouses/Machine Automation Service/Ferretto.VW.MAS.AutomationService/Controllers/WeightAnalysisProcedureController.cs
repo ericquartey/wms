@@ -48,12 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         [HttpPost("stop")]
@@ -65,12 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         #endregion

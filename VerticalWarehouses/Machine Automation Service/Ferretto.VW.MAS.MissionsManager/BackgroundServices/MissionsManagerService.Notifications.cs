@@ -64,7 +64,10 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         private void OnDataLayerReady()
         {
-            this.missionManagementTask.Start();
+            if (this.configuration.IsWmsEnabled())
+            {
+                this.missionManagementTask.Start();
+            }
         }
 
         private void OnMachineRunningStatusChange(NotificationMessage message)

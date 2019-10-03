@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         #region Fields
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
+
+        private readonly IConfiguration configuration;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -48,6 +51,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             IMachinesDataService machinesDataService,
             IMissionsProvider missionsProvider,
             IMissionsDataService missionsDataService,
+            IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
         {
@@ -55,6 +59,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.missionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             this.serviceScope = serviceScopeFactory.CreateScope();
 

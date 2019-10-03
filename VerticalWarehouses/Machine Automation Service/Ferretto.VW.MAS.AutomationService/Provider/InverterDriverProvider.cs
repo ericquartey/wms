@@ -12,30 +12,32 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Provider
 {
-    public class InverterProvider : IInverterProvider
+    public class InverterProvider : Interfaces.IInverterProvider
     {
         #region Fields
 
-        private readonly IInverterService inverterService;
-        private const int WORD_DIMENSION = 16;
-        private const int TOTAL_INPUTS = 8;
         private const int SKIP_CHARS_FROM_NAME = 4;
 
+        private const int TOTAL_INPUTS = 8;
+
+        private const int WORD_DIMENSION = 16;
+
+        private readonly InverterDriver.Interface.Services.IInvertersProvider invertersProvider;
 
         #endregion
 
         #region Constructors
 
-        public InverterProvider(IInverterService inverterService)
+        public InverterProvider(InverterDriver.Interface.Services.IInvertersProvider invertersProvider)
         {
-            this.inverterService = inverterService;
+            this.invertersProvider = invertersProvider;
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<InverterDeviceInfo> GetStatuses => this.GetInvertersStatuses(this.inverterService.GetStatuses);
+        public IEnumerable<InverterDeviceInfo> GetStatuses => this.GetInvertersStatuses(this.invertersProvider.GetAll());
 
         #endregion
 
@@ -65,15 +67,15 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             var digitalInputs = new List<BitInfo>();
             switch (status)
             {
-                case IAcuInverterStatus acu:
+                case IAcuInverterStatus _:
                     inverterInputsProperties = typeof(IAcuInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
                     break;
 
-                case IAglInverterStatus agl:
+                case IAglInverterStatus _:
                     inverterInputsProperties = typeof(IAglInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
                     break;
 
-                case IAngInverterStatus ang:
+                case IAngInverterStatus _:
                     inverterInputsProperties = typeof(IAngInverterStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
                     break;
 
@@ -96,7 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
                 device.ControlWords = this.GetBits(controlWordProperties, status.CommonControlWord, WORD_DIMENSION);
                 device.StatusWords = this.GetBits(statusWordProperties, status.CommonStatusWord, WORD_DIMENSION);
                 device.DigitalInputs = this.GetDigitalInputs(status);
-                device.Id = status.SystemIndex;
+                device.Id = (byte)status.SystemIndex;
                 inverterDevices.Add(device);
             }
 
