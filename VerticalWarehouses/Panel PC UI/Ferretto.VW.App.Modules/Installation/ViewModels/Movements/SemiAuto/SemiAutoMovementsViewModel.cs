@@ -346,7 +346,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        //System.Diagnostics.Debugger.Break();
                     }
                     break;
             }
