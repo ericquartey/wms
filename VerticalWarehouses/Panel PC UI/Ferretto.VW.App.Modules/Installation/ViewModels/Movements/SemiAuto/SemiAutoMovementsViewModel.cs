@@ -306,6 +306,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             switch (message.Status)
             {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.ShowNotification(string.Empty);
+                        break;
+                    }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
                     {
                         if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
