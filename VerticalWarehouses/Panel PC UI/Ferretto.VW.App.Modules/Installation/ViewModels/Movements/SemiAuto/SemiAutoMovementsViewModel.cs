@@ -309,6 +309,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
                     {
                         this.ShowNotification(string.Empty);
+
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                        }
+
                         break;
                     }
 

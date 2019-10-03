@@ -224,18 +224,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
-                !this.Sensors.LuPresentInOperatorSideBay1
-                &&
-                !this.IsZeroChain;
+                !this.Sensors.LuPresentInOperatorSideBay1;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)
         {
+            this.IsElevatorDisembarking = true;
             await this.StartMovementAsync(direction, true);
         }
 
         private async Task Embark(HorizontalMovementDirection direction)
         {
+            this.IsElevatorEmbarking = true;
             await this.StartMovementAsync(direction, false);
         }
 

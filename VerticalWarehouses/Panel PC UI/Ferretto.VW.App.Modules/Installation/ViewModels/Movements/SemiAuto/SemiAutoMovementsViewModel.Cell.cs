@@ -238,9 +238,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving
-                &&
-                this.IsZeroChain;
+                !this.IsMoving;
         }
 
         private bool CanMoveToHeight()
@@ -249,9 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving
-                &&
-                this.IsZeroChain;
+                !this.IsMoving;
         }
 
         private bool CanMoveToLoadingUnitHeight()
@@ -260,9 +256,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving
-                &&
-                this.IsZeroChain;
+                !this.IsMoving;
         }
 
         private async Task MoveToCellHeightAsync()
