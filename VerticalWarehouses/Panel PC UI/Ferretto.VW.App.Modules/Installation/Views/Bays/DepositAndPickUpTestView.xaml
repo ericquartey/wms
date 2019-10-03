@@ -9,34 +9,23 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="30,15">
+    <Grid Margin="80,15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" MinHeight="100" />
             <RowDefinition Height="Auto" MinHeight="100" />
             <RowDefinition Height="Auto" MinHeight="100" />
             <RowDefinition Height="Auto" MinHeight="100" />
-            <RowDefinition />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto" MinWidth="280"/>
             <ColumnDefinition Width="Auto" MinWidth="280"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-
-
-        <!--<controls:PpcLabeledText 
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition, FallbackValue=0}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />-->
-
-
-
-            <TextBlock
+        <TextBlock
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -124,35 +113,31 @@
             </Grid>
         </Border>
 
-        <controls:PpcButton Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="5"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Command="{Binding MoveToBayHeightCommand}"
-                                Content="{x:Static res:InstallationApp.GoToBay}"
-                                IsBusy="{Binding IsElevatorMovingToBay}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
 
-        <controls:PpcButton Grid.Row="1"
-                                Grid.Column="2"
+        <controls:PpcButton 
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPosition1Command}"
                                 Content="{x:Static res:InstallationApp.BayPosition1}"
                                 IsActive="{Binding IsPosition1Selected}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
-        <controls:PpcButton Grid.Row="1"
-                                Grid.Column="3"
-                                Margin="5"                            
+        <controls:PpcButton 
+                                Margin="15"                            
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPosition2Command}"
                                 Content="{x:Static res:InstallationApp.BayPosition2}"
                                 IsActive="{Binding IsPosition2Selected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-
+        </StackPanel>
+        
         <Border Grid.Row="3"
                 Grid.RowSpan="2">
             <Grid>
@@ -204,9 +189,9 @@
 
             </Grid>
         </Border>
-        
+
         <!-- Deposit / Pick up -->
-            <ctrls:PpcSpinEdit Grid.Row="2"
+        <ctrls:PpcSpinEdit Grid.Row="2"
                              Grid.Column="1"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
@@ -214,7 +199,7 @@
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
-            <ctrls:PpcSpinEdit Grid.Row="2"
+        <ctrls:PpcSpinEdit Grid.Row="2"
                              Grid.Column="2"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
@@ -222,14 +207,14 @@
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
-            <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="1"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      ContentText="{Binding CompletedCycles, FallbackValue='0'}"
                                      LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
-            <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="2"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"

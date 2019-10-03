@@ -17,7 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();
 
         Task LoadFromAsync(string fileNamePath);
-        void SetWeight(int loadingUnitId, double? loadingUnitGrossWeight);
+
+        void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 
         #endregion
     }

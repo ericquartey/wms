@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private LoadingUnit loadingUnitInBay;
 
-        private DelegateCommand moveToBayHeightCommand;
-
         private DelegateCommand selectBayPosition1Command;
 
         private DelegateCommand selectBayPosition2Command;
@@ -84,13 +82,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.loadingUnitInBay;
             protected set => this.SetProperty(ref this.loadingUnitInBay, value);
         }
-
-        public ICommand MoveToBayHeightCommand =>
-            this.moveToBayHeightCommand
-            ??
-            (this.moveToBayHeightCommand = new DelegateCommand(
-                async () => await this.MoveToBayHeightAsync(),
-                this.CanMoveToBayHeight));
 
         public ICommand SelectBayPosition1Command =>
             this.selectBayPosition1Command

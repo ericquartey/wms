@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
@@ -106,9 +103,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             var sensors = this.sensorsProvider.GetAll();
             this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
 
-            if (loadingUnitId.HasValue)
+            if (loadingUnitId.HasValue
+                &&
+                loadingUnitNetWeight.HasValue)
             {
-                this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight);
+                this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight.Value);
             }
 
             var isLoadingUnitOnBoard =

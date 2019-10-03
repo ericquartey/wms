@@ -244,10 +244,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             return loadingUnits;
         }
-        public void SetWeight(int? loadingUnitId, double? loadingUnitNetWeight)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
     }

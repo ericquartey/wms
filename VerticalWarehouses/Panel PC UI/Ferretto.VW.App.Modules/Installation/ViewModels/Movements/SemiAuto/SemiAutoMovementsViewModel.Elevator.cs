@@ -244,7 +244,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.ShowNotification(string.Empty);
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard);
+                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (System.Exception ex)
             {

@@ -47,6 +47,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
+        private double? netWeight;
+        public double? NetWeight
+        {
+            get => this.netWeight;
+            protected set => this.SetProperty(ref this.netWeight, value);
+        }
+
         public LoadingUnit EmbarkedLoadingUnit
         {
             // TODO  for the moment we use only presence sensors
@@ -186,7 +193,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return;
                 }
 
-                await this.machineElevatorService.MoveHorizontalAutoAsync(this.GetDirection(), this.embarkedLoadingUnit != null);
+                var loadingUnitId = this.bayManagerService.Bay.LoadingUnit.Id;
+                var grossWeight = this.bayManagerService.Bay.LoadingUnit.Tare + this.NetWeight;
+
+                await this.machineElevatorService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, grossWeight);
 
                 if (this.currentState == DepositAndPickUpState.GotoBay)
                 {

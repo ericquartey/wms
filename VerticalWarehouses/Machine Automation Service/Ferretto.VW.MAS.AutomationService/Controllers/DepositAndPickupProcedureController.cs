@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
                 IElevatorProvider elevatorProvider)
                 : base(eventAggregator)
-        {            
+        {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.configurationValueManagement = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
         }
@@ -34,15 +34,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("reset-cycle-quantity")]
         public IActionResult Reset()
         {
-            try
-            {
-                this.elevatorProvider.ResetDepositAndPickUpCycleQuantity();
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.ResetDepositAndPickUpCycleQuantity();
+            return this.Ok();
         }
 
         [HttpGet("cycle-quantity")]
@@ -54,16 +47,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("increase-cycle-quantity")]
         public IActionResult IncreaseCycleQuantity()
         {
-            try
-            {
-                this.elevatorProvider.IncreaseDepositAndPickUpCycleQuantity();
-
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.IncreaseDepositAndPickUpCycleQuantity();
+            return this.Ok();
         }
     }
 }

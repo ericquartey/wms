@@ -368,7 +368,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaiseCanExecuteChanged();
 
-            await this.GetParameterValuesAsync();
+            await this.GetCycleQtuantityAsync();
 
             await this.RetrieveElevatorPositionAsync();
 
@@ -423,9 +423,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
-            this.CompletedCycles = message.Data.ExecutedCycles;
-
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
@@ -452,17 +449,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
-                        this.IsExecutingProcedure = false;
+
+                        await this.ExecuteNextStateAsync();
 
                         if (this.currentState == DepositAndPickUpState.EndLoaded)
                         {
                             await this.machineDepositAndPickupProcedureService.IncreaseCycleQuantityAsync();
+                            this.CompletedCycles++;
+                            this.TotalCompletedCycles = this.initialCycles + this.completedCycles;
                         }
 
                         break;
                     }
 
                 case MessageStatus.OperationStop:
+                case MessageStatus.OperationFaultStop:
+                case MessageStatus.OperationRunningStop:
                     {
                         this.IsElevatorDisembarking = false;
                         this.IsElevatorEmbarking = false;
@@ -487,17 +489,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.tuningBayCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
-            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
             this.resetCommand.RaiseCanExecuteChanged();
         }
 
-        public async Task GetParameterValuesAsync()
+        public async Task GetCycleQtuantityAsync()
         {
             try
             {
-                this.InputRequiredCycles = await this.machineDepositAndPickupProcedureService.GetRequiredCycleQuantityAsync();
+                //this.InputRequiredCycles = await this.machineDepositAndPickupProcedureService.GetRequiredCycleQuantityAsync();
 
                 await this.InitializeTotalCycles();
             }
@@ -540,7 +541,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineDepositAndPickupProcedureService.ResetAsync();
 
-                await this.GetParameterValuesAsync();
+                await this.GetCycleQtuantityAsync();
 
                 this.CompletedCycles = 0;
             }
@@ -568,7 +569,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.InitializeTotalCycles();
 
-                await this.ExecuteStateAsync();
+                this.isExecutingProcedure = true;
+
+                await this.ExecuteNextStateAsync();
             }
             catch (Exception ex)
             {
@@ -580,32 +583,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteStateAsync()
+        private async Task ExecuteNextStateAsync()
         {
-            this.isExecutingProcedure = true;
-
-            do
+            switch (this.currentState)
             {
-                switch (this.currentState)
-                {
-                    case DepositAndPickUpState.None:
-                        await this.MoveToBayHeightAsync();
-                        break;
-                    case DepositAndPickUpState.GotoBay:
-                        await this.StartMovementAsync();
-                        break;
-                    case DepositAndPickUpState.Deposit:
-                        await this.MoveToBayHeightAsync();
-                        break;
-                    case DepositAndPickUpState.GotoBayAdjusted:
-                        await this.StartMovementAsync();
-                        break;
-                    case DepositAndPickUpState.EndLoaded:
-                        await this.CheckStart();
-                        break;
-                }
+                case DepositAndPickUpState.None:
+                    await this.MoveToBayHeightAsync();
+                    break;
+                case DepositAndPickUpState.GotoBay:
+                    await this.StartMovementAsync();
+                    break;
+                case DepositAndPickUpState.Deposit:
+                    await this.MoveToBayHeightAsync();
+                    break;
+                case DepositAndPickUpState.GotoBayAdjusted:
+                    await this.StartMovementAsync();
+                    break;
+                case DepositAndPickUpState.EndLoaded:
+                    await this.CheckStart();
+                    break;
             }
-            while (this.isExecutingProcedure);
         }
 
         private async Task StopAsync()
