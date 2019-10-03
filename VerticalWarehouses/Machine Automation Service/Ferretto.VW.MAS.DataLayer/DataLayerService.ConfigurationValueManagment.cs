@@ -351,10 +351,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                using (var scope = this.serviceScopeFactory.CreateScope())
+                using (var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
                 {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-
                     configurationValue = dbContext.ConfigurationValues
                         .FirstOrDefault(s =>
                             s.VarName == configurationValueEnum
@@ -374,10 +372,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void SetUpdateConfigurationValueCommon(ConfigurationValue newConfigurationValue)
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            using (var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-
                 var configurationValue = dbContext.ConfigurationValues
                     .FirstOrDefault(s =>
                         s.VarName == newConfigurationValue.VarName

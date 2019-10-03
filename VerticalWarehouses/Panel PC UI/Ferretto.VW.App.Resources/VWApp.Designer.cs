@@ -239,5 +239,14 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("UserLogin_UserName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0}.
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
     }
 }

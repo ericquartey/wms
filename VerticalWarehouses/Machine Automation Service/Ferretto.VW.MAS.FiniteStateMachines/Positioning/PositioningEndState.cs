@@ -37,15 +37,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~PositioningEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -183,21 +174,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug("1:Stop Method Empty");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

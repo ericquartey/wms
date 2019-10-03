@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
@@ -18,7 +21,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public partial class AutomationService : AutomationBackgroundService
+    public partial class AutomationService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
         #region Fields
 
@@ -81,9 +84,22 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
+            this.LogVersion();
+
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
+        }
+
+        private void LogVersion()
+        {
+            var versionAttribute = this.GetType().Assembly
+                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
+                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+
+            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
+
+            this.Logger.LogInformation($"VertiMag Automation Service version {versionString}");
         }
 
         #endregion

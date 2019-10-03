@@ -177,4 +177,7 @@
   <data name="Now" xml:space="preserve">
     <value>Adesso</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versione {0}</value>
+  </data>
 </root>

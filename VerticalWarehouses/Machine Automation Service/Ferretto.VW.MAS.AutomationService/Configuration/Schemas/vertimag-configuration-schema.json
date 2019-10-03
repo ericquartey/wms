@@ -30,24 +30,28 @@
             "$id": "#/properties/Machine/properties/Bays/items",
             "type": "object",
             "title": "The Items Schema",
+            "minItems": 1,
+            "additionalProperties": false,
             "required": [
               "Inverter",
               "IoDevice",
               "IsExternal",
               "Number",
               "Side",
-              "Positions",
-              "Type"
+              "Positions"
             ],
             "properties": {
               "AlphaNumericBar": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/AlphaNumericBar",
                 "type": [ "object", "null" ],
                 "title": "The Alphanumericbar Schema",
-                "default": null,
-                "examples": [
-                  null
-                ]
+                "default": null
+              },
+              "LaserPointer": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/LaserPointer",
+                "type": [ "object", "null" ],
+                "title": "The LaserPointer Schema",
+                "default": null
               },
               "Inverter": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter",
@@ -92,9 +96,7 @@
                     "type": "integer",
                     "title": "The Index Schema",
                     "default": 0,
-                    "examples": [
-                      0
-                    ]
+                    "minimum": 0
                   },
                   "IpAddress": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/IpAddress",
@@ -104,7 +106,7 @@
                     "examples": [
                       "127.0.0.1"
                     ],
-                    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+                    "format": "ipv4"
                   },
                   "TcpPort": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/TcpPort",
@@ -117,23 +119,35 @@
                   }
                 }
               },
+              "Carousel": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel",
+                "type": "object",
+                "title": "The Carousel Schema",
+                "required": [
+                  "ElevatorDistance"
+                ],
+                "properties": {
+                  "ElevatorDistance": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ElevatorDistance",
+                    "type": "integer",
+                    "title": "The Elevatordistance Schema",
+                    "default": 0
+                  }
+                }
+              },
               "IsExternal": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/IsExternal",
                 "type": "boolean",
                 "title": "The Isexternal Schema",
-                "default": false,
-                "examples": [
-                  true
-                ]
+                "default": false
               },
               "Number": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
                 "type": "integer",
                 "title": "The Number Schema",
-                "default": 0,
-                "examples": [
-                  1
-                ]
+                "minimum": 1,
+                "maximum": 3,
+                "default": 1
               },
               "Positions": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Positions",
@@ -152,9 +166,8 @@
                       "type": "integer",
                       "title": "The Height Schema",
                       "default": 0,
-                      "examples": [
-                        500
-                      ]
+                      "minimum": 0,
+                      "exclusiveMinimum": true
                     }
                   }
                 }
@@ -189,9 +202,8 @@
                         "type": "integer",
                         "title": "The Index Schema",
                         "default": 0,
-                        "examples": [
-                          2
-                        ]
+                        "minimum": 0,
+                        "maximum": 7
                       }
                     }
                   },
@@ -206,13 +218,6 @@
                     "pattern": "^(.*)$"
                   }
                 }
-              },
-              "Type": {
-                "$id": "#/properties/Machine/properties/Bays/items/properties/Type",
-                "type": "string",
-                "title": "The Type Schema",
-                "default": "",
-                "enum": [ "Carousel", "Single", "Double" ]
               },
               "Side": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Side",
@@ -264,9 +269,8 @@
                         "type": "integer",
                         "title": "The Index Schema",
                         "default": 0,
-                        "examples": [
-                          0
-                        ]
+                        "minimum": 0,
+                        "maximum": 7
                       },
                       "Type": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Type",
@@ -283,7 +287,7 @@
                         "examples": [
                           "127.0.0.1"
                         ],
-                        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+                        "format": "ipv4"
                       },
                       "TcpPort": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/TcpPort",
@@ -506,28 +510,21 @@
           "type": "integer",
           "title": "The Height Schema",
           "default": 0,
-          "examples": [
-            4563
-          ]
+          "minimum": 0,
+          "exclusiveMinimum": true
         },
         "MaxGrossWeight": {
           "$id": "#/properties/Machine/properties/MaxGrossWeight",
           "type": "integer",
           "title": "The Maxgrossweight Schema",
-          "default": 0,
-          "examples": [
-            50000
-          ]
+          "minimum": 0,
+          "exclusiveMinimum": true
         },
         "ModelName": {
           "$id": "#/properties/Machine/properties/ModelName",
           "type": "string",
           "title": "The Modelname Schema",
-          "default": "",
-          "examples": [
-            "Simulated VertiMAG"
-          ],
-          "pattern": "^(.*)$"
+          "minLength": 1
         },
         "Panels": {
           "$id": "#/properties/Machine/properties/Panels",
@@ -568,38 +565,31 @@
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/id",
                       "type": "integer",
                       "title": "The Id Schema",
-                      "default": 0,
-                      "examples": [
-                        1
-                      ]
+                      "default": 0
                     },
                     "position": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
                       "type": "integer",
                       "title": "The Position Schema",
-                      "default": 0,
-                      "examples": [
-                        268
-                      ]
+                      "minimum": 0,
+                      "exclusiveMinimum": true
                     },
                     "priority": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/priority",
                       "type": "integer",
                       "title": "The Priority Schema",
-                      "default": 0,
-                      "examples": [
-                        1
-                      ]
+                      "default": 0
                     },
                     "status": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/status",
                       "type": "string",
                       "title": "The Status Schema",
-                      "default": "",
-                      "examples": [
-                        "free"
-                      ],
-                      "pattern": "^(.*)$"
+                      "enum": [
+                        "Free",
+                        "Disabled",
+                        "Occupied",
+                        "Unusable"
+                      ]
                     }
                   }
                 }
@@ -611,21 +601,17 @@
           "$id": "#/properties/Machine/properties/ProductionDate",
           "type": "string",
           "title": "The Productiondate Schema",
-          "default": "",
           "examples": [
             "2011-05-01T19:43:37+0100"
           ],
-          "pattern": "^(.*)$"
+          "format": "date-time"
         },
         "SerialNumber": {
           "$id": "#/properties/Machine/properties/SerialNumber",
           "type": "string",
           "title": "The Serialnumber Schema",
-          "default": "",
-          "examples": [
-            "Not applicable"
-          ],
-          "pattern": "^(.*)$"
+          "minLength": 1,
+          "description": "The serial number of the machine"
         }
       }
     }

@@ -626,6 +626,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isDouble", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDouble { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("isExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
     
@@ -649,9 +652,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        public BayType Type { get; set; }
     
         public string ToJson() 
         {
@@ -1197,23 +1197,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Busy = 2,
     
         Errored = 3,
-    
-    }
-    
-    /// <summary>0 = Single
-    /// 1 = Double
-    /// 2 = Carousel
-    /// 6 = Elevator</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayType
-    {
-        Single = 0,
-    
-        Double = 1,
-    
-        Carousel = 2,
-    
-        Elevator = 6,
     
     }
     

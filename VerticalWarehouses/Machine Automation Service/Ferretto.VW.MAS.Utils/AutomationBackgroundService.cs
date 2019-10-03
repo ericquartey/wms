@@ -1,9 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,15 +10,19 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils
 {
-    public abstract class AutomationBackgroundService : BackgroundService
+    public abstract class AutomationBackgroundService<TCommandMessage, TNotificationMessage, TCommandEvent, TNotificationEvent> : BackgroundService
+        where TCommandMessage : class
+        where TNotificationMessage : class
+        where TCommandEvent : PubSubEvent<TCommandMessage>, new()
+        where TNotificationEvent : PubSubEvent<TNotificationMessage>, new()
     {
         #region Fields
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+        private readonly BlockingConcurrentQueue<TCommandMessage> commandQueue = new BlockingConcurrentQueue<TCommandMessage>();
 
         private readonly Task commandReceiveTask;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+        private readonly BlockingConcurrentQueue<TNotificationMessage> notificationQueue = new BlockingConcurrentQueue<TNotificationMessage>();
 
         private readonly Task notificationReceiveTask;
 
@@ -89,6 +91,16 @@ namespace Ferretto.VW.MAS.Utils
             await base.StopAsync(cancellationToken);
         }
 
+        protected void EnqueueCommand(TCommandMessage command)
+        {
+            if (command is null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            this.commandQueue.Enqueue(command);
+        }
+
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             this.CancellationToken = cancellationToken;
@@ -106,13 +118,13 @@ namespace Ferretto.VW.MAS.Utils
             return Task.CompletedTask;
         }
 
-        protected abstract bool FilterCommand(CommandMessage command);
+        protected abstract bool FilterCommand(TCommandMessage command);
 
-        protected abstract bool FilterNotification(NotificationMessage notification);
+        protected abstract bool FilterNotification(TNotificationMessage notification);
 
-        protected abstract Task OnCommandReceivedAsync(CommandMessage command);
+        protected abstract Task OnCommandReceivedAsync(TCommandMessage command);
 
-        protected abstract Task OnNotificationReceivedAsync(NotificationMessage message);
+        protected abstract Task OnNotificationReceivedAsync(TNotificationMessage message);
 
         private async Task DequeueCommandsAsync()
         {
@@ -121,8 +133,7 @@ namespace Ferretto.VW.MAS.Utils
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command);
-                    this.Logger.LogTrace(
-                        $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
+                    this.Logger.LogTrace($"Dequeued command {command}.");
 
                     await this.OnCommandReceivedAsync(command);
                 }
@@ -142,8 +153,7 @@ namespace Ferretto.VW.MAS.Utils
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification);
-                    this.Logger.LogTrace(
-                        $"Dequeued notification '{notification.Type}', status {notification.Status} (from '{notification.Source}' to '{notification.Destination}').");
+                    this.Logger.LogTrace($"Dequeued notification {notification}");
 
                     await this.OnNotificationReceivedAsync(notification);
                 }
@@ -164,7 +174,7 @@ namespace Ferretto.VW.MAS.Utils
         private void InitializeSubscriptions()
         {
             this.commandEventSubscriptionToken = this.EventAggregator
-                .GetEvent<CommandEvent>()
+                .GetEvent<TCommandEvent>()
                 .Subscribe(
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
@@ -174,7 +184,7 @@ namespace Ferretto.VW.MAS.Utils
             this.Logger.LogTrace("Subscribed to command events.");
 
             this.notificationEventSubscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEvent>()
+                .GetEvent<TNotificationEvent>()
                 .Subscribe(
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,
