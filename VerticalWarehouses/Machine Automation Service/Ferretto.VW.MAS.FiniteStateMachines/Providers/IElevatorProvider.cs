@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         double HorizontalPosition { get; set; }
 
-        MovementProfileType ProfileType { get; set; }
-
         double VerticalPosition { get; set; }
 
         #endregion

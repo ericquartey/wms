@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
                     }
 
-                    this.Logger.LogError($"Conditions not verified for homing");
+                    this.Logger.LogError($"Conditions not verified for homing: Missing Zero sensor with empty elevator OR Zero sensor active with full elevator");
 
                     this.CurrentState = new HomingErrorState(stateData);
                 }
