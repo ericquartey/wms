@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -57,6 +58,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<decimal> GetPosition()
         {
             throw new NotImplementedException("Carousel positioning not implemented");
+        }
+
+        [HttpPost("homing")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Homing()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal);
+
+            this.PublishCommand(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
         }
 
         [HttpPost("move")]

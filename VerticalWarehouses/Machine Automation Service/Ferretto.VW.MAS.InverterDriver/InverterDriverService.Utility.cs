@@ -400,6 +400,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentAxis = calibrateData.AxisToCalibrate;
                     var currentStateMachine = new CalibrateAxisStateMachine(
                         this.currentAxis,
+                        calibrateData.CalibrationType,
                         inverter,
                         this.logger,
                         this.eventAggregator,

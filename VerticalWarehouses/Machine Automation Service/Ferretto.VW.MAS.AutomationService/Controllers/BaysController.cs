@@ -1,5 +1,7 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
@@ -69,6 +71,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var bay = this.baysProvider.GetByNumber(bayNumber);
 
             return this.Ok(bay);
+        }
+
+        [HttpPost("homing")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Homing()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal);
+
+            this.PublishCommand(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
         }
 
         [HttpPost("move")]

@@ -93,10 +93,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 if (message.Status == MessageStatus.OperationEnd)
                 {
                     this.machineData.NumberOfExecutedSteps++;
-                    this.machineData.AxisToCalibrate =
-                        (this.machineData.AxisToCalibrate == Axis.Vertical) ?
-                            Axis.Horizontal :
-                            Axis.Vertical;
+                    if (this.machineData.MaximumSteps == 3)
+                    {
+                        this.machineData.AxisToCalibrate =
+                            (this.machineData.AxisToCalibrate == Axis.Vertical) ?
+                                Axis.Horizontal :
+                                Axis.Vertical;
+                    }
+                    if (this.machineData.AxisToCalibrate == Axis.Horizontal && this.machineData.NumberOfExecutedSteps > 0)
+                    {
+                        this.machineData.CalibrationType = Calibration.ResetEncoder;
+                    }
                 }
             }
 
@@ -156,18 +163,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 case Axis.HorizontalAndVertical:
                     this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 2;
+                    this.machineData.MaximumSteps = 3;
                     break;
 
                 case Axis.Horizontal:
                     this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 1;
+                    this.machineData.MaximumSteps = 2;
                     break;
 
                 case Axis.Vertical:
                     this.machineData.AxisToCalibrate = Axis.Vertical;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = 1;
                     break;
