@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         #endregion
 
         #region Constructors
@@ -19,11 +21,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStopState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
         }
 
         #endregion
@@ -68,7 +72,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
@@ -79,6 +83,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         new CalibrateAxisDisableOperationState(
                             this.ParentStateMachine,
                             this.axisToCalibrate,
+                            this.calibration,
                             this.InverterStatus,
                             this.Logger,
                             true));

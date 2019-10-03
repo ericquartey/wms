@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         private readonly bool stopRequested;
 
         #endregion
@@ -21,12 +23,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisDisableOperationState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IInverterStatusBase inverterStatus,
             ILogger logger,
             bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
             this.stopRequested = stopRequested;
         }
 
@@ -65,6 +69,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     new CalibrateAxisStopState(
                         this.ParentStateMachine,
                         this.axisToCalibrate,
+                        this.calibration,
                         this.InverterStatus,
                         this.Logger));
             }
@@ -85,7 +90,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
@@ -94,11 +99,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 {
                     if (this.stopRequested)
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                     }
                     else
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                     }
                     returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                 }

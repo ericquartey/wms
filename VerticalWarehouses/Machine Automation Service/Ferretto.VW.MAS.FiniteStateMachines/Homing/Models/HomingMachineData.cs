@@ -58,6 +58,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models
 
         public Axis AxisToCalibrated { get => this.axisToCalibrated; set => this.axisToCalibrated = value; }
 
+        public Calibration CalibrationType { get; set; }
+
         public IEventAggregator EventAggregator { get; }
 
         public bool IsOneKMachine { get; }
