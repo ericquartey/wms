@@ -12,9 +12,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public HomingMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
+            this.CalibrationType = calibration;
             this.Verbosity = verbosity;
         }
 
@@ -23,6 +24,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Properties
 
         public Axis AxisToCalibrate { get; set; }
+
+        public Calibration CalibrationType { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

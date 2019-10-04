@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorEmbarking;
 
+        private bool isTuningBay;
+
         private bool isTuningChain;
 
         private DelegateCommand tuningBayCommand;
@@ -106,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorDisembarking, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -119,7 +121,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorEmbarking, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsTuningBay
+        {
+            get => this.isTuningBay;
+            private set
+            {
+                if (this.SetProperty(ref this.isTuningBay, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -132,7 +147,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningChain, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -168,7 +183,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 // !this.IsWaitingForResponse
                 // &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
                 this.Sensors.LuPresentInMachineSideBay1
                 &&
@@ -181,7 +196,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 // !this.IsWaitingForResponse
                 // &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
@@ -192,31 +207,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningBay()
         {
-            return true;
+            return !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                !this.IsTuningBay;
         }
 
         private bool CanTuningChain()
         {
             return !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
+                !this.IsMoving
                 &&
                 !this.IsTuningChain
                 &&
+                this.IsZeroChain
+                &&
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
-                !this.Sensors.LuPresentInOperatorSideBay1
-                &&
-                !this.IsZeroChain;
+                !this.Sensors.LuPresentInOperatorSideBay1;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)
         {
+            this.IsElevatorDisembarking = true;
             await this.StartMovementAsync(direction, true);
         }
 
         private async Task Embark(HorizontalMovementDirection direction)
         {
+            this.IsElevatorEmbarking = true;
             await this.StartMovementAsync(direction, false);
         }
 
@@ -243,7 +264,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.ShowNotification(string.Empty);
                 await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (System.Exception ex)
@@ -254,6 +274,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningBay()
         {
+            this.IsTuningBay = true;
             await Task.Delay(1);
         }
 

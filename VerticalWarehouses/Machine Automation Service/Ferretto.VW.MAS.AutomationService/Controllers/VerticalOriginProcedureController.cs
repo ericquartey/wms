@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical);
+            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
 
             this.PublishCommand(
                 homingData,

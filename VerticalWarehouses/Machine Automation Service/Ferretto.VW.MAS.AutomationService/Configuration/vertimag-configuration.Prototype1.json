@@ -27,10 +27,6 @@
         "Type": "Single"
       },
       {
-        "Inverter": {
-          "Type": "Acu",
-          "Index": 5
-        },
         "IoDevice": {
           "Index": 1,
           "IpAddress": "192.168.0.2",
@@ -2760,7 +2756,7 @@
     "FeedRate": 0.20
   },
   "HorizontalManualMovements": {
-    "FeedRate": 0.30,
+    "FeedRate": 0.40,
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 200.0
   },
@@ -2792,8 +2788,8 @@
     "Deceleration": 500.0,
     "HigherDistance": 467.0,
     "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 15.0,
-    "HighSpeedDurationClose": 15.0
+    "HighSpeedDurationOpen": 14.0,
+    "HighSpeedDurationClose": 13.0
   },
   "VerticalManualMovements": {
     "FeedRate": 0.10,

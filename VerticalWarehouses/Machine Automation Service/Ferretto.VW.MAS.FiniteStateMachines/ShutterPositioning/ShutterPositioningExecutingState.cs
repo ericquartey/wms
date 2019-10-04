@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
         private bool disposed;
 
-        private int numberOfExecutedCycles;
-
         private ShutterMovementDirection oldDirection;
 
         #endregion
@@ -80,8 +78,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                             {
                                 if (messageData.ShutterPosition == ShutterPosition.Opened)
                                 {
-                                    this.numberOfExecutedCycles++;
-                                    if (this.numberOfExecutedCycles == this.machineData.PositioningMessageData.RequestedCycles)
+                                    this.machineData.PositioningMessageData.ExecutedCycles++;
+                                    if (this.machineData.PositioningMessageData.ExecutedCycles == this.machineData.PositioningMessageData.RequestedCycles)
                                     {
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                                     }
@@ -255,7 +253,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            this.machineData.PositioningMessageData.ExecutedCycles = this.numberOfExecutedCycles;
             var notificationMessage = new NotificationMessage(
                 this.machineData.PositioningMessageData,
                 "ShutterControl Test Executing",

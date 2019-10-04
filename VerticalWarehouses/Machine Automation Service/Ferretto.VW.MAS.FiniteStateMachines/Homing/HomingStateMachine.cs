@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         private readonly IHomingMachineData machineData;
 
         #endregion
@@ -28,20 +31,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public HomingStateMachine(
             Axis axisToCalibrate,
+            Calibration calibration,
             bool isOneKMachine,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
+            IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
 
-            this.machineData = new HomingMachineData(isOneKMachine, requestingBay, targetBay, machineResourcesProvider, eventAggregator, logger, serviceScopeFactory);
+            this.machineData = new HomingMachineData(
+                isOneKMachine,
+                requestingBay,
+                targetBay,
+                machineResourcesProvider,
+                baysProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
+                eventAggregator,
+                logger,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -93,10 +107,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 if (message.Status == MessageStatus.OperationEnd)
                 {
                     this.machineData.NumberOfExecutedSteps++;
+                    this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;
                     this.machineData.AxisToCalibrate =
                         (this.machineData.AxisToCalibrate == Axis.Vertical) ?
                             Axis.Horizontal :
                             Axis.Vertical;
+                    if (this.machineData.AxisToCalibrate == Axis.Vertical)
+                    {
+                        this.machineData.CalibrationType = Calibration.FindSensor;
+                    }
+                    else if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+                    {
+                        this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
+                    }
                 }
             }
 
@@ -156,18 +179,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 case Axis.HorizontalAndVertical:
                     this.machineData.AxisToCalibrate = Axis.Horizontal;
+                    this.machineData.CalibrationType = Calibration.ResetEncoder;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = 2;
                     break;
 
                 case Axis.Horizontal:
-                    this.machineData.AxisToCalibrate = Axis.Horizontal;
+                case Axis.BayChain:
+                    this.machineData.AxisToCalibrate = this.axisToCalibrate;
+                    this.machineData.CalibrationType = this.calibration;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:
                     this.machineData.AxisToCalibrate = Axis.Vertical;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = 1;
                     break;
@@ -178,12 +205,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 var stateData = new HomingStateData(this, this.machineData);
 
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions();
+                checkConditions = this.CheckConditions(out string errorText);
                 if (!checkConditions)
                 {
                     var notificationMessage = new NotificationMessage(
                         null,
-                        "Conditions not verified for homing",
+                        errorText,
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.InverterException,
@@ -200,7 +227,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
                     }
 
-                    this.Logger.LogError($"Conditions not verified for homing");
+                    this.Logger.LogError($"Conditions not verified for homing: {errorText}");
 
                     this.CurrentState = new HomingErrorState(stateData);
                 }
@@ -224,14 +251,63 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             }
         }
 
-        private bool CheckConditions()
+        private bool CheckConditions(out string errorText)
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            var checkConditions = ((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) ||
-                                    this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle);
-
-            return checkConditions;
+            bool ok = true;
+            errorText = string.Empty;
+            if (this.machineData.TargetBay == BayNumber.ElevatorBay)
+            {
+                if (this.machineData.MaximumSteps > 1 &&
+                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) &&
+                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    )
+                {
+                    ok = false;
+                    errorText = "Invalid presence sensors";
+                }
+                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
+                    )
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible with full elevator";
+                }
+                //else if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                //    this.machineData.AxisToCalibrate == Axis.Horizontal &&
+                //    this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                //    )
+                //{
+                //    ok = false;
+                //    errorText = "Find Zero not possible: already in zero position";
+                //}
+            }
+            else
+            {
+                if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                    this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
+                    )
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: already in zero position";
+                }
+                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                    !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                    )
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: Top position occupied";
+                }
+                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                    !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                    )
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: Bottom position occupied";
+                }
+            }
+            return ok;
         }
 
         #endregion

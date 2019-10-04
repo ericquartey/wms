@@ -56,16 +56,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canInputCellId, value);
         }
 
+        public bool CanInputHeight
+        {
+            get => this.canInputHeight;
+            private set => this.SetProperty(ref this.canInputHeight, value);
+        }
+
         public bool CanInputLoadingUnitId
         {
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
-        }
-
-        public bool CanInputQuote
-        {
-            get => this.canInputHeight;
-            private set => this.SetProperty(ref this.canInputHeight, value);
         }
 
         public int? InputCellId
@@ -80,6 +80,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell = value == null
                         ? null
                         : this.Cells.SingleOrDefault(c => c.Id == value);
+
+                    this.InputHeight = this.SelectedCell?.Position ?? 0;
+
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -108,6 +112,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedLoadingUnit = value == null
                         ? null
                         : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
+
+                    this.InputCellId = this.SelectedLoadingUnit?.CellId ?? 0;
+
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -119,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -132,7 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -145,7 +153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -230,13 +238,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
-                &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                !this.IsMoving;
         }
 
         private bool CanMoveToHeight()
@@ -245,13 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
-                &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                !this.IsMoving;
         }
 
         private bool CanMoveToLoadingUnitHeight()
@@ -260,13 +256,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsElevatorMoving
-                &&
-                !this.IsElevatorMovingToCell
-                &&
-                !this.IsElevatorMovingToHeight
-                &&
-                !this.IsElevatorMovingToLoadingUnit;
+                !this.IsMoving;
         }
 
         private async Task MoveToCellHeightAsync()

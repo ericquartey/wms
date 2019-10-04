@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -873,7 +873,7 @@
     <value>Lato Cella</value>
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
-    <value>Porta a Quota Cella</value>
+    <value>Porta a quota cella</value>
   </data>
   <data name="BayPosition1" xml:space="preserve">
     <value>Posizione 1</value>
@@ -915,7 +915,7 @@
     <value>Cassetto in Baia</value>
   </data>
   <data name="GoToBay" xml:space="preserve">
-    <value>Vai a Baia</value>
+    <value>Vai a baia</value>
   </data>
   <data name="Cells" xml:space="preserve">
     <value>Celle</value>
@@ -998,16 +998,16 @@
     <value>Peso Netto [kg]</value>
   </data>
   <data name="DisembarkBackwards" xml:space="preserve">
-    <value>Scarica Indietro</value>
+    <value>Scarica indietro</value>
   </data>
   <data name="DisembarkForwards" xml:space="preserve">
-    <value>Scarica Avanti</value>
+    <value>Scarica avanti</value>
   </data>
   <data name="EmbarkBackwards" xml:space="preserve">
-    <value>Carica Indietro</value>
+    <value>Carica indietro</value>
   </data>
   <data name="EmbarkForwards" xml:space="preserve">
-    <value>Carica Avanti</value>
+    <value>Carica avanti</value>
   </data>
   <data name="LSMTEngineTitle" xml:space="preserve">
     <value>Movimenti Assi</value>
@@ -1035,5 +1035,38 @@
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
     <value>Peso cassetto</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Taratura baia</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Giostra giù</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Giostra su</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Taratura catena</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Numero Cassetto</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Chiudi serranda</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Apri serranda</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Vai a cassetto</value>
+  </data>
+  <data name="IntermediatePosition" xml:space="preserve">
+    <value>Posizione intermedia</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Presenza UDC lato macchina</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Presenza UDC lato operatore</value>
   </data>
 </root>

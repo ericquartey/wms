@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineBaysService.MoveAsync(this.BayNumber, direction);
+                await this.machineBaysService.MoveAsync(direction);
             }
             catch (System.Exception ex)
             {

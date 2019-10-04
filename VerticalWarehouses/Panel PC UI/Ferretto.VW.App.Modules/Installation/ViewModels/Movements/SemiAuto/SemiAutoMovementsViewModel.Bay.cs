@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -111,10 +111,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToBayHeight()
         {
             return this.BayPositionHeight.HasValue
-              &&
-              !this.IsWaitingForResponse
-              &&
-              !this.IsElevatorMoving;
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                this.IsZeroChain;
         }
 
         private async Task MoveToBayHeightAsync()
@@ -122,6 +124,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.InputHeight = this.BayPositionHeight.HasValue ? this.BayPositionHeight.Value : 0;
 
                 await this.machineElevatorService.MoveToVerticalPositionAsync(
                     this.BayPositionHeight.Value,

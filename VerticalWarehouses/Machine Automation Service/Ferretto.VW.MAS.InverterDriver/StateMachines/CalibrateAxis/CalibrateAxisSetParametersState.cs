@@ -15,11 +15,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         // TODO move following parameters into configuration
         private const int HIGH_SPEED = 2000;
 
-        private const short HORIZONTAL_SENSOR = 1807;
+        private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
         private const int LOW_SPEED = 500;
 
-        private const short VERTICAL_SENSOR = 527;
+        private const short VERTICAL_SENSOR = 527;      // S3IND
 
         private readonly Axis axisToCalibrate;
 
@@ -69,6 +69,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 new CalibrateAxisStopState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
+                    this.calibration,
                     this.InverterStatus,
                     this.Logger));
         }
@@ -80,7 +81,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
@@ -128,7 +129,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             break;
                         }
                     case InverterParameterId.HomingCreepSpeedParam:
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         break;
                 }
             }

@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",
