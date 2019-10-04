@@ -554,7 +554,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         public int GetDepositAndPickUpCycleQuantity()
         {
-            return this.depositAndPickUpDataLayer.CycleQuantity;
+            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
         }
 
         public void IncreaseDepositAndPickUpCycleQuantity()

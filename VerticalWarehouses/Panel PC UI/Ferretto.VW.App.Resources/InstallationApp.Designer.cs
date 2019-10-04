@@ -1492,6 +1492,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit id.
+        /// </summary>
+        public static string LoadingUnitId {
+            get {
+                return ResourceManager.GetString("LoadingUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit weight.
+        /// </summary>
+        public static string LoadingUnitWeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Off.
         /// </summary>
         public static string LogOff {

@@ -1097,4 +1097,12 @@
   <data name="ConfirmationOperation" xml:space="preserve">
     <value>Confirmation operation?</value>
   </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Loading unit id</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingUnitWeight" xml:space="preserve">
+    <value>Loading unit weight</value>
+    <comment>Label text</comment>
+  </data>
 </root>

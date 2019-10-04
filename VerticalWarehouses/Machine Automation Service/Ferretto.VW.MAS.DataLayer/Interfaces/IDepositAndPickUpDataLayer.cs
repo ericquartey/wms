@@ -4,7 +4,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        int CycleQuantity { get; }
+        int CycleQuantityDP { get; }
 
         #endregion
     }

@@ -1030,4 +1030,10 @@
   <data name="ConfirmationOperation" xml:space="preserve">
     <value>Confermi l'operazione?</value>
   </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Id cassetto</value>
+  </data>
+  <data name="LoadingUnitWeight" xml:space="preserve">
+    <value>Peso cassetto</value>
+  </data>
 </root>

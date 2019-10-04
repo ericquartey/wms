@@ -145,6 +145,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.setupStatusProvider.CompleteVerticalResolution();
         }
 
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            return horizontalAxis.TotalCycles;
+        }
+
         public void IncreaseDepositAndPickUpCycleQuantity()
         {
             var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);

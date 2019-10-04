@@ -13,21 +13,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         private readonly IElevatorProvider elevatorProvider;
         private readonly IConfigurationValueManagmentDataLayer configurationValueManagement;
+        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
 
         public DepositAndPickupProcedureController(
-                IEventAggregator eventAggregator,
+                IEventAggregator eventAggregator,                
                 IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+                IDepositAndPickUpDataLayer depositAndPickUpDataLayer,
                 IElevatorProvider elevatorProvider)
                 : base(eventAggregator)
         {
-            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
-            this.configurationValueManagement = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));            
+            this.configurationValueManagement = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));            
+            this.depositAndPickUpDataLayer = depositAndPickUpDataLayer ?? throw new ArgumentNullException(nameof(depositAndPickUpDataLayer));
         }
 
         [HttpGet("required-cycle-quantity")]
         public ActionResult<int> GetRequiredCycleQuantity()
         {
-            var requiredCycles = this.configurationValueManagement.GetIntegerConfigurationValue(DepositAndPickUp.CycleQuantity, ConfigurationCategory.DepositAndPickUp);
+            var requiredCycles = this.depositAndPickUpDataLayer.CycleQuantityDP;            
             return this.Ok(requiredCycles);
         }
 

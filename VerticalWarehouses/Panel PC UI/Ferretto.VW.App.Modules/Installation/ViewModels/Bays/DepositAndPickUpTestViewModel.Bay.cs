@@ -37,13 +37,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? BayPositionHeight
         {
             get => this.bayPositionHeight;
-            protected set => this.SetProperty(ref this.bayPositionHeight, value);
+            set => this.SetProperty(ref this.bayPositionHeight, value);
         }
 
         public bool IsElevatorMovingToBay
         {
             get => this.isElevatorMovingToBay;
-            private set
+            set
             {
                 if (this.SetProperty(ref this.isElevatorMovingToBay, value))
                 {
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsPosition1Selected
         {
             get => this.isPosition1Selected;
-            protected set
+            set
             {
                 if (this.SetProperty(ref this.isPosition1Selected, value))
                 {
@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsPosition2Selected
         {
             get => this.isPosition2Selected;
-            protected set
+            set
             {
                 if (this.SetProperty(ref this.isPosition2Selected, value))
                 {
@@ -80,7 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit LoadingUnitInBay
         {
             get => this.loadingUnitInBay;
-            protected set => this.SetProperty(ref this.loadingUnitInBay, value);
+            set => this.SetProperty(ref this.loadingUnitInBay, value);
         }
 
         public ICommand SelectBayPosition1Command =>
@@ -110,15 +110,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                if (!(this.currentState == DepositAndPickUpState.None
+                    ||
+                    this.currentState == DepositAndPickUpState.PickUp
+                    ||
+                    this.currentState == DepositAndPickUpState.Deposit))
+                {
+                    this.ShowNotification($"Vai a baia non eseguito, lo stato corrente è {this.currentState.ToString()}");
+                    this.IsExecutingProcedure = false;
+                    return;
+                }
+
                 this.IsWaitingForResponse = true;
 
+                if (this.currentState == DepositAndPickUpState.None)
+                {
+                    this.currentState = DepositAndPickUpState.GotoBay;
+                }
+                else
+                {
+                    this.currentState = DepositAndPickUpState.GotoBayAdjusted;
+                }
+
                 await this.machineElevatorService.MoveToVerticalPositionAsync(
-                    this.BayPositionHeight.Value,
-                    FeedRateCategory.VerticalManualMovementsAfterZero);
+                        this.BayPositionHeight.Value,
+                        FeedRateCategory.VerticalManualMovementsAfterZero);
 
                 this.IsElevatorMovingToBay = true;
-
-                this.currentState = DepositAndPickUpState.GotoBay;
             }
             catch (Exception ex)
             {
