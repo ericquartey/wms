@@ -57,6 +57,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return axis;
         }
 
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            return horizontalAxis.TotalCycles;
+        }
+
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
@@ -68,18 +75,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             return elevator.LoadingUnit;
         }
-
-        public void SetLoadingUnitOnBoard(int? id)
-        {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.LoadingUnit)
-                .Single();
-
-            elevator.LoadingUnitId = id;
-
-            this.dataContext.SaveChanges();
-        }
-
 
         public double GetMaximumLoadOnBoard()
         {
@@ -101,6 +96,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            horizontalAxis.TotalCycles++;
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+
+            horizontalAxis.TotalCycles = 0;
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void SetLoadingUnitOnBoard(int? id)
+        {
+            var elevator = this.dataContext.Elevators
+                .Include(e => e.LoadingUnit)
+                .Single();
+
+            elevator.LoadingUnitId = id;
+
+            this.dataContext.SaveChanges();
+        }
+
         public void UpdateVerticalOffset(double newOffset)
         {
             var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
@@ -121,32 +145,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.setupStatusProvider.CompleteVerticalResolution();
         }
-
-        public int GetDepositAndPickUpCycleQuantity()
-        {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            return horizontalAxis.TotalCycles;
-        }
-
-        public void IncreaseDepositAndPickUpCycleQuantity()
-        {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            horizontalAxis.TotalCycles++;
-
-            this.dataContext.SaveChanges();
-        }
-
-        public void ResetDepositAndPickUpCycleQuantity()
-        {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            horizontalAxis.TotalCycles = 0;
-
-            this.dataContext.SaveChanges();
-        }
-
 
         /// <summary>
         /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
@@ -187,16 +185,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
-        }
-
-        private ElevatorAxis GetAxis(Orientation orientation)
-        {
-            return this.dataContext.ElevatorAxes
-                .Include(a => a.Profiles)
-                .ThenInclude(p => p.Steps)
-                .Include(a => a.MaximumLoadMovement)
-                .Include(a => a.EmptyLoadMovement)
-                .Single(a => a.Orientation == orientation);
         }
 
         #endregion
