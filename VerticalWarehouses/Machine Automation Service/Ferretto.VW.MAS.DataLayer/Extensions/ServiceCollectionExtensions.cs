@@ -42,13 +42,16 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer);
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IDepositAndPickUpDataLayer);
 
             services
                 .AddScoped<IBaysProvider, BaysProvider>()

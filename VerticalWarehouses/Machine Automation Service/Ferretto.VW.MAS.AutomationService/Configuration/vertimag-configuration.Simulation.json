@@ -2728,6 +2728,9 @@
   "BeltBurnishing": {
     "CycleQuantity": 200
   },
+  "DepositAndPickUp": {
+    "CycleQuantity": 10
+  },
   "CellControl": {
     "StepValue": 0.5,
     "FeedRate": 0.20

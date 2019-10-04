@@ -2745,6 +2745,9 @@
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
     "CycleQuantity": 5
   },
+  "DepositAndPickUp": {
+    "CycleQuantity": 10
+  },
   "ResolutionCalibration": {
     "InitialPosition": 1000.0, //TEMP Temporary value for software test
     "FinalPosition": 5500.0, //TEMP Temporary value for software test

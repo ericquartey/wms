@@ -51,13 +51,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private bool disposedValue = false;
 
+        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
+
         #endregion
 
         #region Constructors
 
         public ElevatorProvider(
-            IEventAggregator eventAggregator,
-            ILogger<FiniteStateMachines> logger,
+                    IEventAggregator eventAggregator,
+                    ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator)
         {
@@ -65,7 +67,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-
             this.configurationProvider = this.scope.ServiceProvider.GetRequiredService<IConfigurationValueManagmentDataLayer>();
             this.panelControlDataLayer = this.scope.ServiceProvider.GetRequiredService<IPanelControlDataLayer>();
             this.horizontalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IHorizontalManualMovementsDataLayer>();
@@ -79,6 +80,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.verticalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IVerticalManualMovementsDataLayer>();
             this.loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+            this.depositAndPickUpDataLayer = this.scope.ServiceProvider.GetRequiredService<IDepositAndPickUpDataLayer>();
         }
 
         #endregion
@@ -102,9 +104,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.Dispose(true);
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay)
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
         {
             var sensors = this.sensorsProvider.GetAll();
+            this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
+
+            if (loadingUnitId.HasValue
+                &&
+                loadingUnitNetWeight.HasValue)
+            {
+                this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight.Value);
+            }
 
             var isLoadingUnitOnBoard =
                 sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
@@ -542,6 +552,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
                 this.disposedValue = true;
             }
+        }
+
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
+        }
+
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
+        }
+
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
         }
 
         private double GetFeedRate(FeedRateCategory feedRateCategory)

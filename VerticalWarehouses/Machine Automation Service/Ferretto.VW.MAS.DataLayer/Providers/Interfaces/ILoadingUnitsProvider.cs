@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         Task LoadFromAsync(string fileNamePath);
 
+        void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
+
         #endregion
     }
 }
