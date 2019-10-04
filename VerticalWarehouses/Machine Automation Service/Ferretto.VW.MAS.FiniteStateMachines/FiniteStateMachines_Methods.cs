@@ -130,7 +130,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (receivedMessage.Data is IHomingMessageData data)
             {
-                var targetBay = this.baysProvider.GetByAxis(data);
+                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+                var targetBay = baysProvider.GetByAxis(data);
                 if (targetBay == BayNumber.None)
                 {
                     targetBay = receivedMessage.RequestingBay;
@@ -147,13 +148,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         data.CalibrationType,
-                        this.machineProvider.IsOneTonMachine(),
+                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.eventAggregator,
                         this.logger,
-                        this.baysProvider,
+                        baysProvider,
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
