@@ -7,7 +7,6 @@
              Style="{StaticResource PpcSpinEditStyle}"
              mc:Ignorable="d">
 
-
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="0,1,5,1"
@@ -17,17 +16,10 @@
                       Width="{Binding WidthNumber, FallbackValue=250}"
                       Margin="0,3,5,5"
                       AllowDefaultButton="False"
+                      EditValue="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Increment="1"
                       IsEnabled="{Binding IsEnabled}"
-                      KeyDown="OnKeyDownHandler"
-                      Mask="{Binding Mask}"
-                      MaskType="Simple"
-                      MaskUseAsDisplayFormat="True"
-                      PreviewMouseDown="OnPreviewEventDown"
-                      PreviewTouchDown="OnPreviewEventDown"
-                      Style="{StaticResource VWAPP_PpcTextBox_SpinEditDecimalStyle}"
-                      Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-
+                      Style="{StaticResource VWAPP_PpcTextBox_SpinEditDecimalStyle}">
             <dxe:SpinEdit.Buttons>
                 <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                 IsLeft="True"
@@ -47,7 +39,8 @@
                         </Grid>
                     </dxe:ButtonInfo.Content>
                 </dxe:ButtonInfo>
-                <dxe:ButtonInfo Command="{Binding SpinUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}">
+                <dxe:ButtonInfo Command="{Binding SpinUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
+                                TextBlock.FontSize="20">
                     <dxe:ButtonInfo.Content>
                         <Grid Width="60"
                               Height="60"

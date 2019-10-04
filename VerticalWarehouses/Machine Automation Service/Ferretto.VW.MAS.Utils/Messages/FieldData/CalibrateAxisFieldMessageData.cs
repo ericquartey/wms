@@ -8,10 +8,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
     {
         #region Constructors
 
-        public CalibrateAxisFieldMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public CalibrateAxisFieldMessageData(Axis axisToCalibrate, Calibration calibration, MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
             this.AxisToCalibrate = axisToCalibrate;
+            this.CalibrationType = calibration;
         }
 
         #endregion
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public Axis AxisToCalibrate { get; }
+
+        public Calibration CalibrationType { get; }
 
         #endregion
 

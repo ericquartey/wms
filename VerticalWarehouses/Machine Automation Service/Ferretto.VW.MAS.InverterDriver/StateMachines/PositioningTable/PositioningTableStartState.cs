@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private IInverterPositioningFieldMessageData dataOld;
+        private readonly IInverterPositioningFieldMessageData dataOld;
 
         #endregion
 

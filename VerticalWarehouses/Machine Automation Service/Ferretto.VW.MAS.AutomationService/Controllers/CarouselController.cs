@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -53,10 +54,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
+
         [HttpGet("position")]
         public ActionResult<decimal> GetPosition()
         {
             throw new NotImplementedException("Carousel positioning not implemented");
+        }
+
+        [HttpPost("homing")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Homing()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
+
+            this.PublishCommand(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
         }
 
         [HttpPost("move")]

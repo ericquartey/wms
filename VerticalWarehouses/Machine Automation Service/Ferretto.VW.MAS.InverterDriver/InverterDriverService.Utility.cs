@@ -400,6 +400,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentAxis = calibrateData.AxisToCalibrate;
                     var currentStateMachine = new CalibrateAxisStateMachine(
                         this.currentAxis,
+                        calibrateData.CalibrationType,
                         inverter,
                         this.logger,
                         this.eventAggregator,
@@ -615,7 +616,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         else
                         {
                             this.logger.LogDebug("3: Switch On the inverter state machine");
-                            this.logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn}");
+                            this.logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
 
                             var currentStateMachine = new SwitchOnStateMachine(
                                 switchOnData.AxisToSwitchOn,
@@ -635,7 +636,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
-                        this.logger.LogDebug($"Inverter requires Switch axis {switchOnData.AxisToSwitchOn}");
+                        this.logger.LogDebug($"Inverter requires switching off axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
 
                         var currentStateMachine = new SwitchOffStateMachine(
                             inverter,

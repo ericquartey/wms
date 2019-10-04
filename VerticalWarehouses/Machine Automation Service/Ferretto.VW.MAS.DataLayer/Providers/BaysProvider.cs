@@ -130,6 +130,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.dataContext.Bays.ToArray();
         }
 
+        public BayNumber GetByAxis(IHomingMessageData data)
+        {
+            BayNumber targetBay;
+            switch (data.AxisToCalibrate)
+            {
+                case Axis.Horizontal:
+                case Axis.Vertical:
+                case Axis.HorizontalAndVertical:
+                    targetBay = BayNumber.ElevatorBay;
+                    break;
+
+                default:
+                    targetBay = BayNumber.None;
+                    break;
+            }
+
+            return targetBay;
+        }
+
         public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
         {
             var bay = this.dataContext.Bays.SingleOrDefault(b =>
@@ -223,6 +242,29 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             return bay;
+        }
+
+        public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
+        {
+            var returnValue = InverterIndex.None;
+
+            switch (bayNumber)
+            {
+                case BayNumber.ElevatorBay:
+                    returnValue = InverterIndex.MainInverter;
+                    break;
+
+                case BayNumber.BayOne:
+                case BayNumber.BayTwo:
+                case BayNumber.BayThree:
+                    returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return returnValue;
         }
 
         public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber)

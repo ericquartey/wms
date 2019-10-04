@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         #endregion
 
         #region Constructors
@@ -23,11 +26,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStartState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
         }
 
         #endregion
@@ -36,7 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Calibrate start axis {this.axisToCalibrate}");
+            this.Logger.LogDebug($"Calibrate start axis {this.axisToCalibrate} inverter {this.InverterStatus.SystemIndex}");
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Homing;
 
             this.ParentStateMachine.EnqueueCommandMessage(
@@ -47,7 +52,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             this.ParentStateMachine.PublishNotificationEvent(
                 new FieldNotificationMessage(
-                    new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info),
+                    new CalibrateAxisFieldMessageData(this.axisToCalibrate, this.calibration, MessageVerbosity.Info),
                 $"{this.axisToCalibrate} Homing started",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -65,6 +70,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 new CalibrateAxisStopState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
+                    this.calibration,
                     this.InverterStatus,
                     this.Logger));
         }
@@ -75,7 +81,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
@@ -83,16 +89,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
                 {
                     // TODO: disable EnableOperation and enable SetParameters
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
-                    //this.ParentStateMachine.ChangeState(
-                    //    new CalibrateAxisSetParametersState(
-                    //        this.ParentStateMachine,
-                    //        this.axisToCalibrate,
-                    //        (this.axisToCalibrate == Axis.Vertical ? Calibration.FindSensor : Calibration.ResetEncoder),
-                    //        this.InverterStatus,
-                    //        this.Logger));
+                    //this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(
+                        new CalibrateAxisSetParametersState(
+                            this.ParentStateMachine,
+                            this.axisToCalibrate,
+                            this.calibration,
+                            this.InverterStatus,
+                            this.Logger));
 
-                    var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+                    var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, this.calibration, MessageVerbosity.Info);
                     var notificationMessage = new FieldNotificationMessage(
                         messageData,
                         $"{this.axisToCalibrate} calibrate axis executing",

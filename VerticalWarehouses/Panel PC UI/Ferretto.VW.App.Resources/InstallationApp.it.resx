@@ -873,7 +873,7 @@
     <value>Lato Cella</value>
   </data>
   <data name="MoveToCellHeight" xml:space="preserve">
-    <value>Porta a Quota Cella</value>
+    <value>Porta a quota cella</value>
   </data>
   <data name="BayPosition1" xml:space="preserve">
     <value>Posizione 1</value>
@@ -915,7 +915,7 @@
     <value>Cassetto in Baia</value>
   </data>
   <data name="GoToBay" xml:space="preserve">
-    <value>Vai a Baia</value>
+    <value>Vai a baia</value>
   </data>
   <data name="Cells" xml:space="preserve">
     <value>Celle</value>
@@ -998,16 +998,16 @@
     <value>Peso Netto [kg]</value>
   </data>
   <data name="DisembarkBackwards" xml:space="preserve">
-    <value>Scarica Indietro</value>
+    <value>Scarica indietro</value>
   </data>
   <data name="DisembarkForwards" xml:space="preserve">
-    <value>Scarica Avanti</value>
+    <value>Scarica avanti</value>
   </data>
   <data name="EmbarkBackwards" xml:space="preserve">
-    <value>Carica Indietro</value>
+    <value>Carica indietro</value>
   </data>
   <data name="EmbarkForwards" xml:space="preserve">
-    <value>Carica Avanti</value>
+    <value>Carica avanti</value>
   </data>
   <data name="LSMTEngineTitle" xml:space="preserve">
     <value>Movimenti Assi</value>
@@ -1029,5 +1029,38 @@
   </data>
   <data name="ConfirmationOperation" xml:space="preserve">
     <value>Confermi l'operazione?</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Taratura baia</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Giostra giù</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Giostra su</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Taratura catena</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Numero Cassetto</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Chiudi serranda</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Apri serranda</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Vai a cassetto</value>
+  </data>
+  <data name="IntermediatePosition" xml:space="preserve">
+    <value>Posizione intermedia</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Presenza UDC lato macchina</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Presenza UDC lato operatore</value>
   </data>
 </root>

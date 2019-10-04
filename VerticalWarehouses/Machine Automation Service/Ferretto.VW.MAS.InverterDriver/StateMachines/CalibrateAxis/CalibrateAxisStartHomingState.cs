@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         private bool homingReachedReset;
 
         #endregion
@@ -22,12 +24,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStartHomingState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IHomingInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
-
+            this.calibration = calibration;
             this.Inverter = inverterStatus;
         }
 
@@ -62,6 +65,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 new CalibrateAxisStopState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
+                    this.calibration,
                     this.InverterStatus,
                     this.Logger));
         }
@@ -82,7 +86,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
@@ -99,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     }
                     if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }
@@ -116,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     }
                     if (this.homingReachedReset && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }

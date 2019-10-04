@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 {
@@ -9,7 +10,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces
 
         Axis AxisToCalibrate { get; set; }
 
-        Axis AxisToCalibrated { get; }
+        Calibration CalibrationType { get; set; }
+
+        InverterIndex CurrentInverterIndex { get; set; }
+
+        InverterIndex InverterIndexOld { get; set; }
 
         bool IsOneKMachine { get; }
 

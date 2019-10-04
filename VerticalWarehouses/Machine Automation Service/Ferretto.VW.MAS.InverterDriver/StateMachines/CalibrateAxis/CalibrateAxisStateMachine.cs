@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         private readonly IInverterStatusBase inverterStatus;
 
         private Axis currentAxis;
@@ -25,6 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStateMachine(
             Axis axisToCalibrate,
+            Calibration calibration,
             IInverterStatusBase inverterStatus,
             ILogger logger,
             IEventAggregator eventAggregator,
@@ -33,6 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
             this.inverterStatus = inverterStatus;
         }
 
@@ -57,7 +61,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     break;
             }
 
-            this.CurrentState = new CalibrateAxisStartState(this, this.currentAxis, this.inverterStatus, this.Logger);
+            this.CurrentState = new CalibrateAxisStartState(this, this.currentAxis, this.calibration, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 

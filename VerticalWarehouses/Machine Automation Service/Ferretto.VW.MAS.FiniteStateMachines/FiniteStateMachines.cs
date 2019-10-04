@@ -559,20 +559,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     switch (receivedMessage.Type)
                     {
                         case MessageType.Homing:
-                            if (receivedMessage.Status == MessageStatus.OperationEnd)
-                            {
-                                try
-                                {
-                                    this.setupStatusProvider.CompleteVerticalOrigin();
-                                }
-                                catch (Exception ex)
-                                {
-                                    this.logger.LogDebug($"4:Exception: {ex.Message}");
+                            //if (receivedMessage.Status == MessageStatus.OperationEnd)
+                            //{
+                            //    try
+                            //    {
+                            //        this.setupStatusProvider.CompleteVerticalOrigin();
+                            //    }
+                            //    catch (Exception ex)
+                            //    {
+                            //        this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                                }
-                            }
-                            this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
+                            //        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                            //    }
+                            //}
+                            this.logger.LogDebug($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
                             this.currentStateMachines.Remove(receivedMessage.TargetBay);
                             this.SendCleanDebug();
                             break;

@@ -8,6 +8,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Axis AxisToCalibrate { get; }
 
+        Calibration CalibrationType { get; }
+
         #endregion
     }
 }
