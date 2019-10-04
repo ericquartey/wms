@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 
-        public bool HasCarousel => this.bayManager.Bay.Type == BayType.Carousel;
+        public bool HasCarousel => this.bayManager.Bay.Carousel != null;
 
         public bool IsBayExternal => this.bayManager.Bay.IsExternal;
 

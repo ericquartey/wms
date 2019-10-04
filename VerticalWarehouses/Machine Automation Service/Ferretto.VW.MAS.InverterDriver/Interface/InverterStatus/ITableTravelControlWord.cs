@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
 
         bool SequenceMode { set; }
 
-        bool StartMotionBlock { set; }
+        bool StartMotionBlock { get; set; }
 
         #endregion
     }

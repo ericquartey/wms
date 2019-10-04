@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersService shuttersService;
 
+        private SubscriptionToken homingToken;
+
         private int? inputLoadingUnitCode;
 
         private bool isWaitingForResponse;
@@ -135,6 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking
                 || this.IsTuningChain
+                || this.IsTuningBay
                 || this.IsCarouselMoving
                 || this.IsShutterMoving;
 
@@ -170,6 +173,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
+            if (this.homingToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Unsubscribe(this.homingToken);
+
+                this.homingToken = null;
+            }
+
             if (this.shutterPositionToken != null)
             {
                 this.EventAggregator
@@ -201,6 +214,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.IsBackNavigationAllowed = true;
+
+            this.homingToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<HomingMessageData>>()
+              .Subscribe(
+                  message => this.OnHomingChanged(message),
+                  ThreadOption.UIThread,
+                  false);
 
             this.shutterPositionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
@@ -294,6 +314,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorEmbarking = false;
                 this.IsTuningChain = false;
                 this.IsCarouselMoving = false;
+                this.IsTuningBay = false;
+                this.IsShutterMoving = false;
             }
         }
 
@@ -341,11 +363,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToLoadingUnit = false;
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
+                        this.IsTuningBay = false;
                         if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
                             this.IsCarouselMoving = false;
                         }
 
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
+
+        private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsTuningChain = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsTuningChain = false;
                         break;
                     }
 
@@ -399,6 +452,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsTuningChain = false;
             this.IsCarouselMoving = false;
             this.IsShutterMoving = false;
+            this.IsTuningBay = false;
 
             if (status == CommonUtils.Messages.Enumerations.MessageStatus.OperationError)
             {

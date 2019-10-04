@@ -114,7 +114,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                             Axis.Vertical;
                     if (this.machineData.AxisToCalibrate == Axis.Vertical)
                     {
-                        this.machineData.CalibrationType = Calibration.FindSensor;
+                        this.machineData.CalibrationType = Calibration.Elevator;
+                        this.machineData.CurrentInverterIndex = InverterIndex.MainInverter;
                     }
                     else if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
                     {
@@ -274,25 +275,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.AxisToCalibrate == Axis.Horizontal &&
-                    this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: already in zero position";
-                }
             }
             else
             {
                 if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: already in zero position";
-                }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
                     !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
                     )
                 {

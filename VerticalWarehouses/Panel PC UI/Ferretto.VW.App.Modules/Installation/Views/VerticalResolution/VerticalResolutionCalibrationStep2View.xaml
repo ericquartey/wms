@@ -45,13 +45,13 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition}"
+                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding InitialPosition}"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
         <controls:PpcTextBox Grid.Row="3"

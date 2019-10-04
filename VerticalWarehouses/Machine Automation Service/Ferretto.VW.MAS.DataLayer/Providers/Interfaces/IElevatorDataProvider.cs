@@ -6,17 +6,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        double ComputeDisplacement(double targetPosition);
-
-        int ConvertMillimetersToPulses(double millimeters, Orientation orientation);
-
-        double ConvertPulsesToMillimeters(int pulses, Orientation orientation);
+        ElevatorAxis GetAxis(Orientation orientation);
 
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
 
         double GetMaximumLoadOnBoard();
+
+        ElevatorStructuralProperties GetStructuralProperties();
 
         ElevatorAxis GetVerticalAxis();
 

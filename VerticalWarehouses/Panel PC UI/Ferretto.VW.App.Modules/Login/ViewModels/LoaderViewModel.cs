@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -17,6 +19,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private readonly IHealthProbeService healthProbeService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private string applicationVersion;
 
         private SubscriptionToken subscriptionToken;
 
@@ -41,11 +45,25 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService;
+
+            var versionAttribute = this.GetType().Assembly
+                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
+                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+
+            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
+
+            this.ApplicationVersion = string.Format(Resources.VWApp.Version, versionString);
         }
 
         #endregion
 
         #region Properties
+
+        public string ApplicationVersion
+        {
+            get => this.applicationVersion;
+            set => this.SetProperty(ref this.applicationVersion, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.None;
 

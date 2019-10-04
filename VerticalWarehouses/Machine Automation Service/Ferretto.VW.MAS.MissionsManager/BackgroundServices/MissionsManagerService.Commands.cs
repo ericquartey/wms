@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 command.Destination == MessageActor.Any;
         }
 
-        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
             switch (command.Type)
             {

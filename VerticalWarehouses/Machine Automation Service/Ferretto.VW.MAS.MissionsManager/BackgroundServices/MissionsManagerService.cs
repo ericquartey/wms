@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
-    internal partial class MissionsManagerService : AutomationBackgroundService
+    internal partial class MissionsManagerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
         #region Fields
 
@@ -37,8 +37,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         private readonly IServiceScope serviceScope;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private bool isDisposed;
 
         #endregion
@@ -53,7 +51,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             IMissionsDataService missionsDataService,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));

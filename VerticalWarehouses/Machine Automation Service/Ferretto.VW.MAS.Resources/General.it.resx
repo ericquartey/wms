@@ -129,6 +129,12 @@
   <data name="NotFoundTitle" xml:space="preserve">
     <value>Elemento non trovato.</value>
   </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Il servizio è in fase di inizializzazione.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Il servizio ha completato la fase di inizializzazione.</value>
+  </data>
   <data name="UnprocessableEntityTitle" xml:space="preserve">
     <value>Impossibile processare la richiesta, dato lo stato corrente.</value>
   </data>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
 
 // ReSharper disable ArrangeThisQualifier
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService
             return false;
         }
 
-        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
             return Task.CompletedTask;
         }

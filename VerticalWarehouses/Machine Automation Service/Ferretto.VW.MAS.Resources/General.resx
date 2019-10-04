@@ -129,6 +129,12 @@
   <data name="NotFoundTitle" xml:space="preserve">
     <value>Not Found.</value>
   </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Service is initializing.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Service startup sequence completed.</value>
+  </data>
   <data name="UnprocessableEntityTitle" xml:space="preserve">
     <value>Unprocessable Entity.</value>
   </data>

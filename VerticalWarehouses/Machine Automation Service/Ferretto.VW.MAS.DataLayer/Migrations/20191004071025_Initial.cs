@@ -5,6 +5,109 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     public partial class Initial : Migration
     {
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_ElevatorAxes_Inverters_InverterId",
+                table: "ElevatorAxes");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Elevators_LoadingUnits_LoadingUnitId",
+                table: "Elevators");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ElevatorAxes_Elevators_ElevatorId",
+                table: "ElevatorAxes");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ElevatorAxes_MovementParameters_EmptyLoadMovementId",
+                table: "ElevatorAxes");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ElevatorAxes_MovementParameters_MaximumLoadMovementId",
+                table: "ElevatorAxes");
+
+            migrationBuilder.DropTable(
+                name: "BayPosition");
+
+            migrationBuilder.DropTable(
+                name: "ConfigurationValues");
+
+            migrationBuilder.DropTable(
+                name: "Errors");
+
+            migrationBuilder.DropTable(
+                name: "ErrorStatistics");
+
+            migrationBuilder.DropTable(
+                name: "LogEntries");
+
+            migrationBuilder.DropTable(
+                name: "MachineStatistics");
+
+            migrationBuilder.DropTable(
+                name: "ServicingInfo");
+
+            migrationBuilder.DropTable(
+                name: "SetupStatus");
+
+            migrationBuilder.DropTable(
+                name: "TorqueCurrentSamples");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Bays");
+
+            migrationBuilder.DropTable(
+                name: "ErrorDefinitions");
+
+            migrationBuilder.DropTable(
+                name: "TorqueCurrentMeasurementSessions");
+
+            migrationBuilder.DropTable(
+                name: "Carousels");
+
+            migrationBuilder.DropTable(
+                name: "IoDevices");
+
+            migrationBuilder.DropTable(
+                name: "Shutter");
+
+            migrationBuilder.DropTable(
+                name: "Inverters");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnits");
+
+            migrationBuilder.DropTable(
+                name: "Cells");
+
+            migrationBuilder.DropTable(
+                name: "CellPanels");
+
+            migrationBuilder.DropTable(
+                name: "Machines");
+
+            migrationBuilder.DropTable(
+                name: "Elevators");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorStructuralProperties");
+
+            migrationBuilder.DropTable(
+                name: "MovementParameters");
+
+            migrationBuilder.DropTable(
+                name: "MovementProfiles");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorAxes");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -346,7 +449,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Number = table.Column<int>(nullable: false),
                     Operation = table.Column<int>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
+                    Side = table.Column<string>(type: "text", nullable: false),
                     MachineId = table.Column<int>(nullable: true),
                 },
                 constraints: table =>
@@ -596,7 +699,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 11, 27, 10, 11, 36, 636, DateTimeKind.Local).AddTicks(4663), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 4, 9, 10, 24, 981, DateTimeKind.Local).AddTicks(3087), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -713,8 +816,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Errors_Code",
                 table: "Errors",
-                column: "Code",
-                unique: true);
+                column: "Code");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inverters_Index",
@@ -818,105 +920,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 onDelete: ReferentialAction.Restrict);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_Inverters_InverterId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Elevators_LoadingUnits_LoadingUnitId",
-                table: "Elevators");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_Elevators_ElevatorId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_MovementParameters_EmptyLoadMovementId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_MovementParameters_MaximumLoadMovementId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropTable(
-                name: "BayPosition");
-
-            migrationBuilder.DropTable(
-                name: "ConfigurationValues");
-
-            migrationBuilder.DropTable(
-                name: "Errors");
-
-            migrationBuilder.DropTable(
-                name: "ErrorStatistics");
-
-            migrationBuilder.DropTable(
-                name: "LogEntries");
-
-            migrationBuilder.DropTable(
-                name: "MachineStatistics");
-
-            migrationBuilder.DropTable(
-                name: "ServicingInfo");
-
-            migrationBuilder.DropTable(
-                name: "SetupStatus");
-
-            migrationBuilder.DropTable(
-                name: "TorqueCurrentSamples");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Bays");
-
-            migrationBuilder.DropTable(
-                name: "ErrorDefinitions");
-
-            migrationBuilder.DropTable(
-                name: "TorqueCurrentMeasurementSessions");
-
-            migrationBuilder.DropTable(
-                name: "Carousels");
-
-            migrationBuilder.DropTable(
-                name: "IoDevices");
-
-            migrationBuilder.DropTable(
-                name: "Shutter");
-
-            migrationBuilder.DropTable(
-                name: "Inverters");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnits");
-
-            migrationBuilder.DropTable(
-                name: "Cells");
-
-            migrationBuilder.DropTable(
-                name: "CellPanels");
-
-            migrationBuilder.DropTable(
-                name: "Machines");
-
-            migrationBuilder.DropTable(
-                name: "Elevators");
-
-            migrationBuilder.DropTable(
-                name: "ElevatorStructuralProperties");
-
-            migrationBuilder.DropTable(
-                name: "MovementParameters");
-
-            migrationBuilder.DropTable(
-                name: "MovementProfiles");
-
-            migrationBuilder.DropTable(
-                name: "ElevatorAxes");
-        }
+        #endregion
     }
 }

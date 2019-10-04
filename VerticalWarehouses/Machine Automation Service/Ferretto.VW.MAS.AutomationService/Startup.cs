@@ -6,20 +6,13 @@ using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.FiniteStateMachines;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Extensions;
-using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.InverterDriver.Interface.Services;
-using Ferretto.VW.MAS.InverterDriver.Services;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
-using Ferretto.VW.MAS.IODriver.Services;
 using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.VW.MAS.MissionsManager.Extensions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -128,8 +121,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
                 .AddCheck<ReadinessHealthCheck>("readiness-check", null, tags: new[] { ReadyHealthCheckTag });
 
-            this.InitialiseWmsInterfaces(services);
-
             services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
 
             services.AddApiVersioning(o =>
@@ -141,29 +132,25 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
-            this.RegisterSocketTransport(services);
-
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
             });
 
-            services.AddIODriver();
-            services.AddInverterDriver();
+            this.InitialiseWmsInterfaces(services);
 
-            services.AddHostedService<HostedIoDriver>();
-
-            services.AddHostedService<InverterDriverService>();
-
-            services.AddFiniteStateMachines();
-
-            services.AddMissionsManager();
+            services
+                .AddIODriver()
+                .AddInverterDriver()
+                .AddFiniteStateMachines()
+                .AddMissionsManager();
 
             services.AddHostedService<AutomationService>();
 
@@ -178,19 +165,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
             var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
             services.AddDataHub(wmsServiceAddressHubsEndpoint);
-        }
-
-        private void RegisterSocketTransport(IServiceCollection services)
-        {
-            var useMockedTransport = this.Configuration.UseInverterDriverMock();
-            if(useMockedTransport)
-            {
-                services.AddSingleton<ISocketTransport, SocketTransportMock>();
-            }
-            else
-            {
-                services.AddSingleton<ISocketTransport, SocketTransport>();
-            }
         }
 
         #endregion

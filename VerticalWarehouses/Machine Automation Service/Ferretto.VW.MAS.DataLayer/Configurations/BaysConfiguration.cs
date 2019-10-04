@@ -21,7 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .IsUnique();
 
             builder
-                .Ignore(b => b.Status);
+                .Ignore(b => b.Status)
+                .Ignore(b => b.IsDouble);
 
             builder.Property(b => b.Side)
            .HasColumnType("text")

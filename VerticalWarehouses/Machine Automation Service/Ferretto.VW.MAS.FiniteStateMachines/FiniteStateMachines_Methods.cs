@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
@@ -17,6 +18,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -26,27 +28,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Methods
 
-        private bool EvaluateCondition(ConditionToCheckType condition)
+        private void ProcessCheckConditionMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
-            var result = false;
-            switch (condition)
+            this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
+
+            if (message.Data is ICheckConditionMessageData data)
             {
-                case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineResourcesProvider.IsMachineInEmergencyStateBay1;
-                    break;
+                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                switch (data.ConditionToCheck)
+                {
+                    case ConditionToCheckType.MachineIsInEmergencyState:
+                        data.Result = machineResourcesProvider.IsMachineInEmergencyStateBay1;
+                        break;
 
-                case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
-                    break;
+                    case ConditionToCheckType.DrawerIsCompletelyOnCradle:
+                        data.Result = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+                        break;
 
-                case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineResourcesProvider.IsDrawerPartiallyOnCradleBay1;
-                    break;
+                    case ConditionToCheckType.DrawerIsPartiallyOnCradle:
+                        data.Result = machineResourcesProvider.IsDrawerPartiallyOnCradleBay1;
+                        break;
 
-                    //TEMP Add here other condition getters
-            }
-            return result;
-        }
+                        //TEMP Add here other condition getters
+                }
 
         private void ProcessCheckConditionMessage(CommandMessage message)
         {
@@ -58,19 +62,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 //TEMP Send a notification message
                 var msg = new NotificationMessage(
-                data,
-                $"{data.ConditionToCheck} response: {data.Result}",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.CheckCondition,
-                message.RequestingBay,
-                message.RequestingBay,
-                MessageStatus.OperationEnd);
+                    data,
+                    $"{data.ConditionToCheck} response: {data.Result}",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.CheckCondition,
+                    message.RequestingBay,
+                    message.RequestingBay,
+                    MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
         }
 
-        private void ProcessDrawerOperation(CommandMessage receivedMessage)
+        private void ProcessDrawerOperation(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
@@ -86,10 +90,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogTrace("2: Starting Drawer Operation FSM");
 
                     currentStateMachine = new MoveDrawerStateMachine(
-                        this.machineProvider.IsOneTonMachine(),
+                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
                         receivedMessage.RequestingBay,
-                        this.setupStatusProvider,
-                        this.machineResourcesProvider,
+                        serviceProvider.GetRequiredService<ISetupStatusProvider>(),
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         data,
                         this.eventAggregator,
                         this.logger,
@@ -106,9 +110,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger.LogError(ex,
                             $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
 
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex,
-                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine", 1,
-                            MessageVerbosity.Error));
+                        this.SendNotificationMessage(
+                            new FsmExceptionMessageData(
+                                ex,
+                                $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine",
+                                1,
+                                MessageVerbosity.Error));
                     }
                 }
                 else
@@ -116,20 +123,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogError(
                         $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
 
-                    this.SendNotificationMessage(new FsmExceptionMessageData(null,
-                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
-                        2, MessageVerbosity.Error));
+                    this.SendNotificationMessage(
+                        new FsmExceptionMessageData(
+                            null,
+                            $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
+                            2,
+                            MessageVerbosity.Error));
                 }
             }
         }
 
-        private void ProcessHomingMessage(CommandMessage receivedMessage)
+        private void ProcessHomingMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
             if (receivedMessage.Data is IHomingMessageData data)
             {
-                var targetBay = this.baysProvider.GetByAxis(data);
+                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+                var targetBay = baysProvider.GetByAxis(data);
                 if (targetBay == BayNumber.None)
                 {
                     targetBay = receivedMessage.RequestingBay;
@@ -146,13 +157,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         data.CalibrationType,
-                        this.machineProvider.IsOneTonMachine(),
+                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
-                        this.machineResourcesProvider,
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.eventAggregator,
                         this.logger,
-                        this.baysProvider,
+                        baysProvider,
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
@@ -176,9 +187,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessInverterFaultResetMessage(CommandMessage receivedMessage)
+        private void ProcessInverterFaultResetMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
+
+            var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
 
             if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
@@ -189,7 +202,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
             else
             {
-                var inverterList = this.digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
+                var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
 
                 currentStateMachine = new ResetFaultStateMachine(
                     receivedMessage,
@@ -266,11 +279,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage(CommandMessage message)
+        private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
             if (message.Data is IPositioningMessageData data)
             {
-                var targetBay = this.baysProvider.GetByMovementType(data);
+                var targetBay = baysProvider.GetByMovementType(data);
                 if (targetBay == BayNumber.None)
                 {
                     targetBay = message.RequestingBay;
@@ -282,17 +299,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
-                    data.IsOneKMachine = this.machineProvider.IsOneTonMachine();
-                    data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
+                    data.IsOneKMachine = machineProvider.IsOneTonMachine();
+                    data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                     currentStateMachine = new PositioningStateMachine(
                         message.RequestingBay,
                         targetBay,
                         data,
-                        this.machineResourcesProvider,
+                        machineResourcesProvider,
                         this.eventAggregator,
                         this.logger,
-                        this.baysProvider,
+                        baysProvider,
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
@@ -316,12 +333,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessPowerEnableMessage(CommandMessage message)
+        private void ProcessPowerEnableMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IPowerEnableMessageData data)
             {
+                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
                 //TODO verify pre conditions (is this actually an error ?)
                 if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
                 {
@@ -342,14 +361,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.machineResourcesProvider.IsMachineInRunningState && !data.Enable ||
-                    !this.machineResourcesProvider.IsMachineInRunningState && data.Enable)
+                if (machineResourcesProvider.IsMachineInRunningState && !data.Enable ||
+                    !machineResourcesProvider.IsMachineInRunningState && data.Enable)
                 {
                     message.TargetBay = BayNumber.BayOne;
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
-                        this.machineResourcesProvider,
-                        this.baysProvider,
+                        machineResourcesProvider,
+                        serviceProvider.GetRequiredService<IBaysProvider>(),
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
@@ -369,7 +388,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 else
                 {
-                    this.logger.LogDebug($"Machine is already in the requested state [Actual State: {this.machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
+                    this.logger.LogDebug(
+                        $"Machine is already in the requested state [Actual State: {machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
+
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Completed",
@@ -430,7 +451,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessSensorsChangedMessage()
+        private void ProcessSensorsChangedMessage(IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -446,10 +467,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            foreach (var ioDevice in this.ioDevices)
+            foreach (var ioDevice in serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>().GetAllIoDevices())
             {
-                var ioDataMessage = new SensorsChangedFieldMessageData();
-                ioDataMessage.SensorsStatus = true;
+                var ioDataMessage = new SensorsChangedFieldMessageData
+                {
+                    SensorsStatus = true
+                };
+
                 var ioMessage = new FieldCommandMessage(
                     ioDataMessage,
                     "Update IO digital input",
@@ -465,7 +489,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.forceInverterIoStatusPublish = true;
         }
 
-        private void ProcessShutterPositioningMessage(CommandMessage message)
+        private void ProcessShutterPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -480,12 +504,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
+                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+
                     message.TargetBay = message.RequestingBay;
                     currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
                         message.TargetBay,
-                        this.baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
-                        this.machineResourcesProvider,
+                        baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);

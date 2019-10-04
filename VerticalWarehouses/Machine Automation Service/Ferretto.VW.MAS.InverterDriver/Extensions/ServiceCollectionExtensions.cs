@@ -1,6 +1,6 @@
 ﻿using System;
-using Ferretto.VW.MAS.InverterDriver.Interface.Services;
-using Ferretto.VW.MAS.InverterDriver.Services;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.InverterDriver.Extensions
@@ -10,14 +10,25 @@ namespace Ferretto.VW.MAS.InverterDriver.Extensions
         #region Methods
 
         public static IServiceCollection AddInverterDriver(
-                    this IServiceCollection services)
+            this IServiceCollection services)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
+            services.AddHostedService<InverterDriverService>();
+
             services.AddSingleton<IInvertersProvider, InvertersProvider>();
+
+            services.AddSingleton(s =>
+            {
+                var configuration = s.GetRequiredService<IConfiguration>();
+
+                return configuration.UseInverterDriverMock()
+                    ? new SocketTransportMock() as ISocketTransport
+                    : new SocketTransport(configuration) as ISocketTransport;
+            });
 
             return services;
         }
