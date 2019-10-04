@@ -30,7 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.SequenceMode = true;
-                currentStatus.TableTravelControlWord.StartMotionBlock = true;
                 var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
 
                 this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
@@ -63,6 +62,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (message.ParameterId == InverterParameterId.ControlWordParam)
             {
+                if (this.InverterStatus is IPositioningInverterStatus currentStatus
+                    && !currentStatus.TableTravelControlWord.StartMotionBlock
+                    )
+                {
+                    currentStatus.TableTravelControlWord.StartMotionBlock = true;
+                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
+
+                    this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                    this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                }
                 return false;
             }
 

@@ -4,6 +4,8 @@
     {
         None,
 
+        Elevator,
+
         FindSensor,
 
         ResetEncoder,
