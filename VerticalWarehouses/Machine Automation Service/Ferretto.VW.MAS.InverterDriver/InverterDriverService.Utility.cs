@@ -375,6 +375,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentAxis = calibrateData.AxisToCalibrate;
                     var currentStateMachine = new CalibrateAxisStateMachine(
                         this.currentAxis,
+                        calibrateData.CalibrationType,
                         inverter,
                         this.Logger,
                         this.eventAggregator,
@@ -386,7 +387,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.Logger.LogTrace("4:Inverter is not ready. Powering up the inverter");
+                    this.Logger.LogDebug("4:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
                         inverter,
@@ -468,11 +469,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.Logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError($"Exception {ex.Message}");
+                    this.Logger.LogError(ex, "An exception was thrown.");
                 }
             }
             else if (Debugger.IsAttached)
@@ -502,7 +503,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.Logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
 
                 if (result)
@@ -590,7 +591,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         else
                         {
                             this.Logger.LogDebug("3: Switch On the inverter state machine");
-                            this.Logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn}");
+                            this.Logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
 
                             var currentStateMachine = new SwitchOnStateMachine(
                                 switchOnData.AxisToSwitchOn,
@@ -610,7 +611,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
-                        this.Logger.LogDebug($"Inverter requires Switch axis {switchOnData.AxisToSwitchOn}");
+                        this.Logger.LogDebug($"Inverter requires switching off axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
 
                         var currentStateMachine = new SwitchOffStateMachine(
                             inverter,
@@ -829,13 +830,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogError($"Exception {ex.Message}");
+                        this.Logger.LogError(ex, $"Exception {ex.Message}");
                         this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
                     }
                 }
                 else
                 {
-                    this.Logger.LogError("5:Inverter is not ready. Powering up the inverter");
+                    this.Logger.LogDebug("5:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
                         inverter,
@@ -953,7 +954,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.Logger.LogError("5:Inverter is not ready. Powering up the inverter");
+                    this.Logger.LogDebug("5:Inverter is not ready. Powering up the inverter");
 
                     var currentStateMachine = new PowerOnStateMachine(
                         inverter,

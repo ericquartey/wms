@@ -95,6 +95,25 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
             <controls:PpcButton Margin="0,0,0,0"
+                                Content="{x:Static res:InstallationApp.Backwards}"
+                                IsEnabled="{Binding CanExecuteMoveBackwardsCommand}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchDown">
+                        <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="TouchUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </controls:PpcButton>
+
+            <controls:PpcButton Margin="100,0,0,0"
                                 Content="{x:Static res:InstallationApp.Forwards}"
                                 IsEnabled="{Binding CanExecuteMoveForwardsCommand}">
                 <i:Interaction.Triggers>
@@ -113,24 +132,6 @@
                 </i:Interaction.Triggers>
             </controls:PpcButton>
 
-            <controls:PpcButton Margin="100,0,0,0"
-                                Content="{x:Static res:InstallationApp.Backwards}"
-                                IsEnabled="{Binding CanExecuteMoveBackwardsCommand}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewMouseDown">
-                        <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="PreviewMouseUp">
-                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="TouchDown">
-                        <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="TouchUp">
-                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </controls:PpcButton>
         </StackPanel>
     </Grid>
 

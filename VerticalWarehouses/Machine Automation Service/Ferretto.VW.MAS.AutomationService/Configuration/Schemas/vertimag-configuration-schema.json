@@ -33,7 +33,7 @@
             "minItems": 1,
             "additionalProperties": false,
             "required": [
-              "Inverter",
+
               "IoDevice",
               "IsExternal",
               "Number",

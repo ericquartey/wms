@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
 
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (this.stateData.StopRequestReason == StopRequestReason.NoReason)
+            if (this.stateData.StopRequestReason == StopRequestReason.NoReason && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
                 using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                 {

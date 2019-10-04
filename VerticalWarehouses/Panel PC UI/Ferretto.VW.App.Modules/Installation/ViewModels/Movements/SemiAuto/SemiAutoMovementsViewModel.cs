@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken sensorsToken;
 
+        private SubscriptionToken shutterPositionToken;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -125,16 +127,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsElevatorMoving => this.IsElevatorMovingToCell
+        public bool IsMoving =>
+                   this.IsElevatorMovingToCell
                 || this.IsElevatorMovingToHeight
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking
                 || this.IsTuningChain
-                || this.IsCarouselMoving;
+                || this.IsCarouselMoving
+                || this.IsShutterMoving;
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+
+        public bool IsShutterTwoSensors => this.bayManagerService.Bay.Shutter.Type == ShutterType.TwoSensors;
 
         public bool IsWaitingForResponse
         {
@@ -164,6 +170,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+            if (this.shutterPositionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Unsubscribe(this.shutterPositionToken);
+
+                this.shutterPositionToken = null;
+            }
 
             if (this.subscriptionToken != null)
             {
@@ -187,6 +201,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             this.IsBackNavigationAllowed = true;
+
+            this.shutterPositionToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+              .Subscribe(
+                  message => this.OnShutterPositionChanged(message),
+                  ThreadOption.UIThread,
+                  false);
 
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -285,6 +306,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             switch (message.Status)
             {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.ShowNotification(string.Empty);
+
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                        }
+
+                        break;
+                    }
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
                     {
                         if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
@@ -316,37 +349,80 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
                     }
 
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
-                        this.IsElevatorDisembarking = false;
-                        this.IsElevatorEmbarking = false;
-                        this.IsElevatorMovingToCell = false;
-                        this.IsElevatorMovingToHeight = false;
-                        this.IsElevatorMovingToLoadingUnit = false;
-                        this.IsElevatorMovingToBay = false;
-                        this.IsTuningChain = false;
-                        this.IsCarouselMoving = false;
-
-                        this.ShowNotification(
-                            VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                            Services.Models.NotificationSeverity.Warning);
-
+                        this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
             }
         }
 
+        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsShutterMoving = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsShutterMoving = false;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
+
+        private void OperationWarningOrError(CommonUtils.Messages.Enumerations.MessageStatus status, string errorDescription)
+        {
+            this.IsElevatorDisembarking = false;
+            this.IsElevatorEmbarking = false;
+            this.IsElevatorMovingToCell = false;
+            this.IsElevatorMovingToHeight = false;
+            this.IsElevatorMovingToLoadingUnit = false;
+            this.IsElevatorMovingToBay = false;
+            this.IsTuningChain = false;
+            this.IsCarouselMoving = false;
+            this.IsShutterMoving = false;
+
+            if (status == CommonUtils.Messages.Enumerations.MessageStatus.OperationError)
+            {
+                this.ShowNotification(
+                    errorDescription,
+                    Services.Models.NotificationSeverity.Error);
+            }
+            else
+            {
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+        }
+
         private void RaiseCanExecuteChanged()
         {
-            this.IsShutterMoving = !this.shutterSensors.Open && !this.shutterSensors.Closed && !this.shutterSensors.MidWay;
-
             this.CanInputCellId = this.Cells != null
                &&
-               !this.IsElevatorMoving
+               !this.IsMoving
                &&
                !this.IsWaitingForResponse;
 
-            this.CanInputQuote = !this.IsElevatorMoving
+            this.CanInputHeight = !this.IsMoving
                &&
                !this.IsWaitingForResponse;
 
@@ -354,7 +430,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                &&
                this.Cells != null
                &&
-               !this.IsElevatorMoving
+               !this.IsMoving
                &&
                !this.IsWaitingForResponse;
 
@@ -373,6 +449,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closedShutterCommand?.RaiseCanExecuteChanged();
             this.carouselDownCommand?.RaiseCanExecuteChanged();
             this.carouselUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         #endregion

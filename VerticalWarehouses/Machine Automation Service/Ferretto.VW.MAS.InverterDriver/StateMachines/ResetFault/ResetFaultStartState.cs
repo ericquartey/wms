@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:message={message}");
+                this.Logger.LogError($"1:ResetFaultStartState message={message}");
                 this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
             }
             else

@@ -1,25 +1,5 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "HorizontalManualMovements": {
-    "FeedRate": 0.40, // 0.30
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 200.0
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
-  },
   "Machine": {
     "Bays": [
       {
@@ -33,7 +13,7 @@
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
         },
-        "IsExternal": false,
+        "IsExternal": true,
         "Number": 1,
         "Positions": [ { "Height": 738 } ],
         "Shutter": {
@@ -2739,21 +2719,16 @@
     "ProductionDate": "2019-10-19T16:39:57-08:00",
     "SerialNumber": "Prototype #2"
   },
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
+  "VerticalManualMovements": {
+    "FeedRate": 0.10,
+    "PositiveTargetDirection": 30.0,
+    "NegativeTargetDirection": 30.0,
+    "FeedRateAfterZero": 0.15
   },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
+  "HorizontalManualMovements": {
+    "FeedRate": 0.40, // 0.30
+    "InitialTargetPosition": 30.0,
+    "RecoveryTargetPosition": 200.0
   },
   "ShutterManualMovements": {
     "FeedRate": 0.20,
@@ -2766,13 +2741,38 @@
     "HighSpeedDurationOpen": 14.0,
     "HighSpeedDurationClose": 13.0
   },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
+  "BeltBurnishing": {
+    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+    "CycleQuantity": 5
+  },
+  "ResolutionCalibration": {
+    "InitialPosition": 1000.0, //TEMP Temporary value for software test
+    "FinalPosition": 5500.0, //TEMP Temporary value for software test
+    "FeedRate": 0.20
+  },
+  "OffsetCalibration": {
+    "ReferenceCell": 50, //TEMP Temporary value for software test
+    "StepValue": 0.5,
+    "FeedRate": 0.20
+  },
+  "CellControl": {
+    "StepValue": 0.5,
+    "FeedRate": 0.20
+  },
+  "PanelControl": {
+    "FeedRate": 0.20
+  },
+  "ShutterHeightControl": {
+    "FeedRate": 0.10
   },
   "WeightControl": {
     "FeedRate": 0.10
+  },
+  "BayPositionControl": {
+    "StepValue": 0.5,
+    "FeedRate": 0.20
+  },
+  "LoadFirstDrawer": {
+    "FeedRate": 0.20
   }
 }

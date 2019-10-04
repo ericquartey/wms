@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(
+                        this.logger.LogError(ex,
                             $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
 
                         this.SendNotificationMessage(
@@ -128,29 +128,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (this.currentStateMachines.TryGetValue(BayNumber.ElevatorBay, out var currentStateMachine))
+            if (receivedMessage.Data is IHomingMessageData data)
             {
-                this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
-            }
-            else
-            {
-                if (receivedMessage.Data is IHomingMessageData data)
+                var targetBay = this.baysProvider.GetByAxis(data);
+                if (targetBay == BayNumber.None)
                 {
-                    receivedMessage.TargetBay = BayNumber.ElevatorBay;
+                    targetBay = receivedMessage.RequestingBay;
+                }
 
+                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+                {
+                    this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                    this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                }
+                else
+                {
+                    receivedMessage.TargetBay = targetBay;
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
-                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        data.CalibrationType,
+                        this.machineProvider.IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.eventAggregator,
                         this.logger,
+                        this.baysProvider,
                         this.serviceScopeFactory);
 
                     this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
-                    this.currentStateMachines.Add(BayNumber.ElevatorBay, currentStateMachine);
+                    this.currentStateMachines.Add(targetBay, currentStateMachine);
 
                     try
                     {
@@ -158,11 +165,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
                 }
+            }
+            else
+            {
+                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
@@ -199,7 +210,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                    this.logger.LogError(ex, $"3:Exception: during the FSM {currentStateMachine.GetType()} start");
 
                     this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
@@ -262,7 +273,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
@@ -322,7 +333,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
@@ -386,7 +397,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                 this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
@@ -466,7 +477,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError($"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
