@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     this.PublishNotificationMessage(notificationMessage);
                 }
 
-                if (message.Status == MessageStatus.OperationEnd)
+                if (message.Status == MessageStatus.OperationStepEnd)
                 {
                     this.machineData.NumberOfExecutedSteps++;
                     this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;

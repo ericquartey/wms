@@ -63,6 +63,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
+                            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+
+                            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Completed",
+                                MessageActor.FiniteStateMachines,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
@@ -120,20 +133,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
+            else
+            {
+                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    "Homing Completed",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Homing,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
+                    StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                "Homing Completed",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing,
-                this.machineData.RequestingBay,
-                this.machineData.TargetBay,
-                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
