@@ -33,13 +33,13 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
-                                 ContentText="{Binding CurrentHorizontalPosition}"
+                                 ContentText="{Binding CurrentHorizontalPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
-                                 ContentText="{Binding CurrentVerticalPosition}"
+                                 ContentText="{Binding CurrentVerticalPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <StackPanel Grid.Row="3"

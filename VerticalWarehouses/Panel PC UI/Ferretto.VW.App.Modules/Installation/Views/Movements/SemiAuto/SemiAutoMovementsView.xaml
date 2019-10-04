@@ -79,7 +79,7 @@
                 <TextBlock Grid.Row="2"
                            Grid.Column="1"
                            Foreground="White"
-                           Text="{Binding ElevatorVerticalPosition, StringFormat=0}" />
+                           Text="{Binding ElevatorVerticalPosition, StringFormat={}{0:F1}}" />
 
                 <TextBlock Grid.Row="3"
                            Grid.Column="0"
@@ -97,7 +97,7 @@
                 <TextBlock Grid.Row="4"
                            Grid.Column="1"
                            Foreground="White"
-                           Text="{Binding ElevatorHorizontalPosition, StringFormat=0, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                           Text="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                 <TextBlock Grid.Row="5"
                            Grid.Column="0"
                            Foreground="White"
@@ -147,7 +147,7 @@
                 <TextBlock Grid.Row="10"
                            Grid.Column="1"
                            Foreground="White"
-                           Text="{Binding SelectedCell.Position, StringFormat=0, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                           Text="{Binding SelectedCell.Position, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
 
                 <TextBlock Grid.Row="11"
                            Grid.ColumnSpan="2"
