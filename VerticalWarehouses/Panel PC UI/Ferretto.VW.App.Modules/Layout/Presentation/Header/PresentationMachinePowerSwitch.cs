@@ -96,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             if (this.emergencyButtonPressed)
             {
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                dialogService.ShowMessage(Resources.VWApp.EnsureEmergencyIsOff, Resources.VWApp.EmergencyIsOn, DialogType.Question, DialogButtons.OK);
+                dialogService.ShowMessage(Resources.VWApp.EnsureEmergencyIsOff, Resources.VWApp.EmergencyIsOn, DialogType.Exclamation, DialogButtons.OK);
                 return;
             }
 
@@ -125,8 +125,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             await base.OnLoadedAsync();
 
-            var sensors = await this.machineSensorsService.GetAsync();
-            this.OnSensorsChanged(sensors.ToArray());
+            try
+            {
+                var sensors = await this.machineSensorsService.GetAsync();
+                this.OnSensorsChanged(sensors.ToArray());
+            }
+            catch
+            {
+            }
         }
 
         protected override bool CanExecute()
