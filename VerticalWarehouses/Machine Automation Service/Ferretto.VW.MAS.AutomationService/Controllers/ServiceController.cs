@@ -71,38 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Homing);
 
             return this.Accepted();
-            /*
-                        var horizontalAxis = this.elevatorDataProvider.GetHorizontalAxis();
-                        var actualSpeed = horizontalAxis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM;
-
-                        var speed = new[] { actualSpeed };
-                        var acceleration = new[] { horizontalAxis.EmptyLoadMovement.Acceleration };
-                        var deceleration = new[] { horizontalAxis.EmptyLoadMovement.Deceleration };
-                        var switchPosition = new[] { 0.0 };
-
-                        var messageData = new PositioningMessageData(
-                            Axis.Horizontal,
-                            MovementType.Relative,
-                            MovementMode.FindZero,
-                            ChainLength,
-                            speed,
-                            acceleration,
-                            deceleration,
-                            0,
-                            0,
-                            0,
-                            0,
-                            switchPosition,
-                            HorizontalMovementDirection.Forwards);
-
-                        this.PublishCommand(
-                                messageData,
-                                $"Execute Find Horizontal Zero Positioning Command",
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Positioning);
-
-                        return this.Accepted();
-            */
         }
 
         #endregion

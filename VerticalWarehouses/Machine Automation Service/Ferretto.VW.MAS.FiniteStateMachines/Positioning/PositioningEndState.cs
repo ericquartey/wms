@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
+            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 1000);
             inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter axis position status",
