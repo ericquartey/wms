@@ -173,6 +173,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
+            if (this.homingToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Unsubscribe(this.homingToken);
+
+                this.homingToken = null;
+            }
+
             if (this.shutterPositionToken != null)
             {
                 this.EventAggregator
@@ -205,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.EventAggregator
+            this.homingToken = this.EventAggregator
               .GetEvent<NotificationEventUI<HomingMessageData>>()
               .Subscribe(
                   message => this.OnHomingChanged(message),
