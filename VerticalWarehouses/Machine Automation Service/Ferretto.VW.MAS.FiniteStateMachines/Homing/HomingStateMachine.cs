@@ -279,13 +279,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             else
             {
                 if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: already in zero position";
-                }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
                     !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
                     )
                 {
