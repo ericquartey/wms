@@ -1663,11 +1663,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LU Presence on Machine Side.
+        /// </summary>
+        public static string LuPresenceOnMachineCradle {
+            get {
+                return ResourceManager.GetString("LuPresenceOnMachineCradle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LU Presence on Machine Cradle Side.
         /// </summary>
         public static string LuPresenceOnMachineCradleSide {
             get {
                 return ResourceManager.GetString("LuPresenceOnMachineCradleSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LU Presence on Operator Side.
+        /// </summary>
+        public static string LuPresenceOnOperatorCradle {
+            get {
+                return ResourceManager.GetString("LuPresenceOnOperatorCradle", resourceCulture);
             }
         }
         

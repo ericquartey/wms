@@ -1124,4 +1124,12 @@
   <data name="IntermediatePosition" xml:space="preserve">
     <value>Intermediate position</value>
   </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>LU Presence on Machine Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>LU Presence on Operator Side</value>
+    <comment>Sensor control text</comment>
+  </data>
 </root>
