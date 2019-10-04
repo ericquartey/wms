@@ -36,6 +36,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.dataContext.Machines.Single();
         }
 
+        public double GetHeight()
+        {
+            return this.dataContext.Machines.Select(m => m.Height).Single();
+        }
+
         public MachineStatistics GetStatistics()
         {
             return this.dataContext.MachineStatistics.FirstOrDefault();

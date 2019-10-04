@@ -12,7 +12,6 @@ namespace Ferretto.VW.App.Services
 {
     public sealed class MachineModeService : IMachineModeService, IDisposable
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -84,8 +83,6 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-
         #region Properties
 
         public MachineMode MachineMode { get; }
@@ -108,8 +105,6 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
-
-
 
         #region Methods
 

@@ -179,4 +179,13 @@
   <data name="UserLogin" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergency is on</value>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Ensure no emergency buttons are pressed.</value>
+  </data>
 </root>

@@ -33,7 +33,7 @@
         <controls:PpcLabeledText Grid.Row="1"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition}"
+                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
         <StackPanel Grid.Row="1"

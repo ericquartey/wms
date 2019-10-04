@@ -54,11 +54,6 @@ namespace Ferretto.VW.MAS.AutomationService
             return configuration.GetValue<bool>(WmsIsEnabledKey);
         }
 
-        public static bool UseInverterDriverMock(this IConfiguration configuration)
-        {
-            return configuration.GetValue<bool>(VertimagInverterDriverUseMockKey);
-        }
-
         public static bool UseRemoteIoDriverMock(this IConfiguration configuration)
         {
             return configuration.GetValue<bool>(VertimagRemoteIoDriverUseMockKey);

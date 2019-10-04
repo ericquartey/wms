@@ -40,14 +40,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CarouselUpAsync(),
                 this.CanExecuteCarouselUpCommand));
 
-        public bool HasCarousel
-        {
-            get
-            {
-                var bay = this.bayManagerService.Bay;
-                return bay.Type == BayType.Carousel;
-            }
-        }
+        public bool HasCarousel => this.bayManagerService.Bay.Carousel != null;
 
         public bool IsCarouselMoving
         {

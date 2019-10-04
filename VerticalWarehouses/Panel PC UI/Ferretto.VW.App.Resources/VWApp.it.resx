@@ -177,4 +177,13 @@
   <data name="Now" xml:space="preserve">
     <value>Adesso</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versione {0}</value>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergenza attiva</value>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
+  </data>
 </root>
