@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.verticalOperation = true;
+                this.verticalOperation = false;
 
                 await this.verticalOriginProcedureService.StartAsync();
 
