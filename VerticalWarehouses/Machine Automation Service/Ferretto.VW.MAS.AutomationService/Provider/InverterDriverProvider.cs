@@ -2,12 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Provider
@@ -22,13 +18,13 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         private const int WORD_DIMENSION = 16;
 
-        private readonly InverterDriver.Interface.Services.IInvertersProvider invertersProvider;
+        private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
 
         #region Constructors
 
-        public InverterProvider(InverterDriver.Interface.Services.IInvertersProvider invertersProvider)
+        public InverterProvider(InverterDriver.IInvertersProvider invertersProvider)
         {
             this.invertersProvider = invertersProvider;
         }

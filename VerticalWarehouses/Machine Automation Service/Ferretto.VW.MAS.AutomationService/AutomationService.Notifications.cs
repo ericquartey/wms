@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -17,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 notification.Destination == MessageActor.Any;
         }
 
-        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage)
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             switch (receivedMessage.Type)
             {

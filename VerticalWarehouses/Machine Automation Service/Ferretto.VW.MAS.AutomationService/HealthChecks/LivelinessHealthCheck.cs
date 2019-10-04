@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (this.redundancyService.IsActiveDbInhibited)
             {

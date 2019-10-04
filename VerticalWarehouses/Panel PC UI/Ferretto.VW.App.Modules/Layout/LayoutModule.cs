@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Modules.Layout
             containerRegistry.RegisterSingleton<Installation.ViewsAndViewModels.SingleViews.DiagnosticDetailsViewModel>();
 
             containerRegistry.Register<IPresentation, PresentationError>(nameof(PresentationError));
-            containerRegistry.Register<IPresentation, PresentationMachineMarch>(nameof(PresentationMachineMarch));
+            containerRegistry.Register<IPresentation, PresentationMachinePowerSwitch>(nameof(PresentationMachinePowerSwitch));
             containerRegistry.Register<IPresentation, PresentationMachineMode>(nameof(PresentationMachineMode));
             containerRegistry.Register<IPresentation, PresentationLogged>(nameof(PresentationLogged));
             containerRegistry.Register<IPresentation, PresentationHelp>(nameof(PresentationHelp));

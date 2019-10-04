@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
             services.AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>();
 
-            services.AddTransient(p =>
+            services.AddScoped(p =>
                 new DataLayerContext(
                    isActiveChannel: true,
                    p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
@@ -53,20 +54,21 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IDepositAndPickUpDataLayer);
 
             services
-                .AddTransient<IBaysProvider, BaysProvider>()
-                .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
-                .AddTransient<ICellsProvider, CellsProvider>()
-                .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
-                .AddTransient<IElevatorDataProvider, ElevatorDataProvider>()
-                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
-                .AddTransient<IErrorsProvider, ErrorsProvider>()
-                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
-                .AddTransient<IMachineProvider, MachineProvider>()
-                .AddTransient<IServicingProvider, ServicingProvider>()
-                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
-                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
-                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
-                .AddTransient<IUsersProvider, UsersProvider>();
+                .AddScoped<IBaysProvider, BaysProvider>()
+                .AddScoped<ICellPanelsProvider, CellPanelsProvider>()
+                .AddScoped<ICellsProvider, CellsProvider>()
+                .AddScoped<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
+                .AddScoped<IElevatorDataProvider, ElevatorDataProvider>()
+                .AddScoped<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddScoped<IErrorsProvider, ErrorsProvider>()
+                .AddScoped<ILoadingUnitsProvider, LoadingUnitsProvider>()
+                .AddScoped<ILogEntriesProvider, LogEntriesProvider>()
+                .AddScoped<IMachineProvider, MachineProvider>()
+                .AddScoped<IServicingProvider, ServicingProvider>()
+                .AddScoped<ISetupStatusProvider, SetupStatusProvider>()
+                .AddScoped<IShutterTestParametersProvider, ShutterTestParametersProvider>()
+                .AddScoped<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddScoped<IUsersProvider, UsersProvider>();
 
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>();
@@ -81,8 +83,9 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             var listener = dataContext.GetService<DiagnosticSource>() as DiagnosticListener;
 
             var redundancyService = app.ApplicationServices.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<DataLayerContext>>();
 
-            listener.SubscribeWithAdapter(new CommandListener<DataLayerContext>(redundancyService));
+            listener.SubscribeWithAdapter(new CommandListener<DataLayerContext>(redundancyService, logger));
 
             return app;
         }

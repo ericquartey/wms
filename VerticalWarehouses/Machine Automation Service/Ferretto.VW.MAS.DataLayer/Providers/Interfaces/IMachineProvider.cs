@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         Machine Get();
 
+        double GetHeight();
+
         MachineStatistics GetStatistics();
 
         bool IsOneTonMachine();

@@ -352,15 +352,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
-        {
-            base.OnMachineModeChanged(e);
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
-            {
-                this.IsExecutingProcedure = false;
-            }
-        }
-
         private bool CanExecuteResetCommand()
         {
             return !this.IsExecutingProcedure
@@ -488,10 +479,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationEnd:
-                case MessageStatus.OperationStop:
                     this.IsExecutingProcedure = false;
 
                     await this.beltBurnishingService.MarkAsCompletedAsync();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationFaultStop:
+                case MessageStatus.OperationRunningStop:
+                    this.IsExecutingProcedure = false;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
                     break;
 
                 case MessageStatus.OperationError:

@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DataLayerContext(DbContextOptions<DataLayerContext> options)
             : base(options)
         {
-            this.Options = options;
+            this.Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         #endregion
@@ -84,6 +84,11 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #endregion
 
         #region Methods
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

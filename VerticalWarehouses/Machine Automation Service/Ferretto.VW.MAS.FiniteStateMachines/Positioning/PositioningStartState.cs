@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly IPositioningStateData stateData;
 
-        private bool disposed;
-
         private bool inverterSwitched;
 
         private bool ioSwitched;
@@ -37,15 +35,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningStartState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -142,8 +131,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
-
             var inverterIndex = this.machineData.CurrentInverterIndex;
+
+            {
+                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 250);
+                var inverterMessage = new FieldCommandMessage(
+                    inverterDataMessage,
+                    "Update Inverter axis position status",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterSetTimer,
+                    (byte)inverterIndex);
+                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+            }
 
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.MessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(
@@ -192,22 +194,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

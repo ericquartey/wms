@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.configuredBays,
                         this.EventAggregator,
                         this.Logger as ILogger<AutomationService>,
-                        this.serviceScopeFactory);
+                        this.ServiceScopeFactory);
 
                     this.currentStateMachine.Start();
                 }

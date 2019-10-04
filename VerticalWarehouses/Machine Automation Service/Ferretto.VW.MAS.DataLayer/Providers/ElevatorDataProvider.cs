@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -39,54 +40,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        /// <summary>
-        /// Computes the elevator displacement due to belt and shaft mechanical distorsions.
-        /// </summary>
-        /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
-        /// <returns>The vertical position displacement, in millimeters.</returns>
-        public double ComputeDisplacement(double targetPosition)
+        public ElevatorAxis GetAxis(Orientation orientation)
         {
-            var loadingUnit = this.GetLoadingUnitOnBoard();
-            if (loadingUnit is null)
+            var axis = this.dataContext.ElevatorAxes
+                .Include(a => a.Profiles)
+                .ThenInclude(p => p.Steps)
+                .Include(a => a.MaximumLoadMovement)
+                .Include(a => a.EmptyLoadMovement)
+                .SingleOrDefault(a => a.Orientation == orientation);
+
+            if (axis is null)
             {
-                return 0;
+                throw new EntityNotFoundException(orientation.ToString());
             }
 
-            var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
-            var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
-
-            return beltElongation + shaftTorsion;
+            return axis;
         }
 
-        public int ConvertMillimetersToPulses(double millimeters, Orientation orientation)
-        {
-            var axis = this.GetAxis(orientation);
-
-            return (int)(axis.Resolution * (decimal)millimeters);
-        }
-
-        public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
-        {
-            if (pulses == 0)
-            {
-                throw new ArgumentOutOfRangeException("Pulses must be different from zero.", nameof(pulses));
-            }
-
-            var axis = this.GetAxis(orientation);
-
-            if (axis.Resolution == 0)
-            {
-                throw new InvalidOperationException(
-                    $"Configured {orientation} axis resolution is zero, therefore it is not possible to convert pulses to millimeters.");
-            }
-
-            return (double)(pulses / axis.Resolution);
-        }
-
-        public ElevatorAxis GetHorizontalAxis()
-        {
-            return this.GetAxis(Orientation.Horizontal);
-        }
+        public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
         {
@@ -119,10 +90,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return elevator.StructuralProperties.MaximumLoadOnBoard;
         }
 
-        public ElevatorAxis GetVerticalAxis()
+        public ElevatorStructuralProperties GetStructuralProperties()
         {
-            return this.GetAxis(Orientation.Vertical);
+            var elevator = this.dataContext.Elevators
+                .Include(e => e.StructuralProperties)
+                .Single();
+
+            return elevator.StructuralProperties;
         }
+
+        public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
         public void UpdateVerticalOffset(double newOffset)
         {

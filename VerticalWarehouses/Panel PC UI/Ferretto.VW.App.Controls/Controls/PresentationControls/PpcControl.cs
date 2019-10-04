@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Ferretto.VW.App.Services;
@@ -22,6 +24,15 @@ namespace Ferretto.VW.App.Controls
             typeof(PresentationTypes),
             typeof(PpcControl),
             new PropertyMetadata(default(PresentationTypes), PresentationTypeChanged));
+
+        #endregion
+
+        #region Constructors
+
+        public PpcControl()
+        {
+            this.Loaded += async (sender, e) => await this.OnViewLoadedAsync(sender, e);
+        }
 
         #endregion
 
@@ -80,6 +91,14 @@ namespace Ferretto.VW.App.Controls
             if (d is PpcControl control)
             {
                 control.Initialize();
+            }
+        }
+
+        private async Task OnViewLoadedAsync(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is BasePresentation basePresentation)
+            {
+                await basePresentation.OnLoadedAsync();
             }
         }
 
