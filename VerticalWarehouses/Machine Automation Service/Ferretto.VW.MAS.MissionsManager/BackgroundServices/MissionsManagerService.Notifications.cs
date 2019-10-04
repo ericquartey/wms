@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 notification.Destination == MessageActor.Any;
         }
 
-        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
+        protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
             switch (message.Type)
             {
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                 throw new ArgumentNullException(nameof(e));
             }
 
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 

@@ -12,5 +12,6 @@
 
     <controls:PpcButton x:Name="LayoutRoot"
                         Command="{Binding ExecuteCommand}"
+                        IsBusy="{Binding IsBusy}"
                         Style="{DynamicResource PpcButtonMachinePowerHeaderStyle}" />
 </ctrls:PpcControl>

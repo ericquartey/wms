@@ -27,45 +27,48 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="configurationFilePath">Configuration parameters to load</param>
         private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
-            var dataContext = this.serviceScopeFactory
-                .CreateScope()
-                .ServiceProvider
-                .GetRequiredService<DataLayerContext>();
-
-            if (dataContext.ConfigurationValues.Any())
+            JObject jsonObject;
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                return;
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
+                if (dataContext.ConfigurationValues.Any())
+                {
+                    return;
+                }
+
+                this.Logger.LogInformation($"First run: loading machine configration from external JSON file ...");
+
+                string fileContents = null;
+                using (var streamReader = new StreamReader(configurationFilePath))
+                {
+                    fileContents = streamReader.ReadToEnd();
+                }
+
+                jsonObject = JObject.Parse(fileContents);
+
+                var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
+
+                jsonObject.Validate(schema);
+
+                foreach (var jsonCategory in jsonObject)
+                {
+                    if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
+                    {
+                        var settings = new JsonSerializerSettings();
+                        settings.Converters.Add(new IPAddressConverter());
+
+                        var machine = JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString(), settings);
+
+                        dataContext.Machines.Add(machine);
+                        dataContext.SaveChanges();
+                    }
+                }
             }
-
-            this.Logger.LogInformation($"First run: loading machine configration from external JSON file ...");
-
-            string fileContents = null;
-            using (var streamReader = new StreamReader(configurationFilePath))
-            {
-                fileContents = streamReader.ReadToEnd();
-            }
-
-            var jsonObject = JObject.Parse(fileContents);
-
-            var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
-
-            jsonObject.Validate(schema);
 
             foreach (var jsonCategory in jsonObject)
             {
-                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
-                {
-                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
-                    settings.Converters.Add(new IPAddressConverter());
-
-                    var machine = Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString(), settings);
-
-                    dataContext.Machines.Add(machine);
-                    dataContext.SaveChanges();
-
-                    continue;
-                }
-                else if (jsonCategory.Key == "$schema")
+                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase) || jsonCategory.Key == "$schema")
                 {
                     continue;
                 }

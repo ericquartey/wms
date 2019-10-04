@@ -49,8 +49,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Type");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
@@ -571,7 +569,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 11, 30, 14, 3, 0, 787, DateTimeKind.Local).AddTicks(6118),
+                            InstallationDate = new DateTime(2016, 12, 4, 9, 10, 24, 981, DateTimeKind.Local).AddTicks(3087),
                             ServiceStatus = 86
                         });
                 });

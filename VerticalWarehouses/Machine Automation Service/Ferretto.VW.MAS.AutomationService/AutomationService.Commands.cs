@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 command.Destination == MessageActor.Any;
         }
 
-        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
             switch (command.Type)
             {
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService
                             this.configuredBays,
                             this.EventAggregator,
                             this.Logger as ILogger<AutomationService>,
-                            this.serviceScopeFactory);
+                            this.ServiceScopeFactory);
 
                         this.currentStateMachine.Start();
                     }

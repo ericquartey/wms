@@ -109,7 +109,7 @@
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <controls:PpcLabeledText VerticalAlignment="Center"
-                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F1}}"
                                   LabelText="{x:Static res:InstallationApp.BayHeightCheckActualHeight}" />
 
             <controls:PpcButton Name="SaveHeight"
