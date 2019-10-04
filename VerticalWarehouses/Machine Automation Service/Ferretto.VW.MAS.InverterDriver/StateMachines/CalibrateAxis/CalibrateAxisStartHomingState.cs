@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
-        private readonly Timer delayCheck;
+        private readonly Timer delayCheckTimer;
 
         private bool delayElapsed;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
             this.Inverter = inverterStatus;
-            this.delayCheck = new Timer(this.delayCheckMethod, null, -1, Timeout.Infinite);
+            this.delayCheckTimer = new Timer(this.DelayCheck, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -53,15 +53,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.Logger.LogDebug($"Calibrate start homing axis {this.axisToCalibrate}");
-            //if (this.calibration != Calibration.ResetEncoder)
-            {
-                this.delayCheck.Change(CheckDelayTime, CheckDelayTime);
-                this.delayElapsed = false;
-            }
-            //else
-            //{
-            //    this.delayElapsed = true;
-            //}
+            this.delayCheckTimer.Change(CheckDelayTime, CheckDelayTime);
+            this.delayElapsed = false;
 
             this.Inverter.HomingControlWord.HomingOperation = true;
 
@@ -129,10 +122,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             return returnValue;
         }
 
-        private void delayCheckMethod(object state)
+        private void DelayCheck(object state)
         {
             // stop timer
-            this.delayCheck.Change(Timeout.Infinite, Timeout.Infinite);
+            this.delayCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // delay expired
             this.delayElapsed = true;
