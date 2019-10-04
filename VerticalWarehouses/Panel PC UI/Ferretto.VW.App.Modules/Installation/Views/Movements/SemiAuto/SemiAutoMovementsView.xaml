@@ -126,7 +126,7 @@
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
+                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradle}" />
                 <controls:PpcSensorControl Grid.Row="7"
                                            Grid.Column="1"
                                            Margin="0"
@@ -138,7 +138,7 @@
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
+                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradle}" />
                 <controls:PpcSensorControl Grid.Row="8"
                                            Grid.Column="1"
                                            Margin="0"
