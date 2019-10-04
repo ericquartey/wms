@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {
-                if (this.machineData.AxisToCalibrate != Axis.Horizontal &&
+                if (this.machineData.MaximumSteps > 1 &&
                     !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) &&
                     !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     )
@@ -273,6 +273,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 {
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
+                }
+                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
+                    this.machineData.AxisToCalibrate == Axis.Horizontal &&
+                    this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                    )
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: already in zero position";
                 }
             }
             else
