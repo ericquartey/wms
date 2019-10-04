@@ -33,7 +33,7 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public partial class InverterDriverService
+    partial class InverterDriverService
     {
         #region Fields
 
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         double currentAxisPosition = 0;
                         if (currentMessage.IntPayload != 0)
                         {
-                            currentAxisPosition = this.elevatorDataProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
+                            currentAxisPosition = this.invertersProvider.ConvertPulsesToMillimeters(currentMessage.IntPayload, axisOrientation);
                         }
 
                         var offset = axis == Axis.Horizontal
@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             : this.elevatorDataProvider.GetVerticalAxis().Offset;
                         currentAxisPosition += offset;
 
-                        var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
+                        var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                         var msgNotification = new FieldNotificationMessage(
                             notificationData,
                             "Inverter encoder value update",
@@ -648,7 +648,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
+        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter, IInvertersProvider invertersProvider)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
@@ -694,28 +694,28 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             if (axis.Orientation == Orientation.Vertical)
                             {
-                                var beltDisplacement = this.elevatorDataProvider.ComputeDisplacement(positioningData.TargetPosition);
+                                var beltDisplacement = invertersProvider.ComputeDisplacement(positioningData.TargetPosition);
                                 this.Logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
                                 position += beltDisplacement;
                             }
                         }
 
-                        var targetPosition = this.elevatorDataProvider.ConvertMillimetersToPulses(position, axisOrientation);
+                        var targetPosition = invertersProvider.ConvertMillimetersToPulses(position, axisOrientation);
 
                         var targetAcceleration = positioningData.TargetAcceleration
-                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
                         var targetDeceleration = positioningData.TargetDeceleration
-                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
                         var targetSpeed = positioningData.TargetSpeed
-                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
                         var switchPosition = positioningData.SwitchPosition
-                            .Select(value => this.elevatorDataProvider.ConvertMillimetersToPulses(value, axisOrientation))
+                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
                         // TODO: what is '2' and '4'? Please replace with named constants.

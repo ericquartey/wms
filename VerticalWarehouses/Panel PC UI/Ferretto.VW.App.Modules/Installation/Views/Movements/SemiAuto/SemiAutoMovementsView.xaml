@@ -287,7 +287,7 @@
                                VerticalAlignment="Top"
                                InputText="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
-                               LabelText="NUMERO CASSETTO"
+                               LabelText="Numero Cassetto"
                                Mask="#0"
                                WidthNumber="210" />
             <controls:PpcButton Grid.Row="1"
@@ -296,7 +296,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
                                 Command="{Binding MoveToLoadingUnitHeightCommand}"
-                                Content="VAI A CASSETTO***"
+                                Content="Vai a Cassetto"
                                 IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
 
             <controls:PpcButton Grid.Row="2"

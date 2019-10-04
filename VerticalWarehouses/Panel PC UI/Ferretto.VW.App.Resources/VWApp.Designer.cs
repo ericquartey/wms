@@ -88,6 +88,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emergency is on.
+        /// </summary>
+        public static string EmergencyIsOn {
+            get {
+                return ResourceManager.GetString("EmergencyIsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure no emergency buttons are pressed..
+        /// </summary>
+        public static string EnsureEmergencyIsOff {
+            get {
+                return ResourceManager.GetString("EnsureEmergencyIsOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error Code.
         /// </summary>
         public static string ErrorCode {

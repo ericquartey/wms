@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
 
         private const int WORD_DIMENSION = 16;
 
-        private readonly InverterDriver.Interface.Services.IInvertersProvider invertersProvider;
+        private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
 
         #region Constructors
 
-        public InverterProvider(InverterDriver.Interface.Services.IInvertersProvider invertersProvider)
+        public InverterProvider(InverterDriver.IInvertersProvider invertersProvider)
         {
             this.invertersProvider = invertersProvider;
         }

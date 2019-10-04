@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
@@ -17,8 +18,9 @@ namespace Ferretto.VW.App.Controls
 
         private DelegateCommand executeCommand;
 
-        private bool? isVisible;
         private bool? isEnabled;
+
+        private bool? isVisible;
 
         private PresentationStates state;
 
@@ -44,15 +46,16 @@ namespace Ferretto.VW.App.Controls
             ??
             (this.executeCommand = new DelegateCommand(async () => await this.ExecuteAsync(), this.CanExecute));
 
-        public bool? IsVisible
-        {
-            get => this.isVisible;
-            set => this.SetProperty(ref this.isVisible, value);
-        }
         public bool? IsEnabled
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
+        }
+
+        public bool? IsVisible
+        {
+            get => this.isVisible;
+            set => this.SetProperty(ref this.isVisible, value);
         }
 
         public PresentationStates State
@@ -74,6 +77,11 @@ namespace Ferretto.VW.App.Controls
         public virtual Task ExecuteAsync()
         {
             // do nothing
+            return Task.CompletedTask;
+        }
+
+        public virtual Task OnLoadedAsync()
+        {
             return Task.CompletedTask;
         }
 

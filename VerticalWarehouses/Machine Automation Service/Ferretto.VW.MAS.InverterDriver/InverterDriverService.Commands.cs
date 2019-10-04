@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
@@ -75,7 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
 
                     case FieldMessageType.Positioning:
-                        this.ProcessPositioningMessage(receivedMessage, inverter);
+                        this.ProcessPositioningMessage(receivedMessage, inverter, serviceProvider.GetRequiredService<IInvertersProvider>());
                         break;
 
                     case FieldMessageType.ShutterPositioning:

@@ -55,7 +55,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 try
                 {
-                    // System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceCounter}] Save changes start ({counter})");
                     affectedRecordsCount = base.SaveChanges();
                 }
                 catch (Exception ex)
@@ -74,8 +73,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
                     affectedRecordsCount = this.SaveToActiveDb();
                 }
-
-                //System.Diagnostics.Debug.WriteLine($"***** DB context [instance: {instanceCounter}] Save changes end ({counter})");
             }
 
             return affectedRecordsCount;

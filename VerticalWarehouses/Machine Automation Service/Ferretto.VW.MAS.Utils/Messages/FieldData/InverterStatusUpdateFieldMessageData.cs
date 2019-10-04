@@ -19,13 +19,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         }
 
         public InverterStatusUpdateFieldMessageData(
-            Axis currentAxis,
+            Axis axis,
             bool[] currentSensorStatus,
-            int currentPosition,
+            double currentPosition,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            this.CurrentAxis = currentAxis;
+            this.CurrentAxis = axis;
             this.CurrentPosition = currentPosition;
 
             this.CurrentSensorStatus = currentSensorStatus;
@@ -37,16 +37,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             : base(verbosity)
         {
             this.CurrentSensorStatus = currentSensorStatus;
-        }
-
-        public InverterStatusUpdateFieldMessageData(
-            Axis currentAxis,
-            int currentPosition,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
-            : base(verbosity)
-        {
-            this.CurrentAxis = currentAxis;
-            this.CurrentPosition = currentPosition;
         }
 
         #endregion

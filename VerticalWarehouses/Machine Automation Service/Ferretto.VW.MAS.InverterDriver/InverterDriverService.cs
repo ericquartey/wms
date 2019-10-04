@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.InverterDriver.Interface.Services;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -26,7 +25,7 @@ using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public partial class InverterDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
+    internal partial class InverterDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
     {
         #region Fields
 
@@ -192,6 +191,48 @@ namespace Ferretto.VW.MAS.InverterDriver
                 notification.Destination == FieldMessageActor.Any;
         }
 
+        private void OnInverterMessageReceived(byte[] extractedMessage)
+        {
+            InverterMessage currentMessage;
+            try
+            {
+                currentMessage = new InverterMessage(extractedMessage);
+
+                this.Logger.LogTrace($"6:currentMessage={currentMessage}");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError($"7:Exception {ex.Message} while parsing Inverter raw message bytes {BitConverter.ToString(extractedMessage)}");
+
+                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
+
+                this.socketTransport.Disconnect();
+                return;
+            }
+
+            if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                this.Logger.LogError($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message {BitConverter.ToString(extractedMessage)}");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
+
+                this.socketTransport.Disconnect();
+                return;
+            }
+
+            this.currentStateMachines.TryGetValue(inverterIndex, out var messageCurrentStateMachine);
+
+            if (currentMessage.IsWriteMessage)
+            {
+                this.EvaluateWriteMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
+            }
+            else
+            {
+                this.EvaluateReadMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
+            }
+        }
+
         private async Task ReceiveInverterData()
         {
             this.Logger.LogTrace("1:Method Start");
@@ -314,44 +355,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 foreach (var extractedMessage in extractedMessages)
                 {
-                    InverterMessage currentMessage;
-                    try
-                    {
-                        currentMessage = new InverterMessage(extractedMessage);
-
-                        this.Logger.LogTrace($"6:currentMessage={currentMessage}");
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError($"7:Exception {ex.Message} while parsing Inverter raw message bytes {BitConverter.ToString(extractedMessage)}");
-
-                        this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
-
-                        this.socketTransport.Disconnect();
-                        break;
-                    }
-
-                    if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
-                    {
-                        this.Logger.LogError($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message {BitConverter.ToString(extractedMessage)}");
-
-                        var ex = new Exception();
-                        this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
-
-                        this.socketTransport.Disconnect();
-                        break;
-                    }
-
-                    this.currentStateMachines.TryGetValue(inverterIndex, out var messageCurrentStateMachine);
-
-                    if (currentMessage.IsWriteMessage)
-                    {
-                        this.EvaluateWriteMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
-                    }
-                    else
-                    {
-                        this.EvaluateReadMessage(currentMessage, inverterIndex, messageCurrentStateMachine);
-                    }
+                    this.OnInverterMessageReceived(extractedMessage);
                 }
             }
             while (!this.CancellationToken.IsCancellationRequested);
