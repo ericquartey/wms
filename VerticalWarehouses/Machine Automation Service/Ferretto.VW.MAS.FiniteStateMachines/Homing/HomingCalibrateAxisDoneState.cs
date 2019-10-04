@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 MessageType.CalibrateAxis,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
-                MessageStatus.OperationEnd);
+                MessageStatus.OperationStepStop);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

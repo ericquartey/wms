@@ -44,15 +44,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PowerOff()
         {
-            try
-            {
-                this.runningStateProvider.SetRunningState(false, this.BayNumber, MessageActor.AutomationService);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.runningStateProvider.SetRunningState(false, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
         }
 
         [HttpPost("power-on")]
@@ -60,15 +53,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PowerOn()
         {
-            try
-            {
-                this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
         }
 
         [HttpPost("stop")]
@@ -76,15 +62,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Stop()
         {
-            try
-            {
-                this.runningStateProvider.Stop(this.BayNumber, MessageActor.AutomationService);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.runningStateProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
         }
 
         #endregion

@@ -44,9 +44,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(double displacement, double netWeight, int? loadingUnitId)
         {
-            try
-            {
-                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber,
+                MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -56,9 +55,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            try
-            {
-                this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
