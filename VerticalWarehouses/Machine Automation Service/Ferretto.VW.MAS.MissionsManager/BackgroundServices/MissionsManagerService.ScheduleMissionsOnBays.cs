@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private async Task ExecuteNextMissionAsync()
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         .OrderBy(o => o.Priority)
                         .FirstOrDefault(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed);
 
-                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
                     {
                         var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 

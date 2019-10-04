@@ -379,7 +379,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory);
+                        this.ServiceScopeFactory);
 
                     this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
@@ -393,7 +393,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory,
+                        this.ServiceScopeFactory,
                         receivedMessage);
 
                     this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
@@ -418,7 +418,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                    this.Logger,
                    this.eventAggregator,
                    this.inverterCommandQueue,
-                   this.serviceScopeFactory);
+                   this.ServiceScopeFactory);
 
                 this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                 currentStateMachine.Start();
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger,
                 this.eventAggregator,
                 this.inverterCommandQueue,
-                this.serviceScopeFactory);
+                this.ServiceScopeFactory);
 
             this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
             currentStateMachine.Start();
@@ -548,7 +548,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger,
                 this.eventAggregator,
                 this.inverterCommandQueue,
-                this.serviceScopeFactory);
+                this.ServiceScopeFactory);
 
             this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
 
@@ -598,7 +598,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.Logger,
                                 this.eventAggregator,
                                 this.inverterCommandQueue,
-                                this.serviceScopeFactory);
+                                this.ServiceScopeFactory);
 
                             this.currentStateMachines.Add(currentInverter, currentStateMachine);
                             currentStateMachine.Start();
@@ -617,7 +617,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger,
                             this.eventAggregator,
                             this.inverterCommandQueue,
-                            this.serviceScopeFactory,
+                            this.ServiceScopeFactory,
                             receivedMessage);
 
                         this.currentStateMachines.Add(currentInverter, currentStateMachine);
@@ -633,7 +633,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory,
+                        this.ServiceScopeFactory,
                         receivedMessage);
 
                     this.currentStateMachines.Add(currentInverter, currentStateMachine);
@@ -771,7 +771,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         this.Logger,
                                         this.eventAggregator,
                                         this.inverterCommandQueue,
-                                        this.serviceScopeFactory);
+                                        this.ServiceScopeFactory);
 
                                     this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                     currentStateMachine.Start();
@@ -805,7 +805,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             this.Logger,
                                             this.eventAggregator,
                                             this.inverterCommandQueue,
-                                            this.serviceScopeFactory);
+                                            this.ServiceScopeFactory);
 
                                         this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                         currentStateMachine.Start();
@@ -818,7 +818,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                             this.Logger,
                                             this.eventAggregator,
                                             this.inverterCommandQueue,
-                                            this.serviceScopeFactory);
+                                            this.ServiceScopeFactory);
 
                                         this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                                         currentStateMachine.Start();
@@ -842,7 +842,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory,
+                        this.ServiceScopeFactory,
                         receivedMessage);
                     this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
@@ -871,7 +871,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger,
                     this.eventAggregator,
                     this.inverterCommandQueue,
-                    this.serviceScopeFactory);
+                    this.ServiceScopeFactory);
 
                 this.currentStateMachines.Add(currentInverter, currentStateMachine);
                 currentStateMachine.Start();
@@ -920,7 +920,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger,
                     this.eventAggregator,
                     this.inverterCommandQueue,
-                    this.serviceScopeFactory);
+                    this.ServiceScopeFactory);
 
                 this.currentStateMachines.Add(currentInverter, currentStateMachine);
                 currentStateMachine.Start();
@@ -946,7 +946,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory);
+                        this.ServiceScopeFactory);
 
                     this.currentStateMachines.Add(currentInverter, currentStateMachine);
                     currentStateMachine.Start();
@@ -960,7 +960,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger,
                         this.eventAggregator,
                         this.inverterCommandQueue,
-                        this.serviceScopeFactory,
+                        this.ServiceScopeFactory,
                         receivedMessage);
                     this.currentStateMachines.Add(currentInverter, currentStateMachine);
                     currentStateMachine.Start();
@@ -984,7 +984,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger,
                 this.eventAggregator,
                 this.inverterCommandQueue,
-                this.serviceScopeFactory);
+                this.ServiceScopeFactory);
 
             this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
             currentStateMachine.Start();

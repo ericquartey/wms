@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 DateTimeOffset startTime,
                 TimeSpan duration)
         {
-            this.logger.LogError($"Database command error: {command.CommandText}");
+            this.logger.LogError($"Database command error.");
             this.OnCommandOrConnectionError(exception);
         }
 
@@ -75,24 +75,21 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 {
                     this.writingOnStandby = true;
 
-                    using(var dbContext = new DataLayerContext(
-                       isActiveChannel: false,
-                       this.redundancyService as IDbContextRedundancyService<DataLayerContext>))
+                    using (var dbContext = new DataLayerContext(isActiveChannel: false, this.redundancyService as IDbContextRedundancyService<DataLayerContext>))
                     {
+                        var parametersArray = new SqliteParameter[command.Parameters.Count];
+                        command.Parameters.CopyTo(parametersArray, 0);
 
-                    var parametersArray = new SqliteParameter[command.Parameters.Count];
-                    command.Parameters.CopyTo(parametersArray, 0);
+                        try
+                        {
+                            dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
+                        }
+                        catch
+                        {
+                            this.redundancyService.InhibitStandbyDb();
+                        }
 
-                    try
-                    {
-                        dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
-                    }
-                    catch
-                    {
-                        this.redundancyService.InhibitStandbyDb();
-                    }
-
-                    this.writingOnStandby = false;
+                        this.writingOnStandby = false;
                     }
                 }
             }

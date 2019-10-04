@@ -347,18 +347,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private ConfigurationValue RetrieveConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            ConfigurationValue configurationValue;
-
             try
             {
-                var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
-                    configurationValue = dbContext.ConfigurationValues
+                    return dbContext.ConfigurationValues
                         .FirstOrDefault(s =>
                             s.VarName == configurationValueEnum
                             &&
                             s.CategoryName == (long)category);
-
+                }
             }
             catch
             {
@@ -366,13 +366,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
-
-            return configurationValue;
         }
 
         private void SetUpdateConfigurationValueCommon(ConfigurationValue newConfigurationValue)
         {
-            var dbContext = this.scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
                 var configurationValue = dbContext.ConfigurationValues
                     .FirstOrDefault(s =>
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     throw;
                 }
-
+            }
         }
 
         #endregion

@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddScoped<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
                 .AddScoped<IErrorsProvider, ErrorsProvider>()
                 .AddScoped<ILoadingUnitsProvider, LoadingUnitsProvider>()
+                .AddScoped<ILogEntriesProvider, LogEntriesProvider>()
                 .AddScoped<IMachineProvider, MachineProvider>()
                 .AddScoped<IServicingProvider, ServicingProvider>()
                 .AddScoped<ISetupStatusProvider, SetupStatusProvider>()

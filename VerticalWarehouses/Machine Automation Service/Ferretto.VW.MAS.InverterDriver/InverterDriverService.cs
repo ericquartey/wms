@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
@@ -19,7 +18,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
@@ -84,8 +82,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly InverterDiagnosticsData SensorTimeData = new InverterDiagnosticsData();
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private readonly ISocketTransport socketTransport;
 
         private readonly Timer[] statusWordUpdateTimer;
@@ -116,13 +112,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             IInvertersProvider invertersProvider,
             IServiceScopeFactory serviceScopeFactory,
             ISocketTransport socketTransport)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.invertersProvider = invertersProvider ?? throw new ArgumentNullException(nameof(invertersProvider));
 
             this.writeEnableEvent = new ManualResetEventSlim(true);

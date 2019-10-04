@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Methods
 
-        protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage receivedMessage)
+        protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
             this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);

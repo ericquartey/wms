@@ -41,8 +41,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private List<DataModels.Bay> configuredBays;
 
         private IStateMachine currentStateMachine;
@@ -63,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
             IBaysProvider baysProvider)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
 
@@ -73,7 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.baysDataService = baysDataService ?? throw new ArgumentNullException(nameof(baysDataService));
             this.missionDataService = missionDataService ?? throw new ArgumentNullException(nameof(missionDataService));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }

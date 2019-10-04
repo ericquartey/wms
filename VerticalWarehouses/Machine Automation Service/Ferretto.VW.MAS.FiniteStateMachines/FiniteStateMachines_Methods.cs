@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -14,7 +13,6 @@ using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -103,9 +101,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger.LogError(
                             $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
 
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex,
-                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine", 1,
-                            MessageVerbosity.Error));
+                        this.SendNotificationMessage(
+                            new FsmExceptionMessageData(
+                                ex,
+                                $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine",
+                                1,
+                                MessageVerbosity.Error));
                     }
                 }
                 else
@@ -113,9 +114,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogError(
                         $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
 
-                    this.SendNotificationMessage(new FsmExceptionMessageData(null,
-                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
-                        2, MessageVerbosity.Error));
+                    this.SendNotificationMessage(
+                        new FsmExceptionMessageData(
+                            null,
+                            $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
+                            2,
+                            MessageVerbosity.Error));
                 }
             }
         }

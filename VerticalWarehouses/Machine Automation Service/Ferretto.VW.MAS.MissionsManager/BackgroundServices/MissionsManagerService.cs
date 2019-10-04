@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private readonly IServiceScope serviceScope;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private bool isDisposed;
 
         #endregion
@@ -47,12 +45,11 @@ namespace Ferretto.VW.MAS.MissionsManager
             IMissionsDataService missionsDataService,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             this.serviceScope = serviceScopeFactory.CreateScope();
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());

@@ -9,8 +9,8 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -26,26 +26,14 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>, IDataLayerService
     {
-        #region Fields
-
-        private readonly IServiceScope scope;
-
-        #endregion
-
         #region Constructors
 
         public DataLayerService(
             IEventAggregator eventAggregator,
             ILogger<DataLayerService> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.scope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -75,48 +63,17 @@ namespace Ferretto.VW.MAS.DataLayer
             return true;
         }
 
-        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            this.Logger.LogTrace($"2:command={command}");
-
-            var serializedData = SerializeMessageData(command.Data);
-
-            var logEntry = new LogEntry
-            {
-                BayNumber = command.RequestingBay.ToString(),
-                Data = serializedData,
-                Description = command.Description,
-                Destination = command.Destination.ToString(),
-                Source = command.Source.ToString(),
-                TimeStamp = DateTime.UtcNow,
-                Type = command.Type.ToString(),
-            };
-
-            this.SaveEntryToDb(logEntry);
+            serviceProvider.GetRequiredService<ILogEntriesProvider>().Add(command);
 
             return Task.CompletedTask;
         }
 
-        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
+        protected override Task OnNotificationReceivedAsync(NotificationMessage notification, IServiceProvider serviceProvider)
         {
-            this.Logger.LogTrace($"2:message={message}");
+            serviceProvider.GetRequiredService<ILogEntriesProvider>().Add(notification);
 
-            var serializedData = SerializeMessageData(message.Data);
-
-            var logEntry = new LogEntry
-            {
-                BayNumber = message.RequestingBay.ToString(),
-                Data = serializedData,
-                Description = message.Description,
-                Destination = message.Destination.ToString(),
-                Source = message.Source.ToString(),
-                TimeStamp = DateTime.UtcNow,
-                Type = message.Type.ToString(),
-                ErrorLevel = message.ErrorLevel.ToString(),
-                Status = message.Status.ToString(),
-            };
-
-            this.SaveEntryToDb(logEntry);
             return Task.CompletedTask;
         }
 
@@ -124,33 +81,36 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             try
             {
-                var redundancyService = this.scope
-                    .ServiceProvider
-                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-
-                redundancyService.IsEnabled = false;
-
-                using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
-                    if (pendingMigrations.Count() > 0)
-                    {
-                        this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
-                        await activeDbContext.Database.MigrateAsync();
-                    }
-                }
+                    var redundancyService = scope
+                        .ServiceProvider
+                        .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
 
-                using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
-                {
-                    var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
-                    if (pendingMigrations.Count() > 0)
-                    {
-                        this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
-                        await standbyDbContext.Database.MigrateAsync();
-                    }
-                }
+                    redundancyService.IsEnabled = false;
 
-                redundancyService.IsEnabled = true;
+                    using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                    {
+                        var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
+                        {
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
+                            await activeDbContext.Database.MigrateAsync();
+                        }
+                    }
+
+                    using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
+                    {
+                        var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
+                        if (pendingMigrations.Count() > 0)
+                        {
+                            this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
+                            await standbyDbContext.Database.MigrateAsync();
+                        }
+                    }
+
+                    redundancyService.IsEnabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -163,36 +123,39 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             await this.ApplyMigrationsAsync();
 
-            var configuration = this.scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-            var loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-
-            try
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-                await loadingUnitsProvider.LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
+                var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
 
-                this.IsReady = true;
+                try
+                {
+                    this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
 
-                var message = new NotificationMessage(
-                    null,
-                    "DataLayer initialization complete.",
-                    MessageActor.Any,
-                    MessageActor.DataLayer,
-                    MessageType.DataLayerReady,
-                    BayNumber.None);
+                    await loadingUnitsProvider.LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
 
-                this.EventAggregator
-                    .GetEvent<NotificationEvent>()
-                    .Publish(message);
+                    this.IsReady = true;
 
-                this.Logger.LogDebug("Data layer service initialized.");
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogError(ex, "Error while loading configuration values.");
-                this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    var message = new NotificationMessage(
+                        null,
+                        "DataLayer initialization complete.",
+                        MessageActor.Any,
+                        MessageActor.DataLayer,
+                        MessageType.DataLayerReady,
+                        BayNumber.None);
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(message);
+
+                    this.Logger.LogDebug("Data layer service initialized.");
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while loading configuration values.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                }
             }
         }
 
