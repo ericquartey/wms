@@ -274,7 +274,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningBay()
         {
-            this.IsTuningChain = true;
+            this.IsTuningBay = true;
             await Task.Delay(1);
         }
 
