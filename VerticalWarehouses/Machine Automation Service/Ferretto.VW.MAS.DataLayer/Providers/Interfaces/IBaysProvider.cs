@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<Bay> GetAll();
 
+        BayNumber GetByAxis(IHomingMessageData data);
+
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
@@ -30,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         BayNumber GetByMovementType(IPositioningMessageData data);
 
         Bay GetByNumber(BayNumber bayNumber);
+
+        InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
 

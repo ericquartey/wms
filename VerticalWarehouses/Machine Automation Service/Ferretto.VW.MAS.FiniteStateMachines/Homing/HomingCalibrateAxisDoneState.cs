@@ -109,11 +109,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
-                ? InverterIndex.Slave1
-                : InverterIndex.MainInverter;
+            var inverterIndex = this.machineData.CurrentInverterIndex;
 
-            if (!this.machineData.IsOneKMachine)
+            if (!this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -144,9 +142,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            if (this.machineData.AxisToCalibrated != this.machineData.AxisToCalibrate)
+            if (this.machineData.InverterIndexOld != inverterIndex)
             {
-                var inverterIndexOld = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrated == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                 var inverterDataMessageOld = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
                 var inverterMessageOld = new FieldCommandMessage(
                     inverterDataMessageOld,
@@ -154,7 +151,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterSetTimer,
-                    (byte)inverterIndexOld);
+                    (byte)this.machineData.InverterIndexOld);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessageOld);
             }
@@ -170,10 +167,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrated, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{this.machineData.AxisToCalibrated} axis calibration completed",
+                $"{this.machineData.InverterIndexOld} axis calibration completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,

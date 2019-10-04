@@ -41,10 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.IntermediateShutterAsync(),
                 this.CanExecuteIntermediateCommand));
 
-        public bool IsClosedShutterCommand => false;
-
-        public bool IsIntermediateShutterCommand => false;
-
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
@@ -79,7 +75,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteClosedCommand()
         {
-            return !this.IsElevatorMoving
+            return !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
@@ -88,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteIntermediateCommand()
         {
-            return !this.IsElevatorMoving
+            return !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
@@ -97,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteOpenCommand()
         {
-            return !this.IsElevatorMoving
+            return !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
@@ -111,6 +107,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersService.MoveToAsync(ShutterPosition.Closed);
+                this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
             {
@@ -129,6 +126,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersService.MoveToAsync(ShutterPosition.Half);
+                this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
             {
@@ -147,6 +145,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersService.MoveToAsync(ShutterPosition.Opened);
+                this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
             {

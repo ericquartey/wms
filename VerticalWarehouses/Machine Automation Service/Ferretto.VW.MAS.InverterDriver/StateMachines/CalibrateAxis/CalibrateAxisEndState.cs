@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly Calibration calibration;
+
         private readonly bool stopRequested;
 
         #endregion
@@ -24,12 +26,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisEndState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IInverterStatusBase inverterStatus,
             ILogger logger,
             bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.calibration = calibration;
             this.stopRequested = stopRequested;
         }
 
@@ -41,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogDebug($"Notify Positioning End axis {this.axisToCalibrate}. StopRequested = {this.stopRequested}");
 
-            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
+            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, this.calibration);
             var endNotification = new FieldNotificationMessage(
                 messageData,
                 "Axis calibration complete",

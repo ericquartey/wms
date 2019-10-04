@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
@@ -66,6 +67,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpPost("horizontal/findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
 
         [HttpGet("horizontal/position")]
         public ActionResult<double> GetHorizontalPosition()

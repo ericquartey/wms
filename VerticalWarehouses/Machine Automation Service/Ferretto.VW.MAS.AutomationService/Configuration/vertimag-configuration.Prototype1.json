@@ -27,10 +27,6 @@
         "Type": "Single"
       },
       {
-        "Inverter": {
-          "Type": "Acu",
-          "Index": 5
-        },
         "IoDevice": {
           "Index": 1,
           "IpAddress": "192.168.0.2",

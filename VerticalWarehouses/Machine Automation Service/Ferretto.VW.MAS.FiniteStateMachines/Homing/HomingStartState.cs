@@ -101,11 +101,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
-                ? InverterIndex.Slave1
-                : InverterIndex.MainInverter;
+            if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+            {
+                this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
+            }
+            var inverterIndex = this.machineData.CurrentInverterIndex;
 
-            if (!this.machineData.IsOneKMachine)
+            if (!this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -161,7 +163,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Started",
