@@ -55,13 +55,10 @@
           }
         },
         {
-          "Inverter": {
-            "Index": 1,
-            "Type": "Acu"
-          },
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
+          "Inverter": null,
           "MaximumLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,
