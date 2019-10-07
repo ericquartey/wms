@@ -76,7 +76,7 @@
                              Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Center"
-                             InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             EditValue="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <controls:PpcButton Grid.Row="5"
