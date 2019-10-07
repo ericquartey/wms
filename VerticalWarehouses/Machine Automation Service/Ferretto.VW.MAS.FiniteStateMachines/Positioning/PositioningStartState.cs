@@ -131,8 +131,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
             }
-
             var inverterIndex = this.machineData.CurrentInverterIndex;
+
+            {
+                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 250);
+                var inverterMessage = new FieldCommandMessage(
+                    inverterDataMessage,
+                    "Update Inverter axis position status",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterSetTimer,
+                    (byte)inverterIndex);
+                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+            }
 
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.MessageData.AxisMovement);
             var inverterCommandMessage = new FieldCommandMessage(

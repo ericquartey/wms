@@ -108,13 +108,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 {
                     this.machineData.NumberOfExecutedSteps++;
                     this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;
-                    this.machineData.AxisToCalibrate =
-                        (this.machineData.AxisToCalibrate == Axis.Vertical) ?
-                            Axis.Horizontal :
-                            Axis.Vertical;
+                    if (this.axisToCalibrate == Axis.HorizontalAndVertical)
+                    {
+                        this.machineData.AxisToCalibrate =
+                            (this.machineData.AxisToCalibrate == Axis.Vertical) ?
+                                Axis.Horizontal :
+                                Axis.Vertical;
+                    }
+                    else if (this.calibration == Calibration.FindSensor)
+                    {
+                        this.machineData.CalibrationType = Calibration.ResetEncoder;
+                    }
+
                     if (this.machineData.AxisToCalibrate == Axis.Vertical)
                     {
-                        this.machineData.CalibrationType = Calibration.FindSensor;
+                        this.machineData.CalibrationType = Calibration.Elevator;
+                        this.machineData.CurrentInverterIndex = InverterIndex.MainInverter;
                     }
                     else if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
                     {
@@ -189,7 +198,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     this.machineData.AxisToCalibrate = this.axisToCalibrate;
                     this.machineData.CalibrationType = this.calibration;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 1;
+                    this.machineData.MaximumSteps = (this.calibration == Calibration.FindSensor) ? 2 : 1;
                     break;
 
                 case Axis.Vertical:
@@ -274,25 +283,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.AxisToCalibrate == Axis.Horizontal &&
-                    this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: already in zero position";
-                }
             }
             else
             {
                 if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: already in zero position";
-                }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
                     !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
                     )
                 {

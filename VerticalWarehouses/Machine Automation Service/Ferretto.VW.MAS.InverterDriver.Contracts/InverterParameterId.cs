@@ -12,6 +12,8 @@
 
         HomingAcceleration = 1134,
 
+        HomingOffset = 1185,
+
         HomingSensor = 1139,
 
         PositionAccelerationParam = 1457,

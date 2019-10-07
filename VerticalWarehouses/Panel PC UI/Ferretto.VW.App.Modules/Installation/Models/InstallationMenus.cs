@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Modifica blocco celle")]
         CellsBlockTuning,
 
-        [View(Utils.Modules.Installation.DRAWERLOADINGUNLOADINGTEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Test di Imbarco/Sbarco")]
         HorizontalHoming,
 

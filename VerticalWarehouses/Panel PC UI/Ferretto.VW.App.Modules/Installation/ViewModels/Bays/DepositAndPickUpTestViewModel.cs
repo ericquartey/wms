@@ -1,0 +1,699 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Regions;
+
+namespace Ferretto.VW.App.Installation.ViewModels
+{
+    public partial class DepositAndPickUpTestViewModel : BaseMainViewModel
+    {
+        public enum DepositAndPickUpState
+        {
+            None,
+            GotoBay,
+            PickUp,
+            GotoBayAdjusted,
+            Deposit,
+            EndLoaded,
+        }
+
+        #region Fields
+
+        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+
+        private readonly IMachineSensorsService machineSensorsService;
+
+        private readonly Sensors sensors = new Sensors();
+
+        private int? inputLoadingUnitCode;
+
+        private bool isWaitingForResponse;
+
+        private bool isZeroChain;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken sensorsToken;
+
+        private SubscriptionToken subscriptionToken;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineSetupStatusService machineSetupStatusService;
+
+        private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
+
+        private int? completedCycles;
+
+        private int initialCycles;
+
+        private int inputDelay;
+
+        private int? inputRequiredCycles;
+
+        private bool isExecutingProcedure;
+
+        private SubscriptionToken receivedActionUpdateToken;
+
+        private DelegateCommand resetCommand;
+
+        private DelegateCommand startCommand;
+
+        private DelegateCommand stopCommand;
+
+        private int? totalCompletedCycles;
+
+        #endregion
+
+        #region Constructors
+
+        public DepositAndPickUpTestViewModel(
+            IEventAggregator eventAggregator,
+            IMachineSetupStatusService machineSetupStatusService,
+            IMachineDepositAndPickupProcedureService machineDepositPickupProcedure,
+            IMachineElevatorService machineElevatorService,
+            IMachineLoadingUnitsService machineLoadingUnitsService,
+            IMachineSensorsService machineSensorsService,
+            IMachineServiceService machineServiceService,
+            IBayManager bayManagerService)
+            : base(PresentationMode.Installer)
+        {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (machineDepositPickupProcedure == null)
+            {
+                throw new ArgumentNullException(nameof(machineDepositPickupProcedure));
+            }
+
+            if (machineElevatorService is null)
+            {
+                throw new ArgumentNullException(nameof(machineElevatorService));
+            }
+
+            if (machineLoadingUnitsService is null)
+            {
+                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
+            }
+
+            if (bayManagerService is null)
+            {
+                throw new ArgumentNullException(nameof(bayManagerService));
+            }
+
+            if (machineSensorsService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineSensorsService));
+            }
+
+            if (machineServiceService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineServiceService));
+            }
+
+            this.eventAggregator = eventAggregator;
+            this.machineSensorsService = machineSensorsService;
+            this.machineElevatorService = machineElevatorService;
+            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.bayManagerService = bayManagerService;
+            this.machineSetupStatusService = machineSetupStatusService;
+            this.machineDepositAndPickupProcedureService = machineDepositPickupProcedure;
+            this.inputDelay = 0;
+            this.SelectBayPosition1();
+        }
+
+        #endregion
+
+        #region Properties
+        public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1;
+        public bool IsLoadingUnitInBay
+        {
+            get
+            {
+                if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.LUPresentInBay1;
+                }
+                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.LUPresentInBay2;
+                }
+                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.LUPresentInBay3;
+                }
+
+                return false;
+            }
+        }
+
+        private bool isStopping;
+
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set => this.SetProperty(ref this.isStopping, value);
+        }
+
+        private double? tare;
+
+        public double? Tare
+        {
+            get => this.tare;
+            set
+            {
+                if (this.SetProperty(ref this.tare, value))
+                {
+                    this.UpdateLoadingUnit();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        private double? netWeight;
+
+        public double? NetWeight
+        {
+            get => this.netWeight;
+            set
+            {
+                if (this.SetProperty(ref this.netWeight, value))
+                {
+                    this.UpdateLoadingUnit();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        private double? grossWeight;
+
+        public double? GrossWeight
+        {
+            get => this.grossWeight;
+            set => this.SetProperty(ref this.grossWeight, value);
+        }
+
+        private void UpdateLoadingUnit()
+        {
+            if (this.tare.HasValue
+                &&
+                this.tare > 0)
+            {
+                this.LoadingUnitInBay = new LoadingUnit();
+                this.LoadingUnitInBay.Id = 1;
+                this.LoadingUnitInBay.Tare = this.Tare.Value;
+                this.GrossWeight = this.Tare + this.NetWeight;
+            }
+            else
+            {
+                this.LoadingUnitInBay = null;
+                this.GrossWeight = 0;
+            }
+
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+        }
+
+        public int? CompletedCycles
+        {
+            get => this.completedCycles;
+            set
+            {
+                if (this.SetProperty(ref this.completedCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int InputDelay
+        {
+            get => this.inputDelay;
+            set
+            {
+                if (this.SetProperty(ref this.inputDelay, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int? InputRequiredCycles
+        {
+            get => this.inputRequiredCycles;
+            set
+            {
+                if (this.SetProperty(ref this.inputRequiredCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get => this.isExecutingProcedure;
+            private set
+            {
+                if (this.SetProperty(ref this.isExecutingProcedure, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand ResetCommand =>
+                        this.resetCommand
+                        ??
+                        (this.resetCommand = new DelegateCommand(
+                            async () => await this.ResetAsync(),
+                            this.CanExecuteResetCommand));
+
+        public ICommand StartCommand =>
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(
+                async () => await this.StartAsync(),
+                this.CanExecuteStartCommand));
+
+        public ICommand StopCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(
+                this.StartStop,
+                this.CanExecuteStopCommand));
+
+        public int? TotalCompletedCycles
+        {
+            get => this.totalCompletedCycles;
+            private set => this.SetProperty(ref this.totalCompletedCycles, value);
+        }
+
+        public bool IsElevatorMoving =>
+                this.IsElevatorMovingToBay
+                || this.IsElevatorDisembarking
+                || this.IsElevatorEmbarking;
+
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public Sensors Sensors => this.sensors;
+
+        #endregion
+
+        #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.subscriptionToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken = null;
+            }
+
+            if (this.sensorsToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Unsubscribe(this.sensorsToken);
+
+                this.sensorsToken = null;
+            }
+        }
+
+        public override async Task OnNavigatedAsync()
+        {
+            this.CompletedCycles = 0;
+
+            await base.OnNavigatedAsync();
+
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+
+            this.IsBackNavigationAllowed = true;
+
+            this.subscriptionToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<PositioningMessageData>>()
+              .Subscribe(
+                  async message => await this.OnElevatorPositionChanged(message),
+                  ThreadOption.UIThread,
+                  false);
+
+            this.sensorsToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message =>
+                        {
+                            this.sensors.Update(message?.Data?.SensorsStates);
+                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+                            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
+                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+                            this.RaiseCanExecuteChanged();
+                        },
+                    ThreadOption.UIThread,
+                    false);
+
+            await this.InitializeSensors();
+
+            await this.GetCycleQtuantityAsync();
+
+            await this.RetrieveElevatorPositionAsync();
+
+            await this.RetrieveLoadingUnitsAsync();
+
+            await base.OnNavigatedAsync();
+
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+            this.RaiseCanExecuteChanged();
+        }
+
+        private async Task InitializeSensors()
+        {
+            try
+            {
+                var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            this.RetrieveElevatorPositionAsync();
+        }
+
+        public async Task RetrieveLoadingUnitsAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+
+            // reset all status if stop machine
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.IsElevatorMovingToBay = false;
+                this.IsElevatorDisembarking = false;
+                this.IsElevatorEmbarking = false;
+                this.IsExecutingProcedure = false;
+            }
+        }
+
+        private async Task OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message is null || message.Data is null)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.IsExecutingProcedure = true;
+                    this.RaiseCanExecuteChanged();
+
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    {
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                        }
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                        }
+
+                        break;
+                    }
+
+                case MessageStatus.OperationEnd:
+                    {
+                        if (!this.IsExecutingProcedure)
+                        {
+                            break;
+                        }
+
+                        this.IsElevatorDisembarking = false;
+                        this.IsElevatorEmbarking = false;
+                        this.IsElevatorMovingToBay = false;
+
+
+                        if (this.currentState == DepositAndPickUpState.PickUp)
+                        {
+                            await this.machineDepositAndPickupProcedureService.IncreaseCycleQuantityAsync();
+                            this.CompletedCycles++;
+                            this.TotalCompletedCycles = this.initialCycles + this.completedCycles;
+                        }
+
+                        await this.ExecuteNextStateAsync();
+
+                        break;
+                    }
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationFaultStop:
+                case MessageStatus.OperationRunningStop:
+                    {
+                        this.Stopped();
+
+                        break;
+                    }
+
+                case MessageStatus.OperationError:
+                    this.IsExecutingProcedure = false;
+
+                    break;
+            }
+        }
+
+        private void Stopped()
+        {
+            this.IsElevatorDisembarking = false;
+            this.IsElevatorEmbarking = false;
+            this.IsElevatorMovingToBay = false;
+            this.IsExecutingProcedure = false;
+
+            this.ShowNotification(
+                VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                Services.Models.NotificationSeverity.Warning);
+
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+            this.resetCommand.RaiseCanExecuteChanged();
+        }
+
+        public async Task GetCycleQtuantityAsync()
+        {
+            try
+            {
+                this.InputRequiredCycles = await this.machineDepositAndPickupProcedureService.GetRequiredCycleQuantityAsync();
+
+                await this.InitializeTotalCycles();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private bool CanExecuteResetCommand()
+        {
+            return !this.IsExecutingProcedure
+                   &&
+                   !this.IsWaitingForResponse;
+        }
+
+        private bool CanExecuteStartCommand()
+        {
+            return !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.IsLoadingUnitInBay
+                &&
+                !this.IsLoadingUnitOnElevator;
+        }
+
+        private bool CanExecuteStopCommand()
+        {
+            return this.IsExecutingProcedure
+                && !this.IsWaitingForResponse;
+        }
+
+        private async Task InitializeTotalCycles()
+        {
+            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.GetCycleQuantityAsync();
+        }
+
+        private async Task ResetAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineDepositAndPickupProcedureService.ResetAsync();
+
+                await this.GetCycleQtuantityAsync();
+
+                this.CompletedCycles = 0;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsExecutingProcedure = false;
+            }
+        }
+
+        private async Task StartAsync()
+        {
+            try
+            {
+                if (!this.Tare.HasValue)
+                {
+                    this.ShowNotification("Tara non inserita", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                if (this.Tare.Value <= 0)
+                {
+                    this.ShowNotification("Tara deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                if (!this.NetWeight.HasValue)
+                {
+                    this.ShowNotification("Peso non inserito", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                if (this.NetWeight.Value <= 0)
+                {
+                    this.ShowNotification("Peso deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
+                {
+                    this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                this.currentState = DepositAndPickUpState.None;
+
+                await this.InitializeTotalCycles();
+
+                this.isExecutingProcedure = true;
+
+                await this.ExecuteNextStateAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task ExecuteNextStateAsync()
+        {
+            if (this.IsStopping)
+            {
+                this.IsStopping = false;
+                this.IsExecutingProcedure = false;
+                this.Stopped();
+            }
+
+            if (!this.IsExecutingProcedure)
+            {
+                return;
+            }
+
+            switch (this.currentState)
+            {
+                case DepositAndPickUpState.None:
+                    await this.MoveToBayHeightAsync();
+                    break;
+                case DepositAndPickUpState.GotoBay:
+                    await this.StartMovementAsync();
+                    break;
+                case DepositAndPickUpState.PickUp:
+                    await this.ReStart();
+                    break;
+                case DepositAndPickUpState.GotoBayAdjusted:
+                    await this.StartMovementAsync();
+                    break;
+                case DepositAndPickUpState.Deposit:
+                    await this.MoveToBayHeightAsync();
+                    break;
+            }
+        }
+
+        private void StartStop()
+        {
+            this.IsStopping = true;
+        }
+
+        #endregion
+    }
+}

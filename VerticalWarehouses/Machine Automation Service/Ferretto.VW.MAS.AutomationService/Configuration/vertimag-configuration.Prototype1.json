@@ -2746,6 +2746,9 @@
     //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
     "CycleQuantity": 5
   },
+  "DepositAndPickUp": {
+    "CycleQuantity": 10
+  },
   "CellControl": {
     "StepValue": 0.5,
     "FeedRate": 0.20

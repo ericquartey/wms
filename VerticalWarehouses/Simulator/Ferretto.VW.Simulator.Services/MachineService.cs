@@ -396,6 +396,7 @@ namespace Ferretto.VW.Simulator.Services
                 case InverterParameterId.HomingFastSpeedParam:
                 case InverterParameterId.HomingAcceleration:
                 case InverterParameterId.HomingSensor:
+                case InverterParameterId.HomingOffset:
                     result = client.Client.Send(message.ToBytes());
                     break;
 

@@ -222,6 +222,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningChain
                 &&
+                this.IsZeroChain
+                &&
                 !this.Sensors.LuPresentInMachineSideBay1
                 &&
                 !this.Sensors.LuPresentInOperatorSideBay1;
@@ -262,7 +264,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard);
+                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (System.Exception ex)
             {
@@ -272,7 +274,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningBay()
         {
-            this.IsTuningChain = true;
+            this.IsTuningBay = true;
             await Task.Delay(1);
         }
 

@@ -168,6 +168,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 1000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         else

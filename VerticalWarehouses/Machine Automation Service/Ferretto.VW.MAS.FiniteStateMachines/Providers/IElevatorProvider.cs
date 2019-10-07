@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #region Methods
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
 
@@ -32,6 +32,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         void Stop(BayNumber requestingBay);
 
+        void IncreaseDepositAndPickUpCycleQuantity();
+
+        int GetDepositAndPickUpCycleQuantity();
+
+        void ResetDepositAndPickUpCycleQuantity();
         #endregion
     }
 }
