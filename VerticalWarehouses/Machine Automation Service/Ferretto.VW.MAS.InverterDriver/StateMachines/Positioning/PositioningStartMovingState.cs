@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug("1:Positioning Stop requested");
 
+            this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
             this.ParentStateMachine.ChangeState(
                 new PositioningStopState(
                     this.ParentStateMachine,
@@ -92,6 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
+                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(
                     new PositioningErrorState(
                         this.ParentStateMachine,
@@ -105,6 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (this.TargetPositionReached)
             {
+                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(
                     new PositioningDisableOperationState(
                         this.ParentStateMachine,
@@ -119,6 +123,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
 
             return true; //INFO Next status word request handled by timer
+        }
+
+        protected override void OnDisposing()
+        {
+            this.axisPositionUpdateTimer?.Dispose();
         }
 
         private void RequestAxisPositionUpdate(object state)
