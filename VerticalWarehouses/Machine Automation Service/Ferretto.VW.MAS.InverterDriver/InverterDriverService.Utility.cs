@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -739,8 +740,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
-                        // TODO: what is '2' and '4'? Please replace with named constants.
-                        var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+                        var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
 
                         this.Logger.LogDebug($"Direction: {positioningData.Direction}");
                         this.Logger.LogDebug($"Position:");
@@ -758,9 +758,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                             switchPosition,
                             direction,
                             this.refreshTargetTable);
-
-                        // TODO: why this comment? remove if not necessary!
-                        //this.refreshTargetTable = false;
 
                         this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
