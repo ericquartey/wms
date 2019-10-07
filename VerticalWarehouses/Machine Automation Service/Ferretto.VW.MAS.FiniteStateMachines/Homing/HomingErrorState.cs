@@ -70,30 +70,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
-            if (this.machineData.IsOneKMachine)
-            {
-                inverterMessage = new FieldCommandMessage(
-                    inverterDataMessage,
-                    "Update Inverter axis position status",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer,
-                    (byte)InverterIndex.Slave1);
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-            }
-
             var currentInverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
 
             var stopMessage = new FieldCommandMessage(
