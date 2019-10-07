@@ -69,6 +69,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
         /// <inheritdoc/>
         public override void Start()
         {
+            this.Logger.LogDebug($"Start with requested state: {this.machineData?.Enable}");
+
             lock (this.CurrentState)
             {
                 var stateData = new InverterPowerEnableStateData(this, this.machineData);
@@ -79,6 +81,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug($"Stop with reason: {reason}");
+
             lock (this.CurrentState)
             {
                 this.CurrentState.Stop(reason);

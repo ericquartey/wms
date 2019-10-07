@@ -17,7 +17,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class MissionsProvider : IMissionsProvider
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -40,8 +39,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -120,7 +117,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(eventArgs.InstanceId));
             if (mission != null)
             {
-
                 mission.EndMachine();
 
                 this.machineMissions.Remove(mission);

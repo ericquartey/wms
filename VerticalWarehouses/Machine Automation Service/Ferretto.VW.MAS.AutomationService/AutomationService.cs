@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -34,8 +33,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
-
-        private List<DataModels.Bay> configuredBays;
 
         #endregion
 
@@ -72,32 +69,17 @@ namespace Ferretto.VW.MAS.AutomationService
                 throw new ArgumentNullException(nameof(dataHubClient));
             }
 
-            if (machinesDataService is null)
-            {
-                throw new ArgumentNullException(nameof(machinesDataService));
-            }
-
             if (operatorHub is null)
             {
                 throw new ArgumentNullException(nameof(operatorHub));
             }
 
-            if (baysDataService is null)
-            {
-                throw new ArgumentNullException(nameof(baysDataService));
-            }
-
-            if (missionDataService is null)
-            {
-                throw new ArgumentNullException(nameof(missionDataService));
-            }
-
             this.Logger.LogTrace("1:Method Start");
 
-            this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
-            this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
-            this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
+            this.installationHub = installationHub;
+            this.dataHubClient = dataHubClient;
+            this.operatorHub = operatorHub;
+            this.applicationLifetime = applicationLifetime;
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
@@ -112,17 +94,6 @@ namespace Ferretto.VW.MAS.AutomationService
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
-        }
-
-        private void LogVersion()
-        {
-            var versionAttribute = this.GetType().Assembly
-                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
-                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
-
-            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
-
-            this.Logger.LogInformation($"VertiMag Automation Service version {versionString}");
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)
@@ -146,6 +117,17 @@ namespace Ferretto.VW.MAS.AutomationService
         protected override void NotifyError(NotificationMessage notificationData)
         {
             throw new NotImplementedException();
+        }
+
+        private void LogVersion()
+        {
+            var versionAttribute = this.GetType().Assembly
+                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
+                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+
+            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
+
+            this.Logger.LogInformation($"VertiMag Automation Service version {versionString}");
         }
 
         #endregion

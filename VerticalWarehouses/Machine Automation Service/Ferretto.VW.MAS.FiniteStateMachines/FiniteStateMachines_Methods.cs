@@ -52,14 +52,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         //TEMP Add here other condition getters
                 }
 
-        private void ProcessCheckConditionMessage(CommandMessage message)
-        {
-            this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
-
-            if (message.Data is ICheckConditionMessageData data)
-            {
-                data.Result = this.EvaluateCondition(data.ConditionToCheck);
-
                 //TEMP Send a notification message
                 var msg = new NotificationMessage(
                     data,
@@ -227,7 +219,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessInverterPowerEnable(CommandMessage receivedMessage)
+        private void ProcessInverterPowerEnable(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:ProcessInverterPowerEnable Start");
 
@@ -240,7 +232,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
             else
             {
-                var inverterList = this.digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
+                var inverterList = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>().GetAllInvertersByBay(receivedMessage.TargetBay);
 
                 currentStateMachine = new InverterPowerEnableStateMachine(
                     receivedMessage,

@@ -55,7 +55,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.missionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -84,7 +83,6 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
-
             this.Logger.LogDebug($"Notifying Mission Manager service command error");
 
             var msg = new NotificationMessage(

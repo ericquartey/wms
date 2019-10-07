@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             this.baysProvider.AddElevatorPseudoBay();
 
-            this.configuredBays = this.baysProvider.GetAll().ToList();
+            this.baysProvider.GetAll().ToList();
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)

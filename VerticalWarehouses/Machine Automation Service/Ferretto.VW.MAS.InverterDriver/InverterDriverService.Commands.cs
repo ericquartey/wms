@@ -19,6 +19,16 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Methods
 
+        protected override void NotifyCommandError(FieldCommandMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void NotifyError(FieldNotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Task OnCommandReceivedAsync(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");

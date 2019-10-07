@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void Start()
         {
+            this.Logger.LogDebug($"1:Starting {this.GetType()} with {this.stateData.StopRequestReason}");
+
             var notificationMessage = new NotificationMessage(
                 null,
                 $"InverterPowerEnable completed for Bay {this.machineData.TargetBay}",
@@ -63,7 +65,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            this.Logger.LogDebug($"Stop with reason: {reason}");
         }
 
         protected override void Dispose(bool disposing)

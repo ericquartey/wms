@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                    this.logger.LogError(ex, $"2:Exception: {ex.Message}");
+                        this.logger.LogError(ex, $"2:Exception: {ex.Message}");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -336,6 +336,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                 case MessageType.ResetSecurity:
                     this.ProcessResetSecurityMessage(receivedMessage);
+                    break;
+
+                case MessageType.InverterPowerEnable:
+                    this.ProcessInverterPowerEnable(receivedMessage, serviceProvider);
                     break;
             }
 
@@ -539,32 +543,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case MessageType.Homing:
-                        //f (receivedMessage.Status == MessageStatus.OperationEnd)
-                        //
-                        //   try
-                        //   {
-                        //       serviceProvider
-                        //           .GetRequiredService<ISetupStatusProvider>()
-                        //           .CompleteVerticalOrigin();
-                        //   }
-                        //   catch (Exception ex)
-                        //   {
-                        //       this.logger.LogDebug($"4:Exception: {ex.Message}");
-
-                        //           this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                        //       }
-                        //   }
-                        this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
-                        this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                        this.SendCleanDebug();
-                        break;
-
                     case MessageType.Positioning:
                     case MessageType.ShutterPositioning:
                     case MessageType.DrawerOperation:
                     case MessageType.PowerEnable:
                     case MessageType.InverterFaultReset:
                     case MessageType.ResetSecurity:
+                    case MessageType.InverterPowerEnable:
                         this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
                         this.currentStateMachines.Remove(receivedMessage.TargetBay);
                         this.SendCleanDebug();

@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            this.Logger.LogDebug($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.SwitchAxis)
@@ -101,6 +103,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType()}");
+
             if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
             {
                 this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
@@ -179,7 +183,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Start");
+            this.Logger.LogDebug($"{this.GetType()} Stop: {reason}");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));

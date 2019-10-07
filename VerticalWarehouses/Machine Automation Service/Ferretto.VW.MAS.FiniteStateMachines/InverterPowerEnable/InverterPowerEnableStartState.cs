@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            this.Logger.LogDebug($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+
             if (message.Type != FieldMessageType.InverterPowerOn && message.Type != FieldMessageType.InverterPowerOff)
             {
                 return;
@@ -86,6 +88,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start with requested state: {this.machineData.Enable}");
+
             var commandMessage = new FieldCommandMessage(
                 null,
                 $"InverterPowerEnable Start State Field Command",
@@ -117,7 +121,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.InverterPowerEnable
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Start");
+            this.Logger.LogDebug($"Stop with reason: {reason}");
+
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
         }
