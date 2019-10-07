@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
 
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
+                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
 
                             this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
                             this.currentStateMachines.Remove(messageDeviceIndex);
                         }
                         else
@@ -168,7 +169,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 1000);
                             this.currentStateMachines.Remove(messageDeviceIndex);
                         }
                         else
@@ -194,6 +194,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(10000, 10000);
                             this.currentStateMachines.Remove(messageDeviceIndex);
                         }
                         else
@@ -219,6 +220,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is ResetFaultStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
                             this.currentStateMachines.Remove(messageDeviceIndex);
                         }
                         else

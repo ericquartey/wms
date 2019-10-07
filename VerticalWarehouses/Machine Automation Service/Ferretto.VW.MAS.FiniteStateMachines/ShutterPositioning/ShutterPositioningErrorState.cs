@@ -114,18 +114,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
-            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-            this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
         }
 
         public override void Stop(StopRequestReason reason)

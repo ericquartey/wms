@@ -275,6 +275,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         ? Axis.Vertical
                         : Axis.Horizontal;
 
+                    this.Logger.LogDebug($"ActualPositionShaft inverter={inverterIndex}; axis={axis}; value={currentMessage.IntPayload}");
+
                     if ((axis == this.currentAxis || currentStateMachine == null) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, currentMessage.IntPayload) || this.forceStatusPublish))
                     {
@@ -369,6 +371,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (inverter.IsStarted)
                 {
                     this.Logger.LogTrace("3:Starting Calibrate Axis FSM");
+                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(250, 250);
 
                     this.Logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
 
@@ -744,6 +747,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+                        this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(Timeout.Infinite, Timeout.Infinite);
 
                         this.Logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
 
@@ -765,7 +769,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    //this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                     var currentStateMachine = new PositioningStateMachine(
                                         positioningFieldData,
                                         inverter,
@@ -796,7 +800,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 500);
+                                    //this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(500, 500);
                                     if (positioningData.MovementType == MovementType.TableTarget)
                                     {
                                         var currentStateMachine = new PositioningTableStateMachine(
@@ -996,20 +1000,24 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncAxisTimer)
             {
                 var inverterIndex = (InverterIndex)state;
-                var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
-
-                this.Logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
-
-                this.axisIntervalStopwatch.Stop();
-                this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
-                this.axisIntervalStopwatch.Reset();
-                this.axisIntervalStopwatch.Start();
-
-                this.axisStopwatch.Reset();
-                this.axisStopwatch.Start();
-                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ActualPositionShaft && x.SystemIndex == (byte)inverterIndex) < 2)
+                var inverter = this.invertersProvider.GetByIndex(inverterIndex);
+                if (inverter is AngInverterStatus || inverter is AcuInverterStatus)
                 {
-                    this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                    var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
+
+                    this.Logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
+
+                    this.axisIntervalStopwatch.Stop();
+                    this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
+                    this.axisIntervalStopwatch.Reset();
+                    this.axisIntervalStopwatch.Start();
+
+                    this.axisStopwatch.Reset();
+                    this.axisStopwatch.Start();
+                    if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ActualPositionShaft && x.SystemIndex == (byte)inverterIndex) < 2)
+                    {
+                        this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                    }
                 }
             }
         }
@@ -1112,16 +1120,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace("1:Method Start");
 
-            var masterInverter = this.digitalDevicesDataProvider.GetInverterByIndex(InverterIndex.MainInverter);
-
-            this.inverterAddress = masterInverter.IpAddress;
-            this.inverterPort = masterInverter.TcpPort;
-
-            this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
-            this.Logger.LogInformation($"1:Configure Inverter {masterInverter.Index}, tcp-endpoint={this.inverterAddress}:{this.inverterPort}");
-
             try
             {
+                var masterInverter = this.digitalDevicesDataProvider.GetInverterByIndex(InverterIndex.MainInverter);
+
+                this.inverterAddress = masterInverter.IpAddress;
+                this.inverterPort = masterInverter.TcpPort;
+
+                this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
+                this.Logger.LogInformation($"1:Configure Inverter {masterInverter.Index}, tcp-endpoint={this.inverterAddress}:{this.inverterPort}");
+
                 await this.socketTransport.ConnectAsync();
             }
             catch (InverterDriverException ex)

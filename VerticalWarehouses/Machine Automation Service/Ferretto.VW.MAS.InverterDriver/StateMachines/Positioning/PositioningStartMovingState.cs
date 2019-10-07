@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System.Threading;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -9,6 +10,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStartMovingState : InverterStateBase
     {
+        #region Fields
+
+        private readonly Timer axisPositionUpdateTimer;
+
+        #endregion
+
         #region Constructors
 
         public PositioningStartMovingState(
@@ -18,6 +25,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Inverter = inverterStatus;
+            this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -49,6 +57,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWordParam,
                     this.Inverter.PositionControlWord.Value));
+
+            this.axisPositionUpdateTimer.Change(250, 250);
         }
 
         /// <inheritdoc />
@@ -109,6 +119,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
 
             return true; //INFO Next status word request handled by timer
+        }
+
+        private void RequestAxisPositionUpdate(object state)
+        {
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    InverterParameterId.ActualPositionShaft));
         }
 
         #endregion
