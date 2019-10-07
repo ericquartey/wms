@@ -70,7 +70,7 @@
     </Style>
 
 
-    <Style x:Key="VWAPP_PpcTextBox_SpinEditIntegerStyle"
+    <Style x:Key="VWAPP_SpinEdit_IntegerStyle"
            BasedOn="{StaticResource SpinEditBaseStyle}"
            TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
@@ -78,18 +78,29 @@
         <Setter Property="Mask" Value="N0" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
         <Setter Property="NullValue" Value="0" />
-        <Setter Property="Increment" Value="5" />
+        <Setter Property="Increment" Value="1" />
     </Style>
 
-    <Style x:Key="VWAPP_PpcTextBox_SpinEditDecimalStyle"
+    <Style x:Key="VWAPP_SpinEdit_DoubleStyle"
+           BasedOn="{StaticResource SpinEditBaseStyle}"
+           TargetType="{x:Type dxe:SpinEdit}">
+        <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
+        <Setter Property="MaskUseAsDisplayFormat" Value="True" />
+        <Setter Property="Increment" Value="1.0" />
+        <Setter Property="NullValue" Value="0.0" />
+        <Setter Property="MaskType" Value="Numeric" />
+        <Setter Property="Mask" Value="N0" />
+    </Style>
+
+    <Style x:Key="VWAPP_SpinEdit_DecimalStyle"
            BasedOn="{StaticResource SpinEditBaseStyle}"
            TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:Decimal}" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
-        <Setter Property="Increment" Value="0.5" />
+        <Setter Property="Increment" Value="1.0" />
         <Setter Property="NullValue" Value="0.0" />
         <Setter Property="MaskType" Value="Numeric" />
-        <Setter Property="Mask" Value="N2" />
+        <Setter Property="Mask" Value="N0" />
     </Style>
 
     <!--  SpinEdit  -->

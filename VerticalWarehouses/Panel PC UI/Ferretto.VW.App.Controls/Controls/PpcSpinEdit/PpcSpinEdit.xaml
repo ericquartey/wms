@@ -16,10 +16,9 @@
                       Width="{Binding WidthNumber, FallbackValue=250}"
                       Margin="0,3,5,5"
                       AllowDefaultButton="False"
-                      EditValue="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Increment="1"
-                      IsEnabled="{Binding IsEnabled}"
-                      Style="{StaticResource VWAPP_PpcTextBox_SpinEditDecimalStyle}">
+                      IsEnabled="{Binding IsEnabled}">
             <dxe:SpinEdit.Buttons>
                 <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                 IsLeft="True"
