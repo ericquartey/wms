@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -727,7 +727,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Embark / Disembark in bay test.
+        ///   Looks up a localized string similar to Deposit / Pickup in bay test.
         /// </summary>
         public static string DLUTestHeader {
             get {
@@ -876,15 +876,6 @@ namespace Ferretto.VW.App.Resources {
         public static string EmbarkBackwards {
             get {
                 return ResourceManager.GetString("EmbarkBackwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Embarked Tray.
-        /// </summary>
-        public static string EmbarkedTray {
-            get {
-                return ResourceManager.GetString("EmbarkedTray", resourceCulture);
             }
         }
         
@@ -1420,6 +1411,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loaded Tray.
+        /// </summary>
+        public static string LoadedTray {
+            get {
+                return ResourceManager.GetString("LoadedTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Testing cell.
         /// </summary>
         public static string LoadFirstDrawerActualCellToCheck {
@@ -1569,6 +1569,24 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingDrawersTotalDrawers {
             get {
                 return ResourceManager.GetString("LoadingDrawersTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit id.
+        /// </summary>
+        public static string LoadingUnitId {
+            get {
+                return ResourceManager.GetString("LoadingUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit weight.
+        /// </summary>
+        public static string LoadingUnitWeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeight", resourceCulture);
             }
         }
         

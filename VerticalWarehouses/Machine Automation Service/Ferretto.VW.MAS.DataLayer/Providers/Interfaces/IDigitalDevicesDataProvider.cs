@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IDigitalDevicesDataProvider
     {

@@ -9,8 +9,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -116,7 +114,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
                         var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
-                        if (pendingMigrations.Count() > 0)
+                        if (pendingMigrations.Any())
                         {
                             this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
                             await activeDbContext.Database.MigrateAsync();
@@ -126,7 +124,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
                         var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
-                        if (pendingMigrations.Count() > 0)
+                        if (pendingMigrations.Any())
                         {
                             this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
                             await standbyDbContext.Database.MigrateAsync();

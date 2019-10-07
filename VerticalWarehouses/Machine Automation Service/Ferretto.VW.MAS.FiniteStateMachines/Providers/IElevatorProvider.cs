@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
@@ -16,8 +16,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #region Methods
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, BayNumber requestingBay,
-            MessageActor sender);
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
@@ -34,6 +33,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         void Stop(BayNumber requestingBay, MessageActor sender);
 
+        void IncreaseDepositAndPickUpCycleQuantity();
+
+        int GetDepositAndPickUpCycleQuantity();
+
+        void ResetDepositAndPickUpCycleQuantity();
         #endregion
     }
 }

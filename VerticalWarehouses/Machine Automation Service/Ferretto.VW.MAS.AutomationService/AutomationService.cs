@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;

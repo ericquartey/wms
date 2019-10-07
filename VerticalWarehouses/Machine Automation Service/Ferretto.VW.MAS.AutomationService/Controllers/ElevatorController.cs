@@ -2,8 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
@@ -99,9 +98,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, this.BayNumber);
             return this.Accepted();
         }
 

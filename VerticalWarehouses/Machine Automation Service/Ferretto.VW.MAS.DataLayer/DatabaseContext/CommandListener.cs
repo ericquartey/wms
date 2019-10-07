@@ -48,8 +48,14 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 DateTimeOffset startTime,
                 TimeSpan duration)
         {
-            this.logger.LogError($"Database command error.");
-            this.OnCommandOrConnectionError(exception);
+            lock (this.redundancyService)
+            {
+                if (this.redundancyService.IsEnabled)
+                {
+                    this.logger.LogError($"Database command error.");
+                    this.OnCommandOrConnectionError(exception);
+                }
+            }
         }
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
@@ -106,8 +112,14 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                DateTimeOffset startTime,
                TimeSpan duration)
         {
-            this.logger.LogError($"Database connection error.");
-            this.OnCommandOrConnectionError(null);
+            lock (this.redundancyService)
+            {
+                if (this.redundancyService.IsEnabled)
+                {
+                    this.logger.LogError($"Database connection error.");
+                    this.OnCommandOrConnectionError(null);
+                }
+            }
         }
 
         private static bool IsModifyingCommand(DbCommand command)
@@ -124,8 +136,11 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         private bool IsActiveDbChannel(string connectionString)
         {
-            var activeDbExtension = this.redundancyService.ActiveDbContextOptions.FindExtension<SqliteOptionsExtension>();
-            return connectionString == activeDbExtension.ConnectionString;
+            lock (this.redundancyService)
+            {
+                var activeDbExtension = this.redundancyService.ActiveDbContextOptions.FindExtension<SqliteOptionsExtension>();
+                return connectionString == activeDbExtension.ConnectionString;
+            }
         }
 
         private void OnCommandOrConnectionError(Exception exception)

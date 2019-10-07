@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface ICellsProvider
     {
@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IEnumerable<Cell> GetAll();
 
-        Models.CellStatisticsSummary GetStatistics();
+        CellStatisticsSummary GetStatistics();
 
         Cell UpdateHeight(int cellId, double height);
 

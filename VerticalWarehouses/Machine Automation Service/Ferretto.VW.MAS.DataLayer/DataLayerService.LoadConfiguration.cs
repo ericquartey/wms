@@ -112,6 +112,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
                             break;
 
+                        case ConfigurationCategory.DepositAndPickUp:
+                            if (!Enum.TryParse(jsonData.Key, false, out DepositAndPickUp depositAndPickUpData))
+                            {
+                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                            }
+
+                            this.SaveConfigurationData(jsonElementCategory, (long)depositAndPickUpData, jsonData.Value);
+
+                            break;
+
                         case ConfigurationCategory.ResolutionCalibration:
                             if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
                             {

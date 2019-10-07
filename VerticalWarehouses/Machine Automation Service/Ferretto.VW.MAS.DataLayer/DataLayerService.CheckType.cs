@@ -218,6 +218,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         break;
                     }
 
+                case ConfigurationCategory.DepositAndPickUp:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
+                        break;
+                    }
+
                 default:
                     throw new ArgumentNullException();
             }

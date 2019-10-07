@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             lock (this.lastWriteMessage)
             {
-                systemIndex = currentMessage.SystemIndex;
+                systemIndex = (byte)currentMessage.SystemIndex;
                 parameterId = currentMessage.ParameterId;
                 dataSet = currentMessage.DataSetIndex;
             }
@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             lock (this.lastWriteMessage)
             {
-                systemIndex = this.lastWriteMessage.SystemIndex;
+                systemIndex = (byte)this.lastWriteMessage.SystemIndex;
                 parameterId = this.lastWriteMessage.ParameterId;
                 dataSet = this.lastWriteMessage.DataSetIndex;
             }
@@ -299,7 +299,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             lock (this.lastWriteMessage)
             {
-                systemIndex = this.lastWriteMessage.SystemIndex;
+                systemIndex = (byte)this.lastWriteMessage.SystemIndex;
                 parameterId = this.lastWriteMessage.ParameterId;
                 dataSet = this.lastWriteMessage.DataSetIndex;
             }
@@ -331,7 +331,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             lock (this.lastWriteMessage)
             {
-                systemIndex = this.lastWriteMessage.SystemIndex;
+                systemIndex = (byte)this.lastWriteMessage.SystemIndex;
                 parameterId = this.lastWriteMessage.ParameterId;
                 dataSet = this.lastWriteMessage.DataSetIndex;
             }
@@ -484,9 +484,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             return inverterMessage.GetReadMessage().Length;
         }
 
-        private async Task<int> ParseWriteMessage(byte[] inverterMessage, CancellationToken stoppingToken)
+        private async Task<int> ParseWriteMessage(byte[] messageBytes, CancellationToken cancellationToken)
         {
-            var message = new InverterMessage(inverterMessage);
+            var message = InverterMessage.FromBytes(messageBytes);
 
             lock (this.lastWriteMessage)
             {
@@ -495,27 +495,27 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (message.IsWriteMessage)
             {
-                return await this.ParseWriteMessage(message, stoppingToken);
+                return await this.ParseWriteMessage(message, cancellationToken);
             }
 
-            return await this.ParseReadMessage(message, stoppingToken);
+            return await this.ParseReadMessage(message, cancellationToken);
         }
 
-        private async Task<int> ParseWriteMessage(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        private async Task<int> ParseWriteMessage(InverterMessage message, CancellationToken stoppingToken)
         {
-            switch (inverterMessage.ParameterId)
+            switch (message.ParameterId)
             {
                 case InverterParameterId.ControlWordParam:
-                    return await this.ProcessControlWordPayload(inverterMessage, stoppingToken);
+                    return await this.ProcessControlWordPayload(message, stoppingToken);
 
                 case InverterParameterId.SetOperatingModeParam:
-                    return await this.ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
+                    return await this.ProcessSetOperatingModePayload(message, stoppingToken);
 
                 case InverterParameterId.ShutterTargetPosition:
-                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+                    return await this.ProcessTargetPositionPayload(message, stoppingToken);
 
                 case InverterParameterId.ShutterTargetVelocityParam:
-                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+                    return await this.ProcessTargetPositionPayload(message, stoppingToken);
 
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
@@ -525,7 +525,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
             }
 
-            return inverterMessage.ToBytes().Length;
+            return message.ToBytes().Length;
         }
 
         private async Task<int> ProcessActualPositionShafts(InverterMessage inverterMessage, CancellationToken stoppingToken)

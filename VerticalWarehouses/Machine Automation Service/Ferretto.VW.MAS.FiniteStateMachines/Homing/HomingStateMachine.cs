@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -108,10 +108,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 {
                     this.machineData.NumberOfExecutedSteps++;
                     this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;
-                    this.machineData.AxisToCalibrate =
-                        (this.machineData.AxisToCalibrate == Axis.Vertical) ?
-                            Axis.Horizontal :
-                            Axis.Vertical;
+                    if (this.axisToCalibrate == Axis.HorizontalAndVertical)
+                    {
+                        this.machineData.AxisToCalibrate =
+                            (this.machineData.AxisToCalibrate == Axis.Vertical) ?
+                                Axis.Horizontal :
+                                Axis.Vertical;
+                    }
+                    else if (this.calibration == Calibration.FindSensor)
+                    {
+                        this.machineData.CalibrationType = Calibration.ResetEncoder;
+                    }
+
                     if (this.machineData.AxisToCalibrate == Axis.Vertical)
                     {
                         this.machineData.CalibrationType = Calibration.Elevator;
@@ -190,7 +198,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                     this.machineData.AxisToCalibrate = this.axisToCalibrate;
                     this.machineData.CalibrationType = this.calibration;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 1;
+                    this.machineData.MaximumSteps = (this.calibration == Calibration.FindSensor) ? 2 : 1;
                     break;
 
                 case Axis.Vertical:

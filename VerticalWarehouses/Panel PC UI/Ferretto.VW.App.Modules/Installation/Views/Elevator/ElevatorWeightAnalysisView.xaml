@@ -32,7 +32,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.EmbarkedTray}" />
+                             LabelText="{x:Static res:InstallationApp.LoadedTray}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"

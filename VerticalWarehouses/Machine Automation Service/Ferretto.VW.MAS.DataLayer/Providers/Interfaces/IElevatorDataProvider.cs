@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IElevatorDataProvider
     {
@@ -12,15 +12,20 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         LoadingUnit GetLoadingUnitOnBoard();
 
-        double GetMaximumLoadOnBoard();
-
         ElevatorStructuralProperties GetStructuralProperties();
 
         ElevatorAxis GetVerticalAxis();
 
         void UpdateVerticalOffset(double newOffset);
 
-        void UpdateVerticalResolution(decimal newResolution);
+        void UpdateVerticalResolution(decimal newResolution);        
+
+        int GetDepositAndPickUpCycleQuantity();
+
+        void IncreaseDepositAndPickUpCycleQuantity();
+
+        void ResetDepositAndPickUpCycleQuantity();
+        void SetLoadingUnitOnBoard(int? loadingUnitId);
 
         #endregion
     }

@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isExecutingVerticalOperation;
+
         private bool isWaitingForResponse;
 
         private double lowerBound;
@@ -54,8 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken updateCurrentPositionToken;
 
         private double upperBound;
-
-        private bool verticalOperation;
 
         #endregion
 
@@ -293,22 +293,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCalibrationStepCompleted(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationExecuting
-                ||
-                message.Status == MessageStatus.OperationError)
+            if (message.Status == MessageStatus.OperationExecuting)
             {
-                this.verticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+                this.isExecutingVerticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
 
                 this.ShowNotification(
                     string.Format(
                         this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
                         message.Data.CurrentStepCalibrate,
                         message.Data.MaxStepCalibrate));
+            }
 
-                if (message.Status == MessageStatus.OperationError)
-                {
-                    this.IsExecutingProcedure = false;
-                }
+            if (message.Status == MessageStatus.OperationError)
+            {
+                this.isExecutingVerticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+
+                this.ShowNotification(message.Description);
+
+                this.IsExecutingProcedure = false;
             }
         }
 
@@ -319,7 +321,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            if (this.verticalOperation)
+            if (this.isExecutingVerticalOperation)
             {
                 this.CurrentVerticalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
             }
@@ -333,7 +335,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
-                this.verticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
+                this.isExecutingVerticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
 
                 switch (h.Status)
                 {
@@ -376,7 +378,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.verticalOperation = false;
+                this.isExecutingVerticalOperation = false;
 
                 await this.verticalOriginProcedureService.StartAsync();
 

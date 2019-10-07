@@ -28,14 +28,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-            this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
+            var inverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            this.currentStateMachines.TryGetValue(inverterIndex, out var messageCurrentStateMachine);
 
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.DataLayerReady:
 
-                    await this.StartHardwareCommunications();
+                    await this.StartHardwareCommunications(serviceProvider);
                     this.InitializeTimers();
 
                     break;
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (messageCurrentStateMachine is ShutterPositioningStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is SwitchOffStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already switched off current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
@@ -165,8 +165,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 1000);
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 1000);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already powered on current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already powered off current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is ResetFaultStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {

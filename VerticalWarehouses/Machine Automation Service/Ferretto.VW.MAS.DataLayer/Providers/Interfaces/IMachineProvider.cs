@@ -1,6 +1,6 @@
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IMachineProvider
     {

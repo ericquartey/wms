@@ -4,7 +4,7 @@
     {
         Elevator = 5,
 
-        FindSensorCarousel = 22,
+        FindSensorCarousel = 20,
 
         FindSensor = 22,
 

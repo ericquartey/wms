@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Providers;
