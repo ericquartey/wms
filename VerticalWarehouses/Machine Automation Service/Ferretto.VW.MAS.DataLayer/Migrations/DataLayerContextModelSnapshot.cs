@@ -191,6 +191,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<decimal>("Resolution");
 
+                    b.Property<int>("TotalCycles");
+
                     b.Property<double>("UpperBound");
 
                     b.HasKey("Id");
@@ -567,7 +569,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 7, 13, 38, 4, 26, DateTimeKind.Local).AddTicks(2336),
+                            InstallationDate = new DateTime(2016, 12, 7, 13, 55, 30, 211, DateTimeKind.Local).AddTicks(1438),
                             ServiceStatus = 86
                         });
                 });

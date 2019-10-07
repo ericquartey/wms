@@ -546,6 +546,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Orientation = table.Column<int>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
+                    TotalCycles = table.Column<int>(nullable: false),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -595,7 +596,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 7, 13, 38, 4, 26, DateTimeKind.Local).AddTicks(2336), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 7, 13, 55, 30, 211, DateTimeKind.Local).AddTicks(1438), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
