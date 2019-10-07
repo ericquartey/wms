@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -47,10 +46,19 @@ namespace Ferretto.VW.MAS.InverterDriver
             eventAggregator
                 .GetEvent<NotificationEvent>()
                 .Subscribe(
-                    this.OnDataLayerReady,
+                    m => this.OnDataLayerReady(),
                     ThreadOption.PublisherThread,
                     false,
                     message => message.Type == CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
+
+            try
+            {
+                this.OnDataLayerReady();
+            }
+            catch
+            {
+                // do nothing
+            }
         }
 
         #endregion
@@ -103,6 +111,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IEnumerable<IInverterStatusBase> GetAll()
         {
+            if (this.inverters is null)
+            {
+                throw new InvalidOperationException("The inverter configuration is not yet loaded because data layer is not ready.");
+            }
+
             return this.inverters;
         }
 
@@ -166,32 +179,32 @@ namespace Ferretto.VW.MAS.InverterDriver
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
 
-        private void OnDataLayerReady(NotificationMessage obj)
+        private void OnDataLayerReady()
         {
             this.inverters = this.digitalDevicesDataProvider
              .GetAllInverters()
-             .Select<DataModels.Inverter, IInverterStatusBase>(i =>
+             .Select<Inverter, IInverterStatusBase>(i =>
              {
                  switch (i.Type)
                  {
-                     case DataModels.InverterType.Acu:
+                     case InverterType.Acu:
                          return new AcuInverterStatus(i.Index);
 
-                     case DataModels.InverterType.Ang:
+                     case InverterType.Ang:
                          return new AngInverterStatus(i.Index);
 
-                     case DataModels.InverterType.Agl:
+                     case InverterType.Agl:
                          return new AglInverterStatus(i.Index);
 
                      default:
-                         throw new System.Exception();
+                         throw new Exception();
                  }
              })
              .ToArray();
 
-            if (this.inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus == null)
+            if (this.inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
             {
-                throw new System.Exception("No main inverter is configured in the system.");
+                throw new Exception("No main inverter is configured in the system.");
             }
         }
 

@@ -85,5 +85,14 @@ namespace Ferretto.VW.MAS.Utils.Messages
         public FieldMessageType Type { get; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Description ?? base.ToString();
+        }
+
+        #endregion
     }
 }

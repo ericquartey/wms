@@ -38,11 +38,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Orientation Orientation { get; set; }
 
-        /// <summary>
-        /// Gets or sets the last known position of the elevator's axis.
-        /// </summary>
-        public double Position { get; set; }
-
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
         public decimal Resolution

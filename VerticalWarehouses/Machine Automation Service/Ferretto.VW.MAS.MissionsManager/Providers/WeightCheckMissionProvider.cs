@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.Providers
