@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataLayer.Providers.Models
+﻿namespace Ferretto.VW.MAS.DataLayer
 {
     public class SetupStatusCapabilities
     {

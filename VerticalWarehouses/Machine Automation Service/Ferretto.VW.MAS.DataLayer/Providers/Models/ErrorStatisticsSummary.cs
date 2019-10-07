@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Models
+namespace Ferretto.VW.MAS.DataLayer
 {
     public sealed class ErrorStatisticsSummary
     {

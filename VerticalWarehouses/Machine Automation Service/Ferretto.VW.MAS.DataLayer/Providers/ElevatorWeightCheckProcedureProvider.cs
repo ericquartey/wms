@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
     public sealed class ElevatorWeightCheckProcedureProvider : IElevatorWeightCheckProcedureProvider
     {

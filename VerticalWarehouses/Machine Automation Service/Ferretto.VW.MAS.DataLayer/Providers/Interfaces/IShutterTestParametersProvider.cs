@@ -1,6 +1,4 @@
-﻿using Ferretto.VW.MAS.DataLayer.Providers.Models;
-
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IShutterTestParametersProvider
     {

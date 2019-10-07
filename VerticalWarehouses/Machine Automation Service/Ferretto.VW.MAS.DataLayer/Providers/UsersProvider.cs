@@ -5,9 +5,9 @@ using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class UsersProvider : Interfaces.IUsersProvider
+    internal sealed class UsersProvider : IUsersProvider
     {
         #region Fields
 

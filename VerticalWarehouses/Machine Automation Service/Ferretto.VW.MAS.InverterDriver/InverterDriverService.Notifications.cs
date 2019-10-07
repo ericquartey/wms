@@ -27,14 +27,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-            this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
+            var inverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            this.currentStateMachines.TryGetValue(inverterIndex, out var messageCurrentStateMachine);
 
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.DataLayerReady:
 
-                    await this.StartHardwareCommunications();
+                    await this.StartHardwareCommunications(serviceProvider);
                     this.InitializeTimers();
 
                     break;
@@ -49,12 +49,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             if (messageCurrentStateMachine is PositioningStateMachine)
                             {
-                                this.currentStateMachines.Remove(messageDeviceIndex);
+                                this.currentStateMachines.Remove(inverterIndex);
                             }
                             else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
                             {
                                 this.dataOld = currentPositioning.data;
-                                this.currentStateMachines.Remove(messageDeviceIndex);
+                                this.currentStateMachines.Remove(inverterIndex);
                             }
                             else
                             {
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
 
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 1000);
 
                             this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
@@ -79,8 +79,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 1000);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (messageCurrentStateMachine is ShutterPositioningStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             if (messageCurrentStateMachine is SwitchOnStateMachine ||
                                 messageCurrentStateMachine is StopStateMachine)
                             {
-                                this.currentStateMachines.Remove(messageDeviceIndex);
+                                this.currentStateMachines.Remove(inverterIndex);
                             }
                             else
                             {
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is SwitchOffStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -194,8 +194,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(10000, 10000);
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(10000, 10000);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -220,8 +220,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is ResetFaultStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)messageDeviceIndex]?.Change(1000, 1000);
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 1000);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {

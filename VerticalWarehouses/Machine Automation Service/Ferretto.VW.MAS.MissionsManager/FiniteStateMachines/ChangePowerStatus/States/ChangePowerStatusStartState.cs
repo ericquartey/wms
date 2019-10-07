@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils;
 using Microsoft.Extensions.Logging;
 

@@ -3,9 +3,9 @@ using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class MachineProvider : Interfaces.IMachineProvider
+    internal sealed class MachineProvider : IMachineProvider
     {
         #region Fields
 

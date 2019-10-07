@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IElevatorDataProvider
     {
@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
-
-        double GetMaximumLoadOnBoard();
 
         ElevatorStructuralProperties GetStructuralProperties();
 
