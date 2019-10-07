@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (message.SystemIndex == (byte)this.InverterStatus.SystemIndex)
+                if (message.SystemIndex == this.InverterStatus.SystemIndex)
                 {
                     if (this.InverterStatus is AglInverterStatus currentStatus)
                     {

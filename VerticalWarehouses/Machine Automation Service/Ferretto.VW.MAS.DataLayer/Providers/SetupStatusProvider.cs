@@ -2,12 +2,10 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class SetupStatusProvider : ISetupStatusProvider
     {

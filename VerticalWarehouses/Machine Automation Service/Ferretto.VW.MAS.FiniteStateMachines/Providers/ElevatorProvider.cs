@@ -3,9 +3,8 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,8 +19,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         private readonly IBayPositionControlDataLayer bayPositionControl;
 
         private readonly ICellControlDataLayer cellControlDataLayer;
-
-        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -66,7 +63,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
-            this.configurationProvider = this.scope.ServiceProvider.GetRequiredService<IConfigurationValueManagmentDataLayer>();
             this.panelControlDataLayer = this.scope.ServiceProvider.GetRequiredService<IPanelControlDataLayer>();
             this.horizontalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IHorizontalManualMovementsDataLayer>();
             this.resolutionCalibrationDataLayer = this.scope.ServiceProvider.GetRequiredService<IResolutionCalibrationDataLayer>();
@@ -619,7 +615,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
             var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
 
-            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetMaximumLoadOnBoard();
+            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetStructuralProperties().MaximumLoadOnBoard;
 
             return new MovementParameters
             {
@@ -630,13 +626,5 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         }
 
         #endregion
-
-        // To detect redundant calls
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~ElevatorProvider()
-        // {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
     }
 }

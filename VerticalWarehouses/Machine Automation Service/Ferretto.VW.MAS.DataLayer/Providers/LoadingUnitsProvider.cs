@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class LoadingUnitsProvider : Interfaces.ILoadingUnitsProvider
+    internal sealed class LoadingUnitsProvider : ILoadingUnitsProvider
     {
         #region Fields
 

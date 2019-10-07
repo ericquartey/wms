@@ -8,7 +8,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

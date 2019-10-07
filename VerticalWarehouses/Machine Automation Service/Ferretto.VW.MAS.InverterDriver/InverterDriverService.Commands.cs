@@ -23,43 +23,38 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
 
-            var messageDeviceIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+            var inverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (!this.invertersProvider.GetAll().Any())
+            if (this.currentStateMachines.TryGetValue(inverterIndex, out var messageCurrentStateMachine)
+                &&
+                messageCurrentStateMachine != null)
             {
-                this.Logger.LogError("4:Inverter Driver not configured for this message Type");
+                if (receivedMessage.Type == FieldMessageType.InverterStop)
+                {
+                    this.Logger.LogTrace("4: Stop the timer for update shaft position");
+                    this.axisPositionUpdateTimer[(int)inverterIndex].Change(Timeout.Infinite, Timeout.Infinite);
 
-                var ex = new Exception();
-                this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
+                    messageCurrentStateMachine.Stop();
 
-                return Task.CompletedTask;
-            }
+                    return Task.CompletedTask;
+                }
 
-            this.currentStateMachines.TryGetValue(messageDeviceIndex, out var messageCurrentStateMachine);
+                if (receivedMessage.Type != FieldMessageType.InverterSetTimer)
+                {
+                    this.Logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
+                    this.Logger.LogError($"5a: Message {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source} will be discarded!");
+                    var ex = new Exception();
+                    this.SendOperationErrorMessage(inverterIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
 
-            if (messageCurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
-            {
-                this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
-
-                messageCurrentStateMachine.Stop();
-
-                return Task.CompletedTask;
-            }
-
-            if (messageCurrentStateMachine != null && receivedMessage.Type != FieldMessageType.InverterSetTimer)
-            {
-                this.Logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
-                this.Logger.LogError($"5a: Message {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source} will be discarded!");
-                var ex = new Exception();
-                this.SendOperationErrorMessage(messageDeviceIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
-
-                return Task.CompletedTask;
+                    return Task.CompletedTask;
+                }
             }
 
             try
             {
-                var inverter = this.invertersProvider.GetByIndex((InverterIndex)receivedMessage.DeviceIndex);
+                var inverter = serviceProvider
+                    .GetRequiredService<IInvertersProvider>()
+                    .GetByIndex(inverterIndex);
 
                 switch (receivedMessage.Type)
                 {
@@ -76,7 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
 
                     case FieldMessageType.Positioning:
-                        this.ProcessPositioningMessage(receivedMessage, inverter, serviceProvider.GetRequiredService<IInvertersProvider>());
+                        this.ProcessPositioningMessage(receivedMessage, inverter, serviceProvider);
                         break;
 
                     case FieldMessageType.ShutterPositioning:

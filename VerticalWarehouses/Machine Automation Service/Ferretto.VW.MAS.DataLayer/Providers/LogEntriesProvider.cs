@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
@@ -9,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal class LogEntriesProvider : ILogEntriesProvider
     {
@@ -46,7 +44,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Description = command.Description,
                 Destination = command.Destination.ToString(),
                 Source = command.Source.ToString(),
-                TimeStamp = DateTime.UtcNow,
+                TimeStamp = DateTime.Now,
                 Type = command.Type.ToString(),
             };
 
@@ -64,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 Description = notification.Description,
                 Destination = notification.Destination.ToString(),
                 Source = notification.Source.ToString(),
-                TimeStamp = DateTime.UtcNow,
+                TimeStamp = DateTime.Now,
                 Type = notification.Type.ToString(),
                 ErrorLevel = notification.ErrorLevel.ToString(),
                 Status = notification.Status.ToString(),

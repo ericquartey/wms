@@ -1,7 +1,4 @@
-﻿using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
-
-namespace Ferretto.VW.MAS.DataLayer.Providers
+﻿namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class VerticalOriginVolatileSetupStatusProvider : IVerticalOriginVolatileSetupStatusProvider
     {

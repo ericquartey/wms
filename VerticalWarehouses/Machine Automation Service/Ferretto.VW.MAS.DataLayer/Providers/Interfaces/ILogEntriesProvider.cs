@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface ILogEntriesProvider
     {

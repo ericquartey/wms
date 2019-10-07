@@ -189,8 +189,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Orientation");
 
-                    b.Property<double>("Position");
-
                     b.Property<decimal>("Resolution");
 
                     b.Property<double>("UpperBound");
@@ -569,7 +567,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 4, 9, 10, 24, 981, DateTimeKind.Local).AddTicks(3087),
+                            InstallationDate = new DateTime(2016, 12, 7, 13, 38, 4, 26, DateTimeKind.Local).AddTicks(2336),
                             ServiceStatus = 86
                         });
                 });

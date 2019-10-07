@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces

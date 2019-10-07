@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Models;
+﻿using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable ArrangeThisQualifier
