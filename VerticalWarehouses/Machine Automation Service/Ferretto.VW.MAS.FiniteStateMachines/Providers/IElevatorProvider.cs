@@ -16,7 +16,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #region Methods
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
+        int GetDepositAndPickUpCycleQuantity();
+
+        void IncreaseDepositAndPickUpCycleQuantity();
+
+        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId,
+                            double? loadingUnitGrossWeight, BayNumber requestingBay, MessageActor sender);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
@@ -29,15 +34,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber requestingBay, MessageActor sender);
 
+        void ResetDepositAndPickUpCycleQuantity();
+
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void Stop(BayNumber requestingBay, MessageActor sender);
 
-        void IncreaseDepositAndPickUpCycleQuantity();
-
-        int GetDepositAndPickUpCycleQuantity();
-
-        void ResetDepositAndPickUpCycleQuantity();
         #endregion
     }
 }

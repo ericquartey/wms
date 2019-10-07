@@ -50,12 +50,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PositioningStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
                         {
                             this.dataOld = currentPositioning.data;
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
                         {
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                        this.axisPositionUpdateTimer[(int)messageDeviceIndex].Change(Timeout.Infinite, Timeout.Infinite);
+                        this.axisPositionUpdateTimer[(int)inverterIndex].Change(Timeout.Infinite, Timeout.Infinite);
 
                         this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                     }
@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is SwitchOnStateMachine || messageCurrentStateMachine is StopStateMachine)
                         {
-                            this.currentStateMachines.Remove(messageDeviceIndex);
+                            this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already switched on / stopped current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)

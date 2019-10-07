@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private readonly ICellControlDataLayer cellControlDataLayer;
 
+        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
+
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
@@ -47,8 +49,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         private readonly IWeightControlDataLayer weightControl;
 
         private bool disposedValue = false;
-
-        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
 
         #endregion
 
@@ -101,7 +101,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.Dispose(true);
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
+        }
+
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
+        }
+
+        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay, MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
             this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
@@ -457,8 +467,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
+        }
+
         public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId,
-            BayNumber requestingBay, MessageActor sender)
+                    BayNumber requestingBay, MessageActor sender)
         {
             if (displacement <= 0)
             {
@@ -559,21 +574,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
                 this.disposedValue = true;
             }
-        }
-
-        public void ResetDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
-        }
-
-        public int GetDepositAndPickUpCycleQuantity()
-        {
-            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
-        }
-
-        public void IncreaseDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
         }
 
         private double GetFeedRate(FeedRateCategory feedRateCategory)
