@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// The loading unit currently loaded on the elevator.
         /// </summary>
         public LoadingUnit LoadingUnit { get; set; }
+
         public int? LoadingUnitId { get; set; }
 
         /// <summary>
