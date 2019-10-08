@@ -15,7 +15,6 @@ namespace Ferretto.VW.App.Services
 {
     public class NavigationService : INavigationService
     {
-
         #region Fields
 
         private readonly IUnityContainer container;
@@ -77,8 +76,6 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-
         #region Properties
 
         public bool IsBusy
@@ -104,8 +101,6 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
-
-
 
         #region Methods
 

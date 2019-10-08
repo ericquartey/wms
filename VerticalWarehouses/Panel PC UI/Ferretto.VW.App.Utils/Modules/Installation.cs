@@ -8,7 +8,7 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
-        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";        
+        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
@@ -37,6 +37,7 @@
             #region Fields
 
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+
             public const string DEPOSITANDPICKUPTEST = "DepositAndPickUpTestViewModel";
 
             #endregion
