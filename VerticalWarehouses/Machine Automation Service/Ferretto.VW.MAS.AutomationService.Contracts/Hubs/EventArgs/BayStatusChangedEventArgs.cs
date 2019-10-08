@@ -4,8 +4,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class BayStatusChangedEventArgs : System.EventArgs, IBayOperationalStatusChangedMessageData
     {
-
-
         #region Constructors
 
         public BayStatusChangedEventArgs(
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         #endregion
-
-
 
         #region Properties
 
