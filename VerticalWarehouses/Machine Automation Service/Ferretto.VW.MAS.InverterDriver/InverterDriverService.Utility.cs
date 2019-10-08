@@ -381,6 +381,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (inverter.IsStarted)
                 {
                     this.Logger.LogTrace("3:Starting Calibrate Axis FSM");
+                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(250, 250);
 
                     this.Logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
 
@@ -761,6 +762,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+                        this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(Timeout.Infinite, Timeout.Infinite);
 
                         this.Logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
 

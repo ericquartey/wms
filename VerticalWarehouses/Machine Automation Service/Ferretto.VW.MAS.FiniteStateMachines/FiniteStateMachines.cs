@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                    this.logger.LogError(ex, $"2:Exception: {ex.Message}");
+                        this.logger.LogError(ex, $"2:Exception: {ex.Message}");
 
                         this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
@@ -438,7 +438,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         {
                             elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
                         }
-                        else if (dataInverters.CurrentAxis == Axis.Horizontal)
+                        else if (dataInverters.CurrentAxis == Axis.Horizontal && inverterIndex <= (byte)InverterIndex.Slave1)
                         {
                             elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                         }
