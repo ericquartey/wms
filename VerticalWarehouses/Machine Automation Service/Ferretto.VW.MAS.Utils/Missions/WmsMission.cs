@@ -3,14 +3,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
 {
     public class WmsMission : Mission
     {
-
         #region Fields
 
         private bool disposed;
 
         #endregion
-
-
 
         #region Methods
 
