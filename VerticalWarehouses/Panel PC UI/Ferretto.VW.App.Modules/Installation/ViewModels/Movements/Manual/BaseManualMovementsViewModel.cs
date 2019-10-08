@@ -197,11 +197,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Horizontal:
-                    this.CurrentHorizontalPosition = message.Data.CurrentPosition;
+                    this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Vertical:
-                    this.CurrentVerticalPosition = message.Data.CurrentPosition;
+                    this.CurrentVerticalPosition = message?.Data?.CurrentPosition ?? this.CurrentVerticalPosition;
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:

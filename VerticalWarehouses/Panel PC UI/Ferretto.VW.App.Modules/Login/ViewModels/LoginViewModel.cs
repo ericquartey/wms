@@ -172,8 +172,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             return
                 this.machineIdentity != null
-                //&&
-                //string.IsNullOrEmpty(this.UserLogin.Error)
+
+                // &&
+                // string.IsNullOrEmpty(this.UserLogin.Error)
                 &&
                 !this.IsWaitingForResponse
                 &&

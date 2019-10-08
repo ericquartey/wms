@@ -20,23 +20,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IBayManager bayManager;
-
         private readonly IMachineBaysService machineBaysService;
 
         private readonly IMachineElevatorService machineElevatorService;
 
-        private DelegateCommand changeBayPosition1Command;
+        private DelegateCommand applyCorrectionCommand;
 
-        private DelegateCommand changeBayPosition2Command;
+        private DelegateCommand changeToLowerBayPositionCommand;
+
+        private DelegateCommand changeToUpperBayPositionCommand;
 
         private int currentBayPosition;
 
         private double? currentHeight;
 
-        private double? inputStepValue;
+        private double? displacement;
 
-        private bool isBayPositionsVisible;
+        private double? inputStepValue;
 
         private bool isElevatorMovingDown;
 
@@ -51,8 +51,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveUpCommand;
 
         private double positionHeight;
-
-        private DelegateCommand saveHeightCorrectionCommand;
 
         private SubscriptionToken subscriptionToken;
 
@@ -81,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(machineBaysService));
             }
 
-            this.bayManager = bayManager;
+            this.Bay = bayManager.Bay;
             this.machineElevatorService = machineElevatorService;
             this.machineBaysService = machineBaysService;
         }
@@ -90,19 +88,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand ChangeBayPosition1Command =>
-            this.changeBayPosition1Command
+        public ICommand ApplyCorrectionCommand =>
+            this.applyCorrectionCommand
             ??
-            (this.changeBayPosition1Command = new DelegateCommand(
-                this.ChangeCurrentPosition1,
-                this.CanChangeCurrentPosition1));
+            (this.applyCorrectionCommand = new DelegateCommand(
+                async () => await this.ApplyCorrectionAsync(),
+                this.CanApplyCorrectionCommand));
 
-        public ICommand ChangeBayPosition2Command =>
-            this.changeBayPosition2Command
+        public Bay Bay { get; }
+
+        public ICommand ChangeToLowerBayPositionCommand =>
+            this.changeToLowerBayPositionCommand
             ??
-            (this.changeBayPosition2Command = new DelegateCommand(
-                this.ChangeCurrentPosition2,
+            (this.changeToLowerBayPositionCommand = new DelegateCommand(
+                this.ToggleBayPosition,
                 this.CanChangeCurrentPosition2));
+
+        public ICommand ChangeToUpperBayPositionCommand =>
+                    this.changeToUpperBayPositionCommand
+            ??
+            (this.changeToUpperBayPositionCommand = new DelegateCommand(
+                this.ToggleBayPosition,
+                this.CanChangeCurrentPosition1));
 
         public int CurrentBayPosition
         {
@@ -123,7 +130,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.currentHeight, value))
                 {
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public double? Displacement
+        {
+            get => this.displacement;
+            set
+            {
+                if (this.SetProperty(ref this.displacement, value))
+                {
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -139,19 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.inputStepValue, value))
                 {
-                    this.UpdateChanged();
-                }
-            }
-        }
-
-        public bool IsBayPositionsVisible
-        {
-            get => this.isBayPositionsVisible;
-            private set
-            {
-                if (this.SetProperty(ref this.isBayPositionsVisible, value))
-                {
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -163,7 +170,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingDown, value))
                 {
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -180,7 +187,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.ClearNotifications();
                     }
 
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -192,7 +199,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingUp, value))
                 {
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -201,21 +208,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveDownCommand
             ??
             (this.moveDownCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveDownAsync(),
+                async () => await this.MoveDownAsync(),
                 this.CanExecuteMoveDownCommand));
 
         public ICommand MoveToBayHeightCommand =>
           this.moveToBayHeightCommand
           ??
           (this.moveToBayHeightCommand = new DelegateCommand(
-              async () => await this.ExecuteMoveToBayHeightCommandAsync(),
+              async () => await this.MoveToBayHeightAsync(),
               this.CanExecuteMoveToBayHeight));
 
         public ICommand MoveUpCommand =>
             this.moveUpCommand
             ??
             (this.moveUpCommand = new DelegateCommand(
-                async () => await this.ExecuteMoveUpAsync(),
+                async () => await this.MoveUpAsync(),
                 this.CanExecuteMoveUpCommand));
 
         public double PositionHeight
@@ -225,17 +232,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.positionHeight, value))
                 {
-                    this.UpdateChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
-
-        public ICommand SaveHeightCorrectionCommand =>
-            this.saveHeightCorrectionCommand
-            ??
-            (this.saveHeightCorrectionCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveHeightCorrectionAsync(),
-                this.CanExecuteApplyCorrectionCommand));
 
         #endregion
 
@@ -296,20 +296,51 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.IsBayPositionsVisible = this.bayManager.Bay.Positions.Count() > 1;
-
-            this.InitializeData();
             this.ChangeDataFromBayPosition();
+
+            this.InitializeDataAsync();
         }
 
-        protected void UpdateChanged()
+        protected void RaiseCanExecuteChanged()
         {
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
-            this.saveHeightCorrectionCommand?.RaiseCanExecuteChanged();
-            this.changeBayPosition1Command?.RaiseCanExecuteChanged();
-            this.changeBayPosition2Command?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
+            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task ApplyCorrectionAsync()
+        {
+            try
+            {
+                await this.machineBaysService.UpdateHeightAsync(this.currentBayPosition, this.PositionHeight + this.Displacement.Value);
+
+                this.ChangeDataFromBayPosition();
+
+                this.ShowNotification(
+                    $"Quota posizione {this.currentBayPosition} aggiornata.",
+                    Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private bool CanApplyCorrectionCommand()
+        {
+            return
+                !this.IsElevatorMovingToHeight
+                &&
+                !this.IsElevatorMovingUp
+                &&
+                !this.IsElevatorMovingDown
+                &&
+                this.currentHeight.HasValue
+                &&
+                this.CurrentHeight != this.PositionHeight;
         }
 
         private bool CanChangeCurrentPosition1()
@@ -320,32 +351,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.isElevatorMovingUp
                 &&
-                this.IsBayPositionsVisible;
+                this.CurrentBayPosition == 2;
         }
 
         private bool CanChangeCurrentPosition2()
         {
             return !this.isElevatorMovingDown
-             &&
-             !this.isElevatorMovingToHeight
-             &&
-             !this.isElevatorMovingUp
                 &&
-                this.IsBayPositionsVisible;
-        }
-
-        private bool CanExecuteApplyCorrectionCommand()
-        {
-            return
-                !this.IsElevatorMovingToHeight
+                !this.isElevatorMovingToHeight
                 &&
-                !this.IsElevatorMovingUp
+                !this.isElevatorMovingUp
                 &&
-                !this.IsElevatorMovingDown
-                &&
-                this.currentHeight > 0
-                &&
-                this.CurrentHeight != this.PositionHeight;
+                this.CurrentBayPosition == 1;
         }
 
         private bool CanExecuteMoveDownCommand()
@@ -381,32 +398,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
         }
 
-        private void ChangeCurrentPosition1()
-        {
-            this.CurrentBayPosition = 1;
-        }
-
-        private void ChangeCurrentPosition2()
-        {
-            this.CurrentBayPosition = 2;
-        }
-
         private void ChangeDataFromBayPosition()
         {
-            this.PositionHeight = this.currentBayPosition == 1
-                ? this.bayManager.Bay.Positions.First().Height
-                : this.bayManager.Bay.Positions.Last().Height;
+            this.PositionHeight = this.CurrentBayPosition == 1
+                ? this.Bay.Positions.Min(p => p.Height)
+                : this.Bay.Positions.Max(p => p.Height);
+
+            this.RaiseCanExecuteChanged();
 
             this.InputStepValue = null;
         }
 
-        private async Task ExecuteMoveDownAsync()
+        private async Task InitializeDataAsync()
+        {
+            this.CurrentBayPosition = 1;
+
+            this.IsElevatorMovingDown = false;
+            this.IsElevatorMovingUp = false;
+            this.IsElevatorMovingToHeight = false;
+
+            try
+            {
+                this.CurrentHeight = await this.machineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task MoveDownAsync()
         {
             try
             {
                 this.IsElevatorMovingDown = true;
 
                 await this.machineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue.Value);
+                this.Displacement = (this.Displacement ?? 0) - this.InputStepValue.Value;
             }
             catch (Exception ex)
             {
@@ -415,7 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteMoveToBayHeightCommandAsync()
+        private async Task MoveToBayHeightAsync()
         {
             try
             {
@@ -429,48 +457,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ExecuteMoveUpAsync()
+        private async Task MoveUpAsync()
         {
             try
             {
                 this.IsElevatorMovingUp = true;
 
                 await this.machineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue.Value);
+                this.Displacement = (this.Displacement ?? 0) + this.InputStepValue.Value;
             }
             catch (Exception ex)
             {
                 this.IsElevatorMovingDown = false;
                 this.ShowNotification(ex);
             }
-        }
-
-        private async Task ExecuteSaveHeightCorrectionAsync()
-        {
-            try
-            {
-                await this.machineBaysService.UpdateHeightAsync(this.currentBayPosition, this.currentHeight.Value);
-
-                this.ChangeDataFromBayPosition();
-
-                this.ShowNotification(
-                    $"Quota posizione {this.currentBayPosition} aggiornata.",
-                    Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private void InitializeData()
-        {
-            this.CurrentBayPosition = 1;
-
-            this.IsElevatorMovingDown = false;
-            this.IsElevatorMovingUp = false;
-            this.IsElevatorMovingToHeight = false;
-
-            this.RaisePropertyChanged(nameof(this.IsBayPositionsVisible));
         }
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -484,10 +484,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToHeight = false;
             }
 
-            if (!(message.Data is null))
+            if (message?.Data?.CurrentPosition != null)
             {
                 this.CurrentHeight = message.Data.CurrentPosition;
             }
+        }
+
+        private void ToggleBayPosition()
+        {
+            this.CurrentBayPosition = this.CurrentBayPosition == 1 ? 2 : 1;
         }
 
         #endregion

@@ -137,7 +137,10 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            this.bay = await this.machineBaysService.GetByNumberAsync();
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            this.bay = await this.machineBaysService.GetByNumberAsync((
+                MAS.AutomationService.Contracts.BayNumber)bayNumber);
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
