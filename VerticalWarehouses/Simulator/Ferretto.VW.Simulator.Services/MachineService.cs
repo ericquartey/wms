@@ -26,7 +26,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private const int DELAY_IO_CLIENT = 5;
 
-        private const int IMPULSES_ENCODER_PER_ROUND = 77;
+        private const double IMPULSES_ENCODER_PER_ROUND = 77.67;
 
         private readonly static Random random = new Random();
 
@@ -222,7 +222,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private int Impulses2millimeters(int value)
         {
-            return value / IMPULSES_ENCODER_PER_ROUND;
+            return (int)(value / IMPULSES_ENCODER_PER_ROUND);
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
@@ -266,7 +266,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private int Millimeters2Impulses(int value)
         {
-            return value * IMPULSES_ENCODER_PER_ROUND;
+            return (int)(value * IMPULSES_ENCODER_PER_ROUND);
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)

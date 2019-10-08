@@ -441,10 +441,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         if (dataInverters.CurrentAxis == Axis.Vertical)
                         {
                             elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
+                            this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
                         }
                         else if (dataInverters.CurrentAxis == Axis.Horizontal)
                         {
                             elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
+                            this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
                         }
 
                         if (machineResourcesProvider.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)

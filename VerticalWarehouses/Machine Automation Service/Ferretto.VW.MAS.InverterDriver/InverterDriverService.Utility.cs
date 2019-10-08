@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -284,6 +285,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         ? Axis.Vertical
                         : Axis.Horizontal;
 
+                    this.Logger.LogDebug($"ActualPositionShaft inverter={message.SystemIndex}; axis={axis}; value={message.IntPayload}");
+
                     if ((axis == this.currentAxis || currentStateMachine == null) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish))
                     {
@@ -381,6 +384,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (inverter.IsStarted)
                 {
                     this.Logger.LogTrace("3:Starting Calibrate Axis FSM");
+                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(250, 250);
 
                     this.Logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
 
@@ -736,8 +740,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
-                        // TODO: what is '2' and '4'? Please replace with named constants.
-                        var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+                        var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
 
                         this.Logger.LogDebug($"Direction: {positioningData.Direction}");
                         this.Logger.LogDebug($"Position:");
@@ -756,11 +759,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             direction,
                             this.refreshTargetTable);
 
-                        // TODO: why this comment? remove if not necessary!
-                        //this.refreshTargetTable = false;
-
                         this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+                        this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(Timeout.Infinite, Timeout.Infinite);
 
                         this.Logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
 
@@ -782,7 +783,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                                    //this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                                     var currentStateMachine = new PositioningStateMachine(
                                         positioningFieldData,
                                         inverter,
@@ -813,7 +814,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 else
                                 {
-                                    this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 500);
+                                    //this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 500);
                                     if (positioningData.MovementType == MovementType.TableTarget)
                                     {
                                         var currentStateMachine = new PositioningTableStateMachine(
@@ -1013,25 +1014,29 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncAxisTimer)
             {
                 var inverterIndex = (InverterIndex)state;
-                var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
-
-                this.Logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
-
-                this.axisIntervalStopwatch.Stop();
-                this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
-                this.axisIntervalStopwatch.Reset();
-                this.axisIntervalStopwatch.Start();
-
-                this.axisStopwatch.Reset();
-                this.axisStopwatch.Start();
-
-                if (this.inverterCommandQueue
-                        .Count(x =>
-                            x.ParameterId == InverterParameterId.ActualPositionShaft
-                            &&
-                            x.SystemIndex == inverterIndex) < 2)
+                //var inverter = this.invertersProvider.GetByIndex(inverterIndex);
+                //if (inverter is AngInverterStatus || inverter is AcuInverterStatus)
                 {
-                    this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                    var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
+
+                    this.Logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
+
+                    this.axisIntervalStopwatch.Stop();
+                    this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
+                    this.axisIntervalStopwatch.Reset();
+                    this.axisIntervalStopwatch.Start();
+
+                    this.axisStopwatch.Reset();
+                    this.axisStopwatch.Start();
+
+                    if (this.inverterCommandQueue
+                            .Count(x =>
+                                x.ParameterId == InverterParameterId.ActualPositionShaft
+                                &&
+                                x.SystemIndex == inverterIndex) < 2)
+                    {
+                        this.inverterCommandQueue.Enqueue(readAxisPositionMessage);
+                    }
                 }
             }
         }

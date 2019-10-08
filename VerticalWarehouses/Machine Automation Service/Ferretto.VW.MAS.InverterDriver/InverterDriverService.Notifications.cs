@@ -41,35 +41,35 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.Positioning:
-                {
-                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                        receivedMessage.Status == MessageStatus.OperationError ||
-                        receivedMessage.Status == MessageStatus.OperationStop)
                     {
-                        this.Logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
-
-                        if (messageCurrentStateMachine is PositioningStateMachine)
+                        if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                            receivedMessage.Status == MessageStatus.OperationError ||
+                            receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            this.currentStateMachines.Remove(inverterIndex);
-                        }
-                        else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
-                        {
-                            this.dataOld = currentPositioning.data;
-                            this.currentStateMachines.Remove(inverterIndex);
-                        }
-                        else
-                        {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
+
+                            if (messageCurrentStateMachine is PositioningStateMachine)
+                            {
+                                this.currentStateMachines.Remove(inverterIndex);
+                            }
+                            else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
+                            {
+                                this.dataOld = currentPositioning.data;
+                                this.currentStateMachines.Remove(inverterIndex);
+                            }
+                            else
+                            {
+                                this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
+
+                            this.Logger.LogTrace("4: Stop the timer for update shaft position");
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
+
+                            this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
 
-                        this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                        this.axisPositionUpdateTimer[(int)inverterIndex].Change(Timeout.Infinite, Timeout.Infinite);
-
-                        this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
+                        break;
                     }
-
-                    break;
-                }
                 case FieldMessageType.CalibrateAxis:
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
@@ -80,6 +80,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
@@ -165,7 +166,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 1000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already powered on current state machine is null but end notification is still sent so no error to report here
@@ -192,6 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(10000, 10000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         // If inverter is already powered off current state machine is null but end notification is still sent so no error to report here
@@ -218,6 +219,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is ResetFaultStateMachine)
                         {
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 1000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         else

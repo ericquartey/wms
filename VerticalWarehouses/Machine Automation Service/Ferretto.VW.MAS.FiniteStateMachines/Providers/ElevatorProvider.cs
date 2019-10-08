@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}");
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}");
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
                 .Single(p => p.Name == profileType)
