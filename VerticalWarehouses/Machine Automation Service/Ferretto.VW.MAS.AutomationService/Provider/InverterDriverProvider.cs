@@ -44,11 +44,15 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
             var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), dimension).ToArray();
             foreach (var prop in properties)
             {
-                if (prop.CanRead &&
-                    prop.PropertyType == typeof(bool) &&
+                if (prop.GetCustomAttribute<ColumnAttribute>() is ColumnAttribute colAttribute
+                    &&
+                    prop.CanRead
+                    &&
+                    prop.PropertyType == typeof(bool)
+                    &&
                     prop.GetValue(status) is bool propValue)
                 {
-                    var position = prop.GetCustomAttribute<ColumnAttribute>().Order;
+                    var position = colAttribute.Order;
                     var propName = prop.Name.Substring(skipCharFromName);
                     bits[position] = new BitInfo(propName, propValue, propName);
                 }

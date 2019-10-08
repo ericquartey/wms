@@ -193,7 +193,7 @@
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           InputText="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                             EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.TrayTare}" />
 
@@ -201,7 +201,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           InputText="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                             EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.NetWeight}" />
 
@@ -210,7 +210,7 @@
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                             EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
@@ -218,7 +218,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           InputText="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                             EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 

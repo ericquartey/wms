@@ -284,13 +284,12 @@
                                Margin="4,4,4,0"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               InputText="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+                               EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputHeight}"
                                LabelText="{x:Static res:InstallationApp.Position}"
                                Mask="####0"
-                               SpinEditStyle="{StaticResource VWAPP_PpcTextBox_SpinEditIntegerStyle}"
                                WidthNumber="210" />
-            
+
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="0"
                                 Margin="4,0,4,4"
@@ -304,11 +303,10 @@
                                Margin="4,4,4,0"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               InputText="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+                               EditValue="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputCellId}"
                                LabelText="{x:Static res:InstallationApp.CellNumber}"
-                               Mask="##0"
-                               SpinEditStyle="{StaticResource VWAPP_PpcTextBox_SpinEditIntegerStyle}"
+                               Mask="##0"                               
                                WidthNumber="210" />
             
             <controls:PpcButton Grid.Row="1"
@@ -324,11 +322,10 @@
                                Margin="4,4,4,0"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               InputText="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+                               EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
                                LabelText="{x:Static res:InstallationApp.DrawerNumber}"
-                               Mask="#0"
-                               SpinEditStyle="{StaticResource VWAPP_PpcTextBox_SpinEditIntegerStyle}"
+                               Mask="#0"                               
                                WidthNumber="210" />
             
             <controls:PpcButton Grid.Row="1"
