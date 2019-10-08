@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogDebug($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+            this.Logger.LogTrace($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
 
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 

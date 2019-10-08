@@ -204,6 +204,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void MachineSensorsStatusOnFaultStateChanged(object sender, StatusUpdateEventArgs e)
         {
+            this.logger.LogError($"Inverter Fault signal detected! Begin Stop machine procedure.");
             var messageData = new StateChangedMessageData(e.NewState);
             var msg = new NotificationMessage(
                 messageData,
@@ -217,6 +218,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private void MachineSensorsStatusOnRunningStateChanged(object sender, StatusUpdateEventArgs e)
         {
+            if (!e.NewState)
+            {
+                this.logger.LogError($"RunningState signal fall detected! Begin Stop machine procedure.");
+            }
             var messageData = new StateChangedMessageData(e.NewState);
             var msg = new NotificationMessage(
                 messageData,
