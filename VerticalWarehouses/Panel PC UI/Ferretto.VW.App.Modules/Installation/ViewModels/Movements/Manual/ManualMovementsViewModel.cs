@@ -88,30 +88,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 
-        public bool HasCarousel
-        {
-            get
-            {
-                var bay = this.bayManager.Bay;
-                return bay.Type == BayType.Carousel
-                        ||
-                       bay.Type == BayType.ExternalCarousel;
-            }
-        }
+        public bool HasCarousel => this.bayManager.Bay.Carousel != null;
 
-        public bool IsBayExternal
-        {
-            get
-            {
-                var bay = this.bayManager.Bay;
-                return
-                    bay.Type == BayType.ExternalCarousel
-                    ||
-                    bay.Type == BayType.ExternalDouble
-                    ||
-                    bay.Type == BayType.ExternalSingle;
-            }
-        }
+        public bool IsBayExternal => this.bayManager.Bay.IsExternal;
 
         public ShutterEngineManualMovementsViewModel ShutterEngineManualMovementsViewModel => this.shutterEngineManualMovementsViewModel;
 

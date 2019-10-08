@@ -17,5 +17,9 @@
         HigherDistance = 7L,
 
         LowerDistance = 8L,
+
+        HighSpeedDurationOpen = 9L,
+
+        HighSpeedDurationClose = 10L,
     }
 }

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
@@ -6,21 +7,31 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelACradle)]
         bool ANG_EncoderChannelACradle { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelBCradle)]
         bool ANG_EncoderChannelBCradle { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_EncoderChannelZCradle)]
         bool ANG_EncoderChannelZCradle { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_HardwareSensorSS1)]
         bool ANG_HardwareSensorSS1 { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_HardwareSensorSTO)]
         bool ANG_HardwareSensorSTO { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_OverrunElevatorSensor)]
         bool ANG_OverrunElevatorSensor { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_ZeroCradleSensor)]
         bool ANG_ZeroCradleSensor { get; }
 
+        [Column(Order = (int)InverterSensors.ANG_ZeroElevatorSensor)]
         bool ANG_ZeroElevatorSensor { get; }
+
+        bool WaitingHeartbeatAck { get; set; }
 
         #endregion
 

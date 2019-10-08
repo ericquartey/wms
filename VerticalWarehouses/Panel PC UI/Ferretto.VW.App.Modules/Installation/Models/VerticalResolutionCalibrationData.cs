@@ -8,11 +8,11 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         private decimal? currentResolution;
 
-        private decimal? finalPosition;
+        private double? finalPosition;
 
-        private decimal? initialPosition;
+        private double? initialPosition;
 
-        private decimal? measuredInitialPosition;
+        private double? measuredInitialPosition;
 
         #endregion
 
@@ -24,19 +24,19 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             set => this.SetProperty(ref this.currentResolution, value);
         }
 
-        public decimal? FinalPosition
+        public double? FinalPosition
         {
             get => this.finalPosition;
             set => this.SetProperty(ref this.finalPosition, value);
         }
 
-        public decimal? InitialPosition
+        public double? InitialPosition
         {
             get => this.initialPosition;
             set => this.SetProperty(ref this.initialPosition, value);
         }
 
-        public decimal? MeasuredInitialPosition
+        public double? MeasuredInitialPosition
         {
             get => this.measuredInitialPosition;
             set => this.SetProperty(ref this.measuredInitialPosition, value);

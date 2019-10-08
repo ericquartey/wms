@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        decimal? Weight { get; set; }
+        double? Weight { get; set; }
 
         #endregion
     }

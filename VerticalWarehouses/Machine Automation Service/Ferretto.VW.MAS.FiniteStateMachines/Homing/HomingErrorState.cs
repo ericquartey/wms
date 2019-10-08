@@ -15,23 +15,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IHomingMachineData machineData;
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public HomingErrorState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public HomingErrorState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.homingOperation = homingOperation;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
         }
 
         #endregion
@@ -49,13 +45,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -72,56 +70,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
+            var currentInverterIndex = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
 
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
-            if (this.homingOperation.IsOneKMachine)
-            {
-                inverterMessage = new FieldCommandMessage(
-                    inverterDataMessage,
-                    "Update Inverter axis position status",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer,
-                    (byte)InverterIndex.Slave1);
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-            }
-
-            var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Reset Inverter Axis {this.homingOperation.AxisToCalibrate}",
+                $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
-                (byte)inverterIndex);
+                (byte)currentInverterIndex);
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",
-                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Homing,
-                                MessageStatus.OperationError);
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

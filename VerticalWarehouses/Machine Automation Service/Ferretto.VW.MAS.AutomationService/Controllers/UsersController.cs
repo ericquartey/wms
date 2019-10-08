@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -12,6 +14,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class UsersController : BaseWmsProxyBaseController
     {
         #region Fields
+
+        private readonly IConfiguration configuration;
+
+        private readonly ILogger<UsersController> logger;
 
         private readonly IUsersDataService usersDataService;
 
@@ -23,20 +29,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public UsersController(
             IUsersDataService usersDataService,
-            IUsersProvider usersProvider)
+            IUsersProvider usersProvider,
+            IConfiguration configuration,
+            ILogger<UsersController> logger)
         {
-            if (usersDataService is null)
-            {
-                throw new ArgumentNullException(nameof(usersDataService));
-            }
-
-            if (usersProvider is null)
-            {
-                throw new ArgumentNullException(nameof(usersProvider));
-            }
-
-            this.usersDataService = usersDataService;
-            this.usersProvider = usersProvider;
+            this.usersDataService = usersDataService ?? throw new ArgumentNullException(nameof(usersDataService));
+            this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -53,23 +53,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                return this.Ok(await this.usersDataService
-                    .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
+                if (this.configuration.IsWmsEnabled())
+                {
+                    this.logger.LogInformation($"Login requested for user '{userName}'. Forwarding authentication request to WMS ...");
+
+                    return this.Ok(await this.usersDataService
+                        .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
+                }
             }
             catch
             {
-                var accessLevel = this.usersProvider.Authenticate(userName, password);
-                if (!accessLevel.HasValue)
-                {
-                    return this.Unauthorized();
-                }
-
-                return this.Ok(new UserClaims
-                {
-                    Name = userName,
-                    AccessLevel = (UserAccessLevel)accessLevel.Value
-                });
+                this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS.");
             }
+
+            var accessLevel = this.usersProvider.Authenticate(userName, password);
+            if (!accessLevel.HasValue)
+            {
+                this.logger.LogWarning($"Login for '{userName}' failed.");
+                return this.Unauthorized();
+            }
+
+            return this.Ok(new UserClaims
+            {
+                Name = userName,
+                AccessLevel = (UserAccessLevel)accessLevel.Value
+            });
         }
 
         #endregion

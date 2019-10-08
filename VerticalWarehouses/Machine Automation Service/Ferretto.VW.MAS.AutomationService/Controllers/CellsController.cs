@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +16,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ICellsProvider cellsProvider;
 
-        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
-
         #endregion
 
         #region Constructors
 
         public CellsController(
             ICellsProvider cellsProvider,
-            IConfigurationValueManagmentDataLayer configurationProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
@@ -34,13 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(cellsProvider));
             }
 
-            if (configurationProvider is null)
-            {
-                throw new ArgumentNullException(nameof(configurationProvider));
-            }
-
             this.cellsProvider = cellsProvider;
-            this.configurationProvider = configurationProvider;
         }
 
         #endregion
@@ -68,18 +58,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cell> UpdateHeight(int id, decimal height)
+        public ActionResult<Cell> UpdateHeight(int id, double height)
         {
-            try
-            {
-                var cell = this.cellsProvider.UpdateHeight(id, height);
+            var cell = this.cellsProvider.UpdateHeight(id, height);
 
-                return this.Ok(cell);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Cell>(ex);
-            }
+            return this.Ok(cell);
         }
 
         #endregion

@@ -16,15 +16,18 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder
-                .HasKey(b => b.Number);
-
-            builder
-                .HasIndex(b => b.IpAddress)
+                .HasIndex(b => b.Number)
                 .IsUnique();
 
             builder
                 .Ignore(b => b.Status)
-                .Ignore(b => b.Positions);
+                .Ignore(b => b.IsDouble);
+
+            builder.Property(b => b.Side)
+           .HasColumnType("text")
+           .HasConversion(
+               enumValue => enumValue.ToString(),
+               stringValue => System.Enum.Parse<WarehouseSide>(stringValue));
         }
 
         #endregion

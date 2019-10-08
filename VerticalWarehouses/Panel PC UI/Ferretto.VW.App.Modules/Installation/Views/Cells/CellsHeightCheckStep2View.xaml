@@ -61,7 +61,7 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition}"
+                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
         <controls:PpcButton Grid.Row="4"
@@ -75,7 +75,7 @@
         <ctrls:PpcSpinEdit   Grid.Row="4"
                              Grid.Column="1"
                              HorizontalAlignment="Left"
-                             InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             EditValue="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <controls:PpcButton Grid.Row="5"

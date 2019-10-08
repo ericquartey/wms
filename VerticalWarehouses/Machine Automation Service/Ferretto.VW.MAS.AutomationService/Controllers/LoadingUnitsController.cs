@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -110,7 +109,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     if (loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        stat.AreaFillPercentage = (decimal?)loadingUnit.AreaFillRate.Value * 100;
+                        stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
                     }
                 }
             }
@@ -202,8 +201,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
-                null,
+                messageData,
                 "Stop Command",
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop);

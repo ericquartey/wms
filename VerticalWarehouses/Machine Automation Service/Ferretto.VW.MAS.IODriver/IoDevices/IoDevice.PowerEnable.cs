@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
-
-
         #region Methods
 
         public void ExecutePowerEnable(FieldCommandMessage receivedMessage)
@@ -39,7 +37,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 }
                 if (this.CurrentStateMachine == null)
                 {
-                    this.CurrentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine = new PowerEnableStateMachine(
+                        powerEnableMessageData.Enable,
+                        this.ioCommandQueue,
+                        this.ioStatus,
+                        this.deviceIndex,
+                        this.eventAggregator,
+                        this.logger);
+
                     this.CurrentStateMachine.Start();
                 }
             }

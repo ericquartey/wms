@@ -8,6 +8,8 @@
 
         Vertical,
 
-        Both
+        HorizontalAndVertical,
+
+        BayChain
     }
 }

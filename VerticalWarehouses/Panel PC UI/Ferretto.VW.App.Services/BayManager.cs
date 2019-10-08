@@ -1,8 +1,11 @@
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.App.Services
 {
@@ -134,19 +137,12 @@ namespace Ferretto.VW.App.Services
         {
             this.Identity = await this.identityService.GetAsync();
 
-            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.bay = await this.machineBaysService.GetByNumberAsync(bayNumber);
-        }
-
-        public async Task<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
-        {
-            this.bay = await this.machineBaysService.UpdateHeightAsync(bayNumber, position, height);
-            return this.bay;
+            this.bay = await this.machineBaysService.GetByNumberAsync();
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            if (this.Bay != null && this.Bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -155,7 +151,24 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (this.Bay?.Number == e.BayNumber)
+            //TODO Review Implementation avoid using numbers to identify bays
+            var bayNumber = MAS.AutomationService.Contracts.BayNumber.None;
+            switch (e.BayNumber)
+            {
+                case 1:
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    break;
+
+                case 2:
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    break;
+
+                case 3:
+                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    break;
+            }
+
+            if (this.Bay.Number == bayNumber)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

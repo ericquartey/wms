@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -27,25 +26,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? completedCycles;
 
-        private decimal? currentPosition;
+        private double? currentPosition;
 
         private int initialCycles;
 
         private int inputDelay;
 
-        private decimal? inputLowerBound;
+        private double? inputLowerBound;
 
         private int? inputRequiredCycles;
 
-        private decimal? inputUpperBound;
+        private double? inputUpperBound;
 
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
-        private decimal? machineLowerBound;
+        private double? machineLowerBound;
 
-        private decimal? machineUpperBound;
+        private double? machineUpperBound;
 
         private SubscriptionToken receivedActionUpdateToken;
 
@@ -93,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.completedCycles, value);
         }
 
-        public decimal? CurrentPosition
+        public double? CurrentPosition
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);
@@ -118,7 +117,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputLowerBound
+        public double? InputLowerBound
         {
             get => this.inputLowerBound;
             set
@@ -142,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal? InputUpperBound
+        public double? InputUpperBound
         {
             get => this.inputUpperBound;
             set
@@ -353,15 +352,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
-        {
-            base.OnMachineModeChanged(e);
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
-            {
-                this.IsExecutingProcedure = false;
-            }
-        }
-
         private bool CanExecuteResetCommand()
         {
             return !this.IsExecutingProcedure
@@ -489,10 +479,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationEnd:
-                case MessageStatus.OperationStop:
                     this.IsExecutingProcedure = false;
 
                     await this.beltBurnishingService.MarkAsCompletedAsync();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationFaultStop:
+                case MessageStatus.OperationRunningStop:
+                    this.IsExecutingProcedure = false;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
                     break;
 
                 case MessageStatus.OperationError:

@@ -1,12 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -17,23 +18,28 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly IHomingOperation homingOperation;
+        private readonly IHomingMachineData machineData;
 
-        private readonly bool stopRequested;
+        private readonly IHomingStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public HomingEndState(
-            IStateMachine parentMachine,
-            IHomingOperation homingOperation,
-            ILogger logger,
-            bool stopRequested = false)
-            : base(parentMachine, logger)
+        public HomingEndState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.stopRequested = stopRequested;
-            this.homingOperation = homingOperation;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingEndState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -60,7 +66,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
+                            this.stateData.FieldMessage = message;
+                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                             break;
                     }
                     break;
@@ -76,70 +83,48 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)InverterIndex.MainInverter);
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
-            if (this.homingOperation.IsOneKMachine)
+            if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
-                inverterMessage = new FieldCommandMessage(
-                    inverterDataMessage,
-                    "Update Inverter axis position status",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterSetTimer,
-                    (byte)InverterIndex.Slave1);
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-            }
-
-            if (this.stopRequested)
-            {
-                var inverterIndex = (this.homingOperation.IsOneKMachine && this.homingOperation.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
-                var data = new InverterStopFieldMessageData();
-
+                var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                 var stopMessage = new FieldCommandMessage(
-                    data,
+                    null,
                     "Homing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
-                    (byte)inverterIndex);
+                    (byte)targetInverter);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
 
-            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (!this.stopRequested)
+            if (this.stateData.StopRequestReason == StopRequestReason.NoReason && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
-                var setupStatusProvider = this.ParentStateMachine
-                    .ServiceScopeFactory.CreateScope().ServiceProvider
-                    .GetRequiredService<ISetupStatusProvider>();
+                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                {
+                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
-                setupStatusProvider.CompleteVerticalOrigin();
+                    setupStatusProvider.CompleteVerticalOrigin();
+                }
             }
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

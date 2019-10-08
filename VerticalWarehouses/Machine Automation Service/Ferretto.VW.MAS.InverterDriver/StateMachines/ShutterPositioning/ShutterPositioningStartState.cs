@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
@@ -18,6 +19,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private ShutterPosition currentShutterPosition;
+
+        private InverterDataset dataset;
+
+        private short duration;
 
         #endregion
 
@@ -39,11 +44,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Shutter positioning Start state");
 
             if (this.InverterStatus is IAglInverterStatus aglStatus)
             {
-                if (aglStatus.ShutterType == ShutterType.Shutter2Type && this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
+                if (this.shutterPositionData.ShutterType == ShutterType.TwoSensors
+                    &&
+                    this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
                 {
                     this.Logger.LogError($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
 
@@ -62,6 +69,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 }
                 this.currentShutterPosition = aglStatus.CurrentShutterPosition;
             }
+            this.CalculateDatasetAndDuration();
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
@@ -91,9 +99,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Stop");
+            this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new ShutterPositioningStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.shutterPositionData,
+                    this.Logger));
         }
 
         /// <inheritdoc/>
@@ -108,94 +121,60 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 case InverterParameterId.ShutterTargetPosition:
                     {
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate);
+                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate, this.dataset);
                         var byteData = data.ToBytes();
 
-                        this.Logger.LogTrace($"5:inverterMessage={data}");
                         this.ParentStateMachine.EnqueueCommandMessage(data);
+                        this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {(int)this.dataset}");
                     }
                     break;
 
                 case InverterParameterId.ShutterTargetVelocityParam:
                     {
-                        var byteDataReceived = message.ToBytes();
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteEnable, (this.shutterPositionData.MovementType == MovementType.Absolute) ? 1 : 0);
-                        var byteData = data.ToBytes();
-
-                        this.Logger.LogTrace($"6:inverterMessage={data}");
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-
-                        returnValue = true;
-                    }
-                    break;
-
-                case InverterParameterId.ShutterAbsoluteEnable:
-                    {
-                        var byteDataReceived = message.ToBytes();
-                        if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        // TODO: remove this change state after inverter firmware update
+                        //if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        //{
+                        //    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        //}
+                        //else
                         {
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                        }
-                        else
-                        {
-                            // Absolute positioning
-                            // calculate revs and dataset
-                            var revs = 0;
-                            var dataset = InverterDataset.ActualDataset;
-                            switch (this.shutterPositionData.ShutterPosition)
-                            {
-                                case ShutterPosition.Opened:
-                                    dataset = InverterDataset.ShutterAbsoluteOpen;
-                                    revs = this.shutterPositionData.HigherDistance;
-                                    if (this.currentShutterPosition == ShutterPosition.Closed)
-                                    {
-                                        revs += this.shutterPositionData.LowerDistance;
-                                    }
-                                    break;
-
-                                case ShutterPosition.Closed:
-                                    dataset = InverterDataset.ShutterAbsoluteClose;
-                                    revs = this.shutterPositionData.LowerDistance;
-                                    if (this.currentShutterPosition == ShutterPosition.Opened)
-                                    {
-                                        revs += this.shutterPositionData.HigherDistance;
-                                    }
-                                    break;
-
-                                case ShutterPosition.Half:
-                                    dataset = InverterDataset.ShutterAbsoluteHalf;
-                                    if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
-                                    {
-                                        revs = this.shutterPositionData.HigherDistance;
-                                    }
-                                    else
-                                    {
-                                        revs = this.shutterPositionData.LowerDistance;
-                                    }
-                                    break;
-
-                                default:
-                                    if (Debugger.IsAttached)
-                                    {
-                                        Debugger.Break();
-                                    }
-                                    break;
-                            }
-                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterAbsoluteRevs, revs, dataset);
+                            var byteDataReceived = message.ToBytes();
+                            var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
                             var byteData = data.ToBytes();
 
-                            this.Logger.LogTrace($"7:inverterMessage={data}");
                             this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
 
                             returnValue = true;
                         }
                     }
                     break;
 
-                case InverterParameterId.ShutterAbsoluteRevs:
+                case InverterParameterId.ShutterLowVelocity:
                     {
                         var byteDataReceived = message.ToBytes();
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        if (this.duration > 0)
+                        {
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration);
+                            var byteData = data.ToBytes();
+
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set duration: {this.duration}");
+
+                            returnValue = true;
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
+                    }
+                    break;
+
+                case InverterParameterId.ShutterHighVelocityDuration:
+                    {
+                        var byteDataReceived = message.ToBytes();
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                     }
                     break;
 
@@ -211,6 +190,55 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
+        }
+
+        private void CalculateDatasetAndDuration()
+        {
+            this.dataset = InverterDataset.ActualDataset;
+            this.duration = 0;
+            if (this.shutterPositionData.MovementType == MovementType.Absolute)
+            {
+                switch (this.shutterPositionData.ShutterPosition)
+                {
+                    case ShutterPosition.Opened:
+                        this.dataset = InverterDataset.ShutterAbsoluteOpen;
+                        this.duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
+                        if (this.currentShutterPosition != ShutterPosition.Closed)
+                        {
+                            this.duration = (short)(this.duration * 0.45);
+                        }
+                        break;
+
+                    case ShutterPosition.Closed:
+                        this.dataset = InverterDataset.ShutterAbsoluteClose;
+                        this.duration = (short)this.shutterPositionData.HighSpeedDurationClose;
+                        if (this.currentShutterPosition != ShutterPosition.Opened)
+                        {
+                            this.duration = (short)(this.duration * 0.45);
+                        }
+                        break;
+
+                    case ShutterPosition.Half:
+                        this.dataset = InverterDataset.ShutterAbsoluteHalf;
+                        if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
+                        {
+                            this.duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
+                        }
+                        else
+                        {
+                            this.duration = (short)this.shutterPositionData.HighSpeedDurationClose;
+                        }
+                        this.duration = (short)(this.duration * 0.45);
+                        break;
+
+                    default:
+                        if (Debugger.IsAttached)
+                        {
+                            Debugger.Break();
+                        }
+                        break;
+                }
+            }
         }
 
         #endregion

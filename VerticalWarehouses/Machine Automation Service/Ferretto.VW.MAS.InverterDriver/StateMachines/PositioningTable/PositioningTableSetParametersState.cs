@@ -11,7 +11,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private int parameterId;
+        private readonly IInverterPositioningFieldMessageData dataOld;
+
+        private int stepId;
 
         private InverterTableIndex tableIndex;
 
@@ -22,11 +24,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public PositioningTableSetParametersState(
             IInverterStateMachine parentStateMachine,
             IInverterPositioningFieldMessageData data,
+            IInverterPositioningFieldMessageData dataOld,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
+
+            if (this.data.RefreshAll)
+            {
+                this.dataOld = null;
+            }
+            else
+            {
+                this.dataOld = dataOld;
+            }
 
             logger.LogDebug("1:Method Start");
         }
@@ -38,20 +50,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
-
             this.tableIndex = InverterTableIndex.TableTravelP7;
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-            this.parameterId = 0;
+            this.stepId = 0;
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(new PositioningTableEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new PositioningTableStopState(
+                    this.ParentStateMachine,
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />
@@ -74,8 +88,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         switch (this.tableIndex)
                         {
                             case InverterTableIndex.TableTravelP7:
-                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
-                                this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
+                                if (this.data.TargetPosition != (this.dataOld?.TargetPosition ?? 0))
+                                {
+                                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
+                                    this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
+                                }
+                                else
+                                {
+                                    this.DoTargetPosition();
+                                }
                                 break;
 
                             case InverterTableIndex.TableTravelSet1:
@@ -83,88 +104,53 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                             case InverterTableIndex.TableTravelSet3:
                             case InverterTableIndex.TableTravelSet4:
                             case InverterTableIndex.TableTravelSet5:
-                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.parameterId]));
-                                this.Logger.LogDebug($"Set target Speed[{this.parameterId}]: {this.data.TargetSpeed[this.parameterId]}: table index {this.tableIndex}");
+                                if (this.data.TargetSpeed[this.stepId] != (this.dataOld?.TargetSpeed[this.stepId] ?? 0))
+                                {
+                                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetSpeeds, this.data.TargetSpeed[this.stepId]));
+                                    this.Logger.LogDebug($"Set target Speed[{this.stepId}]: {this.data.TargetSpeed[this.stepId]}: table index {this.tableIndex}");
+                                }
+                                else
+                                {
+                                    this.DoTargetSpeeds();
+                                }
                                 break;
 
                             case InverterTableIndex.TableTravelP1:
                             case InverterTableIndex.TableTravelP2:
                             case InverterTableIndex.TableTravelP3:
                             case InverterTableIndex.TableTravelP4:
-                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.SwitchPosition[this.parameterId]));
-                                this.Logger.LogDebug($"Set Switch Position[{this.parameterId}]: {this.data.SwitchPosition[this.parameterId]}: table index {this.tableIndex}");
+                                if (this.data.SwitchPosition[this.stepId] != (this.dataOld?.SwitchPosition[this.stepId] ?? 0))
+                                {
+                                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.SwitchPosition[this.stepId]));
+                                    this.Logger.LogDebug($"Set Switch Position[{this.stepId}]: {this.data.SwitchPosition[this.stepId]}: table index {this.tableIndex}");
+                                }
+                                else
+                                {
+                                    this.DoTargetPosition();
+                                }
                                 break;
                         }
                         break;
 
                     case InverterParameterId.TableTravelTargetPosition:
-                        if (this.tableIndex == InverterTableIndex.TableTravelDirection)
-                        {
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, (short)this.data.Direction));
-                            this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
-                        }
-                        else if (++this.parameterId < this.data.SwitchPosition.Length - 1)
-                        {
-                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(
-                                new PositioningTableEnableOperationState(
-                                    this.ParentStateMachine,
-                                    this.data,
-                                    this.InverterStatus as IPositioningInverterStatus,
-                                    this.Logger));
-                        }
+                        this.DoTargetPosition();
                         break;
 
                     case InverterParameterId.TableTravelDirection:
-                        if (!this.data.RefreshAll)
-                        {
-                            this.ParentStateMachine.ChangeState(
-                                new PositioningTableEnableOperationState(
-                                    this.ParentStateMachine,
-                                    this.data,
-                                    this.InverterStatus as IPositioningInverterStatus,
-                                    this.Logger));
-                        }
-                        else
-                        {
-                            this.parameterId = 0;
-                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-                        }
+                        this.stepId = -1;
+                        this.DoTargetDecelerations();
                         break;
 
                     case InverterParameterId.TableTravelTargetSpeeds:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.parameterId]));
-                        this.Logger.LogDebug($"Set Acceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
-
+                        this.DoTargetSpeeds();
                         break;
 
                     case InverterParameterId.TableTravelTargetAccelerations:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetAcceleration[this.parameterId]));
-                        this.Logger.LogDebug($"Set Deceleration[{this.parameterId}]: {this.data.TargetAcceleration[this.parameterId]}: table index {this.tableIndex}");
-
+                        this.DoTargetAccelerations();
                         break;
 
                     case InverterParameterId.TableTravelTargetDecelerations:
-                        if (++this.parameterId < this.data.SwitchPosition.Length)
-                        {
-                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-                        }
-                        else
-                        {
-                            this.parameterId = 0;
-                            this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.parameterId);
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-                        }
+                        this.DoTargetDecelerations();
                         break;
                 }
             }
@@ -177,6 +163,91 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
+        }
+
+        private void DoTargetAccelerations()
+        {
+            if (this.data.TargetAcceleration[this.stepId] != (this.dataOld?.TargetAcceleration[this.stepId] ?? 0))
+            {
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetDecelerations, this.data.TargetAcceleration[this.stepId]));
+                this.Logger.LogDebug($"Set Deceleration[{this.stepId}]: {this.data.TargetAcceleration[this.stepId]}: table index {this.tableIndex}");
+            }
+            else
+            {
+                this.DoTargetDecelerations();
+            }
+        }
+
+        private void DoTargetDecelerations()
+        {
+            this.stepId = this.FindChangedStep(this.stepId);
+            if (this.stepId < this.data.SwitchPosition.Length)
+            {
+                this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.stepId);
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+            }
+            else
+            {
+                this.stepId = 0;
+                this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+            }
+        }
+
+        private void DoTargetPosition()
+        {
+            if (this.tableIndex == InverterTableIndex.TableTravelP7)
+            {
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelDirection, (short)this.data.Direction));
+                this.Logger.LogDebug($"Set Direction: {this.data.Direction}");
+            }
+            else if (++this.stepId < this.data.SwitchPosition.Length - 1)
+            {
+                this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+            }
+            else
+            {
+                this.ParentStateMachine.ChangeState(
+                    new PositioningTableEnableOperationState(
+                        this.ParentStateMachine,
+                        this.data,
+                        this.InverterStatus as IPositioningInverterStatus,
+                        this.Logger));
+            }
+        }
+
+        private void DoTargetSpeeds()
+        {
+            if (this.data.TargetAcceleration[this.stepId] != (this.dataOld?.TargetAcceleration[this.stepId] ?? 0))
+            {
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetAccelerations, this.data.TargetAcceleration[this.stepId]));
+                this.Logger.LogDebug($"Set Acceleration[{this.stepId}]: {this.data.TargetAcceleration[this.stepId]}: table index {this.tableIndex}");
+            }
+            else
+            {
+                this.DoTargetAccelerations();
+            }
+        }
+
+        private int FindChangedStep(int step)
+        {
+            while (++step < this.data.SwitchPosition.Length)
+            {
+                for (int iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
+                {
+                    if (this.data.TargetSpeed[iStep] != (this.dataOld?.TargetSpeed[iStep] ?? 0) ||
+                        this.data.TargetAcceleration[iStep] != (this.dataOld?.TargetAcceleration[iStep] ?? 0)
+                        )
+                    {
+                        return step;
+                    }
+                }
+            }
+            return step;
         }
 
         #endregion

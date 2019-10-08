@@ -21,9 +21,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
-        private decimal? currentHorizontalPosition;
+        private double? currentHorizontalPosition;
 
-        private decimal? currentVerticalPosition;
+        private double? currentVerticalPosition;
 
         private SubscriptionToken movementsSubscriptionToken;
 
@@ -58,15 +58,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public int BayNumber => this.bayManagerService.Bay.Number;
+        public int BayNumber => (int)this.bayManagerService.Bay.Number;
 
-        public decimal? CurrentHorizontalPosition
+        public double? CurrentHorizontalPosition
         {
             get => this.currentHorizontalPosition;
             protected set => this.SetProperty(ref this.currentHorizontalPosition, value);
         }
 
-        public decimal? CurrentVerticalPosition
+        public double? CurrentVerticalPosition
         {
             get => this.currentVerticalPosition;
             protected set => this.SetProperty(ref this.currentVerticalPosition, value);
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var name = this.GetType().ToString();
             this.EventAggregator
               .GetEvent<ManualMovementsChangedPubSubEvent>()
-              .Publish(new ManualMovementshangedMessage(name));
+              .Publish(new ManualMovementsChangedMessage(name));
         }
 
         public override void Disappear()
@@ -117,10 +117,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.EventAggregator
                .GetEvent<ManualMovementsChangedPubSubEvent>()
-               .Publish(new ManualMovementshangedMessage(null));
+               .Publish(new ManualMovementsChangedMessage(null));
         }
 
-        public virtual void EnabledChanged(ManualMovementshangedMessage message)
+        public virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
             if (string.IsNullOrEmpty(message.ViewModelName))
             {
@@ -204,7 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.CurrentVerticalPosition = message.Data.CurrentPosition;
                     break;
 
-                case CommonUtils.Messages.Enumerations.Axis.Both:
+                case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:
                     break;
 
                 default:

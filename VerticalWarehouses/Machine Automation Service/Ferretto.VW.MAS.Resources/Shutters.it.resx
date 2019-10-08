@@ -120,10 +120,19 @@
   <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
     <value>Il ritardo tra due cicli di test deve essere strettamente positivo.</value>
   </data>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>La velocità bassa non è valida</value>
+  </data>
   <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
     <value>Il numero di cicli di test deve essere strettamente positivo.</value>
   </data>
   <data name="ThePositionIsNotValid" xml:space="preserve">
     <value>La Posizione iniziale non è valida</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Il tipo di serranda non è valido</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>La Velocità alta non è valida</value>
   </data>
 </root>

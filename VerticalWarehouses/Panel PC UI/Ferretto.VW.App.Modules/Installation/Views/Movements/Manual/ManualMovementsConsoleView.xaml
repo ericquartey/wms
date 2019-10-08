@@ -48,7 +48,7 @@
             <controls:PpcLabeledText Grid.Row="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding CurrentPosition}"
+                                     ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                      LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
             <Grid Grid.Row="2"

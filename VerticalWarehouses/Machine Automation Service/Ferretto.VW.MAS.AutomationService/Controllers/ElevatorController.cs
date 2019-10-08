@@ -1,16 +1,14 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,11 +18,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         #endregion
 
@@ -33,7 +33,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ElevatorController(
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
-            IMachineConfigurationProvider machineConfigurationProvider,
+            IElevatorDataProvider elevatorDataProvider,
+            IMachineProvider machineProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
         {
@@ -42,66 +43,65 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(elevatorProvider));
             }
 
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
+            }
+
             if (elevatorWeightCheckProvider is null)
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
-            if (machineConfigurationProvider is null)
+            if (machineProvider is null)
             {
-                throw new ArgumentNullException(nameof(machineConfigurationProvider));
+                throw new ArgumentNullException(nameof(machineProvider));
             }
 
             this.elevatorProvider = elevatorProvider;
+            this.elevatorDataProvider = elevatorDataProvider;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
-            this.machineConfigurationProvider = machineConfigurationProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("horizontal/position")]
-        public ActionResult<decimal> GetHorizontalPosition()
+        [HttpPost("horizontal/findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
         {
-            try
-            {
-                var position = this.elevatorProvider.GetHorizontalPosition();
-                return this.Ok(position);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<decimal>(ex);
-            }
+            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
+
+        [HttpGet("horizontal/position")]
+        public ActionResult<double> GetHorizontalPosition()
+        {
+            return this.Ok(this.elevatorProvider.HorizontalPosition);
         }
 
         [HttpGet("vertical/position")]
-        public ActionResult<decimal> GetVerticalPosition()
+        public ActionResult<double> GetVerticalPosition()
         {
-            try
-            {
-                var position = this.elevatorProvider.GetVerticalPosition();
-                return this.Ok(position);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<decimal>(ex);
-            }
+            return this.Ok(this.elevatorProvider.VerticalPosition);
         }
 
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight)
         {
-            try
-            {
-                this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("horizontal/move-manual")]
@@ -109,32 +109,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            try
-            {
-                this.elevatorProvider.MoveHorizontalManual(direction);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(decimal targetPosition, FeedRateCategory feedRateCategory)
+        public IActionResult MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
         {
-            try
-            {
-                this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("vertical/move")]
@@ -142,31 +128,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVertical(VerticalMovementDirection direction)
         {
-            try
-            {
-                this.elevatorProvider.MoveVertical(direction);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.MoveVertical(direction, this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("vertical/move-relative")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveVerticalOfDistance(decimal distance)
+        public IActionResult MoveVerticalOfDistance(double distance)
         {
-            try
-            {
-                this.elevatorProvider.MoveVerticalOfDistance(distance);
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("stop")]
@@ -174,15 +146,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            try
-            {
-                this.elevatorProvider.Stop();
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorProvider.Stop(this.BayNumber);
+            return this.Accepted();
         }
 
         [HttpPost("weight-check-stop")]
@@ -190,49 +155,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StopWeightCheck()
         {
-            try
-            {
-                this.elevatorWeightCheckProvider.Stop();
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            this.elevatorWeightCheckProvider.Stop();
+            return this.Accepted();
         }
 
         [HttpPost("vertical/resolution")]
-        public IActionResult UpdateResolution(decimal newResolution)
+        public IActionResult UpdateVerticalResolution(decimal newResolution)
         {
-            try
-            {
-                this.elevatorProvider.UpdateResolution(newResolution);
+            this.elevatorDataProvider.UpdateVerticalResolution(newResolution);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Ok();
         }
 
         [HttpPost("weight-check")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult WeightCheck(int loadingUnitId, decimal runToTest, decimal weight)
+        public IActionResult WeightCheck(int loadingUnitId, double runToTest, double weight)
         {
-            try
-            {
-                this.elevatorWeightCheckProvider.Start(loadingUnitId, runToTest, weight);
+            this.elevatorWeightCheckProvider.Start(loadingUnitId, runToTest, weight);
 
-                var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
+            var data = new ElevatorWeightCheckMessageData() { Weight = 200 };
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         #endregion

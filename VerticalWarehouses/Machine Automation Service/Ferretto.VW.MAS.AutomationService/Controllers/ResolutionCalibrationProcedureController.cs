@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +18,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IConfigurationValueManagmentDataLayer configurationProvider;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IResolutionCalibrationDataLayer resolutionCalibration;
 
         private readonly ISetupStatusProvider setupStatusProvider;
-
-        private readonly IVerticalAxisDataLayer verticalAxis;
 
         #endregion
 
@@ -30,12 +30,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ResolutionCalibrationProcedureController(
             IEventAggregator eventAggregator,
+            IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IResolutionCalibrationDataLayer resolutionCalibration,
-            IVerticalAxisDataLayer verticalAxisDataLayer,
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
+            if (elevatorDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(elevatorDataProvider));
+            }
+
             if (dataLayerConfigurationValueManagement is null)
             {
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
@@ -46,18 +51,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(resolutionCalibration));
             }
 
-            if (verticalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
-            }
-
             if (setupStatusProvider is null)
             {
                 throw new ArgumentNullException(nameof(setupStatusProvider));
             }
 
-            this.verticalAxis = verticalAxisDataLayer;
             this.setupStatusProvider = setupStatusProvider;
+            this.elevatorDataProvider = elevatorDataProvider;
             this.configurationProvider = dataLayerConfigurationValueManagement;
             this.resolutionCalibration = resolutionCalibration;
         }
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<decimal> GetAdjustedResolution(decimal measuredDistance, decimal expectedDistance)
+        public ActionResult<decimal> GetAdjustedResolution(double measuredDistance, double expectedDistance)
         {
             if (measuredDistance <= 0)
             {
@@ -92,11 +92,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            var resolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    VerticalAxis.Resolution,
-                    ConfigurationCategory.VerticalAxis);
+            var resolution = this.elevatorDataProvider.GetVerticalAxis().Resolution;
 
-            return resolution * expectedDistance / measuredDistance;
+            return resolution * (decimal)expectedDistance / (decimal)measuredDistance;
         }
 
         [HttpGet("parameters")]
@@ -104,15 +102,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var parameters = new ResolutionCalibrationParameters
             {
-                CurrentResolution = this.configurationProvider.GetDecimalConfigurationValue(
-                    VerticalAxis.Resolution,
-                    ConfigurationCategory.VerticalAxis),
+                CurrentResolution = this.elevatorDataProvider.GetVerticalAxis().Resolution,
 
-                InitialPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                InitialPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
                     ResolutionCalibration.InitialPosition,
                     ConfigurationCategory.ResolutionCalibration),
 
-                FinalPosition = this.configurationProvider.GetDecimalConfigurationValue(
+                FinalPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
                     ResolutionCalibration.FinalPosition,
                     ConfigurationCategory.ResolutionCalibration),
             };

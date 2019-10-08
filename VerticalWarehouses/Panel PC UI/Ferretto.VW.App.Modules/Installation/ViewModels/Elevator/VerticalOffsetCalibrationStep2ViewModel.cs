@@ -19,11 +19,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Cell cell;
 
-        private decimal? currentVerticalOffset;
+        private double? currentVerticalOffset;
 
-        private decimal? displacement;
+        private double? displacement;
 
-        private decimal inputStepValue;
+        private double inputStepValue;
 
         private bool isElevatorMovingDown;
 
@@ -68,13 +68,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.cell, value);
         }
 
-        public decimal? CurrentVerticalOffset
+        public double? CurrentVerticalOffset
         {
             get => this.currentVerticalOffset;
             set => this.SetProperty(ref this.currentVerticalOffset, value);
         }
 
-        public decimal? Displacement
+        public double? Displacement
         {
             get => this.displacement;
             set
@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             Environment.NewLine,
             this[nameof(this.Displacement)]);
 
-        public decimal InputStepValue
+        public double InputStepValue
         {
             get => this.inputStepValue;
             set

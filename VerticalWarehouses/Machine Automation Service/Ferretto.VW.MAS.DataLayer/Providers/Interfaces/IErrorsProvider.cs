@@ -1,6 +1,7 @@
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IErrorsProvider
     {
@@ -10,7 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         ErrorStatisticsSummary GetStatistics();
 
-        Error RecordNew(MachineErrors code);
+        Error RecordNew(MachineErrors code, BayNumber bayNumber);
 
         Error Resolve(int id);
 

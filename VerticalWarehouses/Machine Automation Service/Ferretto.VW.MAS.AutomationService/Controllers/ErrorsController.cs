@@ -1,8 +1,10 @@
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -56,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost]
         public ActionResult<Error> Create(MachineErrors code)
         {
-            var newError = this.errorsProvider.RecordNew(code);
+            var newError = this.errorsProvider.RecordNew(code, BayNumber.None);
 
             return this.Ok(newError);
         }
@@ -69,16 +71,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Error> Resolve(int id)
         {
-            try
-            {
-                var resolvedError = this.errorsProvider.Resolve(id);
+            var resolvedError = this.errorsProvider.Resolve(id);
 
-                return this.Ok(resolvedError);
-            }
-            catch (System.Exception ex)
-            {
-                return this.NegativeResponse<Error>(ex);
-            }
+            return this.Ok(resolvedError);
         }
 
         #endregion

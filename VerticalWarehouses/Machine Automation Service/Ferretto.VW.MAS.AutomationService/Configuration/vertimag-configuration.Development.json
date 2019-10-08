@@ -144,6 +144,9 @@
   "BeltBurnishing": {
     "CycleQuantity": 200
   },
+  "DepositAndPickUp": {
+    "CycleQuantity": 100
+  },
   "ResolutionCalibration": {
     "InitialPosition": 1000.0,
     "FinalPosition": 5500.0,

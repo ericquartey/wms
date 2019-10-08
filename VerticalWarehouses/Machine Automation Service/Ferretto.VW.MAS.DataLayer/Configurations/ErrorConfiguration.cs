@@ -15,11 +15,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(e => e.Id);
-
-            builder.Property(e => e.Code)
-                .IsRequired();
-
             builder
                 .Property(m => m.OccurrenceDate)
                 .IsRequired();

@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -44,15 +44,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug("Inverter Enable Operation");
 
-            this.Inverter.PositionControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineConfigurationProvider>().IsOneKMachine()
-                ? false
-                : this.data.AxisMovement == Axis.Horizontal;
+            this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
             this.Inverter.PositionControlWord.EnableOperation = true;
-            this.Inverter.PositionControlWord.RelativeMovement =
-                this.data.MovementType == MovementType.Relative
-                ||
-                this.data.MovementType == MovementType.TableTarget;
+            this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
@@ -64,14 +58,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningEndState(
+                new PositioningStopState(
                     this.ParentStateMachine,
-                    this.Inverter,
-                    this.Logger,
-                    true));
+                    this.InverterStatus as IPositioningInverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

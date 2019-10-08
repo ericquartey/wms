@@ -51,8 +51,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
             this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync();
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
-
-            this.CheckErrorsPresenceAsync();
         }
 
         #endregion
@@ -82,6 +80,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             return Task.CompletedTask;
         }
 
+        public async override Task OnLoadedAsync()
+        {
+            await this.CheckErrorsPresenceAsync();
+
+            await base.OnLoadedAsync();
+        }
+
         private async Task CheckErrorsPresenceAsync()
         {
             try
@@ -90,9 +95,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
                 this.areErrorsPresent = error != null;
 
-                this.IsVisible = this.IsVisible.HasValue
-                    ? this.IsVisible.Value && this.areErrorsPresent
-                    : this.IsVisible;
+                this.IsVisible = this.areErrorsPresent;
             }
             catch (Exception)
             {

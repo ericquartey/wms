@@ -47,14 +47,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             Func<int, TimeSpan> sleepDurationProvider = count =>
             {
-                System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count})");
-                return TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count / 3.0, 2));
+                var timeout = TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count / 3.0, 2));
+
+                System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count}). Retrying in {timeout.TotalSeconds} seconds ...");
+
+                return timeout;
             };
 
             return await Policy
               .Handle<HttpRequestException>()
               .OrResult<HttpResponseMessage>(response => IsTooManyRequests(response) || IsServerError(response))
-              .WaitAndRetryAsync(this.MaximumRetries, sleepDurationProvider)
+               .WaitAndRetryAsync(0, sleepDurationProvider)
               .ExecuteAsync(async () => await base.SendAsync(CopyRequest(request), completionOption, cancellationToken));
         }
 
@@ -88,12 +91,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private static bool IsServerError(HttpResponseMessage response)
         {
-            return (int)response.StatusCode / 100 == 5;
+            var isServerError = (int)response.StatusCode / 100 == 5;
+
+            if (isServerError)
+            {
+                System.Diagnostics.Debug.WriteLine($"Response: {(int)response.StatusCode} {response.ReasonPhrase} ({response.RequestMessage.RequestUri})");
+            }
+
+            return isServerError;
         }
 
         private static bool IsTooManyRequests(HttpResponseMessage response)
         {
-            return (int)response.StatusCode == 429;
+            var isTooManyRequests = (int)response.StatusCode == 429;
+
+            if (isTooManyRequests)
+            {
+                System.Diagnostics.Debug.WriteLine($"Response: {(int)response.StatusCode} {response.ReasonPhrase} ({response.RequestMessage.RequestUri})");
+            }
+
+            return isTooManyRequests;
         }
 
         #endregion

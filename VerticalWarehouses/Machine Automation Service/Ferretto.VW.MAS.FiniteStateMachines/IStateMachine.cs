@@ -1,13 +1,21 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     internal interface IStateMachine : IDisposable
     {
         #region Properties
+
+        IEventAggregator EventAggregator { get; }
+
+        ILogger<FiniteStateMachines> Logger { get; }
 
         IServiceScopeFactory ServiceScopeFactory { get; }
 
@@ -72,7 +80,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <summary>
         /// Stop states machine.
         /// </summary>
-        void Stop();
+        /// <param name="reason"></param>
+        void Stop(StopRequestReason reason);
 
         #endregion
     }

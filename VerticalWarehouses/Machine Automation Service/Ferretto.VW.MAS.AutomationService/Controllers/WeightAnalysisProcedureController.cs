@@ -1,5 +1,6 @@
 ﻿using System;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -40,18 +41,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(decimal displacement, decimal netWeight, int? loadingUnitId)
+        public IActionResult Start(double displacement, double netWeight, int? loadingUnitId)
         {
-            try
-            {
-                this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId);
+            this.elevatorProvider.RunTorqueCurrentSampling(displacement, netWeight, loadingUnitId, this.BayNumber);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         [HttpPost("stop")]
@@ -59,16 +53,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            try
-            {
-                this.elevatorProvider.Stop();
+            this.elevatorProvider.Stop(this.BayNumber);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse(ex);
-            }
+            return this.Accepted();
         }
 
         #endregion

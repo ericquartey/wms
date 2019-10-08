@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
-            var sensorIndex = (int)IOMachineSensors.NormalState;
+            var sensorIndex = (int)IOMachineSensors.RunningState;
 
             if (sensorsStates.Length > sensorIndex)
             {

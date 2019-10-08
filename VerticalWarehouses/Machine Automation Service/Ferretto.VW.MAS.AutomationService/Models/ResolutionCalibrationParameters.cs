@@ -6,9 +6,9 @@
 
         public decimal CurrentResolution { get; set; }
 
-        public decimal FinalPosition { get; set; }
+        public double FinalPosition { get; set; }
 
-        public decimal InitialPosition { get; set; }
+        public double InitialPosition { get; set; }
 
         #endregion
     }

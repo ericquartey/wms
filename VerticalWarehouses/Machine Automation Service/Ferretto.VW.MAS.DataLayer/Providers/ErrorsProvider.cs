@@ -10,9 +10,9 @@ using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal class ErrorsProvider : Interfaces.IErrorsProvider
+    internal sealed class ErrorsProvider : IErrorsProvider
     {
         #region Fields
 
@@ -64,8 +64,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         Code = e.Code,
                         Description = e.Definition.Description,
                         Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity
-                    }
+                        Severity = e.Definition.Severity,
+                    },
                 })
                 .FirstOrDefault();
         }
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             Code = s.Code,
                             Description = s.Error.Description,
                             Total = s.TotalErrors,
-                            RatioTotal = s.TotalErrors * 100.0 / totalErrors
+                            RatioTotal = s.TotalErrors * 100.0 / totalErrors,
                         }),
             };
 
@@ -101,8 +101,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return summary;
         }
 
-        public Error RecordNew(MachineErrors code)
+        public Error RecordNew(MachineErrors code, BayNumber bayNumber)
         {
+            var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null);
+            if (existingUnresolvedError != null)
+            {
+                return existingUnresolvedError;
+            }
+
             var newError = new Error
             {
                 Code = (int)code,
@@ -112,12 +118,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             this.dataContext.Errors.Add(newError);
 
             var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
-            errorStatistics.TotalErrors++;
-            this.dataContext.ErrorStatistics.Update(errorStatistics);
+            if (errorStatistics != null)
+            {
+                errorStatistics.TotalErrors++;
+                this.dataContext.ErrorStatistics.Update(errorStatistics);
+            }
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorCreation(newError);
+            this.NotifyErrorCreation(newError, bayNumber);
 
             return newError;
         }
@@ -136,12 +145,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorResolution(error);
+            this.NotifyErrorResolution(error, BayNumber.None);
 
             return error;
         }
 
-        private void NotifyErrorCreation(Error error)
+        private void NotifyErrorCreation(Error error, BayNumber bayNumber)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -149,12 +158,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                MessageStatus.NoStatus);
+                bayNumber);
 
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error)
+        private void NotifyErrorResolution(Error error, BayNumber bayNumber)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -162,7 +171,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                MessageStatus.NoStatus);
+                bayNumber);
 
             this.notificationEvent.Publish(message);
         }

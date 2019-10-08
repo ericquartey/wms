@@ -1,29 +1,39 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils
 {
-    public abstract class AutomationBackgroundService : BackgroundService
+    public abstract class AutomationBackgroundService<TCommandMessage, TNotificationMessage, TCommandEvent, TNotificationEvent> : BackgroundService
+        where TCommandMessage : class
+        where TNotificationMessage : class
+        where TCommandEvent : PubSubEvent<TCommandMessage>, new()
+        where TNotificationEvent : PubSubEvent<TNotificationMessage>, new()
     {
         #region Fields
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+        private readonly BlockingConcurrentQueue<TCommandMessage> commandQueue = new BlockingConcurrentQueue<TCommandMessage>();
+
+        private readonly IServiceScope commandQueueScope;
 
         private readonly Task commandReceiveTask;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+        private readonly BlockingConcurrentQueue<TNotificationMessage> notificationQueue = new BlockingConcurrentQueue<TNotificationMessage>();
+
+        private readonly IServiceScope notificationQueueScope;
 
         private readonly Task notificationReceiveTask;
 
         private SubscriptionToken commandEventSubscriptionToken;
+
+        private bool isDisposed;
 
         private SubscriptionToken notificationEventSubscriptionToken;
 
@@ -33,44 +43,46 @@ namespace Ferretto.VW.MAS.Utils
 
         public AutomationBackgroundService(
             IEventAggregator eventAggregator,
-            ILogger logger)
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
+            this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            this.EventAggregator = eventAggregator;
-            this.Logger = logger;
+            this.commandQueueScope = serviceScopeFactory.CreateScope();
+            this.notificationQueueScope = serviceScopeFactory.CreateScope();
 
             this.commandReceiveTask = new Task(async () => await this.DequeueCommandsAsync());
             this.notificationReceiveTask = new Task(async () => await this.DequeueNotificationsAsync());
+
+            this.InitializeSubscriptions();
         }
 
         #endregion
 
         #region Properties
 
+        protected CancellationToken CancellationToken { get; private set; }
+
         protected IEventAggregator EventAggregator { get; }
 
         protected ILogger Logger { get; }
 
-        protected CancellationToken StoppingToken { get; private set; }
+        protected IServiceScopeFactory ServiceScopeFactory { get; }
 
         #endregion
 
         #region Methods
 
+        public override void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            this.InitializeSubscriptions();
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -88,9 +100,19 @@ namespace Ferretto.VW.MAS.Utils
             await base.StopAsync(cancellationToken);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected void EnqueueCommand(TCommandMessage command)
         {
-            this.StoppingToken = stoppingToken;
+            if (command is null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            this.commandQueue.Enqueue(command);
+        }
+
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
+        {
+            this.CancellationToken = cancellationToken;
 
             try
             {
@@ -105,13 +127,13 @@ namespace Ferretto.VW.MAS.Utils
             return Task.CompletedTask;
         }
 
-        protected abstract bool FilterCommand(CommandMessage command);
+        protected abstract bool FilterCommand(TCommandMessage command);
 
-        protected abstract bool FilterNotification(NotificationMessage notification);
+        protected abstract bool FilterNotification(TNotificationMessage notification);
 
-        protected abstract Task OnCommandReceivedAsync(CommandMessage command);
+        protected abstract Task OnCommandReceivedAsync(TCommandMessage command, IServiceProvider serviceProvider);
 
-        protected abstract Task OnNotificationReceivedAsync(NotificationMessage message);
+        protected abstract Task OnNotificationReceivedAsync(TNotificationMessage message, IServiceProvider serviceProvider);
 
         private async Task DequeueCommandsAsync()
         {
@@ -119,11 +141,10 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out var command);
-                    this.Logger.LogTrace(
-                        $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command);
+                    this.Logger.LogTrace($"Dequeued command {command}.");
 
-                    await this.OnCommandReceivedAsync(command);
+                    await this.OnCommandReceivedAsync(command, this.commandQueueScope.ServiceProvider);
                 }
                 catch (OperationCanceledException)
                 {
@@ -131,7 +152,7 @@ namespace Ferretto.VW.MAS.Utils
                     return;
                 }
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         private async Task DequeueNotificationsAsync()
@@ -140,11 +161,10 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out var notification);
-                    this.Logger.LogTrace(
-                        $"Dequeued notification '{notification.Type}', status {notification.Status} (from '{notification.Source}' to '{notification.Destination}').");
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification);
+                    this.Logger.LogTrace($"Dequeued notification {notification}");
 
-                    await this.OnNotificationReceivedAsync(notification);
+                    await this.OnNotificationReceivedAsync(notification, this.notificationQueueScope.ServiceProvider);
                 }
                 catch (OperationCanceledException)
                 {
@@ -157,13 +177,31 @@ namespace Ferretto.VW.MAS.Utils
                     this.Logger.LogError(ex, "Error while processing the notification.");
                 }
             }
-            while (!this.StoppingToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.commandQueueScope.Dispose();
+                this.notificationQueueScope.Dispose();
+            }
+
+            base.Dispose();
+
+            this.isDisposed = true;
         }
 
         private void InitializeSubscriptions()
         {
             this.commandEventSubscriptionToken = this.EventAggregator
-                .GetEvent<CommandEvent>()
+                .GetEvent<TCommandEvent>()
                 .Subscribe(
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
@@ -173,7 +211,7 @@ namespace Ferretto.VW.MAS.Utils
             this.Logger.LogTrace("Subscribed to command events.");
 
             this.notificationEventSubscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEvent>()
+                .GetEvent<TNotificationEvent>()
                 .Subscribe(
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,

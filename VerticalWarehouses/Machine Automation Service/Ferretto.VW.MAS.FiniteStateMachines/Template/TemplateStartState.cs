@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
@@ -12,18 +13,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
     {
         #region Fields
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateMachineData machineData;
+
+        private readonly ITemplateStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public TemplateStartState(
-            IStateMachine parentMachine,
-            ITemplateData machineData)
-            : base(parentMachine, machineData.Logger)
+        public TemplateStartState(ITemplateStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
@@ -41,11 +45,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData));
+                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.machineData, message));
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
                         break;
                 }
             }
@@ -69,18 +74,38 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
             var notificationMessage = new NotificationMessage(
                 null,
-                "Template Start State Notification",
+                $"Template Start State Notification with {this.machineData.Message}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.machineData, true));
+            this.Logger.LogDebug("1:Stop Method Start");
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

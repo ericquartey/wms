@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(u => u.Name);
+            builder.HasIndex(u => u.Name).IsUnique();
 
             builder.Property(u => u.PasswordHash).IsRequired();
 
@@ -23,18 +23,20 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasData(new User
             {
+                Id = -1,
                 Name = "installer",
                 AccessLevel = 0,
                 PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
-                PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A=="
+                PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A==",
             });
 
             builder.HasData(new User
             {
+                Id = -2,
                 Name = "operator",
                 AccessLevel = 2,
                 PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
-                PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
+                PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
             });
         }
 

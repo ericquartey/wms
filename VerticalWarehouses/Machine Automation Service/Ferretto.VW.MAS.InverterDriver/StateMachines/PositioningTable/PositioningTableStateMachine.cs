@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private readonly IInverterPositioningFieldMessageData data;
+        public readonly IInverterPositioningFieldMessageData data;
+
+        private readonly IInverterPositioningFieldMessageData dataOld;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -23,6 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public PositioningTableStateMachine(
             IInverterPositioningFieldMessageData data,
+            IInverterPositioningFieldMessageData dataOld,
             IInverterStatusBase inverterStatus,
             ILogger logger,
             IEventAggregator eventAggregator,
@@ -42,6 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.data = data;
             this.inverterStatus = inverterStatus;
+            this.dataOld = dataOld;
         }
 
         #endregion
@@ -51,7 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PositioningTableStartState(this, this.data, this.inverterStatus, this.Logger);
+            this.CurrentState = new PositioningTableStartState(this, this.data, this.dataOld, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 

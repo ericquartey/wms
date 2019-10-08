@@ -135,6 +135,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool StartMotionBlock
         {
+            get
+            {
+                return (this.Value & 0x0200) > 0;
+            }
             set
             {
                 if (value)

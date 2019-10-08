@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface.Services;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -20,8 +22,8 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice : IIoDevice
@@ -29,8 +31,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         #region Fields
 
         private const int IO_POLLING_INTERVAL = 50;
-
-        private const int IO_PUBLISH_INTERVAL = 1000;
 
         private readonly IoIndex deviceIndex;
 
@@ -70,7 +70,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         #region Constructors
 
-        public IoDevice(IEventAggregator eventAggregator, IIoTransport shdTransport, IPAddress ipAddress, int port, IoIndex index, ILogger logger, CancellationToken cancellationToken)
+        public IoDevice(
+            IEventAggregator eventAggregator,
+            IIoDevicesProvider ioDeviceService,
+            IIoTransport shdTransport,
+            IPAddress ipAddress,
+            int port,
+            IoIndex index,
+            ILogger logger,
+            CancellationToken cancellationToken)
         {
             logger.LogTrace("1:Method Start");
 
@@ -82,14 +90,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
 
-            this.ioStatus = new IoStatus();
-
             this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
+
+            this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
         }
 
         #endregion
@@ -119,6 +127,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
+                    BayNumber.None,
+                    BayNumber.None,
                     MessageStatus.OperationStart);
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
@@ -139,12 +149,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         {
             this.logger.LogTrace("1:Method Start");
 
-            var formatDataOperation = ShdFormatDataOperation.Data;
-            byte fwRelease = 0x00;
-            byte errorCode = 0x00;
-            var inputData = new bool[16];
-            var outputData = new bool[8];
-            var configurationData = new byte[25];
+            const int N_BYTES_16 = 16;
+            const int N_BYTES_8 = 8;
 
             do
             {
@@ -157,7 +163,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     }
                     catch (IoDriverException ex)
                     {
-                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected};\nInner exception: {ex.InnerException.Message}");
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
                     }
@@ -190,13 +196,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         this.ioStatus.SetupOutputLines,
                         this.ioStatus.DebounceInput);
 
-                    this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
+                    this.logger.LogDebug(
+                        $"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
 
                     this.ioCommandQueue.Enqueue(message);
+                    this.forceIoStatusPublish = true;
                 }
 
-                // socket connected
-                var nBytesReceived = 0;
                 byte[] telegram;
                 try
                 {
@@ -219,7 +225,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 catch (IoDriverException ex)
                 {
                     // connection error
-                    this.logger.LogError($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
+                    this.logger.LogError(ex, $"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
                     this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     continue;
                 }
@@ -260,6 +266,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     this.writeEnableEvent.Set();
                 }
 
+                var inputData = new bool[N_BYTES_16];
+                var outputData = new bool[N_BYTES_8];
+                byte[] configurationData;
                 foreach (var extractedMessage in extractedMessages)
                 {
                     if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))    // length is not valid  for new release
@@ -272,31 +281,32 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         break;
                     }
 
+                    byte fwRelease;
+                    byte errorCode;
+
+                    ShdFormatDataOperation formatDataOperation;
                     try
                     {
+                        // socket connected
                         this.ParsingDataBytes(
                             extractedMessage,
-                            out nBytesReceived,
+                            out var nBytesReceived,
                             out formatDataOperation,
                             out fwRelease,
                             ref inputData,
                             ref outputData,
                             out configurationData,
                             out errorCode);
+
+                        this.ioStatus.FwRelease = fwRelease;
                     }
                     catch (Exception ex)
                     {
                         // message error
-                        this.logger.LogError($"6:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(extractedMessage)}");
+                        this.logger.LogError(ex, $"6:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(extractedMessage)}");
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.ioTransport.Disconnect();
                         break;
-                    }
-
-                    // message ok
-                    lock (this.ioStatus)
-                    {
-                        this.ioStatus.FwRelease = fwRelease;
                     }
 
                     switch (formatDataOperation)
@@ -313,7 +323,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
                                 var data = new SensorsChangedFieldMessageData();
-                                data.SensorsStates = inputData;
+                                data.SensorsStates = inputData.ToArray();
                                 var notificationMessage = new FieldNotificationMessage(
                                     data,
                                     "Update IO sensors",
@@ -323,6 +333,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                     MessageStatus.OperationExecuting,
                                     (byte)this.deviceIndex);
                                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                                this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
 
                                 this.forceIoStatusPublish = false;
                             }
@@ -425,7 +436,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         catch (IoDriverException ex)
                         {
                             // connection error
-                            this.logger.LogError($"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
+                            this.logger.LogError(ex, $"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
                             this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                             continue;
                         }
@@ -480,7 +491,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public async Task StartHardwareCommunications()
         {
-            this.logger.LogInformation($"1:Configure ioAddress={this.ipAddress}:ioPort={this.port}");
+            this.logger.LogInformation($"1:Configure I/O device {this.deviceIndex}, tcp-endpoint={this.ipAddress}:{this.port}");
 
             this.ioTransport.Configure(this.ipAddress, this.port);
 
@@ -490,7 +501,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             catch (IoDriverException ex)
             {
-                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}; Inner exception: {ex.InnerException.Message}");
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected};\nInner exception: {ex.InnerException.Message}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
@@ -533,7 +544,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void StartPollingIoMessage()
         {
-            this.logger.LogDebug($"1:Create Timer to poll data");
+            this.logger.LogTrace($"1:Create Timer to poll data");
 
             this.pollIoTimer?.Dispose();
 

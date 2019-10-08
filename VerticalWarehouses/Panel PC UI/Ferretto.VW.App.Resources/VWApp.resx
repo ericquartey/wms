@@ -123,6 +123,9 @@
   <data name="BayNumber" xml:space="preserve">
     <value>Bay {0}</value>
   </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} days ago</value>
+  </data>
   <data name="ErrorCode" xml:space="preserve">
     <value>Error Code</value>
   </data>
@@ -138,8 +141,20 @@
   <data name="ErrorRecoveryProcedure" xml:space="preserve">
     <value>Error recovery</value>
   </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>First Seen</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0:0} hours ago</value>
+  </data>
   <data name="ManualMode" xml:space="preserve">
     <value>Manual</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} minutes ago</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Just now</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -157,5 +172,20 @@
   </data>
   <data name="UserLogin_UserName" xml:space="preserve">
     <value>User Name</value>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergency is on</value>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Ensure no emergency buttons are pressed.</value>
   </data>
 </root>

@@ -1,10 +1,13 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -37,86 +40,90 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("{bayNumber}/activate")]
+        [HttpPost("activate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> ActivateAsync(int bayNumber)
+        public ActionResult<Bay> ActivateAsync()
         {
-            try
-            {
-                var bay = this.baysProvider.Activate(bayNumber);
+            var bay = this.baysProvider.Activate(this.BayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
-        [HttpPost("{bayNumber}/deactivate")]
+        [HttpPost("deactivate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> DeactivateAsync(int bayNumber)
+        public ActionResult<Bay> DeactivateAsync()
         {
-            try
-            {
-                var bay = this.baysProvider.Deactivate(bayNumber);
+            var bay = this.baysProvider.Deactivate(this.BayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
-        [HttpGet("{bayNumber}")]
+        [HttpPost("findzero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindZero()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+
+            this.PublishCommand(
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
+        }
+
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber(int bayNumber)
+        public ActionResult<Bay> GetByNumber()
         {
-            try
-            {
-                var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysProvider.GetByNumber(this.BayNumber);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
+        }
+
+        [HttpPost("homing")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Homing()
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
+
+            this.PublishCommand(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
+
+            return this.Accepted();
         }
 
         [HttpPost("move")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult Move(int bayNumber, HorizontalMovementDirection direction)
+        public IActionResult Move(HorizontalMovementDirection direction)
         {
             throw new NotImplementedException();
         }
 
-        [HttpPost("{bayNumber}/height")]
+        [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateHeightAsync(int bayNumber, int position, decimal height)
+        public ActionResult<Bay> UpdateHeightAsync(int position, double height)
         {
-            try
-            {
-                var bay = this.baysProvider.UpdatePosition(bayNumber, position, height);
+            var bay = this.baysProvider.UpdatePosition(this.BayNumber, position, height);
 
-                return this.Ok(bay);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<Bay>(ex);
-            }
+            return this.Ok(bay);
         }
 
         #endregion

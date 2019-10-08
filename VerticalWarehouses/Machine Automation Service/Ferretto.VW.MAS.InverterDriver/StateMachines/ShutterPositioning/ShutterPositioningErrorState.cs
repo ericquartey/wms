@@ -36,13 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.EnableOperation = false;
-            this.InverterStatus.CommonControlWord.EnableVoltage = false;
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
-
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.Logger.LogDebug($"Shutter Positioning Error state");
 
             if (this.InverterStatus is AglInverterStatus currentStatus)
             {
@@ -66,7 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
+            this.Logger.LogDebug("1:Stop ignored in error state");
         }
 
         /// <inheritdoc/>

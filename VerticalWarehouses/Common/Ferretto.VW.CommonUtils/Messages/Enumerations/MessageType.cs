@@ -60,20 +60,22 @@
 
         ErrorStatusChanged,
 
-        ResetSecurity,
-
         InverterStop,
 
         PowerEnable,
 
         InverterStatusWord,
 
-        RequestPosition,
+        RunningStateChanged,
+
+        FaultStateChanged,
 
         ElevatorWeightCheck,
 
         PositioningTable,
 
-        TorqueCurrentSampling
+        InverterFaultReset,
+
+        ResetSecurity,
     }
 }

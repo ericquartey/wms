@@ -1,8 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldNotificationMessage
@@ -26,6 +27,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Source = otherMessage.Source;
             this.Type = otherMessage.Type;
             this.Status = otherMessage.Status;
+            this.DeviceIndex = otherMessage.DeviceIndex;
             this.ErrorLevel = otherMessage.ErrorLevel;
         }
 
@@ -49,6 +51,19 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.ErrorLevel = level;
         }
 
+        public FieldNotificationMessage(
+            IFieldMessageData data,
+            string description,
+            FieldMessageActor destination,
+            FieldMessageActor source,
+            FieldMessageType type,
+            MessageStatus status,
+            InverterIndex inverterIndex,
+            ErrorLevel level = ErrorLevel.NoError)
+            : this(data, description, destination, source, type, status, (byte)inverterIndex, level)
+        {
+        }
+
         #endregion
 
         #region Properties
@@ -68,6 +83,15 @@ namespace Ferretto.VW.MAS.Utils.Messages
         public MessageStatus Status { get; set; }
 
         public FieldMessageType Type { get; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Description ?? base.ToString();
+        }
 
         #endregion
     }

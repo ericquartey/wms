@@ -11,7 +11,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public CurrentPositionMessageData(decimal currentPosition)
+        public CurrentPositionMessageData(double currentPosition)
         {
             this.CurrentPosition = currentPosition;
         }
@@ -23,7 +23,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.BeltBurnishingPosition = beltBurnishingPosition;
         }
 
-        public CurrentPositionMessageData(int executedCycles, decimal currentPosition, BeltBurnishingPosition beltBurnishingPosition)
+        public CurrentPositionMessageData(int executedCycles, double currentPosition, BeltBurnishingPosition beltBurnishingPosition)
         {
             this.ExecutedCycles = executedCycles;
             this.CurrentPosition = currentPosition;
@@ -36,7 +36,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
-        public decimal? CurrentPosition { get; set; }
+        public double? CurrentPosition { get; set; }
 
         public int ExecutedCycles { get; set; }
 

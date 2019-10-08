@@ -2,11 +2,9 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -19,9 +17,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Cell cell;
 
-        private decimal? inputCellHeight;
+        private double? inputCellHeight;
 
-        private decimal inputStepValue;
+        private double inputStepValue;
 
         private bool isElevatorMovingDown;
 
@@ -63,7 +61,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
               Environment.NewLine,
               this[nameof(this.InputCellHeight)]);
 
-        public decimal? InputCellHeight
+        public double? InputCellHeight
         {
             get => this.inputCellHeight;
             set
@@ -75,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal InputStepValue
+        public double InputStepValue
         {
             get => this.inputStepValue;
             set

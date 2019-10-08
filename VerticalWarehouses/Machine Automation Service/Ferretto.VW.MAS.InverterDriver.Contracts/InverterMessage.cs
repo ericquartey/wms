@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 // ReSharper disable ParameterHidesMember
@@ -79,43 +80,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
         }
 
-        public InverterMessage(byte[] rawMessage)
-        {
-            this.responseMessage = true;
-
-            this.heartbeatMessage = false;
-
-            this.sendDelay = 0;
-
-            if (rawMessage[1] == 0x00)
-            {
-                throw new InverterDriverException("Invalid raw data");
-            }
-
-            this.IsWriteMessage = (rawMessage[0] & 0x80) > 0;
-
-            this.IsError = (rawMessage[0] & 0x40) > 0;
-
-            this.payloadLength = rawMessage[1] - 4;
-
-            this.SystemIndex = rawMessage[2];
-
-            this.DataSetIndex = rawMessage[3];
-
-            //VALUE parameterId is always stored starting at byte index 4 in the byte array
-            this.parameterId = BitConverter.ToInt16(rawMessage, 4);
-
-            this.payload = new byte[this.payloadLength];
-            try
-            {
-                Array.Copy(rawMessage, 6, this.payload, 0, this.payloadLength);
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException($"Exception {ex.Message} while parsing raw message bytes\nLength:{rawMessage.Length} payloadLength:{this.payloadLength}", InverterDriverExceptionCode.InverterPacketMalformed, ex);
-            }
-        }
-
         public InverterMessage(InverterIndex systemIndex, InverterParameterId parameterId)
             : this((short)systemIndex, parameterId)
         {
@@ -123,8 +87,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public InverterMessage(short systemIndex, InverterParameterId parameterId)
         {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
             this.responseMessage = false;
-            this.SystemIndex = (byte)systemIndex;
+            this.SystemIndex = inverterIndex;
             this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
             this.parameterId = (short)parameterId;
             this.IsWriteMessage = false;
@@ -141,6 +110,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
 
+        private InverterMessage()
+        { }
+
         #endregion
 
         #region Properties
@@ -151,7 +123,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public int IntPayload => this.ConvertPayloadToInt();
 
-        public bool IsError { get; }
+        public bool IsError { get; private set; }
 
         public bool IsHeartbeatMessage => this.heartbeatMessage;
 
@@ -173,15 +145,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public string StringPayload => this.ConvertPayloadToString();
 
-        public byte SystemIndex { get; private set; }
+        public InverterIndex SystemIndex { get; private set; }
 
-        public string TelegramErrorText
-        {
-            get
-            {
-                return this.telegramErrorText.ContainsKey(this.UShortPayload) ? this.telegramErrorText[this.UShortPayload] : string.Empty;
-            }
-        }
+        public string TelegramErrorText => this.telegramErrorText.ContainsKey(this.UShortPayload)
+            ? this.telegramErrorText[this.UShortPayload]
+            : string.Empty;
 
         public uint UIntPayload => this.ConvertPayloadToUInt();
 
@@ -193,7 +161,61 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public static InverterMessage FromBytes(byte[] messageBytes)
         {
-            return new InverterMessage(messageBytes);
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+
+            var message = new InverterMessage();
+
+            message.responseMessage = true;
+
+            message.heartbeatMessage = false;
+
+            message.sendDelay = 0;
+
+            if (messageBytes[1] == 0x00)
+            {
+                throw new InverterDriverException("Invalid raw data");
+            }
+
+            message.IsWriteMessage = (messageBytes[0] & 0x80) > 0;
+
+            message.IsError = (messageBytes[0] & 0x40) > 0;
+
+            message.payloadLength = messageBytes[1] - 4;
+
+            var systemIndex = messageBytes[2];
+
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException(
+                    $"Invalid inverter message: system index {systemIndex} is out of range [{BitConverter.ToString(messageBytes)}]",
+                    nameof(messageBytes));
+            }
+
+            message.SystemIndex = inverterIndex;
+
+            message.DataSetIndex = messageBytes[3];
+
+            //VALUE parameterId is always stored starting at byte index 4 in the byte array
+            message.parameterId = BitConverter.ToInt16(messageBytes, 4);
+
+            message.payload = new byte[message.payloadLength];
+
+            try
+            {
+                Array.Copy(messageBytes, 6, message.payload, 0, message.payloadLength);
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{message.payloadLength}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
+
+            return message;
         }
 
         public byte[] GetHeartbeatMessage(bool setBit)
@@ -229,7 +251,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             readMessage[0] = READ_HEADER;
             readMessage[1] = 0x04; //VALUE Fixed packed data length to 4 bytes
-            readMessage[2] = this.SystemIndex;
+            readMessage[2] = (byte)this.SystemIndex;
             readMessage[3] = this.DataSetIndex;
 
             if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || this.IsWriteMessage)
@@ -259,7 +281,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             writeMessage[0] = WRITE_HEADER;
             writeMessage[1] =
                 Convert.ToByte(messageLength - 2); //VALUE Data length does not include header and length bytes
-            writeMessage[2] = this.SystemIndex;
+            writeMessage[2] = (byte)this.SystemIndex;
             writeMessage[3] = this.DataSetIndex;
 
             var parameterIdBytes = BitConverter.GetBytes(this.parameterId);
@@ -290,19 +312,15 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         {
             var returnString = new StringBuilder();
 
-            returnString.Append("InverterMessage:");
+            returnString
+                .Append("InverterMessage:")
+                .Append($"SystemIndex={(byte)this.SystemIndex}:")
+                .Append($"IsWriteMessage={this.IsWriteMessage}:")
+                .Append($"parameterId={this.parameterId}:")
+                .Append($"DataSetIndex={this.DataSetIndex}:")
+                .Append($"payloadLength={this.payloadLength:X}:")
+                .Append($"payload=");
 
-            returnString.Append($"SystemIndex={this.SystemIndex}:");
-
-            returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
-
-            returnString.Append($"parameterId={this.parameterId}:");
-
-            returnString.Append($"DataSetIndex={this.DataSetIndex}:");
-
-            returnString.Append($"payloadLength={this.payloadLength:X}:");
-
-            returnString.Append($"payload=");
             if (this.payload != null)
             {
                 if ((InverterParameterId)this.parameterId == InverterParameterId.DigitalInputsOutputs)
@@ -334,8 +352,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         private void BuildWriteMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
         {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
             this.responseMessage = false;
-            this.SystemIndex = systemIndex;
+            this.SystemIndex = inverterIndex;
             this.DataSetIndex = dataSetIndex;
             this.parameterId = parameterId;
             this.IsWriteMessage = true;
@@ -446,6 +469,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.TorqueCurrent:
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
+                case InverterParameterId.ShutterTargetPosition:
+                case InverterParameterId.HomingCalibration:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
@@ -453,7 +478,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     break;
 
                 default:
-                    returnValue = default(ushort);
+                    returnValue = default;
                     break;
             }
 
@@ -500,6 +525,15 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case "String":
                     this.payload = Encoding.ASCII.GetBytes((string)payload);
                     break;
+
+                default:
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
+                    this.payload = new byte[0];
+                    this.payloadLength = 0;
+                    return;
             }
 
             this.payloadLength = this.payload.Length;

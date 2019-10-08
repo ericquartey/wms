@@ -1,6 +1,8 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +19,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         // TODO: avoid hardcoding constants in code
-        private const decimal ChainLength = 2850.0M;
+        private const double ChainLength = 2850;
 
-        private readonly IHorizontalAxisDataLayer horizontalAxis;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
@@ -31,16 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ServiceController(
             IEventAggregator eventAggregator,
-            IHorizontalAxisDataLayer horizontalAxisDataLayer,
+            IElevatorDataProvider elevatorDataProvider,
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ILogger<ServiceController> logger)
             : base(eventAggregator)
         {
-            if (horizontalAxisDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalAxisDataLayer));
-            }
-
             if (horizontalManualMovementsDataLayer is null)
             {
                 throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
@@ -52,7 +49,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.logger = logger;
-            this.horizontalAxis = horizontalAxisDataLayer;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.horizontalManualMovements = horizontalManualMovementsDataLayer;
         }
 
@@ -65,33 +62,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
-
-            decimal[] speed = { actualSpeed };
-            decimal[] acceleration = { this.horizontalAxis.MaxEmptyAccelerationHA };
-            decimal[] deceleration = { this.horizontalAxis.MaxEmptyDecelerationHA };
-            decimal[] switchPosition = { 0 };
-
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.FindZero,
-                ChainLength,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                HorizontalMovementDirection.Forwards);
+            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
 
             this.PublishCommand(
-                    messageData,
-                    $"Execute Find Horizontal Zero Positioning Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Positioning);
+                homingData,
+                "Execute FindZeroSensor Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing);
 
             return this.Accepted();
         }

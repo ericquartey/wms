@@ -1,6 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -16,9 +21,31 @@ namespace Ferretto.VW.MAS.AutomationService
                 command.Destination == MessageActor.Any;
         }
 
-        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            // do nothing
+            switch (command.Type)
+            {
+                case MessageType.PowerEnable:
+                    if (command.Data is IPowerEnableMessageData messageData)
+                    {
+                        this.currentStateMachine = new PowerEnableStateMachine(
+                            messageData.Enable,
+                            command.RequestingBay,
+                            messageData.Enable ? StopRequestReason.NoReason : StopRequestReason.RunningStateChanged,
+                            this.configuredBays,
+                            this.EventAggregator,
+                            this.Logger as ILogger<AutomationService>,
+                            this.ServiceScopeFactory);
+
+                        this.currentStateMachine.Start();
+                    }
+                    break;
+
+                case MessageType.Stop:
+                    this.currentStateMachine?.Stop(StopRequestReason.Stop);
+                    break;
+            }
+
             return Task.CompletedTask;
         }
 

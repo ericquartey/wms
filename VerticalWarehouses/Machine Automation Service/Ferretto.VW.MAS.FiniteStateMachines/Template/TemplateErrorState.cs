@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.Template
@@ -10,22 +11,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
     {
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly ITemplateMachineData machineData;
 
-        private readonly ITemplateData machineData;
+        private readonly ITemplateStateData stateData;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public TemplateErrorState(
-            IStateMachine parentMachine,
-            ITemplateData machineData,
-            FieldNotificationMessage errorMessage)
-            : base(parentMachine, machineData.Logger)
+        public TemplateErrorState(ITemplateStateData stateData)
+                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.machineData = machineData;
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as ITemplateMachineData;
         }
 
         #endregion
@@ -49,18 +49,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         {
             var notificationMessage = new NotificationMessage(
                 null,
-                "Template Error State",
-                MessageActor.Any,
+                $"Template Error State Notification with {this.machineData.Message} and {this.stateData.Message}. Filed message: {this.stateData.FieldMessage.Description}",
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
+            this.Logger.LogDebug("1:Stop Method Empty");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

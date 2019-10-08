@@ -4,11 +4,17 @@
     {
         ControlWordParam = 410, //INFO:Writeonly
 
-        HomingCreepSpeedParam = 1133,
+        HomingCalibration = 1130,
 
         HomingFastSpeedParam = 1132,
 
+        HomingCreepSpeedParam = 1133,
+
         HomingAcceleration = 1134,
+
+        HomingOffset = 1185,
+
+        HomingSensor = 1139,
 
         PositionAccelerationParam = 1457,
 
@@ -30,11 +36,11 @@
 
         ShutterTargetPosition = 414, // 19E
 
-        ShutterAbsoluteEnable = 458,
-
-        ShutterAbsoluteRevs = 460,
-
         ShutterTargetVelocityParam = 480,
+
+        ShutterLowVelocity = 481,
+
+        ShutterHighVelocityDuration = 583,
 
         TableTravelTableIndex = 1200,
 

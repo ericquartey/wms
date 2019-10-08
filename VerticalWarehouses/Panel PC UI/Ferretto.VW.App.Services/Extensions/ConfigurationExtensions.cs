@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.App.Services
 {
@@ -6,10 +8,22 @@ namespace Ferretto.VW.App.Services
     {
         #region Methods
 
-        public static int GetBayNumber(this NameValueCollection appSettings)
+        public static BayNumber GetBayNumber(this NameValueCollection appSettings)
         {
+            var bayNumberStringEnv = Environment.GetEnvironmentVariable("BAY_NUMBER");
+            if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
+            {
+                return (BayNumber)Enum.Parse(typeof(BayNumber), bayNumberStringEnv);
+            }
+
             var bayNumberString = appSettings.Get("BayNumber");
-            return int.Parse(bayNumberString);
+            return (BayNumber)Enum.Parse(typeof(BayNumber), bayNumberString);
+        }
+
+        public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
+        {
+            var valueString = appSettings.Get("AutomationService:HealthChecks:LogoutWhenUnhealthy");
+            return bool.Parse(valueString);
         }
 
         #endregion

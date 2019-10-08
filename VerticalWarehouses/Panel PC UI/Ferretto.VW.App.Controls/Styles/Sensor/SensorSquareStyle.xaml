@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls">
+    <Style x:Key="VW_SensorSquareStyle"
+           TargetType="{x:Type ctrls:SensorSquare}">
+        <Style.Triggers>
+            <Trigger Property="SensorState" Value="true">
+                <Setter Property="BulletColor" Value="{DynamicResource PpcSensorControlActiveStateBrush}" />
+            </Trigger>
+            <Trigger Property="SensorState" Value="false">
+                <Setter Property="BulletColor" Value="{DynamicResource PpcSensorControlInactiveStateBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

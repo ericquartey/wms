@@ -239,7 +239,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.SetIsMoving(false);
+                this.StopMoving();
                 this.IsStopping = false;
                 this.EnableAll();
             }
@@ -253,14 +253,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
         }
 
-        private void SetIsMoving(bool isMoving)
-        {
-            this.IsMovingUp = isMoving;
-            this.IsMovingDown = isMoving;
-            this.IsMovingForwards = isMoving;
-            this.IsMovingBackwards = isMoving;
-        }
-
         private async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
             try
@@ -269,7 +261,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.SetIsMoving(false);
+                this.StopMoving();
 
                 this.ShowNotification(ex);
             }
@@ -283,10 +275,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.SetIsMoving(false);
+                this.StopMoving();
 
                 this.ShowNotification(ex);
             }
+        }
+
+        private void StopMoving()
+        {
+            this.IsMovingUp = false;
+            this.IsMovingDown = false;
+            this.IsMovingForwards = false;
+            this.IsMovingBackwards = false;
         }
 
         #endregion

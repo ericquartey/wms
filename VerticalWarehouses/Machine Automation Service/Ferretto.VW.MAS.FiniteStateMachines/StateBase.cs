@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -14,37 +16,49 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         public const int SENSOR_UPDATE_SLOW = 500;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
-        public StateBase(
+        protected StateBase(
             IStateMachine parentStateMachine,
-            ILogger logger)
+            ILogger<FiniteStateMachines> logger)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
             this.ParentStateMachine = parentStateMachine;
-            this.Logger = logger;
-            this.Logger.LogTrace($"State '{this.GetType().Name}' initialised.");
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.Logger.LogTrace($"State '{this.GetType().Name}' initialized.");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~StateBase()
+        {
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Properties
 
-        public virtual string Type => this.GetType().ToString();
+        public ILogger<FiniteStateMachines> Logger { get; }
 
-        protected ILogger Logger { get; }
+        public virtual string Type => this.GetType().ToString();
 
         protected IStateMachine ParentStateMachine { get; }
 
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <inheritdoc />
         public abstract void ProcessCommandMessage(CommandMessage message);
@@ -58,8 +72,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <inheritdoc />
         public abstract void Start();
 
+        /// <param name="reason"></param>
         /// <inheritdoc />
-        public abstract void Stop();
+        public abstract void Stop(StopRequestReason reason);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
 
         #endregion
     }

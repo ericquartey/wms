@@ -1,5 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -11,19 +13,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
     {
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
+        private readonly IResetSecurityMachineData machineData;
+
+        private readonly IResetSecurityStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public ResetSecurityErrorState(
-            IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public ResetSecurityErrorState(IResetSecurityStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.errorMessage = errorMessage;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IResetSecurityMachineData;
         }
 
         #endregion
@@ -44,9 +46,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 var notificationMessage = new NotificationMessage(
                     null,
                     "Reset Security Stopped due to an error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.ResetSecurity,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -75,9 +79,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
         }
 
         #endregion

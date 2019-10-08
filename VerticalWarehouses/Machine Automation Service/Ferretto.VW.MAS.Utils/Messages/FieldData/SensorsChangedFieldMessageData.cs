@@ -6,11 +6,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class SensorsChangedFieldMessageData : FieldMessageData, ISensorsChangedFieldMessageData
     {
+        #region Constructors
+
         public SensorsChangedFieldMessageData(MessageVerbosity verbosity = MessageVerbosity.Info)
             : base(verbosity)
         {
-
         }
+
+        #endregion
 
         #region Properties
 
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
                 {
                     sb.AppendFormat("{0:x2};", b);
                 }
+
                 sensorsStates = sb.ToString();
             }
 

@@ -4,7 +4,7 @@
     {
         //INFO Remote IO 1 sensors
 
-        NormalState = 0,
+        RunningState = 0,
 
         MushroomEmergencyButtonBay1 = 1,
 

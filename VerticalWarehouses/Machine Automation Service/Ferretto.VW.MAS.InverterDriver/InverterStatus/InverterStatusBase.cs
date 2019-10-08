@@ -3,7 +3,6 @@ using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
-using Ferretto.VW.MAS.Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier
@@ -13,24 +12,19 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
     {
         #region Fields
 
-        protected IControlWord controlWord;
+        protected IControlWord controlWord = new ControlWordBase();
 
-        protected IStatusWord statusWord;
-
-        private InverterType inverterType;
+        protected IStatusWord statusWord = new StatusWordBase();
 
         private ushort operatingMode;
-
-        private byte systemIndex;
 
         #endregion
 
         #region Constructors
 
-        protected InverterStatusBase()
+        protected InverterStatusBase(InverterIndex systemIndex)
         {
-            this.controlWord = new ControlWordBase();
-            this.statusWord = new StatusWordBase();
+            this.SystemIndex = systemIndex;
         }
 
         #endregion
@@ -43,11 +37,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool[] Inputs { get; protected set; }
 
-        public InverterType InverterType
-        {
-            get => this.inverterType;
-            protected set => this.inverterType = value;
-        }
+        public bool IsStarted =>
+            this.CommonStatusWord.IsReadyToSwitchOn &
+            this.CommonStatusWord.IsSwitchedOn &
+            this.CommonStatusWord.IsVoltageEnabled &
+            this.CommonStatusWord.IsQuickStopTrue;
 
         public ushort OperatingMode
         {
@@ -80,11 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
-        public byte SystemIndex
-        {
-            get => this.systemIndex;
-            protected set => this.systemIndex = value;
-        }
+        public InverterIndex SystemIndex { get; }
 
         #endregion
 

@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    internal partial class AutomationService : AutomationBackgroundService
+    partial class AutomationService
     {
         #region Methods
 
@@ -19,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 notification.Destination == MessageActor.Any;
         }
 
-        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage)
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             switch (receivedMessage.Type)
             {
@@ -86,7 +85,18 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.MachineStatusActive:
                     this.MachineStatusActiveMethod(receivedMessage);
                     break;
+
+                case MessageType.DataLayerReady:
+                    this.OnDataLayerReady();
+                    break;
+
+                case MessageType.FaultStateChanged:
+                case MessageType.RunningStateChanged:
+                    this.OnMachineRunningStatusChange(receivedMessage);
+                    break;
             }
+
+            this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
         }
 
         private void OnDataLayerException(NotificationMessage receivedMessage)

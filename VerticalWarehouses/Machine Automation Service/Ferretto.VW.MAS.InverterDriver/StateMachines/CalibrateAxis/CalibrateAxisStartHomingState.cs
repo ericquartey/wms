@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Threading;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -11,9 +12,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const int CheckDelayTime = 1000;
+
         private readonly Axis axisToCalibrate;
 
-        private bool homingReachedReset;
+        private readonly Calibration calibration;
+
+        private readonly Timer delayCheckTimer;
+
+        private bool delayElapsed;
 
         #endregion
 
@@ -22,13 +29,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public CalibrateAxisStartHomingState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
+            Calibration calibration,
             IHomingInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
-
+            this.calibration = calibration;
             this.Inverter = inverterStatus;
+            this.delayCheckTimer = new Timer(this.DelayCheck, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -43,6 +52,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Calibrate start homing axis {this.axisToCalibrate}");
+            this.delayCheckTimer.Change(CheckDelayTime, CheckDelayTime);
+            this.delayElapsed = false;
+
             this.Inverter.HomingControlWord.HomingOperation = true;
 
             this.ParentStateMachine.EnqueueCommandMessage(
@@ -55,9 +68,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Calibrate Stop requested");
 
-            this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(
+                new CalibrateAxisStopState(
+                    this.ParentStateMachine,
+                    this.axisToCalibrate,
+                    this.calibration,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />
@@ -76,47 +95,40 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus is AngInverterStatus currentStatus)
                 {
-                    if (this.axisToCalibrate == Axis.Horizontal)
+                    if (this.delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
                     {
-                        this.homingReachedReset = true;
-                    }
-                    if (!currentStatus.HomingStatusWord.HomingAttained)
-                    {
-                        this.homingReachedReset = true;
-                    }
-                    if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
-                    {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }
 
                 if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
                 {
-                    if (this.axisToCalibrate == Axis.Horizontal)
+                    if (this.delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
-                        this.homingReachedReset = true;
-                    }
-                    if (!currentAcuStatus.HomingStatusWord.HomingAttained)
-                    {
-                        this.homingReachedReset = true;
-                    }
-                    if (this.homingReachedReset && currentAcuStatus.HomingStatusWord.HomingAttained)
-                    {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }
             }
 
             return returnValue;
+        }
+
+        private void DelayCheck(object state)
+        {
+            // stop timer
+            this.delayCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            // delay expired
+            this.delayElapsed = true;
         }
 
         #endregion

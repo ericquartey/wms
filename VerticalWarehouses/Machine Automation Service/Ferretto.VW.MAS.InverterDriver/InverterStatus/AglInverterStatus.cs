@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
@@ -16,22 +17,18 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 8;
 
-        private readonly ShutterType shutterType;
-
         private ShutterPosition currentShutterPosition;
 
         #endregion
 
         #region Constructors
 
-        public AglInverterStatus(byte systemIndex)
+        public AglInverterStatus(InverterIndex systemIndex)
+            : base(systemIndex)
         {
-            this.SystemIndex = systemIndex;
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-            this.InverterType = InverterType.Agl;
-            this.shutterType = ShutterType.Shutter3Type;
         }
 
         #endregion
@@ -99,8 +96,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with ProfileVelocity Mode");
             }
         }
-
-        public ShutterType ShutterType => this.shutterType;
 
         #endregion
 

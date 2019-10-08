@@ -30,6 +30,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
@@ -52,7 +53,7 @@
                            Text="{x:Static res:VWApp.ErrorCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
-                           Background="Red"
+                           Background="{DynamicResource FerrettoRed}"
                            Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                            Text="{Binding Error.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
                            TextAlignment="Center"
@@ -73,8 +74,14 @@
                                   ContentText="{Binding Error.Definition.Reason}"
                                   LabelText="{x:Static res:VWApp.ErrorReason}" />
 
+            <local:PpcLabeledText Grid.Row="3"
+                                  Grid.ColumnSpan="2"
+                                  MinHeight="100"
+                                  HorizontalAlignment="Left"
+                                  ContentText="{Binding ErrorTime}"
+                                  LabelText="Visto" />
 
-            <local:PpcButton Grid.Row="3"
+            <local:PpcButton Grid.Row="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"

@@ -38,7 +38,9 @@ namespace Ferretto.VW.App.Services
 
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            if (e.HealthStatus == HealthStatus.Unhealthy)
+            if (e.HealthStatus == HealthStatus.Unhealthy
+                &&
+                System.Configuration.ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),

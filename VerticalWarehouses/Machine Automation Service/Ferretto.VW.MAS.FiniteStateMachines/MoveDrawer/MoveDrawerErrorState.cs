@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -13,27 +14,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
-        private readonly Axis axis;
+        private readonly IMoveDrawerMachineData machineData;
 
-        private readonly IDrawerOperationMessageData drawerOperationData;
+        private readonly IMoveDrawerStateData stateData;
 
-        private readonly FieldNotificationMessage errorMessage;
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public MoveDrawerErrorState(
-            IStateMachine parentMachine,
-            FieldNotificationMessage errorMessage,
-            IDrawerOperationMessageData drawerOperationData,
-            Axis axis,
-            ILogger logger)
-            : base(parentMachine, logger)
+        public MoveDrawerErrorState(IMoveDrawerStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
-            this.errorMessage = errorMessage;
-            this.drawerOperationData = drawerOperationData;
-            this.axis = axis;
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IMoveDrawerMachineData;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~MoveDrawerErrorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -52,11 +56,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
                 var notificationMessage = new NotificationMessage(
-                    this.drawerOperationData,
+                    this.machineData.DrawerOperationData,
                     $"{FieldMessageType.InverterStop} Error",
-                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.DrawerOperation,
+                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -74,7 +80,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         {
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Reset Inverter Axis {this.axis}",
+                $"Reset Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop,
@@ -85,19 +91,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
             var notificationMessage = new NotificationMessage(
-                this.drawerOperationData,
+                this.machineData.DrawerOperationData,
                 $"{MessageType.DrawerOperation} Error",
-                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
                 MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Stop Method Empty");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

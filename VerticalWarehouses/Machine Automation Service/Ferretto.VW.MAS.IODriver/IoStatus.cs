@@ -1,18 +1,22 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver
 {
     public class IoStatus
     {
-
         #region Fields
+
+        public const int TOTAL_INPUTS = 16;
 
         private const short COMTOUT_DEFAULT = 20000;
 
-        private const byte DEBOUNCE_INPUT_DEFAULT = 0x23; // 35 ms
+        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32; // 50 ms
 
         private const byte RELEASE_FW_10 = 0x10;
 
@@ -20,11 +24,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const byte SETUP_OUTPUTLINES_DEFAULT = 0x00;
 
-        private const int TOTAL_INPUTS = 16;
-
         private const int TOTAL_OUTPUTS = 8;
 
         private readonly bool[] inputs;
+
+        private readonly IoIndex ioIndex;
 
         private readonly bool[] outputs;
 
@@ -46,7 +50,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public IoStatus()
+        public IoStatus(IoIndex ioIndex)
         {
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
@@ -58,28 +62,31 @@ namespace Ferretto.VW.MAS.IODriver
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
             this.useSetupOutputLines = false;
             this.ipAddress = string.Empty;
+            this.ioIndex = ioIndex;
         }
 
         #endregion
 
-
-
         #region Properties
 
+        [Column(Order = (int)IoPorts.AntiIntrusionBarrierBay)]
         public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
 
+        [Column(Order = (int)IoPorts.CradleMotor)]
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
+        [Column(Order = (int)IoPorts.CradleMotorFeedback)]
         public bool CradleMotorSelected => this.inputs?[(int)IoPorts.CradleMotorFeedback] ?? false;
 
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
+        [Column(Order = (int)IoPorts.ElevatorMotorFeedback)]
         public bool ElevatorMotorSelected => this.inputs?[(int)IoPorts.ElevatorMotorFeedback] ?? false;
 
         public ShdFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
@@ -88,19 +95,26 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool[] InputData => this.inputs;
 
+        public IoIndex IoIndex => this.ioIndex;
+
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
+        [Column(Order = (int)IoPorts.LoadingUnitInBay)]
         public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
+        [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
         public bool MicroCarterLeftSideBay => this.inputs?[(int)IoPorts.MicroCarterLeftSideBay] ?? false;
 
+        [Column(Order = (int)IoPorts.MicroCarterRightSideBay)]
         public bool MicroCarterRightSideBay => this.inputs?[(int)IoPorts.MicroCarterRightSideBay] ?? false;
 
+        [Column(Order = (int)IoPorts.MushroomEmergency)]
         public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
 
+        [Column(Order = (int)IoPorts.NormalState)]
         public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public bool[] OutputData => this.outputs;
@@ -114,8 +128,6 @@ namespace Ferretto.VW.MAS.IODriver
         #endregion
 
         // Add other output signals names
-
-
 
         #region Methods
 

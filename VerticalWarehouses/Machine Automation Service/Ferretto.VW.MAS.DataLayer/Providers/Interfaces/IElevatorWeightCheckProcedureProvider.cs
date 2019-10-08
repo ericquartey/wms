@@ -1,10 +1,10 @@
-﻿namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IElevatorWeightCheckProcedureProvider
     {
         #region Methods
 
-        void Start(int loadingUnitId, decimal runToTest, decimal weight);
+        void Start(int loadingUnitId, double displacement, double weight);
 
         void Stop();
 

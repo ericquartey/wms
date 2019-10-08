@@ -4,9 +4,9 @@ using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal class ServicingProvider : Interfaces.IServicingProvider
+    internal sealed class ServicingProvider : IServicingProvider
     {
         #region Fields
 

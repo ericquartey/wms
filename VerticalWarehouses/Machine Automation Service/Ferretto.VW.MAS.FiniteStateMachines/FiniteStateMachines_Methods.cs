@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
-using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable.Models;
+using Ferretto.VW.MAS.FiniteStateMachines.ResetFault;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -28,235 +27,193 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Methods
 
-        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
-        {
-            if (this.currentStateMachine != null)
-            {
-                this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                this.currentStateMachine = null;
-            }
-
-            var powerEnableData = new PowerEnableData(this.eventAggregator,
-                this.vertimagConfiguration.GetInstalledIoList().ToList(),
-                this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                data.Enable,
-                this.logger,
-                this.serviceScopeFactory);
-
-            this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
-
-            this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
-
-            try
-            {
-                this.currentStateMachine.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
-        }
-
-        private void DelayTimerMethod(object state)
-        {
-            // stop timer
-            this.delayTimer.Change(Timeout.Infinite, Timeout.Infinite);
-
-            // send a notification to wake up the state machine waiting for the delay
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Delay Timer Expired",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
-                MessageType.CheckCondition,
-                MessageStatus.OperationExecuting);
-
-            this.logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-        }
-
-        private bool EvaluateCondition(ConditionToCheckType condition)
-        {
-            var result = false;
-            switch (condition)
-            {
-                case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.IsMachineInEmergencyStateBay1;
-                    break;
-
-                case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
-                    break;
-
-                case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1;
-                    break;
-
-                    //TEMP Add here other condition getters
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// This routine contains all conditions to be satisfied before to do an homing operation.
-        /// </summary>
-        //TEMP
-        //private bool IsHomingToExecute(out ConditionToCheckType condition)
-        //{
-        //    //TEMP The following conditions must be checked in order to execute an homing operation
-
-        //    condition = ConditionToCheckType.MachineIsInEmergencyState;
-        //    if (this.EvaluateCondition(condition))
-        //    {
-        //        this.logger.LogTrace("1:MachineIsInEmergencyState");
-        //        return false;
-        //    }
-
-        //    condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
-        //    if (this.EvaluateCondition(condition))
-        //    {
-        //        this.logger.LogTrace("1:DrawerIsPartiallyOnCradle");
-        //        return false;
-        //    }
-
-        //    //TEMP This condition does not satisfied by the Bender machine
-        //    //condition = ConditionToCheckType.SensorInZeroOnCradle;
-        //    //if (!this.EvaluateCondition(condition))
-        //    //{
-        //    //    return false;
-        //    //}
-
-        //    return true;
-        //}
-
-        private InverterIndex InverterFromBayNumber(int BayNumber)
-        {
-            InverterIndex inverterIndex;
-            switch (BayNumber)
-            {
-                case 1:
-                    inverterIndex = InverterIndex.Slave2;
-                    break;
-
-                case 2:
-                    inverterIndex = InverterIndex.Slave4;
-                    break;
-
-                case 3:
-                    inverterIndex = InverterIndex.Slave6;
-                    break;
-
-                default:
-                    throw new ArgumentException($"Bay number not valid {BayNumber}");
-            }
-            return inverterIndex;
-        }
-
-        private void ProcessCheckConditionMessage(CommandMessage message)
+        private void ProcessCheckConditionMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
 
             if (message.Data is ICheckConditionMessageData data)
             {
-                data.Result = this.EvaluateCondition(data.ConditionToCheck);
+                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                switch (data.ConditionToCheck)
+                {
+                    case ConditionToCheckType.MachineIsInEmergencyState:
+                        data.Result = machineResourcesProvider.IsMachineInEmergencyStateBay1;
+                        break;
+
+                    case ConditionToCheckType.DrawerIsCompletelyOnCradle:
+                        data.Result = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+                        break;
+
+                    case ConditionToCheckType.DrawerIsPartiallyOnCradle:
+                        data.Result = machineResourcesProvider.IsDrawerPartiallyOnCradleBay1;
+                        break;
+
+                        //TEMP Add here other condition getters
+                }
 
                 //TEMP Send a notification message
                 var msg = new NotificationMessage(
-                data,
-                $"{data.ConditionToCheck} response: {data.Result}",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.CheckCondition,
-                MessageStatus.OperationEnd);
+                    data,
+                    $"{data.ConditionToCheck} response: {data.Result}",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.CheckCondition,
+                    message.RequestingBay,
+                    message.RequestingBay,
+                    MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
         }
 
-        private void ProcessDrawerOperation(CommandMessage receivedMessage)
+        private void ProcessDrawerOperation(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
-            if (receivedMessage.Data is IDrawerOperationMessageData data)
+            if (this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var currentStateMachine))
             {
-                this.logger.LogTrace("2: Starting Drawer Operation FSM");
-
-                this.currentStateMachine = new MoveDrawerStateMachine(
-                    this.eventAggregator,
-                    this.setupStatusProvider,
-                    this.machineSensorsStatus,
-                    this.generalInfoDataLayer,
-                    this.verticalAxis,
-                    this.horizontalAxis,
-                    data,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                try
+                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on bay {receivedMessage.RequestingBay}", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (receivedMessage.Data is IDrawerOperationMessageData data)
                 {
-                    this.currentStateMachine.Start();
+                    this.logger.LogTrace("2: Starting Drawer Operation FSM");
+
+                    currentStateMachine = new MoveDrawerStateMachine(
+                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        receivedMessage.RequestingBay,
+                        serviceProvider.GetRequiredService<ISetupStatusProvider>(),
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
+                        data,
+                        this.eventAggregator,
+                        this.logger,
+                        this.serviceScopeFactory);
+
+                    this.currentStateMachines.Add(receivedMessage.RequestingBay, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex,
+                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
+
+                        this.SendNotificationMessage(
+                            new FsmExceptionMessageData(
+                                ex,
+                                $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine",
+                                1,
+                                MessageVerbosity.Error));
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    this.logger.LogError($"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine");
+                    this.logger.LogError(
+                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error));
+                    this.SendNotificationMessage(
+                        new FsmExceptionMessageData(
+                            null,
+                            $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
+                            2,
+                            MessageVerbosity.Error));
+                }
+            }
+        }
+
+        private void ProcessHomingMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (receivedMessage.Data is IHomingMessageData data)
+            {
+                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+                var targetBay = baysProvider.GetByAxis(data);
+                if (targetBay == BayNumber.None)
+                {
+                    targetBay = receivedMessage.RequestingBay;
+                }
+
+                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+                {
+                    this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                    this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                }
+                else
+                {
+                    receivedMessage.TargetBay = targetBay;
+                    currentStateMachine = new HomingStateMachine(
+                        data.AxisToCalibrate,
+                        data.CalibrationType,
+                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        receivedMessage.RequestingBay,
+                        receivedMessage.TargetBay,
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
+                        this.eventAggregator,
+                        this.logger,
+                        baysProvider,
+                        this.serviceScopeFactory);
+
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(targetBay, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+
+                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
             else
             {
-                this.logger.LogError($"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
-
-                this.SendMessage(new FsmExceptionMessageData(null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error));
+                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
-        private void ProcessHomingMessage(CommandMessage message)
+        private void ProcessInverterFaultResetMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IHomingMessageData data)
+            var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+
+            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
-                //TEMP Check the conditions before start an homing procedure
-                //if (!this.IsHomingToExecute(out var condition))
-                //{
-                //    var notificationData = new HomingMessageData(data.AxisToCalibrate);
+                this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on {receivedMessage.TargetBay}",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
 
-                //    var msg = new NotificationMessage(
-                //        notificationData,
-                //        $"Condition: {condition}",
-                //        MessageActor.Any,
-                //        MessageActor.FiniteStateMachines,
-                //        MessageType.Homing,
-                //        MessageStatus.OperationError,
-                //        ErrorLevel.Error);
-                //    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-
-                //    return;
-                //}
-
-                //TEMP Instantiate the homing states machine
-                this.currentStateMachine = new HomingStateMachine(
-                    this.machineSensorsStatus,
+                currentStateMachine = new ResetFaultStateMachine(
+                    receivedMessage,
+                    inverterList,
                     this.eventAggregator,
-                    data,
-                    this.machineConfigurationProvider.IsOneKMachine(),
                     this.logger,
                     this.serviceScopeFactory);
 
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
 
                 try
                 {
-                    this.currentStateMachine.Start();
+                    currentStateMachine.Start();
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+                    this.logger.LogError(ex, $"3:Exception: during the FSM {currentStateMachine.GetType()} start");
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -275,167 +232,179 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage(IPositioningMessageData data)
+        private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
-            if (data is null)
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+            if (message.Data is IPositioningMessageData data)
             {
-                return;
+                var targetBay = baysProvider.GetByMovementType(data);
+                if (targetBay == BayNumber.None)
+                {
+                    targetBay = message.RequestingBay;
+                }
+
+                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+                {
+                    this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                }
+                else
+                {
+                    data.IsOneKMachine = machineProvider.IsOneTonMachine();
+                    data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+
+                    currentStateMachine = new PositioningStateMachine(
+                        message.RequestingBay,
+                        targetBay,
+                        data,
+                        machineResourcesProvider,
+                        this.eventAggregator,
+                        this.logger,
+                        baysProvider,
+                        this.serviceScopeFactory);
+
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(targetBay, currentStateMachine);
+
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
+
+                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
+                }
             }
-
-            this.logger.LogTrace("1:Method Start");
-
-            data.IsOneKMachine = this.machineConfigurationProvider.IsOneKMachine();
-            data.IsStartedOnBoard = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
-
-            this.currentStateMachine = new PositioningStateMachine(
-                this.machineSensorsStatus,
-                this.eventAggregator,
-                data,
-                this.logger,
-                this.serviceScopeFactory);
-
-            this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-            try
+            else
             {
-                this.logger.LogDebug("Starting Positioning FSM");
-                this.currentStateMachine.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
-        private void ProcessPowerEnableMessage(CommandMessage message)
+        private void ProcessPowerEnableMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IPowerEnableMessageData data)
             {
-                if (
-                    (this.machineSensorsStatus.IsMachineInNormalState && !data.Enable) ||
-                    (!this.machineSensorsStatus.IsMachineInNormalState && data.Enable)
-                    )
-                {
-                    if (this.currentStateMachine != null)
-                    {
-                        this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                        this.currentStateMachine = null;
-                    }
+                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-                    var powerEnableData = new PowerEnableData(this.eventAggregator,
-                        this.vertimagConfiguration.GetInstalledIoList().ToList(),
-                        this.vertimagConfiguration.GetInstalledInverterList().Keys.ToList(),
-                        data.Enable,
+                //TODO verify pre conditions (is this actually an error ?)
+                if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
+                {
+                    this.logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType()}");
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        "Power Enable Info",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.PowerEnable,
+                        message.RequestingBay,
+                        BayNumber.BayOne,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Info);
+
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                    return;
+                }
+
+                if (machineResourcesProvider.IsMachineInRunningState && !data.Enable ||
+                    !machineResourcesProvider.IsMachineInRunningState && data.Enable)
+                {
+                    message.TargetBay = BayNumber.BayOne;
+                    currentStateMachine = new PowerEnableStateMachine(
+                        message,
+                        machineResourcesProvider,
+                        serviceProvider.GetRequiredService<IBaysProvider>(),
+                        this.eventAggregator,
                         this.logger,
                         this.serviceScopeFactory);
 
-                    this.currentStateMachine = new PowerEnableStateMachine(powerEnableData);
-
-                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+                    this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
                     try
                     {
-                        this.currentStateMachine.Start();
+                        currentStateMachine.Start();
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
+                        this.logger.LogError(ex, $"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
-                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
                 }
                 else
                 {
-                    this.logger.LogTrace($"5:Machine is already in the requested state: IsNormal {this.machineSensorsStatus.IsMachineInNormalState}: Enable {data.Enable}");
+                    this.logger.LogDebug(
+                        $"Machine is already in the requested state [Actual State: {machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
+
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Completed",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.PowerEnable,
+                        message.RequestingBay,
+                        BayNumber.BayOne,
                         MessageStatus.OperationEnd);
-
-                    this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
             }
         }
 
-        private void ProcessRequestPositionMessage(CommandMessage message)
+        private void ProcessResetSecurityMessage(CommandMessage message)
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IRequestPositionMessageData data)
+            if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
             {
-                if (data.CurrentAxis == Axis.Horizontal || data.CurrentAxis == Axis.Vertical)
-                {
-                    var msgData = new PositioningMessageData();
-                    msgData.CurrentPosition = (data.CurrentAxis == Axis.Horizontal)
-                        ? this.machineSensorsStatus.AxisXPosition
-                        : this.machineSensorsStatus.AxisYPosition;
-
-                    var msg = new NotificationMessage(
-                        msgData,
-                        "Request Position",
-                        MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
-                        MessageType.Positioning,
-                        MessageStatus.OperationExecuting);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-                }
-                else if (data.BayNumber > 0)
-                {
-                    var notificationMessageData = new ShutterPositioningMessageData();
-                    var inverterStatus = new AglInverterStatus((byte)this.InverterFromBayNumber(data.BayNumber));
-                    var sensorStart = (int)(IOMachineSensors.PowerOnOff + inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
-                    Array.Copy(this.machineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
-                    notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
-                    var msg = new NotificationMessage(
-                        notificationMessageData,
-                        $"Request Position",
-                        MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
-                        MessageType.ShutterPositioning,
-                        MessageStatus.OperationExecuting);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-                }
-            }
-        }
-
-        private void ProcessResetSecurityMessage()
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            //if (message.Data is IResetSecurityMessageData data)
-            {
-                this.currentStateMachine = new ResetSecurityStateMachine(
-                    this.eventAggregator,
+                this.logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType()}");
+                var notificationMessage = new NotificationMessage(
                     null,
+                    "Power Enable Critical error",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.PowerEnable,
+                    message.RequestingBay,
+                    BayNumber.BayOne,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Critical);
+
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                return;
+            }
+
+            currentStateMachine = new ResetSecurityStateMachine(
+                    message.RequestingBay,
+                    BayNumber.BayOne,
+                    this.eventAggregator,
                     this.logger,
                     this.serviceScopeFactory);
 
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+            this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+            this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
-                try
-                {
-                    this.logger.LogDebug("Starting Reset Security FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+            try
+            {
+                currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 
-        private void ProcessSensorsChangedMessage()
+        private void ProcessSensorsChangedMessage(IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -451,51 +420,68 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            foreach (var index in this.ioIndexDeviceList)
+            foreach (var ioDevice in serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>().GetAllIoDevices())
             {
-                var ioDataMessage = new SensorsChangedFieldMessageData();
-                ioDataMessage.SensorsStatus = true;
+                var ioDataMessage = new SensorsChangedFieldMessageData
+                {
+                    SensorsStatus = true
+                };
+
                 var ioMessage = new FieldCommandMessage(
                     ioDataMessage,
                     "Update IO digital input",
                     FieldMessageActor.IoDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.SensorsChanged,
-                    (byte)index);
+                    (byte)ioDevice.Index);
 
                 this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
+                this.forceRemoteIoStatusPublish[(int)ioDevice.Index] = true;
             }
 
             this.forceInverterIoStatusPublish = true;
-            this.forceRemoteIoStatusPublish = true;
         }
 
-        private void ProcessShutterPositioningMessage(CommandMessage message)
+        private void ProcessShutterPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IShutterPositioningMessageData data)
+            if (this.currentStateMachines.TryGetValue(message.RequestingBay, out var currentStateMachine))
             {
-                try
+                this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType()}");
+                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                    $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on ElevatorBay",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                if (message.Data is IShutterPositioningMessageData data)
                 {
-                    this.currentStateMachine = new ShutterPositioningStateMachine(
+                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+
+                    message.TargetBay = message.RequestingBay;
+                    currentStateMachine = new ShutterPositioningStateMachine(data,
+                        message.RequestingBay,
+                        message.TargetBay,
+                        baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
+                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.eventAggregator,
-                        data,
-                        this.InverterFromBayNumber(data.BayNumber),
                         this.logger,
-                        this.serviceScopeFactory,
-                        this.machineSensorsStatus,
-                        this.delayTimer);
+                        this.serviceScopeFactory);
 
-                    this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                    this.logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType()}");
+                    this.currentStateMachines.Add(message.TargetBay, currentStateMachine);
 
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+                    try
+                    {
+                        currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType()} start");
 
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
                 }
             }
         }
@@ -503,8 +489,46 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private void ProcessStopMessage(CommandMessage receivedMessage)
         {
             this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
+            if (receivedMessage.TargetBay == BayNumber.None)
+            {
+                if (this.currentStateMachines.Any(x => x.Key == receivedMessage.RequestingBay))
+                {
+                    receivedMessage.TargetBay = receivedMessage.RequestingBay;
+                }
+                else
+                {
+                    // message received from the UI: let's stop the first active FSM
+                    receivedMessage.TargetBay = this.currentStateMachines.Keys.FirstOrDefault();
+                }
+            }
 
-            this.currentStateMachine?.Stop();
+            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            {
+                if (receivedMessage.Data is IStopMessageData data)
+                {
+                    currentStateMachine.Stop(data.StopReason);
+                }
+                else
+                {
+                    currentStateMachine.Stop(StopRequestReason.Stop);
+                }
+            }
+            else
+            {
+                var errorNotification = new NotificationMessage(
+                    receivedMessage.Data,
+                    $"Bay {receivedMessage.TargetBay} is already stopped",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    receivedMessage.Type,
+                    receivedMessage.RequestingBay,
+                    receivedMessage.TargetBay,
+                    MessageStatus.OperationEnd);
+
+                this.logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+            }
         }
 
         #endregion

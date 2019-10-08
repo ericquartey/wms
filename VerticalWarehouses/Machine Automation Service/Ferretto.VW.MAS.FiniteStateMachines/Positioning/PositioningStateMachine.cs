@@ -1,6 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning.Models;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,35 +16,39 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly ILogger logger;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
-
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IPositioningMachineData machineData;
 
         #endregion
 
         #region Constructors
 
         public PositioningStateMachine(
-            IMachineSensorsStatus machineSensorsStatus,
+            BayNumber requestingBay,
+            BayNumber targetBay,
+            IPositioningMessageData messageData,
+            IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
-            IPositioningMessageData positioningMessageData,
-            ILogger logger,
+            ILogger<FiniteStateMachines> logger,
+            IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.logger = logger;
+            this.CurrentState = new EmptyState(this.Logger);
 
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.logger.LogTrace($"TargetPosition = {positioningMessageData.TargetPosition} - CurrentPosition = {positioningMessageData.CurrentPosition} - MovementType = {positioningMessageData.MovementType}");
+            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
 
-            this.CurrentState = new EmptyState(logger);
-
-            this.positioningMessageData = positioningMessageData;
-
-            this.machineSensorsStatus = machineSensorsStatus;
+            this.machineData = new PositioningMachineData(
+                requestingBay,
+                targetBay,
+                messageData,
+                machineResourcesProvider,
+                baysProvider.GetInverterIndexByMovementType(messageData, targetBay),
+                eventAggregator,
+                logger,
+                baysProvider,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -50,7 +57,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
@@ -60,7 +67,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -70,7 +77,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
@@ -80,68 +87,112 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
+            //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                var canStartPositioning = this.CheckConditions();
-                if (canStartPositioning)
+                var stateData = new PositioningStateData(this, this.machineData);
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                if (this.CheckConditions(out string errorText))
                 {
-                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero
-                        &&
-                        this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    if (this.machineData.MessageData.MovementMode == MovementMode.FindZero && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     {
-                        this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
+                        this.CurrentState = new PositioningEndState(stateData);
                     }
                     else
                     {
-                        this.CurrentState = new PositioningStartState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger);
+                        this.CurrentState = new PositioningStartState(stateData);
                     }
                 }
                 else
                 {
                     var notificationMessage = new NotificationMessage(
-                        this.positioningMessageData,
-                        "Conditions not verified for positioning",
+                        this.machineData.MessageData,
+                        errorText,
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.InverterException,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
                         MessageStatus.OperationStart);
 
-                    this.Logger.LogError($"Conditions not verified for positioning");
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                        errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                    }
+
+                    this.Logger.LogError(errorText);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.CurrentState = new PositioningErrorState(this, this.machineSensorsStatus, this.positioningMessageData, null, this.Logger);
+                    this.CurrentState = new PositioningErrorState(stateData);
                 }
 
                 this.CurrentState?.Start();
             }
             //INFO End check the pre conditions to start the positioning
 
-            this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
-        public override void Stop()
+        public override void Stop(StopRequestReason reason)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
-                this.CurrentState.Stop();
+                this.CurrentState.Stop(reason);
             }
         }
 
-        private bool CheckConditions()
+        // return false in case of error
+        private bool CheckConditions(out string errorText)
         {
-            //HACK The condition must be handled by the Bug #3711
-            //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-
-            return (((this.machineSensorsStatus.IsDrawerCompletelyOnCradle &&
-                    !this.machineSensorsStatus.IsSensorZeroOnCradle &&
-                    (this.positioningMessageData.MovementMode == MovementMode.Position || this.positioningMessageData.MovementMode == MovementMode.BeltBurnishing)) ||
-                this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle
-                ) &&
-                this.positioningMessageData.AxisMovement == Axis.Vertical)
-                ||
-                this.positioningMessageData.AxisMovement == Axis.Horizontal;
+            bool ok = true;
+            errorText = string.Empty;
+            if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
+               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+            {
+                ok = false;
+                errorText = "Invalid presence sensors";
+            }
+            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+               this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+            {
+                ok = false;
+                errorText = "Missing Zero sensor with empty elevator";
+            }
+            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
+                this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
+                this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
+                (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                )
+            {
+                ok = false;
+                errorText = "Zero sensor active with full elevator";
+            }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+            {
+                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
+                if (!ok)
+                {
+                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
+                            $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
+                            $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
+                }
+                else
+                {
+                    ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                    if (!ok)
+                    {
+                        errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";
+                    }
+                }
+            }
+            return ok;
         }
 
         #endregion

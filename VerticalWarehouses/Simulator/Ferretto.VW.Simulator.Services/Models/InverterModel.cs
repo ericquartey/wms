@@ -10,6 +10,13 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
+    public enum InverterCalibrationMode : ushort
+    {
+        FindSensor = 22,
+
+        ResetEncoder = 35,
+    }
+
     public enum InverterOperationMode : ushort
     {
         Position = 1,
@@ -252,6 +259,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer targetTimer;
 
+        private InverterCalibrationMode calibrationMode;
+
         private int controlWord;
 
         private Axis currentAxis;
@@ -323,7 +332,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.axisPosition = new Dictionary<Axis, int>();
             this.axisPosition.Add(Axis.Horizontal, 0);
-            this.axisPosition.Add(Axis.Vertical, 300);
+            this.axisPosition.Add(Axis.Vertical, 0);
 
             this.TargetPosition = new Dictionary<Axis, int>();
             this.TargetPosition.Add(Axis.Horizontal, 0);
@@ -376,6 +385,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
 
         public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
+
+        public InverterCalibrationMode CalibrationMode
+        {
+            get => this.calibrationMode;
+            set => this.SetProperty(ref this.calibrationMode, value);
+        }
 
         public int ControlWord
         {
@@ -594,9 +609,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.TargetPosition[Axis.Vertical] = 300 + new Random().Next(-5, 15);
-                    this.TargetPosition[Axis.Horizontal] = this.AxisPosition; //0 + new Random().Next(-5, 15);
-
+                    this.TargetPosition[Axis.Vertical] = 0 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Horizontal] = this.AxisPosition;
+                    if (this.calibrationMode == InverterCalibrationMode.FindSensor)
+                    {
+                        this.TargetPosition[Axis.Horizontal] += new Random().Next(-5, 15);
+                    }
                     this.homingTimerActive = true;
                     this.homingTimer.Change(0, 500);
                 }
@@ -712,7 +730,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x1000;          // Set TargetReached
                 if (this.currentAxis == Axis.Horizontal)
                 {
-                    this.AxisPosition = 0;
                     if (this.Id == 0)
                     {
                         this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
@@ -722,6 +739,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
                     }
                 }
+                this.AxisPosition = 0;
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
@@ -906,30 +924,30 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return;
             }
             if (this.TargetShutterPosition == (int)ShutterPosition.Opened
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 304)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 4)
                 )
             {
                 this.AxisPosition++;
             }
             else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 306)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 6)
                 )
             {
                 this.AxisPosition--;
             }
 
             // Shutter position
-            if (this.AxisPosition <= 300)
+            if (this.AxisPosition <= 0)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 304 && this.AxisPosition <= 306)
+            else if (this.AxisPosition >= 4 && this.AxisPosition <= 6)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = false;
             }
-            else if (this.AxisPosition >= 310)
+            else if (this.AxisPosition >= 10)
             {
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
@@ -986,12 +1004,26 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                     }
                     else
@@ -1000,12 +1032,26 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                            }
                         }
                     }
                 }
@@ -1021,12 +1067,26 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                     }
                     else
@@ -1035,12 +1095,26 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                            if (this.InverterType == InverterType.Ang)
+                            {
+                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                            }
+                            else
+                            {
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                            }
                         }
                     }
                 }

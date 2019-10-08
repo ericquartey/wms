@@ -8,9 +8,7 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
-        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
-
-        public const string DRAWERLOADINGUNLOADINGTEST = "DrawerLoadingUnloadingTestViewModel";
+        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";        
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
@@ -39,6 +37,7 @@
             #region Fields
 
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+            public const string DEPOSITANDPICKUPTEST = "DepositAndPickUpTestViewModel";
 
             #endregion
         }
@@ -50,6 +49,15 @@
             public const string STEP1 = "CellsHeightCheckStep1ViewModel";
 
             public const string STEP2 = "CellsHeightCheckStep2ViewModel";
+
+            #endregion
+        }
+
+        public static class Devices
+        {
+            #region Fields
+
+            public const string DEVICES = "DevicesViewModel";
 
             #endregion
         }

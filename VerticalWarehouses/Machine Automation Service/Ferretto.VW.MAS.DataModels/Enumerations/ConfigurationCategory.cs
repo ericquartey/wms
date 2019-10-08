@@ -4,18 +4,6 @@
     {
         Undefined = 0L,
 
-        GeneralInfo = 1L,
-
-        SetupNetwork = 2L,
-
-        VerticalAxis = 4L,
-
-        HorizontalAxis = 5L,
-
-        HorizontalMovementLongerProfile = 6L,
-
-        HorizontalMovementShorterProfile = 7L,
-
         VerticalManualMovements = 8L,
 
         HorizontalManualMovements = 9L,
@@ -38,6 +26,8 @@
 
         LoadFirstDrawer = 18L,
 
-        ShutterManualMovements = 19L
+        ShutterManualMovements = 19L,
+
+        DepositAndPickUp = 22L,
     }
 }

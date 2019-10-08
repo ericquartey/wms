@@ -7,15 +7,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningDisableOperationState : InverterStateBase
     {
+        #region Fields
+
+        private readonly bool stopRequested;
+
+        #endregion
+
         #region Constructors
 
         public PositioningDisableOperationState(
             IInverterStateMachine parentStateMachine,
             IPositioningInverterStatus inverterStatus,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Inverter = inverterStatus;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -31,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
+            this.Logger.LogDebug($"Positioning Disable Operation. StopRequested = {this.stopRequested}");
             this.Inverter.PositionControlWord.EnableOperation = false;
             this.Inverter.PositionControlWord.NewSetPoint = false;
             this.Inverter.PositionControlWord.RelativeMovement = false;
@@ -45,14 +54,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            if (this.stopRequested)
+            {
+                this.Logger.LogTrace("1:Stop process already active");
+            }
+            else
+            {
+                this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.ParentStateMachine.ChangeState(
-                new PositioningEndState(
-                    this.ParentStateMachine,
-                    this.Inverter,
-                    this.Logger,
-                    true));
+                this.ParentStateMachine.ChangeState(
+                    new PositioningStopState(
+                        this.ParentStateMachine,
+                        this.Inverter,
+                        this.Logger));
+            }
         }
 
         /// <inheritdoc />
@@ -78,11 +93,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningEndState(
-                            this.ParentStateMachine,
-                            this.Inverter,
-                            this.Logger));
+                    if (this.stopRequested)
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningQuickStopState(
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningEndState(
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
+                    }
 
                     returnValue = true;
                 }

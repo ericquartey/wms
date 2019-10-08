@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface ITorqueCurrentMeasurementsDataProvider
     {
         #region Methods
 
-        TorqueCurrentMeasurementSession AddMeasurementSession(int? loadingUnitId, decimal? loadedNetWeight);
+        TorqueCurrentMeasurementSession AddMeasurementSession(int? loadingUnitId, double? loadedNetWeight);
 
-        TorqueCurrentSample AddSample(int sessionId, decimal value, System.DateTime timeStamp, System.DateTime requestTimeStamp);
+        TorqueCurrentSample AddSample(int sessionId, double value, System.DateTime timeStamp, System.DateTime requestTimeStamp);
 
         IEnumerable<TorqueCurrentMeasurementSession> GetAllMeasurementSessions();
 

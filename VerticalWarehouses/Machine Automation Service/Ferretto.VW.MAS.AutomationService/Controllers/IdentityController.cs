@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer.Exceptions;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -12,11 +12,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IGeneralInfoConfigurationDataLayer generalInfo;
-
         private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
 
-        private readonly IMachineConfigurationProvider machineConfigurationProvider;
+        private readonly IMachineProvider machineProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -25,16 +23,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public IdentityController(
-            IGeneralInfoConfigurationDataLayer generalInfo,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
-            IMachineConfigurationProvider machineConfigurationProvider)
+            IMachineProvider machineProvider)
         {
-            if (generalInfo is null)
-            {
-                throw new System.ArgumentNullException(nameof(generalInfo));
-            }
-
             if (loadingUnitStatisticsProvider is null)
             {
                 throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
@@ -45,15 +37,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(servicingProvider));
             }
 
-            if (machineConfigurationProvider == null)
+            if (machineProvider is null)
             {
-                throw new System.ArgumentNullException(nameof(machineConfigurationProvider));
+                throw new System.ArgumentNullException(nameof(machineProvider));
             }
 
-            this.generalInfo = generalInfo;
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.servicingProvider = servicingProvider;
-            this.machineConfigurationProvider = machineConfigurationProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion
@@ -67,20 +58,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
+            var machine = this.machineProvider.Get();
             var machineInfo = new MachineIdentity
             {
-                Id = 1,
                 AreaId = 2, // TODO remove this hardcoded value
                 Width = 3080, // TODO remove this hardcoded value
                 Depth = 500, // TODO remove this hardcoded value
-                ModelName = this.generalInfo.Model,
-                SerialNumber = this.generalInfo.Serial,
+                ModelName = machine.ModelName,
+                SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
-                MaxGrossWeight = this.generalInfo.MaxGrossWeight,
+                MaxGrossWeight = machine.MaxGrossWeight,
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
                 LastServiceDate = servicingInfo.LastServiceDate,
-                IsOneTonMachine = this.machineConfigurationProvider.IsOneKMachine(),
+                IsOneTonMachine = this.machineProvider.IsOneTonMachine(),
             };
 
             return this.Ok(machineInfo);

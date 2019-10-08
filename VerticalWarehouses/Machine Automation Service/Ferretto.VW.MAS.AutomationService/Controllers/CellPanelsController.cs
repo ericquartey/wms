@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,18 +50,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CellPanel> UpdateHeight(int cellId, decimal newHeight)
+        public ActionResult<CellPanel> UpdateHeight(int cellId, double newHeight)
         {
-            try
-            {
-                var panel = this.cellPanelsProvider.UpdateHeight(cellId, newHeight);
+            var panel = this.cellPanelsProvider.UpdateHeight(cellId, newHeight);
 
-                return this.Ok(panel);
-            }
-            catch (Exception ex)
-            {
-                return this.NegativeResponse<CellPanel>(ex);
-            }
+            return this.Ok(panel);
         }
 
         #endregion

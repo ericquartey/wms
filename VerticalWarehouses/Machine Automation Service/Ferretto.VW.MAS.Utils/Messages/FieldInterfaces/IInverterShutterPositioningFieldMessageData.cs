@@ -8,7 +8,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int HigherDistance { get; set; }
 
+        int HighSpeedDurationClose { get; set; }
+
+        int HighSpeedDurationOpen { get; set; }
+
         int LowerDistance { get; set; }
+
+        int LowerSpeed { get; set; }
 
         MovementType MovementType { get; }
 

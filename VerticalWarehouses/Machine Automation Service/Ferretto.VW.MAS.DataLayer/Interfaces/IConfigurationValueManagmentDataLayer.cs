@@ -18,7 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        bool GetBoolConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        bool GetBoolConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Get a DateTime variable from the configuration table in the primary context
@@ -29,7 +30,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        DateTime GetDateTimeConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        DateTime GetDateTimeConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Get a decimal variable from the configuration table in the primary context
@@ -40,7 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        decimal GetDecimalConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        decimal GetDecimalConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Get an integer variable from the configuration table in the primary context
@@ -51,7 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        int GetIntegerConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        int GetIntegerConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Get an IPAddress variable from the runtime table in the primary context
@@ -62,7 +66,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        IPAddress GetIpAddressConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        IPAddress GetIpAddressConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Get a string variable from the configuration table in the primary context
@@ -72,7 +77,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <returns>Return the value of a string configuration parameter</returns>
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        string GetStringConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category) where TEnum : Enum;
+        string GetStringConfigurationValue<TEnum>(TEnum configurationValueEnum, ConfigurationCategory category)
+            where TEnum : Enum;
 
         /// <summary>
         ///     Set a bool variable in the configuration table to a new value or update it

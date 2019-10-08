@@ -56,11 +56,11 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
         }
@@ -283,7 +283,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     this.ReplyToInverterMessage(client, message);
 
-                    Thread.Sleep(DELAY_INVERTER_CLIENT);
+                    Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
                 }
             }
             else
@@ -387,9 +387,16 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
+                case InverterParameterId.HomingCalibration:
+                    inverter.CalibrationMode = (InverterCalibrationMode)message.UShortPayload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 case InverterParameterId.HomingCreepSpeedParam:
                 case InverterParameterId.HomingFastSpeedParam:
                 case InverterParameterId.HomingAcceleration:
+                case InverterParameterId.HomingSensor:
+                case InverterParameterId.HomingOffset:
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -517,8 +524,8 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.ShutterAbsoluteEnable:
-                case InverterParameterId.ShutterAbsoluteRevs:
+                case InverterParameterId.ShutterLowVelocity:
+                case InverterParameterId.ShutterHighVelocityDuration:
                     result = client.Client.Send(message.ToBytes());
                     break;
 
@@ -567,13 +574,17 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
-            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
+            inverter.CurrentAxis = (!inverter.IsHorizontalAxis && inverter.Id == 0) ? Axis.Vertical : Axis.Horizontal;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
             // Logic
-            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
+            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
+                !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
+                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value
+                )
             {
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);

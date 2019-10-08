@@ -31,16 +31,16 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (this.dataLayerService.IsReady)
             {
                 return Task.FromResult(
-                    HealthCheckResult.Healthy("The startup sequence is completed."));
+                    HealthCheckResult.Healthy(Resources.General.ServiceStartupSequenceCompleted));
             }
 
             return Task.FromResult(
-                HealthCheckResult.Unhealthy("The data layer is initializing."));
+                HealthCheckResult.Unhealthy(Resources.General.ServiceIsInitializing));
         }
 
         #endregion

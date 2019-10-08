@@ -23,19 +23,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
 
-        private decimal? currentHorizontalPosition;
+        private double? currentHorizontalPosition;
 
-        private decimal? currentVerticalPosition;
+        private double? currentVerticalPosition;
 
         private bool isExecutingProcedure;
 
+        private bool isExecutingVerticalOperation;
+
         private bool isWaitingForResponse;
 
-        private decimal lowerBound;
+        private double lowerBound;
 
         private string noteString;
 
-        private decimal offset;
+        private double offset;
 
         private SubscriptionToken receivedCalibrateAxisUpdateToken;
 
@@ -53,9 +55,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken updateCurrentPositionToken;
 
-        private decimal upperBound;
-
-        private bool verticalOperation;
+        private double upperBound;
 
         #endregion
 
@@ -84,13 +84,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public decimal? CurrentHorizontalPosition
+        public double? CurrentHorizontalPosition
         {
             get => this.currentHorizontalPosition;
             private set => this.SetProperty(ref this.currentHorizontalPosition, value);
         }
 
-        public decimal? CurrentVerticalPosition
+        public double? CurrentVerticalPosition
         {
             get => this.currentVerticalPosition;
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public decimal LowerBound
+        public double LowerBound
         {
             get => this.lowerBound;
             set => this.SetProperty(ref this.lowerBound, value);
@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.noteString, value);
         }
 
-        public decimal Offset
+        public double Offset
         {
             get => this.offset;
             set => this.SetProperty(ref this.offset, value);
@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanExecuteStopCommand));
 
-        public decimal UpperBound
+        public double UpperBound
         {
             get => this.upperBound;
             set => this.SetProperty(ref this.upperBound, value);
@@ -293,22 +293,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCalibrationStepCompleted(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationExecuting
-                ||
-                message.Status == MessageStatus.OperationError)
+            if (message.Status == MessageStatus.OperationExecuting)
             {
-                this.verticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+                this.isExecutingVerticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
 
                 this.ShowNotification(
                     string.Format(
                         this.GetStringByCalibrateAxisMessageData(message.Data.AxisToCalibrate, message.Status),
                         message.Data.CurrentStepCalibrate,
                         message.Data.MaxStepCalibrate));
+            }
 
-                if (message.Status == MessageStatus.OperationError)
-                {
-                    this.IsExecutingProcedure = false;
-                }
+            if (message.Status == MessageStatus.OperationError)
+            {
+                this.isExecutingVerticalOperation = !(message.Data.AxisToCalibrate == Axis.Horizontal);
+
+                this.ShowNotification(message.Description);
+
+                this.IsExecutingProcedure = false;
             }
         }
 
@@ -319,7 +321,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            if (this.verticalOperation)
+            if (this.isExecutingVerticalOperation)
             {
                 this.CurrentVerticalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
             }
@@ -333,7 +335,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
-                this.verticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
+                this.isExecutingVerticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
 
                 switch (h.Status)
                 {
@@ -376,7 +378,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.verticalOperation = true;
+                this.isExecutingVerticalOperation = false;
 
                 await this.verticalOriginProcedureService.StartAsync();
 

@@ -5,9 +5,9 @@ using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer.Providers
+namespace Ferretto.VW.MAS.DataLayer
 {
-    public class TorqueCurrentMeasurementsDataProvider : ITorqueCurrentMeasurementsDataProvider
+    public sealed class TorqueCurrentMeasurementsDataProvider : ITorqueCurrentMeasurementsDataProvider
     {
         #region Fields
 
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public TorqueCurrentMeasurementSession AddMeasurementSession(int? loadingUnitId, decimal? loadedNetWeight)
+        public TorqueCurrentMeasurementSession AddMeasurementSession(int? loadingUnitId, double? loadedNetWeight)
         {
             if (loadedNetWeight.HasValue && !loadingUnitId.HasValue)
             {
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 new TorqueCurrentMeasurementSession
                 {
                     LoadedNetWeight = loadedNetWeight ?? 0,
-                    LoadingUnitId = loadingUnitId
+                    LoadingUnitId = loadingUnitId,
                 });
 
             this.dataContext.SaveChanges();
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return entry.Entity;
         }
 
-        public TorqueCurrentSample AddSample(int sessionId, decimal value, DateTime timeStamp, DateTime requestTimeStamp)
+        public TorqueCurrentSample AddSample(int sessionId, double value, DateTime timeStamp, DateTime requestTimeStamp)
         {
             var entry = this.dataContext.TorqueCurrentSamples.Add(
                 new TorqueCurrentSample
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     MeasurementSessionId = sessionId,
                     Value = value,
                     TimeStamp = timeStamp,
-                    RequestTimeStamp = requestTimeStamp
+                    RequestTimeStamp = requestTimeStamp,
                 });
 
             this.dataContext.SaveChanges();

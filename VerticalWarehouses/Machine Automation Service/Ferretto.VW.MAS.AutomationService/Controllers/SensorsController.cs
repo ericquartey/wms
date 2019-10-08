@@ -1,4 +1,7 @@
-﻿using Ferretto.VW.MAS.DataLayer.Providers;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 

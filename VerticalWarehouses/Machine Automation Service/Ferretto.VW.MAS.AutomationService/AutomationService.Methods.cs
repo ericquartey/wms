@@ -1,15 +1,17 @@
-﻿using System;
+﻿// ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeThisQualifier
+
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.AutomationService.StateMachines.PowerEnable;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Exceptions;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -150,6 +152,13 @@ namespace Ferretto.VW.MAS.AutomationService
                 .BayStatusChanged(messageData);
         }
 
+        private void OnDataLayerReady()
+        {
+            this.baysProvider.AddElevatorPseudoBay();
+
+            this.configuredBays = this.baysProvider.GetAll().ToList();
+        }
+
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
         {
             if (machineErrorMessageData == null)
@@ -186,6 +195,38 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.Logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
+        private void OnMachineRunningStatusChange(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is IStateChangedMessageData messageData)
+            {
+                var reason = StopRequestReason.NoReason;
+
+                if (receivedMessage.Type == MessageType.FaultStateChanged && messageData.CurrentState)
+                {
+                    reason = StopRequestReason.FaultStateChanged;
+                }
+
+                if (receivedMessage.Type == MessageType.RunningStateChanged && !messageData.CurrentState)
+                {
+                    reason = StopRequestReason.RunningStateChanged;
+                }
+
+                if (reason != StopRequestReason.NoReason)
+                {
+                    this.currentStateMachine = new PowerEnableStateMachine(
+                        false,
+                        BayNumber.BayOne,
+                        reason,
+                        this.configuredBays,
+                        this.EventAggregator,
+                        this.Logger as ILogger<AutomationService>,
+                        this.ServiceScopeFactory);
+
+                    this.currentStateMachine.Start();
+                }
             }
         }
 

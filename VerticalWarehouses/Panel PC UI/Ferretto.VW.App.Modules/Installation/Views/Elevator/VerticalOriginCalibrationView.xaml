@@ -31,39 +31,39 @@
         <controls:PpcLabeledText Grid.Row="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.LowerBound}" />
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Offset}" />
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentVerticalPosition, FallbackValue='999,99'}"
+                                 ContentText="{Binding CurrentVerticalPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentHorizontalPosition, FallbackValue='999,99'}"
+                                 ContentText="{Binding CurrentHorizontalPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                 ContentText="{Binding Resolution, StringFormat={}{0:F6}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Resolution}" />
 
         <controls:PpcLabeledText Grid.Row="3"

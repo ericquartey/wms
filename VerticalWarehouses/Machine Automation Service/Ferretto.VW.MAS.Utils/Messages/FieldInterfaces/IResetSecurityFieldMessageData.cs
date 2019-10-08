@@ -2,9 +2,5 @@
 {
     public interface IResetSecurityFieldMessageData : IFieldMessageData
     {
-        #region Properties
-
-
-        #endregion
     }
 }

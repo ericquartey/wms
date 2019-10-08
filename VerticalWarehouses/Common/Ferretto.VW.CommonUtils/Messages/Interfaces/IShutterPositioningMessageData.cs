@@ -6,15 +6,19 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
-        int BayNumber { get; }
-
         int Delay { get; set; }
 
         int ExecutedCycles { get; set; }
 
         decimal HigherDistance { get; }
 
+        decimal HighSpeedDurationClose { get; }
+
+        decimal HighSpeedDurationOpen { get; }
+
         decimal LowerDistance { get; }
+
+        decimal LowerSpeed { get; }
 
         MovementMode MovementMode { get; set; }
 

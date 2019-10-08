@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
-
-
         #region Methods
 
         public void ExecuteIoPowerUp()
@@ -22,7 +20,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
             else
             {
-                this.CurrentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioStatus, this.deviceIndex, this.eventAggregator, this.logger);
+                this.CurrentStateMachine = new PowerUpStateMachine(
+                    this.ioCommandQueue,
+                    this.ioStatus,
+                    this.deviceIndex,
+                    this.eventAggregator,
+                    this.logger);
+
                 this.CurrentStateMachine.Start();
             }
         }
