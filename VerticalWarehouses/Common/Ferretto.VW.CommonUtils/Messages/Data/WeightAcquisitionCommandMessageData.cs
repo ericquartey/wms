@@ -6,8 +6,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class WeightAcquisitionCommandMessageData : IMessageData
     {
-
-
         #region Properties
 
         public CommandAction CommandAction { get; set; }

@@ -2,8 +2,6 @@
 {
     public interface IPowerEnableMessageData : IMessageData
     {
-
-
         #region Properties
 
         bool Enable { get; }
