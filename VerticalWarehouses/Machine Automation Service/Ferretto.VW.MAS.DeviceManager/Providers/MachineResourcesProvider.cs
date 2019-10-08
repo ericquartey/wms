@@ -59,17 +59,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
-        public bool IsDrawerInBay1Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+        public bool IsDrawerInBay1Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
 
         public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
 
-        public bool IsDrawerInBay2Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+        public bool IsDrawerInBay2Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
 
-        public bool IsDrawerInBay2Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+        public bool IsDrawerInBay2Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
 
-        public bool IsDrawerInBay3Bottom => !this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+        public bool IsDrawerInBay3Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
 
-        public bool IsDrawerInBay3Top => !this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
+        public bool IsDrawerInBay3Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
@@ -126,13 +126,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 default:
                 case BayNumber.BayOne:
-                    return !this.IsDrawerInBay1Bottom;
+                    return this.IsDrawerInBay1Bottom;
 
                 case BayNumber.BayTwo:
-                    return !this.IsDrawerInBay2Bottom;
+                    return this.IsDrawerInBay2Bottom;
 
                 case BayNumber.BayThree:
-                    return !this.IsDrawerInBay3Bottom;
+                    return this.IsDrawerInBay3Bottom;
             }
         }
 
@@ -142,13 +142,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 default:
                 case BayNumber.BayOne:
-                    return !this.IsDrawerInBay1Top;
+                    return this.IsDrawerInBay1Top;
 
                 case BayNumber.BayTwo:
-                    return !this.IsDrawerInBay2Top;
+                    return this.IsDrawerInBay2Top;
 
                 case BayNumber.BayThree:
-                    return !this.IsDrawerInBay3Top;
+                    return this.IsDrawerInBay3Top;
             }
         }
 

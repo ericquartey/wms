@@ -175,12 +175,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
             {
-                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
+                ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
                         !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
                         !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
                 if (!ok)
                 {
-                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ?
+                    errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
                             $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
                             $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
                 }
