@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
-using Ferretto.VW.MAS.Utils.Enumerations;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.IODriver
