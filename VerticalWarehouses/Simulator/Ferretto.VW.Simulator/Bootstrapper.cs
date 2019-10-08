@@ -10,8 +10,6 @@ namespace Ferretto.VW.Simulator
 {
     internal class Bootstrapper : UnityBootstrapper
     {
-
-
         #region Methods
 
         public void BindViewModelToView<TViewModel, TView>()
