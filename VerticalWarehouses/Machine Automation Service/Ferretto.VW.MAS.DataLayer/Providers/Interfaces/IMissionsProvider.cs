@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
     public interface IMissionsProvider
     {
-
-
         #region Methods
 
         bool StartMachineMission(Guid missionId, CommandMessage command);
