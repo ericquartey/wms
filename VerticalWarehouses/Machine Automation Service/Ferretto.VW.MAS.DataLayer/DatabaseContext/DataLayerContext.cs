@@ -73,6 +73,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 
+        public DbSet<SetupProcedure> SetupProcedures { get; set; }
+
+        public DbSet<SetupProceduresSet> SetupProceduresSets { get; set; }
+
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
         public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }

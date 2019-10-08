@@ -51,19 +51,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 jsonObject.Validate(schema);
 
-                foreach (var jsonCategory in jsonObject)
-                {
-                    if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase))
-                    {
-                        var settings = new JsonSerializerSettings();
-                        settings.Converters.Add(new IPAddressConverter());
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new IPAddressConverter());
 
-                        var machine = JsonConvert.DeserializeObject<Machine>(jsonCategory.Value.ToString(), settings);
+                var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
 
-                        dataContext.Machines.Add(machine);
-                        dataContext.SaveChanges();
-                    }
-                }
+                dataContext.Machines.Add(vertimagConfiguration.Machine);
+                dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
+
+                dataContext.SaveChanges();
             }
 
             foreach (var jsonCategory in jsonObject)

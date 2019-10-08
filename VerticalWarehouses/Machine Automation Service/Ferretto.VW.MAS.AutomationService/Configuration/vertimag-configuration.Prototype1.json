@@ -2738,6 +2738,11 @@
     "ProductionDate": "2019-10-19T16:39:57-08:00",
     "SerialNumber": "Prototype #1"
   },
+  "SetupProcedures": {
+    "ShutterTest": {
+      "CycleQuantity": 10
+    }
+  },
   "BayPositionControl": {
     "StepValue": 0.5,
     "FeedRate": 0.20

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191007115531_Initial")]
+    [Migration("20191008121732_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -571,9 +571,40 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 7, 13, 55, 30, 211, DateTimeKind.Local).AddTicks(1438),
+                            InstallationDate = new DateTime(2016, 12, 8, 14, 17, 31, 822, DateTimeKind.Local).AddTicks(9617),
                             ServiceStatus = 86
                         });
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProcedure", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<double>("FeedRate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SetupProcedures");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("SetupProcedure");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ShutterTestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShutterTestId");
+
+                    b.ToTable("SetupProceduresSets");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupStatus", b =>
@@ -779,6 +810,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("StepMovementParameters");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<int>("CycleQuantity");
+
+                    b.HasDiscriminator().HasValue("RepeatedTestProcedure");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
@@ -891,6 +931,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis")
                         .WithMany("Profiles")
                         .HasForeignKey("ElevatorAxisId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("ShutterTestId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Shutter", b =>
