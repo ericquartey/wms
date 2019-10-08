@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     }
                     else
                     {
-                        this.Logger.LogDebug("Position Not Reached");
+                        this.Logger.LogTrace("Moving towards target position.");
                     }
                 }
             }
