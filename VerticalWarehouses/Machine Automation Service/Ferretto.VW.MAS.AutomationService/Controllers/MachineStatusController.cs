@@ -1,9 +1,9 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 using Ferretto.VW.MAS.MissionsManager.Providers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
