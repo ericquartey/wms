@@ -39,35 +39,35 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.Positioning:
+                {
+                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                        receivedMessage.Status == MessageStatus.OperationError ||
+                        receivedMessage.Status == MessageStatus.OperationStop)
                     {
-                        if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                            receivedMessage.Status == MessageStatus.OperationError ||
-                            receivedMessage.Status == MessageStatus.OperationStop)
+                        this.Logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
+
+                        if (messageCurrentStateMachine is PositioningStateMachine)
                         {
-                            this.Logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
-
-                            if (messageCurrentStateMachine is PositioningStateMachine)
-                            {
-                                this.currentStateMachines.Remove(inverterIndex);
-                            }
-                            else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
-                            {
-                                this.dataOld = currentPositioning.data;
-                                this.currentStateMachines.Remove(inverterIndex);
-                            }
-                            else
-                            {
-                                this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
-                            }
-
-                            this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
-
-                            this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
+                            this.currentStateMachines.Remove(inverterIndex);
+                        }
+                        else if (messageCurrentStateMachine is PositioningTableStateMachine currentPositioning)
+                        {
+                            this.dataOld = currentPositioning.data;
+                            this.currentStateMachines.Remove(inverterIndex);
+                        }
+                        else
+                        {
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
                         }
 
-                        break;
+                        this.Logger.LogTrace("4: Stop the timer for update shaft position");
+                        this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
+
+                        this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                     }
+
+                    break;
+                }
                 case FieldMessageType.CalibrateAxis:
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
