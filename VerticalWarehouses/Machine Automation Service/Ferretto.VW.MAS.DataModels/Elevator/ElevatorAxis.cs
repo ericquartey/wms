@@ -54,9 +54,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public double UpperBound { get; set; }
-
         public int TotalCycles { get; set; }
+
+        public double UpperBound { get; set; }
 
         #endregion
 

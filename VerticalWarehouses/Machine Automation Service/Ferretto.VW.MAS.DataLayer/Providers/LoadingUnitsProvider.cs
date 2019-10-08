@@ -81,16 +81,6 @@ namespace Ferretto.VW.MAS.DataLayer
             return loadingUnits;
         }
 
-        public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
-        {
-            var loadingUnit = this.dataContext.LoadingUnits
-                .SingleOrDefault(l => l.Id == loadingUnitId);
-
-            loadingUnit.GrossWeight = loadingUnitGrossWeight;
-
-            this.dataContext.SaveChanges();
-        }
-
         public async Task LoadFromAsync(string fileNamePath)
         {
             if (this.dataContext.LoadingUnits.Any())
@@ -154,6 +144,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
+        {
+            var loadingUnit = this.dataContext.LoadingUnits
+                .SingleOrDefault(l => l.Id == loadingUnitId);
+
+            loadingUnit.GrossWeight = loadingUnitGrossWeight;
+
+            this.dataContext.SaveChanges();
         }
 
         private async Task<IEnumerable<(string Id, double MaxLoadCapacity, double Tare)>> ReadAllLoadingUnitClassesAsync(JSchemaValidatingReader jsonFile)
