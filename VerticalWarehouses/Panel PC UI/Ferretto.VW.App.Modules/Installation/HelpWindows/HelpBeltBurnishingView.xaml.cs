@@ -7,9 +7,13 @@ namespace Ferretto.VW.App.Installation.HelpWindows
     /// </summary>
     public partial class BeltBurnishingHelpView : UserControl
     {
+        #region Constructors
+
         public BeltBurnishingHelpView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

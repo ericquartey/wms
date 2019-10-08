@@ -131,6 +131,10 @@ namespace Ferretto.VW.MAS.Utils
 
         protected abstract bool FilterNotification(TNotificationMessage notification);
 
+        protected abstract void NotifyCommandError(TCommandMessage notificationData);
+
+        protected abstract void NotifyError(TNotificationMessage notificationData);
+
         protected abstract Task OnCommandReceivedAsync(TCommandMessage command, IServiceProvider serviceProvider);
 
         protected abstract Task OnNotificationReceivedAsync(TNotificationMessage message, IServiceProvider serviceProvider);

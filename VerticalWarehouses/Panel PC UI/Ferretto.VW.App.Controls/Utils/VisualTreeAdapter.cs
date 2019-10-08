@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Controls.Utils
 
         private readonly DependencyObject item;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -19,13 +19,13 @@ namespace Ferretto.VW.App.Controls.Utils
             this.item = item;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public DependencyObject Parent => VisualTreeHelper.GetParent(this.item);
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -38,6 +38,6 @@ namespace Ferretto.VW.App.Controls.Utils
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

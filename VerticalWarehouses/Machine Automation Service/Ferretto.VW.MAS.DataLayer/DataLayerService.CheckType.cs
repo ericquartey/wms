@@ -142,87 +142,87 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (category)
             {
                 case ConfigurationCategory.Undefined:
-                    {
-                        throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
-                    }
+                {
+                    throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
+                }
 
                 case ConfigurationCategory.VerticalManualMovements:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((VerticalManualMovements)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((VerticalManualMovements)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.HorizontalManualMovements:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((HorizontalManualMovements)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((HorizontalManualMovements)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.BeltBurnishing:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.ResolutionCalibration:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.OffsetCalibration:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.CellControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.PanelControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.ShutterHeightControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.WeightControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.BayPositionControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.LoadFirstDrawer:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.ShutterManualMovements:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((ShutterManualMovements)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((ShutterManualMovements)parameter);
+                    break;
+                }
 
                 case ConfigurationCategory.DepositAndPickUp:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
-                        break;
-                    }
+                {
+                    actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
+                    break;
+                }
 
                 default:
                     throw new ArgumentNullException();

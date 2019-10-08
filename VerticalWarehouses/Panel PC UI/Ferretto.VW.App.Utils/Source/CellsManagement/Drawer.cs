@@ -6,7 +6,7 @@
 
         private int heightMillimiters;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -17,7 +17,7 @@
             this.FirstCellID = newFirstCellID;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -41,6 +41,6 @@
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -6,7 +6,7 @@
 
         private int heightMillimiters;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -17,11 +17,12 @@
             this.Id = newBayID;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public int DrawerID { get; set; }
+
         public int FirstCellID { get; set; }
 
         public int HeightMillimiters
@@ -41,8 +42,9 @@
         }
 
         public int Id { get; set; }
+
         public bool Occupied { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

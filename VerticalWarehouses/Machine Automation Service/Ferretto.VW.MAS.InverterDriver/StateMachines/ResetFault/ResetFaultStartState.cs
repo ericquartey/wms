@@ -65,7 +65,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:ResetFault Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new ResetFaultEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.inverterIndex,
+                    this.Logger));
         }
 
         /// <inheritdoc />

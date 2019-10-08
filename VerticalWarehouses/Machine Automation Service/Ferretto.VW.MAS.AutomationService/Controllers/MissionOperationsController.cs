@@ -15,7 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class MissionOperationsController : BaseWmsProxyBaseController
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -54,8 +53,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
-
-
 
         #region Methods
 

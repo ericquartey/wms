@@ -7,9 +7,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     /// </summary>
     public partial class DiagnosticDetailsView : Window
     {
+        #region Constructors
+
         public DiagnosticDetailsView()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

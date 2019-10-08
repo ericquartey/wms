@@ -4,9 +4,9 @@
     {
         #region Properties
 
-        decimal ReadFinalPosition { get; }
-
         decimal MeasuredInitialPosition { get; }
+
+        decimal ReadFinalPosition { get; }
 
         decimal Resolution { get; set; }
 

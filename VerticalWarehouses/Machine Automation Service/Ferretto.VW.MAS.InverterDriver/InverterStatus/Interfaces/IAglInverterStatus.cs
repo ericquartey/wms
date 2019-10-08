@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
-
         [Column(Order = (int)InverterSensors.AGL_FreeSensor1)]
         bool AGL_FreeSensor1 { get; }
 

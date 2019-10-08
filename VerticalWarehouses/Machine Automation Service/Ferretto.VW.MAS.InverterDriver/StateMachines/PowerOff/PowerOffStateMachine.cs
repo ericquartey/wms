@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         {
             if (this.CurrentState is PowerOffEndState)
             {
-                if (this.nextCommandMessage.Type != FieldMessageType.InverterPowerOff)
+                if (this.nextCommandMessage?.Type != FieldMessageType.InverterPowerOff)
                 {
                     ((InverterPowerOffFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
                 }

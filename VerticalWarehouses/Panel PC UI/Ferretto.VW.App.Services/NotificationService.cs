@@ -13,7 +13,6 @@ namespace Ferretto.VW.App.Services
 {
     internal class NotificationService : INotificationService
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -39,8 +38,6 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
-
-
 
         #region Methods
 
@@ -205,6 +202,10 @@ namespace Ferretto.VW.App.Services
 
                 case NotificationMessageUI<MachineStateActiveMessageData> msa:
                     this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Publish(msa);
+                    break;
+
+                case NotificationMessageUI<ChangeRunningStateMessageData> crm:
+                    this.eventAggregator.GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>().Publish(crm);
                     break;
             }
         }

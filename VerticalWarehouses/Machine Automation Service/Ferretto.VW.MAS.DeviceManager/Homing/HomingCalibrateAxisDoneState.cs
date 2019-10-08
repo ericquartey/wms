@@ -1,0 +1,168 @@
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.Logging;
+
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.DeviceManager.Homing
+{
+    internal class HomingCalibrateAxisDoneState : StateBase
+    {
+        #region Fields
+
+        private readonly IHomingMachineData machineData;
+
+        private readonly IHomingStateData stateData;
+
+        private bool inverterSwitched;
+
+        private bool ioSwitched;
+
+        #endregion
+
+        #region Constructors
+
+        public HomingCalibrateAxisDoneState(IHomingStateData stateData)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        {
+            this.stateData = stateData;
+            this.machineData = stateData.MachineData as IHomingMachineData;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingCalibrateAxisDoneState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.SwitchAxis)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.ioSwitched = true;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        break;
+                }
+            }
+
+            if (message.Type == FieldMessageType.InverterSwitchOn)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.inverterSwitched = true;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        break;
+                }
+            }
+
+            if (this.ioSwitched && this.inverterSwitched)
+            {
+                if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps)
+                {
+                    this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.stateData));
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
+
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            var inverterIndex = this.machineData.CurrentInverterIndex;
+
+            if (!this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
+            {
+                var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
+                var ioCommandMessage = new FieldCommandMessage(
+                    ioCommandMessageData,
+                    $"Switch Axis {this.machineData.AxisToCalibrate}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.SwitchAxis,
+                    (byte)IoIndex.IoDevice1);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+            }
+            else
+            {
+                this.ioSwitched = true;
+            }
+
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.machineData.AxisToCalibrate);
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Switch Axis {this.machineData.AxisToCalibrate}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSwitchOn,
+                (byte)inverterIndex);
+
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"{this.machineData.InverterIndexOld} axis calibration completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationStepStop);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+        }
+
+        public override void Stop(StopRequestReason reason)
+        {
+            this.Logger.LogDebug("1:Stop Method Start");
+
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+        }
+
+        #endregion
+    }
+}

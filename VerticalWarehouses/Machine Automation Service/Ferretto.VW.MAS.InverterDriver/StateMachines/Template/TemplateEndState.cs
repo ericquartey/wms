@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
             var notificationMessage = new FieldNotificationMessage(
                 null,
                 "Message",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
                 MessageStatus.OperationEnd,

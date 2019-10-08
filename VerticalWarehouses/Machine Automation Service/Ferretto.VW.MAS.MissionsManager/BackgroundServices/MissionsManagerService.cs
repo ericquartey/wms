@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -12,7 +14,8 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.MissionsManager
+
+namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
@@ -28,6 +31,8 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private readonly IMissionsDataService missionsDataService;
 
+        private readonly IMissionsProvider missionsProvider;
+
         private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
 
         private readonly IServiceScope serviceScope;
@@ -42,6 +47,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             IEventAggregator eventAggregator,
             ILogger<MissionsManagerService> logger,
             IMachinesDataService machinesDataService,
+            IMissionsProvider missionsProvider,
             IMissionsDataService missionsDataService,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
@@ -49,12 +55,14 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.missionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             this.serviceScope = serviceScopeFactory.CreateScope();
+
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 
-            this.Logger.LogTrace("Mission manager initialised.");
+            this.Logger.LogTrace("Mission manager initialized.");
         }
 
         #endregion
@@ -71,6 +79,42 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 this.isDisposed = true;
             }
+        }
+
+        protected override void NotifyCommandError(CommandMessage notificationData)
+        {
+            this.Logger.LogDebug($"Notifying Mission Manager service command error");
+
+            var msg = new NotificationMessage(
+                notificationData?.Data,
+                "MM Command Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.MissionManagerException,
+                notificationData?.RequestingBay ?? BayNumber.None,
+                notificationData?.TargetBay ?? BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        protected override void NotifyError(NotificationMessage notificationData)
+        {
+            this.Logger.LogDebug($"Notifying Mission Manager service notification error");
+
+            var msg = new NotificationMessage(
+                notificationData?.Data,
+                "MM Notification Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.MissionManagerException,
+                notificationData?.RequestingBay ?? BayNumber.None,
+                notificationData?.TargetBay ?? BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

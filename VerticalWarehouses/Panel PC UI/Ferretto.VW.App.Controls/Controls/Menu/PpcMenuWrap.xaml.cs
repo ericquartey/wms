@@ -21,6 +21,10 @@ namespace Ferretto.VW.App.Controls
             this.InitializeComponent();
         }
 
+        #endregion
+
+        #region Properties
+
         public Orientation Orientation
         {
             get => (Orientation)this.GetValue(OrientationProperty);
