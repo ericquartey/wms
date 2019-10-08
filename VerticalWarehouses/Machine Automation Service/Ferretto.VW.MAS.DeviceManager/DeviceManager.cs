@@ -323,10 +323,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ProcessCheckConditionMessage(receivedMessage, serviceProvider);
                     break;
 
-                case MessageType.DrawerOperation:
-                    this.ProcessDrawerOperation(receivedMessage, serviceProvider);
-                    break;
-
                 case MessageType.PowerEnable:
                     this.ProcessPowerEnableMessage(receivedMessage, serviceProvider);
                     break;
@@ -552,7 +548,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.Homing:
                     case MessageType.Positioning:
                     case MessageType.ShutterPositioning:
-                    case MessageType.DrawerOperation:
                     case MessageType.PowerEnable:
                     case MessageType.InverterFaultReset:
                     case MessageType.ResetSecurity:

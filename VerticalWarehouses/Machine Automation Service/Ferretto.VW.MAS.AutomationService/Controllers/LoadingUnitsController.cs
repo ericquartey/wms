@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.MissionsManager.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +19,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
-
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
         #endregion
 
@@ -32,60 +32,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            IMoveLoadingUnitProvider moveLoadingUnitProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machinesDataService));
-            }
-
-            if (horizontalManualMovementsDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            }
-
-            this.loadingUnitsProvider = loadingUnitStatisticsProvider;
-            this.machinesDataService = machinesDataService;
-            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
+            this.loadingUnitsProvider = loadingUnitStatisticsProvider ?? throw new ArgumentNullException(nameof(loadingUnitStatisticsProvider));
+            this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
         }
 
         #endregion
 
         #region Methods
-
-        [HttpPost("deposit")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesDefaultResponseType]
-        public IActionResult Deposit(DrawerDestination destination, decimal targetPosition, bool isPositive)
-        {
-            var drawerOperationData = new DrawerOperationMessageData(
-               DrawerOperation.Deposit,
-               DrawerOperationStep.None);
-
-            drawerOperationData.Destination = destination;
-            drawerOperationData.DestinationVerticalPosition = targetPosition;
-            drawerOperationData.IsDestinationPositive = isPositive;
-            drawerOperationData.DestinationHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
-            {
-                drawerOperationData.DestinationHorizontalPosition *= -1;
-            }
-
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
-
-            return this.Accepted();
-        }
 
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
@@ -109,7 +67,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     if (loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                        if (loadingUnit.AreaFillRate != null)
+                        {
+                            stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                        }
                     }
                 }
             }
@@ -148,50 +109,54 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
-        [HttpPost("pickup")]
+        [HttpPost("start-moving-loading-unit-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Pickup(DrawerDestination source, decimal targetPosition, bool isPositive)
+        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination)
         {
-            var drawerOperationData = new DrawerOperationMessageData(
-               DrawerOperation.Pickup,
-               DrawerOperationStep.None);
-
-            drawerOperationData.Source = source;
-            drawerOperationData.SourceVerticalPosition = targetPosition;
-            drawerOperationData.IsSourcePositive = isPositive;
-            drawerOperationData.SourceHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
+            if (destination == LoadingUnitDestination.Cell)
             {
-                drawerOperationData.SourceHorizontalPosition *= -1;
+                return this.BadRequest();
             }
 
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber);
 
             return this.Accepted();
         }
 
-        [HttpPost("start-moving")]
+        [HttpPost("start-moving-loading-unit-to-cell")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMoving(DrawerOperation drawerOperation)
+        public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
         {
-            var drawerOperationData = new DrawerOperationMessageData(
-               drawerOperation,
-               DrawerOperationStep.None);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber);
 
-            drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO HACK remove this hardcoded value
-            drawerOperationData.Destination = DrawerDestination.Cell;
+            return this.Accepted();
+        }
 
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
+        [HttpPost("start-moving-source-destination")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartMovingSourceDestination(LoadingUnitDestination source, LoadingUnitDestination destination, int sourceCellId, int destinationCellId)
+        {
+            if (source == LoadingUnitDestination.Cell && destination == LoadingUnitDestination.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber);
+            }
+            else if (source != LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber);
+            }
+            else if (source == LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber);
+            }
+            else
+            {
+                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber);
+            }
 
             return this.Accepted();
         }
@@ -201,13 +166,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                "Stop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop);
-
+            this.moveLoadingUnitProvider.StopMoving();
             return this.Accepted();
         }
 

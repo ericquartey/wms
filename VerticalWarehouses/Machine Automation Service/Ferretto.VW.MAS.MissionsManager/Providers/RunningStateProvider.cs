@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Providers;
+using Ferretto.VW.MAS.MissionsManager.Providers.Interfaces;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 

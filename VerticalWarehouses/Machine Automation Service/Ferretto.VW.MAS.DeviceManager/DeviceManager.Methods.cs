@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Homing;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
-using Ferretto.VW.MAS.DeviceManager.MoveDrawer;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers;
@@ -64,65 +63,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                     message.RequestingBay,
                     MessageStatus.OperationEnd);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-            }
-        }
-
-        private void ProcessDrawerOperation(CommandMessage receivedMessage, IServiceProvider serviceProvider)
-        {
-            this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
-
-            if (this.currentStateMachines.TryGetValue(receivedMessage.RequestingBay, out var currentStateMachine))
-            {
-                this.logger.LogDebug($"2:Deallocation FSM {currentStateMachine?.GetType()}");
-                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType()} state machine. Operation already in progress on bay {receivedMessage.RequestingBay}", 1, MessageVerbosity.Error));
-            }
-            else
-            {
-                if (receivedMessage.Data is IDrawerOperationMessageData data)
-                {
-                    this.logger.LogTrace("2: Starting Drawer Operation FSM");
-
-                    currentStateMachine = new MoveDrawerStateMachine(
-                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
-                        receivedMessage.RequestingBay,
-                        serviceProvider.GetRequiredService<ISetupStatusProvider>(),
-                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
-                        data,
-                        this.eventAggregator,
-                        this.logger,
-                        this.serviceScopeFactory);
-
-                    this.currentStateMachines.Add(receivedMessage.RequestingBay, currentStateMachine);
-
-                    try
-                    {
-                        currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.logger.LogError(ex,
-                            $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine");
-
-                        this.SendNotificationMessage(
-                            new FsmExceptionMessageData(
-                                ex,
-                                $"Exception: {ex.Message} while starting {currentStateMachine.GetType()} state machine",
-                                1,
-                                MessageVerbosity.Error));
-                    }
-                }
-                else
-                {
-                    this.logger.LogError(
-                        $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
-
-                    this.SendNotificationMessage(
-                        new FsmExceptionMessageData(
-                            null,
-                            $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type",
-                            2,
-                            MessageVerbosity.Error));
-                }
             }
         }
 
