@@ -86,7 +86,6 @@
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
-          "Inverter": null,
           "MaximumLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
