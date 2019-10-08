@@ -323,11 +323,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.isExecutingVerticalOperation)
             {
-                this.CurrentVerticalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+                this.CurrentVerticalPosition = message?.Data?.CurrentPosition ?? this.CurrentVerticalPosition;
             }
             else
             {
-                this.CurrentHorizontalPosition = message.Data.CurrentPosition; // TODO add field for Axis so that we can filter
+                this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
             }
         }
 
