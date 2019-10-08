@@ -3,53 +3,15 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangePowerStatus;
-using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
-        #region Fields
-
-        private IFiniteStateMachine activeStateMachine;
-
-        #endregion
-
-        #region Properties
-
-        private IFiniteStateMachine ActiveStateMachine
-        {
-            get => this.activeStateMachine;
-            set
-            {
-                if (this.activeStateMachine != value)
-                {
-                    if (this.activeStateMachine != null)
-                    {
-                        this.activeStateMachine.Completed -= this.OnActiveStateMachineCompleted;
-                    }
-
-                    if (this.activeStateMachine is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-
-                    this.activeStateMachine = value;
-                    if (this.activeStateMachine != null)
-                    {
-                        this.activeStateMachine.Completed += this.OnActiveStateMachineCompleted;
-                    }
-                }
-            }
-        }
-
-        #endregion
-
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)
@@ -64,9 +26,15 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             switch (command.Type)
             {
-                case MessageType.PowerEnable:
+                case MessageType.WeightAcquisitionCommand:
                     {
-                        this.OnPowerEnableCommandReceived(command.Data as PowerEnableMessageData);
+                        this.OnWeightAcquisitionProcedureCommandReceived(command);
+                        break;
+                    }
+
+                case MessageType.ChangeRunningState:
+                    {
+                        this.OnChangeRunningStateCommandReceived(command);
                         break;
                     }
             }
@@ -74,22 +42,51 @@ namespace Ferretto.VW.MAS.MissionsManager
             return Task.CompletedTask;
         }
 
-        private void OnActiveStateMachineCompleted(object sender, EventArgs e)
+        private void OnChangeRunningStateCommandReceived(CommandMessage command)
         {
-            this.ActiveStateMachine = null;
-        }
-
-        private void OnPowerEnableCommandReceived(PowerEnableMessageData data)
-        {
-            if (data is null)
+            if (command is null)
             {
                 return;
             }
 
-            if (data.CommandAction == CommandAction.Start && this.ActiveStateMachine == null)
+            switch (((ChangeRunningStateMessageData)command.Data).CommandAction)
             {
-                this.ActiveStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangePowerStatusStateMachine>();
-                this.ActiveStateMachine.Start(data, this.CancellationToken);
+                case CommandAction.Start:
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
+                    {
+                        this.missionsProvider.StartMachineMission(missionId, command);
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.NotifyCommandError(command);
+                    }
+
+                    break;
+            }
+        }
+
+        private void OnWeightAcquisitionProcedureCommandReceived(CommandMessage command)
+        {
+            if (command is null)
+            {
+                return;
+            }
+
+            switch (((WeightAcquisitionCommandMessageData)command.Data).CommandAction)
+            {
+                case CommandAction.Start:
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.WeightAcquisition, out var missionId))
+                    {
+                        this.missionsProvider.StartMachineMission(missionId, command);
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.NotifyCommandError(command);
+                    }
+
+                    break;
             }
         }
 

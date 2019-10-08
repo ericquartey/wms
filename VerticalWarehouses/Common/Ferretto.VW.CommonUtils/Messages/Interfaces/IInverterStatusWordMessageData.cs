@@ -5,6 +5,7 @@
         #region Properties
 
         byte InverterIndex { get; }
+
         ushort Value { get; }
 
         #endregion

@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal abstract class InverterStateMachineBase : IInverterStateMachine
     {
-
         #region Fields
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -64,8 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         protected ILogger Logger { get; }
 
         #endregion
-
-
 
         #region Methods
 

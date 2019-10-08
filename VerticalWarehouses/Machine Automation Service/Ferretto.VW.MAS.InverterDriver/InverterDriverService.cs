@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -224,7 +223,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         catch (InverterDriverException ex)
                         {
-                        this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
+                            this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
                         }
                         catch (Exception ex)
                         {

@@ -3,7 +3,6 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
@@ -26,8 +25,6 @@ namespace Ferretto.VW.MAS.Utils
         private readonly NotificationEvent notificationEvent;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-        private readonly BayNumber requestingBay;
 
         private readonly IServiceScope serviceScope;
 
@@ -48,12 +45,13 @@ namespace Ferretto.VW.MAS.Utils
 
         private Thread notificationsDequeuingThread;
 
+        private BayNumber requestingBay;
+
         #endregion
 
         #region Constructors
 
         protected FiniteStateMachine(
-            BayNumber requestingBay,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -63,19 +61,15 @@ namespace Ferretto.VW.MAS.Utils
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
             if (serviceScopeFactory is null)
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            this.Logger = logger;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            this.requestingBay = requestingBay;
+            this.InstanceId = Guid.NewGuid();
+
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.serviceScope = serviceScopeFactory.CreateScope();
@@ -85,7 +79,7 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Events
 
-        public event EventHandler Completed;
+        public event EventHandler<FiniteStateMachinesEventArgs> Completed;
 
         #endregion
 
@@ -107,14 +101,23 @@ namespace Ferretto.VW.MAS.Utils
 
                     this.activeState = value;
 
-                    this.activeState.Enter(this.StartData);
+                    this.activeState?.Enter(this.StartData);
+                }
+
+                // These code lines MUST be the last in the Setter
+                if (this.activeState is IEndState endState && endState.IsCompleted)
+                {
+                    var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    this.RaiseCompleted(eventArgs);
                 }
             }
         }
 
-        protected ILogger<StateBase> Logger { get; }
+        public Guid InstanceId { get; }
 
-        protected IMessageData StartData { get; private set; }
+        public CommandMessage StartData { get; private set; }
+
+        protected ILogger<StateBase> Logger { get; }
 
         #endregion
 
@@ -141,7 +144,7 @@ namespace Ferretto.VW.MAS.Utils
             }
         }
 
-        public void Start(IMessageData data, CancellationToken cancellationToken)
+        public void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -150,16 +153,18 @@ namespace Ferretto.VW.MAS.Utils
 
             this.isStarted = true;
 
-            this.StartData = data;
+            this.StartData = commandMessage;
 
-            this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
+            this.requestingBay = commandMessage.RequestingBay;
+
+            this.commandsDequeuingThread = new Thread(this.DequeueCommands)
             {
-                Name = $"FSM Commands {this.GetType().Name}",
+                Name = $"MM Commands {this.GetType().Name}"
             };
 
-            this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
+            this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
             {
-                Name = $"FSM Notifications {this.GetType().Name}",
+                Name = $"MM Notifications {this.GetType().Name}"
             };
 
             this.commandsDequeuingThread.Start(cancellationToken);
@@ -170,6 +175,11 @@ namespace Ferretto.VW.MAS.Utils
             this.ActiveState = this.GetState<TStartState>();
         }
 
+        public void Stop(StopRequestReason reason)
+        {
+            this.OnStop(reason);
+        }
+
         protected abstract bool FilterCommand(CommandMessage command);
 
         protected abstract bool FilterNotification(NotificationMessage notification);
@@ -177,7 +187,7 @@ namespace Ferretto.VW.MAS.Utils
         protected IState GetState<TState>()
             where TState : IState
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TStartState>();
+            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)
@@ -200,9 +210,19 @@ namespace Ferretto.VW.MAS.Utils
             return this.ActiveState;
         }
 
-        protected void RaiseCompleted()
+        protected virtual void OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
-            this.Completed?.Invoke(this, null);
+            // do nothing
+        }
+
+        protected virtual void OnStop(StopRequestReason reason)
+        {
+            this.ActiveState = this.ActiveState.Stop(reason);
+        }
+
+        protected void RaiseCompleted(FiniteStateMachinesEventArgs eventArgs)
+        {
+            this.Completed?.Invoke(this, eventArgs);
         }
 
         private void DequeueCommands(object cancellationTokenObject)
@@ -231,8 +251,7 @@ namespace Ferretto.VW.MAS.Utils
 
                     return;
                 }
-            }
-            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -261,8 +280,7 @@ namespace Ferretto.VW.MAS.Utils
 
                     return;
                 }
-            }
-            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
@@ -272,14 +290,14 @@ namespace Ferretto.VW.MAS.Utils
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
                     false,
-                    command => this.FilterCommand(command));
+                    this.FilterCommand);
 
             this.notificationEventSubscriptionToken = this.notificationEvent
                 .Subscribe(
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,
                     false,
-                    notification => this.FilterNotification(notification));
+                    this.FilterNotification);
         }
 
         private void NotifyError(Exception ex)
@@ -292,7 +310,7 @@ namespace Ferretto.VW.MAS.Utils
                 MessageActor.Any,
                 MessageActor.MissionsManager,
                 MessageType.FsmException,
-                BayNumber.None,
+                this.requestingBay,
                 BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);

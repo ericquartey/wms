@@ -6,9 +6,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
-        MessageActor MessageActor { get; set; }
-
         string CurrentState { get; set; }
+
+        MessageActor MessageActor { get; set; }
 
         #endregion
     }

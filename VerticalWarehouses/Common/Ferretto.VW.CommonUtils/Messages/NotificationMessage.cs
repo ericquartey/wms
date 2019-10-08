@@ -8,7 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages
 {
     public class NotificationMessage
     {
-
         #region Fields
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -59,8 +58,6 @@ namespace Ferretto.VW.CommonUtils.Messages
         }
 
         #endregion
-
-
 
         #region Properties
 

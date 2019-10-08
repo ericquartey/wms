@@ -44,19 +44,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug($"Notify Positioning End. StopRequested = {this.stopRequested}");
 
-            if (this.stopRequested)
-            {
-                this.ParentStateMachine.PublishNotificationEvent(
-                    new FieldNotificationMessage(
-                        null,
-                        "Message",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStop,
-                        MessageStatus.OperationEnd,
-                        this.InverterStatus.SystemIndex));
-            }
-
             this.ParentStateMachine.PublishNotificationEvent(
                 new FieldNotificationMessage(
                     null,

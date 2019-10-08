@@ -56,8 +56,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
-            //TEMP Add your implementation code here
+            this.Logger.LogDebug("1:Power On Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new PowerOnEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         public override bool ValidateCommandMessage(InverterMessage message)

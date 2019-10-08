@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.FiniteStateMachines", "Machine Automation Service\Ferretto.VW.MAS.FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DeviceManager", "Machine Automation Service\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
 EndProject

@@ -122,6 +122,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             return returnValue;
         }
 
+        protected override void OnDisposing()
+        {
+            this.delayCheckTimer?.Dispose();
+        }
+
         private void DelayCheck(object state)
         {
             // stop timer

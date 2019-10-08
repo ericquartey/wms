@@ -6,8 +6,6 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;

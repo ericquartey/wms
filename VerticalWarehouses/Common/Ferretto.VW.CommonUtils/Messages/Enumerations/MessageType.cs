@@ -77,5 +77,13 @@
         InverterFaultReset,
 
         ResetSecurity,
+
+        WeightAcquisitionCommand,
+
+        MissionManagerException,
+
+        ChangeRunningState,
+
+        InverterPowerEnable
     }
 }

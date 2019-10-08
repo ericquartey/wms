@@ -69,7 +69,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Switch On Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new SwitchOnEndState(
+                    this.ParentStateMachine,
+                    this.axisToSwitchOn,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

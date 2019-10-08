@@ -211,8 +211,6 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         private bool mushroomEmergencyButtonBay3;
 
-        private bool runningState;
-
         private bool powerOnOff;
 
         private bool robotOptionBay1;
@@ -220,6 +218,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         private bool robotOptionBay2;
 
         private bool robotOptionBay3;
+
+        private bool runningState;
 
         private bool trolleyOptionBay1;
 
@@ -441,8 +441,6 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         public bool MushroomEmergencyButtonBay3 { get => this.mushroomEmergencyButtonBay3; set => this.SetProperty(ref this.mushroomEmergencyButtonBay3, value); }
 
-        public bool RunningState { get => this.runningState; set => this.SetProperty(ref this.runningState, value); }
-
         public bool PowerOnOff { get => this.powerOnOff; set => this.SetProperty(ref this.powerOnOff, value); }
 
         public bool RobotOptionBay1 { get => this.robotOptionBay1; set => this.SetProperty(ref this.robotOptionBay1, value); }
@@ -450,6 +448,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         public bool RobotOptionBay2 { get => this.robotOptionBay2; set => this.SetProperty(ref this.robotOptionBay2, value); }
 
         public bool RobotOptionBay3 { get => this.robotOptionBay3; set => this.SetProperty(ref this.robotOptionBay3, value); }
+
+        public bool RunningState { get => this.runningState; set => this.SetProperty(ref this.runningState, value); }
 
         public bool TrolleyOptionBay1 { get => this.trolleyOptionBay1; set => this.SetProperty(ref this.trolleyOptionBay1, value); }
 

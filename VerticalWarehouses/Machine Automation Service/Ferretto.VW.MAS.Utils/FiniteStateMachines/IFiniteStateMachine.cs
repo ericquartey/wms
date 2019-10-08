@@ -1,20 +1,31 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public interface IFiniteStateMachine
     {
         #region Events
 
-        event EventHandler Completed;
+        event EventHandler<FiniteStateMachinesEventArgs> Completed;
+
+        #endregion
+
+        #region Properties
+
+        Guid InstanceId { get; }
+
+        CommandMessage StartData { get; }
 
         #endregion
 
         #region Methods
 
-        void Start(IMessageData data, CancellationToken cancellationToken);
+        void Start(CommandMessage commandMessage, CancellationToken cancellationToken);
+
+        void Stop(StopRequestReason reason);
 
         #endregion
     }

@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class OperatorHubClient : AutoReconnectHubClient, IOperatorHubClient
     {
-
-
         #region Constructors
 
         public OperatorHubClient(Uri uri)
@@ -17,8 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         #endregion
-
-
 
         #region Events
 
@@ -29,8 +25,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
-
-
 
         #region Methods
 

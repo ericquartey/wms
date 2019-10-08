@@ -31,7 +31,7 @@
             }
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -51,6 +51,6 @@
 
         public bool Sensor8 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }
