@@ -23,6 +23,9 @@
             "Index": 2
           },
           "Type": "TwoSensors"
+        },
+        "Carousel": {
+          "ElevatorDistance": 300
         }
       },
       {
