@@ -171,8 +171,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     FeedRate = table.Column<double>(nullable: false),
+                    IsCompleted = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    CycleQuantity = table.Column<int>(nullable: true)
+                    Step = table.Column<double>(nullable: true),
+                    PerformedCycles = table.Column<int>(nullable: true),
+                    RequiredCycles = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -314,11 +317,39 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BayHeightCheckId = table.Column<int>(nullable: true),
+                    BeltBurnishingTestId = table.Column<int>(nullable: true),
+                    CellPanelsCheckId = table.Column<int>(nullable: true),
+                    CellsHeightCheckId = table.Column<int>(nullable: true),
                     ShutterTestId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SetupProceduresSets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_BayHeightCheckId",
+                        column: x => x.BayHeightCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_BeltBurnishingTestId",
+                        column: x => x.BeltBurnishingTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_CellPanelsCheckId",
+                        column: x => x.CellPanelsCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_CellsHeightCheckId",
+                        column: x => x.CellsHeightCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_ShutterTestId",
                         column: x => x.ShutterTestId,
@@ -630,7 +661,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 8, 14, 17, 31, 822, DateTimeKind.Local).AddTicks(9617), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 8, 16, 46, 23, 473, DateTimeKind.Local).AddTicks(6011), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -793,6 +824,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "MovementProfiles",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_BayHeightCheckId",
+                table: "SetupProceduresSets",
+                column: "BayHeightCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_BeltBurnishingTestId",
+                table: "SetupProceduresSets",
+                column: "BeltBurnishingTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_CellPanelsCheckId",
+                table: "SetupProceduresSets",
+                column: "CellPanelsCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_CellsHeightCheckId",
+                table: "SetupProceduresSets",
+                column: "CellsHeightCheckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_ShutterTestId",

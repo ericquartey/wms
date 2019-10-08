@@ -16,10 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
     {
         #region Fields
 
-        private readonly IBayPositionControlDataLayer bayPositionControl;
-
-        private readonly ICellControlDataLayer cellControlDataLayer;
-
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
@@ -30,12 +26,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IOffsetCalibrationDataLayer offsetCalibrationDataLayer;
-
-        private readonly IPanelControlDataLayer panelControlDataLayer;
-
-        private readonly IResolutionCalibrationDataLayer resolutionCalibrationDataLayer;
-
         private readonly IServiceScope scope;
 
         private readonly ISensorsProvider sensorsProvider;
@@ -44,19 +34,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private readonly IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer;
 
-        private readonly IWeightControlDataLayer weightControl;
-
         private bool disposedValue = false;
-
-        private readonly IDepositAndPickUpDataLayer depositAndPickUpDataLayer;
 
         #endregion
 
         #region Constructors
 
         public ElevatorProvider(
-                    IEventAggregator eventAggregator,
-                    ILogger<FiniteStateMachines> logger,
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator)
         {
@@ -65,19 +51,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
-            this.panelControlDataLayer = this.scope.ServiceProvider.GetRequiredService<IPanelControlDataLayer>();
             this.horizontalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IHorizontalManualMovementsDataLayer>();
-            this.resolutionCalibrationDataLayer = this.scope.ServiceProvider.GetRequiredService<IResolutionCalibrationDataLayer>();
-            this.offsetCalibrationDataLayer = this.scope.ServiceProvider.GetRequiredService<IOffsetCalibrationDataLayer>();
-            this.bayPositionControl = this.scope.ServiceProvider.GetRequiredService<IBayPositionControlDataLayer>();
-            this.cellControlDataLayer = this.scope.ServiceProvider.GetRequiredService<ICellControlDataLayer>();
             this.setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
-            this.weightControl = this.scope.ServiceProvider.GetRequiredService<IWeightControlDataLayer>();
             this.machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
             this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.verticalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IVerticalManualMovementsDataLayer>();
             this.loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-            this.depositAndPickUpDataLayer = this.scope.ServiceProvider.GetRequiredService<IDepositAndPickUpDataLayer>();
         }
 
         #endregion
@@ -99,6 +78,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
+        }
+
+        public int GetDepositAndPickUpCycleQuantity()
+        {
+            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
+        }
+
+        public void IncreaseDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
         }
 
         public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
@@ -141,7 +130,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 .Steps
                 .OrderBy(s => s.Number);
 
-            // if direction is Forwards height increments, else is decremented
+            // if direction is Forwards then height increments, otherwise it decrements
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var speed = profileSteps.Select(s => s.Speed).ToArray();
@@ -216,8 +205,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory, BayNumber bayNumber)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber bayNumber)
         {
+            if (feedRate <= 0 || feedRate > 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(feedRate));
+            }
+
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
             var upperBound = verticalAxis.UpperBound;
@@ -235,8 +229,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 throw new InvalidOperationException(
                    Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
-
-            var feedRate = this.GetFeedRate(feedRateCategory);
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
@@ -450,6 +442,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void ResetDepositAndPickUpCycleQuantity()
+        {
+            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
+        }
+
         public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
             if (displacement <= 0)
@@ -549,78 +546,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
                 this.disposedValue = true;
             }
-        }
-
-        public void ResetDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
-        }
-
-        public int GetDepositAndPickUpCycleQuantity()
-        {
-            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
-        }
-
-        public void IncreaseDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
-        }
-
-        private double GetFeedRate(FeedRateCategory feedRateCategory)
-        {
-            double feedRate;
-            switch (feedRateCategory)
-            {
-                case DataModels.FeedRateCategory.VerticalManualMovements:
-                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
-                    break;
-
-                case DataModels.FeedRateCategory.VerticalManualMovementsAfterZero:
-                    feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
-                    break;
-
-                case DataModels.FeedRateCategory.HorizontalManualMovements:
-                    feedRate = (double)this.horizontalManualMovementsDataLayer.FeedRateHM;
-                    break;
-
-                case DataModels.FeedRateCategory.VerticalResolutionCalibration:
-                    feedRate = (double)this.resolutionCalibrationDataLayer.FeedRate;
-                    break;
-
-                case DataModels.FeedRateCategory.VerticalOffsetCalibration:
-                    feedRate = (double)this.offsetCalibrationDataLayer.FeedRateOC;
-                    break;
-
-                case DataModels.FeedRateCategory.CellHeightCheck:
-                    feedRate = (double)this.cellControlDataLayer.FeedRateCC;
-                    break;
-
-                case DataModels.FeedRateCategory.PanelHeightCheck:
-                    feedRate = (double)this.panelControlDataLayer.FeedRatePC;
-                    break;
-
-                case DataModels.FeedRateCategory.LoadingUnitWeight:
-                    feedRate = (double)this.weightControl.FeedRateWC;
-                    break;
-
-                case DataModels.FeedRateCategory.BayHeight:
-                    feedRate = (double)this.bayPositionControl.FeedRateBP;
-                    break;
-
-                case DataModels.FeedRateCategory.LoadFirstDrawer:
-                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.LoadFirstDrawer));
-
-                case DataModels.FeedRateCategory.ShutterManualMovements:
-                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterManualMovements));
-
-                case DataModels.FeedRateCategory.ShutterHeightCheck:
-                    throw new NotImplementedException(nameof(DataModels.FeedRateCategory.ShutterHeightCheck));
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(feedRateCategory));
-            }
-
-            return feedRate;
         }
 
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)

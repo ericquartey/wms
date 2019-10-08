@@ -2740,23 +2740,32 @@
   },
   "SetupProcedures": {
     "ShutterTest": {
-      "CycleQuantity": 10
+      "RequestedCycles": 10,
+      "FeedRate": 1.0
+    },
+    "BayHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.20
+    },
+    "BeltBurnishingTest": {
+      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+      "RequestedCycles": 5
+    },
+    "CellsHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.20
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.20
+    },
+    "VerticalResolutionCalibration": {
+      "InitialPosition": 1000.0, //TEMP Temporary value for software test
+      "FinalPosition": 5500.0, //TEMP Temporary value for software test
+      "FeedRate": 0.20
     }
-  },
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
   },
   "DepositAndPickUp": {
     "CycleQuantity": 10
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.40,
@@ -2766,20 +2775,12 @@
   "LoadFirstDrawer": {
     "FeedRate": 0.20
   },
-
   "OffsetCalibration": {
     "ReferenceCell": 50, //TEMP Temporary value for software test
     "StepValue": 0.5,
     "FeedRate": 0.20
   },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
+
   "ShutterHeightControl": {
     "FeedRate": 0.10
   },

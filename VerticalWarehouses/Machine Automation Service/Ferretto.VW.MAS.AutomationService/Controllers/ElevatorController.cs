@@ -117,9 +117,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
+        public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate)
         {
-            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber);
+            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRate, this.BayNumber);
+
             return this.Accepted();
         }
 

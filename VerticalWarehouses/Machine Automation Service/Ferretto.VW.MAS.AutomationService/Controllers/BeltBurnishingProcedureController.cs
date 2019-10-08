@@ -19,11 +19,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer configurationProvider;
-
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IElevatorProvider elevatorProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
@@ -35,13 +35,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.configurationProvider = dataLayerConfigurationValueManagement ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
         }
 
@@ -54,15 +54,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
 
+            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = verticalAxis.UpperBound,
-
                 LowerBound = verticalAxis.LowerBound,
-
-                RequiredCycles = this.configurationProvider.GetIntegerConfigurationValue(
-                    BeltBurnishing.CycleQuantity,
-                    ConfigurationCategory.BeltBurnishing),
+                RequiredCycles = setupProcedures.BeltBurnishingTest.RequiredCycles,
             };
 
             return this.Ok(parameters);

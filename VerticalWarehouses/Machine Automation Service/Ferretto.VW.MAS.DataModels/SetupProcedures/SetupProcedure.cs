@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        public double FeedRate { get; set; }
+        public double FeedRate { get; set; } = 1.0;
 
         public bool IsCompleted { get; set; }
 

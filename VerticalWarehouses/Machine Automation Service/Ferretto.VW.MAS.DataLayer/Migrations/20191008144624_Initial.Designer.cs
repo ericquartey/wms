@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191008121732_Initial")]
+    [Migration("20191008144624_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -571,7 +571,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 8, 14, 17, 31, 822, DateTimeKind.Local).AddTicks(9617),
+                            InstallationDate = new DateTime(2016, 12, 8, 16, 46, 23, 473, DateTimeKind.Local).AddTicks(6011),
                             ServiceStatus = 86
                         });
                 });
@@ -586,6 +586,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("FeedRate");
 
+                    b.Property<bool>("IsCompleted");
+
                     b.HasKey("Id");
 
                     b.ToTable("SetupProcedures");
@@ -598,9 +600,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BayHeightCheckId");
+
+                    b.Property<int?>("BeltBurnishingTestId");
+
+                    b.Property<int?>("CellPanelsCheckId");
+
+                    b.Property<int?>("CellsHeightCheckId");
+
                     b.Property<int?>("ShutterTestId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BayHeightCheckId");
+
+                    b.HasIndex("BeltBurnishingTestId");
+
+                    b.HasIndex("CellPanelsCheckId");
+
+                    b.HasIndex("CellsHeightCheckId");
 
                     b.HasIndex("ShutterTestId");
 
@@ -810,11 +828,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("StepMovementParameters");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.PositioningProcedure", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<double>("Step");
+
+                    b.HasDiscriminator().HasValue("PositioningProcedure");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<int>("CycleQuantity");
+                    b.Property<int>("PerformedCycles");
+
+                    b.Property<int>("RequiredCycles");
 
                     b.HasDiscriminator().HasValue("RepeatedTestProcedure");
                 });
@@ -935,6 +964,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "BayHeightCheck")
+                        .WithMany()
+                        .HasForeignKey("BayHeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "BeltBurnishingTest")
+                        .WithMany()
+                        .HasForeignKey("BeltBurnishingTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "CellPanelsCheck")
+                        .WithMany()
+                        .HasForeignKey("CellPanelsCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "CellsHeightCheck")
+                        .WithMany()
+                        .HasForeignKey("CellsHeightCheckId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "ShutterTest")
                         .WithMany()
                         .HasForeignKey("ShutterTestId");

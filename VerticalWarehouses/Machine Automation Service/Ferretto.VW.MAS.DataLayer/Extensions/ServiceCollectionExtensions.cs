@@ -33,9 +33,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton<IDataLayerService, DataLayerService>();
 
             services
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IBayPositionControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IBeltBurnishingDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
@@ -44,9 +41,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IDepositAndPickUpDataLayer);
@@ -64,6 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddScoped<IMachineProvider, MachineProvider>()
                 .AddScoped<IServicingProvider, ServicingProvider>()
                 .AddScoped<ISetupStatusProvider, SetupStatusProvider>()
+                .AddScoped<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
                 .AddScoped<IShutterTestParametersProvider, ShutterTestParametersProvider>()
                 .AddScoped<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddScoped<IUsersProvider, UsersProvider>();

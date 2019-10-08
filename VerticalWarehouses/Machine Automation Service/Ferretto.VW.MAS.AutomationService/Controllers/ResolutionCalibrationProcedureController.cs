@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IResolutionCalibrationDataLayer resolutionCalibration;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IResolutionCalibrationDataLayer resolutionCalibration,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ISetupStatusProvider setupStatusProvider)
             : base(eventAggregator)
         {
@@ -46,9 +46,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
             }
 
-            if (resolutionCalibration is null)
+            if (setupProceduresDataProvider is null)
             {
-                throw new ArgumentNullException(nameof(resolutionCalibration));
+                throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             }
 
             if (setupStatusProvider is null)
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.setupStatusProvider = setupStatusProvider;
             this.elevatorDataProvider = elevatorDataProvider;
             this.configurationProvider = dataLayerConfigurationValueManagement;
-            this.resolutionCalibration = resolutionCalibration;
+            this.setupProceduresDataProvider = setupProceduresDataProvider;
         }
 
         #endregion
@@ -100,17 +100,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<ResolutionCalibrationParameters> GetParameters()
         {
+            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+
             var parameters = new ResolutionCalibrationParameters
             {
                 CurrentResolution = this.elevatorDataProvider.GetVerticalAxis().Resolution,
-
-                InitialPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
-                    ResolutionCalibration.InitialPosition,
-                    ConfigurationCategory.ResolutionCalibration),
-
-                FinalPosition = (double)this.configurationProvider.GetDecimalConfigurationValue(
-                    ResolutionCalibration.FinalPosition,
-                    ConfigurationCategory.ResolutionCalibration),
+                InitialPosition = setupProcedures.VerticalResolutionCalibration.InitialPosition,
+                FinalPosition = setupProcedures.VerticalResolutionCalibration.FinalPosition,
             };
 
             return this.Ok(parameters);

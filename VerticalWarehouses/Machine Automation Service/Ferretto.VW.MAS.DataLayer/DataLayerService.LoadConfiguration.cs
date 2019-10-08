@@ -64,7 +64,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             foreach (var jsonCategory in jsonObject)
             {
-                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase) || jsonCategory.Key == "$schema")
+                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase)
+                    || jsonCategory.Key == "$schema"
+                    || jsonCategory.Key == nameof(VertimagConfiguration.SetupProcedures))
                 {
                     continue;
                 }
@@ -98,16 +100,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                             break;
 
-                        case ConfigurationCategory.BeltBurnishing:
-                            if (!Enum.TryParse(jsonData.Key, false, out BeltBurnishing beltBurnishingData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
-
-                            break;
-
                         case ConfigurationCategory.DepositAndPickUp:
                             if (!Enum.TryParse(jsonData.Key, false, out DepositAndPickUp depositAndPickUpData))
                             {
@@ -118,16 +110,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                             break;
 
-                        case ConfigurationCategory.ResolutionCalibration:
-                            if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
-
-                            break;
-
                         case ConfigurationCategory.OffsetCalibration:
                             if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
                             {
@@ -135,26 +117,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
 
                             this.SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.CellControl:
-                            if (!Enum.TryParse(jsonData.Key, false, out CellControl cellControlData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)cellControlData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.PanelControl:
-                            if (!Enum.TryParse(jsonData.Key, false, out PanelControl panelControlData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)panelControlData, jsonData.Value);
 
                             break;
 
@@ -175,16 +137,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
 
                             this.SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.BayPositionControl:
-                            if (!Enum.TryParse(jsonData.Key, false, out BayPositionControl bayPositionControlData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
 
                             break;
 

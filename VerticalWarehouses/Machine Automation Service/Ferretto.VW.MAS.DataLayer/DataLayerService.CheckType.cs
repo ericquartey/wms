@@ -81,36 +81,6 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        public ConfigurationDataType CheckConfigurationValueType(CellControl configurationValueEnum)
-        {
-            return ConfigurationDataType.Float;
-        }
-
-        public ConfigurationDataType CheckConfigurationValueType(PanelControl configurationValueEnum)
-        {
-            ConfigurationDataType returnValue;
-            switch (configurationValueEnum)
-            {
-                case PanelControl.FrontInitialReferenceCell:
-                case PanelControl.FrontPanelQuantity:
-                case PanelControl.BackInitialReferenceCell:
-                case PanelControl.BackPanelQuantity:
-                    returnValue = ConfigurationDataType.Integer;
-                    break;
-
-                case PanelControl.StepValue:
-                case PanelControl.FeedRate:
-                    returnValue = ConfigurationDataType.Float;
-                    break;
-
-                default:
-                    returnValue = ConfigurationDataType.Undefined;
-                    break;
-            }
-
-            return returnValue;
-        }
-
         public ConfigurationDataType CheckConfigurationValueType(ShutterHeightControl configurationValueEnum)
         {
             return ConfigurationDataType.Float;
@@ -122,11 +92,6 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public ConfigurationDataType CheckConfigurationValueType(ShutterManualMovements configurationValueEnum)
-        {
-            return ConfigurationDataType.Float;
-        }
-
-        public ConfigurationDataType CheckConfigurationValueType(BayPositionControl configurationValueEnum)
         {
             return ConfigurationDataType.Float;
         }
@@ -158,33 +123,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         break;
                     }
 
-                case ConfigurationCategory.BeltBurnishing:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
-                        break;
-                    }
-
-                case ConfigurationCategory.ResolutionCalibration:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
-                        break;
-                    }
-
                 case ConfigurationCategory.OffsetCalibration:
                     {
                         actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
-                        break;
-                    }
-
-                case ConfigurationCategory.CellControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
-                        break;
-                    }
-
-                case ConfigurationCategory.PanelControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
                         break;
                     }
 
@@ -197,12 +138,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 case ConfigurationCategory.WeightControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
-                        break;
-                    }
-
-                case ConfigurationCategory.BayPositionControl:
-                    {
-                        actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
                         break;
                     }
 

@@ -6,7 +6,7 @@
 
         public int PerformedCycles { get; set; }
 
-        public int RequestedCycles { get; set; }
+        public int RequiredCycles { get; set; }
 
         #endregion
     }
