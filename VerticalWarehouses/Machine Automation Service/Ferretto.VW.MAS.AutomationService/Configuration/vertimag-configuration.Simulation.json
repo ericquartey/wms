@@ -79,6 +79,10 @@
           }
         },
         {
+          "Inverter": {
+            "Index": 1,
+            "Type": "Acu"
+          },
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
@@ -269,7 +273,7 @@
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
         "HalfShaftLength": 2084,
-        "MaximumLoadOnBoard": 800,
+        "MaximumLoadOnBoard": 990,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,
         "ShaftElasticity": 210000
