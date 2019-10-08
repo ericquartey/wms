@@ -450,11 +450,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 false);
 
             this.updateCurrentPositionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
-                message => this.OnElevatorPositionChanged(message),
-                ThreadOption.UIThread,
-                false);
+                            this.UpdatePositions,
+                            ThreadOption.UIThread,
+                            false);
+        }
+
+        private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message is null
+                ||
+                message.Data is null)
+            {
+                return;
+            }
+
+            switch (message.Data.AxisMovement)
+            {
+                case Axis.Horizontal:
+                    this.CurrentHorizontalPosition = message.Data.CurrentPosition;
+                    break;
+
+                case Axis.Vertical:
+                    this.CurrentVerticalPosition = message.Data.CurrentPosition;
+                    break;
+            }
         }
 
         #endregion
