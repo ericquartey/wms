@@ -1,13 +1,13 @@
-﻿using System.Windows;
-using System;
+﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
-using System.Windows.Data;
-using System.Reflection;
 
 namespace Ferretto.VW.App.Controls
 {
