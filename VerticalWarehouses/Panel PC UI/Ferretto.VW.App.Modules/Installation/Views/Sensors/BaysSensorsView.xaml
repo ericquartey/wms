@@ -61,7 +61,8 @@
 
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay2}" />
@@ -82,10 +83,11 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2"
-                        Orientation="Vertical">
+                        Orientation="Vertical"   Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay3}" />
+                           Text="{x:Static res:InstallationApp.Bay3}"
+                         />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay3}"
                                            Text="{x:Static res:InstallationApp.LuPresentInBay}" />
 

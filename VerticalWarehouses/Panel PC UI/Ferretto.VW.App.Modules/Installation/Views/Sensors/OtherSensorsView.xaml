@@ -65,7 +65,8 @@
             </StackPanel>
             <StackPanel Grid.Row="2"
                         Grid.Column="1"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay2}" />
@@ -83,7 +84,8 @@
                                            Text="{x:Static res:InstallationApp.AntiIntrusionGate}" />
             </StackPanel>
             <StackPanel Grid.Row="3"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay3}" />

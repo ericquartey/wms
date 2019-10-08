@@ -467,7 +467,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
             this.CompletedCycles = message.Data.ExecutedCycles;
-            this.CurrentPosition = message.Data.CurrentPosition;
+            this.CurrentPosition = message?.Data?.CurrentPosition ?? this.CurrentPosition;
 
             switch (message.Status)
             {

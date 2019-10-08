@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
-        public bool IsDouble => this.Positions.Count() == 2;
+        public bool IsDouble => this.Positions?.Count() == 2;
 
         public bool IsExternal { get; set; }
 

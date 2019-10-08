@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly IMachineBaysService machineBaysService;
+
         private readonly MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
@@ -31,6 +33,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected BaseSensorsViewModel(
             IMachineSensorsService machineSensorsService,
+            IMachineBaysService machineBaysService,
             IBayManager bayManager)
             : base(Services.PresentationMode.Installer)
         {
@@ -39,13 +42,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(machineSensorsService));
             }
 
+            if (machineBaysService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machineBaysService));
+            }
+
             if (bayManager == null)
             {
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
 
             this.machineSensorsService = machineSensorsService;
+            this.machineBaysService = machineBaysService;
             this.bayManager = bayManager;
+
             this.InitializeNavigationMenu();
         }
 
@@ -54,6 +64,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public override EnableMask EnableMask => EnableMask.None;
+
+        public bool IsBay2Present { get; private set; }
+
+        public bool IsBay3Present { get; private set; }
 
         public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
@@ -95,6 +109,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                var bays = await this.machineBaysService.GetAllAsync();
+
+                this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
+                this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
