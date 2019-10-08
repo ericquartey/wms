@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.MoveDrawer.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;

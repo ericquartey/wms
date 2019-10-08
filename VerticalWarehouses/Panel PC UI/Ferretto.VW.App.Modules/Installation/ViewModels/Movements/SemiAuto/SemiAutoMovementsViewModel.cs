@@ -268,6 +268,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveElevatorPositionAsync();
 
+            await this.RetrieveCarouselPositionAsync();
+
             await this.RetrieveCellsAsync();
 
             await this.RetrieveLoadingUnitsAsync();
@@ -280,6 +282,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             this.RetrieveElevatorPositionAsync();
+
+            this.RetrieveCarouselPositionAsync();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -336,6 +340,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                        {
+                            this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
 
                         break;
                     }
@@ -350,7 +358,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
-
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                        {
+                            this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
                         break;
                     }
 
