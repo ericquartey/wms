@@ -105,18 +105,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, false, 0);
-            inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter axis position status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSetTimer,
-                (byte)this.machineData.CurrentInverterIndex);
-            this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"{this.machineData.MessageData.MovementMode} Positioning Error Detected",
