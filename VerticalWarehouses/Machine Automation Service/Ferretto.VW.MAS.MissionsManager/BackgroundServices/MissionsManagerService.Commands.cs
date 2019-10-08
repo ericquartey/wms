@@ -27,16 +27,16 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             switch (command.Type)
             {
                 case MessageType.WeightAcquisitionCommand:
-                {
-                    this.OnWeightAcquisitionProcedureCommandReceived(command);
-                    break;
-                }
+                    {
+                        this.OnWeightAcquisitionProcedureCommandReceived(command);
+                        break;
+                    }
 
                 case MessageType.ChangeRunningState:
-                {
-                    this.OnChangeRunningStateCommandReceived(command);
-                    break;
-                }
+                    {
+                        this.OnChangeRunningStateCommandReceived(command);
+                        break;
+                    }
             }
 
             return Task.CompletedTask;

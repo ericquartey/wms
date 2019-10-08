@@ -6,8 +6,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public interface IState
     {
-
-
         #region Methods
 
         IState CommandReceived(CommandMessage commandMessage);

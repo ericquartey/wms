@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #endregion
 
-
-
         #region Properties
 
         Guid InstanceId { get; }

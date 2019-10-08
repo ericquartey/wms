@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     var machineId = 1; // TODO get machine Id from DataLayer
                     var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
 
-                    foreach(var bay in idleBays)
+                    foreach (var bay in idleBays)
                     {
                         var pendingMissionsOnBay = missions
                             .Where(m =>
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         await this.ExecuteNextMissionAsync(bay, pendingMissionsOnBay);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // do nothing
                     this.Logger.LogWarning("Unable to load missions from WMS service.");
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         {
             this.Logger.LogDebug($"Bay #{bay.Number}: there are {pendingMissions.Count()} pending missions.");
 
-            if(!bay.CurrentMissionId.HasValue
+            if (!bay.CurrentMissionId.HasValue
                 &&
                 pendingMissions.Any())
             {
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 this.Logger.LogDebug($"Bay #{bay.Number}: new mission id='{bay.CurrentMissionId}' assigned.");
             }
 
-            if(bay.CurrentMissionId.HasValue)
+            if (bay.CurrentMissionId.HasValue)
             {
                 try
                 {
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     {
                         var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
-                        if(missionOperation != null)
+                        if (missionOperation != null)
                         {
                             bayProvider.AssignMissionOperation(bay.Number, mission.Id, missionOperation.Id);
 
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         }
                     }
                 }
-                catch(WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
                 {
                     this.Logger.LogError(ex, $"Unable to load details for mission id='{bay.CurrentMissionId}' from WMS.");
                 }
@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
                 WaitHandle.WaitAny(waitHandles);
             }
-            while(!this.CancellationToken.IsCancellationRequested);
+            while (!this.CancellationToken.IsCancellationRequested);
         }
 
         #endregion
