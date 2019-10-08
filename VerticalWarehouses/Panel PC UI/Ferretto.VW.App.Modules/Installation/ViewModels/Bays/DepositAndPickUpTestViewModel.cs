@@ -540,13 +540,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case MessageStatus.OperationExecuting:
                     {
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        if (message.Data.AxisMovement == Axis.Vertical)
                         {
-                            this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
-                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        else if (message.Data.AxisMovement == Axis.Horizontal)
                         {
-                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
 
                         break;

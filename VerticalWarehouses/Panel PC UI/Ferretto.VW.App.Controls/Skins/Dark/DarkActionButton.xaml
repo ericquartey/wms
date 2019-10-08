@@ -4,7 +4,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <SolidColorBrush x:Key="PpcButtonBackground"
-                     Color="{DynamicResource EDBGrayB}" />
+                     Color="{DynamicResource EDBGrayC}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrush"
                      Color="{DynamicResource EDBGrayH}" />
     <SolidColorBrush x:Key="PpcButtonForeground"
@@ -34,6 +34,6 @@
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />-->
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
-                     Color="{DynamicResource EDBGrayD}" />
+                     Color="{DynamicResource EDBGrayG}" />
 
 </ResourceDictionary>
