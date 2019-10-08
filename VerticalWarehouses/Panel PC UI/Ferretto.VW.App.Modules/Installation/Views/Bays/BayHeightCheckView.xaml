@@ -83,8 +83,8 @@
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <ctrls:PpcSpinEdit VerticalAlignment="Center"
-                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
-                              LabelText="{x:Static res:InstallationApp.StepValue}" />
+                               EditValue="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+                               LabelText="{x:Static res:InstallationApp.StepValue}" />
 
             <StackPanel Grid.Column="1"
                         Orientation="Vertical">
