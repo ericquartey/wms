@@ -5,8 +5,6 @@ namespace Ferretto.VW.MAS.IODriver.Interface
 {
     public interface IIoStateMachine : IDisposable
     {
-
-
         #region Methods
 
         void ChangeState(IIoState newState);

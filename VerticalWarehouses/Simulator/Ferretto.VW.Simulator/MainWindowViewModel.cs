@@ -86,7 +86,6 @@ namespace Ferretto.VW.Simulator
 
         #region Methods
 
-
         private void ToggleTheme()
         {
             this.themeService.ApplyTheme(

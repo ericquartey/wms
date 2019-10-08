@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
-
-
         #region Methods
 
         public void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage)

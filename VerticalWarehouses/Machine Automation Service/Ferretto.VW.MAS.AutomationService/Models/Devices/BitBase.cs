@@ -1,5 +1,4 @@
 ﻿using System;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.MAS.AutomationService.Models
 {

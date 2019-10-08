@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -20,12 +19,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
 
         protected BaseProvider(IEventAggregator eventAggregator)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion
@@ -35,7 +29,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         protected void SendCommandToMissionManager(
             IMessageData messageData,
             string description,
-            MessageType messageType)
+            MessageActor sender,
+            MessageType messageType,
+            BayNumber requestingBay)
         {
             this.eventAggregator
                 .GetEvent<CommandEvent>()
@@ -44,9 +40,9 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                         messageData,
                         description,
                         MessageActor.MissionsManager,
-                        MessageActor.Any,
+                        sender,
                         messageType,
-                        BayNumber.None));
+                        requestingBay));
         }
 
         #endregion
@@ -62,37 +58,32 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
         {
             TData messageData = null;
 
-            using (var semaphore = new Semaphore(0, 100))
+            var semaphore = new Semaphore(0, 100);
+
+            var notificationEvent = this.eventAggregator
+                .GetEvent<NotificationEvent>();
+
+            var subscriptionToken = notificationEvent.Subscribe(
+                m => { messageData = m.Data as TData; semaphore.Release(); },
+                ThreadOption.PublisherThread,
+                false,
+                message =>
+                    message.Type == messageType
+                    &&
+                    message.Data is TData
+                    &&
+                    (!messageStatus.HasValue || message.Status == messageStatus.Value)
+                    &&
+                    (messageSource == MessageActor.Any || message.Source == messageSource));
+
+            action?.Invoke();
+
+            var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
+
+            notificationEvent.Unsubscribe(subscriptionToken);
+            if (signalReceived == false)
             {
-                var notificationEvent = this.eventAggregator
-                    .GetEvent<NotificationEvent>();
-
-                var subscriptionToken = notificationEvent.Subscribe(
-                        m =>
-                        {
-                            messageData = m.Data as TData;
-                            semaphore.Release();
-                        },
-                        ThreadOption.PublisherThread,
-                        false,
-                        message =>
-                            message.Type == messageType
-                            &&
-                            message.Data is TData
-                            &&
-                            (!messageStatus.HasValue || message.Status == messageStatus.Value)
-                            &&
-                            (messageSource == MessageActor.Any || message.Source == messageSource));
-
-                action?.Invoke();
-
-                var signalReceived = semaphore.WaitOne(timeoutInMilliseconds);
-
-                notificationEvent.Unsubscribe(subscriptionToken);
-                if (signalReceived == false)
-                {
-                    throw new InvalidOperationException("Waiting for the specified event timed out.");
-                }
+                throw new InvalidOperationException("Waiting for the specified event timed out.");
             }
 
             return messageData;

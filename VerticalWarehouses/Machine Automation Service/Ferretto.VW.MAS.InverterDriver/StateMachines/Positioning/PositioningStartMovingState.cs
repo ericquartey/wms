@@ -1,7 +1,5 @@
 ﻿using System.Threading;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -119,7 +117,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             else
             {
-                this.Logger.LogDebug("Moving towards target position.");
+                this.Logger.LogTrace("Moving towards target position.");
             }
 
             return true; //INFO Next status word request handled by timer

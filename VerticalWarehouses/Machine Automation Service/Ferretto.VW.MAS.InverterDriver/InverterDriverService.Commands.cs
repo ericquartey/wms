@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -18,6 +17,16 @@ namespace Ferretto.VW.MAS.InverterDriver
     partial class InverterDriverService
     {
         #region Methods
+
+        protected override void NotifyCommandError(FieldCommandMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void NotifyError(FieldNotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override Task OnCommandReceivedAsync(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider)
         {

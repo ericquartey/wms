@@ -7,6 +7,8 @@ namespace Ferretto.VW.Simulator.Services
 {
     public static class BufferUtility
     {
+        #region Methods
+
         public static byte[] AppendArrays(this byte[] a, byte[] b, int bytesRead)
         {
             if (a == null)
@@ -47,6 +49,41 @@ namespace Ferretto.VW.Simulator.Services
                 }
             }
             return -1;
+        }
+
+        public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
+        {
+            IList<byte[]> messages = new List<byte[]>();
+            if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
+            {
+                var startIndex = 0;
+                while (startIndex != -1 && receiveBuffer.Length > 0)
+                {
+                    var messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
+
+                    // check if there is a message to extract
+                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)
+                    {
+                        // Cut message from raw buffer and enqueue it
+                        var message = new byte[messageLength];
+                        Array.Copy(receiveBuffer, startIndex, message, 0, message.Length);
+                        messages.Add(message);
+
+                        // Remove message from raw buffer
+                        var count = receiveBuffer.Length - messageLength;
+                        var newarray = new byte[count];
+                        Buffer.BlockCopy(receiveBuffer, startIndex + messageLength, newarray, 0, count);
+                        receiveBuffer = newarray;
+                        startIndex = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return messages;
         }
 
         internal static IList<string> GetMessagesToEnqueue(ref byte[] receiveBuffer, byte[] messageStartPattern, byte[] messageEndPattern)
@@ -94,7 +131,6 @@ namespace Ferretto.VW.Simulator.Services
                             Buffer.BlockCopy(receiveBuffer, endIndex + messageEndPattern.Length, newarray, 0, count);
                             receiveBuffer = newarray;
                             startIndex = 0;
-
                         }
                         else
                         {
@@ -114,41 +150,6 @@ namespace Ferretto.VW.Simulator.Services
             return messages;
         }
 
-        public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
-        {
-            IList<byte[]> messages = new List<byte[]>();
-            if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
-            {
-                var startIndex = 0;
-                while (startIndex != -1 && receiveBuffer.Length > 0)
-                {
-                    var messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
-
-                    // check if there is a message to extract
-                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)
-                    {
-                        // Cut message from raw buffer and enqueue it
-                        var message = new byte[messageLength];
-                        Array.Copy(receiveBuffer, startIndex, message, 0, message.Length);
-                        messages.Add(message);
-
-                        // Remove message from raw buffer
-                        var count = receiveBuffer.Length - messageLength;
-                        var newarray = new byte[count];
-                        Buffer.BlockCopy(receiveBuffer, startIndex + messageLength, newarray, 0, count);
-                        receiveBuffer = newarray;
-                        startIndex = 0;
-
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-
-            return messages;
-        }
+        #endregion
     }
 }

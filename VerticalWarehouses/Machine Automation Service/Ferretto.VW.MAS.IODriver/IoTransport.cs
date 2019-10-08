@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
+        private readonly int readTimeoutMilliseconds;   // -1 is no timeout
+
         private readonly byte[] receiveBuffer = new byte[1024];
 
         private bool disposed;
 
         private IPAddress ioAddress;
-
-        private readonly int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 

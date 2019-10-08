@@ -2,8 +2,6 @@
 {
     public interface IStateChangedMessageData : IMessageData
     {
-
-
         #region Properties
 
         bool CurrentState { get; }

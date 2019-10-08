@@ -1,7 +1,9 @@
-﻿using System.Windows;
-using System;
+﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
@@ -19,7 +21,7 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit));
 
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
-            nameof(Highlighted),
+                    nameof(Highlighted),
             typeof(bool),
             typeof(PpcSpinEdit));
 
@@ -28,12 +30,6 @@ namespace Ferretto.VW.App.Controls
             typeof(decimal),
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
-
-        public static readonly DependencyProperty InputTextProperty = DependencyProperty.Register(
-            nameof(InputText),
-            typeof(string),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
             nameof(LabelText),
@@ -59,21 +55,30 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(250)));
 
+        private const string DECIMAL_STYLE = "VWAPP_SpinEdit_DecimalStyle";
+
+        private const string DOUBLE_STYLE = "VWAPP_SpinEdit_DoubleStyle";
+
+        private const string INTEGER_STYLE = "VWAPP_SpinEdit_IntegerStyle";
+
+        private static readonly DependencyProperty EditValueProperty = DependencyProperty.Register(
+            nameof(EditValue),
+            typeof(object),
+            typeof(PpcSpinEdit),
+            new FrameworkPropertyMetadata(null));
+
+        private bool isStyleSet;
+
         #endregion
 
         #region Constructors
 
         public PpcSpinEdit()
         {
-            try
-            {
-                this.InitializeComponent();
-                var customInputFieldControlFocusable = this;
-                this.LayoutRoot.DataContext = customInputFieldControlFocusable;
-            }
-            catch (System.Exception)
-            {
-            }
+            this.InitializeComponent();
+            var customInputFieldControlFocusable = this;
+            this.LayoutRoot.DataContext = customInputFieldControlFocusable;
+            this.Loaded += this.PpcSpinEdit_Loaded;
         }
 
         #endregion
@@ -84,6 +89,12 @@ namespace Ferretto.VW.App.Controls
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
             set => this.SetValue(BorderColorProperty, value);
+        }
+
+        public object EditValue
+        {
+            get => this.GetValue(EditValueProperty);
+            set => this.SetValue(EditValueProperty, value);
         }
 
         public bool Highlighted
@@ -98,11 +109,7 @@ namespace Ferretto.VW.App.Controls
             set => this.SetValue(IncrementProperty, value);
         }
 
-        public string InputText
-        {
-            get => (string)this.GetValue(InputTextProperty);
-            set => this.SetValue(InputTextProperty, value);
-        }
+        public bool IsStyleSet => this.isStyleSet;
 
         public string LabelText
         {
@@ -131,6 +138,42 @@ namespace Ferretto.VW.App.Controls
         #endregion
 
         #region Methods
+
+        public void SetStyle(string styleName)
+        {
+            var style = Application.Current.Resources[styleName] as Style;
+            this.InnerSpinEdit.Style = style;
+            this.isStyleSet = true;
+        }
+
+        private static PropertyInfo GetProperty(Type type, string fieldPathName)
+        {
+            var pathTokens = fieldPathName.Split('.');
+            PropertyInfo property = null;
+            foreach (var memberName in pathTokens)
+            {
+                property = type.GetProperty(memberName);
+                if (property == null)
+                {
+                    System.Diagnostics.Debug.Print(
+                        $"Cannot retrieve property '{fieldPathName}' because property '{memberName}' is not available on type '{type}'.");
+
+                    return null;
+                }
+
+                type = property.PropertyType;
+            }
+
+            if (property == null)
+            {
+                System.Diagnostics.Debug.Print(
+                    $"Cannot retrieve property '{fieldPathName}' for model type '{type}'.");
+
+                return null;
+            }
+
+            return property;
+        }
 
         private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -172,7 +215,7 @@ namespace Ferretto.VW.App.Controls
         {
             if (e.Key == Key.Return)
             {
-                var b = this.GetBindingExpression(InputTextProperty);
+                var b = this.GetBindingExpression(EditValueProperty);
                 b?.UpdateSource();
             }
         }
@@ -183,6 +226,45 @@ namespace Ferretto.VW.App.Controls
             if (LayoutTreeHelper.GetVisualParents((DependencyObject)e.OriginalSource, spinEdit).Any(x => x is TextBox))
             {
                 this.Dispatcher.BeginInvoke((Action)spinEdit.SelectAll);
+            }
+        }
+
+        private void PpcSpinEdit_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.IsStyleSet)
+            {
+                return;
+            }
+
+            var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
+
+            var dataContextType = this.DataContext.GetType();
+            var path = bindingExpression.ParentBinding.Path.Path;
+
+            var property = GetProperty(dataContextType, path);
+
+            var type = property.PropertyType;
+            if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
+            {
+                type = nullType;
+            }
+
+            if (type == typeof(int))
+            {
+                this.SetStyle(INTEGER_STYLE);
+                return;
+            }
+
+            if (type == typeof(double))
+            {
+                this.SetStyle(DOUBLE_STYLE);
+                return;
+            }
+
+            if (type == typeof(decimal))
+            {
+                this.SetStyle(DECIMAL_STYLE);
+                return;
             }
         }
 

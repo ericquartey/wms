@@ -8,7 +8,7 @@ namespace Ferretto.VW.App.Controls.Controls
 {
     public class CustomControlMaintenanceDetailDataGridViewModel : BaseViewModel, ICustomControlMaintenanceDetailDataGridViewModel
     {
-        #region Private Fields
+        #region Fields
 
         private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         public ObservableCollection<DataGridMaintenanceDetail> MaintenanceDetails { get => this.maintenanceDetails; set => this.SetProperty(ref this.maintenanceDetails, value); }
 

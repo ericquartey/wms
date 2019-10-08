@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -65,9 +64,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
                  nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
+
+            connection.On<NotificationMessageUI<ChangeRunningStateMessageData>>(
+                nameof(IInstallationHub.ChangeRunningState), this.OnChangeRunningState);
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnChangeRunningState(NotificationMessageUI<ChangeRunningStateMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

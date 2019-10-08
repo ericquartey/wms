@@ -7,8 +7,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class StateChangedMessageData : IStateChangedMessageData
     {
-
-
         #region Constructors
 
         public StateChangedMessageData(bool newState, MessageVerbosity verbosity = MessageVerbosity.Info)
@@ -18,8 +16,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         #endregion
-
-
 
         #region Properties
 

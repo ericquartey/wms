@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -29,7 +29,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
@@ -284,7 +283,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         ? Axis.Vertical
                         : Axis.Horizontal;
 
-                    this.Logger.LogDebug($"ActualPositionShaft inverter={message.SystemIndex}; axis={axis}; value={message.IntPayload}");
+                    this.Logger.LogTrace($"ActualPositionShaft inverter={message.SystemIndex}; axis={axis}; value={message.IntPayload}");
 
                     if ((axis == this.currentAxis || currentStateMachine == null) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish))
@@ -739,8 +738,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
                             .ToArray();
 
-                        // TODO: what is '2' and '4'? Please replace with named constants.
-                        var direction = (positioningData.Direction == HorizontalMovementDirection.Forwards) ? 2 : 4;
+                        var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
 
                         this.Logger.LogDebug($"Direction: {positioningData.Direction}");
                         this.Logger.LogDebug($"Position:");
@@ -758,9 +756,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                             switchPosition,
                             direction,
                             this.refreshTargetTable);
-
-                        // TODO: why this comment? remove if not necessary!
-                        //this.refreshTargetTable = false;
 
                         this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
@@ -902,7 +897,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.Logger.LogTrace("4:Inverter already powered off. Just notify operation completed");
                 var endNotification = new FieldNotificationMessage(
-                    new InverterPowerOnFieldMessageData(),
+                    new InverterPowerOffFieldMessageData(),
                     "Inverter Started",
                     FieldMessageActor.Any,
                     FieldMessageActor.InverterDriver,

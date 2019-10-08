@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 // ReSharper disable ArrangeThisQualifier

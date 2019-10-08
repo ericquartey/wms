@@ -17,5 +17,11 @@
         OperationStart,
 
         OperationExecuting,
+
+        OperationStepStart,
+
+        OperationStepEnd,
+
+        OperationStepStop
     }
 }

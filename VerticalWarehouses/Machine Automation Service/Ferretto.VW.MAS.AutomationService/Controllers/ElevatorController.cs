@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, this.BayNumber);
+            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber);
+            this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(double targetPosition, FeedRateCategory feedRateCategory)
         {
-            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber);
+            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRateCategory, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVertical(VerticalMovementDirection direction)
         {
-            this.elevatorProvider.MoveVertical(direction, this.BayNumber);
+            this.elevatorProvider.MoveVertical(direction, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVerticalOfDistance(double distance)
         {
-            this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber);
+            this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.elevatorProvider.Stop(this.BayNumber);
+            this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
