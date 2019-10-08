@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
                             this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
                         }
-                        else if (dataInverters.CurrentAxis == Axis.Horizontal)
+                        else if (dataInverters.CurrentAxis == Axis.Horizontal && inverterIndex <= (byte)InverterIndex.Slave1)
                         {
                             elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                             this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
