@@ -34,7 +34,7 @@
                                  Grid.Column="0"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
+                                 ContentText="{Binding CurrentPosition}"
                                  LabelText="{x:Static res:InstallationApp.ActualPosition}"
                                  TextBlock.TextAlignment="Center" />
         <StackPanel Grid.Row="1"
