@@ -12,29 +12,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
-
-
         #region Methods
-
-        private bool[] ByteArrayToBoolArray(byte b)
-        {
-            const int N_BITS8 = 8;
-            var t = new BitArray(new byte[] { b });
-            var bits = new bool[N_BITS8];
-            t.CopyTo(bits, 0);
-            return bits;
-        }
-
-        private bool IsHeaderValid(byte header)
-        {
-            return (header == 3 || header == 15 || header == 26);
-        }
-
-        private bool IsMessageLengthValid(byte firmwareVersion, byte length)
-        {
-            return (firmwareVersion == 0x10 && !(length == 15 || length == 3))    // length is not valid for old release
-                || (firmwareVersion == 0x11 && !(length == 26 || length == 3));
-        }
 
         /// <summary>
         /// Parsing the incoming telegram from the SHDRemoteIO device.
@@ -187,6 +165,26 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                 throw new IoDriverException($"Exception: {ex.Message} ParsingDataBytes error", IoDriverExceptionCode.CreationFailure, ex);
             }
+        }
+
+        private bool[] ByteArrayToBoolArray(byte b)
+        {
+            const int N_BITS8 = 8;
+            var t = new BitArray(new byte[] { b });
+            var bits = new bool[N_BITS8];
+            t.CopyTo(bits, 0);
+            return bits;
+        }
+
+        private bool IsHeaderValid(byte header)
+        {
+            return (header == 3 || header == 15 || header == 26);
+        }
+
+        private bool IsMessageLengthValid(byte firmwareVersion, byte length)
+        {
+            return (firmwareVersion == 0x10 && !(length == 15 || length == 3))    // length is not valid for old release
+                || (firmwareVersion == 0x11 && !(length == 26 || length == 3));
         }
 
         #endregion
