@@ -23,9 +23,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public MessageActor MessageActor { get; set; }
-
         public string CurrentState { get; set; }
+
+        public MessageActor MessageActor { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

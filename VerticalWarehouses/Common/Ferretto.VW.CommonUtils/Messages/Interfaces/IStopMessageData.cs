@@ -4,8 +4,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IStopMessageData : IMessageData
     {
-
-
         #region Properties
 
         StopRequestReason StopReason { get; }

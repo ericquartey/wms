@@ -6,8 +6,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class MmExceptionMessageData : IMmExceptionMessageData
     {
-
-
         #region Constructors
 
         public MmExceptionMessageData(Exception innerException, string exceptionDescription, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -20,8 +18,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #endregion
 
-
-
         #region Properties
 
         public int ExceptionCode { get; }
@@ -33,8 +29,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; }
 
         #endregion
-
-
 
         #region Methods
 
