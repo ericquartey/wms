@@ -59,11 +59,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
             else if (this.calibration == Calibration.FindSensor)
             {
-                calibrationMode = InverterCalibrationMode.FindSensor;
-            }
-            else if (this.axisToCalibrate == Axis.BayChain)
-            {
-                calibrationMode = InverterCalibrationMode.FindSensorCarousel;
+                if (this.axisToCalibrate == Axis.BayChain)
+                {
+                    calibrationMode = InverterCalibrationMode.FindSensorCarousel;
+                }
+                else
+                {
+                    calibrationMode = InverterCalibrationMode.FindSensor;
+                }
             }
             else
             {
