@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -131,6 +134,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuningBay()
+        {
+            try
+            {
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.IsWaitingForResponse = true;
+                    await this.machineCarouselService.FindZeroAsync();
+                    this.IsTuningBay = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningBay = false;
+
                 this.ShowNotification(ex);
             }
             finally
