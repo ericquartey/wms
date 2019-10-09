@@ -61,6 +61,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             {
                 calibrationMode = InverterCalibrationMode.FindSensor;
             }
+            else if (this.axisToCalibrate == Axis.BayChain)
+            {
+                calibrationMode = InverterCalibrationMode.FindSensorCarousel;
+            }
             else
             {
                 calibrationMode = InverterCalibrationMode.ResetEncoder;
