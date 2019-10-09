@@ -1761,13 +1761,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     /// <summary>100032 = CradleNotCompletelyLoaded
-    /// 100033 = ConditionsNotMetForPositioning</summary>
+    /// 100033 = ConditionsNotMetForPositioning
+    /// 100034 = ConditionsNotMetForRunning</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrors
     {
         CradleNotCompletelyLoaded = 100032,
     
         ConditionsNotMetForPositioning = 100033,
+    
+        ConditionsNotMetForRunning = 100034,
     
     }
     
