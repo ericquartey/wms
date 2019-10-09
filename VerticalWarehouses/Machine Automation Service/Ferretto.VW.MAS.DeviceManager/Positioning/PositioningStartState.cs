@@ -151,9 +151,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                 {
                     var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
-                    this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                    ? elevatorProvider.VerticalPosition
-                    : elevatorProvider.HorizontalPosition;
+                    if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
+                    {
+                        this.machineData.MessageData.CurrentPosition = elevatorProvider.VerticalPosition;
+                    }
+                    else if (this.machineData.MessageData.MovementMode >= MovementMode.BayChain)
+                    {
+                        var bayChainProvider = scope.ServiceProvider.GetRequiredService<IBayChainProvider>();
+                        this.machineData.MessageData.CurrentPosition = bayChainProvider.HorizontalPosition;
+                    }
+                    else
+                    {
+                        this.machineData.MessageData.CurrentPosition = elevatorProvider.HorizontalPosition;
+                    }
                 }
             }
 

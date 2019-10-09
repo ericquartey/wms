@@ -82,17 +82,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger?.LogTrace("1:Method Start");
 
-            lock (this.machineData.MachineSensorStatus)
-            {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+            //lock (this.machineData.MachineSensorStatus)
+            //{
+            //    using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            //    {
+            //        var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
 
-                    this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                        ? elevatorProvider.VerticalPosition
-                        : elevatorProvider.HorizontalPosition;
-                }
-            }
+            //        this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
+            //            ? elevatorProvider.VerticalPosition
+            //            : elevatorProvider.HorizontalPosition;
+            //    }
+            //}
 
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)

@@ -1146,4 +1146,10 @@
   <data name="UpperBayPosition" xml:space="preserve">
     <value>Upper Position</value>
   </data>
+  <data name="BayChainHorizontalPosition" xml:space="preserve">
+    <value>BayChainHorizontalPosition</value>
+  </data>
+  <data name="CurrentBayChainPosition" xml:space="preserve">
+    <value>CurrentBayChainPosition</value>
+  </data>
 </root>

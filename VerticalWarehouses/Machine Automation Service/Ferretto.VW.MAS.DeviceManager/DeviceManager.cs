@@ -442,26 +442,44 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                         if (dataInverters.CurrentPosition != null)
                         {
+                            var notificationData = new PositioningMessageData();
                             var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
-
                             //TEMP Update X, Y axis positions
                             if (dataInverters.CurrentAxis == Axis.Vertical)
                             {
                                 elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
+                                notificationData.AxisMovement = dataInverters.CurrentAxis;
                             }
                             else if (dataInverters.CurrentAxis == Axis.Horizontal)
                             {
-                                if (inverterIndex <= (byte)InverterIndex.Slave1)
-                                {
-                                    elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
-                                }
-                                else
-                                {
-                                    var bayChainProvider = serviceProvider.GetRequiredService<IBayChainProvider>();
-                                    bayChainProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
-                                }
+                                elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
+                                notificationData.AxisMovement = dataInverters.CurrentAxis;
+                            }
+                            else
+                            {
+                                var bayChainProvider = serviceProvider.GetRequiredService<IBayChainProvider>();
+                                bayChainProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
+                                notificationData.AxisMovement = Axis.Horizontal;
+                                notificationData.MovementMode = MovementMode.BayChain;
                             }
                             this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
+
+                            this.currentStateMachines.TryGetValue(messageBayBayIndex, out var tempStateMachine);
+                            if (tempStateMachine == null)
+                            {
+                                notificationData.CurrentPosition = dataInverters.CurrentPosition.Value;
+                                var notificationMessage = new NotificationMessage(
+                                    notificationData,
+                                    $"Current Encoder position: {notificationData.CurrentPosition}",
+                                    MessageActor.AutomationService,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.Positioning,
+                                    messageBayBayIndex,
+                                    messageBayBayIndex,
+                                    MessageStatus.OperationExecuting);
+
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                            }
                         }
 
                         if (machineResourcesProvider.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)

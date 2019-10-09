@@ -428,7 +428,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (message.Data is InverterStatusUpdateFieldMessageData data)
             {
-                this.machineData.MessageData.CurrentPosition = data.CurrentPosition;
+                if (data.CurrentPosition != null)
+                {
+                    this.machineData.MessageData.CurrentPosition = data.CurrentPosition;
+                }
                 this.machineData.MessageData.TorqueCurrentSample = data.TorqueCurrent;
 
                 var notificationMessage = new NotificationMessage(
