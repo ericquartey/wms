@@ -225,6 +225,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
+        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        {
+            base.OnMachineModeChanged(e);
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+            }
+        }
+
         protected override async Task StopMovementAsync()
         {
             this.IsStopping = true;
