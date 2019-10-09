@@ -702,6 +702,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Carousel Carousel { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double ChainOffset { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("currentMissionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentMissionId { get; set; }
     

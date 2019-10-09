@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -10,14 +11,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal class CalibrateAxisSetParametersState : InverterStateBase
     {
+        //private const int HORIZONTAL_OFFSET = -500;
+
+        //private const int HORIZONTAL_OFFSET_ONETON_MACHINE = -800;
+
         #region Fields
 
-        // TODO move following parameters into configuration
+        // TODO move following parameters into configuration?
         private const int HIGH_SPEED = 2000;
-
-        private const int HORIZONTAL_OFFSET = -500;
-
-        private const int HORIZONTAL_OFFSET_ONETON_MACHINE = -800;
 
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
@@ -142,12 +143,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             {
                                 if (this.calibration == Calibration.FindSensor)
                                 {
-                                    offset = isOneTonMachine ? HORIZONTAL_OFFSET_ONETON_MACHINE : HORIZONTAL_OFFSET;
+                                    var axis = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
+                                    offset = (int)axis.ChainOffset;
                                 }
                                 else
                                 {
                                     offset = 0;
                                 }
+                            }
+                            else if (this.axisToCalibrate == Axis.BayChain)
+                            {
+                                offset = (int)this.ParentStateMachine.GetRequiredService<IBaysProvider>().GetChainOffset(this.InverterStatus.SystemIndex);
                             }
                             else
                             {

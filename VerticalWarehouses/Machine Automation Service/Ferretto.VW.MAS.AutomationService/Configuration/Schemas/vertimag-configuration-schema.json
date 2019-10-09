@@ -33,9 +33,9 @@
             "minItems": 1,
             "additionalProperties": false,
             "required": [
-
               "IoDevice",
               "IsExternal",
+              "ChainOffset",
               "Number",
               "Side",
               "Positions"
@@ -140,6 +140,14 @@
                 "type": "boolean",
                 "title": "The Isexternal Schema",
                 "default": false
+              },
+              "ChainOffset": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/ChainOffset",
+                "type": "integer",
+                "title": "The ChainOffset Schema",
+                "minimum": -10000,
+                "maximum": 10000,
+                "default": -500
               },
               "Number": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
@@ -251,6 +259,7 @@
                   "Orientation",
                   "Resolution",
                   "Offset",
+                  "ChainOffset",
                   "MaximumLoadMovement",
                   "EmptyLoadMovement"
                 ],
@@ -324,6 +333,14 @@
                     "examples": [
                       300
                     ]
+                  },
+                  "ChainOffset": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ChainOffset",
+                    "type": "integer",
+                    "title": "The ChainOffset Schema",
+                    "minimum": -10000,
+                    "maximum": 10000,
+                    "default": -500
                   },
                   "UpperBound": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/UpperBound",
