@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
-namespace Ferretto.VW.MAS.DeviceManager.Providers
+namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
     internal interface IMachineResourcesProvider
     {

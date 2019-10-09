@@ -61,6 +61,7 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case Axis.Horizontal:
+                    case Axis.BayChain:
                         actionType = ActionType.HorizontalHoming;
                         break;
 
