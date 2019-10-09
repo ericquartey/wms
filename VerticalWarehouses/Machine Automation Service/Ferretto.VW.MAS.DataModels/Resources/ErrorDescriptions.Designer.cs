@@ -70,6 +70,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Condizioni per la messa in marcia non soddisfatte..
+        /// </summary>
+        public static string ConditionsNotMetForRunning {
+            get {
+                return ResourceManager.GetString("ConditionsNotMetForRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cassetto non caricato completamente..
         /// </summary>
         public static string CradleNotCompletelyLoaded {

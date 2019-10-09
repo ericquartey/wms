@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.MAS.MissionsManager.Providers
+namespace Ferretto.VW.MAS.MissionsManager.Providers.Interfaces
 {
     public interface IRunningStateProvider
     {
