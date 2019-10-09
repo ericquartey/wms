@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -11,6 +12,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselService machineCarouselService;
 
+        private double? bayChainHorizontalPosition;
+
         private DelegateCommand carouselDownCommand;
 
         private DelegateCommand carouselUpCommand;
@@ -21,8 +24,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public double? BayChainHorizontalPosition
+        {
+            get => this.bayChainHorizontalPosition;
+            protected set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
+        }
+
         public ICommand CarouselDownCommand =>
-            this.carouselDownCommand
+                    this.carouselDownCommand
             ??
             (this.carouselDownCommand = new DelegateCommand(
                 async () => await this.CarouselDownAsync(),
@@ -103,6 +112,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveCarouselPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.BayChainHorizontalPosition = await this.machineCarouselService.GetPositionAsync();
+            }
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

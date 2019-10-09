@@ -2,7 +2,7 @@
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DeviceManager.Providers
+namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
     public interface IElevatorProvider
     {
