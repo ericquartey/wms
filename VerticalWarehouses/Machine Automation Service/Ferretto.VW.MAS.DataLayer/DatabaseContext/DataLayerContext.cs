@@ -41,8 +41,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<Cell> Cells { get; set; }
 
-        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
-
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
 
         public DbSet<Elevator> Elevators { get; set; }
@@ -132,7 +130,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 .ApplyConfiguration(new BaysConfiguration())
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
-                .ApplyConfiguration(new ConfigurationValuesConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())

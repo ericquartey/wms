@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer;
-
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly ILogger<FiniteStateMachines> logger;
@@ -30,9 +28,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         private readonly ISensorsProvider sensorsProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly IVerticalManualMovementsDataLayer verticalManualMovementsDataLayer;
+        private readonly ISetupStatusProvider setupStatusProvider;
 
         private bool disposedValue = false;
 
@@ -49,13 +47,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             this.scope = serviceScopeFactory.CreateScope();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+            this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-
-            this.horizontalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IHorizontalManualMovementsDataLayer>();
             this.setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
             this.machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
             this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
-            this.verticalManualMovementsDataLayer = this.scope.ServiceProvider.GetRequiredService<IVerticalManualMovementsDataLayer>();
             this.loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
         }
 
@@ -78,16 +74,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
-        }
-
-        public int GetDepositAndPickUpCycleQuantity()
-        {
-            return this.elevatorDataProvider.GetDepositAndPickUpCycleQuantity();
-        }
-
-        public void IncreaseDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.IncreaseDepositAndPickUpCycleQuantity();
         }
 
         public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay)
@@ -168,15 +154,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         {
             var setupStatus = this.setupStatusProvider.Get();
 
+            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+
             var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? (double)this.horizontalManualMovementsDataLayer.RecoveryTargetPositionHM
-                : (double)this.horizontalManualMovementsDataLayer.InitialTargetPositionHM;
+                ? setupProcedures.HorizontalManualMovements.RecoveryTargetPosition
+                : setupProcedures.HorizontalManualMovements.InitialTargetPosition;
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            var speed = new[] { movementParameters.Speed * (double)this.horizontalManualMovementsDataLayer.FeedRateHM / 10 };
+            var speed = new[] { movementParameters.Speed * setupProcedures.HorizontalManualMovements.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -266,6 +254,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
 
+            var parameters = this.setupProceduresDataProvider.GetAll().VerticalManualMovements;
+
             double feedRate;
             double targetPosition;
 
@@ -273,7 +263,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (homingDone)
             {
-                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero;
+                feedRate = parameters.FeedRateAfterZero;
                 movementType = MovementType.Absolute;
 
                 targetPosition = direction == VerticalMovementDirection.Up
@@ -284,11 +274,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
             // INFO Before homing relative movements step by step
             else
             {
-                feedRate = (double)this.verticalManualMovementsDataLayer.FeedRateVM;
+                feedRate = parameters.FeedRate;
 
                 targetPosition = direction == VerticalMovementDirection.Up
-                    ? (double)this.verticalManualMovementsDataLayer.PositiveTargetDirection
-                    : (double)-this.verticalManualMovementsDataLayer.NegativeTargetDirection;
+                    ? parameters.PositiveTargetDirection
+                    : -parameters.NegativeTargetDirection;
             }
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
@@ -442,11 +432,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void ResetDepositAndPickUpCycleQuantity()
-        {
-            this.elevatorDataProvider.ResetDepositAndPickUpCycleQuantity();
-        }
-
         public void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay)
         {
             if (displacement <= 0)
@@ -462,9 +447,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
+            var procedureParameters = this.setupProceduresDataProvider.GetAll().WeightCheck;
+
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            double[] speed = { movementParameters.Speed * (double)this.verticalManualMovementsDataLayer.FeedRateAfterZero };
+            double[] speed = { movementParameters.Speed * procedureParameters.FeedRate };
             double[] acceleration = { movementParameters.Acceleration };
             double[] deceleration = { movementParameters.Deceleration };
             double[] switchPosition = { 0 };

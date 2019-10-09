@@ -19,21 +19,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public BaysController(
             IEventAggregator eventAggregator,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IBaysProvider baysProvider)
             : base(eventAggregator)
         {
-            if (baysProvider is null)
-            {
-                throw new ArgumentNullException(nameof(baysProvider));
-            }
-
-            this.baysProvider = baysProvider;
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
         #endregion
@@ -87,6 +86,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var bay = this.baysProvider.GetByNumber(this.BayNumber);
 
             return this.Ok(bay);
+        }
+
+        [HttpGet("height-check-parameters")]
+        public ActionResult<PositioningProcedure> GetHeightCheckParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetAll().BayHeightCheck);
         }
 
         [HttpPost("homing")]

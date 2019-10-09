@@ -16,10 +16,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
 
         #region Methods
 
-        int GetDepositAndPickUpCycleQuantity();
-
-        void IncreaseDepositAndPickUpCycleQuantity();
-
         void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
@@ -31,8 +27,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Providers
         void MoveVerticalOfDistance(double distance, BayNumber requestingBay, double feedRate = 1);
 
         void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber requestingBay);
-
-        void ResetDepositAndPickUpCycleQuantity();
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay);
 

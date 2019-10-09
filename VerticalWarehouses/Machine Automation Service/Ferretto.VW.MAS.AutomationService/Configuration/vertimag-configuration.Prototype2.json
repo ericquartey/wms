@@ -2720,67 +2720,71 @@
     "SerialNumber": "Prototype #2"
   },
   "SetupProcedures": {
-    "ShutterTest": {
-      "CycleQuantity": 10
-    },
     "BayHeightCheck": {
       "Step": 0.5,
-      "FeedRate": 0.20
+      "FeedRate": 0.2
     },
     "BeltBurnishingTest": {
       //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-      "RequestedCycles": 5
+      "RequiredCycles": 5
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2
     },
     "CellsHeightCheck": {
       "Step": 0.5,
-      "FeedRate": 0.20
+      "FeedRate": 0.2
     },
-    "CellPanelsCheck": {
-      "FeedRate": 0.20
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "HorizontalManualMovements": {
+      "FeedRate": 0.04,
+      "InitialTargetPosition": 30,
+      "RecoveryTargetPosition": 200
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "OffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterManualMovements": {
+      "FeedRate": 0.2,
+      "MaxSpeed": 40000,
+      "MinSpeed": 5000,
+      "Acceleration": 500,
+      "Deceleration": 500,
+      "HigherDistance": 467,
+      "LowerDistance": 472,
+      "HighSpeedDurationOpen": 14,
+      "HighSpeedDurationClose": 13
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10
+    },
+    "VerticalManualMovements": {
+      "FeedRate": 0.1,
+      "PositiveTargetDirection": 30,
+      "NegativeTargetDirection": 30,
+      "FeedRateAfterZero": 0.15
     },
     "VerticalResolutionCalibration": {
-      "InitialPosition": 1000.0, //TEMP Temporary value for software test
-      "FinalPosition": 5500.0, //TEMP Temporary value for software test
-      "FeedRate": 0.20
+      "InitialPosition": 1000, //TEMP Temporary value for software test
+      "FinalPosition": 5500, //TEMP Temporary value for software test
+      "FeedRate": 0.2
+    },
+    "WeightCheck": {
+      "FeedRate": 0.05
     }
-  },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
-  },
-  "HorizontalManualMovements": {
-    "FeedRate": 0.40, // 0.30
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 200.0
-  },
-  "ShutterManualMovements": {
-    "FeedRate": 0.20,
-    "MaxSpeed": 40000.0,
-    "MinSpeed": 5000.0,
-    "Acceleration": 500.0,
-    "Deceleration": 500.0,
-    "HigherDistance": 467.0,
-    "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 14.0,
-    "HighSpeedDurationClose": 13.0
-  },
-  "DepositAndPickUp": {
-    "CycleQuantity": 10
-  },
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
-  },
-  "WeightControl": {
-    "FeedRate": 0.10
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
   }
 }

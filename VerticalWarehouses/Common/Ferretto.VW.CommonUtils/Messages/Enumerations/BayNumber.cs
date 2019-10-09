@@ -12,6 +12,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         ElevatorBay = 4,
 
-        All = 10
+        All = 10,
     }
 }

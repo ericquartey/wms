@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
@@ -118,6 +115,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected IMachineElevatorService MachineElevatorService { get; }
 
+        protected OffsetCalibrationProcedure ProcedureParameters { get; private set; }
+
         protected IMachineVerticalOffsetProcedureService VerticalOffsetService { get; }
 
         #endregion
@@ -152,6 +151,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveCellsAsync();
+
+            await this.RetrieveProcedureParametersAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -204,6 +205,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.ProcedureParameters = await this.VerticalOffsetService.GetParametersAsync();
             }
             catch (Exception ex)
             {

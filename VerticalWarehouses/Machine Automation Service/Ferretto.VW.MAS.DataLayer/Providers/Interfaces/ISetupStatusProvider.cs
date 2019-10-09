@@ -1,22 +1,21 @@
-﻿namespace Ferretto.VW.MAS.DataLayer
+﻿using System;
+
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface ISetupStatusProvider
     {
         #region Methods
 
-        void CompleteBeltBurnishing();
-
+        [Obsolete]
         void CompleteVerticalOffset();
 
+        [Obsolete]
         void CompleteVerticalOrigin();
 
+        [Obsolete]
         void CompleteVerticalResolution();
 
         SetupStatusCapabilities Get();
-
-        void IncreaseBeltBurnishingCycle();
-
-        void ResetBeltBurnishing();
 
         #endregion
     }

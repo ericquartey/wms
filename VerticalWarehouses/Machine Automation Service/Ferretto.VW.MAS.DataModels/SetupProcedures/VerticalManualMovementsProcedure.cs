@@ -1,18 +1,18 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class SetupProcedure : DataModel
+    public sealed class VerticalManualMovementsProcedure : SetupProcedure
     {
         #region Fields
 
-        private double feedRate = 1.0;
+        private double feedRateAfterZero;
 
         #endregion
 
         #region Properties
 
-        public double FeedRate
+        public double FeedRateAfterZero
         {
-            get => this.feedRate;
+            get => this.feedRateAfterZero;
             set
             {
                 if (value <= 0 || value > 1)
@@ -20,11 +20,13 @@
                     throw new System.ArgumentOutOfRangeException(nameof(value));
                 }
 
-                this.feedRate = value;
+                this.feedRateAfterZero = value;
             }
         }
 
-        public bool IsCompleted { get; set; }
+        public double NegativeTargetDirection { get; set; }
+
+        public double PositiveTargetDirection { get; set; }
 
         #endregion
     }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -19,11 +18,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
-
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
@@ -31,29 +30,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
-            ILoadingUnitsProvider loadingUnitStatisticsProvider,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            ILoadingUnitsProvider loadingUnitsProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machinesDataService));
-            }
-
-            if (horizontalManualMovementsDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            }
-
-            this.loadingUnitsProvider = loadingUnitStatisticsProvider;
-            this.machinesDataService = machinesDataService;
-            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
         }
 
         #endregion
@@ -63,16 +47,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("deposit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Deposit(DrawerDestination destination, decimal targetPosition, bool isPositive)
+        public IActionResult Deposit(DrawerDestination destination, double targetPosition, bool isPositive)
         {
+            var parameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+
             var drawerOperationData = new DrawerOperationMessageData(
                DrawerOperation.Deposit,
-               DrawerOperationStep.None);
+               DrawerOperationStep.None)
+            {
+                Destination = destination,
+                DestinationVerticalPosition = targetPosition,
+                IsDestinationPositive = isPositive,
+                DestinationHorizontalPosition = parameters.RecoveryTargetPosition
+            };
 
-            drawerOperationData.Destination = destination;
-            drawerOperationData.DestinationVerticalPosition = targetPosition;
-            drawerOperationData.IsDestinationPositive = isPositive;
-            drawerOperationData.DestinationHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
             if (!isPositive)
             {
                 drawerOperationData.DestinationHorizontalPosition *= -1;
@@ -151,16 +139,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("pickup")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Pickup(DrawerDestination source, decimal targetPosition, bool isPositive)
+        public IActionResult Pickup(DrawerDestination source, double targetPosition, bool isPositive)
         {
+            var parameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+
             var drawerOperationData = new DrawerOperationMessageData(
                DrawerOperation.Pickup,
-               DrawerOperationStep.None);
+               DrawerOperationStep.None)
+            {
+                Source = source,
+                SourceVerticalPosition = targetPosition,
+                IsSourcePositive = isPositive,
+                SourceHorizontalPosition = parameters.RecoveryTargetPosition
+            };
 
-            drawerOperationData.Source = source;
-            drawerOperationData.SourceVerticalPosition = targetPosition;
-            drawerOperationData.IsSourcePositive = isPositive;
-            drawerOperationData.SourceHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
             if (!isPositive)
             {
                 drawerOperationData.SourceHorizontalPosition *= -1;

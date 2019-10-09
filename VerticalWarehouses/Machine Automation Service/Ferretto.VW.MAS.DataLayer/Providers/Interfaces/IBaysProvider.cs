@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
-        void Create(Bay bay);
-
         Bay Deactivate(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();

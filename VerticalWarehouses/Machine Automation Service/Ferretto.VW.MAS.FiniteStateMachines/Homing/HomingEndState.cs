@@ -20,7 +20,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly IHomingMachineData machineData;
 
+        private readonly IServiceScope scope;
+
         private readonly IHomingStateData stateData;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -31,15 +35,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
-        }
 
-        #endregion
-
-        #region Destructors
-
-        ~HomingEndState()
-        {
-            this.Dispose(false);
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -135,20 +132,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (this.stateData.StopRequestReason == StopRequestReason.NoReason && this.machineData.AxisToCalibrate != Axis.BayChain)
+            if (this.stateData.StopRequestReason == StopRequestReason.NoReason
+                &&
+                this.machineData.AxisToCalibrate != Axis.BayChain)
             {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+                var setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
-                    setupStatusProvider.CompleteVerticalOrigin();
-                }
+                setupStatusProvider.CompleteVerticalOrigin();
             }
         }
 
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug("1:Stop Method Empty");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.scope.Dispose();
+            }
+
+            base.Dispose(disposing);
+
+            this.isDisposed = true;
         }
 
         #endregion

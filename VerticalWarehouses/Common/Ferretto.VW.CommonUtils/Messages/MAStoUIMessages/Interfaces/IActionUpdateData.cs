@@ -10,7 +10,7 @@ namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Interfaces
 
         ActionType ActionType { get; set; }
 
-        decimal? CurrentPosition { get; set; }
+        double? CurrentPosition { get; set; }
 
         NotificationType NotificationType { get; set; }
 

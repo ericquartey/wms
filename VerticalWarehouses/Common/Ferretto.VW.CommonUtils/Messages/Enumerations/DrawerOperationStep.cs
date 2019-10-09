@@ -14,6 +14,6 @@
 
         MovingElevatorDown,
 
-        StoringDrawerToBay
+        StoringDrawerToBay,
     }
 }

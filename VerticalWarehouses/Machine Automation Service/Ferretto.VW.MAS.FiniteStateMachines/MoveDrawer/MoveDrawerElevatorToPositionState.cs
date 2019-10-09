@@ -245,12 +245,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
              *
 
             var maxSpeed = this.machineData.VerticalAxis.MaxEmptySpeed;
-            decimal[] maxAcceleration = { this.machineData.VerticalAxis.MaxEmptyAcceleration };
-            decimal[] maxDeceleration = { this.machineData.VerticalAxis.MaxEmptyDeceleration };
-            decimal[] switchPosition = { 0 };
+            double[] maxAcceleration = { this.machineData.VerticalAxis.MaxEmptyAcceleration };
+            double[] maxDeceleration = { this.machineData.VerticalAxis.MaxEmptyDeceleration };
+            double[] switchPosition = { 0 };
             var feedRate = 0.10;  // TEMP: remove this code line (used only for test)
 
-            decimal[] speed = { maxSpeed * (decimal)feedRate };
+            double[] speed = { maxSpeed * (double)feedRate };
 
             var direction = target > this.machineData.DrawerOperationData.SourceHorizontalPosition
                 ? HorizontalMovementDirection.Forwards

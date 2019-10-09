@@ -10,15 +10,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
-        decimal HigherDistance { get; }
+        double HigherDistance { get; }
 
-        decimal HighSpeedDurationClose { get; }
+        double HighSpeedDurationClose { get; }
 
-        decimal HighSpeedDurationOpen { get; }
+        double HighSpeedDurationOpen { get; }
 
-        decimal LowerDistance { get; }
+        double LowerDistance { get; }
 
-        decimal LowerSpeed { get; }
+        double LowerSpeed { get; }
 
         MovementMode MovementMode { get; set; }
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         ShutterType ShutterType { get; }
 
-        decimal SpeedRate { get; }
+        double SpeedRate { get; }
 
         #endregion
     }

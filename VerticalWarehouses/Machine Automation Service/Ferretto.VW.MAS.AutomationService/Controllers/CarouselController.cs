@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
@@ -31,23 +31,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public CarouselController(
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
-            IBaysProvider baysProvider,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer)
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IBaysProvider baysProvider)
             : base(eventAggregator)
         {
-            if (baysProvider is null)
-            {
-                throw new ArgumentNullException(nameof(baysProvider));
-            }
-
-            if (horizontalManualMovementsDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            }
-
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.baysProvider = baysProvider;
-            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
         #endregion
@@ -71,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("position")]
-        public ActionResult<decimal> GetPosition()
+        public ActionResult<double> GetPosition()
         {
             throw new NotImplementedException("Carousel positioning not implemented");
         }
@@ -109,7 +99,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
             // TODO: scale movement speed by weight
-            var speed = new[] { axis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var parameters = this.setupProceduresDataProvider.GetAll().CarouselManualMovements;
+
+            var speed = new[] { axis.EmptyLoadMovement.Speed * parameters.FeedRate };
             var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
             var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -145,15 +137,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var bay = this.baysProvider.GetByNumber(this.BayNumber);
             if (bay.Carousel is null)
             {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
+                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because the bay has no carousel.");
             }
 
             var targetPosition = bay.Carousel.ElevatorDistance;
 
             targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
+            var parameters = this.setupProceduresDataProvider.GetAll().CarouselManualMovements;
+
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
-            var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var speed = new[] { axis.MaximumLoadMovement.Speed * parameters.FeedRate };
             var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
             var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };

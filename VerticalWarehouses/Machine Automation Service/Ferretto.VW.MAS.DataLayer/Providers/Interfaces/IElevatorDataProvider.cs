@@ -16,16 +16,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetVerticalAxis();
 
+        void SetLoadingUnitOnBoard(int? loadingUnitId);
+
         void UpdateVerticalOffset(double newOffset);
 
-        void UpdateVerticalResolution(decimal newResolution);        
-
-        int GetDepositAndPickUpCycleQuantity();
-
-        void IncreaseDepositAndPickUpCycleQuantity();
-
-        void ResetDepositAndPickUpCycleQuantity();
-        void SetLoadingUnitOnBoard(int? loadingUnitId);
+        void UpdateVerticalResolution(decimal newResolution);
 
         #endregion
     }

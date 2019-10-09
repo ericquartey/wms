@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -51,6 +49,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveUpCommand;
 
         private double positionHeight;
+
+        private PositioningProcedure procedureParameters;
 
         private DelegateCommand saveHeightCorrectionCommand;
 
@@ -283,9 +283,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigatedTo(navigationContext);
+            await base.OnNavigatedAsync();
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -296,10 +296,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.IsBayPositionsVisible = this.bayManager.Bay.Positions.Count() > 1;
+            this.IsBayPositionsVisible = this.bayManager.Bay.IsDouble;
 
             this.InitializeData();
+
             this.ChangeDataFromBayPosition();
+
+            try
+            {
+                this.procedureParameters = await this.machineBaysService.GetHeightCheckParametersAsync();
+
+                this.InputStepValue = this.procedureParameters.Step;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
         }
 
         protected void UpdateChanged()
@@ -420,7 +437,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsElevatorMovingToHeight = true;
-                await this.machineElevatorService.MoveToVerticalPositionAsync(this.PositionHeight, FeedRateCategory.BayHeight);
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.PositionHeight,
+                    this.procedureParameters.FeedRate);
             }
             catch (Exception ex)
             {

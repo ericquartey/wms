@@ -8,9 +8,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         DrawerDestination Destination { get; set; }
 
-        decimal DestinationHorizontalPosition { get; set; }
+        double DestinationHorizontalPosition { get; set; }
 
-        decimal DestinationVerticalPosition { get; set; }
+        double DestinationVerticalPosition { get; set; }
 
         bool IsDestinationPositive { get; set; }
 
@@ -20,9 +20,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         DrawerDestination Source { get; set; }
 
-        decimal SourceHorizontalPosition { get; set; }
+        double SourceHorizontalPosition { get; set; }
 
-        decimal SourceVerticalPosition { get; set; }
+        double SourceVerticalPosition { get; set; }
 
         DrawerOperationStep Step { get; set; }
 

@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages
     {
         #region Constructors
 
-        public ActionUpdateData(NotificationType notificationType, ActionType actionType, ActionStatus actionStatus, decimal? currentPosition = null)
+        public ActionUpdateData(NotificationType notificationType, ActionType actionType, ActionStatus actionStatus, double? currentPosition = null)
         {
             this.NotificationType = notificationType;
             this.ActionType = actionType;
@@ -23,7 +23,7 @@ namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages
 
         public ActionType ActionType { get; set; }
 
-        public decimal? CurrentPosition { get; set; }
+        public double? CurrentPosition { get; set; }
 
         public NotificationType NotificationType { get; set; }
 

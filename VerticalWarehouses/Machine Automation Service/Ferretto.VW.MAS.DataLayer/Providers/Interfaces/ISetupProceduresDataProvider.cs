@@ -8,6 +8,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProceduresSet GetAll();
 
+        RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
+
+        SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
+
         #endregion
     }
 }

@@ -8,6 +8,6 @@
 
         RunningStateChanged = 2,
 
-        FaultStateChanged = 3
+        FaultStateChanged = 3,
     }
 }

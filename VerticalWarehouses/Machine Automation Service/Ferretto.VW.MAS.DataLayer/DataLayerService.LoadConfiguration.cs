@@ -1,13 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Net;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,216 +14,37 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        /// <summary>
-        /// This method is been invoked during the installation, to load the general_info.json file
-        /// </summary>
-        /// <param name="configurationFilePath">Configuration parameters to load</param>
-        private void LoadConfigurationValuesInfo(string configurationFilePath)
+        private void LoadConfiguration(string configurationFilePath, DataLayerContext dataContext)
         {
-            JObject jsonObject;
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            if (dataContext.Machines.Any())
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-
-                if (dataContext.ConfigurationValues.Any())
-                {
-                    return;
-                }
-
-                this.Logger.LogInformation($"First run: loading machine configration from external JSON file ...");
-
-                string fileContents = null;
-                using (var streamReader = new StreamReader(configurationFilePath))
-                {
-                    fileContents = streamReader.ReadToEnd();
-                }
-
-                jsonObject = JObject.Parse(fileContents);
-
-                var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
-
-                jsonObject.Validate(schema);
-
-                var settings = new JsonSerializerSettings();
-                settings.Converters.Add(new IPAddressConverter());
-
-                var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
-
-                dataContext.Machines.Add(vertimagConfiguration.Machine);
-                dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
-
-                dataContext.SaveChanges();
+                return;
             }
 
-            foreach (var jsonCategory in jsonObject)
+            this.Logger.LogInformation($"First run: loading configuration from JSON file ...");
+
+            string fileContents = null;
+            using (var streamReader = new StreamReader(configurationFilePath))
             {
-                if (string.Equals(jsonCategory.Key, nameof(Machine), StringComparison.OrdinalIgnoreCase)
-                    || jsonCategory.Key == "$schema"
-                    || jsonCategory.Key == nameof(VertimagConfiguration.SetupProcedures))
-                {
-                    continue;
-                }
-
-                if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
-                {
-                    throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
-                }
-
-                foreach (var jsonData in (JObject)jsonCategory.Value)
-                {
-                    switch (jsonElementCategory)
-                    {
-                        case ConfigurationCategory.VerticalManualMovements:
-                            if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.HorizontalManualMovements:
-                            if (!Enum.TryParse(jsonData.Key, false, out HorizontalManualMovements horizontalManualMovementsData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.DepositAndPickUp:
-                            if (!Enum.TryParse(jsonData.Key, false, out DepositAndPickUp depositAndPickUpData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)depositAndPickUpData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.OffsetCalibration:
-                            if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.ShutterHeightControl:
-                            if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.WeightControl:
-                            if (!Enum.TryParse(jsonData.Key, false, out WeightControl weightControlData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.LoadFirstDrawer:
-                            if (!Enum.TryParse(jsonData.Key, false, out LoadFirstDrawer loadFirstDrawerData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
-
-                            break;
-
-                        case ConfigurationCategory.ShutterManualMovements:
-                            if (!Enum.TryParse(jsonData.Key, false, out ShutterManualMovements shutterManualMovementsData))
-                            {
-                                throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
-                            }
-
-                            this.SaveConfigurationData(jsonElementCategory, (long)shutterManualMovementsData, jsonData.Value);
-
-                            break;
-                    }
-                }
-            }
-        }
-
-        private void SaveConfigurationData(
-            ConfigurationCategory elementCategory,
-            long configurationData,
-            JToken jsonDataValue)
-        {
-            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
-            {
-                throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
+                fileContents = streamReader.ReadToEnd();
             }
 
-            try
-            {
-                switch (generalInfoConfigurationDataType)
-                {
-                    case ConfigurationDataType.Boolean:
-                        this.SetBoolConfigurationValue(
-                            configurationData,
-                            elementCategory,
-                            jsonDataValue.Value<bool>());
-                        break;
+            var jsonObject = JObject.Parse(fileContents);
 
-                    case ConfigurationDataType.Date:
-                        this.SetDateTimeConfigurationValue(
-                            configurationData,
-                            elementCategory,
-                            jsonDataValue.Value<DateTime>());
-                        break;
+            var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
+            jsonObject.Validate(schema);
 
-                    case ConfigurationDataType.Integer:
-                        this.SetIntegerConfigurationValue(
-                            configurationData,
-                            elementCategory,
-                            jsonDataValue.Value<int>());
-                        break;
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new IPAddressConverter());
 
-                    case ConfigurationDataType.Float:
-                        this.SetDecimalConfigurationValue(
-                            configurationData,
-                            elementCategory,
-                            jsonDataValue.Value<decimal>());
-                        break;
+            var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
 
-                    case ConfigurationDataType.String:
-                        var stringValue = jsonDataValue.Value<string>();
-                        if (IPAddress.TryParse(stringValue, out var configurationValue)
-                            &&
-                            (stringValue.Count(c => c == ':') >= 2
-                            ||
-                            stringValue.Count(c => c == '.') == 3))
-                        {
-                            this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
-                        }
-                        else
-                        {
-                            this.SetStringConfigurationValue(configurationData, elementCategory, stringValue);
-                        }
+            dataContext.Machines.Add(vertimagConfiguration.Machine);
+            dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
 
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+            dataContext.SaveChanges();
 
-                // TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty));
-            }
+            this.Logger.LogInformation($"First run: configuration loaded.");
         }
 
         #endregion

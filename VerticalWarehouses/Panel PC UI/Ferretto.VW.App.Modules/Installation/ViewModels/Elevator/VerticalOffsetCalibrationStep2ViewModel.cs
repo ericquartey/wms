@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -180,17 +179,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cell = cell;
             }
 
-            try
-            {
-                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+            this.InputStepValue = this.ProcedureParameters.Step;
 
-                this.InputStepValue = parameters.StepValue;
-                this.CurrentVerticalOffset = parameters.VerticalOffset;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            await this.RetrieveVerticalOffset();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -342,6 +333,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveVerticalOffset()
+        {
+            try
+            {
+                this.CurrentVerticalOffset = await this.MachineElevatorService.GetVerticalOffsetAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

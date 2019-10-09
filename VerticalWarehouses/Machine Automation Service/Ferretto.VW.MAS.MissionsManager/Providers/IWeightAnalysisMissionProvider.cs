@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void Start(decimal initialPosition, decimal displacement, decimal netWeight, System.TimeSpan inPlaceSamplingDuration);
+        void Start(double initialPosition, double displacement, double netWeight, System.TimeSpan inPlaceSamplingDuration);
 
         void Stop();
 

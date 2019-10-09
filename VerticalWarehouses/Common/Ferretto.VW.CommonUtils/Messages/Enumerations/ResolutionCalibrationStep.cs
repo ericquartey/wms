@@ -10,6 +10,6 @@
 
         InitialPosition = 3,
 
-        CloseProcedure = 4
+        CloseProcedure = 4,
     }
 }

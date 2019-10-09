@@ -16,8 +16,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
-        private readonly IMachineServiceService machineServiceService;
-
         private DelegateCommand disembarkBackwardsCommand;
 
         private DelegateCommand disembarkForwardsCommand;
@@ -266,7 +264,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -280,26 +278,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningChain()
         {
-            try
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult == DialogResult.Yes)
             {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                try
                 {
                     this.IsWaitingForResponse = true;
-                    await this.machineServiceService.SearchHorizontalZeroAsync();
+                    await this.machineElevatorService.SearchHorizontalZeroAsync();
                     this.IsTuningChain = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                this.IsTuningChain = false;
+                catch (Exception ex)
+                {
+                    this.IsTuningChain = false;
 
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
             }
         }
 

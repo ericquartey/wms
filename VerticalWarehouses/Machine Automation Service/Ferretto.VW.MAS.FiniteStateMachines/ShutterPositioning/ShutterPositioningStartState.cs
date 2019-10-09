@@ -210,11 +210,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
                     return;
                 }
+
                 var destination = ShutterPosition.Opened;
                 if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
                 {
                     destination = ShutterPosition.Half;
                 }
+
                 // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(
                     ShutterPosition.Opened,

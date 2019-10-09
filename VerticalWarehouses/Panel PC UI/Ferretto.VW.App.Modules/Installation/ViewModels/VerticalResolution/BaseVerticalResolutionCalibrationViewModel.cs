@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -23,7 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
-        private readonly IMachineResolutionCalibrationProcedureService resolutionCalibrationService;
+        private readonly IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService;
 
         private double? currentPosition;
 
@@ -44,7 +42,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BaseVerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
-            IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
+            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(Services.PresentationMode.Installer)
         {
             if (eventAggregator is null)
@@ -123,7 +121,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
-        public IMachineResolutionCalibrationProcedureService ResolutionCalibrationService => this.resolutionCalibrationService;
+        public IMachineVerticalResolutionCalibrationProcedureService ResolutionCalibrationService => this.resolutionCalibrationService;
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -131,6 +129,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
                 this.CanStop));
+
+        protected VerticalResolutionCalibrationProcedure ProcedureParameters { get; private set; }
 
         #endregion
 
@@ -162,6 +162,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
 
             await this.RetrieveCurrentPositionAsync();
+
+            await this.RetrieveProcedureParametersAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -242,6 +244,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.ProcedureParameters = await this.resolutionCalibrationService.GetParametersAsync();
             }
             catch (Exception ex)
             {
