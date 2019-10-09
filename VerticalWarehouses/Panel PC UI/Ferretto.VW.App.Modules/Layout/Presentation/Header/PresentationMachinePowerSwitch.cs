@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly IMachineSensorsService machineSensorsService;
 
+        private readonly SubscriptionToken runningStateSubscriptionToken;
+
         private readonly SubscriptionToken sensorsSubscriptionToken;
 
         private readonly SubscriptionToken subscriptionToken;
@@ -53,6 +55,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                    message => this.OnSensorsChanged(message?.Data?.SensorsStates),
                    ThreadOption.UIThread,
                    false);
+
+            this.runningStateSubscriptionToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+                .Subscribe(
+                    message => this.OnRunningStateChanged(message),
+                    ThreadOption.UIThread,
+                    false);
 
             this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
                 .Subscribe(
@@ -142,6 +151,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             this.IsMachinePoweredOn = e.MachinePower == Services.Models.MachinePowerState.Powered;
+            this.IsBusy = false;
+        }
+
+        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
+        {
             this.IsBusy = false;
         }
 

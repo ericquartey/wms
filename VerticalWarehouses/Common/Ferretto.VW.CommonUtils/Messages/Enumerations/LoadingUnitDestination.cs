@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
-    public enum DrawerDestination
+    public enum LoadingUnitDestination
     {
         NoDestination = 0,
 

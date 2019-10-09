@@ -14,8 +14,6 @@
 
         DataLayerReady,
 
-        DrawerOperation,
-
         ExecuteMission,
 
         SwitchAxis,

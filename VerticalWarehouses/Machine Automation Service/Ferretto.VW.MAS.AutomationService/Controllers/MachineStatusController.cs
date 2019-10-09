@@ -1,6 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.MissionsManager.Providers;
+using Ferretto.VW.MAS.MissionsManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;

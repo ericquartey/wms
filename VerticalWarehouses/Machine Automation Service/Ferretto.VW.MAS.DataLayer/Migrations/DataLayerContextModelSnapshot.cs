@@ -3,6 +3,7 @@ using System;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
@@ -288,6 +289,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Condizioni per il posizionamento non soddisfatte.",
                             Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100034,
+                            Code = 100034,
+                            Description = "Condizioni per la messa in marcia non soddisfatte.",
+                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi",
+                            Severity = 0
                         });
                 });
 
@@ -310,6 +319,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100033,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100034,
                             TotalErrors = 0
                         });
                 });
@@ -568,7 +582,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 7, 13, 55, 30, 211, DateTimeKind.Local).AddTicks(1438),
+                            InstallationDate = new DateTime(2016, 12, 9, 10, 12, 11, 17, DateTimeKind.Local).AddTicks(1157),
                             ServiceStatus = 86
                         });
                 });
