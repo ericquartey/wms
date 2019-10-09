@@ -379,7 +379,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                        if (message.Data.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }

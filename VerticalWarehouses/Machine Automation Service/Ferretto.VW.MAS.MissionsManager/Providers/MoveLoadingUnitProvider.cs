@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
     {
         #region Constructors
 
-        protected MoveLoadingUnitProvider(IEventAggregator eventAggregator)
+        public MoveLoadingUnitProvider(IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
         }
