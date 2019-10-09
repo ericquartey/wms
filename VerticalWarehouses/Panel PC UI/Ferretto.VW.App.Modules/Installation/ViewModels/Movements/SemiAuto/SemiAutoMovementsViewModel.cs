@@ -268,6 +268,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveElevatorPositionAsync();
 
+            await this.RetrieveCarouselPositionAsync();
+
             await this.RetrieveCellsAsync();
 
             await this.RetrieveLoadingUnitsAsync();
@@ -280,6 +282,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             this.RetrieveElevatorPositionAsync();
+
+            this.RetrieveCarouselPositionAsync();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -332,7 +336,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.ShowNotification(string.Empty);
 
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                        }
+                        else if (message.Data.MovementMode >= CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
@@ -346,11 +358,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
+                        else if (message.Data.MovementMode >= CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
                         else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
-
                         break;
                     }
 
@@ -364,7 +379,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }

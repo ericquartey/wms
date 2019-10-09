@@ -22,7 +22,8 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
             services.AddHostedService<BackgroundServices.MissionsManagerService>();
 
             services
-                .AddTransient<IRunningStateProvider, RunningStateProvider>();
+                .AddTransient<IRunningStateProvider, RunningStateProvider>()
+                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>();
 
             services
                 .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()

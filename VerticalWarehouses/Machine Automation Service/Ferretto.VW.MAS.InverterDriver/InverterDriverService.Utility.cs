@@ -283,12 +283,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                         ? Axis.Vertical
                         : Axis.Horizontal;
 
+                    if (message.SystemIndex > InverterIndex.Slave1)
+                    {
+                        axis = Axis.BayChain;
+                    }
+
                     this.Logger.LogTrace($"ActualPositionShaft inverter={message.SystemIndex}; axis={axis}; value={message.IntPayload}");
 
-                    if ((axis == this.currentAxis || currentStateMachine == null) &&
+                    if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish))
                     {
-                        var axisOrientation = axis == Axis.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
+                        var axisOrientation = (axis == Axis.Horizontal || axis == Axis.BayChain) ? Orientation.Horizontal : Orientation.Vertical;
 
                         double currentAxisPosition = 0;
                         if (message.IntPayload != 0)
@@ -296,9 +301,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(message.IntPayload, axisOrientation);
                         }
 
-                        var offset = axis == Axis.Horizontal
-                            ? elevatorDataProvider.GetHorizontalAxis().Offset
-                            : elevatorDataProvider.GetVerticalAxis().Offset;
+                        var offset = (axis == Axis.Vertical)
+                            ? elevatorDataProvider.GetVerticalAxis().Offset
+                            : elevatorDataProvider.GetHorizontalAxis().Offset;
                         currentAxisPosition += offset;
 
                         var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);

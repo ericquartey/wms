@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.DeviceManager.Providers;
+﻿using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.DeviceManager.PowerEnable.Interfaces
 {

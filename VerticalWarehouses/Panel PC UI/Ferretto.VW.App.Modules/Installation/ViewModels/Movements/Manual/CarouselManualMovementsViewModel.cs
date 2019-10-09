@@ -117,6 +117,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
+        public override async Task OnNavigatedAsync()
+        {
+            await base.OnNavigatedAsync();
+
+            try
+            {
+                this.CurrentBayChainPosition = await this.machineCarouselService.GetPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         public async Task OpenCarouselAsync()
         {
             this.IsOpening = true;

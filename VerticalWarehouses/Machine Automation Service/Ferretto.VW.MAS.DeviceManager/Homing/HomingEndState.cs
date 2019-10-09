@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
-                var targetInverter = (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                var targetInverter = this.machineData.CurrentInverterIndex;
                 var stopMessage = new FieldCommandMessage(
                     null,
                     "Homing Stopped",

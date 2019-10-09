@@ -156,7 +156,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
         {
-            this.IsBusy = false;
+            if (message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
+            {
+                this.IsBusy = false;
+            }
         }
 
         private void OnSensorsChanged(bool[] sensorsStates)
