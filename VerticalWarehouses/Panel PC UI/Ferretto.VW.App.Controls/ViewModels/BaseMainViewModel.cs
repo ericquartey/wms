@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.UpdatePresentation();
 
@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdateNotifications();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

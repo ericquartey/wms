@@ -117,9 +117,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             try
             {

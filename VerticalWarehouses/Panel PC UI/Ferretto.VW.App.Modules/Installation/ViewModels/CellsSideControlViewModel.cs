@@ -34,9 +34,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return Task.CompletedTask;
         }
 
-        public override Task OnNavigatedAsync()
+        public override Task OnAppearedAsync()
         {
-            return base.OnNavigatedAsync();
+            return base.OnAppearedAsync();
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)

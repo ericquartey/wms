@@ -473,6 +473,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CarouselId = table.Column<int>(nullable: true),
+                    ChainOffset = table.Column<double>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
                     CurrentMissionOperationId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
@@ -675,6 +676,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ChainOffset = table.Column<double>(nullable: false),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
                     LowerBound = table.Column<double>(nullable: false),
@@ -738,7 +740,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 10, 10, 13, 7, 942, DateTimeKind.Local).AddTicks(6955), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 10, 11, 20, 6, 887, DateTimeKind.Local).AddTicks(8355), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
