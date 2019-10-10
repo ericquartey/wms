@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
 
+        Bay GetByIoIndex(IoIndex ioIndex);
+
         BayNumber GetByMovementType(IPositioningMessageData data);
 
         Bay GetByNumber(BayNumber bayNumber);
