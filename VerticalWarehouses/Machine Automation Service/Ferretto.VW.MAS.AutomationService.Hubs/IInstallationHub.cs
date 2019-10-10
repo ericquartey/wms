@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
+        Task ChangeRunningState(IBaseNotificationMessageUI message);
+
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);

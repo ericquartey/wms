@@ -18,9 +18,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public double ReadFinalPosition { get; }
-
         public double MeasuredInitialPosition { get; }
+
+        public double ReadFinalPosition { get; }
 
         public decimal Resolution { get; set; }
 

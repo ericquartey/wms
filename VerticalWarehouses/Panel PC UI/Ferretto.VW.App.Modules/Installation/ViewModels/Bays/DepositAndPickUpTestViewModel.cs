@@ -19,9 +19,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly int? inputLoadingUnitCode;
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
+
+        private readonly int? inputLoadingUnitCode;
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
 
@@ -34,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? completedCycles;
 
         private double? grossWeight;
+
+        private int initialCycles;
 
         private int inputDelay;
 
@@ -52,6 +56,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? netWeight;
 
         private RepeatedTestProcedure procedureParameters;
+
+        private SubscriptionToken sensorsToken;
 
         private SubscriptionToken sensorsToken;
 
@@ -255,6 +261,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public Sensors Sensors => this.sensors;
 
         public Sensors Sensors => this.sensors;
 
@@ -485,6 +493,87 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private bool CanExecuteResetCommand()
+        {
+            return !this.IsExecutingProcedure
+                   &&
+                   !this.IsWaitingForResponse;
+        }
+
+        private bool CanExecuteStartCommand()
+        {
+            return !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.IsLoadingUnitInBay
+                &&
+                !this.IsLoadingUnitOnElevator;
+        }
+
+        private bool CanExecuteStopCommand()
+        {
+            return this.IsExecutingProcedure
+                && !this.IsWaitingForResponse;
+        }
+
+        private async Task ExecuteNextStateAsync()
+        {
+            if (this.IsStopping)
+            {
+                this.IsStopping = false;
+                this.IsExecutingProcedure = false;
+                this.Stopped();
+            }
+
+            if (!this.IsExecutingProcedure)
+            {
+                return;
+            }
+
+            switch (this.currentState)
+            {
+                case DepositAndPickUpState.None:
+                    await this.MoveToBayHeightAsync();
+                    break;
+
+                case DepositAndPickUpState.GotoBay:
+                    await this.StartMovementAsync();
+                    break;
+
+                case DepositAndPickUpState.PickUp:
+                    await this.ReStart();
+                    break;
+
+                case DepositAndPickUpState.GotoBayAdjusted:
+                    await this.StartMovementAsync();
+                    break;
+
+                case DepositAndPickUpState.Deposit:
+                    await this.MoveToBayHeightAsync();
+                    break;
+            }
+        }
+
+        private async Task InitializeSensors()
+        {
+            try
+            {
+                var sensorsStates = await this.machineSensorsService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task InitializeTotalCycles()
+        {
+            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.GetCycleQuantityAsync();
+        }
+
         private async Task OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message is null || message.Data is null)
@@ -502,13 +591,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case MessageStatus.OperationExecuting:
                     {
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        if (message.Data.AxisMovement == Axis.Vertical)
                         {
-                            this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
-                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        else if (message.Data.AxisMovement == Axis.Horizontal)
                         {
-                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
 
                         break;

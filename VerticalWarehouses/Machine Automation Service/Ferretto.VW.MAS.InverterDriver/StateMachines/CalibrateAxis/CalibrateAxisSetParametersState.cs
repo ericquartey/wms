@@ -15,7 +15,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         // TODO move following parameters into configuration
         private const int HIGH_SPEED = 2000;
 
-        private const int HORIZONTAL_OFFSET = -800;
+        private const int HORIZONTAL_OFFSET = -500;
+
+        private const int HORIZONTAL_OFFSET_ONETON_MACHINE = -800;
 
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
@@ -100,12 +102,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
             else
             {
+                var isOneTonMachine = this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine();
+
                 this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.HomingCalibration:
                         {
-                            var sensor = (this.axisToCalibrate == Axis.Vertical || this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine() ? VERTICAL_SENSOR : HORIZONTAL_SENSOR);
+                            var sensor = (this.axisToCalibrate == Axis.Vertical || isOneTonMachine) ? VERTICAL_SENSOR : HORIZONTAL_SENSOR;
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingSensor,
@@ -133,7 +137,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                     case InverterParameterId.HomingFastSpeedParam:
                         {
-                            var offset = (this.axisToCalibrate == Axis.Horizontal && this.calibration == Calibration.FindSensor) ? HORIZONTAL_OFFSET : 0;
+                            int offset;
+                            if (this.axisToCalibrate == Axis.Horizontal)
+                            {
+                                if (this.calibration == Calibration.FindSensor)
+                                {
+                                    offset = isOneTonMachine ? HORIZONTAL_OFFSET_ONETON_MACHINE : HORIZONTAL_OFFSET;
+                                }
+                                else
+                                {
+                                    offset = 0;
+                                }
+                            }
+                            else
+                            {
+                                offset = 0;
+                            }
+
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingOffset,

@@ -55,7 +55,31 @@ namespace Ferretto.VW.MAS.DataLayer
             return true;
         }
 
+        protected override void NotifyCommandError(CommandMessage notificationData)
+        {
+            this.Logger.LogDebug($"Notifying Data Layer service error");
+
+            var msg = new NotificationMessage(
+                notificationData.Data,
+                "DL Error",
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.FsmException,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        protected override void NotifyError(NotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
+
         {
             /* serviceProvider
                  .GetRequiredService<ILogEntriesProvider>()

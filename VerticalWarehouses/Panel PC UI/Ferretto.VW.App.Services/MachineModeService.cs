@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
@@ -68,9 +67,9 @@ namespace Ferretto.VW.App.Services
             this.machinePowerService = machinePowerService;
 
             this.sensorsSubscriptionToken = this.eventAggregator
-               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+               .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
                .Subscribe(
-                   message => this.OnSensorsChanged(message?.Data?.SensorsStates),
+                   message => this.OnRunningStateChanged(message),
                    ThreadOption.UIThread,
                    false);
 
@@ -166,9 +165,9 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var sensorStates = await this.machineSensorsService.GetAsync();
+                    var isPoweredOn = await this.machineStatusService.IsPoweredOnAsync();
 
-                    this.OnSensorsChanged(sensorStates.ToArray());
+                    this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
                 }
                 catch (Exception ex)
                 {
@@ -177,28 +176,10 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnSensorsChanged(bool[] sensorsStates)
+        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
         {
-            if (sensorsStates is null)
-            {
-                this.logger.Warn("Unable to update machine power state: empty sensors state array received.");
-                return;
-            }
-
-            var sensorIndex = (int)IOMachineSensors.RunningState;
-
-            if (sensorsStates.Length > sensorIndex)
-            {
-                var isPoweredOn = sensorsStates[sensorIndex];
-
-                this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
-            }
-            else
-            {
-                this.MachinePower = MachinePowerState.Unknown;
-
-                this.logger.Warn("Unable to update machine power state: sensors state array length was shorter than expected.");
-            }
+            var runningState = message.Status == MessageStatus.OperationEnd && message.Data.Enable;
+            this.MachinePower = runningState ? MachinePowerState.Powered : MachinePowerState.Unpowered;
         }
 
         private void ShowError(Exception ex)

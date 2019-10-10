@@ -33,7 +33,7 @@
                                  Grid.Column="0"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentHorizontalPosition, StringFormat={}{0:F1}}"
+                                 ContentText="{Binding BayChainHorizontalPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
 
         <StackPanel Grid.Row="1"

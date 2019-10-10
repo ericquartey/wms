@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -79,11 +80,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<IEnumerable<Bay>> GetAll()
+        {
+            var bay = this.baysProvider.GetAll();
+
+            return this.Ok(bay);
+        }
+
+        [HttpGet("{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber()
+        public ActionResult<Bay> GetByNumber(BayNumber bayNumber)
         {
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysProvider.GetByNumber(bayNumber);
 
             return this.Ok(bay);
         }

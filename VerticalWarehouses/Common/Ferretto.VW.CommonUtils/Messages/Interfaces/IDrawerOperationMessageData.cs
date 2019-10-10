@@ -6,7 +6,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
-        DrawerDestination Destination { get; set; }
+        LoadingUnitDestination Destination { get; set; }
 
         double DestinationHorizontalPosition { get; set; }
 
@@ -18,13 +18,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         DrawerOperation Operation { get; set; }
 
-        DrawerDestination Source { get; set; }
+        LoadingUnitDestination Source { get; set; }
 
         double SourceHorizontalPosition { get; set; }
 
         double SourceVerticalPosition { get; set; }
-
-        DrawerOperationStep Step { get; set; }
 
         #endregion
     }

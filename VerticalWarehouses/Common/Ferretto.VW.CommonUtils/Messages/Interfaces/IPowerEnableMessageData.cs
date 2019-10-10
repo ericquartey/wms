@@ -4,8 +4,6 @@
     {
         #region Properties
 
-        CommandAction CommandAction { get; }
-
         bool Enable { get; }
 
         #endregion

@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService
     {
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                         await this.ExecuteNextMissionAsync(bay, pendingMissionsOnBay);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     // do nothing
                     this.Logger.LogWarning("Unable to load missions from WMS service.");

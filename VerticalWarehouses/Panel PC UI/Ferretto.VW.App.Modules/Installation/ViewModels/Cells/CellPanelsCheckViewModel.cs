@@ -450,7 +450,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentHeightChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentHeight = message?.Data?.CurrentPosition;
+            this.CurrentHeight = message?.Data?.CurrentPosition ?? this.CurrentHeight;
 
             if (message is null || message.Data is null)
             {

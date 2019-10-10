@@ -1,13 +1,12 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -23,6 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+        private readonly IBayChainProvider bayChainProvider;
 
         #endregion
 
@@ -32,12 +32,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysProvider baysProvider)
+            IBaysProvider baysProvider,
+            IBayChainProvider bayChainProvider)
             : base(eventAggregator)
         {
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.bayChainProvider = bayChainProvider ?? throw new ArgumentNullException(nameof(bayChainProvider));
         }
 
         #endregion
@@ -63,7 +65,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<double> GetPosition()
         {
-            throw new NotImplementedException("Carousel positioning not implemented");
+            return this.Ok(this.bayChainProvider.HorizontalPosition);
         }
 
         [HttpPost("homing")]
@@ -86,46 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(HorizontalMovementDirection direction)
         {
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
-            if (bay.Carousel is null)
-            {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because it has no carousel.");
-            }
-
-            var targetPosition = bay.Carousel.ElevatorDistance;
-
-            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
-
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
-
-            // TODO: scale movement speed by weight
-            var parameters = this.setupProceduresDataProvider.GetAll().CarouselManualMovements;
-
-            var speed = new[] { axis.EmptyLoadMovement.Speed * parameters.FeedRate };
-            var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
-            var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
-            var switchPosition = new[] { 0.0 };
-
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.BayChain,
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                direction);
-
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+            this.bayChainProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -134,44 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(HorizontalMovementDirection direction)
         {
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
-            if (bay.Carousel is null)
-            {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {this.BayNumber} because the bay has no carousel.");
-            }
-
-            var targetPosition = bay.Carousel.ElevatorDistance;
-
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
-
-            var parameters = this.setupProceduresDataProvider.GetAll().CarouselManualMovements;
-
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
-            var speed = new[] { axis.MaximumLoadMovement.Speed * parameters.FeedRate };
-            var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
-            var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
-            var switchPosition = new[] { 0.0 };
-
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.Relative,
-                MovementMode.BayChainManual,
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                0,
-                0,
-                0,
-                0,
-                switchPosition,
-                direction);
-
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning);
+            this.bayChainProvider.MoveManual(direction, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -181,13 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                "Stop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop);
-
+            this.bayChainProvider.Stop(this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

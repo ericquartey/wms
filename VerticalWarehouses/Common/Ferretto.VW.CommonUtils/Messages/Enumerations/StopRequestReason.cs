@@ -6,8 +6,10 @@
 
         Stop = 1,
 
-        RunningStateChanged = 2,
+        Error = 2,
 
-        FaultStateChanged = 3,
+        RunningStateChanged = 3,
+
+        FaultStateChanged = 4,
     }
 }

@@ -196,7 +196,7 @@
                 <TextBlock Grid.Row="15"
                            Grid.Column="1"
                            Foreground="White"
-                           Text="{Binding BayPositionHeight}" />
+                           Text="{Binding BayChainHorizontalPosition}" />
                 <TextBlock Grid.Row="16"
                            Grid.Column="0"
                            Foreground="White"

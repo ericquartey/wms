@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Bay> GetAll()
         {
-            return this.dataContext.Bays.ToArray();
+            return this.dataContext.Bays.Include(b => b.Positions).ToArray();
         }
 
         public BayNumber GetByAxis(IHomingMessageData data)
@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)
         {
             var bay = this.GetByNumber(bayNumber);
-            if (positionIndex < 0 || positionIndex > bay.Positions.Count() - 1)
+            if (positionIndex < 0 || positionIndex > bay.Positions.Count())
             {
                 throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
             }

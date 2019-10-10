@@ -8,7 +8,6 @@ namespace Ferretto.VW.MAS.IODriver
 {
     public class IoReadMessage
     {
-
         #region Fields
 
         private const byte RELEASE_FW_10 = 0x10;
@@ -102,8 +101,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         #endregion
 
-
-
         #region Properties
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
@@ -135,8 +132,6 @@ namespace Ferretto.VW.MAS.IODriver
         public bool ValidOutputs => this.outputs != null;
 
         #endregion
-
-
 
         #region Methods
 

@@ -10,11 +10,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public DrawerOperationMessageData(
             DrawerOperation operation,
-            DrawerOperationStep step,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Operation = operation;
-            this.Step = step;
             this.Verbosity = verbosity;
         }
 
@@ -22,7 +20,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public DrawerDestination Destination { get; set; }
+        public LoadingUnitDestination Destination { get; set; }
 
         public double DestinationHorizontalPosition { get; set; }
 
@@ -34,13 +32,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public DrawerOperation Operation { get; set; }
 
-        public DrawerDestination Source { get; set; }
+        public LoadingUnitDestination Source { get; set; }
 
         public double SourceHorizontalPosition { get; set; }
 
         public double SourceVerticalPosition { get; set; }
-
-        public DrawerOperationStep Step { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

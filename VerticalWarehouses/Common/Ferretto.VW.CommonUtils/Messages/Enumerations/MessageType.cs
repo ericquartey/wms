@@ -14,8 +14,6 @@
 
         DataLayerReady,
 
-        DrawerOperation,
-
         ExecuteMission,
 
         SwitchAxis,
@@ -77,5 +75,13 @@
         InverterFaultReset,
 
         ResetSecurity,
+
+        WeightAcquisitionCommand,
+
+        MissionManagerException,
+
+        ChangeRunningState,
+
+        InverterPowerEnable
     }
 }

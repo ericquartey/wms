@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panel PC UI", "Panel PC UI", "{F1C06ED8-17DC-48AE-9D64-B18455CA3231}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.FiniteStateMachines", "Machine Automation Service\Ferretto.VW.MAS.FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DeviceManager", "Machine Automation Service\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
 EndProject

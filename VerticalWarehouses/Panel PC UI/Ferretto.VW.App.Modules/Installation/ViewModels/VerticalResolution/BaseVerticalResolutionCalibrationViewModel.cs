@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Data.AxisMovement == Axis.Vertical)
             {
-                this.CurrentPosition = message.Data.CurrentPosition;
+                this.CurrentPosition = message?.Data?.CurrentPosition ?? this.CurrentPosition;
 
                 this.IsExecutingProcedure =
                     message.Status != MessageStatus.OperationEnd

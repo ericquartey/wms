@@ -1,16 +1,28 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+﻿// ReSharper disable ArrangeThisQualifier
+using System;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class StateBase : IState, IDisposable
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IServiceScope serviceScope;
+
         private bool hasEntered;
 
         private bool hasExited;
+
+        private bool hasStopped;
 
         private bool isDisposed;
 
@@ -18,14 +30,20 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Constructors
 
-        protected StateBase(ILogger<StateBase> logger)
+        protected StateBase(
+            IEventAggregator eventAggregator,
+            ILogger<StateBase> logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            this.Logger = logger;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -38,6 +56,11 @@ namespace Ferretto.VW.MAS.Utils
 
         #region Methods
 
+        public IState CommandReceived(CommandMessage commandMessage)
+        {
+            return this.OnCommandReceived(commandMessage);
+        }
+
         public void Dispose()
         {
             if (!this.isDisposed)
@@ -47,7 +70,7 @@ namespace Ferretto.VW.MAS.Utils
             }
         }
 
-        public void Enter(IMessageData data)
+        public void Enter(CommandMessage message)
         {
             if (this.hasEntered)
             {
@@ -58,12 +81,12 @@ namespace Ferretto.VW.MAS.Utils
 
             this.Logger.LogDebug($"Entering state {this.GetType()}.");
 
-            this.OnEnter(data);
+            this.OnEnter(message);
         }
 
         public void Exit()
         {
-            if (!this.hasExited)
+            if (this.hasExited)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already exited.");
             }
@@ -75,21 +98,77 @@ namespace Ferretto.VW.MAS.Utils
             this.OnExit();
         }
 
+        public virtual IState NotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this.OnNotificationReceived(notificationMessage);
+        }
+
+        public IState Stop(StopRequestReason reason)
+        {
+            if (this.hasStopped)
+            {
+                throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+            }
+
+            this.hasStopped = true;
+
+            this.Logger.LogDebug($"Stopping state {this.GetType()}.");
+
+            return this.OnStop(reason);
+        }
+
+        protected IState GetState<TState>() where TState : IState
+        {
+            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
+        }
+
+        protected void NotifyCommandError(CommandMessage commandMessage, string description)
+        {
+            if (commandMessage is null)
+            {
+                throw new ArgumentNullException(nameof(commandMessage));
+            }
+
+            this.Logger.LogDebug($"Notifying Mission Manager service error caused by message {commandMessage.Type}");
+
+            var message = new NotificationMessage(
+                commandMessage.Data,
+                description,
+                MessageActor.Any,
+                MessageActor.MissionsManager,
+                MessageType.MissionManagerException,
+                commandMessage.RequestingBay,
+                commandMessage.TargetBay,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+        }
+
+        protected virtual IState OnCommandReceived(CommandMessage commandMessage)
+        {
+            return this;
+        }
+
         protected virtual void OnDisposing()
         {
             // do nothing
             // derived classes can customize the behaviour of this method
         }
 
-        protected virtual void OnEnter(IMessageData data)
-        {
-            // do nothing
-        }
+        protected abstract void OnEnter(CommandMessage commandMessage);
 
         protected virtual void OnExit()
         {
             // do nothing
         }
+
+        protected virtual IState OnNotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this;
+        }
+
+        protected abstract IState OnStop(StopRequestReason reason);
 
         #endregion
     }

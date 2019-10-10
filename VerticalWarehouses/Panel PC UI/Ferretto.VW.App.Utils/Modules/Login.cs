@@ -4,9 +4,9 @@
     {
         #region Fields
 
-        public const string LOGIN = "LoginViewModel";
-
         public const string LOADER = "LoaderViewModel";
+
+        public const string LOGIN = "LoginViewModel";
 
         #endregion
     }
