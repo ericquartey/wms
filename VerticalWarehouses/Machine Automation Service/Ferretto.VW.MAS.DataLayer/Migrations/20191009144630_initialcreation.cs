@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class initialCreation : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -336,6 +336,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CarouselId = table.Column<int>(nullable: true),
+                    ChainOffset = table.Column<double>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
                     CurrentMissionOperationId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
@@ -538,6 +539,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ChainOffset = table.Column<double>(nullable: false),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
                     LowerBound = table.Column<double>(nullable: false),
@@ -601,7 +603,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 9, 10, 12, 11, 17, DateTimeKind.Local).AddTicks(1157), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 9, 16, 46, 29, 820, DateTimeKind.Local).AddTicks(3805), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

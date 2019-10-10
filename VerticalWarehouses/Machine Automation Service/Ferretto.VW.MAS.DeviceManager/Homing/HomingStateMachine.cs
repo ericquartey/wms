@@ -288,14 +288,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             else
             {
                 if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                    this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible: Top position occupied";
                 }
                 else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                    this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                     )
                 {
                     ok = false;

@@ -242,6 +242,17 @@ namespace Ferretto.VW.MAS.DataLayer
             return bay;
         }
 
+        public double GetChainOffset(InverterIndex inverterIndex)
+        {
+            var bay = this.dataContext.Bays
+                .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(inverterIndex.ToString());
+            }
+            return bay.ChainOffset;
+        }
+
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;

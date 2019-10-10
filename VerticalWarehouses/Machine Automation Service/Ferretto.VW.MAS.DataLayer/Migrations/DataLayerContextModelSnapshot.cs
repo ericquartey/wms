@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CarouselId");
 
+                    b.Property<double>("ChainOffset");
+
                     b.Property<int?>("CurrentMissionId");
 
                     b.Property<int?>("CurrentMissionOperationId");
@@ -174,6 +176,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
 
@@ -582,7 +586,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 9, 10, 12, 11, 17, DateTimeKind.Local).AddTicks(1157),
+                            InstallationDate = new DateTime(2016, 12, 9, 16, 46, 29, 820, DateTimeKind.Local).AddTicks(3805),
                             ServiceStatus = 86
                         });
                 });

@@ -12,6 +12,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 {
     public enum InverterCalibrationMode : ushort
     {
+        Elevator = 5,
+
+        FindSensorCarousel = 20,
+
         FindSensor = 22,
 
         ResetEncoder = 35,
@@ -611,7 +615,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.TargetPosition[Axis.Vertical] = 0 + new Random().Next(-5, 15);
                     this.TargetPosition[Axis.Horizontal] = this.AxisPosition;
-                    if (this.calibrationMode == InverterCalibrationMode.FindSensor)
+                    if (this.calibrationMode == InverterCalibrationMode.FindSensor ||
+                        this.calibrationMode == InverterCalibrationMode.FindSensorCarousel
+                        )
                     {
                         this.TargetPosition[Axis.Horizontal] += new Random().Next(-5, 15);
                     }
