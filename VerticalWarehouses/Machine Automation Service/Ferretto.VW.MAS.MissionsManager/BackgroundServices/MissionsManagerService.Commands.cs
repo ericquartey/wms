@@ -26,17 +26,13 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         {
             switch (command.Type)
             {
-                case MessageType.WeightAcquisitionCommand:
-                    {
-                        this.OnWeightAcquisitionProcedureCommandReceived(command);
-                        break;
-                    }
-
                 case MessageType.ChangeRunningState:
-                    {
-                        this.OnChangeRunningStateCommandReceived(command);
-                        break;
-                    }
+                    this.OnChangeRunningStateCommandReceived(command);
+                    break;
+
+                case MessageType.MoveLoadingUnit:
+                    this.OnMoveLoadingUnit(command);
+                    break;
             }
 
             return Task.CompletedTask;
@@ -52,7 +48,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             switch (((ChangeRunningStateMessageData)command.Data).CommandAction)
             {
                 case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
                         this.missionsProvider.StartMachineMission(missionId, command);
                     }
@@ -66,26 +62,32 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             }
         }
 
-        private void OnWeightAcquisitionProcedureCommandReceived(CommandMessage command)
+        private void OnMoveLoadingUnit(CommandMessage command)
         {
             if (command is null)
             {
                 return;
             }
 
-            switch (((WeightAcquisitionCommandMessageData)command.Data).CommandAction)
+            switch (((MoveLoadingUnitMessageData)command.Data).CommandAction)
             {
                 case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.WeightAcquisition, out var missionId))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
                     {
                         this.missionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.Logger.LogDebug("Failed to create Move Loading UNit State machine mission");
                         this.NotifyCommandError(command);
                     }
 
+                    break;
+
+                case CommandAction.Abort:
+                    break;
+
+                case CommandAction.Stop:
                     break;
             }
         }

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -101,7 +102,15 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     this.activeState = value;
 
-                    this.activeState?.Enter(this.StartData);
+                    try
+                    {
+                        this.activeState?.Enter(this.StartData);
+                    }
+                    catch (StateMachineException ex)
+                    {
+                        var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        this.RaiseCompleted(eventArgs);
+                    }
                 }
 
                 // These code lines MUST be the last in the Setter
@@ -122,6 +131,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         #endregion
 
         #region Methods
+
+        public virtual bool AllowMultipleInstances(CommandMessage command)
+        {
+            return true;
+        }
 
         /// <summary>
         /// This code added is to correctly implement the disposable pattern.

@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         bool StopMachineMission(Guid missionId, StopRequestReason reason);
 
-        bool TryCreateMachineMission(MissionType missionType, out Guid missionId);
+        bool TryCreateMachineMission(MissionType missionType, CommandMessage command, out Guid missionId);
 
         #endregion
     }

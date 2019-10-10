@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,8 +72,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             }
             else
             {
-                // TODO Define a cleanup pattern for State Machine after this error
-                this.NotifyCommandError(commandMessage, $"Power Enable Start State received wrong initialization data ({commandMessage.Data.GetType()})");
+                var description = $"Power Enable Start State received wrong initialization data ({commandMessage.Data.GetType()})";
+
+                throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
         }
 

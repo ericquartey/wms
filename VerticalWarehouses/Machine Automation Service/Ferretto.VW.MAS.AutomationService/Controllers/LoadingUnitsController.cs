@@ -49,6 +49,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("abort-moving")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Abort(BayNumber targetBay)
+        {
+            this.moveLoadingUnitProvider.AbortMove(this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
@@ -124,7 +133,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -134,7 +143,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -147,19 +156,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (source == LoadingUnitDestination.Cell && destination == LoadingUnitDestination.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source != LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source == LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else
             {
-                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
 
             return this.Accepted();
@@ -168,9 +177,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop()
+        public IActionResult Stop(BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.StopMoving();
+            this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

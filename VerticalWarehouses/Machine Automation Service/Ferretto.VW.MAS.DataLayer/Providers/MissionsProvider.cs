@@ -68,11 +68,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(MissionType missionType, out Guid missionId)
+        public bool TryCreateMachineMission(MissionType missionType, CommandMessage command, out Guid missionId)
         {
             missionId = Guid.Empty;
 
-            if (this.CanCreateStateMachine(missionType))
+            if (this.CanCreateStateMachine(missionType, command))
             {
                 MachineMission newMission = null;
 
@@ -80,6 +80,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     case MissionType.ChangeRunningType:
                         newMission = new MachineMission(this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>(), this.OnActiveStateMachineCompleted);
+                        break;
+
+                    case MissionType.MoveLoadingUnit:
+                        newMission = new MachineMission(this.serviceScope.ServiceProvider.GetRequiredService<IMoveLoadingUnitStateMachine>(), this.OnActiveStateMachineCompleted);
                         break;
                 }
 
@@ -91,25 +95,40 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 }
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
         /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses
         /// </summary>
         /// <param name="requestedMission">TYpe of mission to be created</param>
+        /// <param name="command">Command received to create mission. Provides information useful to decide id mission two or more missions of the same type are allowed or not</param>
         /// <returns>True if the mission type can be created, false otherwise</returns>
-        private bool CanCreateStateMachine(MissionType requestedMission)
+        private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
         {
             bool returnValue = true;
             switch (requestedMission)
             {
                 case MissionType.ChangeRunningType:
-                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IChangeRunningStateStateMachine _);
+                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IChangeRunningStateStateMachine _ && !mm.MissionMachine.AllowMultipleInstances(command));
+                    break;
+
+                case MissionType.MoveLoadingUnit:
+                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IMoveLoadingUnitStateMachine _ && !mm.MissionMachine.AllowMultipleInstances(command));
+                    if (returnValue)
+                    {
+                        returnValue = this.EvaluateMissionPolicies(requestedMission, command);
+                    }
+
                     break;
             }
 
             return returnValue;
+        }
+
+        private bool EvaluateMissionPolicies(MissionType MoverequestedMission, CommandMessage command)
+        {
+            return true;
         }
 
         private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)

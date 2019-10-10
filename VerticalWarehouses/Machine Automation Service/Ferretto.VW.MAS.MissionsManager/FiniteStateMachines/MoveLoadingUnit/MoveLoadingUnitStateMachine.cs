@@ -1,8 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -10,27 +9,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
+namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 {
-    internal class ChangeRunningStateStateMachine : FiniteStateMachine<IChangeRunningStateStartState>, IChangeRunningStateStateMachine
+    internal class MoveLoadingUnitStateMachine : FiniteStateMachine<IMoveLoadingUnitStartSate>, IMoveLoadingUnitStateMachine
     {
-        #region Fields
-
-        private readonly IMachineControlProvider machineControlProvider;
-
-        #endregion
-
         #region Constructors
 
-        public ChangeRunningStateStateMachine(
-            IMachineControlProvider machineControlProvider,
+        public MoveLoadingUnitStateMachine(
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
         }
 
         #endregion
@@ -39,17 +29,17 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         public override bool AllowMultipleInstances(CommandMessage command)
         {
-            return false;
+            return true;
         }
 
         protected override bool FilterCommand(CommandMessage command)
         {
-            return command.Type == MessageType.ChangeRunningState;
+            return command.Type == MessageType.MoveLoadingUnit;
         }
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return this.machineControlProvider.FilterNotifications(notification, MessageActor.MissionsManager);
+            throw new NotImplementedException();
         }
 
         protected override IState OnCommandReceived(CommandMessage commandMessage)

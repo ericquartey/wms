@@ -12,11 +12,15 @@ namespace Ferretto.VW.MAS.Utils.Missions
     {
         #region Fields
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        protected readonly CancellationTokenSource CancellationTokenSource;
+
+        protected IFiniteStateMachine CurrentStateMachine;
+
+        protected Guid MissionId;
+
+        protected MissionType Type;
 
         private bool disposed;
-
-        private MissionType type;
 
         #endregion
 
@@ -25,6 +29,8 @@ namespace Ferretto.VW.MAS.Utils.Missions
         protected Mission()
             : this(Guid.NewGuid(), null)
         {
+            this.MissionId = Guid.NewGuid();
+            this.CancellationTokenSource = new CancellationTokenSource();
         }
 
         protected Mission(Guid id, IFiniteStateMachine currentStateMachine)
@@ -52,12 +58,12 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public virtual void EndMachine()
         {
-            this.cancellationTokenSource.Cancel();
+            this.CancellationTokenSource.Cancel();
         }
 
         public virtual void StartMachine(CommandMessage command)
         {
-            this.CurrentStateMachine.Start(command, this.cancellationTokenSource.Token);
+            this.CurrentStateMachine.Start(command, this.CancellationTokenSource.Token);
         }
 
         public virtual void StopMachine(StopRequestReason reason)
@@ -74,7 +80,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
             if (disposing)
             {
-                this.cancellationTokenSource?.Dispose();
+                this.CancellationTokenSource?.Dispose();
             }
 
             this.disposed = true;

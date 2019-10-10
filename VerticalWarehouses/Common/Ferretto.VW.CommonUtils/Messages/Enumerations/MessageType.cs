@@ -83,5 +83,7 @@
         ChangeRunningState,
 
         InverterPowerEnable,
+
+        MoveLoadingUnit
     }
 }

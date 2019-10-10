@@ -6,19 +6,21 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers.Interfaces
     {
         #region Methods
 
-        void MoveFromBayToBay(LoadingUnitDestination sourceBay, LoadingUnitDestination destinationBay, BayNumber requestingBay);
+        void AbortMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
-        void MoveFromBayToCell(LoadingUnitDestination sourceBay, int destinationCellId, BayNumber requestingBay);
+        void MoveFromBayToBay(LoadingUnitDestination sourceBay, LoadingUnitDestination destinationBay, BayNumber requestingBay, MessageActor sender);
 
-        void MoveFromCellToBay(int sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay);
+        void MoveFromBayToCell(LoadingUnitDestination sourceBay, int destinationCellId, BayNumber requestingBay, MessageActor sender);
 
-        void MoveFromCellToCell(int sourceCellId, int destinationCellId, BayNumber requestingBay);
+        void MoveFromCellToBay(int sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay, MessageActor sender);
 
-        void MoveLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination, BayNumber requestingBay);
+        void MoveFromCellToCell(int sourceCellId, int destinationCellId, BayNumber requestingBay, MessageActor sender);
 
-        void MoveLoadingUnitToCell(int loadingUnitId, int destinationCellId, BayNumber requestingBay);
+        void MoveLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination, BayNumber requestingBay, MessageActor sender);
 
-        void StopMoving();
+        void MoveLoadingUnitToCell(int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender);
+
+        void StopMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
         #endregion
     }

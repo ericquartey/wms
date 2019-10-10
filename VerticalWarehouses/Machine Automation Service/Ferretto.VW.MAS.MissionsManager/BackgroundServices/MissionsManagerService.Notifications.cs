@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
                         this.missionsProvider.StartMachineMission(missionId, command);
                     }

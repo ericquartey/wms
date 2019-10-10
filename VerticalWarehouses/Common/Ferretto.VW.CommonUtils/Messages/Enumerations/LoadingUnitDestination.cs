@@ -41,5 +41,7 @@
         CarouselBay3Down,
 
         Cell,
+
+        LoadingUnit
     }
 }

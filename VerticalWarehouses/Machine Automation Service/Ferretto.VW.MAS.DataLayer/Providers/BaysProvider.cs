@@ -360,6 +360,44 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination)
+        {
+            switch (destination)
+            {
+                case LoadingUnitDestination.InternalBay1Up:
+                case LoadingUnitDestination.ExternalBay1Up:
+                case LoadingUnitDestination.CarouselBay1Up:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayOne).Positions.Max(p => p.Height);
+
+                case LoadingUnitDestination.InternalBay1Down:
+                case LoadingUnitDestination.ExternalBay1Down:
+                case LoadingUnitDestination.CarouselBay1Down:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayOne).Positions.Min(p => p.Height);
+
+                case LoadingUnitDestination.InternalBay2Up:
+                case LoadingUnitDestination.ExternalBay2Up:
+                case LoadingUnitDestination.CarouselBay2Up:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayTwo).Positions.Max(p => p.Height);
+
+                case LoadingUnitDestination.InternalBay2Down:
+                case LoadingUnitDestination.ExternalBay2Down:
+                case LoadingUnitDestination.CarouselBay2Down:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayTwo).Positions.Min(p => p.Height);
+
+                case LoadingUnitDestination.InternalBay3Up:
+                case LoadingUnitDestination.ExternalBay3Up:
+                case LoadingUnitDestination.CarouselBay3Up:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayThree).Positions.Max(p => p.Height);
+
+                case LoadingUnitDestination.InternalBay3Down:
+                case LoadingUnitDestination.ExternalBay3Down:
+                case LoadingUnitDestination.CarouselBay3Down:
+                    return this.dataContext.Bays.Single(b => b.Number == BayNumber.BayThree).Positions.Min(p => p.Height);
+            }
+
+            return 0;
+        }
+
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
         {
             var bay = this.GetByNumber(targetBay);

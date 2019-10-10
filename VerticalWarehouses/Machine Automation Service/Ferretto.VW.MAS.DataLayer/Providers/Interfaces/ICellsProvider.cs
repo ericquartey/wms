@@ -14,5 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
         Cell UpdateHeight(int cellId, double height);
 
         #endregion
+
+        double
     }
 }

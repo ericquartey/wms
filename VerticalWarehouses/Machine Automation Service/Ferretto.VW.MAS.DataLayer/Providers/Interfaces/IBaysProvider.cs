@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination);
+
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
