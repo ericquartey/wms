@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var isPoweredOn = await this.machineStatusService.IsPoweredOnAsync();
+                    var isPoweredOn = await this.machinePowerService.IsPoweredOnAsync();
 
                     this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
                 }

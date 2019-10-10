@@ -16,21 +16,33 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
-        void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight, BayNumber requestingBay);
+        void MoveHorizontalAuto(
+            HorizontalMovementDirection direction,
+            bool isStartedOnBoard,
+            int? loadingUnitId,
+            double? loadingUnitGrossWeight,
+            BayNumber requestingBay,
+            MessageActor sender);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber requestingBay);
+        void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber requestingBay, MessageActor sender);
 
-        void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay);
+        void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveVerticalOfDistance(double distance, BayNumber requestingBay, double feedRate = 1);
+        void MoveVerticalOfDistance(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 
-        void RepeatVerticalMovement(double upperBoundPosition, double lowerBoundPosition, int totalTestCycleCount, int delayStart, BayNumber requestingBay);
+        void RepeatVerticalMovement(
+            double upperBoundPosition,
+            double lowerBoundPosition,
+            int totalTestCycleCount,
+            int delayStart, BayNumber
+            requestingBay,
+            MessageActor sender);
 
-        void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay);
+        void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
-        void Stop(BayNumber requestingBay);
+        void Stop(BayNumber requestingBay, MessageActor sender);
 
         #endregion
     }

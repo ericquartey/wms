@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
@@ -26,13 +26,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public BayChainProvider(
             IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.horizontalManualMovements = horizontalManualMovementsDataLayer ?? throw new ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -59,8 +59,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
+            var procedureParameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+
             // TODO: scale movement speed by weight
-            var speed = new[] { axis.EmptyLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var speed = new[] { axis.EmptyLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
             var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -103,7 +105,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
-            var speed = new[] { axis.MaximumLoadMovement.Speed * (double)this.horizontalManualMovements.FeedRateHM / 10 };
+            var procedureParameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+            var speed = new[] { axis.MaximumLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
             var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };

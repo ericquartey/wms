@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService

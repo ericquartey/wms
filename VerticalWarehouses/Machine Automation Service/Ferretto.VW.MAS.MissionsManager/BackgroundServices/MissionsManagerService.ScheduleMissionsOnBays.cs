@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         await this.ExecuteNextMissionAsync(bay, pendingMissionsOnBay);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // do nothing
                     this.Logger.LogWarning("Unable to load missions from WMS service.");

@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,7 +76,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.Dispose(true);
         }
 
-        public void MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitNetWeight, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalAuto(
+            HorizontalMovementDirection direction,
+            bool isStartedOnBoard,
+            int? loadingUnitId,
+            double? loadingUnitNetWeight,
+            BayNumber requestingBay,
+            MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
             this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);

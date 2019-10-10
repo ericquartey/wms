@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -37,9 +36,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.setupProceduresDataProvider.GetAll().DepositAndPickUpTest);
         }
 
-        [HttpPost("increase-cycle-quantity")]
+        [HttpPost("increase-performed-cycles")]
         [Obsolete("This method shall be removed once the test is fully implemented at MissionManager level.")]
-        public ActionResult<int> IncreaseCycleQuantity()
+        public ActionResult<int> IncreasePerformedCycles()
         {
             var setupProcedures = this.setupProceduresDataProvider.GetAll();
 

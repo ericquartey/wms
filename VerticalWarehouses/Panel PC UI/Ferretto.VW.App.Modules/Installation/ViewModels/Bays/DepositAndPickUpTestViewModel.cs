@@ -21,9 +21,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
-
         private readonly int? inputLoadingUnitCode;
+
+        private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
 
         private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
 
@@ -56,8 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? netWeight;
 
         private RepeatedTestProcedure procedureParameters;
-
-        private SubscriptionToken sensorsToken;
 
         private SubscriptionToken sensorsToken;
 
@@ -264,14 +262,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public Sensors Sensors => this.sensors;
 
-        public Sensors Sensors => this.sensors;
-
         public ICommand StartCommand =>
-            this.startCommand
-            ??
-            (this.startCommand = new DelegateCommand(
-                async () => await this.StartAsync(),
-                this.CanExecuteStartCommand));
+           this.startCommand
+           ??
+           (this.startCommand = new DelegateCommand(
+               async () => await this.StartAsync(),
+               this.CanExecuteStartCommand));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -426,7 +422,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteStartCommand()
         {
-            return !this.IsExecutingProcedure
+            return
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -437,8 +434,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteStopCommand()
         {
-            return this.IsExecutingProcedure
-                && !this.IsWaitingForResponse;
+            return
+                this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task ExecuteNextStateAsync()
@@ -487,91 +486,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private bool CanExecuteResetCommand()
-        {
-            return !this.IsExecutingProcedure
-                   &&
-                   !this.IsWaitingForResponse;
-        }
-
-        private bool CanExecuteStartCommand()
-        {
-            return !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                this.IsLoadingUnitInBay
-                &&
-                !this.IsLoadingUnitOnElevator;
-        }
-
-        private bool CanExecuteStopCommand()
-        {
-            return this.IsExecutingProcedure
-                && !this.IsWaitingForResponse;
-        }
-
-        private async Task ExecuteNextStateAsync()
-        {
-            if (this.IsStopping)
-            {
-                this.IsStopping = false;
-                this.IsExecutingProcedure = false;
-                this.Stopped();
-            }
-
-            if (!this.IsExecutingProcedure)
-            {
-                return;
-            }
-
-            switch (this.currentState)
-            {
-                case DepositAndPickUpState.None:
-                    await this.MoveToBayHeightAsync();
-                    break;
-
-                case DepositAndPickUpState.GotoBay:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.PickUp:
-                    await this.ReStart();
-                    break;
-
-                case DepositAndPickUpState.GotoBayAdjusted:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.Deposit:
-                    await this.MoveToBayHeightAsync();
-                    break;
-            }
-        }
-
-        private async Task InitializeSensors()
-        {
-            try
-            {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
-
-                this.sensors.Update(sensorsStates.ToArray());
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task InitializeTotalCycles()
-        {
-            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.GetCycleQuantityAsync();
         }
 
         private async Task OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -616,7 +534,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.currentState == DepositAndPickUpState.PickUp)
                         {
-                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.IncreaseCycleQuantityAsync();
+                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.IncreasePerformedCyclesAsync();
                             this.CompletedCycles++;
                         }
 

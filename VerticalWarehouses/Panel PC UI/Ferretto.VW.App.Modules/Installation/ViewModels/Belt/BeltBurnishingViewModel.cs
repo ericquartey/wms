@@ -340,13 +340,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
         }
 
-        private bool CanExecuteResetCommand()
-        {
-            return !this.IsExecutingProcedure
-                   &&
-                   !this.IsWaitingForResponse;
-        }
-
         private bool CanExecuteStartCommand()
         {
             return !this.IsExecutingProcedure

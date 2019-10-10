@@ -1,12 +1,8 @@
 using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.FiniteStateMachines.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -26,8 +22,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
-
         #endregion
 
         #region Constructors
@@ -36,14 +30,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            ISetupStatusProvider setupStatusProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
             : base(eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
         }
 
         #endregion
@@ -73,7 +65,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
 
-            this.elevatorProvider.MoveVerticalOfDistance(-procedureParameters.Step, this.BayNumber, procedureParameters.FeedRate);
+            this.elevatorProvider.MoveVerticalOfDistance(
+                -procedureParameters.Step,
+                this.BayNumber,
+                MessageActor.AutomationService,
+                procedureParameters.FeedRate);
 
             return this.Accepted();
         }
@@ -85,7 +81,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
 
-            this.elevatorProvider.MoveVerticalOfDistance(procedureParameters.Step, this.BayNumber, procedureParameters.FeedRate);
+            this.elevatorProvider.MoveVerticalOfDistance(
+                procedureParameters.Step,
+                this.BayNumber,
+                MessageActor.AutomationService,
+                procedureParameters.FeedRate);
 
             return this.Accepted();
         }

@@ -274,6 +274,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Condizioni per il posizionamento non soddisfatte.",
                             Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100034,
+                            Code = 100034,
+                            Description = "Condizioni per la messa in marcia non soddisfatte.",
+                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi",
+                            Severity = 0
                         });
                 });
 
@@ -296,6 +304,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100033,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100034,
                             TotalErrors = 0
                         });
                 });
@@ -554,7 +567,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 9, 16, 11, 39, 574, DateTimeKind.Local).AddTicks(3481),
+                            InstallationDate = new DateTime(2016, 12, 10, 10, 13, 7, 942, DateTimeKind.Local).AddTicks(6955),
                             ServiceStatus = 86
                         });
                 });

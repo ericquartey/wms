@@ -682,8 +682,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Offset = table.Column<double>(nullable: false),
                     Orientation = table.Column<int>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
-                    UpperBound = table.Column<double>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
+                    UpperBound = table.Column<double>(nullable: false),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -726,6 +726,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 values: new object[] { 100033, 100033, "Condizioni per il posizionamento non soddisfatte.", "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.", 0 });
 
             migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100034, 100034, "Condizioni per la messa in marcia non soddisfatte.", "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi", 0 });
+
+            migrationBuilder.InsertData(
                 table: "MachineStatistics",
                 columns: new[] { "Id", "TotalAutomaticTime", "TotalBeltCycles", "TotalMissionTime", "TotalMovedTrays", "TotalMovedTraysInBay1", "TotalMovedTraysInBay2", "TotalMovedTraysInBay3", "TotalPowerOnTime", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers", "WeightCapacityPercentage" },
                 values: new object[] { -1, new TimeSpan(0, 0, 0, 0, 0), 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0, 0, 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0.0, 0.0 });
@@ -733,7 +738,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 9, 16, 11, 39, 574, DateTimeKind.Local).AddTicks(3481), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 10, 10, 13, 7, 942, DateTimeKind.Local).AddTicks(6955), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -759,6 +764,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 100033, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100034, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BayPosition_BayId",
