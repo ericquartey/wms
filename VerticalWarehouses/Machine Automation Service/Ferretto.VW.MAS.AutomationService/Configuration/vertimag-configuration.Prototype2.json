@@ -14,6 +14,7 @@
           "TcpPort": 19550
         },
         "IsExternal": true,
+        "ChainOffset": -800,
         "Number": 1,
         "Positions": [ { "Height": 741 } ],
         "Shutter": {
@@ -40,6 +41,7 @@
           "Orientation": "Vertical",
           "Resolution": 99.177657,
           "Offset": 350,
+          "ChainOffset": 0,
           "UpperBound": 8600, //TEMP temporary commented for test on belt-burnishing,
           "LowerBound": 350,
           "EmptyLoadMovement": {
@@ -61,6 +63,7 @@
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
+          "ChainOffset": -800,
           "MaximumLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,

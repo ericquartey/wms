@@ -410,6 +410,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
                         this.IsTuningChain = false;
+                        this.IsTuningBay = false;
                         break;
                     }
 

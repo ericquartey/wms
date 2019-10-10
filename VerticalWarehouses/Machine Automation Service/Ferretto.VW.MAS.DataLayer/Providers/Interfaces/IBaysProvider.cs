@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay GetByNumber(BayNumber bayNumber);
 
+        double GetChainOffset(InverterIndex inverterIndex);
+
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
