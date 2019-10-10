@@ -162,9 +162,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Up);
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()

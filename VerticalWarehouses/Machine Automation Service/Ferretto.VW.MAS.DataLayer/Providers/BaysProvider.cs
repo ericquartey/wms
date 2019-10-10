@@ -233,10 +233,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var bay = this.dataContext.Bays
                 .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+
             if (bay is null)
             {
                 throw new EntityNotFoundException(inverterIndex.ToString());
             }
+
             return bay.ChainOffset;
         }
 

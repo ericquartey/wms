@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveCurrentPositionAsync();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.EnableAll();
         }

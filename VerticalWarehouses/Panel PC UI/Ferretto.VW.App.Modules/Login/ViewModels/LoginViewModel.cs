@@ -158,9 +158,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             if (this.Data is MachineIdentity machineIdentity)
             {

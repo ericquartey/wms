@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Controls
             return true;
         }
 
-        public virtual Task OnNavigatedAsync()
+        public virtual Task OnAppearedAsync()
         {
             // do nothing
             return Task.CompletedTask;
