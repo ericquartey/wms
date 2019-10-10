@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+using System.Net;
+
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
 #pragma warning disable 472 // Disable "CS0472 The result of the expression is always 'false' since a value of type 'Int32' is never equal to 'null' of type 'Int32?'
@@ -391,6 +393,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Machine> GetMachineAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Machine> GetMachineAsync(System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -746,12 +755,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Bay FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -764,12 +773,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Carousel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Carousel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Carousel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -782,12 +791,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static DataModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -809,12 +818,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Inverter FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Inverter>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Inverter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -851,45 +860,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         All = 16,
     
         None = 255,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class IPAddress 
-    {
-        [Newtonsoft.Json.JsonProperty("addressFamily", Required = Newtonsoft.Json.Required.Always)]
-        public AddressFamily AddressFamily { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("scopeId", Required = Newtonsoft.Json.Required.Always)]
-        public long ScopeId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isIPv6Multicast", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIPv6Multicast { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isIPv6LinkLocal", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIPv6LinkLocal { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isIPv6SiteLocal", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIPv6SiteLocal { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isIPv6Teredo", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIPv6Teredo { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isIPv4MappedToIPv6", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIPv4MappedToIPv6 { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Always)]
-        public long Address { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static IPAddress FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IPAddress>(data);
-        }
     
     }
     
@@ -1022,12 +992,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static IoDevice FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDevice>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDevice>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1090,12 +1060,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static LoadingUnit FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnit>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnit>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1123,12 +1093,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Cell FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Cell>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Cell>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1226,12 +1196,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static BayPosition FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1250,12 +1220,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Shutter FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Shutter>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Shutter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1320,12 +1290,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ProblemDetails FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1355,12 +1325,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static BeltBurnishingParameters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BeltBurnishingParameters>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BeltBurnishingParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1376,12 +1346,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static CellPanel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellPanel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellPanel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1406,12 +1376,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static CellStatisticsSummary FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatisticsSummary>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatisticsSummary>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1436,12 +1406,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static CellStatusStatistics FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatusStatistics>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatusStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1457,12 +1427,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1481,12 +1451,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static InverterDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterDeviceInfo>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterDeviceInfo>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1508,12 +1478,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static BitInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BitInfo>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BitInfo>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1526,12 +1496,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static DeviceBase FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DeviceBase>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DeviceBase>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1550,12 +1520,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static IoDeviceInfo FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDeviceInfo>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDeviceInfo>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1636,12 +1606,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static Error FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Error>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Error>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1669,12 +1639,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ErrorDefinition FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorDefinition>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorDefinition>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1693,12 +1663,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ErrorStatistic FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatistic>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatistic>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1723,12 +1693,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ErrorStatisticsSummary FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsSummary>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsSummary>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1750,24 +1720,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ErrorStatisticsDetail FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsDetail>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsDetail>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
     
     /// <summary>100032 = CradleNotCompletelyLoaded
-    /// 100033 = ConditionsNotMetForPositioning</summary>
+    /// 100033 = ConditionsNotMetForPositioning
+    /// 100034 = ConditionsNotMetForRunning</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrors
     {
         CradleNotCompletelyLoaded = 100032,
     
         ConditionsNotMetForPositioning = 100033,
+    
+        ConditionsNotMetForRunning = 100034,
     
     }
     
@@ -1813,12 +1786,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static MachineIdentity FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineIdentity>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineIdentity>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1841,6 +1814,256 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Machine : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("bays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Elevator Elevator { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public double Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxGrossWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ModelName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("panels", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<CellPanel> Panels { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SerialNumber { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static Machine FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Elevator : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("axes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<ElevatorAxis> Axes { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LoadingUnit LoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LoadingUnitId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("structuralProperties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ElevatorStructuralProperties StructuralProperties { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static Elevator FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Elevator>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ElevatorAxis : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("emptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MovementParameters EmptyLoadMovement { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Inverter Inverter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
+        public double LowerBound { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maximumLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MovementParameters MaximumLoadMovement { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
+        public double Offset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orientation", Required = Newtonsoft.Json.Required.Always)]
+        public Orientation Orientation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
+        public decimal Resolution { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
+        public double UpperBound { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static ElevatorAxis FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ElevatorAxis>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MovementParameters : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("acceleration", Required = Newtonsoft.Json.Required.Always)]
+        public double Acceleration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("deceleration", Required = Newtonsoft.Json.Required.Always)]
+        public double Deceleration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("speed", Required = Newtonsoft.Json.Required.Always)]
+        public double Speed { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static MovementParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    /// <summary>0 = Undefined
+    /// 1 = Vertical
+    /// 2 = Horizontal</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Orientation
+    {
+        Undefined = 0,
+    
+        Vertical = 1,
+    
+        Horizontal = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MovementProfile : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("correction", Required = Newtonsoft.Json.Required.Always)]
+        public double Correction { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        public MovementProfileType Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<StepMovementParameters> Steps { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalDistance", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalDistance { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static MovementProfile FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementProfile>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    /// <summary>0 = Undefined
+    /// 1 = ShortPickup
+    /// 2 = ShortDeposit
+    /// 3 = LongDeposit
+    /// 4 = LongPickup</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MovementProfileType
+    {
+        Undefined = 0,
+    
+        ShortPickup = 1,
+    
+        ShortDeposit = 2,
+    
+        LongDeposit = 3,
+    
+        LongPickup = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class StepMovementParameters : MovementParameters
+    {
+        [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
+        public int Number { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.Always)]
+        public double Position { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static StepMovementParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StepMovementParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ElevatorStructuralProperties : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("beltRigidity", Required = Newtonsoft.Json.Required.Always)]
+        public int BeltRigidity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("beltSpacing", Required = Newtonsoft.Json.Required.Always)]
+        public double BeltSpacing { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("halfShaftLength", Required = Newtonsoft.Json.Required.Always)]
+        public double HalfShaftLength { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maximumLoadOnBoard", Required = Newtonsoft.Json.Required.Always)]
+        public double MaximumLoadOnBoard { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pulleyDiameter", Required = Newtonsoft.Json.Required.Always)]
+        public double PulleyDiameter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shaftDiameter", Required = Newtonsoft.Json.Required.Always)]
+        public double ShaftDiameter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shaftElasticity", Required = Newtonsoft.Json.Required.Always)]
+        public double ShaftElasticity { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static ElevatorStructuralProperties FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ElevatorStructuralProperties>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnitSpaceStatistics 
     {
         [Newtonsoft.Json.JsonProperty("areaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1857,12 +2080,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static LoadingUnitSpaceStatistics FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitSpaceStatistics>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitSpaceStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1893,12 +2116,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static LoadingUnitWeightStatistics FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitWeightStatistics>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitWeightStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1982,12 +2205,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ResolutionCalibrationParameters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResolutionCalibrationParameters>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResolutionCalibrationParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2039,12 +2262,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static SetupStatusCapabilities FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupStatusCapabilities>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupStatusCapabilities>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2060,12 +2283,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static SetupStepStatus FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupStepStatus>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupStepStatus>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2093,12 +2316,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static BaySetupStatus FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BaySetupStatus>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BaySetupStatus>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2111,12 +2334,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static BeltBurnishingSetupStepStatus FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BeltBurnishingSetupStepStatus>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BeltBurnishingSetupStepStatus>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2152,12 +2375,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static ShutterTestParameters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterTestParameters>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterTestParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2229,12 +2452,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static MachineStatistics FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineStatistics>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2250,12 +2473,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static UserClaims FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserClaims>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserClaims>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2291,12 +2514,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static VerticalOffsetProcedureParameters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<VerticalOffsetProcedureParameters>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<VerticalOffsetProcedureParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2318,12 +2541,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
         public static HomingProcedureParameters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<HomingProcedureParameters>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HomingProcedureParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

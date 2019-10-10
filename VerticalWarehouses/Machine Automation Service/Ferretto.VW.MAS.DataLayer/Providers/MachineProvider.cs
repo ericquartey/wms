@@ -33,7 +33,26 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Machine Get()
         {
-            return this.dataContext.Machines.Single();
+            return this.dataContext.Machines
+                .Include(m => m.Elevator)
+                    .ThenInclude(e => e.Axes)
+                        .ThenInclude(a => a.Profiles)
+                            .ThenInclude(p => p.Steps)
+                .Include(m => m.Elevator)
+                    .ThenInclude(e => e.StructuralProperties)
+                .Include(m => m.Bays)
+                    .ThenInclude(b => b.Positions)
+                .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                .Include(m => m.Bays)
+                        .ThenInclude(b => b.Inverter)
+                .Include(m => m.Bays)
+                        .ThenInclude(b => b.IoDevice)
+                .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                .Include(m => m.Panels)
+                    .ThenInclude(p => p.Cells)
+                .Single();
         }
 
         public double GetHeight()
