@@ -4,6 +4,8 @@
     {
         #region Fields
 
+        private double acceleration;
+
         private double deceleration;
 
         private double higherDistance;
@@ -24,7 +26,7 @@
 
         public double Acceleration
         {
-            get => this.maxSpeed;
+            get => this.acceleration;
             set
             {
                 if (value <= 0)
@@ -32,7 +34,7 @@
                     throw new System.ArgumentOutOfRangeException(nameof(value));
                 }
 
-                this.maxSpeed = value;
+                this.acceleration = value;
             }
         }
 
