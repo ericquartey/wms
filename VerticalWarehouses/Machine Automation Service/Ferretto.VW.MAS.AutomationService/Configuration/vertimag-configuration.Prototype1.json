@@ -15,6 +15,7 @@
           "TcpPort": 19550
         },
         "IsExternal": true,
+        "ChainOffset": 0,
         "Number": 1,
         "Positions": [ { "Height": 645 } ],
         "Shutter": {
@@ -33,6 +34,7 @@
         },
         "Side": "Back",
         "IsExternal": false,
+        "ChainOffset": 0,
         "LaserPointer": {
           "Heights": [ 680, 1080 ]
         },
@@ -62,6 +64,7 @@
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
+          "ChainOffset": 0,
           "UpperBound": 4000,
           "LowerBound": 350,
           "EmptyLoadMovement": {
@@ -79,6 +82,7 @@
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
+          "ChainOffset": -500,
           "Inverter": null,
           "MaximumLoadMovement": {
             "Acceleration": 350,
@@ -2738,64 +2742,72 @@
     "ProductionDate": "2019-10-19T16:39:57-08:00",
     "SerialNumber": "Prototype #1"
   },
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
-  },
-  "DepositAndPickUp": {
-    "CycleQuantity": 10
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "HorizontalManualMovements": {
-    "FeedRate": 0.40,
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 200.0
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
-  },
-
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
-  },
-  "ShutterManualMovements": {
-    "FeedRate": 0.20,
-    "MaxSpeed": 40000.0,
-    "MinSpeed": 5000.0,
-    "Acceleration": 500.0,
-    "Deceleration": 500.0,
-    "HigherDistance": 467.0,
-    "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 14.0,
-    "HighSpeedDurationClose": 13.0
-  },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
-  },
-  "WeightControl": {
-    "FeedRate": 0.10
+  "SetupProcedures": {
+    "BayHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "BeltBurnishingTest": {
+      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+      "RequiredCycles": 5
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2
+    },
+    "CellsHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "HorizontalManualMovements": {
+      "FeedRate": 0.04,
+      "InitialTargetPosition": 30,
+      "RecoveryTargetPosition": 200
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "OffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterManualMovements": {
+      "FeedRate": 0.2,
+      "MaxSpeed": 40000,
+      "MinSpeed": 5000,
+      "Acceleration": 500,
+      "Deceleration": 500,
+      "HigherDistance": 467,
+      "LowerDistance": 472,
+      "HighSpeedDurationOpen": 14,
+      "HighSpeedDurationClose": 13
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10
+    },
+    "VerticalManualMovements": {
+      "FeedRate": 0.1,
+      "PositiveTargetDirection": 30,
+      "NegativeTargetDirection": 30,
+      "FeedRateAfterZero": 0.15
+    },
+    "VerticalResolutionCalibration": {
+      "InitialPosition": 1000, //TEMP Temporary value for software test
+      "FinalPosition": 5500, //TEMP Temporary value for software test
+      "FeedRate": 0.2
+    },
+    "WeightCheck": {
+      "FeedRate": 0.05
+    }
   }
 }

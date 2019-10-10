@@ -18,6 +18,6 @@
 
         Closed = 3,
 
-        Intermediate = 4
+        Intermediate = 4,
     }
 }

@@ -40,6 +40,6 @@
 
         CarouselBay3Down,
 
-        Cell
+        Cell,
     }
 }

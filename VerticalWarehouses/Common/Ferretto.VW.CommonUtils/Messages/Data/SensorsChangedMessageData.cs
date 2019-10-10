@@ -27,6 +27,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             {
                 sb.AppendFormat("{0:x2};", b);
             }
+
             return $"SensorsStates:{sb}";
         }
 

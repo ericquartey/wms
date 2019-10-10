@@ -6,6 +6,6 @@
 
         Abort,
 
-        Stop
+        Stop,
     }
 }

@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -94,18 +93,6 @@ namespace Ferretto.VW.MAS.DataLayer
             this.Update(bay);
 
             return bay;
-        }
-
-        public void Create(Bay bay)
-        {
-            if (bay is null)
-            {
-                throw new ArgumentNullException(nameof(bay));
-            }
-
-            this.dataContext.Bays.Add(bay);
-
-            this.dataContext.SaveChanges();
         }
 
         public Bay Deactivate(BayNumber bayNumber)
@@ -240,6 +227,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return bay;
+        }
+
+        public double GetChainOffset(InverterIndex inverterIndex)
+        {
+            var bay = this.dataContext.Bays
+                .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(inverterIndex.ToString());
+            }
+
+            return bay.ChainOffset;
         }
 
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)

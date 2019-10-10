@@ -108,6 +108,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected IMachineElevatorService MachineElevatorService { get; }
 
+        protected PositioningProcedure ProcedureParameters { get; private set; }
+
         #endregion
 
         #region Methods
@@ -126,9 +128,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -140,6 +142,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveCellsAsync();
+
+            await this.RetrieveProcedureParametersAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -192,6 +196,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.ProcedureParameters = await this.MachineCellsService.GetHeightCheckProcedureParametersAsync();
             }
             catch (Exception ex)
             {

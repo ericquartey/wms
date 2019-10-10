@@ -22,6 +22,6 @@
 
         OperationStepEnd,
 
-        OperationStepStop
+        OperationStepStop,
     }
 }

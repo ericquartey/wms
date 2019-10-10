@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private VerticalManualMovementsProcedure procedureParameters;
+
         private SubscriptionToken sensorsToken;
 
         private SubscriptionToken shutterPositionToken;
@@ -50,7 +52,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
             IMachineShuttersService shuttersService,
-            IMachineServiceService machineServiceService,
             IMachineCarouselService machineCarouselService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
@@ -85,11 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            if (machineServiceService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineServiceService));
-            }
-
             if (machineCarouselService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineCarouselService));
@@ -101,9 +97,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
             this.shuttersService = shuttersService;
-            this.machineServiceService = machineServiceService;
             this.machineCarouselService = machineCarouselService;
-
             this.shutterSensors = new ShutterSensors(this.BayNumber);
 
             this.SelectBayPosition1();
@@ -211,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
@@ -270,20 +264,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveCarouselPositionAsync();
 
+            await this.RetrieveProcedureParametersAsync();
+
             await this.RetrieveCellsAsync();
 
             await this.RetrieveLoadingUnitsAsync();
 
-            await base.OnNavigatedAsync();
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            this.RetrieveElevatorPositionAsync();
-
-            this.RetrieveCarouselPositionAsync();
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -379,7 +366,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                        if (message.Data.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
@@ -414,6 +401,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
                         this.IsTuningChain = false;
+                        this.IsTuningBay = false;
                         break;
                     }
 
@@ -520,6 +508,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.carouselUpCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.procedureParameters = await this.machineElevatorService.GetVerticalManualMovementsParametersAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

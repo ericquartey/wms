@@ -153,6 +153,7 @@
                     return this.statusWord;
                 }
             }
+
             set
             {
                 lock (this.statusWordLockObject)

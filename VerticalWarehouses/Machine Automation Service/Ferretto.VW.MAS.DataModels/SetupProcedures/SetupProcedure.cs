@@ -1,0 +1,31 @@
+﻿namespace Ferretto.VW.MAS.DataModels
+{
+    public class SetupProcedure : DataModel
+    {
+        #region Fields
+
+        private double feedRate = 1.0;
+
+        #endregion
+
+        #region Properties
+
+        public double FeedRate
+        {
+            get => this.feedRate;
+            set
+            {
+                if (value <= 0 || value > 1)
+                {
+                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.feedRate = value;
+            }
+        }
+
+        public bool IsCompleted { get; set; }
+
+        #endregion
+    }
+}

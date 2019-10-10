@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        public double ChainOffset { get; set; }
+
         public MovementParameters EmptyLoadMovement { get; set; }
 
         public Inverter Inverter { get; set; }

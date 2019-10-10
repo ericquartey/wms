@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
-        void Create(Bay bay);
-
         Bay Deactivate(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
@@ -32,6 +30,8 @@ namespace Ferretto.VW.MAS.DataLayer
         BayNumber GetByMovementType(IPositioningMessageData data);
 
         Bay GetByNumber(BayNumber bayNumber);
+
+        double GetChainOffset(InverterIndex inverterIndex);
 
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 

@@ -12,12 +12,12 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             ShutterPosition shutterPosition,
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
-            decimal speedRate,
-            decimal higherDistance,
-            decimal lowerDistance,
-            decimal highSpeedDurationOpen,
-            decimal highSpeedDurationClose,
-            decimal lowerSpeed,
+            double speedRate,
+            double higherDistance,
+            double lowerDistance,
+            double highSpeedDurationOpen,
+            double highSpeedDurationClose,
+            double lowerSpeed,
             MovementType movementType,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -60,15 +60,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
-        public decimal HigherDistance { get; }
+        public double HigherDistance { get; }
 
-        public decimal HighSpeedDurationClose { get; }
+        public double HighSpeedDurationClose { get; }
 
-        public decimal HighSpeedDurationOpen { get; }
+        public double HighSpeedDurationOpen { get; }
 
-        public decimal LowerDistance { get; }
+        public double LowerDistance { get; }
 
-        public decimal LowerSpeed { get; }
+        public double LowerSpeed { get; }
 
         public MovementType MovementType { get; }
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public ShutterType ShutterType { get; }
 
-        public decimal SpeedRate { get; set; }
+        public double SpeedRate { get; set; }
 
         #endregion
 

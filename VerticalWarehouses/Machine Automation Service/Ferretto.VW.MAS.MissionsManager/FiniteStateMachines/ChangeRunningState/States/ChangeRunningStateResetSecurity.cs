@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateResetSecurity : StateBase, IChangeRunningStateResetSecurity

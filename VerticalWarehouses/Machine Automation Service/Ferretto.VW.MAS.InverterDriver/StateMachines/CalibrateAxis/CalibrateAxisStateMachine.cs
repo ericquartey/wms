@@ -59,6 +59,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 case Axis.Vertical:
                     this.currentAxis = Axis.Vertical;
                     break;
+
+                default:
+                    this.currentAxis = this.axisToCalibrate;
+                    break;
             }
 
             this.CurrentState = new CalibrateAxisStartState(this, this.currentAxis, this.calibration, this.inverterStatus, this.Logger);

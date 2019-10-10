@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
             if (loadingUnit is null)
             {
-                throw new Exceptions.EntityNotFoundException(id);
+                throw new EntityNotFoundException(id);
             }
 
             return loadingUnit;

@@ -8,7 +8,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public MovementMessageData(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        public MovementMessageData(double? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             this.Displacement = displacement;
             this.SpeedPercentage = speedPercentage;
@@ -22,7 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Axis Axis { get; set; }
 
-        public decimal? Displacement { get; set; }
+        public double? Displacement { get; set; }
 
         public MovementType MovementType { get; set; }
 

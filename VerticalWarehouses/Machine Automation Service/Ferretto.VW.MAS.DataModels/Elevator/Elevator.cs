@@ -9,14 +9,14 @@ namespace Ferretto.VW.MAS.DataModels
         public IEnumerable<ElevatorAxis> Axes { get; set; }
 
         /// <summary>
-        /// The loading unit currently loaded on the elevator.
+        /// Gets or sets the loading unit currently loaded on the elevator.
         /// </summary>
         public LoadingUnit LoadingUnit { get; set; }
 
         public int? LoadingUnitId { get; set; }
 
         /// <summary>
-        /// The structural properties of the elevator.
+        /// Gets or sets the structural properties of the elevator.
         /// </summary>
         public ElevatorStructuralProperties StructuralProperties { get; set; }
 

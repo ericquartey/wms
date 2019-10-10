@@ -4,6 +4,6 @@
     {
         Idle,
 
-        ExecutingMission
+        ExecutingMission,
     }
 }

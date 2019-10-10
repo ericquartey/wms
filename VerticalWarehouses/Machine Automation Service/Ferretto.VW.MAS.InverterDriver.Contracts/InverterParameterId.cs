@@ -2,7 +2,7 @@
 {
     public enum InverterParameterId : short
     {
-        ControlWordParam = 410, //INFO:Writeonly
+        ControlWordParam = 410,
 
         HomingCalibration = 1130,
 
@@ -26,7 +26,7 @@
 
         SetOperatingModeParam = 1454,
 
-        StatusWordParam = 411, //19B INFO:Readonly
+        StatusWordParam = 411,
 
         ActualPositionShaft = 1108,
 
@@ -34,7 +34,7 @@
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414, // 19E
+        ShutterTargetPosition = 414,
 
         ShutterTargetVelocityParam = 480,
 
