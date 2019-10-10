@@ -11,32 +11,32 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
     {
         #region Fields
 
-        private const byte ACTUAL_DATA_SET_INDEX = 0x05; //VALUE fixed data set id used for the inverter operation
+        private const byte ActualDataSetIndex = 0x05; // VALUE fixed data set id used for the inverter operation
 
-        private const byte READ_HEADER = 0x00;
+        private const byte ReadHeader = 0x00;
 
-        private const byte WRITE_HEADER = 0x80;
+        private const byte WriteHeader = 0x80;
 
         private readonly Dictionary<int, string> telegramErrorText = new Dictionary<int, string>()
         {
-            {0, "no error" },
-            {1, "Non-permissible parameter value"},
-            {2, "Non-permissible dataset"},
-            {3, "Parameter not readable (write-only)"},
-            {4, "Parameter not writable (read-only)"},
-            {5, "EEPROM read error"},
-            {6, "EEPROM write error"},
-            {7, "EEPROM checksum error"},
-            {8, "Parameter cannot be written while drive is running"},
-            {9, "Values of data sets are different"},
-            {10, "Not available"},
-            {11, "Unknown parameter"},
-            {12, "Not available"},
-            {13, "Syntax error in received telegram"},
-            {14, "Data type of parameter does not correspond to the number of bytes in the telegram"},
-            {15, "Unknown error"},
-            {20, "Selected System Bus node not available"},
-            {30, "Syntax error in received telegram"},
+            { 0, "no error" },
+            { 1, "Non-permissible parameter value" },
+            { 2, "Non-permissible dataset" },
+            { 3, "Parameter not readable (write-only)" },
+            { 4, "Parameter not writable (read-only)" },
+            { 5, "EEPROM read error" },
+            { 6, "EEPROM write error" },
+            { 7, "EEPROM checksum error" },
+            { 8, "Parameter cannot be written while drive is running" },
+            { 9, "Values of data sets are different" },
+            { 10, "Not available" },
+            { 11, "Unknown parameter" },
+            { 12, "Not available" },
+            { 13, "Syntax error in received telegram" },
+            { 14, "Data type of parameter does not correspond to the number of bytes in the telegram" },
+            { 15, "Unknown error" },
+            { 20, "Selected System Bus node not available" },
+            { 30, "Syntax error in received telegram" },
         };
 
         private bool heartbeatMessage;
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             this.responseMessage = false;
             this.SystemIndex = inverterIndex;
-            this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
+            this.DataSetIndex = ActualDataSetIndex;
             this.parameterId = (short)parameterId;
             this.IsWriteMessage = false;
             this.heartbeatMessage = false;
@@ -111,7 +111,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         }
 
         private InverterMessage()
-        { }
+        {
+        }
 
         #endregion
 
@@ -198,7 +199,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             message.DataSetIndex = messageBytes[3];
 
-            //VALUE parameterId is always stored starting at byte index 4 in the byte array
+            // VALUE parameterId is always stored starting at byte index 4 in the byte array
             message.parameterId = BitConverter.ToInt16(messageBytes, 4);
 
             message.payload = new byte[message.payloadLength];
@@ -227,7 +228,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             this.heartbeatMessage = true;
 
-            //VALUE 10th byte of control word value represents Heartbeat flag
+            // VALUE 10th byte of control word value represents Heartbeat flag
             if (setBit)
             {
                 this.payload[1] |= 0x04;
@@ -241,16 +242,16 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         }
 
         /// <summary>
-        ///     Returns a byte array from the current Inverter Message ready to be sent to the Inverter hardware
+        ///     Returns a byte array from the current Inverter Message ready to be sent to the Inverter hardware.
         /// </summary>
-        /// <returns>Byte array containing the request message for the inverter</returns>
-        /// <exception cref="InverterDriverException">Configured ParameterId failed to convert into byte array</exception>
+        /// <returns>Byte array containing the request message for the inverter.</returns>
+        /// <exception cref="InverterDriverException">Configured ParameterId failed to convert into byte array.</exception>
         public byte[] GetReadMessage()
         {
             var readMessage = new byte[6];
 
-            readMessage[0] = READ_HEADER;
-            readMessage[1] = 0x04; //VALUE Fixed packed data length to 4 bytes
+            readMessage[0] = ReadHeader;
+            readMessage[1] = 0x04; // VALUE Fixed packed data length to 4 bytes
             readMessage[2] = (byte)this.SystemIndex;
             readMessage[3] = this.DataSetIndex;
 
@@ -278,9 +279,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             var messageLength = this.payload.Length + 6;
             var writeMessage = new byte[messageLength];
 
-            writeMessage[0] = WRITE_HEADER;
+            writeMessage[0] = WriteHeader;
             writeMessage[1] =
-                Convert.ToByte(messageLength - 2); //VALUE Data length does not include header and length bytes
+                Convert.ToByte(messageLength - 2); // VALUE Data length does not include header and length bytes
             writeMessage[2] = (byte)this.SystemIndex;
             writeMessage[3] = this.DataSetIndex;
 
@@ -335,6 +336,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     {
                         sb.AppendFormat("{0:x2};", b);
                     }
+
                     returnString.Append($"{sb}");
                 }
             }
@@ -342,6 +344,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             {
                 returnString.Append($" null");
             }
+
             if (this.IsError)
             {
                 returnString.Append($":Error={this.TelegramErrorText}");
@@ -426,6 +429,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     {
                         returnValue = BitConverter.ToInt32(this.payload, 0);
                     }
+
                     break;
             }
 
@@ -475,6 +479,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
                     }
+
                     break;
 
                 default:
@@ -531,6 +536,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     {
                         Debugger.Break();
                     }
+
                     this.payload = new byte[0];
                     this.payloadLength = 0;
                     return;

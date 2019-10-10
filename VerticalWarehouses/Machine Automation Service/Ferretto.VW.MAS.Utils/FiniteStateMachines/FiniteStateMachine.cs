@@ -159,12 +159,12 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.commandsDequeuingThread = new Thread(this.DequeueCommands)
             {
-                Name = $"MM Commands {this.GetType().Name}"
+                Name = $"MM Commands {this.GetType().Name}",
             };
 
             this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
             {
-                Name = $"MM Notifications {this.GetType().Name}"
+                Name = $"MM Notifications {this.GetType().Name}",
             };
 
             this.commandsDequeuingThread.Start(cancellationToken);
@@ -251,7 +251,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -280,7 +281,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

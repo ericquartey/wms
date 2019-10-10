@@ -19,39 +19,19 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
         public static IServiceCollection AddDataLayer(
                     this IServiceCollection services)
         {
-            if (services == null)
+            if (services is null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>();
-
-            services.AddScoped(p =>
-                new DataLayerContext(
-                   isActiveChannel: true,
-                   p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
-
             services
-                .AddSingleton<IDataLayerService, DataLayerService>();
-
-            services
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IBayPositionControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IBeltBurnishingDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
+                .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
-                .AddSingleton(p => p.GetService<IDataLayerService>() as IDepositAndPickUpDataLayer);
+                .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
+                .AddScoped(p =>
+                    new DataLayerContext(
+                       isActiveChannel: true,
+                       p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
             services
                 .AddScoped<IBaysProvider, BaysProvider>()
@@ -66,6 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddScoped<IMachineProvider, MachineProvider>()
                 .AddScoped<IServicingProvider, ServicingProvider>()
                 .AddScoped<ISetupStatusProvider, SetupStatusProvider>()
+                .AddScoped<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
                 .AddScoped<IShutterTestParametersProvider, ShutterTestParametersProvider>()
                 .AddScoped<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddScoped<IUsersProvider, UsersProvider>();

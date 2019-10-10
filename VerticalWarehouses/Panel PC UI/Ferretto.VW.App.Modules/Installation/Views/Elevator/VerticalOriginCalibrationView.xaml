@@ -66,14 +66,6 @@
                                  ContentText="{Binding Resolution, StringFormat={}{0:F6}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Resolution}" />
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.ColumnSpan="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='Operation in progress...'}"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
-
-
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"

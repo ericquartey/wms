@@ -268,7 +268,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
 
-            // Notification message
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"Current position {beltBurnishingPosition}",
@@ -284,12 +283,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             if (this.numberExecutedSteps > 0 &&
                 this.numberExecutedSteps % 2 == 0)
             {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var setupStatusProvider = scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
+                var setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
 
-                    setupStatusProvider.IncreaseBeltBurnishingCycle();
-                }
+                var procedure = setupProceduresDataProvider.GetAll().BeltBurnishingTest;
+                setupProceduresDataProvider.IncreasePerformedCycles(procedure);
             }
         }
 

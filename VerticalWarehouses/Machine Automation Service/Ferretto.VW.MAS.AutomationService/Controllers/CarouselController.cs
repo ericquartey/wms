@@ -17,6 +17,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
         private readonly IBayChainProvider bayChainProvider;
 
         #endregion
@@ -25,9 +30,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CarouselController(
             IEventAggregator eventAggregator,
+            IElevatorDataProvider elevatorDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IBaysProvider baysProvider,
             IBayChainProvider bayChainProvider)
             : base(eventAggregator)
         {
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.bayChainProvider = bayChainProvider ?? throw new ArgumentNullException(nameof(bayChainProvider));
         }
 

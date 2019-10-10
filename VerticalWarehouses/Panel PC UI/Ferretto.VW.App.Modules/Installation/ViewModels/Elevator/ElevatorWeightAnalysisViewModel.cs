@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToBayCommand;
 
+        private SetupProcedure procedureParameters;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -310,6 +312,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
+
+            this.procedureParameters = await this.weightAnalysisProcedureService.GetParametersAsync();
         }
 
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
@@ -409,7 +413,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 var bayHeight = this.bayManager.Bay.Positions.First().Height;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(bayHeight, FeedRateCategory.VerticalManualMovementsAfterZero);
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    bayHeight,
+                    this.procedureParameters.FeedRate);
             }
             catch (Exception ex)
             {

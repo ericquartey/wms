@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachinesDataService machinesDataService;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
         #endregion
@@ -31,15 +33,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
-            ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            this.loadingUnitsProvider = loadingUnitStatisticsProvider ?? throw new ArgumentNullException(nameof(loadingUnitStatisticsProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
-            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
-        }
+            }
 
         #endregion
 

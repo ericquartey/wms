@@ -43,6 +43,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
+
             this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
@@ -117,7 +118,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.OnStop(reason);
         }
 
-        protected IState GetState<TState>() where TState : IState
+        protected IState GetState<TState>()
+            where TState : IState
         {
             return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
         }

@@ -24,6 +24,6 @@
 
         RequestWriteOnReadOnlyParameter,
 
-        InverterPacketMalformed
+        InverterPacketMalformed,
     }
 }

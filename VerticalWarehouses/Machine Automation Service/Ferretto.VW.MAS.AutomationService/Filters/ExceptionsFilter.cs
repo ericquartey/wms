@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 &&
                 context.ExceptionHandled == false)
             {
-                if (context.Exception is DataLayer.Exceptions.EntityNotFoundException)
+                if (context.Exception is DataLayer.EntityNotFoundException)
                 {
                     context.Result = new NotFoundObjectResult(new ProblemDetails
                     {

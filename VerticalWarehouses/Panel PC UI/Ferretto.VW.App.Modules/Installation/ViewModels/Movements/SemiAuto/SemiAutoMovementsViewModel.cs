@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private VerticalManualMovementsProcedure procedureParameters;
+
         private SubscriptionToken sensorsToken;
 
         private SubscriptionToken shutterPositionToken;
@@ -50,7 +52,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsService machineLoadingUnitsService,
             IMachineSensorsService machineSensorsService,
             IMachineShuttersService shuttersService,
-            IMachineServiceService machineServiceService,
             IMachineCarouselService machineCarouselService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
@@ -85,11 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            if (machineServiceService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineServiceService));
-            }
-
             if (machineCarouselService is null)
             {
                 throw new System.ArgumentNullException(nameof(machineCarouselService));
@@ -101,9 +97,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineLoadingUnitsService = machineLoadingUnitsService;
             this.bayManagerService = bayManagerService;
             this.shuttersService = shuttersService;
-            this.machineServiceService = machineServiceService;
             this.machineCarouselService = machineCarouselService;
-
             this.shutterSensors = new ShutterSensors(this.BayNumber);
 
             this.SelectBayPosition1();
@@ -269,6 +263,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveElevatorPositionAsync();
 
             await this.RetrieveCarouselPositionAsync();
+
+            await this.RetrieveProcedureParametersAsync();
 
             await this.RetrieveCellsAsync();
 
@@ -521,6 +517,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.carouselUpCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.procedureParameters = await this.machineElevatorService.GetVerticalManualMovementsParametersAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

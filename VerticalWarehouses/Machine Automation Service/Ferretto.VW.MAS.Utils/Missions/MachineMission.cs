@@ -6,51 +6,19 @@ namespace Ferretto.VW.MAS.Utils.Missions
 {
     public class MachineMission : Mission
     {
-        #region Fields
-
-        private bool disposed;
-
-        #endregion
-
         #region Constructors
 
         public MachineMission(IFiniteStateMachine finiteStateMachine, EventHandler<FiniteStateMachinesEventArgs> endHandler)
+            : base(finiteStateMachine.InstanceId, finiteStateMachine)
         {
-            this.currentStateMachine = finiteStateMachine;
-            this.currentStateMachine.Completed += endHandler;
-            this.id = finiteStateMachine.InstanceId;
+            this.CurrentStateMachine.Completed += endHandler;
         }
 
         #endregion
 
         #region Properties
 
-        public Guid Id => this.id;
-
-        public IFiniteStateMachine MissionMachine => this.currentStateMachine;
-
-        #endregion
-
-        #region Methods
-
-        // TODO check if this is actually necessary
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                // Managed Resources
-            }
-
-            // Unmanaged Resources
-            this.disposed = true;
-
-            base.Dispose(disposing);
-        }
+        public IFiniteStateMachine MissionMachine => this.CurrentStateMachine;
 
         #endregion
     }

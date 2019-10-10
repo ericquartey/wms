@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand CarouselDownCommand =>
-                    this.carouselDownCommand
+            this.carouselDownCommand
             ??
             (this.carouselDownCommand = new DelegateCommand(
                 async () => await this.CarouselDownAsync(),

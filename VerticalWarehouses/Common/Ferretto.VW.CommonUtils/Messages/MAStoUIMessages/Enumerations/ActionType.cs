@@ -18,8 +18,6 @@
 
         SwitchEngine = 7,
 
-        //ShutterControl = 8,
-
         BeltBurnishing = 9,
 
         SensorsChanged = 10,
