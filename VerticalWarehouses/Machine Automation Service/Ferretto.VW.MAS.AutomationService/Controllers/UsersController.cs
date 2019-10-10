@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : BaseWmsProxyBaseController
+    public class UsersController : BaseWmsProxyController
     {
         #region Fields
 

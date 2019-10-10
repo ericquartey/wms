@@ -2,7 +2,7 @@
 {
     public enum IOMachineSensors
     {
-        //INFO Remote IO 1 sensors
+        #region Remote IO 1 sensors
 
         RunningState = 0,
 
@@ -36,7 +36,9 @@
 
         RobotOptionBay1 = 15,
 
-        //INFO Remote IO 2 sensors
+        #endregion
+
+        #region Remote IO 2 sensors
 
         Free1Bay2 = 16,
 
@@ -70,7 +72,9 @@
 
         RobotOptionBay2 = 31,
 
-        //INFO Remote IO 3 sensors
+        #endregion
+
+        #region Remote IO 3 sensors
 
         Free1Bay3 = 32,
 
@@ -104,7 +108,9 @@
 
         RobotOptionBay3 = 47,
 
-        //INFO Main ANG Inverter sensors
+        #endregion
+
+        #region Main ANG Inverter sensors
 
         PowerOnOff = 48,
 
@@ -122,7 +128,9 @@
 
         ZeroPawlSensor = 55,
 
-        //INFO Chain ANG Inverter sensors
+        #endregion
+
+        #region Chain ANG Inverter sensors
 
         ANGChainPowerOnOff = 56,
 
@@ -140,7 +148,9 @@
 
         ANGChainMF2ID = 63,
 
-        //INFO Bay1 AGL Inverter sensors
+        #endregion
+
+        #region Bay1 AGL Inverter sensors
 
         AGLPowerOnOffBay1 = 64,
 
@@ -158,7 +168,9 @@
 
         AGLFree4Bay1 = 71,
 
-        //INFO Bay1 ACU Inverter sensors
+        #endregion
+
+        #region Bay1 ACU Inverter sensors
 
         ACUBay1STO = 72,
 
@@ -176,7 +188,9 @@
 
         ACUBay1EMS1IND = 79,
 
-        //INFO Bay2 AGL Inverter sensors
+        #endregion
+
+        #region Bay2 AGL Inverter sensors
 
         AGLPowerOnOffBay2 = 80,
 
@@ -194,7 +208,9 @@
 
         AGLFree4Bay2 = 87,
 
-        //INFO Bay2 ACU Inverter sensors
+        #endregion
+
+        #region Bay2 ACU Inverter sensors
 
         ACUBay2STO = 88,
 
@@ -212,7 +228,9 @@
 
         ACUBay2EMS1IND = 95,
 
-        //INFO Bay3 AGL Inverter sensors
+        #endregion
+
+        #region Bay3 AGL Inverter sensors
 
         AGLPowerOnOffBay3 = 96,
 
@@ -230,7 +248,9 @@
 
         AGLFree4Bay3 = 103,
 
-        //INFO Bay3 ACU Inverter sensors
+        #endregion
+
+        #region Bay3 ACU Inverter sensors
 
         ACUBay3STO = 104,
 
@@ -248,6 +268,8 @@
 
         ACUBay3EMS1IND = 111,
 
-        NoValue = 112
+        NoValue = 112,
+
+        #endregion
     }
 }

@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Carousel Carousel { get; set; }
 
+        public double ChainOffset { get; set; }
+
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }

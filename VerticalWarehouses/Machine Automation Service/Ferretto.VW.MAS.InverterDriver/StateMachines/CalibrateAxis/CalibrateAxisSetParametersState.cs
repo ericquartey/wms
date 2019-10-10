@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -10,12 +11,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal class CalibrateAxisSetParametersState : InverterStateBase
     {
+        //private const int HORIZONTAL_OFFSET = -500;
+
+        //private const int HORIZONTAL_OFFSET_ONETON_MACHINE = -800;
+
         #region Fields
 
-        // TODO move following parameters into configuration
+        // TODO move following parameters into configuration?
         private const int HIGH_SPEED = 2000;
-
-        private const int HORIZONTAL_OFFSET = -800;
 
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
@@ -56,7 +59,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
             else if (this.calibration == Calibration.FindSensor)
             {
-                calibrationMode = InverterCalibrationMode.FindSensor;
+                if (this.axisToCalibrate == Axis.BayChain)
+                {
+                    calibrationMode = InverterCalibrationMode.FindSensorCarousel;
+                }
+                else
+                {
+                    calibrationMode = InverterCalibrationMode.FindSensor;
+                }
             }
             else
             {
@@ -100,63 +110,86 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
             else
             {
+                var isOneTonMachine = this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine();
+
                 this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.HomingCalibration:
-                    {
-                        var sensor = (this.axisToCalibrate == Axis.Vertical || this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine() ? VERTICAL_SENSOR : HORIZONTAL_SENSOR);
-                        var inverterMessage = new InverterMessage(
-                            this.InverterStatus.SystemIndex,
-                            (short)InverterParameterId.HomingSensor,
-                            sensor);
+                        {
+                            var sensor = (this.axisToCalibrate == Axis.Vertical || isOneTonMachine) ? VERTICAL_SENSOR : HORIZONTAL_SENSOR;
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingSensor,
+                                sensor);
 
-                        this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis ={this.axisToCalibrate}");
 
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-                        break;
-                    }
+                            break;
+                        }
 
                     case InverterParameterId.HomingSensor:
-                    {
-                        var inverterMessage = new InverterMessage(
-                            this.InverterStatus.SystemIndex,
-                            (short)InverterParameterId.HomingFastSpeedParam,
-                            HIGH_SPEED);
+                        {
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingFastSpeedParam,
+                                HIGH_SPEED);
 
-                        this.Logger.LogDebug($"Set Homing Fast Speed={HIGH_SPEED}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Fast Speed={HIGH_SPEED}, Axis ={this.axisToCalibrate}");
 
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-                        break;
-                    }
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            break;
+                        }
 
                     case InverterParameterId.HomingFastSpeedParam:
-                    {
-                        var offset = (this.axisToCalibrate == Axis.Horizontal && this.calibration == Calibration.FindSensor) ? HORIZONTAL_OFFSET : 0;
-                        var inverterMessage = new InverterMessage(
-                            this.InverterStatus.SystemIndex,
-                            (short)InverterParameterId.HomingOffset,
-                            offset);
+                        {
+                            int offset;
+                            if (this.axisToCalibrate == Axis.Horizontal)
+                            {
+                                if (this.calibration == Calibration.FindSensor)
+                                {
+                                    var axis = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
+                                    offset = (int)axis.ChainOffset;
+                                }
+                                else
+                                {
+                                    offset = 0;
+                                }
+                            }
+                            else if (this.axisToCalibrate == Axis.BayChain)
+                            {
+                                offset = (int)this.ParentStateMachine.GetRequiredService<IBaysProvider>().GetChainOffset(this.InverterStatus.SystemIndex);
+                            }
+                            else
+                            {
+                                offset = 0;
+                            }
 
-                        this.Logger.LogDebug($"Set Homing offset={offset}, Axis ={this.axisToCalibrate}");
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingOffset,
+                                offset);
 
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-                        break;
-                    }
+                            this.Logger.LogDebug($"Set Homing offset={offset}, Axis ={this.axisToCalibrate}");
+
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            break;
+                        }
 
                     case InverterParameterId.HomingOffset:
-                    {
-                        var inverterMessage = new InverterMessage(
-                            this.InverterStatus.SystemIndex,
-                            (short)InverterParameterId.HomingCreepSpeedParam,
-                            LOW_SPEED);
+                        {
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingCreepSpeedParam,
+                                LOW_SPEED);
 
-                        this.Logger.LogDebug($"Set Homing Low Speed={LOW_SPEED}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Low Speed={LOW_SPEED}, Axis ={this.axisToCalibrate}");
 
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-                        break;
-                    }
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            break;
+                        }
                     case InverterParameterId.HomingCreepSpeedParam:
                         this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         break;

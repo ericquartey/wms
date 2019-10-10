@@ -214,6 +214,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BayChainHorizontalPosition.
+        /// </summary>
+        public static string BayChainHorizontalPosition {
+            get {
+                return ResourceManager.GetString("BayChainHorizontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay height [mm].
         /// </summary>
         public static string BayHeight {
@@ -579,6 +588,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CradleEngineSelected {
             get {
                 return ResourceManager.GetString("CradleEngineSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrentBayChainPosition.
+        /// </summary>
+        public static string CurrentBayChainPosition {
+            get {
+                return ResourceManager.GetString("CurrentBayChainPosition", resourceCulture);
             }
         }
         

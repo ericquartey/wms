@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return user.AccessLevel;
             }
 
-            throw new Exceptions.EntityNotFoundException(userName);
+            throw new EntityNotFoundException(userName);
         }
 
         public User Create(string userName, string password, int accessLevel)

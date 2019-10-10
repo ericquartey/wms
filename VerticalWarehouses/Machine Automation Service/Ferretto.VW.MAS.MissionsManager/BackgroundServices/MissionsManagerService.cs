@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 {
     internal partial class MissionsManagerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>

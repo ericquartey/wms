@@ -91,11 +91,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
-                    FeedRateCategory.CellHeightCheck);
+                    this.ProcedureParameters.FeedRate);
 
                 this.IsElevatorMoving = true;
             }

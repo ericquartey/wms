@@ -8,6 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         Carousel = 2,
 
-        Elevator = 6
+        Elevator = 6,
     }
 }

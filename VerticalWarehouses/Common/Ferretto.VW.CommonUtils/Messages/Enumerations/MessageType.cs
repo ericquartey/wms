@@ -82,6 +82,6 @@
 
         ChangeRunningState,
 
-        InverterPowerEnable
+        InverterPowerEnable,
     }
 }

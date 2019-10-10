@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Microsoft.Extensions.DependencyInjection;

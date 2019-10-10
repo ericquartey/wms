@@ -251,12 +251,5 @@
                             Content="{x:Static res:InstallationApp.Stop}"
                             IsBusy="{Binding IsStop}" />
 
-
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Command="{Binding ResetCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
     </Grid>
 </ctrls:View>

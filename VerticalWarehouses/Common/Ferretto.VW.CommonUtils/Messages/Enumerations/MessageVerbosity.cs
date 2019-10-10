@@ -12,6 +12,6 @@
 
         Error = 4,
 
-        Fatal = 5
+        Fatal = 5,
     }
 }

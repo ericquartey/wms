@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
@@ -16,16 +16,16 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             ShutterPosition shutterPosition,
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
-            decimal speedRate,
-            decimal higherDistance,
-            decimal lowerDistance,
+            double speedRate,
+            double higherDistance,
+            double lowerDistance,
             MovementMode movementMode,
             MovementType movementType,
             int requestedCycles,
             int delay,
-            decimal highSpeedDurationOpen,
-            decimal highSpeedDurationClose,
-            decimal lowerSpeed,
+            double highSpeedDurationOpen,
+            double highSpeedDurationClose,
+            double lowerSpeed,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPosition = shutterPosition;
@@ -76,15 +76,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int ExecutedCycles { get; set; }
 
-        public decimal HigherDistance { get; }
+        public double HigherDistance { get; }
 
-        public decimal HighSpeedDurationClose { get; }
+        public double HighSpeedDurationClose { get; }
 
-        public decimal HighSpeedDurationOpen { get; }
+        public double HighSpeedDurationOpen { get; }
 
-        public decimal LowerDistance { get; }
+        public double LowerDistance { get; }
 
-        public decimal LowerSpeed { get; }
+        public double LowerSpeed { get; }
 
         public MovementMode MovementMode { get; set; }
 
@@ -98,7 +98,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public ShutterType ShutterType { get; set; }
 
-        public decimal SpeedRate { get; set; }
+        public double SpeedRate { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ISensorsProvider sensorsProvider;
 
-        private readonly IShutterManualMovementsDataLayer shutterManualMovementsDataLayer;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly IShutterTestParametersProvider shutterTestParametersProvider;
 
@@ -32,35 +32,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ShuttersController(
             IEventAggregator eventAggregator,
             IShutterTestParametersProvider shutterTestParametersProvider,
-            IShutterManualMovementsDataLayer shutterManualMovementsDataLayer,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IBaysProvider baysProvider,
             ISensorsProvider sensorsProvider)
             : base(eventAggregator)
         {
-            if (shutterTestParametersProvider is null)
-            {
-                throw new ArgumentNullException(nameof(shutterTestParametersProvider));
-            }
-
-            if (shutterManualMovementsDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(shutterManualMovementsDataLayer));
-            }
-
-            if (baysProvider is null)
-            {
-                throw new ArgumentNullException(nameof(baysProvider));
-            }
-
-            if (sensorsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(sensorsProvider));
-            }
-
-            this.baysProvider = baysProvider;
-            this.sensorsProvider = sensorsProvider;
-            this.shutterTestParametersProvider = shutterTestParametersProvider;
-            this.shutterManualMovementsDataLayer = shutterManualMovementsDataLayer;
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.shutterTestParametersProvider = shutterTestParametersProvider ?? throw new ArgumentNullException(nameof(shutterTestParametersProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -84,7 +64,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("move")]
         public void Move(ShutterMovementDirection direction)
         {
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
+            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+
+            var speedRate = parameters.FeedRate * parameters.MinSpeed;
 
             // speed is negative to go up
             speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
@@ -168,13 +150,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
             }
 
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MaxSpeed;
+            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+
+            var speedRate = parameters.FeedRate * parameters.MaxSpeed;
             if (speedRate == 0)
             {
                 return this.BadRequest(Resources.Shutters.TheSpeedRateIsNotValid);
             }
 
-            var lowSpeed = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
+            var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
             if (lowSpeed == 0)
             {
                 return this.BadRequest(Resources.Shutters.TheMinSpeedIsNotValid);
@@ -191,14 +175,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 direction,
                 bay.Shutter.Type,
                 speedRate,
-                this.shutterManualMovementsDataLayer.HigherDistance,
-                this.shutterManualMovementsDataLayer.LowerDistance,
+                parameters.HigherDistance,
+                parameters.LowerDistance,
                 MovementMode.ShutterPosition,
                 MovementType.Absolute,
                 0,
                 0,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
+                parameters.HighSpeedDurationOpen,
+                parameters.HighSpeedDurationClose,
                 lowSpeed);
 
             this.PublishCommand(
@@ -226,16 +210,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MaxSpeed;
-            if (speedRate == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheSpeedRateIsNotValid);
-            }
-            var lowSpeed = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
-            if (lowSpeed == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheMinSpeedIsNotValid);
-            }
+            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+
+            var speedRate = parameters.FeedRate * parameters.MaxSpeed;
+
+            var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
 
             var bay = this.baysProvider.GetByNumber(this.BayNumber);
 
@@ -246,14 +225,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 ShutterMovementDirection.None,
                 bay.Shutter.Type,
                 speedRate,
-                this.shutterManualMovementsDataLayer.HigherDistance,
-                this.shutterManualMovementsDataLayer.LowerDistance,
+                parameters.HigherDistance,
+                parameters.LowerDistance,
                 MovementMode.ShutterTest,
                 MovementType.Absolute,
                 testCycleCount,
                 delayInMilliseconds,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
+                parameters.HighSpeedDurationOpen,
+                parameters.HighSpeedDurationClose,
                 lowSpeed);
 
             this.PublishCommand(

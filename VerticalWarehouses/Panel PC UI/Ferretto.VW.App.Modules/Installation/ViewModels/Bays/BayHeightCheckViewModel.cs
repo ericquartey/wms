@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double positionHeight;
 
+        private PositioningProcedure procedureParameters;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -281,9 +283,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+        public override async Task OnAppearedAsync()
         {
-            base.OnNavigatedTo(navigationContext);
+            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -294,9 +296,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            await this.InitializeDataAsync();
+
             this.ChangeDataFromBayPosition();
 
-            this.InitializeDataAsync();
+            try
+            {
+                this.procedureParameters = await this.machineBaysService.GetHeightCheckParametersAsync();
+
+                this.InputStepValue = this.procedureParameters.Step;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         protected void RaiseCanExecuteChanged()
@@ -446,7 +459,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsElevatorMovingToHeight = true;
-                await this.machineElevatorService.MoveToVerticalPositionAsync(this.PositionHeight, FeedRateCategory.BayHeight);
+                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.PositionHeight,
+                    this.procedureParameters.FeedRate);
             }
             catch (Exception ex)
             {

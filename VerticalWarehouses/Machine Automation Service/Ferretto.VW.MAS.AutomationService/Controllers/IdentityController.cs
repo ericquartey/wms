@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Ferretto.VW.MAS.DataModels;
 
@@ -17,6 +19,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
+
         private readonly IServicingProvider servicingProvider;
 
         #endregion
@@ -26,7 +30,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IdentityController(
             ILoadingUnitsProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
-            IMachineProvider machineProvider)
+            IMachineProvider machineProvider,
+            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
         {
             if (loadingUnitStatisticsProvider is null)
             {
@@ -43,9 +48,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machineProvider));
             }
 
+            if (machinesDataService is null)
+            {
+                throw new System.ArgumentNullException(nameof(machinesDataService));
+            }
+
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.servicingProvider = servicingProvider;
             this.machineProvider = machineProvider;
+            this.machinesDataService = machinesDataService;
         }
 
         #endregion
@@ -76,6 +87,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             };
 
             return this.Ok(machineInfo);
+        }
+
+        [HttpGet("statistics")]
+        public async Task<ActionResult<MachineStatistics>> GetAsync()
+        {
+            var statics = this.machineProvider.GetStatistics();
+
+            try
+            {
+                var machineId = 1; // TODO HACK remove this hardcoded value
+                var machine = await this.machinesDataService.GetByIdAsync(machineId);
+
+                statics.AreaFillPercentage = machine.AreaFillRate;
+            }
+            catch (System.Exception)
+            {
+                // do nothing:
+                // if the call fails, data from WMS will not be populated
+            }
+
+            return this.Ok(statics);
         }
 
         [HttpGet("machine")]

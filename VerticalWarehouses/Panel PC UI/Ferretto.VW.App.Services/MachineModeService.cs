@@ -19,9 +19,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachinePowerService machinePowerService;
 
-        private readonly IMachineMachineStatusService machineStatusService;
+        private readonly IMachineSensorsService machineSensorsService;
 
         private SubscriptionToken healthSubscriptionToken;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
             IMachineSensorsService machineSensorsService,
-            IMachineMachineStatusService machineStatusService)
+            IMachinePowerService machinePowerService)
         {
             if (eventAggregator is null)
             {
@@ -56,15 +56,15 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(machineSensorsService));
             }
 
-            if (machineStatusService is null)
+            if (machinePowerService is null)
             {
-                throw new ArgumentNullException(nameof(machineStatusService));
+                throw new ArgumentNullException(nameof(machinePowerService));
             }
 
             this.eventAggregator = eventAggregator;
             this.healthProbeService = healthProbeService;
             this.machineSensorsService = machineSensorsService;
-            this.machineStatusService = machineStatusService;
+            this.machinePowerService = machinePowerService;
 
             this.sensorsSubscriptionToken = this.eventAggregator
                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                await this.machineStatusService.PowerOffAsync();
+                await this.machinePowerService.PowerOffAsync();
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                await this.machineStatusService.PowerOnAsync();
+                await this.machinePowerService.PowerOnAsync();
             }
             catch (Exception ex)
             {
@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var isPoweredOn = await this.machineStatusService.IsPoweredOnAsync();
+                    var isPoweredOn = await this.machinePowerService.IsPoweredOnAsync();
 
                     this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
                 }

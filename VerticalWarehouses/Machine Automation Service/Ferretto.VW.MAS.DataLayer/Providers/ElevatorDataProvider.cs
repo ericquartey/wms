@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,16 +15,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         private readonly ISetupStatusProvider setupStatusProvider;
 
         #endregion
 
         #region Constructors
 
-        public ElevatorDataProvider(DataLayerContext dataContext, ISetupStatusProvider setupStatusProvider)
+        public ElevatorDataProvider(
+            DataLayerContext dataContext,
+            ISetupStatusProvider setupStatusProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -54,13 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.cachedAxes[orientation];
         }
 
-        public int GetDepositAndPickUpCycleQuantity()
-        {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            return horizontalAxis.TotalCycles;
-        }
-
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
@@ -84,20 +82,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
-        public void IncreaseDepositAndPickUpCycleQuantity()
+        public void IncreaseCycleQuantity(Orientation orientation)
         {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+            var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+            if (axis is null)
+            {
+                throw new EntityNotFoundException(orientation.ToString());
+            }
 
-            horizontalAxis.TotalCycles++;
-
-            this.dataContext.SaveChanges();
-        }
-
-        public void ResetDepositAndPickUpCycleQuantity()
-        {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            horizontalAxis.TotalCycles = 0;
+            axis.TotalCycles++;
 
             this.dataContext.SaveChanges();
         }
@@ -119,10 +112,12 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cachedAxes[Orientation.Vertical] = verticalAxis;
 
             verticalAxis.Offset = newOffset;
-
             this.dataContext.ElevatorAxes.Update(verticalAxis);
-
             this.dataContext.SaveChanges();
+
+            var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
+            this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            this.setupStatusProvider.CompleteVerticalOffset();
         }
 
         public void UpdateVerticalResolution(decimal newResolution)
@@ -131,8 +126,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cachedAxes[Orientation.Vertical] = verticalAxis;
 
             verticalAxis.Resolution = newResolution;
+            this.dataContext.ElevatorAxes.Update(verticalAxis);
             this.dataContext.SaveChanges();
 
+            var procedureParameters = this.setupProceduresDataProvider.GetAll().VerticalResolutionCalibration;
+            this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
             this.setupStatusProvider.CompleteVerticalResolution();
         }
 

@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
+        private double? currentBayChainPosition;
+
         private double? currentHorizontalPosition;
 
         private double? currentVerticalPosition;
@@ -57,6 +59,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public int BayNumber => (int)this.bayManagerService.Bay.Number;
+
+        public double? CurrentBayChainPosition
+        {
+            get => this.currentBayChainPosition;
+            protected set => this.SetProperty(ref this.currentBayChainPosition, value);
+        }
 
         public double? CurrentHorizontalPosition
         {
@@ -133,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
@@ -153,7 +161,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveCurrentPositionAsync();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.EnableAll();
         }
@@ -195,7 +203,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Horizontal:
-                    this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
+                    if (message.Data.MovementMode < CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                    {
+                        this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
+                    }
+                    else
+                    {
+                        this.CurrentBayChainPosition = message?.Data?.CurrentPosition ?? this.CurrentBayChainPosition;
+                    }
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Vertical:

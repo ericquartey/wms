@@ -69,13 +69,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.Error = null;
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             await this.CheckErrorsPresenceAsync();
 
             this.IsBackNavigationAllowed = true;
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
         }
 
         private bool CanExecuteMarkAsResolvedCommand()

@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -81,18 +81,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Start()
         {
             this.Logger?.LogTrace("1:Method Start");
-
-            lock (this.machineData.MachineSensorStatus)
-            {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
-
-                    this.machineData.MessageData.CurrentPosition = (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                        ? elevatorProvider.VerticalPosition
-                        : elevatorProvider.HorizontalPosition;
-                }
-            }
 
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)

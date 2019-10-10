@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<CellPanel> panels;
 
+        private SetupProcedure procedureParameters;
+
         private double? stepValue;
 
         private SubscriptionToken subscriptionToken;
@@ -245,9 +247,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.EventAggregator
              .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -266,6 +268,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Panels = panels
                     .OrderBy(p => p.Side)
                     .ThenBy(p => p.Cells.Min(c => c.Position));
+
+                this.procedureParameters = await this.machineCellPanelsService.GetProcedureParametersAsync();
             }
             catch (Exception ex)
             {
@@ -363,7 +367,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                this.machineElevatorService.MoveToVerticalPositionAsync(this.CurrentCell.Position, FeedRateCategory.PanelHeightCheck);
+                this.machineElevatorService.MoveToVerticalPositionAsync(
+                    this.CurrentCell.Position,
+                    this.procedureParameters.FeedRate);
 
                 this.HasReachedCellPosition = true;
             }

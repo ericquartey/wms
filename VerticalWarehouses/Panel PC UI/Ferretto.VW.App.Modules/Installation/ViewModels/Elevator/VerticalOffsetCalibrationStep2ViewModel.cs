@@ -166,11 +166,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
 
@@ -179,17 +179,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cell = cell;
             }
 
-            try
-            {
-                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+            this.InputStepValue = this.ProcedureParameters.Step;
 
-                this.InputStepValue = parameters.StepValue;
-                this.CurrentVerticalOffset = parameters.VerticalOffset;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            await this.RetrieveVerticalOffset();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -341,6 +333,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveVerticalOffset()
+        {
+            try
+            {
+                this.CurrentVerticalOffset = await this.MachineElevatorService.GetVerticalOffsetAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

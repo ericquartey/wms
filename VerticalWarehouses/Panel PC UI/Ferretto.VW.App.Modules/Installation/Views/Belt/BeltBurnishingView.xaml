@@ -17,7 +17,6 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -98,12 +97,5 @@
                             VerticalAlignment="Top"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
-
-
-        <controls:PpcButton Grid.Row="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding ResetCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
     </Grid>
 </ctrls:View>

@@ -1,5 +1,9 @@
 ﻿using System.Threading.Tasks;
+using System;
 using System.Windows.Input;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -11,6 +15,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselService machineCarouselService;
 
+        private double? bayChainHorizontalPosition;
+
         private DelegateCommand carouselDownCommand;
 
         private DelegateCommand carouselUpCommand;
@@ -20,6 +26,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public double? BayChainHorizontalPosition
+        {
+            get => this.bayChainHorizontalPosition;
+            protected set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
+        }
 
         public ICommand CarouselDownCommand =>
             this.carouselDownCommand
@@ -104,6 +116,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveCarouselPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.BayChainHorizontalPosition = await this.machineCarouselService.GetPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuningBay()
+        {
+            try
+            {
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.IsWaitingForResponse = true;
+                    await this.machineCarouselService.FindZeroAsync();
+                    this.IsTuningBay = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningBay = false;
+
                 this.ShowNotification(ex);
             }
             finally
