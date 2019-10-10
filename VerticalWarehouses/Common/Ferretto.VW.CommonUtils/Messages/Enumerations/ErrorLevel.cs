@@ -14,6 +14,6 @@
 
         Critical,
 
-        Fatal
+        Fatal,
     }
 }

@@ -12,8 +12,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateInverterPowerSwitch : StateBase, IChangeRunningStateInverterPowerSwitch

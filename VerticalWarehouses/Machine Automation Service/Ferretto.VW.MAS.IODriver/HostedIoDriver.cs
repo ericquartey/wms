@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IConfiguration configuration;
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
         private readonly IEventAggregator eventAggregator;
@@ -60,24 +58,14 @@ namespace Ferretto.VW.MAS.IODriver
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IIoDevicesProvider iIoDeviceService,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
         {
-            this.logger = logger
-                ?? throw new ArgumentNullException(nameof(logger));
-
-            this.eventAggregator = eventAggregator
-                ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.iIoDeviceService = iIoDeviceService;
-            this.digitalDevicesDataProvider = digitalDevicesDataProvider
-                ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
-
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement
-                ?? throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
-
-            this.configuration = configuration
-                ?? throw new ArgumentNullException(nameof(configuration));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.iIoDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());

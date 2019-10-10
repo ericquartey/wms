@@ -4,8 +4,6 @@
     {
         TableTravelP7 = 33,
 
-        //TableTravelDirection = 33,
-
         TableTravelSet1 = 50,
 
         TableTravelSet2 = 51,

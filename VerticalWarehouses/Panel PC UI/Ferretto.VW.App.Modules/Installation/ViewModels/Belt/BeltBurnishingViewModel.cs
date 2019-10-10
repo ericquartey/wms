@@ -45,8 +45,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receivedActionUpdateToken;
 
-        private DelegateCommand resetCommand;
-
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -178,13 +176,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
-
-        public ICommand ResetCommand =>
-                        this.resetCommand
-                        ??
-                        (this.resetCommand = new DelegateCommand(
-                            async () => await this.ResetAsync(),
-                            this.CanExecuteResetCommand));
 
         public ICommand StartCommand =>
             this.startCommand
@@ -349,13 +340,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
         }
 
-        private bool CanExecuteResetCommand()
-        {
-            return !this.IsExecutingProcedure
-                   &&
-                   !this.IsWaitingForResponse;
-        }
-
         private bool CanExecuteStartCommand()
         {
             return !this.IsExecutingProcedure
@@ -382,30 +366,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
-            this.resetCommand.RaiseCanExecuteChanged();
-        }
-
-        private async Task ResetAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.beltBurnishingService.ResetAsync();
-
-                await this.GetParameterValuesAsync();
-
-                this.CompletedCycles = 0;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-                this.IsExecutingProcedure = false;
-            }
         }
 
         private async Task StartAsync()
@@ -477,8 +437,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case MessageStatus.OperationEnd:
                     this.IsExecutingProcedure = false;
-
-                    await this.beltBurnishingService.MarkAsCompletedAsync();
 
                     break;
 

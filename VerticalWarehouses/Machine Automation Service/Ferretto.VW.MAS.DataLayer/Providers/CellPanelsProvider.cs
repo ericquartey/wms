@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
             if (cell is null)
             {
-                throw new Exceptions.EntityNotFoundException(cellId);
+                throw new EntityNotFoundException(cellId);
             }
 
             var cellPanel = this.dataContext.CellPanels

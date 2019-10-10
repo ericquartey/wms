@@ -4,17 +4,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class DataSample
-    {
-        #region Properties
-
-        public System.DateTime TimeStamp { get; set; }
-
-        public double Value { get; set; }
-
-        #endregion
-    }
-
     public class PositioningMessageData : IPositioningMessageData
     {
         #region Constructors

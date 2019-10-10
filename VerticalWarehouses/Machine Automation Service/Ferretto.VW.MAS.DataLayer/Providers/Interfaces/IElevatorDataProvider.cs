@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetAxis(Orientation orientation);
 
-        int GetDepositAndPickUpCycleQuantity();
-
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
@@ -17,10 +15,6 @@ namespace Ferretto.VW.MAS.DataLayer
         ElevatorStructuralProperties GetStructuralProperties();
 
         ElevatorAxis GetVerticalAxis();
-
-        void IncreaseDepositAndPickUpCycleQuantity();
-
-        void ResetDepositAndPickUpCycleQuantity();
 
         void SetLoadingUnitOnBoard(int? loadingUnitId);
 

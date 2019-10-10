@@ -8,7 +8,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Axis Axis { get; set; }
 
-        decimal? Displacement { get; set; }
+        double? Displacement { get; set; }
 
         MovementType MovementType { get; set; }
 

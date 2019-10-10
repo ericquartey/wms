@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToPositionCommand;
 
-        private VerticalResolutionCalibrationData procedureParameters;
+        private VerticalResolutionWizardData wizardData;
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationStep2ViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
-            IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
+            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
             : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
         {
         }
@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnNavigatedAsync();
 
-            this.RetrieveInputData();
+            this.RetrieveWizardData();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
         }
@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorService.MoveToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
-                    FeedRateCategory.VerticalResolutionCalibration);
+                    this.ProcedureParameters.FeedRate);
             }
             catch (Exception ex)
             {
@@ -199,25 +199,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.procedureParameters.FinalPosition = this.InputFinalPosition.Value;
-            this.procedureParameters.MeasuredInitialPosition = this.InputMeasuredInitialPosition.Value;
+            this.wizardData.FinalPosition = this.InputFinalPosition.Value;
+            this.wizardData.MeasuredInitialPosition = this.InputMeasuredInitialPosition.Value;
 
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
-                this.procedureParameters,
+                this.wizardData,
                 trackCurrentView: false);
         }
 
-        private void RetrieveInputData()
+        private void RetrieveWizardData()
         {
-            if (this.Data is VerticalResolutionCalibrationData data)
+            if (this.Data is VerticalResolutionWizardData data)
             {
-                this.procedureParameters = data;
+                this.wizardData = data;
 
-                this.InputFinalPosition = this.procedureParameters.FinalPosition;
-                this.InitialPosition = this.procedureParameters.InitialPosition;
-                this.CurrentResolution = this.procedureParameters.CurrentResolution;
+                this.InputFinalPosition = this.wizardData.FinalPosition;
+                this.InitialPosition = this.wizardData.InitialPosition;
+                this.CurrentResolution = this.wizardData.CurrentResolution;
             }
         }
 

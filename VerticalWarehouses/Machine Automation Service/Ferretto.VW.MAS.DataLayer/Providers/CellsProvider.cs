@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (cell is null)
             {
-                throw new Exceptions.EntityNotFoundException(cellId);
+                throw new EntityNotFoundException(cellId);
             }
 
             var cellsOnSameSide = this.dataContext.Cells

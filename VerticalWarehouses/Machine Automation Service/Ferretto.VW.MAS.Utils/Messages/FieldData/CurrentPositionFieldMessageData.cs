@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
     {
         #region Constructors
 
-        public CurrentPositionFieldMessageData(decimal currentPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public CurrentPositionFieldMessageData(double currentPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
             this.CurrentPosition = currentPosition;
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
-        public decimal CurrentPosition { get; set; }
+        public double CurrentPosition { get; set; }
 
         #endregion
 
