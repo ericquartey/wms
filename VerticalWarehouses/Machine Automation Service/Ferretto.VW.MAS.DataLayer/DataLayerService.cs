@@ -79,7 +79,6 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
-
         {
             /* serviceProvider
                  .GetRequiredService<ILogEntriesProvider>()

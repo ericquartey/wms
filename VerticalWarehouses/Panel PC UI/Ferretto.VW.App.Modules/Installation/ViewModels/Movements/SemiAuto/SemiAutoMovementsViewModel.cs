@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
@@ -270,16 +270,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveLoadingUnitsAsync();
 
-            await base.OnNavigatedAsync();
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            this.RetrieveElevatorPositionAsync();
-
-            this.RetrieveCarouselPositionAsync();
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveLoadingUnitsAsync()

@@ -83,9 +83,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
                 async (e) => await this.OnHealthStatusChanged(e),

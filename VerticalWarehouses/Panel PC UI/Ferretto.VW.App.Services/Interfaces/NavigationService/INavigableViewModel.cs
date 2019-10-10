@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Services.Interfaces
 
         void Disappear();
 
-        Task OnNavigatedAsync();
+        Task OnAppearedAsync();
 
         void OnNavigatedFrom(NavigationContext navigationContext);
 

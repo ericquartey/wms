@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Controls
 
             if (this.DataContext is INavigableViewModel viewModel)
             {
-                await viewModel.OnNavigatedAsync();
+                await viewModel.OnAppearedAsync();
             }
 
             SetFocus(this, this.FocusedStart);
