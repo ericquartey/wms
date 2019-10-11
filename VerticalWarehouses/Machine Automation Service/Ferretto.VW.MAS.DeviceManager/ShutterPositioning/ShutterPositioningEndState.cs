@@ -59,11 +59,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             switch (message.Type)
             {
-                case FieldMessageType.InverterStop:
-                    //case FieldMessageType.InverterPowerOff:
+                case FieldMessageType.ShutterPositioning:
                     switch (message.Status)
                     {
-                        case MessageStatus.OperationEnd:
+                        case MessageStatus.OperationStop:
                             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
                             var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
                             var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
@@ -72,13 +71,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
-                                "ShutterPositioning Complete",
+                                "ShutterPositioning Stopped",
                                 MessageActor.FiniteStateMachines,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.ShutterPositioning,
                                 this.machineData.RequestingBay,
                                 this.machineData.TargetBay,
-                                MessageStatus.OperationEnd);
+                                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
@@ -131,17 +130,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     (byte)this.machineData.InverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    "ShutterPositioning Stopped",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.ShutterPositioning,
-                    this.machineData.RequestingBay,
-                    this.machineData.TargetBay,
-                    StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
             else
             {
