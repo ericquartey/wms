@@ -9,7 +9,10 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
+using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -461,7 +464,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                             this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
 
                             this.currentStateMachines.TryGetValue(messageBayBayIndex, out var tempStateMachine);
-                            if (tempStateMachine == null)
+                            if (tempStateMachine == null ||
+                                tempStateMachine is InverterPowerEnableStateMachine ||
+                                tempStateMachine is ResetFaultStateMachine ||
+                                tempStateMachine is PowerEnableStateMachine)
                             {
                                 notificationData.CurrentPosition = dataInverters.CurrentPosition.Value;
                                 var notificationMessage = new NotificationMessage(
@@ -608,6 +614,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     // TEMP Retrieve the current configuration of IO devices
                     this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
+
+                    // why first call to GetAll is so slow?
+                    var setup = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                    setup.GetAll();
 
                     var fieldNotification = new FieldNotificationMessage(
                         null,

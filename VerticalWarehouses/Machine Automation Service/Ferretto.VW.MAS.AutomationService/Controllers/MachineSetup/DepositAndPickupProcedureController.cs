@@ -40,9 +40,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [Obsolete("This method shall be removed once the test is fully implemented at MissionManager level.")]
         public ActionResult<int> IncreasePerformedCycles()
         {
-            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+            var setupProcedures = this.setupProceduresDataProvider.GetAll().DepositAndPickUpTest;
 
-            var procedure = this.setupProceduresDataProvider.IncreasePerformedCycles(setupProcedures.DepositAndPickUpTest);
+            var procedure = this.setupProceduresDataProvider.IncreasePerformedCycles(setupProcedures);
 
             return this.Ok(procedure.PerformedCycles);
         }

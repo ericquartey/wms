@@ -161,17 +161,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var setupStatus = this.setupStatusProvider.Get();
 
-            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+            var setupProcedures = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
 
             var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? setupProcedures.HorizontalManualMovements.RecoveryTargetPosition
-                : setupProcedures.HorizontalManualMovements.InitialTargetPosition;
+                ? setupProcedures.RecoveryTargetPosition
+                : setupProcedures.InitialTargetPosition;
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            var speed = new[] { movementParameters.Speed * setupProcedures.HorizontalManualMovements.FeedRate };
+            var speed = new[] { movementParameters.Speed * setupProcedures.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };

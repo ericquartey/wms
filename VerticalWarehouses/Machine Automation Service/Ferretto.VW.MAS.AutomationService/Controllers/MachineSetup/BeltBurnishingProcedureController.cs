@@ -1,10 +1,7 @@
 using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +22,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
-
         #endregion
 
         #region Constructors
@@ -35,14 +30,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            ISetupStatusProvider setupStatusProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
             : base(eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
         }
 
         #endregion
@@ -54,13 +47,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
 
-            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+            var setupProcedures = this.setupProceduresDataProvider.GetAll().BeltBurnishingTest;
 
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = verticalAxis.UpperBound,
                 LowerBound = verticalAxis.LowerBound,
-                RequiredCycles = setupProcedures.BeltBurnishingTest.RequiredCycles,
+                RequiredCycles = setupProcedures.RequiredCycles,
             };
 
             return this.Ok(parameters);
