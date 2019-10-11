@@ -80,6 +80,16 @@ namespace Ferretto.VW.MAS.DataLayer
             return cellStatistics;
         }
 
+        public void LoadLoadingUnit(int? loadingUnitId, int? cellId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnloadLoadingUnit(int? cellId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Cell UpdateHeight(int cellId, double height)
         {
             var cell = this.dataContext.Cells

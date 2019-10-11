@@ -41,7 +41,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination);
 
+        void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination);
+
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
+
+        void UnloadLoadingUnit(LoadingUnitDestination destination);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 

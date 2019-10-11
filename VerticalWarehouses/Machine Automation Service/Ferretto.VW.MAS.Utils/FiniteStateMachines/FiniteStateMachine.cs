@@ -21,11 +21,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private readonly CommandEvent commandEvent;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue =
+            new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly NotificationEvent notificationEvent;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue =
+            new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly IServiceScope serviceScope;
 
@@ -53,9 +55,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         #region Constructors
 
         protected FiniteStateMachine(
-            IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
+        IEventAggregator eventAggregator,
+        ILogger<StateBase> logger,
+        IServiceScopeFactory serviceScopeFactory)
         {
             if (eventAggregator is null)
             {
@@ -104,11 +106,12 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     try
                     {
-                        this.activeState?.Enter(this.StartData);
+                        this.activeState?.Enter(this.StartData, this.MachineData);
                     }
                     catch (StateMachineException ex)
                     {
-                        var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
                         this.RaiseCompleted(eventArgs);
                     }
                 }
@@ -116,13 +119,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 // These code lines MUST be the last in the Setter
                 if (this.activeState is IEndState endState && endState.IsCompleted)
                 {
-                    var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
                     this.RaiseCompleted(eventArgs);
                 }
             }
         }
 
         public Guid InstanceId { get; }
+
+        public IFiniteStateMachineData MachineData { get; private set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -158,7 +164,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
         }
 
-        public void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
+        public virtual void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -166,6 +172,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
 
             this.isStarted = true;
+
+            this.MachineData = machineData;
 
             this.StartData = commandMessage;
 
@@ -219,7 +227,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
         {
-            this.Logger.LogDebug($"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
+            this.Logger.LogDebug(
+                $"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
 
             return this.ActiveState;
         }
@@ -265,8 +274,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            }
-            while (!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -295,8 +303,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            }
-            while (!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()

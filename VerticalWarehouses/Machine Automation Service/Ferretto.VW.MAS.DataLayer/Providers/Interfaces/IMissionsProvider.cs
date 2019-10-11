@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        bool StartMachineMission(Guid missionId, CommandMessage command);
+        bool StartMachineMission(Guid missionId, CommandMessage command, IFiniteStateMachineData machineData);
 
         bool StopMachineMission(Guid missionId, StopRequestReason reason);
 

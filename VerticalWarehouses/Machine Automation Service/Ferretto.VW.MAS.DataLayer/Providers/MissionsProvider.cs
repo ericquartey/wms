@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly List<MachineMission> machineMissions;
+        private readonly List<IMission> machineMissions;
 
         private readonly IServiceScope serviceScope;
 
@@ -35,14 +35,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             this.eventAggregator = eventAggregator;
             this.serviceScope = serviceScopeFactory.CreateScope();
-            this.machineMissions = new List<MachineMission>();
+            this.machineMissions = new List<IMission>();
         }
 
         #endregion
 
         #region Methods
 
-        public bool StartMachineMission(Guid missionId, CommandMessage command)
+        public bool StartMachineMission(Guid missionId, CommandMessage command, IFiniteStateMachineData machineData)
         {
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
             if (mission is null)
@@ -50,8 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return false;
             }
 
-            mission.StartMachine(command);
-
+            mission.StartMachine(command, machineData);
             return true;
         }
 
@@ -74,16 +73,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             if (this.CanCreateStateMachine(missionType, command))
             {
-                MachineMission newMission = null;
-
+                IMission newMission = null;
                 switch (missionType)
                 {
                     case MissionType.ChangeRunningType:
-                        newMission = new MachineMission(this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>(), this.OnActiveStateMachineCompleted);
+                        var changeRunningStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>();
+                        newMission = new MachineMission<IChangeRunningStateStateMachine>(changeRunningStateMachine, this.OnActiveStateMachineCompleted);
                         break;
 
                     case MissionType.MoveLoadingUnit:
-                        newMission = new MachineMission(this.serviceScope.ServiceProvider.GetRequiredService<IMoveLoadingUnitStateMachine>(), this.OnActiveStateMachineCompleted);
+                        var moveLoadingUnitMachine = this.serviceScope.ServiceProvider.GetRequiredService<IMoveLoadingUnitStateMachine>();
+                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(moveLoadingUnitMachine, this.OnActiveStateMachineCompleted);
                         break;
                 }
 
@@ -106,21 +106,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         /// <returns>True if the mission type can be created, false otherwise</returns>
         private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
         {
-            bool returnValue = true;
-            switch (requestedMission)
+            var returnValue = this.machineMissions.Any(mm => mm.Type == requestedMission && mm.AllowMultipleInstances(command));
+
+            if (returnValue)
             {
-                case MissionType.ChangeRunningType:
-                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IChangeRunningStateStateMachine _ && !mm.MissionMachine.AllowMultipleInstances(command));
-                    break;
-
-                case MissionType.MoveLoadingUnit:
-                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IMoveLoadingUnitStateMachine _ && !mm.MissionMachine.AllowMultipleInstances(command));
-                    if (returnValue)
-                    {
-                        returnValue = this.EvaluateMissionPolicies(requestedMission, command);
-                    }
-
-                    break;
+                returnValue = this.EvaluateMissionPolicies(requestedMission, command);
             }
 
             return returnValue;
@@ -140,7 +130,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 this.machineMissions.Remove(mission);
 
-                mission.MissionMachine.Completed -= this.OnActiveStateMachineCompleted;
+                mission.RemoveHandler(this.OnActiveStateMachineCompleted);
 
                 mission.Dispose();
 

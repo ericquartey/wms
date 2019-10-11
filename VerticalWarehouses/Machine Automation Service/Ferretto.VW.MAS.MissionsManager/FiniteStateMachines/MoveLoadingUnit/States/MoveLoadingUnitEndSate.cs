@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -14,10 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States
+namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class ChangeRunningStateEndState : StateBase, IChangeRunningStateEndState, IEndState
+    internal class MoveLoadingUnitEndSate : StateBase, IMoveLoadingUnitEndSate, IEndState
     {
         #region Fields
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly IMachineControlProvider machineControlProvider;
+        private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
@@ -33,9 +33,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #region Constructors
 
-        public ChangeRunningStateEndState(
+        public MoveLoadingUnitEndSate(
+            ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IBaysProvider baysProvider,
-            IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -43,11 +43,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-
-            this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
-
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
-
+            this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
 
@@ -67,7 +64,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #region Methods
 
-        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
+        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData stateData)
         {
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,
@@ -88,7 +85,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
                 this.errorsProvider.RecordNew(MachineErrors.ConditionsNotMetForRunning, commandMessage.RequestingBay);
 
                 var newMessageData = new StopMessageData(this.StopRequestReason);
-                this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
         }
 
@@ -96,7 +93,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         {
             IState returnValue = this;
 
-            var notificationStatus = this.machineControlProvider.StopOperationStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.StopOperationStatus(notification);
 
             if (notificationStatus != MessageStatus.NoStatus)
             {

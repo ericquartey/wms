@@ -36,8 +36,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 (notification.Type == MessageType.Positioning);
         }
 
-        public void PositionElevatorToSource(IMoveLoadingUnitMessageData messageData, MessageActor sender, BayNumber requestingBay)
+        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
         {
+            throw new NotImplementedException();
+        }
+
+        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
+        {
+            loadingUnitId = null;
             double targetPosition = 0;
             switch (messageData.Source)
             {
@@ -53,6 +59,38 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
                     break;
             }
+
+            return targetPosition;
+        }
+
+        public void MoveLoadingUnitToDestination(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MessageStatus MoveLoadingUnitToDestinationStatus(NotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveLoadingUnitToElevator(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PositionElevatorToPosition(double targetHeight, MessageActor sender, BayNumber requestingBay)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)

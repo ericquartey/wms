@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #region Methods
 
-        protected override void OnEnter(CommandMessage commandMessage)
+        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {

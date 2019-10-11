@@ -12,11 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitStartSate : StateBase, IMoveLoadingUnitStartSate
+    internal class MoveLoadingUnitMoveToTargetSate : StateBase, IMoveLoadingUnitMoveToTargetSate
     {
         #region Fields
 
@@ -26,7 +24,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         #region Constructors
 
-        public MoveLoadingUnitStartSate(
+        public MoveLoadingUnitMoveToTargetSate(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -44,15 +42,15 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
             {
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData, out var loadingUnitId);
+                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData, out var loadingUnitId);
 
                 moveData.LoadingUnitId = loadingUnitId;
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
-                var description = $"Move Loading Unit Start Sate received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit MOve To Target Sate received wrong initialization data ({commandMessage.Data.GetType()})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }

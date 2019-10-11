@@ -17,15 +17,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         Guid InstanceId { get; }
 
-        CommandMessage StartData { get; }
-
         #endregion
 
         #region Methods
 
         bool AllowMultipleInstances(CommandMessage command);
 
-        void Start(CommandMessage commandMessage, CancellationToken cancellationToken);
+        void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken);
 
         void Stop(StopRequestReason reason);
 

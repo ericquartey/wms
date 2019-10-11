@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
         }
 
-        public void Enter(CommandMessage message)
+        public void Enter(CommandMessage message, IFiniteStateMachineData machineData)
         {
             if (this.hasEntered)
             {
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.Logger.LogDebug($"Entering state {this.GetType()}.");
 
-            this.OnEnter(message);
+            this.OnEnter(message, machineData);
         }
 
         public void Exit()
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             // derived classes can customize the behaviour of this method
         }
 
-        protected abstract void OnEnter(CommandMessage commandMessage);
+        protected abstract void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData);
 
         protected virtual void OnExit()
         {

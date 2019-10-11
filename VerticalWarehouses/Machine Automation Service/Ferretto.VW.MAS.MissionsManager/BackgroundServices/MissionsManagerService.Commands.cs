@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -45,20 +46,28 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 return;
             }
 
-            switch (((ChangeRunningStateMessageData)command.Data).CommandAction)
+            if (command.Data is ChangeRunningStateMessageData messageData)
             {
-                case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
-                    {
-                        this.missionsProvider.StartMachineMission(missionId, command);
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
-                        this.NotifyCommandError(command);
-                    }
+                switch (messageData.CommandAction)
+                {
+                    case CommandAction.Start:
+                        if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
+                        {
+                            this.missionsProvider.StartMachineMission(missionId, command, null);
+                        }
+                        else
+                        {
+                            this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                            this.NotifyCommandError(command);
+                        }
 
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType()} fol Change Running State Command");
+                this.NotifyCommandError(command);
             }
         }
 
@@ -69,26 +78,34 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 return;
             }
 
-            switch (((MoveLoadingUnitMessageData)command.Data).CommandAction)
+            if (command.Data is MoveLoadingUnitMessageData messageData)
             {
-                case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
-                    {
-                        this.missionsProvider.StartMachineMission(missionId, command);
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug("Failed to create Move Loading UNit State machine mission");
-                        this.NotifyCommandError(command);
-                    }
+                switch (messageData.CommandAction)
+                {
+                    case CommandAction.Start:
+                        if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
+                        {
+                            this.missionsProvider.StartMachineMission(missionId, command, new MoveLoadingUnitMachineData { LoadingUnitId = messageData.LoadingUnitId });
+                        }
+                        else
+                        {
+                            this.Logger.LogDebug("Failed to create Move Loading Unit State machine mission");
+                            this.NotifyCommandError(command);
+                        }
 
-                    break;
+                        break;
 
-                case CommandAction.Abort:
-                    break;
+                    case CommandAction.Abort:
+                        break;
 
-                case CommandAction.Stop:
-                    break;
+                    case CommandAction.Stop:
+                        break;
+                }
+            }
+            else
+            {
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType()} fol Move Loading Unit Command");
+                this.NotifyCommandError(command);
             }
         }
 

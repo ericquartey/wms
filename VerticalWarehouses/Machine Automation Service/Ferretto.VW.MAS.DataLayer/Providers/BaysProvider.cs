@@ -398,6 +398,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return 0;
         }
 
+        public void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination)
+        {
+            throw new NotImplementedException();
+        }
+
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
         {
             var bay = this.GetByNumber(targetBay);
@@ -411,6 +416,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.Update(bay);
 
             return bay;
+        }
+
+        public void UnloadLoadingUnit(LoadingUnitDestination destination)
+        {
+            throw new NotImplementedException();
         }
 
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)

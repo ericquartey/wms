@@ -10,13 +10,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         LoadingUnitDestination Destination { get; }
 
-        int DestinationCellId { get; }
+        int? DestinationCellId { get; }
 
-        int LoadingUnitId { get; }
+        int? LoadingUnitId { get; }
 
         LoadingUnitDestination Source { get; }
 
-        int SourceCellId { get; }
+        int? SourceCellId { get; }
 
         StopRequestReason StopReason { get; }
 

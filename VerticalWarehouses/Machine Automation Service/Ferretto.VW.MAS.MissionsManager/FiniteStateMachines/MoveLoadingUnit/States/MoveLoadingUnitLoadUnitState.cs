@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
@@ -12,28 +13,44 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitStartSate : StateBase, IMoveLoadingUnitStartSate
+    internal class MoveLoadingUnitLoadUnitState : StateBase, IMoveLoadingUnitLoadUnitState
     {
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
+        private readonly ICellsProvider cellsProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
+
+        private int? loadingUnitId;
+
+        private LoadingUnitDestination source;
+
+        private int? sourceCellId;
 
         #endregion
 
         #region Constructors
 
-        public MoveLoadingUnitStartSate(
+        public MoveLoadingUnitLoadUnitState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IElevatorDataProvider elevatorDataProvider,
+            IBaysProvider baysProvider,
+            ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
         #endregion
@@ -44,15 +61,15 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
             {
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData, out var loadingUnitId);
+                this.loadingUnitId = moveData.LoadingUnitId;
+                this.source = messageData.Source;
+                this.sourceCellId = messageData.SourceCellId;
 
-                moveData.LoadingUnitId = loadingUnitId;
-
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.MoveLoadingUnitToElevator(moveData.LoadingUnitId, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
-                var description = $"Move Loading Unit Start Sate received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit Load Unit Sate received wrong initialization data ({commandMessage.Data.GetType()})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
@@ -62,11 +79,23 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitToElevatorStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
+
+                    // TODO wrap these providers call in a single transaction
+                    this.elevatorDataProvider.SetLoadingUnitOnBoard(this.loadingUnitId);
+                    if (this.source == LoadingUnitDestination.Cell)
+                    {
+                        this.cellsProvider.UnloadLoadingUnit(this.sourceCellId);
+                    }
+                    else
+                    {
+                        this.baysProvider.UnloadLoadingUnit(this.source);
+                    }
+
                     returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
                     break;
 

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         IState CommandReceived(CommandMessage commandMessage);
 
-        void Enter(CommandMessage commandMessage);
+        void Enter(CommandMessage commandMessage, IFiniteStateMachineData stateData);
 
         void Exit();
 

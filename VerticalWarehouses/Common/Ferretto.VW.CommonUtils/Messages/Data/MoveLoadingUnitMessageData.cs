@@ -10,9 +10,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MoveLoadingUnitMessageData(
             LoadingUnitDestination source,
             LoadingUnitDestination destination,
-            int sourceCellId,
-            int destinationCellId,
-            int loadingUnitId,
+            int? sourceCellId,
+            int? destinationCellId,
+            int? loadingUnitId,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -35,13 +35,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public LoadingUnitDestination Destination { get; }
 
-        public int DestinationCellId { get; }
+        public int? DestinationCellId { get; }
 
-        public int LoadingUnitId { get; }
+        public int? LoadingUnitId { get; }
 
         public LoadingUnitDestination Source { get; }
 
-        public int SourceCellId { get; }
+        public int? SourceCellId { get; }
 
         public StopRequestReason StopReason { get; }
 

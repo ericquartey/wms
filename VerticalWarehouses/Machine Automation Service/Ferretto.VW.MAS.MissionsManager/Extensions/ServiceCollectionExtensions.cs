@@ -39,7 +39,11 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
                 .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
                 .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>()
 
-                .AddTransient<IMoveLoadingUnitStartSate, MoveLoadingUnitStartSate>();
+                .AddTransient<IMoveLoadingUnitStartSate, MoveLoadingUnitStartSate>()
+                .AddTransient<IMoveLoadingUnitLoadUnitState, MoveLoadingUnitLoadUnitState>()
+                .AddTransient<IMoveLoadingUnitMoveToTargetSate, MoveLoadingUnitMoveToTargetSate>()
+                .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
+                .AddTransient<IMoveLoadingUnitEndSate, MoveLoadingUnitEndSate>();
 
             return services;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -30,6 +32,20 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
         public override bool AllowMultipleInstances(CommandMessage command)
         {
             return true;
+        }
+
+        public override void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken)
+        {
+            if (machineData is IMoveLoadingUnitMachineData)
+            {
+                base.Start(commandMessage, machineData, cancellationToken);
+            }
+            else
+            {
+                var description = $"Attempting to start {this.GetType()} Finite state machine with wrong ({machineData.GetType()}) machine data";
+
+                throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
+            }
         }
 
         protected override bool FilterCommand(CommandMessage command)
