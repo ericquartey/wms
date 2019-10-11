@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Extensions
                 .AddSingleton<IElevatorProvider, ElevatorProvider>()
                 .AddSingleton<IShutterProvider, ShutterProvider>()
                 .AddSingleton<IMachineControlProvider, MachineControlProvider>()
-                .AddSingleton<IBayChainProvider, BayChainProvider>();
+                .AddSingleton<ICarouselProvider, CarouselProvider>();
 
             return services;
         }

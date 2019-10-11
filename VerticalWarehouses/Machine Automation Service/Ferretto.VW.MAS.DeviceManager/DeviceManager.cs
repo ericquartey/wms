@@ -453,7 +453,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             }
                             else
                             {
-                                var bayChainProvider = serviceProvider.GetRequiredService<IBayChainProvider>();
+                                var bayChainProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
                                 bayChainProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                                 notificationData.AxisMovement = Axis.Horizontal;
                                 notificationData.MovementMode = MovementMode.BayChain;
