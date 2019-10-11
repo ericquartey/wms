@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.CommonUtils.Converters
 {
-    internal sealed class IPAddressConverter : JsonConverter
+    public sealed class IPAddressConverter : JsonConverter
     {
         #region Methods
 

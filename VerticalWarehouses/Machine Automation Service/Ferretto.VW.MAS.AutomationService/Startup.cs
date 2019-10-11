@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Provider;
@@ -110,6 +111,7 @@ namespace Ferretto.VW.MAS.AutomationService
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
               })
+              .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new IPAddressConverter()))
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();

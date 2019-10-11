@@ -83,6 +83,17 @@ namespace Ferretto.VW.MAS.DataLayer
             return existingProcedure;
         }
 
+        public void Update(SetupProceduresSet setupProceduresSet)
+        {
+            if (setupProceduresSet == null)
+            {
+                throw new ArgumentNullException(nameof(setupProceduresSet));
+            }
+
+            this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
+            this.dataContext.SaveChanges();
+        }
+
         #endregion
     }
 }
