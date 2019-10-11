@@ -4,9 +4,9 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public interface ISetupProceduresDataProvider
     {
-        // SetupProceduresSet GetAll();
-
         #region Methods
+
+        SetupProceduresSet GetAll();
 
         PositioningProcedure GetBayHeightCheck();
 

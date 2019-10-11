@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineElevatorWebService machineElevatorWebService;
+
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private int? completedCycles;
@@ -58,11 +60,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
+            IMachineElevatorWebService machineElevatorWebService,
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
             : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
             this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
         }
@@ -322,6 +326,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.GetParameterValuesAsync();
 
+            await this.RetrieveCurrentPositionAsync();
+
             this.receivedActionUpdateToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
@@ -356,6 +362,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task StartAsync()
@@ -419,27 +443,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CompletedCycles = message.Data.ExecutedCycles;
             this.CurrentPosition = message?.Data?.CurrentPosition ?? this.CurrentPosition;
 
-            switch (message.Status)
+            if (message.IsNotRunning())
             {
-                case MessageStatus.OperationStart:
-                    this.IsExecutingProcedure = true;
-                    break;
-
-                case MessageStatus.OperationEnd:
-                    this.IsExecutingProcedure = false;
-
-                    break;
-
-                case MessageStatus.OperationStop:
-                case MessageStatus.OperationFaultStop:
-                case MessageStatus.OperationRunningStop:
-                    this.IsExecutingProcedure = false;
-                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
-                    break;
-
-                case MessageStatus.OperationError:
-                    this.IsExecutingProcedure = false;
-                    break;
+                this.IsExecutingProcedure = false;
+                if (message.IsErrored())
+                {
+                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                }
+            }
+            else
+            {
+                this.IsExecutingProcedure = true;
             }
         }
 
