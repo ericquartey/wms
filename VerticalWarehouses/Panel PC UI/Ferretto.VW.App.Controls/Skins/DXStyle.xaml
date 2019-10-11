@@ -2,6 +2,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/MessageBox/WinUIMessageBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/PropertyGrid/PropertyGrid.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DevExpress/SpinEdit/SpinEdit.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Xpf.PropertyGrid;
@@ -10,6 +11,8 @@ namespace Ferretto.VW.App.Controls
     public class PropertyGridCellTemplateSelector : DataTemplateSelector
     {
         #region Fields
+
+        private const string TEMPLATE_ID_READONLY = "PropDefReadonlyIDTemplate";
 
         private const string TEMPLATE_NAME = "PropDef{0}Template";
 
@@ -44,12 +47,21 @@ namespace Ferretto.VW.App.Controls
                 return null;
             }
 
-            if (property.PropertyType is Type type
-                &&
-                type.IsValueType)
+            if (property.Name.EndsWith("Id"))
             {
-                var templateName = string.Format(TEMPLATE_NAME, type.Name);
-                return this.GetDataTemplate(templateName);
+                return this.GetDataTemplate(TEMPLATE_ID_READONLY);
+            }
+
+            if (property.PropertyType is Type type)
+
+            {
+                if (type.IsValueType
+                    ||
+                    type.Name == typeof(IPAddress).Name)
+                {
+                    var templateName = string.Format(TEMPLATE_NAME, type.Name);
+                    return this.GetDataTemplate(templateName);
+                }
             }
 
             return null;

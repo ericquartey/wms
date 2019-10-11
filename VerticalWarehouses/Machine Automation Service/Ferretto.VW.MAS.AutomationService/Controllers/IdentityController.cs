@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
-using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -108,14 +106,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(statics);
-        }
-
-        [HttpGet("machine")]
-        public ActionResult<Machine> GetMachine()
-        {
-            var machine = this.machineProvider.Get();
-
-            return this.Ok(machine);
         }
 
         #endregion

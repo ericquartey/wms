@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -9,38 +11,78 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineConfigurationService machineConfigurationService;
+
         private readonly IMachineIdentityService machineIdentityService;
 
-        private Machine parameters;
+        private VertimagConfiguration configuration;
+
+        private bool isBusy;
+
+        private DelegateCommand saveCommand;
 
         #endregion
 
         #region Constructors
 
-        public ParametersViewModel(IMachineIdentityService machineIdentityService)
+        public ParametersViewModel(IMachineConfigurationService machineConfigurationService)
             : base(Services.PresentationMode.Installer)
         {
-            this.machineIdentityService = machineIdentityService ?? throw new ArgumentNullException(nameof(machineIdentityService));
+            this.machineConfigurationService = machineConfigurationService ?? throw new ArgumentNullException(nameof(machineConfigurationService));
         }
 
         #endregion
 
         #region Properties
 
-        public Machine Parameters => this.parameters;
+        public VertimagConfiguration Configuration => this.configuration;
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
+
+        public ICommand SaveCommand =>
+                            this.saveCommand
+           ??
+           (this.saveCommand = new DelegateCommand(
+               async () => await this.SaveAsync()));
 
         #endregion
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
 
-            this.parameters = await this.machineIdentityService.GetMachineAsync();
-            this.RaisePropertyChanged(nameof(this.Parameters));
+            this.configuration = await this.machineConfigurationService.GetAsync();
+            this.RaisePropertyChanged(nameof(this.Configuration));
+        }
+
+        private async Task SaveAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                await this.machineConfigurationService.SetAsync(this.configuration);
+
+                this.ShowNotification(Resources.InstallationApp.SaveSuccessful);
+
+                this.IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         #endregion
