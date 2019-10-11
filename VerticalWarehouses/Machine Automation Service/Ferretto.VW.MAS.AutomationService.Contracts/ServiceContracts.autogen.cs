@@ -394,6 +394,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -436,11 +443,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitDestination source, LoadingUnitDestination destination, int sourceCellId, int destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync();
+        System.Threading.Tasks.Task StopAsync(BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StopAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2434,7 +2441,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 16 = CarouselBay2Down
     /// 17 = CarouselBay3Up
     /// 18 = CarouselBay3Down
-    /// 19 = Cell</summary>
+    /// 19 = Cell
+    /// 20 = LoadingUnit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitDestination
     {
@@ -2477,6 +2485,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         CarouselBay3Down = 18,
     
         Cell = 19,
+    
+        LoadingUnit = 20,
     
     }
     
