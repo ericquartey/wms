@@ -58,19 +58,16 @@ namespace Ferretto.VW.App.Services
                     var newErrorPresent = this.activeError != null;
 
                     this.eventAggregator
-                        .GetEvent<PresentationChangedPubSubEvent>()
-                        .Publish(
-                            new PresentationChangedMessage(
-                                new Presentation
-                                {
-                                    Type = PresentationTypes.Error,
-                                    IsEnabled = newErrorPresent
-                                }));
+                      .GetEvent<PresentationChangedPubSubEvent>()
+                      .Publish(
+                          new PresentationChangedMessage(
+                              new Presentation
+                              {
+                                  Type = PresentationTypes.Error,
+                                  IsVisible = newErrorPresent
+                              }));
 
-                    if (newErrorPresent && this.AutoNavigateOnError)
-                    {
-                        this.NavigateToErrorPageAsync();
-                    }
+                    this.NavigateToErrorPageAsync();
                 }
             }
         }
@@ -82,10 +79,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.autoNavigateOnError = value;
 
-                if (this.autoNavigateOnError && this.ActiveError != null)
-                {
-                    this.NavigateToErrorPageAsync();
-                }
+                this.NavigateToErrorPageAsync();
             }
         }
 
@@ -107,6 +101,11 @@ namespace Ferretto.VW.App.Services
 
         private async Task NavigateToErrorPageAsync()
         {
+            if (this.ActiveError is null || !this.AutoNavigateOnError)
+            {
+                return;
+            }
+
             await Application.Current.Dispatcher.BeginInvoke(
                 System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                 new Action(() =>

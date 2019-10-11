@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
 
-                var procedure = setupProceduresDataProvider.GetAll().BeltBurnishingTest;
+                var procedure = setupProceduresDataProvider.GetBeltBurnishingTest();
                 setupProceduresDataProvider.IncreasePerformedCycles(procedure);
             }
         }

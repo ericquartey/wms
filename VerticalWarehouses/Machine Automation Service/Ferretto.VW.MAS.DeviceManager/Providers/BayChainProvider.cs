@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
 
             // TODO: scale movement speed by weight
             var speed = new[] { axis.EmptyLoadMovement.Speed * procedureParameters.FeedRate };
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
             var speed = new[] { axis.MaximumLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
             var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };

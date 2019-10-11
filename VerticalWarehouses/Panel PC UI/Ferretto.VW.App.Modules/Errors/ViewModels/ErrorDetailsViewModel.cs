@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             ??
             (this.markAsResolvedCommand = new DelegateCommand(
                 async () => await this.MarkAsResolvedAsync(),
-                this.CanExecuteMarkAsResolvedCommand)
+                this.CanMarkAsResolved)
             .ObservesProperty(() => this.Error)
             .ObservesProperty(() => this.IsWaitingForResponse));
 
@@ -78,42 +78,24 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await this.CheckErrorsPresenceAsync();
+            await base.OnAppearedAsync();
+
+            await this.RetrieveErrorAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            await base.OnAppearedAsync();
         }
 
-        private bool CanExecuteMarkAsResolvedCommand()
+        private bool CanMarkAsResolved()
         {
             return
-                this.error != null
+                this.Error != null
                 &&
                 !this.IsWaitingForResponse;
         }
 
-        private async Task CheckErrorsPresenceAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task MarkAsResolvedAsync()
         {
-            if (this.error is null)
+            if (this.Error is null)
             {
                 return;
             }
@@ -122,7 +104,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineErrorsWebService.ResolveAsync(this.error.Id);
+                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
 
                 var nextError = await this.machineErrorsWebService.GetCurrentAsync();
                 if (nextError is null)
@@ -168,6 +150,24 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             else
             {
                 this.ErrorTime = string.Format(Resources.VWApp.DaysAgo, elapsedTime.TotalDays);
+            }
+        }
+
+        private async Task RetrieveErrorAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

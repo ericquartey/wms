@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
+        private readonly IMachineErrorsService machineErrorsService;
+
         private readonly IHealthProbeService healthProbeService;
 
         private SubscriptionToken subscriptionToken;
@@ -34,27 +36,19 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public LoginViewModel(
             IAuthenticationService authenticationService,
+            IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
             IBayManager bayManager)
             : base(PresentationMode.Login)
         {
-            if (authenticationService is null)
-            {
-                throw new ArgumentNullException(nameof(authenticationService));
-            }
-
-            if (healthProbeService is null)
-            {
-                throw new ArgumentNullException(nameof(healthProbeService));
-            }
-
             if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            this.authenticationService = authenticationService;
-            this.healthProbeService = healthProbeService;
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
             this.BayNumber = (int)bayManager.Bay.Number;
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
@@ -161,6 +155,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.machineErrorsService.AutoNavigateOnError = false;
+
             if (this.Data is MachineIdentity machineIdentity)
             {
                 this.MachineIdentity = machineIdentity;
@@ -187,7 +183,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task LoginAsync()
         {
-            this.ShowNotification(string.Empty);
+            this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;
             if (!string.IsNullOrEmpty(this.UserLogin.Error))
@@ -214,6 +210,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     {
                         this.NavigateToOperatorMainView();
                     }
+
+                    this.machineErrorsService.AutoNavigateOnError = true;
                 }
                 else
                 {

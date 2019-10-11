@@ -8,5 +8,12 @@ namespace Ferretto.VW.App.Services
 {
     public interface IMachineErrorsService
     {
+        #region Properties
+
+        MAS.AutomationService.Contracts.Error ActiveError { get; set; }
+
+        bool AutoNavigateOnError { get; set; }
+
+        #endregion
     }
 }

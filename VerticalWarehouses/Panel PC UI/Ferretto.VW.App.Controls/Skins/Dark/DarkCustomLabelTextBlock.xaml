@@ -9,7 +9,7 @@
     <SolidColorBrush x:Key="VWAPP_CustomLabel_ContentTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <SolidColorBrush x:Key="VWAPP_CustomLabel_LabelTextBlock_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource EDBGrayH}" />
 
     <SolidColorBrush x:Key="VWAPP_CustomLabel_ContentTextBlock_Foreground_Disabled"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />

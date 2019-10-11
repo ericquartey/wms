@@ -46,6 +46,111 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Single();
         }
 
+        public PositioningProcedure GetBayHeightCheck()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.BayHeightCheck)
+                .Single();
+        }
+
+        public RepeatedTestProcedure GetBeltBurnishingTest()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.BeltBurnishingTest)
+                .Single();
+        }
+
+        public SetupProcedure GetCarouselManualMovements()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.CarouselManualMovements)
+                .Single();
+        }
+
+        public PositioningProcedure GetCellPanelsCheck()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.CellPanelsCheck)
+                .Single();
+        }
+
+        public PositioningProcedure GetCellsHeightCheck()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.CellsHeightCheck)
+                .Single();
+        }
+
+        public RepeatedTestProcedure GetDepositAndPickUpTest()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.DepositAndPickUpTest)
+                .Single();
+        }
+
+        public HorizontalManualMovementsProcedure GetHorizontalManualMovements()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.HorizontalManualMovements)
+                .Single();
+        }
+
+        public SetupProcedure GetLoadFirstDrawerTest()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.LoadFirstDrawerTest)
+                .Single();
+        }
+
+        public OffsetCalibrationProcedure GetOffsetCalibration()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.OffsetCalibration)
+                .Single();
+        }
+
+        public SetupProcedure GetShutterHeightCheck()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.ShutterHeightCheck)
+                .Single();
+        }
+
+        public ShutterManualMovementsProcedure GetShutterManualMovements()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.ShutterManualMovements)
+                .Single();
+        }
+
+        public RepeatedTestProcedure GetShutterTest()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.ShutterTest)
+                .Single();
+        }
+
+        public VerticalManualMovementsProcedure GetVerticalManualMovements()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.VerticalManualMovements)
+                .Single();
+        }
+
+        public VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.VerticalResolutionCalibration)
+                .Single();
+        }
+
+        public SetupProcedure GetWeightCheck()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.WeightCheck)
+                .Single();
+        }
+
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
         {
             var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);

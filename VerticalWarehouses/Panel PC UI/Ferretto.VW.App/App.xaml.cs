@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Windows;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -96,7 +95,7 @@ namespace Ferretto.VW.App
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            containerRegistry.RegisterMachineAutomationServices(serviceUrl, c =>
+            containerRegistry.RegisterMachineAutomationWebServices(serviceUrl, c =>
             {
                 var client = c.Resolve<RetryHttpClient>();
 

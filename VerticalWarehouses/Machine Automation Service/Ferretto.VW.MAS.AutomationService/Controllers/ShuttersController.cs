@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("move")]
         public void Move(ShutterMovementDirection direction)
         {
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MinSpeed;
 
@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
             }
 
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
             if (speedRate == 0)
@@ -210,7 +210,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
 

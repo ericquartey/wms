@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand disembarkBackwardsCommand;
 
@@ -245,8 +245,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.ElevatorVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -262,7 +262,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
+                await this.machineElevatorWebService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (Exception ex)
             {
@@ -279,7 +279,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 try
                 {
                     this.IsWaitingForResponse = true;
-                    await this.machineElevatorService.SearchHorizontalZeroAsync();
+                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
                     this.IsTuningChain = true;
                 }
                 catch (Exception ex)

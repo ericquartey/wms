@@ -211,10 +211,10 @@
     <value>Limite inferiore [mm]</value>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset [mm]:</value>
+    <value>Offset [mm]</value>
   </data>
   <data name="Output" xml:space="preserve">
-    <value>Risultato:</value>
+    <value>Risultato</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Inizia</value>
@@ -305,7 +305,7 @@
     <value>L'origine dell'asse verticale non è stata effettuata.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed rate %:</value>
+    <value>Feed rate %</value>
   </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
     <value>Origine asse verticale</value>
@@ -377,7 +377,7 @@
     <value>Aperta</value>
   </data>
   <data name="RequiredCycles" xml:space="preserve">
-    <value>Cicli richiesti:</value>
+    <value>Cicli richiesti</value>
   </data>
   <data name="Gate1Control" xml:space="preserve">
     <value>Test serranda baia 1</value>
@@ -632,7 +632,7 @@
     <value>Carico cassetti.</value>
   </data>
   <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
-    <value>Totale cassetti:</value>
+    <value>Totale cassetti</value>
   </data>
   <data name="LoadingDrawersMaxWeight" xml:space="preserve">
     <value>Portata max. [kg]</value>
@@ -1070,5 +1070,8 @@
   </data>
   <data name="PreviousPanel" xml:space="preserve">
     <value>Pannello Precedente</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>L'informazione è stata aggiornata.</value>
   </data>
 </root>

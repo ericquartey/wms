@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<OffsetCalibrationProcedure> GetParameters()
         {
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
+            var procedureParameters = this.setupProceduresDataProvider.GetOffsetCalibration();
 
             return this.Ok(procedureParameters);
         }
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveDown()
         {
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
+            var procedureParameters = this.setupProceduresDataProvider.GetOffsetCalibration();
 
             this.elevatorProvider.MoveVerticalOfDistance(
                 -procedureParameters.Step,
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveUp()
         {
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
+            var procedureParameters = this.setupProceduresDataProvider.GetOffsetCalibration();
 
             this.elevatorProvider.MoveVerticalOfDistance(
                 procedureParameters.Step,

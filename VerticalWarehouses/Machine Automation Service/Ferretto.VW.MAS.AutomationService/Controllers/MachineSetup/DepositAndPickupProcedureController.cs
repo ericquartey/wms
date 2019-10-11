@@ -33,16 +33,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<RepeatedTestProcedure> GetParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetAll().DepositAndPickUpTest);
+            return this.Ok(this.setupProceduresDataProvider.GetDepositAndPickUpTest());
         }
 
         [HttpPost("increase-performed-cycles")]
         [Obsolete("This method shall be removed once the test is fully implemented at MissionManager level.")]
         public ActionResult<int> IncreasePerformedCycles()
         {
-            var setupProcedures = this.setupProceduresDataProvider.GetAll();
+            var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
 
-            var procedure = this.setupProceduresDataProvider.IncreasePerformedCycles(setupProcedures.DepositAndPickUpTest);
+            var procedure = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureParameters);
 
             return this.Ok(procedure.PerformedCycles);
         }

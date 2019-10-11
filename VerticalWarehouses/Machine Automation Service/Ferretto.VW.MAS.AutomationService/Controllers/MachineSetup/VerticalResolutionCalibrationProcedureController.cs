@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<VerticalResolutionCalibrationProcedure> GetParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetAll().VerticalResolutionCalibration);
+            return this.Ok(this.setupProceduresDataProvider.GetVerticalResolutionCalibration());
         }
 
         #endregion
