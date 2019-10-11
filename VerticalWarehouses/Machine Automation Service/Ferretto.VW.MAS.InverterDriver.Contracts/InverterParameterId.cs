@@ -55,5 +55,9 @@
         TableTravelDirection = 1261,
 
         TorqueCurrent = 211,
+
+        BrakeReleaseTime = 625,
+
+        BrakeActivatePercent = 637,
     }
 }

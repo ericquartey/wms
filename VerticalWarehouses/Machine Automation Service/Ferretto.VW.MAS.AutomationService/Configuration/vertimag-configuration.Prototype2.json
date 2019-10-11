@@ -63,7 +63,7 @@
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
-          "ChainOffset": -800,
+          "ChainOffset": -10.3,
           "MaximumLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,
@@ -2779,7 +2779,9 @@
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15
+      "FeedRateAfterZero": 0.15,
+      "BrakeReleaseTime": 0,
+      "BrakeActivatePercent": 10
     },
     "VerticalResolutionCalibration": {
       "InitialPosition": 1000, //TEMP Temporary value for software test

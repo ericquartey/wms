@@ -1,15 +1,15 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
-    internal class BayChainProvider : BaseProvider, IBayChainProvider
+    internal class CarouselProvider : BaseProvider, ICarouselProvider
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Constructors
 
-        public BayChainProvider(
+        public CarouselProvider(
             IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
@@ -44,6 +44,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender)
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration);
+            this.PublishCommand(
+                homingData,
+                $"Execute homing {calibration} Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.Homing,
+                bayNumber,
+                BayNumber.None);
+        }
 
         public void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {

@@ -22,9 +22,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Extensions
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()
                 .AddSingleton(s => s.GetRequiredService<IMachineResourcesProvider>() as ISensorsProvider)
                 .AddSingleton<IElevatorProvider, ElevatorProvider>()
+                .AddSingleton<IShutterProvider, ShutterProvider>()
                 .AddSingleton<IMachineControlProvider, MachineControlProvider>()
-                .AddSingleton<IBayChainProvider, BayChainProvider>()
                 .AddSingleton<ILoadingUnitMovementProvider, LoadingUnitMovementProvider>();
+                .AddSingleton<ICarouselProvider, CarouselProvider>();
 
             return services;
         }

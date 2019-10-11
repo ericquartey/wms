@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
         private readonly Task commandReceiveTask;
@@ -57,6 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
         public HostedIoDriver(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IBaysProvider baysProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<HostedIoDriver> logger,
             IConfiguration configuration)
@@ -66,6 +69,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.iIoDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
@@ -161,6 +165,7 @@ namespace Ferretto.VW.MAS.IODriver
             foreach (var ioDevice in ioDevices)
             {
                 var transport = useMockedTransport ? (IIoTransport)new IoTransportMock() : new IoTransport(readTimeoutMilliseconds);
+                bool isCarousel = (this.baysProvider.GetByIoIndex(ioDevice.Index).Carousel != null);
 
                 this.ioDevices.Add(
                     ioDevice.Index,
@@ -171,6 +176,7 @@ namespace Ferretto.VW.MAS.IODriver
                         ioDevice.IpAddress,
                         ioDevice.TcpPort,
                         ioDevice.Index,
+                        isCarousel,
                         this.logger,
                         this.stoppingToken));
             }

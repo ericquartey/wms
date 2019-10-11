@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private bool forceIoStatusPublish;
 
+        private bool isCarousel;
+
         private Timer pollIoTimer;
 
         private byte[] receiveBuffer;
@@ -77,6 +79,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             IPAddress ipAddress,
             int port,
             IoIndex index,
+            bool isCarousel,
             ILogger logger,
             CancellationToken cancellationToken)
         {
@@ -89,6 +92,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.logger = logger;
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
+            this.isCarousel = isCarousel;
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
@@ -317,8 +321,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
                             //INFO The sensor presence in bay must be inverted
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
-                            //INFO The sensor presence in lower bay must be inverted (NOT for BIG: to do)
-                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = !inputData[(int)IoPorts.LoadingUnitInLowerBay];
+                            //INFO The sensor presence in lower bay must be inverted (NOT for carousel)
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {

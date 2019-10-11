@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
-    public interface IBayChainProvider
+    public interface ICarouselProvider
     {
         #region Properties
 
@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         #endregion
 
         #region Methods
+
+        void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender);
 
         void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
