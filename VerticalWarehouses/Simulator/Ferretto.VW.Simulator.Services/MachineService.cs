@@ -529,6 +529,11 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
+                case InverterParameterId.BrakeActivatePercent:
+                case InverterParameterId.BrakeReleaseTime:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
                     {

@@ -1587,6 +1587,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class VerticalManualMovementsProcedure : SetupProcedure
     {
+        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeActivatePercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeReleaseTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("feedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRateAfterZero { get; set; }
     
