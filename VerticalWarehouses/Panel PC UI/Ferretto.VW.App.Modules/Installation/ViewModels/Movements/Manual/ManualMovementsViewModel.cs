@@ -19,13 +19,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ExternalBayManualMovementsViewModel externalBayManualMovementsViewModel;
 
-        private readonly IMachineBaysService machineBayService;
+        private readonly IMachineBaysWebService machineBayWebService;
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private readonly IMachineShuttersService machineShutterService;
+        private readonly IMachineShuttersWebService machineShutterWebService;
 
         private readonly ShutterEngineManualMovementsViewModel shutterEngineManualMovementsViewModel;
 
@@ -34,31 +34,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ManualMovementsViewModel(
-            IMachineShuttersService shutterService,
-            IMachineCarouselService machineCarouselService,
-            IMachineElevatorService machineElevatorService,
-            IMachineBaysService machineBayService,
+            IMachineShuttersWebService shutterWebService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineBaysWebService machineBayWebService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (shutterService == null)
+            if (shutterWebService == null)
             {
-                throw new System.ArgumentNullException(nameof(shutterService));
+                throw new System.ArgumentNullException(nameof(shutterWebService));
             }
 
-            if (machineCarouselService == null)
+            if (machineCarouselWebService == null)
             {
-                throw new System.ArgumentNullException(nameof(machineCarouselService));
+                throw new System.ArgumentNullException(nameof(machineCarouselWebService));
             }
 
-            if (machineElevatorService == null)
+            if (machineElevatorWebService == null)
             {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
+                throw new System.ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            if (machineBayService == null)
+            if (machineBayWebService == null)
             {
-                throw new System.ArgumentNullException(nameof(machineBayService));
+                throw new System.ArgumentNullException(nameof(machineBayWebService));
             }
 
             if (bayManager == null)
@@ -66,16 +66,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
 
-            this.machineShutterService = shutterService;
-            this.machineCarouselService = machineCarouselService;
-            this.machineElevatorService = machineElevatorService;
-            this.machineBayService = machineBayService;
+            this.machineShutterWebService = shutterWebService;
+            this.machineCarouselWebService = machineCarouselWebService;
+            this.machineElevatorWebService = machineElevatorWebService;
+            this.machineBayWebService = machineBayWebService;
             this.bayManager = bayManager;
 
-            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselService, this.machineElevatorService, this.bayManager);
-            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorService, this.bayManager);
-            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorService, this.machineBayService, this.bayManager);
-            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterService, this.machineElevatorService, this.bayManager);
+            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.bayManager);
+            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);
+            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorWebService, this.machineBayWebService, this.bayManager);
+            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.bayManager);
         }
 
         #endregion
@@ -101,11 +101,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
         }
 
         public override void UpdateNotifications()

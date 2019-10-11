@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DataLayer", "Machine Automation Service\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj", "{EA441495-D8F4-48B0-84CB-A5250DE7AB92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService", "Machine Automation Service\Ferretto.VW.MAS.AutomationService\Ferretto.VW.MAS.AutomationService.csproj", "{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A1B4468-5DF1-48ED-8887-E1A5A1814056} = {6A1B4468-5DF1-48ED-8887-E1A5A1814056}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}"
 EndProject

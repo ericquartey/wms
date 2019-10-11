@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -11,11 +12,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
-        private readonly IMachineErrorsService machineErrorsService;
+        private readonly IMachineErrorsWebService machineErrorsWebService;
 
         private Error error;
 
         private string errorTime;
+
+        private bool isWaitingForResponse;
 
         private ICommand markAsResolvedCommand;
 
@@ -23,15 +26,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Constructors
 
-        public ErrorDetailsViewModel(IMachineErrorsService machineErrorsService)
+        public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineErrorsService is null)
-            {
-                throw new ArgumentNullException(nameof(machineErrorsService));
-            }
+            this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
 
-            this.machineErrorsService = machineErrorsService;
+            new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
 
         #endregion
@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public Error Error
         {
             get => this.error;
-            set => this.SetProperty(ref this.error, value, this.OnErrorChanged);
+            set => this.SetProperty(ref this.error, value, () => this.OnErrorChanged(null));
         }
 
         public string ErrorTime
@@ -50,13 +50,20 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
+
         public ICommand MarkAsResolvedCommand =>
             this.markAsResolvedCommand
             ??
             (this.markAsResolvedCommand = new DelegateCommand(
                 async () => await this.MarkAsResolvedAsync(),
                 this.CanExecuteMarkAsResolvedCommand)
-            .ObservesProperty(() => this.Error));
+            .ObservesProperty(() => this.Error)
+            .ObservesProperty(() => this.IsWaitingForResponse));
 
         #endregion
 
@@ -80,15 +87,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private bool CanExecuteMarkAsResolvedCommand()
         {
-            return this.error != null;
+            return
+                this.error != null
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task CheckErrorsPresenceAsync()
         {
             try
             {
-                this.NavigationService.IsBusy = true;
-                this.Error = await this.machineErrorsService.GetCurrentAsync();
+                this.IsWaitingForResponse = true;
+
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
             catch (Exception ex)
             {
@@ -96,7 +107,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             finally
             {
-                this.NavigationService.IsBusy = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -109,29 +120,31 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             try
             {
-                this.NavigationService.IsBusy = true;
+                this.IsWaitingForResponse = true;
 
-                await this.machineErrorsService.ResolveAsync(this.error.Id);
+                await this.machineErrorsWebService.ResolveAsync(this.error.Id);
 
-                var nextError = await this.machineErrorsService.GetCurrentAsync();
-
-                this.NavigationService.IsBusy = false;
-
+                var nextError = await this.machineErrorsWebService.GetCurrentAsync();
                 if (nextError is null)
                 {
                     this.NavigationService.GoBack();
                 }
-
-                this.Error = nextError;
+                else
+                {
+                    this.Error = nextError;
+                }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.NavigationService.IsBusy = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
-        private void OnErrorChanged()
+        private void OnErrorChanged(object state)
         {
             if (this.error is null)
             {

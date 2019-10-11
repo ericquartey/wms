@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -29,9 +30,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CellsHeightCheckStep1ViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineCellsService, machineElevatorService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService)
+            : base(machineCellsWebService, machineElevatorWebService)
         {
         }
 
@@ -166,7 +167,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
                     this.ProcedureParameters.FeedRate);
 
@@ -204,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.MachineElevatorService.StopAsync();
+                await this.MachineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {

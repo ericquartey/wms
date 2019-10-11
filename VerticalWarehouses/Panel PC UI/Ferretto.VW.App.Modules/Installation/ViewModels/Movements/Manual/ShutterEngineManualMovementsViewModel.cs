@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -15,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineShuttersService shuttersService;
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private bool canExecuteMoveDownCommand;
 
@@ -40,17 +41,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEngineManualMovementsViewModel(
-            IMachineShuttersService shuttersService,
-            IMachineElevatorService machineElevatorService,
+            IMachineShuttersWebService shuttersWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IBayManager bayManager)
-            : base(machineElevatorService, bayManager)
+            : base(machineElevatorWebService, bayManager)
         {
-            if (shuttersService is null)
+            if (shuttersWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(shuttersService));
+                throw new System.ArgumentNullException(nameof(shuttersWebService));
             }
 
-            this.shuttersService = shuttersService;
+            this.shuttersWebService = shuttersWebService;
             this.RefreshCanExecuteCommands();
         }
 
@@ -149,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Down);
+            await this.StartMovementAsync(ShutterMovementDirection.Down);
         }
 
         public async Task MoveUpAsync()
@@ -159,7 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Up);
+            await this.StartMovementAsync(ShutterMovementDirection.Up);
         }
 
         public override async Task OnAppearedAsync()
@@ -174,7 +175,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   false);
             try
             {
-                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync();
+                this.CurrentPosition = await this.shuttersWebService.GetShutterPositionAsync();
             }
             catch (System.Exception ex)
             {
@@ -188,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.shuttersService.StopAsync();
+                await this.shuttersWebService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -209,11 +210,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection direction)
+        private async Task StartMovementAsync(ShutterMovementDirection direction)
         {
             try
             {
-                await this.shuttersService.MoveAsync(direction);
+                await this.shuttersWebService.MoveAsync(direction);
             }
             catch (System.Exception ex)
             {

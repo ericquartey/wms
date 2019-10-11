@@ -2735,7 +2735,8 @@
       "FeedRate": 0.04
     },
     "CellPanelsCheck": {
-      "FeedRate": 0.2
+      "FeedRate": 0.2,
+      "Step": 0.5
     },
     "CellsHeightCheck": {
       "Step": 0.5,

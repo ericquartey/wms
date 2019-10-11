@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -21,23 +22,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly int initialCycles;
+
         private readonly int? inputLoadingUnitCode;
 
-        private readonly IMachineDepositAndPickupProcedureService machineDepositAndPickupProcedureService;
+        private readonly IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService;
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly IMachineSetupStatusService machineSetupStatusService;
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private readonly Sensors sensors = new Sensors();
 
         private int? completedCycles;
 
         private double? grossWeight;
-
-        private int initialCycles;
 
         private int inputDelay;
 
@@ -74,11 +75,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public DepositAndPickUpTestViewModel(
-            IMachineSetupStatusService machineSetupStatusService,
-            IMachineDepositAndPickupProcedureService machineDepositPickupProcedure,
-            IMachineElevatorService machineElevatorService,
-            IMachineLoadingUnitsService machineLoadingUnitsService,
-            IMachineSensorsService machineSensorsService,
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineSensorsWebService machineSensorsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -87,14 +88,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(machineDepositPickupProcedure));
             }
 
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            if (machineLoadingUnitsService is null)
+            if (machineLoadingUnitsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
+                throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             }
 
             if (bayManagerService is null)
@@ -102,17 +103,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
 
-            if (machineSensorsService is null)
+            if (machineSensorsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineSensorsService));
+                throw new ArgumentNullException(nameof(machineSensorsWebService));
             }
 
-            this.machineSensorsService = machineSensorsService;
-            this.machineElevatorService = machineElevatorService;
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.machineSensorsWebService = machineSensorsWebService;
+            this.machineElevatorWebService = machineElevatorWebService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
             this.bayManagerService = bayManagerService;
-            this.machineSetupStatusService = machineSetupStatusService;
-            this.machineDepositAndPickupProcedureService = machineDepositPickupProcedure;
+            this.machineSetupStatusWebService = machineSetupStatusWebService;
+            this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
             this.inputDelay = 0;
             this.SelectBayPosition1();
         }
@@ -326,7 +327,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.procedureParameters = await this.machineDepositAndPickupProcedureService.GetParametersAsync();
+                this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
 
                 this.InputRequiredCycles = this.procedureParameters.RequiredCycles;
                 this.TotalCompletedCycles = this.procedureParameters.PerformedCycles;
@@ -382,19 +383,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            this.RetrieveElevatorPositionAsync();
-        }
-
         public async Task RetrieveLoadingUnitsAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
-                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -482,7 +476,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
@@ -534,7 +528,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.currentState == DepositAndPickUpState.PickUp)
                         {
-                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureService.IncreasePerformedCyclesAsync();
+                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
                             this.CompletedCycles++;
                         }
 

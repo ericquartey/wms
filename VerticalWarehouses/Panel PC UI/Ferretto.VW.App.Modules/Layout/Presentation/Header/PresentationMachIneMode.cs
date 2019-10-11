@@ -4,7 +4,7 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationMachineMode : BasePresentation
+    public class PresentationMachineMode : BasePresentationViewModel
     {
         #region Constructors
 

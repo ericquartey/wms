@@ -186,4 +186,13 @@
   <data name="EnsureEmergencyIsOff" xml:space="preserve">
     <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
   </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Marca come risolto</value>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Posteriore</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Anteriore</value>
+  </data>
 </root>

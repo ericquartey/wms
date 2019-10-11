@@ -7,6 +7,7 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -17,9 +18,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly IMachineBaysService machineBaysService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly MAS.AutomationService.Contracts.IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -32,29 +33,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseSensorsViewModel(
-            IMachineSensorsService machineSensorsService,
-            IMachineBaysService machineBaysService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineBaysWebService machineBaysWebService,
             IBayManager bayManager)
-            : base(Services.PresentationMode.Installer)
+            : base(PresentationMode.Installer)
         {
-            if (machineSensorsService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineSensorsService));
-            }
-
-            if (machineBaysService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineBaysService));
-            }
-
-            if (bayManager == null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
-            this.machineSensorsService = machineSensorsService;
-            this.machineBaysService = machineBaysService;
-            this.bayManager = bayManager;
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
+            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
 
             this.InitializeNavigationMenu();
         }
@@ -108,9 +94,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
-                var bays = await this.machineBaysService.GetAllAsync();
+                var bays = await this.machineBaysWebService.GetAllAsync();
 
                 this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
                 this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);

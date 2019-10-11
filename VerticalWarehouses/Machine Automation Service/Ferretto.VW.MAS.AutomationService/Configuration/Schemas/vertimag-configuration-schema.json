@@ -113,7 +113,7 @@
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/TcpPort",
                     "type": "integer",
                     "title": "The Tcpport Schema",
-                    "default": 0,
+                    "default": 0
                   }
                 }
               },
@@ -643,13 +643,20 @@
           "type": "object",
           "title": "The Cellpanelscheck Schema",
           "required": [
-            "FeedRate"
+            "FeedRate",
+            "Step"
           ],
           "properties": {
             "FeedRate": {
               "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
+              "default": 0.0
+            },
+            "Step": {
+              "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/Step",
+              "type": "number",
+              "title": "The Step Schema",
               "default": 0.0
             }
           }

@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
     public interface IBaseNotificationMessageUI
     {

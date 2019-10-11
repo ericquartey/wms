@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
-using Prism.Events;
+﻿using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
 using Unity;
@@ -33,6 +32,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<ISessionService, SessionService>();
             containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
+            containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
 
             containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                 new InjectionFactory(c =>

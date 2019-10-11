@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
+namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
     public interface IInstallationHub
     {

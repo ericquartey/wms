@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
-using System;
+﻿using System;
 #if DEBUG
 using System.Windows;
 

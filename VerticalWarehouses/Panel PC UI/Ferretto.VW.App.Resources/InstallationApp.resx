@@ -873,9 +873,6 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Value inserted not valid</value>
   </data>
-  <data name="UpdateResolution" xml:space="preserve">
-    <value>Update Resolution</value>
-  </data>
   <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
     <value>Store/recall drawer</value>
   </data>
@@ -1014,9 +1011,6 @@
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>The procedure was stopped.</value>
   </data>
-  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
-    <value>Vertical axis resolution updated.</value>
-  </data>
   <data name="SelectLowerBound" xml:space="preserve">
     <value>Select lower bound [mm]</value>
     <comment>Label text</comment>
@@ -1151,5 +1145,11 @@
   </data>
   <data name="CurrentBayChainPosition" xml:space="preserve">
     <value>CurrentBayChainPosition</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Information was updated.</value>
+  </data>
+  <data name="PreviousPanel" xml:space="preserve">
+    <value>Previous Panel</value>
   </data>
 </root>

@@ -12,11 +12,11 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IMachineBaysService machineBaysService;
+        private readonly IMachineIdentityWebService machineIdentityWebService;
 
-        private readonly IMachineMissionOperationsService missionOperationsAutomationService;
+        private readonly IMachineMissionOperationsWebService missionOperationsAutomationService;
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
 
@@ -34,9 +34,9 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
-            IMachineBaysService machineBaysService,
-            IMachineIdentityService identityService,
-            IMachineMissionOperationsService missionOperationsAutomationService,
+            IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineMissionOperationsWebService missionOperationsAutomationWebService,
             WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
             WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
         {
@@ -45,14 +45,14 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(operatorHubClient));
             }
 
-            if (machineBaysService is null)
+            if (machineBaysWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineBaysService));
+                throw new ArgumentNullException(nameof(machineBaysWebService));
             }
 
-            if (identityService is null)
+            if (machineIdentityWebService is null)
             {
-                throw new ArgumentNullException(nameof(identityService));
+                throw new ArgumentNullException(nameof(machineIdentityWebService));
             }
 
             if (missionOperationsDataService is null)
@@ -60,9 +60,9 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
 
-            if (missionOperationsAutomationService is null)
+            if (missionOperationsAutomationWebService is null)
             {
-                throw new ArgumentNullException(nameof(missionOperationsAutomationService));
+                throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
             }
 
             if (missionsDataService is null)
@@ -71,11 +71,11 @@ namespace Ferretto.VW.App.Services
             }
 
             this.missionOperationsDataService = missionOperationsDataService;
-            this.missionOperationsAutomationService = missionOperationsAutomationService;
+            this.missionOperationsAutomationService = missionOperationsAutomationWebService;
             this.missionsDataService = missionsDataService;
             this.operatorHubClient = operatorHubClient;
-            this.machineBaysService = machineBaysService;
-            this.identityService = identityService;
+            this.machineBaysWebService = machineBaysWebService;
+            this.machineIdentityWebService = machineIdentityWebService;
 
             this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
             this.operatorHubClient.MissionOperationAvailable += async (sender, e) => await this.OnMissionOperationAvailableAsync(sender, e);
@@ -114,6 +114,8 @@ namespace Ferretto.VW.App.Services
 
         public MachineIdentity Identity { get; private set; }
 
+        public IMachineIdentityWebService IdentityService => this.machineIdentityWebService;
+
         public int PendingMissionsCount { get; private set; }
 
         #endregion
@@ -134,11 +136,11 @@ namespace Ferretto.VW.App.Services
 
         public async Task InitializeAsync()
         {
-            this.Identity = await this.identityService.GetAsync();
+            this.Identity = await this.IdentityService.GetAsync();
 
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            this.bay = await this.machineBaysService.GetByNumberAsync((
+            this.bay = await this.machineBaysWebService.GetByNumberAsync((
                 MAS.AutomationService.Contracts.BayNumber)bayNumber);
         }
 

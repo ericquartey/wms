@@ -808,10 +808,6 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Valore inserito non valido</value>
   </data>
-  <data name="UpdateResolution" xml:space="preserve">
-    <value>Aggiorna Risoluzione</value>
-    <comment>Aggiorna Risoluzione</comment>
-  </data>
   <data name="LUPresentMiddleBottomBay" xml:space="preserve">
     <value>Secondo Cassetto Presente in Baia</value>
   </data>
@@ -953,9 +949,6 @@
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>La procedura è stata interrotta.</value>
   </data>
-  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
-    <value>Risoluzione dell'asse verticale aggiornata.</value>
-  </data>
   <data name="SelectLowerBound" xml:space="preserve">
     <value>Seleziona limite inferiore [mm]</value>
     <comment>Label text</comment>
@@ -1074,5 +1067,8 @@
   </data>
   <data name="CurrentBayChainPosition" xml:space="preserve">
     <value>CurrentBayChainPosition</value>
+  </data>
+  <data name="PreviousPanel" xml:space="preserve">
+    <value>Pannello Precedente</value>
   </data>
 </root>

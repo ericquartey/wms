@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
@@ -19,9 +19,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly IMachinePowerService machinePowerService;
+        private readonly IMachinePowerWebService machinePowerWebService;
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private SubscriptionToken healthSubscriptionToken;
 
@@ -38,8 +38,8 @@ namespace Ferretto.VW.App.Services
         public MachineModeService(
             IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
-            IMachineSensorsService machineSensorsService,
-            IMachinePowerService machinePowerService)
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachinePowerWebService machinePowerWebService)
         {
             if (eventAggregator is null)
             {
@@ -51,20 +51,20 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(healthProbeService));
             }
 
-            if (machineSensorsService is null)
+            if (machineSensorsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineSensorsService));
+                throw new ArgumentNullException(nameof(machineSensorsWebService));
             }
 
-            if (machinePowerService is null)
+            if (machinePowerWebService is null)
             {
-                throw new ArgumentNullException(nameof(machinePowerService));
+                throw new ArgumentNullException(nameof(machinePowerWebService));
             }
 
             this.eventAggregator = eventAggregator;
             this.healthProbeService = healthProbeService;
-            this.machineSensorsService = machineSensorsService;
-            this.machinePowerService = machinePowerService;
+            this.machineSensorsWebService = machineSensorsWebService;
+            this.machinePowerWebService = machinePowerWebService;
 
             this.sensorsSubscriptionToken = this.eventAggregator
                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                await this.machinePowerService.PowerOffAsync();
+                await this.machinePowerWebService.PowerOffAsync();
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                await this.machinePowerService.PowerOnAsync();
+                await this.machinePowerWebService.PowerOnAsync();
             }
             catch (Exception ex)
             {
@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var isPoweredOn = await this.machinePowerService.IsPoweredOnAsync();
+                    var isPoweredOn = await this.machinePowerWebService.IsPoweredOnAsync();
 
                     this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
                 }

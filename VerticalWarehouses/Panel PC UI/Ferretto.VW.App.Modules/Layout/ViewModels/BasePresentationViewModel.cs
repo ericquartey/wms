@@ -3,7 +3,6 @@ using System.Linq;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels

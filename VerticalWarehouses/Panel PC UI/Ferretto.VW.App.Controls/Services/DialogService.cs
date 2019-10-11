@@ -6,7 +6,6 @@ using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.App.Services

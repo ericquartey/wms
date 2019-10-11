@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
@@ -31,29 +32,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BaseVerticalOffsetCalibrationViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalOffsetProcedureService verticalOffsetService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineCellsService is null)
+            if (machineCellsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineCellsService));
+                throw new ArgumentNullException(nameof(machineCellsWebService));
             }
 
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            if (verticalOffsetService is null)
+            if (verticalOffsetWebService is null)
             {
-                throw new ArgumentNullException(nameof(verticalOffsetService));
+                throw new ArgumentNullException(nameof(verticalOffsetWebService));
             }
 
-            this.MachineCellsService = machineCellsService;
-            this.MachineElevatorService = machineElevatorService;
-            this.VerticalOffsetService = verticalOffsetService;
+            this.MachineCellsWebService = machineCellsWebService;
+            this.MachineElevatorWebService = machineElevatorWebService;
+            this.VerticalOffsetWebService = verticalOffsetWebService;
 
             this.InitializeNavigationMenu();
         }
@@ -111,13 +112,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected IMachineCellsService MachineCellsService { get; }
+        protected IMachineCellsWebService MachineCellsWebService { get; }
 
-        protected IMachineElevatorService MachineElevatorService { get; }
+        protected IMachineElevatorWebService MachineElevatorWebService { get; }
 
         protected OffsetCalibrationProcedure ProcedureParameters { get; private set; }
 
-        protected IMachineVerticalOffsetProcedureService VerticalOffsetService { get; }
+        protected IMachineVerticalOffsetProcedureWebService VerticalOffsetWebService { get; }
 
         #endregion
 
@@ -192,7 +193,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.Cells = await this.MachineCellsService.GetAllAsync();
+                this.Cells = await this.MachineCellsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -204,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -216,7 +217,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.ProcedureParameters = await this.VerticalOffsetService.GetParametersAsync();
+                this.ProcedureParameters = await this.VerticalOffsetWebService.GetParametersAsync();
             }
             catch (Exception ex)
             {

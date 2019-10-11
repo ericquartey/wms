@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -15,11 +16,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineBeltBurnishingProcedureService beltBurnishingService;
+        private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineSetupStatusService machineSetupStatusService;
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private int? completedCycles;
 
@@ -57,24 +58,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
-            IMachineSetupStatusService machineSetupStatusService,
-            IMachineBeltBurnishingProcedureService beltBurnishingService)
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (beltBurnishingService is null)
-            {
-                throw new ArgumentNullException(nameof(beltBurnishingService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.machineSetupStatusService = machineSetupStatusService;
-            this.beltBurnishingService = beltBurnishingService;
-            this.inputDelay = 0;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+            this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
         }
 
         #endregion
@@ -305,7 +295,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.beltBurnishingService.GetParametersAsync();
+                var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
 
                 this.InputUpperBound = procedureParameters.UpperBound;
                 this.machineUpperBound = procedureParameters.UpperBound;
@@ -357,7 +347,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task InitializeTotalCycles()
         {
-            var setupStatus = await this.machineSetupStatusService.GetAsync();
+            var setupStatus = await this.machineSetupStatusWebService.GetAsync();
             this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
             this.TotalCompletedCycles = this.initialCycles;
         }
@@ -381,7 +371,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.beltBurnishingService.StartAsync(
+                await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
                     this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value,
@@ -405,7 +395,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.beltBurnishingService.StopAsync();
+                await this.beltBurnishingWebService.StopAsync();
             }
             catch (Exception ex)
             {

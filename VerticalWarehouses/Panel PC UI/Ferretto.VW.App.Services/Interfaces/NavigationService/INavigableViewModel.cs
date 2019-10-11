@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Services.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface INavigableViewModel : IDisposable
     {

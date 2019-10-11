@@ -4,18 +4,17 @@ using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Modules.Layout
 {
-    public class PresentationLogged : BasePresentation
+    public class PresentationLogged : BasePresentationViewModel
     {
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
 
-        private readonly Services.Interfaces.INavigationService navigationService;
+        private readonly Services.INavigationService navigationService;
 
         private readonly IThemeService themeService;
 
@@ -33,7 +32,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public PresentationLogged(
             IAuthenticationService authenticationService,
-            Services.Interfaces.INavigationService navigationService,
+            Services.INavigationService navigationService,
             IThemeService themeService)
             : base(PresentationTypes.Logged)
         {

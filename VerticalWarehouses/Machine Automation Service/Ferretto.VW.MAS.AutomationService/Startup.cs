@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
@@ -71,8 +70,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            SwaggerBuilderExtensions.UseSwagger(app);
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
             if (this.Configuration.IsWmsEnabled())
             {
@@ -104,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService
               .AddMvc(options =>
               {
                   options.Filters.Add(typeof(ReadinessFilter));
-                  options.Filters.Add(typeof(BayNumberFilter));
+                  options.Filters.Add(typeof(BayNumberActionFilter));
                   options.Filters.Add(typeof(ExceptionsFilter));
                   options.Conventions.Add(
                       new RouteTokenTransformerConvention(
@@ -119,13 +121,16 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
                 .AddCheck<ReadinessHealthCheck>("readiness-check", null, tags: new[] { ReadyHealthCheckTag });
 
-            services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
-
-            services.AddApiVersioning(o =>
+            services.AddSwaggerGen(config =>
             {
-                o.DefaultApiVersion = new ApiVersion(1, 0);
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+                config.SwaggerDoc(
+                    "v1",
+                    new Swashbuckle.AspNetCore.Swagger.Info
+                    {
+                        Title = "Machine Automation Web API",
+                        Version = "v1"
+                    });
+                config.OperationFilter<BayNumberOperationFilter>();
             });
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

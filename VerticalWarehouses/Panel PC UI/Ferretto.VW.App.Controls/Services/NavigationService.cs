@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.Utils;
 using Prism.Events;
 using Prism.Modularity;
@@ -25,11 +24,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly IModuleManager moduleManager;
 
+        private readonly Stack<NavigationHistoryRecord> navigationStack = new Stack<NavigationHistoryRecord>();
+
         private readonly IRegionManager regionManager;
-
-        private readonly IRegionNavigationService regionNavigationService;
-
-        private readonly Stack<NavigationTrack> tracks = new Stack<NavigationTrack>();
 
         #endregion
 
@@ -39,39 +36,12 @@ namespace Ferretto.VW.App.Services
             IUnityContainer unityContainer,
             IRegionManager regionManager,
             IEventAggregator eventAggregator,
-            IRegionNavigationService regionNavigationService,
             IModuleManager moduleManager)
         {
-            if (unityContainer is null)
-            {
-                throw new ArgumentNullException(nameof(unityContainer));
-            }
-
-            if (regionManager is null)
-            {
-                throw new ArgumentNullException(nameof(regionManager));
-            }
-
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (regionNavigationService is null)
-            {
-                throw new ArgumentNullException(nameof(regionNavigationService));
-            }
-
-            if (moduleManager is null)
-            {
-                throw new ArgumentNullException(nameof(moduleManager));
-            }
-
-            this.container = unityContainer;
-            this.regionManager = regionManager;
-            this.eventAggregator = eventAggregator;
-            this.regionNavigationService = regionNavigationService;
-            this.moduleManager = moduleManager;
+            this.container = unityContainer ?? throw new ArgumentNullException(nameof(unityContainer));
+            this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
         }
 
         #endregion
@@ -108,7 +78,14 @@ namespace Ferretto.VW.App.Services
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
-                this.logger.Warn($"Unable to navigate to view '{moduleName}.{viewModelName}' because name is invalid.");
+                this.logger.Warn($"Unable to navigate to view '{moduleName}.{viewModelName}' because its name is invalid.");
+                return;
+            }
+
+            var activeViewModel = this.GetActiveViewModel();
+            if (activeViewModel?.GetType()?.Name == viewModelName)
+            {
+                this.logger.Warn($"Requested view '{moduleName}.{viewModelName}' is already active.");
                 return;
             }
 
@@ -129,12 +106,12 @@ namespace Ferretto.VW.App.Services
 
                 if (trackCurrentView)
                 {
-                    var currentViewRecord = this.tracks.Peek();
+                    var currentViewRecord = this.navigationStack.Peek();
                     this.logger.Warn($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
                     currentViewRecord.IsTrackable = true;
                 }
 
-                this.tracks.Push(new NavigationTrack(moduleName, viewName, viewModelName));
+                this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
 
                 this.eventAggregator
                     .GetEvent<NavigationCompleted>()
@@ -167,58 +144,58 @@ namespace Ferretto.VW.App.Services
 
         public void GoBack()
         {
-            if (!this.tracks.Any())
+            if (!this.navigationStack.Any())
             {
                 this.logger.Warn($"Unable to navigate back because navigation stack is empty.");
                 return;
             }
 
-            var currentHistoryRecord = this.tracks.Pop();
+            var currentHistoryRecord = this.navigationStack.Pop();
             this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
-            while (this.tracks.Any()
+            while (this.navigationStack.Any()
                 &&
-                !this.tracks.Peek().IsTrackable)
+                !this.navigationStack.Peek().IsTrackable)
             {
-                var currentRecord = this.tracks.Peek();
+                var currentRecord = this.navigationStack.Peek();
                 this.logger.Trace($"Discarding history view '{currentRecord.ModuleName}.{currentRecord.ViewName}' because not marked as trackable.");
-                this.tracks.Pop();
+                this.navigationStack.Pop();
             }
 
-            this.NavigateBackTo(this.tracks.Peek());
+            this.NavigateBackTo(this.navigationStack.Peek());
         }
 
         public void GoBackTo(string modelName, string viewModelName)
         {
-            if (!this.tracks.Any(t => t.ModuleName == modelName && t.ViewModelName == viewModelName))
+            if (!this.navigationStack.Any(t => t.ModuleName == modelName && t.ViewModelName == viewModelName))
             {
                 this.logger.Warn($"Unable to navigate back to '{modelName}.{viewModelName}' because no view with the specified name was found in the navigation stack.");
                 return;
             }
 
-            if (this.tracks.Peek().ModuleName == modelName
+            if (this.navigationStack.Peek().ModuleName == modelName
                 &&
-                this.tracks.Peek().ViewModelName == viewModelName)
+                this.navigationStack.Peek().ViewModelName == viewModelName)
             {
                 this.logger.Info($"Back navigation to '{modelName}.{viewModelName}' not performed because it matches the current view");
                 return;
             }
 
-            var currentHistoryRecord = this.tracks.Pop();
+            var currentHistoryRecord = this.navigationStack.Pop();
             this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
-            while (this.tracks.Any()
+            while (this.navigationStack.Any()
                 &&
-                this.tracks.Peek().ModuleName != modelName
+                this.navigationStack.Peek().ModuleName != modelName
                 &&
-                this.tracks.Peek().ViewModelName != viewModelName)
+                this.navigationStack.Peek().ViewModelName != viewModelName)
             {
-                this.tracks.Pop();
+                this.navigationStack.Pop();
             }
 
             this.ClearNotifications();
 
-            this.NavigateBackTo(this.tracks.Peek());
+            this.NavigateBackTo(this.navigationStack.Peek());
         }
 
         public void LoadModule(string moduleName)
@@ -267,12 +244,19 @@ namespace Ferretto.VW.App.Services
 
         private void DisappearActiveView()
         {
+            this.GetActiveViewModel()?.Disappear();
+        }
+
+        private ViewModelBase GetActiveViewModel()
+        {
             var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
 
             if (activeView is View view && view.DataContext is ViewModelBase viewModel)
             {
-                viewModel.Disappear();
+                return viewModel;
             }
+
+            return null;
         }
 
         private IBusyViewModel GetBusyViewModel()
@@ -286,7 +270,7 @@ namespace Ferretto.VW.App.Services
             return null;
         }
 
-        private void NavigateBackTo(NavigationTrack historyRecord)
+        private void NavigateBackTo(NavigationHistoryRecord historyRecord)
         {
             this.DisappearActiveView();
 

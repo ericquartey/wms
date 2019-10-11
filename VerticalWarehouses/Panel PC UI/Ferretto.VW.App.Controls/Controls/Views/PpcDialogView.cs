@@ -6,7 +6,7 @@ using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {

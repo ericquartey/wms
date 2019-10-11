@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -16,7 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly INavigationService navigationService;
 
@@ -45,18 +46,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ElevatorWeightCheckStep2ViewModel(
-                                                 IMachineElevatorService machineElevatorService,
-                                                 INavigationService navigationService,
-                                                 IEventAggregator eventAggregator)
+            IMachineElevatorWebService machineElevatorWebService,
+            INavigationService navigationService,
+            IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            if (machineElevatorService == null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            this.machineElevatorService = machineElevatorService;
-            this.navigationService = navigationService;
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -64,10 +60,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public string Error => string.Join(
-                        System.Environment.NewLine,
-                        this[nameof(this.TestToRun)],
-                        this[nameof(this.InputWeight)],
-                        this[nameof(this.WeightTolerance)]);
+            Environment.NewLine,
+            this[nameof(this.TestToRun)],
+            this[nameof(this.InputWeight)],
+            this[nameof(this.WeightTolerance)]);
 
         public double? InputWeight
         {
@@ -112,18 +108,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand StartWeightCheckCommand =>
-                        this.startWeightCheckCommand
-                        ??
-                        (this.startWeightCheckCommand = new DelegateCommand(
-                            async () => await this.StartWeightCheckAsync(),
-                            this.CanStartWeightCheck));
+            this.startWeightCheckCommand
+            ??
+            (this.startWeightCheckCommand = new DelegateCommand(
+                async () => await this.StartWeightCheckAsync(),
+                this.CanStartWeightCheck));
 
         public ICommand StopWeightCheckCommand =>
-                this.stopWeightCheckCommand
-                ??
-                (this.stopWeightCheckCommand = new DelegateCommand(
-                    async () => await this.StopWeightCheckAsync(),
-                    this.CanStopWeightCheck));
+            this.stopWeightCheckCommand
+            ??
+            (this.stopWeightCheckCommand = new DelegateCommand(
+                async () => await this.StopWeightCheckAsync(),
+                this.CanStopWeightCheck));
 
         public double TestToRun
         {
@@ -250,17 +246,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStartWeightCheck()
         {
-            return this.loadingUnitId.HasValue
-                   &&
-                   this.testToRun >= 0
-                   &&
-                   this.InputWeight > 0
-                   &&
-                   this.WeightTolerance > 0
-                   &&
-                   !this.isWorking
-                   &&
-                   string.IsNullOrWhiteSpace(this.Error);
+            return
+                this.loadingUnitId.HasValue
+                &&
+                this.testToRun >= 0
+                &&
+                this.InputWeight > 0
+                &&
+                this.WeightTolerance > 0
+                &&
+                !this.isWorking
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanStopWeightCheck()
@@ -271,7 +268,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void ElevatorWeightCheckChanged(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
             if (message.Status == MessageStatus.OperationEnd
-                 ||
+                ||
                 message.Status == MessageStatus.OperationStop)
             {
                 this.NoteText = "Operation Completed.";
@@ -300,7 +297,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RaiseCanExecuteChanged();
 
-                await this.machineElevatorService.WeightCheckAsync(this.loadingUnitId.Value, this.testToRun, this.inputWeight.Value);
+                await this.machineElevatorWebService.WeightCheckAsync(this.loadingUnitId.Value, this.testToRun, this.inputWeight.Value);
 
                 this.IsWorking = false;
             }
@@ -319,7 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.StopWeightCheckAsync();
+                await this.machineElevatorWebService.StopWeightCheckAsync();
 
                 this.IsWorking = false;
             }
