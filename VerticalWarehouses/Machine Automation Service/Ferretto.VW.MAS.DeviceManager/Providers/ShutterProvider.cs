@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MinSpeed;
 
@@ -130,25 +130,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
-            if (speedRate == 0)
-            {
-                throw new InvalidOperationException(Resources.Shutters.TheSpeedRateIsNotValid);
-            }
-
             var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
-            if (lowSpeed == 0)
-            {
-                throw new InvalidOperationException(Resources.Shutters.TheMinSpeedIsNotValid);
-            }
 
             var bay = this.baysProvider.GetByNumber(bayNumber);
 
             // speed is negative to go up
-            speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
-            lowSpeed *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
+            speedRate *= direction == ShutterMovementDirection.Up ? -1 : 1;
+            lowSpeed *= direction == ShutterMovementDirection.Up ? -1 : 1;
 
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
@@ -187,7 +178,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
-            var parameters = this.setupProceduresDataProvider.GetAll().ShutterManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
 

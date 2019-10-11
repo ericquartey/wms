@@ -615,10 +615,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                     // TEMP Retrieve the current configuration of IO devices
                     this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
-                    // why first call to GetAll is so slow?
-                    var setup = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                    setup.GetAll();
-
                     var fieldNotification = new FieldNotificationMessage(
                         null,
                         "Data Layer Ready",
