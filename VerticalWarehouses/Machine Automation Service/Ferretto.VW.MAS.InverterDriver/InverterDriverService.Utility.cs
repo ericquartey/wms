@@ -1017,8 +1017,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncAxisTimer)
             {
                 var inverterIndex = (InverterIndex)state;
-                //var inverter = this.invertersProvider.GetByIndex(inverterIndex);
-                //if (inverter is AngInverterStatus || inverter is AcuInverterStatus)
                 {
                     var readAxisPositionMessage = new InverterMessage(inverterIndex, InverterParameterId.ActualPositionShaft);
 
