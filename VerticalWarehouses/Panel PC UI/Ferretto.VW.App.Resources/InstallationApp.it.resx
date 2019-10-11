@@ -1075,4 +1075,7 @@
   <data name="CurrentBayChainPosition" xml:space="preserve">
     <value>CurrentBayChainPosition</value>
   </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Salvataggio completato con successo</value>
+  </data>
 </root>
