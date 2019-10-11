@@ -102,6 +102,15 @@
             #endregion
         }
 
+        public static class Parameters
+        {
+            #region Fields
+
+            public const string PARAMETERS = "ParametersViewModel";
+
+            #endregion
+        }
+
         public static class Sensors
         {
             #region Fields

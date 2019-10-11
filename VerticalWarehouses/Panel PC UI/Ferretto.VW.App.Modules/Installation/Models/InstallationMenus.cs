@@ -86,6 +86,10 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Puntatore Laser")]
         BayLaser,
 
+        [View(Utils.Modules.Installation.Parameters.PARAMETERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Parametri")]
+        Parameters,
+
         None,
     }
 }

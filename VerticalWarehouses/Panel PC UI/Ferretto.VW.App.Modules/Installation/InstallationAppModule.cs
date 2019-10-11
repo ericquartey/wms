@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Installation.Views;
+using Ferretto.VW.App.Modules.Installation.Views;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -89,6 +90,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
             containerRegistry.RegisterForNavigation<CellPanelsCheckView>();
+
+            containerRegistry.RegisterForNavigation<ParametersView>();
 
             containerRegistry.Register<INavigableView, DevicesView>(nameof(DevicesView));
         }

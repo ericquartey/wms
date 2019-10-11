@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS.DataModels;
-
-namespace Ferretto.VW.MAS.DataLayer
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public class VertimagConfiguration
     {
