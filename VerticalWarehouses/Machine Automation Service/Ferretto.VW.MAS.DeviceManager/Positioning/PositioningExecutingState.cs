@@ -211,7 +211,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSetTimer,
-                (byte)inverterIndex));
+                inverterIndex));
         }
 
         public override void Stop(StopRequestReason reason)

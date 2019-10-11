@@ -312,7 +312,7 @@
                   },
                   "ChainOffset": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ChainOffset",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The ChainOffset Schema",
                     "minimum": -10000,
                     "maximum": 10000,
@@ -902,6 +902,18 @@
               "type": "number",
               "title": "The Positivetargetdirection Schema",
               "default": 0
+            },
+            "BrakeReleaseTime": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/BrakeReleaseTime",
+              "type": "number",
+              "title": "The BrakeReleaseTime Schema",
+              "default": 0
+            },
+            "BrakeActivatePercent": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/BrakeActivatePercent",
+              "type": "number",
+              "title": "The BrakeActivatePercent Schema",
+              "default": 10
             },
             "NegativeTargetDirection": {
               "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/NegativeTargetDirection",

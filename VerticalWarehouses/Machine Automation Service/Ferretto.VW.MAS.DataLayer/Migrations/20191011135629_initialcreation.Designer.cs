@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191010092008_Initial")]
-    partial class Initial
+    [Migration("20191011135629_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -573,7 +573,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 10, 11, 20, 6, 887, DateTimeKind.Local).AddTicks(8355),
+                            InstallationDate = new DateTime(2016, 12, 11, 15, 56, 28, 945, DateTimeKind.Local).AddTicks(707),
                             ServiceStatus = 86
                         });
                 });
@@ -927,6 +927,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.VerticalManualMovementsProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
 
                     b.Property<double>("FeedRateAfterZero");
 
