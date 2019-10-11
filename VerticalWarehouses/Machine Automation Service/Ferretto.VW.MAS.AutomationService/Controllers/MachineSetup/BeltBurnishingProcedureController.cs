@@ -82,12 +82,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                "Stop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop);
+            this.elevatorProvider.Stop(this.BayNumber, MessageActor.WebApi);
 
             return this.Accepted();
         }

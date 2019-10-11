@@ -1,9 +1,6 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
-
-        private readonly IElevatorDataProvider elevatorDataProvider;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-        private readonly IBayChainProvider bayChainProvider;
+        private readonly ICarouselProvider carouselProvider;
 
         #endregion
 
@@ -30,16 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CarouselController(
             IEventAggregator eventAggregator,
-            IElevatorDataProvider elevatorDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysProvider baysProvider,
-            IBayChainProvider bayChainProvider)
+            ICarouselProvider carouselProvider)
             : base(eventAggregator)
         {
-            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-            this.bayChainProvider = bayChainProvider ?? throw new ArgumentNullException(nameof(bayChainProvider));
+            this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
         }
 
         #endregion
@@ -51,13 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing);
+            this.carouselProvider.Homing(Calibration.FindSensor, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -65,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<double> GetPosition()
         {
-            return this.Ok(this.bayChainProvider.HorizontalPosition);
+            return this.Ok(this.carouselProvider.HorizontalPosition);
         }
 
         [HttpPost("homing")]
@@ -73,13 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Homing()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
-
-            this.PublishCommand(
-                homingData,
-                "Execute Homing Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing);
+            this.carouselProvider.Homing(Calibration.ResetEncoder, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -88,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(HorizontalMovementDirection direction)
         {
-            this.bayChainProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -97,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(HorizontalMovementDirection direction)
         {
-            this.bayChainProvider.MoveManual(direction, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.MoveManual(direction, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -107,7 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.bayChainProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Stop(this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
