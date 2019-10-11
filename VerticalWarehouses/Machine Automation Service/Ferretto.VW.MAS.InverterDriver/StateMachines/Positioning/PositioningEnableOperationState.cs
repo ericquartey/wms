@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                if (message.SystemIndex == this.InverterStatus.SystemIndex && this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
                     if (this.data.IsTorqueCurrentSamplingEnabled)
                     {

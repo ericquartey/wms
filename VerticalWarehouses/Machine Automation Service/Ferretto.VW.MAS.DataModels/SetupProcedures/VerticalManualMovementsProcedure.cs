@@ -10,6 +10,10 @@
 
         #region Properties
 
+        public double BrakeActivatePercent { get; set; }
+
+        public double BrakeReleaseTime { get; set; }
+
         public double FeedRateAfterZero
         {
             get => this.feedRateAfterZero;

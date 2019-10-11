@@ -175,6 +175,25 @@ namespace Ferretto.VW.MAS.DataLayer
             return bay.Number;
         }
 
+        public Bay GetByIoIndex(IoIndex ioIndex)
+        {
+            var bay = this.dataContext.Bays
+                .Include(b => b.Inverter)
+                .Include(b => b.Positions)
+                .Include(b => b.Shutter)
+                .ThenInclude(s => s.Inverter)
+                .Include(b => b.Carousel)
+                .Include(b => b.LoadingUnit)
+                .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(ioIndex.ToString());
+            }
+
+            return bay;
+        }
+
         public BayNumber GetByMovementType(IPositioningMessageData data)
         {
             BayNumber targetBay;

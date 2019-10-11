@@ -85,7 +85,7 @@
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
-          "ChainOffset": -500,
+          "ChainOffset": -6.4,
           "Inverter": null,
           "MaximumLoadMovement": {
             "Acceleration": 350,
@@ -2753,36 +2753,36 @@
     "BeltBurnishingTest": {
       "RequiredCycles": 5
     },
-  "BeltBurnishing": {
-    "CycleQuantity": 5
+    "BeltBurnishing": {
+      "CycleQuantity": 5
     },
     "CarouselManualMovements": {
       "FeedRate": 0.04
     },
     "CellPanelsCheck": {
       "FeedRate": 0.2
-  },
+    },
     "CellsHeightCheck": {
       "Step": 0.5,
       "FeedRate": 0.2
     },
     "DepositAndPickUpTest": {
       "RequiredCycles": 10
-  },
-  "HorizontalManualMovements": {
+    },
+    "HorizontalManualMovements": {
       "FeedRate": 0.04,
       "InitialTargetPosition": 30,
       "RecoveryTargetPosition": 200
-  },
+    },
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
-  },
+    },
 
-  "OffsetCalibration": {
+    "OffsetCalibration": {
       "ReferenceCellId": 50,
       "Step": 0.5,
       "FeedRate": 0.2
-  },
+    },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
@@ -2800,12 +2800,14 @@
     "ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 10
-  },
-  "VerticalManualMovements": {
+    },
+    "VerticalManualMovements": {
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15
+      "FeedRateAfterZero": 0.15,
+      "BrakeReleaseTime": 0,
+      "BrakeActivatePercent": 10
     },
     "VerticalResolutionCalibration": {
       "InitialPosition": 1000,

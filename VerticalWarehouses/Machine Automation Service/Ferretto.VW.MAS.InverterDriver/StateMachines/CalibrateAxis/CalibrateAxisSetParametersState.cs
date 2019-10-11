@@ -151,7 +151,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 if (this.calibration == Calibration.FindSensor)
                                 {
                                     var axis = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
-                                    offset = (int)axis.ChainOffset;
+
+                                    offset = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(axis.ChainOffset, Orientation.Horizontal);
                                 }
                                 else
                                 {
@@ -160,6 +161,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             }
                             else if (this.axisToCalibrate == Axis.BayChain)
                             {
+                                // TODO:
+                                // - Add resolution field in the configuration file to define the encoder resolution of inverter (ACU)
+                                // - Define the ChainOffset parameter as mm
+                                // - Use the conversion formula to get the impulses related to te distance
+
                                 offset = (int)this.ParentStateMachine.GetRequiredService<IBaysProvider>().GetChainOffset(this.InverterStatus.SystemIndex);
                             }
                             else

@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     else if (this.machineData.MessageData.MovementMode >= MovementMode.BayChain)
                     {
-                        var bayChainProvider = scope.ServiceProvider.GetRequiredService<IBayChainProvider>();
+                        var bayChainProvider = scope.ServiceProvider.GetRequiredService<ICarouselProvider>();
                         this.machineData.MessageData.CurrentPosition = bayChainProvider.HorizontalPosition;
                     }
                     else
