@@ -425,6 +425,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
+                this.totalPerformedCyclesBeforeStart = this.TotalCompletedCycles ?? 0;
+
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
