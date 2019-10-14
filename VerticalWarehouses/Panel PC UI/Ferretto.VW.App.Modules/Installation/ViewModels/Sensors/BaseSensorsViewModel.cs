@@ -26,6 +26,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private bool bay1HasShutter;
+
+        private bool bay2HasShutter;
+
+        private bool bay3HasShutter;
+
         private bool isBay2Present;
 
         private bool isBay3Present;
@@ -52,6 +58,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public bool Bay1HasShutter { get => this.bay1HasShutter; private set => this.SetProperty(ref this.bay1HasShutter, value); }
+
+        public bool Bay2HasShutter { get => this.bay2HasShutter; private set => this.SetProperty(ref this.bay2HasShutter, value); }
+
+        public bool Bay3HasShutter { get => this.bay3HasShutter; private set => this.SetProperty(ref this.bay3HasShutter, value); }
 
         public override EnableMask EnableMask => EnableMask.None;
 
@@ -104,6 +116,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
                 this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
+
+                this.Bay1HasShutter = bays
+                    .Where(b => b.Number == BayNumber.BayOne)
+                    .Select(b => b.Shutter != null)
+                    .SingleOrDefault();
+
+                this.Bay2HasShutter = bays
+                    .Where(b => b.Number == BayNumber.BayTwo)
+                    .Select(b => b.Shutter != null)
+                    .SingleOrDefault();
+
+                this.Bay3HasShutter = bays
+                    .Where(b => b.Number == BayNumber.BayThree)
+                    .Select(b => b.Shutter != null)
+                    .SingleOrDefault();
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
