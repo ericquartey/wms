@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                 if (sourceHeight == 0)
                 {
-                    var description = $"GetSourceHeight error: position not found ({messageData.Source})";
+                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitDestination.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
                 }
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
                     break;
 
                 case MessageStatus.OperationError:

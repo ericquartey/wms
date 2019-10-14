@@ -95,12 +95,12 @@ namespace Ferretto.VW.MAS.DataLayer
             return cellStatistics;
         }
 
-        public void LoadLoadingUnit(int? loadingUnitId, int? cellId)
+        public void LoadLoadingUnit(int loadingUnitId, int cellId)
         {
             throw new NotImplementedException();
         }
 
-        public void UnloadLoadingUnit(int? cellId)
+        public void UnloadLoadingUnit(int cellId)
         {
             throw new NotImplementedException();
         }

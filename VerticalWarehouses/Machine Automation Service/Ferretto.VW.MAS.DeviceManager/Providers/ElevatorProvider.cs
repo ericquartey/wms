@@ -85,7 +85,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
-            this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
 
             if (loadingUnitId.HasValue
                 &&
@@ -562,7 +561,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
-            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+            var loadingUnit = this.elevatorDataProvider.LoadLoadingUnit();
 
             var axis = orientation == Orientation.Horizontal
                 ? this.elevatorDataProvider.GetHorizontalAxis()

@@ -3,8 +3,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -57,9 +57,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (messageData.LoadingUnitId != null)
                     {
                         var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
-                        if (cell != null && cell.Status == DataModels.CellStatus.Occupied)
+                        if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
+                            loadingUnitId = messageData.LoadingUnitId;
                         }
                     }
                     break;
@@ -69,15 +70,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (messageData.SourceCellId != null)
                     {
                         var cell = this.cellsProvider.GetCellById(messageData.SourceCellId.Value);
-                        if (cell != null && cell.Status == DataModels.CellStatus.Occupied)
+                        if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
+                            loadingUnitId = cell.LoadingUnit.Id;
                         }
                     }
                     break;
 
                 default:
-                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
+                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source, out loadingUnitId);
                     break;
             }
             return targetPosition;

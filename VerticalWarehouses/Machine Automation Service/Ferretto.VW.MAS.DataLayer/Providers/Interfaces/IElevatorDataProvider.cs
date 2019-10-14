@@ -16,7 +16,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetVerticalAxis();
 
-        void SetLoadingUnitOnBoard(int? loadingUnitId);
+        void LoadLoadingUnit(int loadingUnitId);
+
+        void UnloadLoadingUnit();
 
         void UpdateVerticalOffset(double newOffset);
 

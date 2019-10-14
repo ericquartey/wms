@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                 case MessageStatus.OperationEnd:
 
                     // TODO wrap these providers call in a single transaction
-                    this.elevatorDataProvider.SetLoadingUnitOnBoard(null);
+                    this.elevatorDataProvider.UnloadLoadingUnit();
                     if (this.destination == LoadingUnitDestination.Cell)
                     {
                         this.cellsProvider.LoadLoadingUnit(this.loadingUnitId, this.destinationCellId);

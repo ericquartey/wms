@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -15,7 +16,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitLoadUnitState : StateBase, IMoveLoadingUnitLoadUnitState
+    internal class MoveLoadingUnitLoadElevatorState : StateBase, IMoveLoadingUnitLoadElevatorState
     {
         #region Fields
 
@@ -37,7 +38,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         #region Constructors
 
-        public MoveLoadingUnitLoadUnitState(
+        public MoveLoadingUnitLoadElevatorState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IElevatorDataProvider elevatorDataProvider,
             IBaysProvider baysProvider,
@@ -84,19 +85,23 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-
-                    // TODO wrap these providers call in a single transaction
-                    this.elevatorDataProvider.SetLoadingUnitOnBoard(this.loadingUnitId);
-                    if (this.source == LoadingUnitDestination.Cell)
+                    using (var scope = new TransactionScope())
                     {
-                        this.cellsProvider.UnloadLoadingUnit(this.sourceCellId);
-                    }
-                    else
-                    {
-                        this.baysProvider.UnloadLoadingUnit(this.source);
-                    }
+                        this.elevatorDataProvider.LoadLoadingUnit(this.loadingUnitId.Value);
 
-                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                        if (this.source == LoadingUnitDestination.Cell)
+                        {
+                            this.cellsProvider.UnloadLoadingUnit(this.sourceCellId);
+                        }
+                        else
+                        {
+                            this.baysProvider.UnloadLoadingUnit(this.source);
+                        }
+
+                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+
+                        scope.Complete();
+                    }
                     break;
 
                 case MessageStatus.OperationError:

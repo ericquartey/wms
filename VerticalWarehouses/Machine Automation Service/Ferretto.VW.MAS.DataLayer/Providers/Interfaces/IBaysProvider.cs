@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
-        double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination);
+        double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination, out int? loadingUnitId);
 
         void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination);
 

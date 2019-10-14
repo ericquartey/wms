@@ -95,13 +95,24 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
-        public void SetLoadingUnitOnBoard(int? id)
+        public void LoadLoadingUnit(int id)
         {
             var elevator = this.dataContext.Elevators
                 .Include(e => e.LoadingUnit)
                 .Single();
 
             elevator.LoadingUnitId = id;
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void UnloadLoadingUnit()
+        {
+            var elevator = this.dataContext.Elevators
+                               .Include(e => e.LoadingUnit)
+                               .Single();
+
+            elevator.LoadingUnitId = null;
 
             this.dataContext.SaveChanges();
         }

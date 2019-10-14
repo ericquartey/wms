@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
                     break;
 
                 case MessageStatus.OperationError:

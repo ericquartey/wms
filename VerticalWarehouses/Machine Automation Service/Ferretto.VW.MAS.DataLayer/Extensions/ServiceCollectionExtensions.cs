@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
-                .AddTransient(p =>
+                .AddScoped(p =>
                     new DataLayerContext(
                        isActiveChannel: true,
                        p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
