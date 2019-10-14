@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitEndSate : StateBase, IMoveLoadingUnitEndSate, IEndState
+    internal class MoveLoadingUnitEndState : StateBase, IMoveLoadingUnitEndState, IEndState
     {
         #region Fields
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         #region Constructors
 
-        public MoveLoadingUnitEndSate(
+        public MoveLoadingUnitEndState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IBaysProvider baysProvider,
             IErrorsProvider errorsProvider,

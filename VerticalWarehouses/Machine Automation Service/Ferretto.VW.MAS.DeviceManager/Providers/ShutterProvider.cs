@@ -83,7 +83,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
+        // return true if movement is started
+        public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
             var direction = ShutterMovementDirection.None;
             var position = this.sensorsProvider.GetShutterPosition(bayNumber);
@@ -119,15 +120,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (direction == ShutterMovementDirection.None)
             {
-                if (targetPosition != position)
-                {
-                    throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
-                }
-                else
-                {
-                    // destination already reached
-                    return;
-                }
+                throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
             }
 
             var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
@@ -164,6 +157,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.ShutterPositioning,
                 bayNumber,
                 BayNumber.None);
+
+            return true;
         }
 
         public void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender)

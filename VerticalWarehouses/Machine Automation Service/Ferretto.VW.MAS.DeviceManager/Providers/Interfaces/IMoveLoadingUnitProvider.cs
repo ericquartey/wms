@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
@@ -22,9 +23,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message);
 
-        void PositionElevatorToPosition(double targetHeight, MessageActor sender, BayNumber requestingBay);
+        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay);
 
-        MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
+        MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements);
 
         void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay);
 

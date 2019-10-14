@@ -43,6 +43,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination);
 
+        ShutterPosition GetShutterPosition(LoadingUnitDestination destination, out BayNumber bay);
+
         void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);

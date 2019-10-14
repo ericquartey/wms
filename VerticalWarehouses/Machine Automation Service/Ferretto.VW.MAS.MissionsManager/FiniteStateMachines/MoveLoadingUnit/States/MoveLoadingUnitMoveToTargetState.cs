@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -14,17 +15,19 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitMoveToTargetSate : StateBase, IMoveLoadingUnitMoveToTargetSate
+    internal class MoveLoadingUnitMoveToTargetState : StateBase, IMoveLoadingUnitMoveToTargetState
     {
         #region Fields
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private List<MovementMode> movements;
+
         #endregion
 
         #region Constructors
 
-        public MoveLoadingUnitMoveToTargetSate(
+        public MoveLoadingUnitMoveToTargetState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -32,6 +35,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.movements = new List<MovementMode>();
         }
 
         #endregion
@@ -46,11 +50,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                 moveData.LoadingUnitId = loadingUnitId;
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Destination, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
-                var description = $"Move Loading Unit MOve To Target Sate received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType()})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
@@ -60,7 +64,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
 
             switch (notificationStatus)
             {
@@ -81,7 +85,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndSate>();
+            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;
 

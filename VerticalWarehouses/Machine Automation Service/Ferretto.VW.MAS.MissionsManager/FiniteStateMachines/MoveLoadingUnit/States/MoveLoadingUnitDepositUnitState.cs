@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                         this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
                     }
 
-                    returnValue = this.GetState<IMoveLoadingUnitEndSate>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     break;
 
                 case MessageStatus.OperationError:
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndSate>();
+            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;
 
