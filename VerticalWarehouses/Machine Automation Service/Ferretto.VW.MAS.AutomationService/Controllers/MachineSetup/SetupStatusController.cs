@@ -18,12 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public SetupStatusController(ISetupStatusProvider setupStatusProvider)
         {
-            if (setupStatusProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(setupStatusProvider));
-            }
-
-            this.setupStatusProvider = setupStatusProvider;
+            this.setupStatusProvider = setupStatusProvider ?? throw new System.ArgumentNullException(nameof(setupStatusProvider));
         }
 
         #endregion
@@ -33,9 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<SetupStatusCapabilities> Get()
         {
-            var status = this.setupStatusProvider.Get();
-
-            return this.Ok(status);
+            return this.Ok(this.setupStatusProvider.Get());
         }
 
         #endregion

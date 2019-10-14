@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IMachineProvider machineProvider;
-
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -36,7 +34,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IMachineProvider machineProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
@@ -55,10 +52,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
-            if (machineProvider is null)
-            {
-                throw new ArgumentNullException(nameof(machineProvider));
-            }
 
             if (setupProceduresDataProvider is null)
             {
@@ -68,7 +61,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider = elevatorProvider;
             this.elevatorDataProvider = elevatorDataProvider;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
-            this.machineProvider = machineProvider;
             this.setupProceduresDataProvider = setupProceduresDataProvider;
         }
 
@@ -96,6 +88,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<double> GetHorizontalPosition()
         {
             return this.Ok(this.elevatorProvider.HorizontalPosition);
+        }
+
+        [HttpGet("vertical/bounds")]
+        public ActionResult<AxisBounds> GetVerticalBounds()
+        {
+            return this.Ok(this.elevatorProvider.GetVerticalBounds());
         }
 
         [HttpGet("vertical/manual-movements-parameters")]

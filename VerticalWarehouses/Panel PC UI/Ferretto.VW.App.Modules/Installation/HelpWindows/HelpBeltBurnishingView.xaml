@@ -51,7 +51,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="4500"
-                                 LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                 LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,350,0,0"

@@ -36,12 +36,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(s => s.DepositAndPickUpTest)
                 .Include(s => s.HorizontalManualMovements)
                 .Include(s => s.LoadFirstDrawerTest)
-                .Include(s => s.OffsetCalibration)
+                .Include(s => s.VerticalOffsetCalibration)
                 .Include(s => s.ShutterHeightCheck)
                 .Include(s => s.ShutterManualMovements)
                 .Include(s => s.ShutterTest)
                 .Include(s => s.VerticalManualMovements)
                 .Include(s => s.VerticalResolutionCalibration)
+                .Include(s => s.VerticalOffsetCalibration)
                 .Include(s => s.WeightCheck)
                 .Single();
         }
@@ -102,13 +103,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Single();
         }
 
-        public OffsetCalibrationProcedure GetOffsetCalibration()
-        {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.OffsetCalibration)
-                .Single();
-        }
-
         public SetupProcedure GetShutterHeightCheck()
         {
             return this.dataContext.SetupProceduresSets
@@ -134,6 +128,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             return this.dataContext.SetupProceduresSets
                 .Select(s => s.VerticalManualMovements)
+                .Single();
+        }
+
+        public OffsetCalibrationProcedure GetVerticalOffsetCalibration()
+        {
+            return this.dataContext.SetupProceduresSets
+                .Select(s => s.VerticalOffsetCalibration)
                 .Single();
         }
 

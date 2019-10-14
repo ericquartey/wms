@@ -2753,11 +2753,6 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-    "OffsetCalibration": {
-      "ReferenceCellId": 50, //TEMP Temporary value for software test
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
@@ -2783,6 +2778,11 @@
       "FeedRateAfterZero": 0.15,
       "BrakeReleaseTime": 0,
       "BrakeActivatePercent": 10
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
     },
     "VerticalResolutionCalibration": {
       "InitialPosition": 1000, //TEMP Temporary value for software test

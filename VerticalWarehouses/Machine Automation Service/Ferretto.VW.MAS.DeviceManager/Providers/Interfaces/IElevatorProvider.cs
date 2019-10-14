@@ -16,8 +16,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        AxisBounds GetVerticalBounds();
+
         void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
+                    HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,

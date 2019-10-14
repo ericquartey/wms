@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                 if (messageData.ShutterPosition == ShutterPosition.Opened)
                                 {
                                     this.machineData.PositioningMessageData.ExecutedCycles++;
-                                    if (this.machineData.PositioningMessageData.ExecutedCycles == this.machineData.PositioningMessageData.RequestedCycles)
+                                    if (this.machineData.PositioningMessageData.ExecutedCycles >= this.machineData.PositioningMessageData.RequestedCycles)
                                     {
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                                     }

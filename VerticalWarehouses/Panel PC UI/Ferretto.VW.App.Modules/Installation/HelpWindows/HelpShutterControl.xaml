@@ -55,11 +55,11 @@
                              LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="20,280,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="125"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                 Margin="20,280,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="125"
+                                 LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
