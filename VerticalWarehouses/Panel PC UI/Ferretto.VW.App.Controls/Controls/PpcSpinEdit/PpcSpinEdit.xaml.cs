@@ -8,6 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
+using Ferretto.VW.App.Controls.Controls.Keyboards;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -30,6 +33,12 @@ namespace Ferretto.VW.App.Controls
             typeof(decimal),
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
+
+        public static readonly DependencyProperty KeyboardProperty = DependencyProperty.Register(
+                            nameof(Keyboard),
+            typeof(KeyboardType),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(KeyboardType.NumpadCenter));
 
         public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
             nameof(LabelText),
@@ -110,6 +119,12 @@ namespace Ferretto.VW.App.Controls
         }
 
         public bool IsStyleSet => this.isStyleSet;
+
+        public KeyboardType Keyboard
+        {
+            get => (KeyboardType)this.GetValue(KeyboardProperty);
+            set => this.SetValue(KeyboardProperty, value);
+        }
 
         public string LabelText
         {
@@ -220,12 +235,34 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        private void OnPreviewEventDown(object sender, InputEventArgs e)
+        private void OnMouseDoubleClickHandler(object sender, MouseButtonEventArgs e)
         {
-            var spinEdit = (SpinEdit)sender;
-            if (LayoutTreeHelper.GetVisualParents((DependencyObject)e.OriginalSource, spinEdit).Any(x => x is TextBox))
+            switch (this.Keyboard)
             {
-                this.Dispatcher.BeginInvoke((Action)spinEdit.SelectAll);
+                case KeyboardType.NumpadCenter:
+                    var ppcMessagePopup = new PpcNumpadCenterPopup();
+                    var vm = new PpcKeypadsPopupViewModel();
+                    ppcMessagePopup.DataContext = vm;
+                    vm.Update(this.LabelText, this.EditValue?.ToString() ?? string.Empty);
+                    ppcMessagePopup.Topmost = false;
+                    ppcMessagePopup.ShowInTaskbar = false;
+                    PpcMessagePopup.ShowDialog(ppcMessagePopup);
+                    this.EditValue = vm.ScreenText;
+                    break;
+
+                case KeyboardType.Numpad:
+                    var ppcNumpadPopup = new PpcNumpadPopup();
+                    var vmNumpad = new PpcKeypadsPopupViewModel();
+                    ppcNumpadPopup.DataContext = vmNumpad;
+                    vmNumpad.Update(this.LabelText, this.EditValue?.ToString() ?? string.Empty);
+                    ppcNumpadPopup.Topmost = false;
+                    ppcNumpadPopup.ShowInTaskbar = false;
+                    PpcMessagePopup.ShowAnchorDialog(ppcNumpadPopup);
+                    this.EditValue = vmNumpad.ScreenText;
+                    break;
+
+                default:
+                    break;
             }
         }
 

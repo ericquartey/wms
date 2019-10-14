@@ -286,6 +286,7 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputHeight}"
+                               Keyboard="Numpad"
                                LabelText="{x:Static res:InstallationApp.Position}"
                                Mask="####0"
                                WidthNumber="210" />
@@ -306,9 +307,9 @@
                                EditValue="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputCellId}"
                                LabelText="{x:Static res:InstallationApp.CellNumber}"
-                               Mask="##0"                               
+                               Mask="##0"
                                WidthNumber="210" />
-            
+
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="4,0,4,4"
@@ -325,9 +326,9 @@
                                EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
                                LabelText="{x:Static res:InstallationApp.DrawerNumber}"
-                               Mask="#0"                               
+                               Mask="#0"
                                WidthNumber="210" />
-            
+
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="2"
                                 Margin="4,0,4,4"
