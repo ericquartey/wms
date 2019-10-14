@@ -1,10 +1,26 @@
-﻿using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using System.Linq;
+using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
     public class HeaderViewModel : BasePresentationViewModel
     {
+        #region Fields
+
+        private readonly IMachineErrorsService machineErrorsService;
+
+        #endregion
+
+        #region Constructors
+
+        public HeaderViewModel(IMachineErrorsService machineErrorsService)
+        {
+            this.machineErrorsService = machineErrorsService;
+        }
+
+        #endregion
+
         #region Methods
 
         public override void InitializeData()
@@ -18,6 +34,26 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance(nameof(PresentationMachinePowerSwitch)));
             this.States.Add(this.GetInstance(nameof(PresentationError)));
             this.States.Add(this.GetInstance(nameof(PresentationDebug)));
+        }
+
+        public override void UpdateChanges(PresentationChangedMessage presentation)
+        {
+            base.UpdateChanges(presentation);
+
+            if (presentation.States == null)
+            {
+                return;
+            }
+
+            var actualStates = this.States.Where(s => presentation.States.Any(ps => ps.Type == s.Type));
+
+            foreach (var state in actualStates)
+            {
+                var presentationState = presentation.States.Single(s => s.Type == state.Type);
+
+                state.IsVisible = presentationState.IsVisible;
+                state.IsEnabled = presentationState.IsEnabled;
+            }
         }
 
         public override void UpdatePresentation(PresentationMode mode)
@@ -43,7 +79,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Logged, true);
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
-                    this.Show(PresentationTypes.Error, true);
+                    this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
                     this.Show(PresentationTypes.Debug, true);
                     break;
 
@@ -53,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Logged, true);
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
-                    this.Show(PresentationTypes.Error, true);
+                    this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
                     break;
 
                 case PresentationMode.Help:

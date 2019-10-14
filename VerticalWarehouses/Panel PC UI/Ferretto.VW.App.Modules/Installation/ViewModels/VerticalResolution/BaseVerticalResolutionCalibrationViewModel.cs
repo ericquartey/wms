@@ -7,6 +7,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -21,7 +22,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
-        private readonly IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService;
+        private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
 
         private double? currentPosition;
 
@@ -41,8 +42,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BaseVerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
             : base(Services.PresentationMode.Installer)
         {
             if (eventAggregator is null)
@@ -50,19 +51,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            if (resolutionCalibrationService is null)
+            if (resolutionCalibrationWebService is null)
             {
-                throw new ArgumentNullException(nameof(resolutionCalibrationService));
+                throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             }
 
             this.eventAggregator = eventAggregator;
-            this.MachineElevatorService = machineElevatorService;
-            this.resolutionCalibrationService = resolutionCalibrationService;
+            this.MachineElevatorWebService = machineElevatorWebService;
+            this.resolutionCalibrationWebService = resolutionCalibrationWebService;
 
             this.InitializeNavigationMenu();
         }
@@ -117,11 +118,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public IMachineElevatorService MachineElevatorService { get; }
+        public IMachineElevatorWebService MachineElevatorWebService { get; }
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
-        public IMachineVerticalResolutionCalibrationProcedureService ResolutionCalibrationService => this.resolutionCalibrationService;
+        public IMachineVerticalResolutionCalibrationProcedureWebService ResolutionCalibrationService => this.resolutionCalibrationWebService;
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -243,7 +244,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -261,7 +262,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.ProcedureParameters = await this.resolutionCalibrationService.GetParametersAsync();
+                this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
             }
             catch (Exception ex)
             {
@@ -279,7 +280,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.MachineElevatorService.StopAsync();
+                await this.MachineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {

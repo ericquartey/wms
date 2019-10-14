@@ -24,6 +24,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="3"
@@ -34,12 +35,13 @@
 
 
         <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  LabelText="{x:Static res:InstallationApp.CurrentPanel}">
             <controls:PpcLabeledText.ContentText>
                 <MultiBinding StringFormat="{x:Static res:General.NumberOnTotal}">
-                    <Binding Path="CurrentPanel.Id"
+                    <Binding Path="CurrentPanelNumber"
                              TargetNullValue="{x:Static res:General.TargetNullValue}" />
                     <Binding Path="Panels.Count"
                              TargetNullValue="{x:Static res:General.TargetNullValue}" />
@@ -47,35 +49,53 @@
             </controls:PpcLabeledText.ContentText>
         </controls:PpcLabeledText>
 
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+
+            <controls:PpcButton Width="110"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding GoToPreviousPanelCommand}"
+                                Content="{x:Static res:InstallationApp.PreviousPanel}" />
+
+            <controls:PpcButton Width="110"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding GoToNextPanelCommand}"
+                                Content="{x:Static res:InstallationApp.NextPanel}" />
+        </StackPanel>
+
 
         <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="1"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPanel.Side}"
+                                 ContentText="{Binding CurrentPanel.Side, Converter={StaticResource EWSC}}"
                                  LabelText="{x:Static res:InstallationApp.Side}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentCell.Id}"
                                  LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentCell.Position}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="3"
+        <ctrls:PpcSpinEdit Grid.Row="4"
                            Grid.RowSpan="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            EditValue="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-        <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="4"
                                  Grid.RowSpan="2"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
@@ -83,21 +103,15 @@
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <controls:PpcLabeledText Grid.Row="5"
+        <controls:PpcLabeledText Grid.Row="6"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding PanelCorrection}"
-                                 LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
+                                 ContentText="{Binding Displacement}"
+                                 LabelText="{x:Static res:InstallationApp.Displacement}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="2"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding GoToNextPanelCommand}"
-                            Content="{x:Static res:InstallationApp.NextPanel}" />
 
-        <controls:PpcButton Grid.Row="2"
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
@@ -105,7 +119,7 @@
                             Content="{x:Static res:InstallationApp.MoveToCellHeight}"
                             IsBusy="{Binding IsElevatorMovingToCell}" />
 
-        <controls:PpcButton Grid.Row="3"
+        <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
@@ -113,7 +127,7 @@
                             Content="{x:Static res:InstallationApp.Up}"
                             IsBusy="{Binding IsElevatorMovingUp}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="5"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
@@ -121,7 +135,7 @@
                             Content="{x:Static res:InstallationApp.Down}"
                             IsBusy="{Binding IsElevatorMovingDown}" />
 
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"

@@ -8,7 +8,7 @@ using Unity;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationDebug : BasePresentation
+    public class PresentationDebug : BasePresentationViewModel
     {
         #region Fields
 

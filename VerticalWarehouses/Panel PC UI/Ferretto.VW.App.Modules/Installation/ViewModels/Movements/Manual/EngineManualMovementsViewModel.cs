@@ -10,10 +10,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IBayManager bayManagerService;
-
-        private readonly IMachineElevatorService machineElevatorService;
-
         private bool canExecuteMoveBackwardsCommand;
 
         private bool canExecuteMoveDownCommand;
@@ -45,23 +41,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public EngineManualMovementsViewModel(
-            IMachineElevatorService elevatorService,
+            IMachineElevatorWebService elevatorWebService,
             IBayManager bayManager)
-            : base(elevatorService, bayManager)
+            : base(elevatorWebService, bayManager)
         {
-            if (elevatorService is null)
-            {
-                throw new System.ArgumentNullException(nameof(elevatorService));
-            }
-
-            if (bayManager is null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
-            this.machineElevatorService = elevatorService;
-            this.bayManagerService = bayManager;
-
             this.RefreshCanExecuteCommands();
         }
 
@@ -240,7 +223,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineElevatorService.StopAsync();
+                await this.MachineElevatorService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -266,7 +249,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalManualAsync(direction);
+                await this.MachineElevatorService.MoveHorizontalManualAsync(direction);
             }
             catch (System.Exception ex)
             {
@@ -280,7 +263,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.MoveVerticalAsync(direction);
+                await this.MachineElevatorService.MoveVerticalAsync(direction);
             }
             catch (System.Exception ex)
             {

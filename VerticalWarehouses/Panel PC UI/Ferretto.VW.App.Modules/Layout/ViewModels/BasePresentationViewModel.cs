@@ -3,7 +3,6 @@ using System.Linq;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
@@ -103,26 +102,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public virtual void UpdatePresentation(PresentationMode mode)
         {
-            if (this.CurrentPresentation == PresentationMode.None ||
-                this.CurrentPresentation == mode)
-            {
-                return;
-            }
-
-            switch (mode)
-            {
-                case PresentationMode.Login:
-                    break;
-
-                case PresentationMode.Installer:
-                    break;
-
-                case PresentationMode.Operator:
-                    break;
-
-                case PresentationMode.None:
-                    break;
-            }
+            // do nothing
         }
 
         #endregion

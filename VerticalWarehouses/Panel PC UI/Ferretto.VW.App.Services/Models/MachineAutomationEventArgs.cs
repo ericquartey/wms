@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.App.Services.Models
 {

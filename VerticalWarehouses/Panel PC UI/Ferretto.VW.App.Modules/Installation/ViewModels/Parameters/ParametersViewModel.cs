@@ -11,9 +11,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineConfigurationService machineConfigurationService;
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly IMachineIdentityService machineIdentityService;
+        private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private VertimagConfiguration configuration;
 
@@ -25,10 +25,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersViewModel(IMachineConfigurationService machineConfigurationService)
+        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService)
             : base(Services.PresentationMode.Installer)
         {
-            this.machineConfigurationService = machineConfigurationService ?? throw new ArgumentNullException(nameof(machineConfigurationService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.configuration = await this.machineConfigurationService.GetAsync();
+            this.configuration = await this.machineConfigurationWebService.GetAsync();
             this.RaisePropertyChanged(nameof(this.Configuration));
         }
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = true;
 
-                await this.machineConfigurationService.SetAsync(this.configuration);
+                await this.machineConfigurationWebService.SetAsync(this.configuration);
 
                 this.ShowNotification(Resources.InstallationApp.SaveSuccessful);
 

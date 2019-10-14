@@ -28,7 +28,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
-            this.verticalParams = this.ParentStateMachine.GetRequiredService<ISetupProceduresDataProvider>().GetAll().VerticalManualMovements;
+            this.verticalParams = this.ParentStateMachine
+                .GetRequiredService<ISetupProceduresDataProvider>()
+                .GetVerticalManualMovements(); // NO! these are not manual movements. This needs to be removed!!!!!!!!!!!
 
             logger.LogDebug("1:Method Start");
         }

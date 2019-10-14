@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<SetupProcedure> GetParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetAll().WeightCheck);
+            return this.Ok(this.setupProceduresDataProvider.GetWeightCheck());
         }
 
         [HttpPost("start")]

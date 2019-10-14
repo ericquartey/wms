@@ -8,10 +8,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public OtherSensorsViewModel(
-            IMachineSensorsService machineSensorsService,
-            IMachineBaysService machineBaysService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineBaysWebService machineBaysWebService,
             IBayManager bayManager)
-            : base(machineSensorsService, machineBaysService, bayManager)
+            : base(machineSensorsWebService, machineBaysWebService, bayManager)
         {
         }
 

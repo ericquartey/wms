@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Services.Interfaces
+﻿namespace Ferretto.VW.App.Services
 {
     public enum ViewType
     {

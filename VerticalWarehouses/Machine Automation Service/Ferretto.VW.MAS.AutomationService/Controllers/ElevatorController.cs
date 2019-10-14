@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("vertical/manual-movements-parameters")]
         public ActionResult<VerticalManualMovementsProcedure> GetVerticalManualMovementsParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetAll().VerticalManualMovements);
+            return this.Ok(this.setupProceduresDataProvider.GetVerticalManualMovements());
         }
 
         [HttpGet("vertical/offset")]

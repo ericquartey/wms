@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 

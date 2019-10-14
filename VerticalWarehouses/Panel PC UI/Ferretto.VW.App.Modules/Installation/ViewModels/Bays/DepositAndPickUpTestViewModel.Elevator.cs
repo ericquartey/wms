@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly LoadingUnit embarkedLoadingUnit;
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DepositAndPickUpState currentState;
 
@@ -103,8 +103,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.ElevatorVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -159,7 +159,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.PickUp;
                 }
 
-                await this.machineElevatorService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
+                await this.machineElevatorWebService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
             }
             catch (System.Exception ex)
             {

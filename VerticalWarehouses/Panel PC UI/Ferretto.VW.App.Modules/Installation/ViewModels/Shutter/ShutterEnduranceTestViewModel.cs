@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -18,11 +19,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly ShutterSensors sensors;
 
-        private readonly IMachineShuttersService shuttersService;
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private int bayNumber;
 
@@ -51,14 +52,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEnduranceTestViewModel(
-            IMachineShuttersService shuttersService,
+            IMachineShuttersWebService shuttersWebService,
             IBayManager bayManager,
-            IMachineSensorsService machineSensorsService)
+            IMachineSensorsWebService machineSensorsWebService)
             : base(PresentationMode.Installer)
         {
-            if (shuttersService is null)
+            if (shuttersWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(shuttersService));
+                throw new System.ArgumentNullException(nameof(shuttersWebService));
             }
 
             if (bayManager is null)
@@ -66,14 +67,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(bayManager));
             }
 
-            if (machineSensorsService is null)
+            if (machineSensorsWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineSensorsService));
+                throw new System.ArgumentNullException(nameof(machineSensorsWebService));
             }
 
-            this.machineSensorsService = machineSensorsService;
+            this.machineSensorsWebService = machineSensorsWebService;
 
-            this.shuttersService = shuttersService;
+            this.shuttersWebService = shuttersWebService;
 
             this.BayNumber = (int)bayManager.Bay.Number;
 
@@ -289,7 +290,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
@@ -312,8 +313,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && !this.IsWaitingForResponse;
         }
 
-        private void OnShutterTestStatusChanged(
-            NotificationMessageUI<ShutterPositioningMessageData> message)
+        private void OnShutterTestStatusChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             if (message?.Data is null)
             {
@@ -338,7 +338,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.shuttersService.GetTestParametersAsync();
+                var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
 
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
                 this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
@@ -356,7 +356,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.RunTestAsync(
+                await this.shuttersWebService.RunTestAsync(
                     this.InputDelayBetweenCycles.Value,
                     this.InputRequiredCycles.Value);
             }
@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.StopAsync();
+                await this.shuttersWebService.StopAsync();
             }
             catch (System.Exception ex)
             {

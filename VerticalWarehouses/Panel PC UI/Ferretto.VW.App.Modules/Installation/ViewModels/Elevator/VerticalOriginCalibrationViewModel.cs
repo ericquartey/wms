@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
@@ -17,9 +18,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private readonly IMachineVerticalOriginProcedureService verticalOriginProcedureService;
+        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
         private double? currentHorizontalPosition;
 
@@ -60,22 +61,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOriginCalibrationViewModel(
-            IMachineVerticalOriginProcedureService verticalOriginProcedureService,
-            IMachineElevatorService machineElevatorService)
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
+            IMachineElevatorWebService machineElevatorWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (verticalOriginProcedureService is null)
+            if (verticalOriginProcedureWebService is null)
             {
-                throw new ArgumentNullException(nameof(verticalOriginProcedureService));
+                throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             }
 
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            this.verticalOriginProcedureService = verticalOriginProcedureService;
-            this.machineElevatorService = machineElevatorService;
+            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService;
+            this.machineElevatorWebService = machineElevatorWebService;
         }
 
         #endregion
@@ -203,15 +204,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.verticalOriginProcedureService.GetParametersAsync();
+                var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
 
                 this.UpperBound = procedureParameters.UpperBound;
                 this.LowerBound = procedureParameters.LowerBound;
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                this.CurrentVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-                this.CurrentHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
+                this.CurrentVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.CurrentHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -378,7 +379,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.isExecutingVerticalOperation = false;
 
-                await this.verticalOriginProcedureService.StartAsync();
+                await this.verticalOriginProcedureWebService.StartAsync();
 
                 this.IsExecutingProcedure = true;
             }
@@ -399,7 +400,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.verticalOriginProcedureService.StopAsync();
+                await this.verticalOriginProcedureWebService.StopAsync();
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,

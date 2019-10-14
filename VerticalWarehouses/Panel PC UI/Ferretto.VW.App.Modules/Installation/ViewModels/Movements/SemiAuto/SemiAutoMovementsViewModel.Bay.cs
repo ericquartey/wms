@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputHeight = this.BayPositionHeight.HasValue ? this.BayPositionHeight.Value : 0;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.BayPositionHeight.Value,
                     this.procedureParameters.FeedRateAfterZero);
 

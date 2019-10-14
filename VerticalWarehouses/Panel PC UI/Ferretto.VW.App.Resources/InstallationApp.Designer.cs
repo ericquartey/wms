@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -1303,6 +1303,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information was updated..
+        /// </summary>
+        public static string InformationSuccessfullyUpdated {
+            get {
+                return ResourceManager.GetString("InformationSuccessfullyUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing ....
         /// </summary>
         public static string InitializingWithEllipsis {
@@ -2113,6 +2122,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous Panel.
+        /// </summary>
+        public static string PreviousPanel {
+            get {
+                return ResourceManager.GetString("PreviousPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Procedure completed..
         /// </summary>
         public static string ProcedureCompleted {
@@ -2707,15 +2725,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update Resolution.
-        /// </summary>
-        public static string UpdateResolution {
-            get {
-                return ResourceManager.GetString("UpdateResolution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Upper Position.
         /// </summary>
         public static string UpperBayPosition {
@@ -2829,15 +2838,6 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalAxisHomedDone {
             get {
                 return ResourceManager.GetString("VerticalAxisHomedDone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vertical axis resolution updated..
-        /// </summary>
-        public static string VerticalAxisResolutionUpdated {
-            get {
-                return ResourceManager.GetString("VerticalAxisResolutionUpdated", resourceCulture);
             }
         }
         

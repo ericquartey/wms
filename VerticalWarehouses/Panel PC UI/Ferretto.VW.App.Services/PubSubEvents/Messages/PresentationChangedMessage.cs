@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services

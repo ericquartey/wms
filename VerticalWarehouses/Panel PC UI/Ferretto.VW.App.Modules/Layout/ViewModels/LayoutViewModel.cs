@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {

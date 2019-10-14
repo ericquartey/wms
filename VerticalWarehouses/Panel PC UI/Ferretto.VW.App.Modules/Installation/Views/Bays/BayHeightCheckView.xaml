@@ -80,7 +80,7 @@
 
         <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
-                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}}"
+                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
         <controls:PpcButton Grid.Row="3"

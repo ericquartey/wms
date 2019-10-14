@@ -9,7 +9,6 @@ using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
@@ -32,7 +31,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
 
-        private readonly IMachineSetupStatusService setupStatusService;
+        private readonly IMachineSetupStatusWebService setupStatusWebService;
 
         private bool areItemsEnabled;
 
@@ -41,7 +40,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public InstallatorMenuViewModel(
-            IMachineSetupStatusService setupStatusService,
+            IMachineSetupStatusWebService setupStatusWebService,
             IMachineModeService machineModeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
@@ -51,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            this.setupStatusService = setupStatusService ?? throw new ArgumentNullException(nameof(setupStatusService));
+            this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
 
             // TODO Review Implementation avoid using numbers to identify bays
@@ -87,13 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = false;
-
-            await this.UpdateMenuItemsStatus();
-        }
-
-        public override async void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
 
             await this.UpdateMenuItemsStatus();
         }
@@ -196,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var setupStatus = await this.setupStatusService.GetAsync();
+                var setupStatus = await this.setupStatusWebService.GetAsync();
 
                 foreach (var menuItem in this.installatorItems)
                 {
