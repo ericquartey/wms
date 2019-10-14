@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
@@ -31,22 +32,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BaseCellsHeightCheckViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineCellsService is null)
+            if (machineCellsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineCellsService));
+                throw new ArgumentNullException(nameof(machineCellsWebService));
             }
 
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            this.MachineCellsService = machineCellsService;
-            this.MachineElevatorService = machineElevatorService;
+            this.MachineCellsWebService = machineCellsWebService;
+            this.MachineElevatorWebService = machineElevatorWebService;
 
             this.InitializeNavigationMenu();
         }
@@ -104,9 +105,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected IMachineCellsService MachineCellsService { get; }
+        protected IMachineCellsWebService MachineCellsWebService { get; }
 
-        protected IMachineElevatorService MachineElevatorService { get; }
+        protected IMachineElevatorWebService MachineElevatorWebService { get; }
 
         protected PositioningProcedure ProcedureParameters { get; private set; }
 
@@ -183,7 +184,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.Cells = await this.MachineCellsService.GetAllAsync();
+                this.Cells = await this.MachineCellsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -195,7 +196,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -207,7 +208,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.ProcedureParameters = await this.MachineCellsService.GetHeightCheckProcedureParametersAsync();
+                this.ProcedureParameters = await this.MachineCellsWebService.GetHeightCheckProcedureParametersAsync();
             }
             catch (Exception ex)
             {

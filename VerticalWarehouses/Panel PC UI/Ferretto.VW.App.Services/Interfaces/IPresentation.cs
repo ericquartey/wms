@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Ferretto.VW.App.Services.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface IPresentation
     {

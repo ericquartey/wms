@@ -2,14 +2,13 @@
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BasePresentation : BindableBase, IPresentation
+    public class BasePresentationViewModel : BindableBase, IPresentation
     {
         #region Fields
 
@@ -29,7 +28,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        protected BasePresentation(PresentationTypes type)
+        protected BasePresentationViewModel(PresentationTypes type)
         {
             this.Type = type;
         }

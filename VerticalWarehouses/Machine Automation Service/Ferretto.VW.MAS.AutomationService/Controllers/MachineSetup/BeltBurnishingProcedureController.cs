@@ -47,13 +47,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
 
-            var setupProcedures = this.setupProceduresDataProvider.GetAll().BeltBurnishingTest;
+            var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
 
             var parameters = new BeltBurnishingParameters
             {
                 UpperBound = verticalAxis.UpperBound,
                 LowerBound = verticalAxis.LowerBound,
-                RequiredCycles = setupProcedures.RequiredCycles,
+                RequiredCycles = procedureParameters.RequiredCycles,
             };
 
             return this.Ok(parameters);

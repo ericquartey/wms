@@ -161,17 +161,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var setupStatus = this.setupStatusProvider.Get();
 
-            var setupProcedures = this.setupProceduresDataProvider.GetAll().HorizontalManualMovements;
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
 
             var targetPosition = setupStatus.VerticalOriginCalibration.IsCompleted
-                ? setupProcedures.RecoveryTargetPosition
-                : setupProcedures.InitialTargetPosition;
+                ? procedureParameters.RecoveryTargetPosition
+                : procedureParameters.InitialTargetPosition;
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
-            var speed = new[] { movementParameters.Speed * setupProcedures.FeedRate };
+            var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
 
-            var parameters = this.setupProceduresDataProvider.GetAll().VerticalManualMovements;
+            var parameters = this.setupProceduresDataProvider.GetVerticalManualMovements();
 
             double feedRate;
             double targetPosition;
@@ -470,7 +470,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().WeightCheck;
+            var procedureParameters = this.setupProceduresDataProvider.GetWeightCheck();
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 

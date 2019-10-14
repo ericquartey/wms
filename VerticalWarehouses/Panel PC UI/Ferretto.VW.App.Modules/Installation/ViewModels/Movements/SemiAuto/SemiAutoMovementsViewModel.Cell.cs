@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineCellsService machineCellsService;
+        private readonly IMachineCellsWebService machineCellsWebService;
 
         private bool canInputCellId;
 
@@ -265,7 +265,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
                     this.procedureParameters.FeedRateAfterZero);
 
@@ -289,7 +289,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
                     this.procedureParameters.FeedRateAfterZero);
 
@@ -313,7 +313,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedLoadingUnit.Cell?.Position ?? 0,
                     this.procedureParameters.FeedRateAfterZero);
 
@@ -336,7 +336,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.Cells = await this.machineCellsService.GetAllAsync();
+                this.Cells = await this.machineCellsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {

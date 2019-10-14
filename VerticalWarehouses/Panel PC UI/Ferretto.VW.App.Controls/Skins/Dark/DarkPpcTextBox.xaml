@@ -14,7 +14,7 @@
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBox_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBlock_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource EDBGrayH}" />
 
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_Disabled"
                      Color="Transparent" />

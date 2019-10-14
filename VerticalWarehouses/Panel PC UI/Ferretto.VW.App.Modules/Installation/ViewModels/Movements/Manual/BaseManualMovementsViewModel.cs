@@ -5,6 +5,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -36,22 +37,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BaseManualMovementsViewModel(
-            IMachineElevatorService machineElevatorService,
+            IMachineElevatorWebService machineElevatorWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            if (machineElevatorService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            if (bayManagerService is null)
-            {
-                throw new ArgumentNullException(nameof(bayManagerService));
-            }
-
-            this.MachineElevatorService = machineElevatorService;
-            this.bayManagerService = bayManagerService;
+            this.MachineElevatorService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
         }
 
         #endregion
@@ -83,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
 
-        protected IMachineElevatorService MachineElevatorService { get; }
+        protected IMachineElevatorWebService MachineElevatorService { get; }
 
         #endregion
 
@@ -166,13 +157,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.EnableAll();
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            this.RetrieveCurrentPositionAsync();
-        }
-
         protected abstract Task StopMovementAsync();
 
         private async Task RetrieveCurrentPositionAsync()
@@ -211,6 +195,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.CurrentBayChainPosition = message?.Data?.CurrentPosition ?? this.CurrentBayChainPosition;
                     }
+
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Vertical:

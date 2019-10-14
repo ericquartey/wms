@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private bool canExecuteCloseCommand;
 
@@ -31,12 +31,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CarouselManualMovementsViewModel(
-            IMachineCarouselService machineCarouselService,
-            IMachineElevatorService machineElevatorService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IBayManager bayManagerService)
-            : base(machineElevatorService, bayManagerService)
+            : base(machineElevatorWebService, bayManagerService)
         {
-            this.machineCarouselService = machineCarouselService;
+            this.machineCarouselWebService = machineCarouselWebService;
 
             this.RefreshCanExecuteCommands();
         }
@@ -123,7 +123,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                this.CurrentBayChainPosition = await this.machineCarouselService.GetPositionAsync();
+                this.CurrentBayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
             }
             catch (System.Exception ex)
             {
@@ -145,7 +145,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineCarouselService.MoveManualAsync(direction);
+                await this.machineCarouselWebService.MoveManualAsync(direction);
             }
             catch (System.Exception ex)
             {
@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.machineCarouselService.StopAsync();
+                await this.machineCarouselWebService.StopAsync();
             }
             catch (System.Exception ex)
             {

@@ -6,6 +6,7 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -33,9 +34,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep2ViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationService)
         {
         }
 
@@ -182,7 +183,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = false;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
                     this.ProcedureParameters.FeedRate);
             }

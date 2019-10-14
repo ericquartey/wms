@@ -132,4 +132,7 @@
   <data name="UserLogin_InvalidCredentials" xml:space="preserve">
     <value>Credenziali non valide.</value>
   </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Il parametro non può essere nullo o vuoto.</value>
+  </data>
 </root>

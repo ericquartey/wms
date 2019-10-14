@@ -7,6 +7,7 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
@@ -16,13 +17,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly Sensors sensors = new Sensors();
 
-        private readonly IMachineShuttersService shuttersService;
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private SubscriptionToken homingToken;
 
@@ -47,28 +48,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public SemiAutoMovementsViewModel(
-            IMachineElevatorService machineElevatorService,
-            IMachineCellsService machineCellsService,
-            IMachineLoadingUnitsService machineLoadingUnitsService,
-            IMachineSensorsService machineSensorsService,
-            IMachineShuttersService shuttersService,
-            IMachineCarouselService machineCarouselService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineCellsWebService machineCellsWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineShuttersWebService shuttersWebService,
+            IMachineCarouselWebService machineCarouselWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            if (machineElevatorService is null)
+            if (machineElevatorWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineElevatorService));
+                throw new ArgumentNullException(nameof(machineElevatorWebService));
             }
 
-            if (machineCellsService is null)
+            if (machineCellsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineCellsService));
+                throw new ArgumentNullException(nameof(machineCellsWebService));
             }
 
-            if (machineLoadingUnitsService is null)
+            if (machineLoadingUnitsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
+                throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             }
 
             if (bayManagerService is null)
@@ -76,28 +77,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(bayManagerService));
             }
 
-            if (machineSensorsService is null)
+            if (machineSensorsWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineSensorsService));
+                throw new System.ArgumentNullException(nameof(machineSensorsWebService));
             }
 
-            if (shuttersService is null)
+            if (shuttersWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(shuttersService));
+                throw new System.ArgumentNullException(nameof(shuttersWebService));
             }
 
-            if (machineCarouselService is null)
+            if (machineCarouselWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(machineCarouselService));
+                throw new System.ArgumentNullException(nameof(machineCarouselWebService));
             }
 
-            this.machineSensorsService = machineSensorsService;
-            this.machineElevatorService = machineElevatorService;
-            this.machineCellsService = machineCellsService;
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.machineSensorsWebService = machineSensorsWebService;
+            this.machineElevatorWebService = machineElevatorWebService;
+            this.machineCellsWebService = machineCellsWebService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
             this.bayManagerService = bayManagerService;
-            this.shuttersService = shuttersService;
-            this.machineCarouselService = machineCarouselService;
+            this.shuttersWebService = shuttersWebService;
+            this.machineCarouselWebService = machineCarouselWebService;
             this.shutterSensors = new ShutterSensors(this.BayNumber);
 
             this.SelectBayPosition1();
@@ -246,7 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
                 this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
@@ -278,7 +279,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -353,6 +354,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
+
                         break;
                     }
 
@@ -514,7 +516,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.procedureParameters = await this.machineElevatorService.GetVerticalManualMovementsParametersAsync();
+                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
             }
             catch (Exception ex)
             {

@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.GotoBayAdjusted;
                 }
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                         this.BayPositionHeight.Value,
                         this.procedureParameters.FeedRate);
 

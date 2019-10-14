@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        private double feedRate = 1.0;
+        private double feedRate = 1;
 
         #endregion
 

@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -17,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly List<DeviceBase> devices;
 
-        private readonly IMachineDevicesService machineDevicesServices = ServiceLocator.Current.GetInstance<IMachineDevicesService>();
+        private readonly IMachineDevicesWebService machineDevicesServices = ServiceLocator.Current.GetInstance<IMachineDevicesWebService>();
 
         private string currentMachineStatusFSM;
 

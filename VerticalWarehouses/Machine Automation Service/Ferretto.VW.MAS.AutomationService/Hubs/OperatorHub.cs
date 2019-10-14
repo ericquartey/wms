@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+﻿using Ferretto.VW.MAS.AutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.VW.MAS.AutomationService

@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.ElevatorAxes.Update(verticalAxis);
             this.dataContext.SaveChanges();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().OffsetCalibration;
+            var procedureParameters = this.setupProceduresDataProvider.GetOffsetCalibration();
             this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
             this.setupStatusProvider.CompleteVerticalOffset();
         }
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.ElevatorAxes.Update(verticalAxis);
             this.dataContext.SaveChanges();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetAll().VerticalResolutionCalibration;
+            var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
             this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
             this.setupStatusProvider.CompleteVerticalResolution();
         }

@@ -79,13 +79,13 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding ErrorTime}"
-                                  LabelText="Visto" />
+                                  LabelText="{x:Static res:VWApp.FirstSeen}" />
 
             <local:PpcButton Grid.Row="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"
-                             Content="Marca come risolto" />
+                             Content="{x:Static res:VWApp.MarkAsResolved}"/>
 
         </Grid>
     </Grid>

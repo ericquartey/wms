@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private DelegateCommand checkLoadingUnitCommand;
 
@@ -28,11 +28,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ElevatorWeightCheckStep1ViewModel(
-            IMachineLoadingUnitsService machineLoadingUnitsService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
         }
 
         #endregion
@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {

@@ -6,6 +6,7 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -27,9 +28,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep1ViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService)
         {
         }
 
@@ -96,7 +97,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.CurrentResolution = await this.MachineElevatorService.GetVerticalResolutionAsync();
+                this.CurrentResolution = await this.MachineElevatorWebService.GetVerticalResolutionAsync();
 
                 this.InputInitialPosition = this.ProcedureParameters.InitialPosition;
             }
@@ -173,7 +174,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputInitialPosition.Value,
                     this.ProcedureParameters.FeedRate);
             }

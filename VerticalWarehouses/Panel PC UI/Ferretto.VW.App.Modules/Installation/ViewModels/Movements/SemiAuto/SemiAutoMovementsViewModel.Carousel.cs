@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private double? bayChainHorizontalPosition;
 
@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Backwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Backwards);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
@@ -111,7 +111,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Forwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Forwards);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.BayChainHorizontalPosition = await this.machineCarouselService.GetPositionAsync();
+                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
             }
             catch (Exception ex)
             {
@@ -151,7 +151,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.IsWaitingForResponse = true;
-                    await this.machineCarouselService.FindZeroAsync();
+                    await this.machineCarouselWebService.FindZeroAsync();
                     this.IsTuningBay = true;
                 }
             }

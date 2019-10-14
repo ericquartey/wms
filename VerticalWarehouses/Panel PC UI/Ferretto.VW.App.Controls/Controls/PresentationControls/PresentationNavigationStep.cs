@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class PresentationNavigationStep : BasePresentation
+    public class PresentationNavigationStep : BasePresentationViewModel
     {
         #region Fields
 
@@ -20,7 +19,7 @@ namespace Ferretto.VW.App.Controls
         #region Constructors
 
         public PresentationNavigationStep(INavigationService navigationService)
-     : base(PresentationTypes.Prev)
+            : base(PresentationTypes.Prev)
         {
             if (navigationService is null)
             {

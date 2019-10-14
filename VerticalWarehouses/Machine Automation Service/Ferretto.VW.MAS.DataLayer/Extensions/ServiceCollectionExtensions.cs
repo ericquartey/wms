@@ -28,28 +28,28 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
-                .AddScoped(p =>
+                .AddTransient(p =>
                     new DataLayerContext(
                        isActiveChannel: true,
                        p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
             services
-                .AddScoped<IBaysProvider, BaysProvider>()
-                .AddScoped<ICellPanelsProvider, CellPanelsProvider>()
-                .AddScoped<ICellsProvider, CellsProvider>()
-                .AddScoped<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
-                .AddScoped<IElevatorDataProvider, ElevatorDataProvider>()
-                .AddScoped<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
-                .AddScoped<IErrorsProvider, ErrorsProvider>()
-                .AddScoped<ILoadingUnitsProvider, LoadingUnitsProvider>()
-                .AddScoped<ILogEntriesProvider, LogEntriesProvider>()
-                .AddScoped<IMachineProvider, MachineProvider>()
-                .AddScoped<IServicingProvider, ServicingProvider>()
-                .AddScoped<ISetupStatusProvider, SetupStatusProvider>()
-                .AddScoped<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
-                .AddScoped<IShutterTestParametersProvider, ShutterTestParametersProvider>()
-                .AddScoped<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
-                .AddScoped<IUsersProvider, UsersProvider>();
+                .AddTransient<IBaysProvider, BaysProvider>()
+                .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
+                .AddTransient<ICellsProvider, CellsProvider>()
+                .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
+                .AddTransient<IElevatorDataProvider, ElevatorDataProvider>()
+                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddTransient<IErrorsProvider, ErrorsProvider>()
+                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
+                .AddTransient<ILogEntriesProvider, LogEntriesProvider>()
+                .AddTransient<IMachineProvider, MachineProvider>()
+                .AddTransient<IServicingProvider, ServicingProvider>()
+                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
+                .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
+                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
+                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<IUsersProvider, UsersProvider>();
 
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()

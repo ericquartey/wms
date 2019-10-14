@@ -7,15 +7,21 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Ferretto.VW.MAS.AutomationService.Filters
 {
-    public class BayNumberFilter : IAsyncActionFilter
+    public class BayNumberActionFilter : IAsyncActionFilter
     {
+        #region Fields
+
+        public static readonly string HeaderName = "Bay-Number";
+
+        #endregion
+
         #region Methods
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (context.Controller is BaseAutomationController baseController)
             {
-                var bayNumberHeaders = context.HttpContext.Request.Headers["Bay-Number"];
+                var bayNumberHeaders = context.HttpContext.Request.Headers[HeaderName];
 
                 if (bayNumberHeaders.Count == 0)
                 {

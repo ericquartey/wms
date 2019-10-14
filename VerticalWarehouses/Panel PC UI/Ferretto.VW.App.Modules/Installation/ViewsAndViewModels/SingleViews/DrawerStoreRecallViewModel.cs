@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineLoadingUnitsService loadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private bool isStartRecallButtonActive = true;
 
@@ -36,20 +36,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public DrawerStoreRecallViewModel(
             IEventAggregator eventAggregator,
-            IMachineLoadingUnitsService loadingUnitsService)
+            IMachineLoadingUnitsWebService loadingUnitsWebService)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (loadingUnitsService is null)
+            if (loadingUnitsWebService is null)
             {
-                throw new ArgumentNullException(nameof(loadingUnitsService));
+                throw new ArgumentNullException(nameof(loadingUnitsWebService));
             }
 
             this.eventAggregator = eventAggregator;
-            this.loadingUnitsService = loadingUnitsService;
+            this.loadingUnitsWebService = loadingUnitsWebService;
             this.NavigationViewModel = null;
         }
 
@@ -84,8 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStartRecallButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                //await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualRecall);
-
+                // await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualRecall);
                 this.NoteString = "Start drawer recall...";
             }
             catch (Exception)
@@ -102,8 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStartStoreButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                //await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualStore);
-
+                // await this.loadingUnitsService.StartMovingAsync(DrawerOperation.ManualStore);
                 this.NoteString = "Start drawer storing...";
             }
             catch (Exception)
@@ -117,7 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.loadingUnitsService.StopAsync();
+                await this.loadingUnitsWebService.StopAsync();
 
                 this.IsStartStoreButtonActive = true;
                 this.IsStartRecallButtonActive = true;

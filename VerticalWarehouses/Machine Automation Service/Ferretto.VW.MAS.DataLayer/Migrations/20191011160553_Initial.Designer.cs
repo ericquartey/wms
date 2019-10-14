@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191011135629_initialcreation")]
-    partial class initialcreation
+    [Migration("20191011160553_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -573,7 +573,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 11, 15, 56, 28, 945, DateTimeKind.Local).AddTicks(707),
+                            InstallationDate = new DateTime(2016, 12, 11, 18, 5, 52, 637, DateTimeKind.Local).AddTicks(8051),
                             ServiceStatus = 86
                         });
                 });
@@ -1089,7 +1089,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CarouselManualMovementsId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "CellPanelsCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "CellPanelsCheck")
                         .WithMany()
                         .HasForeignKey("CellPanelsCheckId");
 

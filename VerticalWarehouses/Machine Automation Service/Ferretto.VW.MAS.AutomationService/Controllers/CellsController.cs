@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("height-check-parameters")]
         public ActionResult<PositioningProcedure> GetHeightCheckProcedureParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetAll().CellsHeightCheck);
+            return this.Ok(this.setupProceduresDataProvider.GetCellsHeightCheck());
         }
 
         [HttpGet("statistics")]

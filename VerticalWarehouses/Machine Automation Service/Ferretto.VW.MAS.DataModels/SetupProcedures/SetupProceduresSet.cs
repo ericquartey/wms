@@ -10,7 +10,7 @@
 
         public SetupProcedure CarouselManualMovements { get; set; }
 
-        public SetupProcedure CellPanelsCheck { get; set; }
+        public PositioningProcedure CellPanelsCheck { get; set; }
 
         public PositioningProcedure CellsHeightCheck { get; set; }
 

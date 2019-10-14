@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineBaysService : ServiceBase, IMachineBaysService
+    internal partial class MachineBaysWebService : ServiceBase, IMachineBaysWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineBaysService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineBaysWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -758,13 +758,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCarouselService : ServiceBase, IMachineCarouselService
+    internal partial class MachineCarouselWebService : ServiceBase, IMachineCarouselWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineCarouselService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineCarouselWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -1265,13 +1265,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCellPanelsService : ServiceBase, IMachineCellPanelsService
+    internal partial class MachineCellPanelsWebService : ServiceBase, IMachineCellPanelsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineCellPanelsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineCellPanelsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -1362,14 +1362,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<SetupProcedure> GetProcedureParametersAsync()
+        public System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync()
         {
             return GetProcedureParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<SetupProcedure> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-panels/height-check-parameters");
@@ -1402,7 +1402,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<SetupProcedure>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PositioningProcedure>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -1412,7 +1412,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(SetupProcedure);
+                        return default(PositioningProcedure);
                     }
                     finally
                     {
@@ -1604,13 +1604,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCellsService : ServiceBase, IMachineCellsService
+    internal partial class MachineCellsWebService : ServiceBase, IMachineCellsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineCellsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineCellsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -2008,13 +2008,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineConfigurationService : ServiceBase, IMachineConfigurationService
+    internal partial class MachineConfigurationWebService : ServiceBase, IMachineConfigurationWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineConfigurationService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineConfigurationWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -2268,13 +2268,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineDevicesService : ServiceBase, IMachineDevicesService
+    internal partial class MachineDevicesWebService : ServiceBase, IMachineDevicesWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineDevicesService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineDevicesWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -2461,13 +2461,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineElevatorService : ServiceBase, IMachineElevatorService
+    internal partial class MachineElevatorWebService : ServiceBase, IMachineElevatorWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineElevatorService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineElevatorWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -3648,13 +3648,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineErrorsService : ServiceBase, IMachineErrorsService
+    internal partial class MachineErrorsWebService : ServiceBase, IMachineErrorsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineErrorsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineErrorsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -4047,13 +4047,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineIdentityService : ServiceBase, IMachineIdentityService
+    internal partial class MachineIdentityWebService : ServiceBase, IMachineIdentityWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineIdentityService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineIdentityWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -4302,13 +4302,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineLoadingUnitsService : ServiceBase, IMachineLoadingUnitsService
+    internal partial class MachineLoadingUnitsWebService : ServiceBase, IMachineLoadingUnitsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineLoadingUnitsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineLoadingUnitsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -4912,13 +4912,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineBeltBurnishingProcedureService : ServiceBase, IMachineBeltBurnishingProcedureService
+    internal partial class MachineBeltBurnishingProcedureWebService : ServiceBase, IMachineBeltBurnishingProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineBeltBurnishingProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineBeltBurnishingProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -5247,13 +5247,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineDepositAndPickupProcedureService : ServiceBase, IMachineDepositAndPickupProcedureService
+    internal partial class MachineDepositAndPickupProcedureWebService : ServiceBase, IMachineDepositAndPickupProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineDepositAndPickupProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineDepositAndPickupProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -5505,13 +5505,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineSetupStatusService : ServiceBase, IMachineSetupStatusService
+    internal partial class MachineSetupStatusWebService : ServiceBase, IMachineSetupStatusWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineSetupStatusService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineSetupStatusWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -5695,13 +5695,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalOffsetProcedureService : ServiceBase, IMachineVerticalOffsetProcedureService
+    internal partial class MachineVerticalOffsetProcedureWebService : ServiceBase, IMachineVerticalOffsetProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineVerticalOffsetProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineVerticalOffsetProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -6080,13 +6080,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalOriginProcedureService : ServiceBase, IMachineVerticalOriginProcedureService
+    internal partial class MachineVerticalOriginProcedureWebService : ServiceBase, IMachineVerticalOriginProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineVerticalOriginProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineVerticalOriginProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -6392,13 +6392,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalResolutionCalibrationProcedureService : ServiceBase, IMachineVerticalResolutionCalibrationProcedureService
+    internal partial class MachineVerticalResolutionCalibrationProcedureWebService : ServiceBase, IMachineVerticalResolutionCalibrationProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineVerticalResolutionCalibrationProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineVerticalResolutionCalibrationProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -6659,13 +6659,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineWeightAnalysisProcedureService : ServiceBase, IMachineWeightAnalysisProcedureService
+    internal partial class MachineWeightAnalysisProcedureWebService : ServiceBase, IMachineWeightAnalysisProcedureWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineWeightAnalysisProcedureService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineWeightAnalysisProcedureWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -6987,13 +6987,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineMissionOperationsService : ServiceBase, IMachineMissionOperationsService
+    internal partial class MachineMissionOperationsWebService : ServiceBase, IMachineMissionOperationsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineMissionOperationsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineMissionOperationsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -7189,13 +7189,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachinePowerService : ServiceBase, IMachinePowerService
+    internal partial class MachinePowerWebService : ServiceBase, IMachinePowerWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachinePowerService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachinePowerWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -7583,13 +7583,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineSensorsService : ServiceBase, IMachineSensorsService
+    internal partial class MachineSensorsWebService : ServiceBase, IMachineSensorsWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineSensorsService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineSensorsWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -7773,13 +7773,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineShuttersService : ServiceBase, IMachineShuttersService
+    internal partial class MachineShuttersWebService : ServiceBase, IMachineShuttersWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineShuttersService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineShuttersWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 
@@ -8291,13 +8291,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineUsersService : ServiceBase, IMachineUsersService
+    internal partial class MachineUsersWebService : ServiceBase, IMachineUsersWebService
     {
         private string _baseUrl = "";
         private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachineUsersService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        public MachineUsersWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
         {
             BaseUrl = baseUrl; 
             _httpClient = httpClient; 

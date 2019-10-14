@@ -7,6 +7,7 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
@@ -46,9 +47,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep3ViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService)
         {
         }
 
@@ -270,10 +271,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.UpdateVerticalResolutionAsync(this.NewResolution.Value);
+                await this.MachineElevatorWebService.UpdateVerticalResolutionAsync(this.NewResolution.Value);
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.VerticalAxisResolutionUpdated,
+                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                     Services.Models.NotificationSeverity.Success);
 
                 this.CurrentResolution = this.NewResolution;
@@ -317,7 +318,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InitialPosition.Value,
                     this.ProcedureParameters.FeedRate);
             }
