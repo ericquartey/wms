@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Properties
 
+        public override EnableMask EnableMask => EnableMask.None;
+
         public Error Error
         {
             get => this.error;

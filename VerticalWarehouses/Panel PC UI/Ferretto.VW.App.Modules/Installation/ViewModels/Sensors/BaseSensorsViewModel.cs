@@ -26,6 +26,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private bool isBay2Present;
+
+        private bool isBay3Present;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -51,9 +55,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.None;
 
-        public bool IsBay2Present { get; private set; }
+        public bool IsBay2Present { get => this.isBay2Present; private set => this.SetProperty(ref this.isBay2Present, value); }
 
-        public bool IsBay3Present { get; private set; }
+        public bool IsBay3Present { get => this.isBay3Present; private set => this.SetProperty(ref this.isBay3Present, value); }
 
         public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
