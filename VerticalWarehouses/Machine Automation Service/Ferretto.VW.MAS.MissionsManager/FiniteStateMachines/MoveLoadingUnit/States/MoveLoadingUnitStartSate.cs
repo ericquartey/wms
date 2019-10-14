@@ -46,13 +46,20 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             {
                 var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData, out var loadingUnitId);
 
+                if (sourceHeight == 0)
+                {
+                    var description = $"GetSourceHeight error: position not found ({messageData.Source})";
+
+                    throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
+                }
+
                 moveData.LoadingUnitId = loadingUnitId;
 
                 this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
-                var description = $"Move Loading Unit Start Sate received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit Start State received wrong initialization data ({commandMessage.Data.GetType()})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }

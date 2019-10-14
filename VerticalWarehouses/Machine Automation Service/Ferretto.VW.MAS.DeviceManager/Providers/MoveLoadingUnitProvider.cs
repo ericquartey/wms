@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -14,16 +15,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ICellsProvider cellsProvider;
+
         #endregion
 
         #region Constructors
 
         protected LoadingUnitMovementProvider(
             IBaysProvider baysProvider,
+            ICellsProvider cellsProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
         #endregion
@@ -49,17 +54,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 case LoadingUnitDestination.LoadingUnit:
                     // Retrieve loading unit position
+                    if (messageData.LoadingUnitId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
+                        if (cell != null && cell.Status == DataModels.CellStatus.Occupied)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
                     break;
 
                 case LoadingUnitDestination.Cell:
                     // Retrieve Cell height
+                    if (messageData.SourceCellId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellById(messageData.SourceCellId.Value);
+                        if (cell != null && cell.Status == DataModels.CellStatus.Occupied)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
                     break;
 
                 default:
                     targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
                     break;
             }
-
             return targetPosition;
         }
 

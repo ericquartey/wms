@@ -47,6 +47,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ToArray();
         }
 
+        public Cell GetCellById(int cellId)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.Id == cellId);
+        }
+
+        public Cell GetCellByLoadingUnit(int loadingUnitId)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.LoadingUnit.Id == loadingUnitId);
+        }
+
         public CellStatisticsSummary GetStatistics()
         {
             var totalCells = this.dataContext.Cells.Count();

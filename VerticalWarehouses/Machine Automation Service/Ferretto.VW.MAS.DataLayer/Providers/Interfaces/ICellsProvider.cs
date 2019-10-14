@@ -9,6 +9,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Cell> GetAll();
 
+        Cell GetCellById(int cellId);
+
+        Cell GetCellByLoadingUnit(int loadingUnitId);
+
         CellStatisticsSummary GetStatistics();
 
         void LoadLoadingUnit(int? loadingUnitId, int? cellId);
