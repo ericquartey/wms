@@ -23,7 +23,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private List<MovementMode> movements;
+        private readonly List<MovementMode> movements;
+
+        private bool needOpenShutter;
 
         #endregion
 
@@ -38,6 +40,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.movements = new List<MovementMode>();
+            this.needOpenShutter = false;
         }
 
         #endregion
@@ -59,7 +62,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                 moveData.LoadingUnitId = loadingUnitId;
 
-                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, LoadingUnitDestination.NoDestination, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.needOpenShutter = this.loadingUnitMovementProvider.NeedOpenShutter(messageData.Source);
             }
             else
             {
@@ -78,7 +82,14 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                    if (this.needOpenShutter)
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitOpenShutterState>();
+                    }
+                    else
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                    }
                     break;
 
                 case MessageStatus.OperationError:

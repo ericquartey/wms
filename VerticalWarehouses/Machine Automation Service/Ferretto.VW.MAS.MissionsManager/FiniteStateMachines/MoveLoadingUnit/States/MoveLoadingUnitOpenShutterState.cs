@@ -15,19 +15,17 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitMoveToTargetState : StateBase, IMoveLoadingUnitMoveToTargetState
+    internal class MoveLoadingUnitOpenShutterState : StateBase, IMoveLoadingUnitOpenShutterState
     {
         #region Fields
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private List<MovementMode> movements;
-
         #endregion
 
         #region Constructors
 
-        public MoveLoadingUnitMoveToTargetState(
+        public MoveLoadingUnitOpenShutterState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -35,7 +33,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
-            this.movements = new List<MovementMode>();
         }
 
         #endregion
@@ -46,15 +43,16 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
             {
-                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData, out var loadingUnitId);
+                if (!this.loadingUnitMovementProvider.OpenShutter(messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay))
+                {
+                    var description = $"OpenShutter error: shutter position not found ({messageData.Source})";
 
-                moveData.LoadingUnitId = loadingUnitId;
-
-                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                    throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
+                }
             }
             else
             {
-                var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit Open Shutter State received wrong initialization data ({commandMessage.Data.GetType()})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
@@ -64,7 +62,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
+            var notificationStatus = this.loadingUnitMovementProvider.ShutterStatus(notification);
 
             switch (notificationStatus)
             {
