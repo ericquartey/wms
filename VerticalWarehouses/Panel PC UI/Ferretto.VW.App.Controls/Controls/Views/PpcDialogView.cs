@@ -72,6 +72,37 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
+        public static void ShowAnchorDialog(INavigableView registeredView, bool isNoModalDialog = false, bool isChildOfMainWindow = true)
+        {
+            if (!(registeredView is PpcDialogView ppcDialog))
+            {
+                return;
+            }
+
+            if (Application.Current.MainWindow.IsVisible
+                &&
+                isChildOfMainWindow)
+            {
+                ppcDialog.Owner = Application.Current.MainWindow;
+                ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+
+            ppcDialog.IsDraggingOrResizing = true;
+
+            if (isNoModalDialog)
+            {
+                ppcDialog.Show();
+            }
+            else
+            {
+                ppcDialog.ShowDialog();
+            }
+        }
+
         public static void ShowDialog(INavigableView registeredView, bool isNoModalDialog = false, bool isChildOfMainWindow = true)
         {
             if (!(registeredView is PpcDialogView ppcDialog))

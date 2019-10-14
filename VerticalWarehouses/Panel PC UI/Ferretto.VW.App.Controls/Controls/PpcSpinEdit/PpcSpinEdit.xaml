@@ -3,9 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:k="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Style="{StaticResource PpcSpinEditStyle}"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="SpinEditControlTemplate"
+                         TargetType="{x:Type dxe:ButtonEdit}">
+            <ContentControl x:Name="PART_Root"
+                            Background="Transparent">
+                <Grid x:Name="ButtonEditGrid"
+                      Background="{DynamicResource PpcButtonBackground}"
+                      SnapsToDevicePixels="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <dxe:ButtonsControl x:Name="PART_LeftButtons"
+                                        Grid.Column="1"
+                                        Background="Transparent"
+                                        ItemsSource="{TemplateBinding LeftButtons}"
+                                        Visibility="{Binding ShowEditorButtons, Converter={StaticResource BTVC}, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <dxe:EditorControl x:Name="PART_Content"
+                                       Grid.Column="2"
+                                       VerticalAlignment="Stretch"
+                                       MouseDoubleClick="OnMouseDoubleClickHandler"
+                                       Template="{TemplateBinding ActualEditorControlTemplate}" />
+                    <dxe:ButtonsControl x:Name="PART_RightButtons"
+                                        Grid.Column="3"
+                                        Background="Transparent"
+                                        ItemsSource="{TemplateBinding RightButtons}"
+                                        Visibility="{Binding ShowEditorButtons, Converter={StaticResource BTVC}, RelativeSource={RelativeSource TemplatedParent}}" />
+                </Grid>
+            </ContentControl>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsTextEditable" Value="true" />
+                        <Condition Property="EditMode" Value="Standalone" />
+                    </MultiTrigger.Conditions>
+                    <Setter TargetName="PART_Content" Property="Template" Value="{Binding EditTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsTextEditable" Value="false" />
+                        <Condition Property="EditMode" Value="Standalone" />
+                    </MultiTrigger.Conditions>
+                    <Setter TargetName="PART_Content" Property="Template" Value="{Binding EditNonEditableTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
@@ -18,7 +68,8 @@
                       AllowDefaultButton="False"
                       EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Increment="1"
-                      IsEnabled="{Binding IsEnabled}">
+                      IsEnabled="{Binding IsEnabled}"
+                      Template="{StaticResource SpinEditControlTemplate}">
             <dxe:SpinEdit.Buttons>
                 <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                 IsLeft="True"
