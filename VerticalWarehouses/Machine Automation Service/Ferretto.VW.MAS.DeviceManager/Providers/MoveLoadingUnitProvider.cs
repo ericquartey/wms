@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -17,6 +18,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly IElevatorProvider elevatorProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
+        private readonly IShutterProvider shutterProvider;
+
         #endregion
 
         #region Constructors
@@ -24,11 +31,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         protected LoadingUnitMovementProvider(
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
+            IElevatorProvider elevatorProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IShutterProvider shutterProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
+            this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -105,14 +118,53 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             throw new NotImplementedException();
         }
 
-        public void PositionElevatorToPosition(double targetHeight, MessageActor sender, BayNumber requestingBay)
+        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay)
         {
-            throw new NotImplementedException();
+            var movements = new List<MovementMode>();
+            if (positionType != LoadingUnitDestination.NoDestination)
+            {
+                var shutter = this.baysProvider.GetShutterPosition(positionType, out var bay);
+                if (shutter != ShutterPosition.None)
+                {
+                    this.shutterProvider.MoveTo(shutter, bay, MessageActor.MissionsManager);
+                    movements.Add(MovementMode.ShutterPosition);
+                }
+            }
+            var parameters = this.setupProceduresDataProvider.GetVerticalManualMovements();
+            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, requestingBay, MessageActor.MissionsManager);
+            movements.Add(MovementMode.Position);
+            return movements;
         }
 
-        public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
+        public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements)
         {
-            throw new NotImplementedException();
+            if (message.Type == MessageType.Positioning)
+            {
+                if (message.Status == MessageStatus.OperationError)
+                {
+                    return message.Status;
+                }
+                if (message.Status == MessageStatus.OperationEnd && movements.Contains(MovementMode.Position))
+                {
+                    movements.Remove(MovementMode.Position);
+                }
+            }
+            else if (message.Type == MessageType.ShutterPositioning)
+            {
+                if (message.Status == MessageStatus.OperationError)
+                {
+                    return message.Status;
+                }
+                if (message.Status == MessageStatus.OperationEnd && movements.Contains(MovementMode.ShutterPosition))
+                {
+                    movements.Remove(MovementMode.ShutterPosition);
+                }
+            }
+            if (movements.Count == 0)
+            {
+                return MessageStatus.OperationEnd;
+            }
+            return MessageStatus.NoStatus;
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)

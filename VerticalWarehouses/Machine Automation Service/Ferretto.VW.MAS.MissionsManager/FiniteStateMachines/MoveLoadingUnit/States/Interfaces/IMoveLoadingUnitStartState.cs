@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces
 {
-    internal interface IMoveLoadingUnitMoveToTargetSate : IState
+    internal interface IMoveLoadingUnitStartState : IState
     {
     }
 }

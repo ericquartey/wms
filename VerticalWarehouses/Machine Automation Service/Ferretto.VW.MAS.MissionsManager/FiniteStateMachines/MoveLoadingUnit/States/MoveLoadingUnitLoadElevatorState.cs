@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndSate>();
+            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;
 

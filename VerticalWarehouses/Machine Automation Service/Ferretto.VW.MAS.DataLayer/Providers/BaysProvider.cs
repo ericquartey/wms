@@ -432,6 +432,52 @@ namespace Ferretto.VW.MAS.DataLayer
             return 0;
         }
 
+        public ShutterPosition GetShutterPosition(LoadingUnitDestination destination, out BayNumber bay)
+        {
+            switch (destination)
+            {
+                case LoadingUnitDestination.InternalBay1Up:
+                case LoadingUnitDestination.ExternalBay1Up:
+                case LoadingUnitDestination.CarouselBay1Up:
+                    bay = BayNumber.BayOne;
+                    return ShutterPosition.Opened;
+
+                case LoadingUnitDestination.InternalBay1Down:
+                case LoadingUnitDestination.ExternalBay1Down:
+                case LoadingUnitDestination.CarouselBay1Down:
+                    bay = BayNumber.BayOne;
+                    return ShutterPosition.Half;
+
+                case LoadingUnitDestination.InternalBay2Up:
+                case LoadingUnitDestination.ExternalBay2Up:
+                case LoadingUnitDestination.CarouselBay2Up:
+                    bay = BayNumber.BayTwo;
+                    return ShutterPosition.Opened;
+
+                case LoadingUnitDestination.InternalBay2Down:
+                case LoadingUnitDestination.ExternalBay2Down:
+                case LoadingUnitDestination.CarouselBay2Down:
+                    bay = BayNumber.BayTwo;
+                    return ShutterPosition.Half;
+
+                case LoadingUnitDestination.InternalBay3Up:
+                case LoadingUnitDestination.ExternalBay3Up:
+                case LoadingUnitDestination.CarouselBay3Up:
+                    bay = BayNumber.BayThree;
+                    return ShutterPosition.Opened;
+
+                case LoadingUnitDestination.InternalBay3Down:
+                case LoadingUnitDestination.ExternalBay3Down:
+                case LoadingUnitDestination.CarouselBay3Down:
+                    bay = BayNumber.BayThree;
+                    return ShutterPosition.Half;
+
+                default:
+                    bay = BayNumber.None;
+                    return ShutterPosition.None;
+            }
+        }
+
         public void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination)
         {
             throw new NotImplementedException();

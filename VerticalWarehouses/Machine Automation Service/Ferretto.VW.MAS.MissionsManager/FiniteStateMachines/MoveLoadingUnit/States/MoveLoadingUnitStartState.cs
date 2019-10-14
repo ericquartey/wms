@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -16,17 +17,19 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitStartSate : StateBase, IMoveLoadingUnitStartSate
+    internal class MoveLoadingUnitStartState : StateBase, IMoveLoadingUnitStartState
     {
         #region Fields
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private List<MovementMode> movements;
+
         #endregion
 
         #region Constructors
 
-        public MoveLoadingUnitStartSate(
+        public MoveLoadingUnitStartState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -34,6 +37,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.movements = new List<MovementMode>();
         }
 
         #endregion
@@ -55,7 +59,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                 moveData.LoadingUnitId = loadingUnitId;
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -69,7 +73,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
 
             switch (notificationStatus)
             {
@@ -90,7 +94,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndSate>();
+            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;
 

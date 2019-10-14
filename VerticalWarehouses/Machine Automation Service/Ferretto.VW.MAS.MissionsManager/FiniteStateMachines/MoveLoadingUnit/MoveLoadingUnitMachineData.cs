@@ -6,6 +6,14 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
     {
         #region Properties
 
+        public bool IsMovingBayChain { get; set; }
+
+        public bool IsMovingHorizontal { get; set; }
+
+        public bool IsMovingShutter { get; set; }
+
+        public bool IsMovingVertical { get; set; }
+
         public int? LoadingUnitId { get; set; }
 
         #endregion
