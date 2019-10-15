@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 case FieldMessageType.InverterPowerOff:
                 case FieldMessageType.CalibrateAxis:
+                case FieldMessageType.InverterSwitchOn:
+                case FieldMessageType.InverterSwitchOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
