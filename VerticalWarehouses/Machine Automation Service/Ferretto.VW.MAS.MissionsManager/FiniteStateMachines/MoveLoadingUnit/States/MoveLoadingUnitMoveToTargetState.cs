@@ -44,11 +44,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
-                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData, out var loadingUnitId);
-
-                moveData.LoadingUnitId = loadingUnitId;
+                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData);
 
                 this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Destination, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
@@ -69,7 +67,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                    returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
                     break;
 
                 case MessageStatus.OperationError:

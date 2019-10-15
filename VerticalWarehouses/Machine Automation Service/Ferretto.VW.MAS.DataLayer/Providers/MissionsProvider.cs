@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public bool StartMachineMission(Guid missionId, CommandMessage command, IFiniteStateMachineData machineData)
+        public bool StartMachineMission(Guid missionId, CommandMessage command)
         {
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
             if (mission is null)
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return false;
             }
 
-            mission.StartMachine(command, machineData);
+            mission.StartMachine(command);
             return true;
         }
 

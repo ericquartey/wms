@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
                 .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>()
 
                 .AddTransient<IMoveLoadingUnitStartState, MoveLoadingUnitStartState>()
-                .AddTransient<IMoveLoadingUnitLoadUnitState, MoveLoadingUnitLoadUnitState>()
+                .AddTransient<IMoveLoadingUnitLoadElevatorState, MoveLoadingUnitLoadElevatorState>()
                 .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
                 .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
                 .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>();

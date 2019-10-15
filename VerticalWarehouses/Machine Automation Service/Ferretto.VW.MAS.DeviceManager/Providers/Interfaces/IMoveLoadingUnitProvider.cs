@@ -11,19 +11,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
-        double GetDestinationHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId);
+        double GetDestinationHeight(IMoveLoadingUnitMessageData messageData);
 
-        double GetSourceHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId);
+        double GetSourceHeight(IMoveLoadingUnitMessageData messageData);
 
         void MoveLoadingUnitToDestination(int? loadingUnitId, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus MoveLoadingUnitToDestinationStatus(NotificationMessage message);
 
-        void MoveLoadingUnitToElevator(int? loadingUnitId, MessageActor sender, BayNumber requestingBay);
+        void MoveLoadingUnitToElevator(int? loadingUnitId, HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message);
 
-        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay);
+        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements);
 

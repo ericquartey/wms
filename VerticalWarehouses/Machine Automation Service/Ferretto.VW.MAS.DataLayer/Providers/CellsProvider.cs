@@ -97,12 +97,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void LoadLoadingUnit(int loadingUnitId, int cellId)
         {
-            throw new NotImplementedException();
+            var cell = this.GetCellById(cellId);
+            cell.LoadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
+
+            this.dataContext.Cells.Update(cell);
+            this.dataContext.SaveChanges();
         }
 
         public void UnloadLoadingUnit(int cellId)
         {
-            throw new NotImplementedException();
+            var cell = this.GetCellById(cellId);
+            cell.LoadingUnit = null;
+
+            this.dataContext.Cells.Update(cell);
+            this.dataContext.SaveChanges();
         }
 
         public Cell UpdateHeight(int cellId, double height)

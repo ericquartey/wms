@@ -62,9 +62,9 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.CurrentStateMachine.Completed -= endHandler;
         }
 
-        public void StartMachine(CommandMessage command, IFiniteStateMachineData machineData)
+        public void StartMachine(CommandMessage command)
         {
-            this.CurrentStateMachine.Start(command, machineData, this.cancellationTokenSource.Token);
+            this.CurrentStateMachine.Start(command, this.cancellationTokenSource.Token);
         }
 
         public virtual void StopMachine(StopRequestReason reason)

@@ -46,18 +46,16 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData, out var loadingUnitId);
+                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData);
 
                 if (sourceHeight == 0)
                 {
-                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitDestination.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
+                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
                 }
-
-                moveData.LoadingUnitId = loadingUnitId;
 
                 this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }

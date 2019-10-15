@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     case CommandAction.Start:
                         if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                         {
-                            this.missionsProvider.StartMachineMission(missionId, command, null);
+                            this.missionsProvider.StartMachineMission(missionId, command);
                         }
                         else
                         {
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     case CommandAction.Start:
                         if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
                         {
-                            this.missionsProvider.StartMachineMission(missionId, command, new MoveLoadingUnitMachineData { LoadingUnitId = messageData.LoadingUnitId });
+                            this.missionsProvider.StartMachineMission(missionId, command);
                         }
                         else
                         {

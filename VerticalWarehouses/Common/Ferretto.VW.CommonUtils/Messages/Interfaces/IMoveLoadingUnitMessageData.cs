@@ -8,13 +8,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         CommandAction CommandAction { get; }
 
-        LoadingUnitDestination Destination { get; }
+        LoadingUnitLocation Destination { get; }
 
         int? DestinationCellId { get; }
 
         int? LoadingUnitId { get; }
 
-        LoadingUnitDestination Source { get; }
+        LoadingUnitLocation Source { get; }
 
         int? SourceCellId { get; }
 

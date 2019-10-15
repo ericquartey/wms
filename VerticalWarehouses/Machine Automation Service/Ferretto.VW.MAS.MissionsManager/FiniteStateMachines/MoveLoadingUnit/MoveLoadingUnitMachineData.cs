@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 {
@@ -14,7 +15,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 
         public bool IsMovingVertical { get; set; }
 
-        public int? LoadingUnitId { get; set; }
+        public int? LoadingUnitCellSourceId { get; set; }
+
+        public int LoadingUnitId { get; set; }
+
+        public LoadingUnitLocation LoadingUnitSource { get; set; }
 
         #endregion
     }

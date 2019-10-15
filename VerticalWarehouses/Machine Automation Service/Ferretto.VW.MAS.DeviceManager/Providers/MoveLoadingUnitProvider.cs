@@ -54,18 +54,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 (notification.Type == MessageType.Positioning);
         }
 
-        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
+        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
         {
-            throw new NotImplementedException();
-        }
-
-        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
-        {
-            loadingUnitId = null;
             double targetPosition = 0;
-            switch (messageData.Source)
+            switch (messageData.Destination)
             {
-                case LoadingUnitDestination.LoadingUnit:
+                case LoadingUnitLocation.LoadingUnit:
                     // Retrieve loading unit position
                     if (messageData.LoadingUnitId != null)
                     {
@@ -73,12 +67,47 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
-                            loadingUnitId = messageData.LoadingUnitId;
                         }
                     }
                     break;
 
-                case LoadingUnitDestination.Cell:
+                case LoadingUnitLocation.Cell:
+                    // Retrieve Cell height
+                    if (messageData.DestinationCellId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
+                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
+                    break;
+
+                default:
+                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Destination);
+                    break;
+            }
+            return targetPosition;
+        }
+
+        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData)
+        {
+            double targetPosition = 0;
+            switch (messageData.Source)
+            {
+                case LoadingUnitLocation.LoadingUnit:
+                    // Retrieve loading unit position
+                    if (messageData.LoadingUnitId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
+                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
+                    break;
+
+                case LoadingUnitLocation.Cell:
                     // Retrieve Cell height
                     if (messageData.SourceCellId != null)
                     {
@@ -86,13 +115,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
-                            loadingUnitId = cell.LoadingUnit.Id;
                         }
                     }
                     break;
 
                 default:
-                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source, out loadingUnitId);
+                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
                     break;
             }
             return targetPosition;
@@ -108,20 +136,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             throw new NotImplementedException();
         }
 
-        public void MoveLoadingUnitToElevator(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnitToElevator(int? loadingUnitId, HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
         {
-            throw new NotImplementedException();
+            this.elevatorProvider.MoveHorizontalAuto(direction, false, null, null, requestingBay, sender);
         }
 
         public MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            if (message.Type == MessageType.Positioning)
+            {
+                return message.Status;
+            }
+
+            return MessageStatus.NoStatus;
         }
 
-        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay)
+        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay)
         {
             var movements = new List<MovementMode>();
-            if (positionType != LoadingUnitDestination.NoDestination)
+            if (positionType != LoadingUnitLocation.NoLocation)
             {
                 var shutter = this.baysProvider.GetShutterPosition(positionType, out var bay);
                 if (shutter != ShutterPosition.None)

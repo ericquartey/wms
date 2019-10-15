@@ -2,8 +2,8 @@
 using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
@@ -28,11 +28,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private int? loadingUnitId;
-
-        private LoadingUnitDestination source;
-
-        private int? sourceCellId;
+        private IMoveLoadingUnitMachineData moveData;
 
         #endregion
 
@@ -60,13 +56,31 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (machineData is IMoveLoadingUnitMachineData machineMoveData)
             {
-                this.loadingUnitId = moveData.LoadingUnitId;
-                this.source = messageData.Source;
-                this.sourceCellId = messageData.SourceCellId;
+                this.moveData = machineMoveData;
 
-                this.loadingUnitMovementProvider.MoveLoadingUnitToElevator(moveData.LoadingUnitId, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                var direction = HorizontalMovementDirection.Backwards;
+                switch (this.moveData.LoadingUnitSource)
+                {
+                    case LoadingUnitLocation.Cell:
+                        if (this.moveData.LoadingUnitCellSourceId != null)
+                        {
+                            var cell = this.cellsProvider.GetCellById(this.moveData.LoadingUnitCellSourceId.Value);
+
+                            direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                        }
+
+                        break;
+
+                    default:
+                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
+                        direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+
+                        break;
+                }
+
+                this.loadingUnitMovementProvider.MoveLoadingUnitToElevator(this.moveData.LoadingUnitId, direction, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -87,21 +101,27 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                 case MessageStatus.OperationEnd:
                     using (var scope = new TransactionScope())
                     {
-                        this.elevatorDataProvider.LoadLoadingUnit(this.loadingUnitId.Value);
+                        this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
 
-                        if (this.source == LoadingUnitDestination.Cell)
+                        if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
                         {
-                            this.cellsProvider.UnloadLoadingUnit(this.sourceCellId);
+                            var moveDataLoadingUnitCellSourceId = this.moveData.LoadingUnitCellSourceId;
+
+                            if (moveDataLoadingUnitCellSourceId != null)
+                            {
+                                this.cellsProvider.UnloadLoadingUnit(moveDataLoadingUnitCellSourceId.Value);
+                            }
                         }
                         else
                         {
-                            this.baysProvider.UnloadLoadingUnit(this.source);
+                            this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
                         }
-
-                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
 
                         scope.Complete();
                     }
+
+                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+
                     break;
 
                 case MessageStatus.OperationError:

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -27,11 +28,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private LoadingUnitDestination destination;
+        private LoadingUnitLocation destination;
 
         private int? destinationCellId;
 
-        private int? loadingUnitId;
+        private int loadingUnitId;
 
         #endregion
 
@@ -59,7 +60,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
             {
                 this.loadingUnitId = moveData.LoadingUnitId;
                 this.destination = messageData.Destination;
@@ -85,18 +86,29 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             {
                 case MessageStatus.OperationEnd:
 
-                    // TODO wrap these providers call in a single transaction
-                    this.elevatorDataProvider.UnloadLoadingUnit();
-                    if (this.destination == LoadingUnitDestination.Cell)
+                    using (var scope = new TransactionScope())
                     {
-                        this.cellsProvider.LoadLoadingUnit(this.loadingUnitId, this.destinationCellId);
-                    }
-                    else
-                    {
-                        this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        this.elevatorDataProvider.UnloadLoadingUnit();
+
+                        if (this.destination == LoadingUnitLocation.Cell)
+                        {
+                            var moveDataLoadingUnitCellSourceId = this.destinationCellId;
+
+                            if (moveDataLoadingUnitCellSourceId != null)
+                            {
+                                this.cellsProvider.LoadLoadingUnit(moveDataLoadingUnitCellSourceId.Value, this.loadingUnitId);
+                            }
+                        }
+                        else
+                        {
+                            this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        }
+
+                        scope.Complete();
                     }
 
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
+
                     break;
 
                 case MessageStatus.OperationError:

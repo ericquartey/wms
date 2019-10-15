@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        public IFiniteStateMachineData MachineData { get; private set; }
+        public IFiniteStateMachineData MachineData { get; protected set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
         }
 
-        public virtual void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken)
+        public virtual void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -172,8 +172,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
 
             this.isStarted = true;
-
-            this.MachineData = machineData;
 
             this.StartData = commandMessage;
 

@@ -2,6 +2,10 @@
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -15,14 +19,40 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 {
     internal class MoveLoadingUnitStateMachine : FiniteStateMachine<IMoveLoadingUnitStartState>, IMoveLoadingUnitStateMachine
     {
+        #region Fields
+
+        private readonly IBaysProvider baysProvider;
+
+        private readonly ICellsProvider cellsProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
+
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
+        #endregion
+
         #region Constructors
 
         public MoveLoadingUnitStateMachine(
+            IBaysProvider baysProvider,
+            IElevatorDataProvider elevatorDataProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
+            ICellsProvider cellsProvider,
+            ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+
+            this.MachineData = new MoveLoadingUnitMachineData();
         }
 
         #endregion
@@ -34,15 +64,15 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
             return true;
         }
 
-        public override void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken)
+        public override void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
-            if (machineData is IMoveLoadingUnitMachineData)
+            if (this.CheckStartConditions(commandMessage))
             {
-                base.Start(commandMessage, machineData, cancellationToken);
+                base.Start(commandMessage, cancellationToken);
             }
             else
             {
-                var description = $"Attempting to start {this.GetType()} Finite state machine with wrong ({machineData.GetType()}) machine data";
+                var description = $"Attempting to start {this.GetType()} Finite state machine while preconditions are not met";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
@@ -55,7 +85,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            throw new NotImplementedException();
+            return this.loadingUnitMovementProvider.FilterNotifications(notification, MessageActor.MissionsManager);
         }
 
         protected override IState OnCommandReceived(CommandMessage commandMessage)
@@ -90,6 +120,132 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
             }
 
             return newState;
+        }
+
+        private bool CheckStartConditions(CommandMessage commandMessage)
+        {
+            bool returnValue;
+
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+            {
+                returnValue = this.IsSourceOk(messageData);
+
+                if (returnValue)
+                {
+                    returnValue = this.IsDestinationOk(messageData);
+                }
+
+                if (returnValue)
+                {
+                    returnValue = this.IsElevatorOk();
+                }
+            }
+            else
+            {
+                var description = $"Attempting to start {this.GetType()} Finite state machine with wrong ({commandMessage.Data.GetType()}) message data";
+
+                throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
+            }
+
+            return returnValue;
+        }
+
+        private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData)
+        {
+            bool returnValue = false;
+            switch (messageData.Destination)
+            {
+                case LoadingUnitLocation.Cell:
+                    // TODO Check loading unit height if source is cell
+                    if (messageData.DestinationCellId != null)
+                    {
+                        var destinationCell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
+                        returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
+                    }
+
+                    break;
+
+                case LoadingUnitLocation.LoadingUnit:
+                    var description = $"Attempting to start {this.GetType()} Finite state machine with Loading Unit as destination Type";
+
+                    throw new StateMachineException(description, null, MessageActor.MissionsManager);
+
+                default:
+                    returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Source) == null;
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        private bool IsElevatorOk()
+        {
+            return this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+        }
+
+        private bool IsSourceOk(IMoveLoadingUnitMessageData messageData)
+        {
+            var machineData = (IMoveLoadingUnitMachineData)this.MachineData;
+
+            LoadingUnit unitToMove = null;
+
+            switch (messageData.Source)
+            {
+                case LoadingUnitLocation.Cell:
+                    if (messageData.SourceCellId != null)
+                    {
+                        var sourceCell = this.cellsProvider.GetCellById(messageData.SourceCellId.Value);
+                        unitToMove = sourceCell.LoadingUnit;
+
+                        machineData.LoadingUnitSource = LoadingUnitLocation.Cell;
+                        machineData.LoadingUnitCellSourceId = sourceCell.Id;
+                    }
+
+                    break;
+
+                case LoadingUnitLocation.LoadingUnit:
+                    if (messageData.LoadingUnitId != null)
+                    {
+                        unitToMove = this.loadingUnitsProvider.GetById(messageData.LoadingUnitId.Value);
+                    }
+
+                    if (unitToMove != null)
+                    {
+                        var sourceCell = this.cellsProvider.GetCellByLoadingUnit(unitToMove.Id);
+
+                        if (sourceCell != null)
+                        {
+                            machineData.LoadingUnitSource = LoadingUnitLocation.Cell;
+                            machineData.LoadingUnitCellSourceId = sourceCell.Id;
+                        }
+                        else
+                        {
+                            var sourceBay = this.baysProvider.GetLoadingUnitLocationByLoadingUnit(unitToMove.Id);
+
+                            if (sourceBay != LoadingUnitLocation.NoLocation)
+                            {
+                                machineData.LoadingUnitSource = sourceBay;
+                            }
+                        }
+
+                        if (machineData.LoadingUnitSource == LoadingUnitLocation.NoLocation)
+                        {
+                            unitToMove = null;
+                        }
+                    }
+                    break;
+
+                default:
+                    unitToMove = this.baysProvider.GetLoadingUnitByDestination(messageData.Source);
+                    break;
+            }
+
+            if (unitToMove != null)
+            {
+                machineData.LoadingUnitId = unitToMove.Id;
+            }
+
+            return unitToMove != null;
         }
 
         #endregion
