@@ -2,13 +2,13 @@
 {
     public enum InverterParameterId : short
     {
-        ControlWordParam = 410,
+        ControlWord = 410,
 
         HomingCalibration = 1130,
 
-        HomingFastSpeedParam = 1132,
+        HomingFastSpeed = 1132,
 
-        HomingCreepSpeedParam = 1133,
+        HomingCreepSpeed = 1133,
 
         HomingAcceleration = 1134,
 
@@ -16,17 +16,17 @@
 
         HomingSensor = 1139,
 
-        PositionAccelerationParam = 1457,
+        PositionAcceleration = 1457,
 
-        PositionDecelerationParam = 1458,
+        PositionDeceleration = 1458,
 
-        PositionTargetPositionParam = 1455,
+        PositionTargetPosition = 1455,
 
-        PositionTargetSpeedParam = 1456,
+        PositionTargetSpeed = 1456,
 
-        SetOperatingModeParam = 1454,
+        SetOperatingMode = 1454,
 
-        StatusWordParam = 411,
+        StatusWord = 411,
 
         ActualPositionShaft = 1108,
 
@@ -36,7 +36,7 @@
 
         ShutterTargetPosition = 414,
 
-        ShutterTargetVelocityParam = 480,
+        ShutterTargetVelocity = 480,
 
         ShutterLowVelocity = 481,
 

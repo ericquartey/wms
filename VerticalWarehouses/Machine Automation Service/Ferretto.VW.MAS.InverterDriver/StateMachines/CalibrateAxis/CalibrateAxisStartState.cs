@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.SetOperatingModeParam,
+                    (short)InverterParameterId.SetOperatingMode,
                     this.InverterStatus.OperatingMode));
 
             this.ParentStateMachine.PublishNotificationEvent(
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                if (message.ParameterId == InverterParameterId.SetOperatingMode)
                 {
                     // TODO: disable EnableOperation and enable SetParameters
                     //this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));

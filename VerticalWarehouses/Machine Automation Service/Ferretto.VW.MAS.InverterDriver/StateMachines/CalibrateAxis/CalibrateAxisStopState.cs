@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.ParentStateMachine.EnqueueCommandMessage(
                     new InverterMessage(
                         this.InverterStatus.SystemIndex,
-                        (short)InverterParameterId.ControlWordParam,
+                        (short)InverterParameterId.ControlWord,
                         currentStatus.HomingControlWord.Value));
             }
         }

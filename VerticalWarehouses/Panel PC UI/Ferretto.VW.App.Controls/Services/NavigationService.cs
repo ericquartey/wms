@@ -198,6 +198,11 @@ namespace Ferretto.VW.App.Services
             this.NavigateBackTo(this.navigationStack.Peek());
         }
 
+        public bool IsActiveView(string moduleName, string viewModelName)
+        {
+            return this.GetActiveViewModel().GetType().Name == viewModelName;
+        }
+
         public void LoadModule(string moduleName)
         {
             var catalog = this.container.Resolve<IModuleCatalog>();

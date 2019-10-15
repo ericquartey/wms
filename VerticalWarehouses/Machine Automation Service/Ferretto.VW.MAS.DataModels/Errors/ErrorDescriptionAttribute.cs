@@ -8,24 +8,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public ErrorDescriptionAttribute(Type descriptionResourceType, Type reasonResourceType, string propertyName, int severity = 0)
         {
-            if (descriptionResourceType == null)
-            {
-                throw new ArgumentNullException(nameof(descriptionResourceType));
-            }
+            this.DescriptionResourceType = descriptionResourceType ?? throw new ArgumentNullException(nameof(descriptionResourceType));
+            this.ReasonResourceType = reasonResourceType ?? throw new ArgumentNullException(nameof(reasonResourceType));
+            this.PropertyName = propertyName ?? throw new ArgumentNullException(nameof(propertyName));
 
-            if (reasonResourceType == null)
-            {
-                throw new ArgumentNullException(nameof(reasonResourceType));
-            }
-
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            this.DescriptionResourceType = descriptionResourceType;
-            this.ReasonResourceType = reasonResourceType;
-            this.PropertyName = propertyName;
             this.Severity = severity;
 
             this.Description = descriptionResourceType

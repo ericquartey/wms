@@ -533,6 +533,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (message.IsNotRunning())
             {
                 this.IsElevatorMovingUp = false;

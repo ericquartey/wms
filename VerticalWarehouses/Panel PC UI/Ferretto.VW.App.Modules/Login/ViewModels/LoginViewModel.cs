@@ -53,10 +53,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.BayNumber = (int)bayManager.Bay.Number;
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
-                this.OnHealthStatusChanged,
-                ThreadOption.UIThread,
-                false);
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    this.OnHealthStatusChanged,
+                    ThreadOption.UIThread,
+                    false);
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -141,6 +142,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             this.ServiceHealthStatus = e.HealthStatus;
 
             if (this.ServiceHealthStatus == HealthStatus.Degraded
