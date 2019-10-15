@@ -159,7 +159,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.PickUp;
                 }
 
-                await this.machineElevatorWebService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
+                await this.machineElevatorWebService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight, ShutterPosition.None);
             }
             catch (System.Exception ex)
             {

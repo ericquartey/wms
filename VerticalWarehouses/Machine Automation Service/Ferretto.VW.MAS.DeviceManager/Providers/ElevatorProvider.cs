@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
+            ShutterPosition shutterPosition,
             BayNumber requestingBay,
             MessageActor sender)
         {
@@ -145,7 +146,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction);
+                direction,
+                shutterPosition);
 
             this.PublishCommand(
                 messageData,
@@ -189,7 +191,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction);
+                direction,
+                ShutterPosition.None);
 
             this.PublishCommand(
                 messageData,
@@ -246,7 +249,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                HorizontalMovementDirection.Forwards);
+                HorizontalMovementDirection.Forwards,
+                ShutterPosition.None);
 
             this.PublishCommand(
                 messageData,
@@ -310,7 +314,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                HorizontalMovementDirection.Forwards);
+                HorizontalMovementDirection.Forwards,
+                ShutterPosition.None);
 
             this.PublishCommand(
                 messageData,
@@ -361,7 +366,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction);
+                direction,
+                ShutterPosition.None);
 
             this.PublishCommand(
                 messageData,
@@ -438,7 +444,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 upperBoundPosition,
                 delayStart,
                 switchPosition,
-                HorizontalMovementDirection.Forwards);
+                HorizontalMovementDirection.Forwards,
+                ShutterPosition.None);
 
             this.PublishCommand(
                 data,
@@ -492,7 +499,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                HorizontalMovementDirection.Forwards)
+                HorizontalMovementDirection.Forwards,
+                ShutterPosition.None)
             {
                 LoadedNetWeight = netWeight,
                 LoadingUnitId = loadingUnitId,

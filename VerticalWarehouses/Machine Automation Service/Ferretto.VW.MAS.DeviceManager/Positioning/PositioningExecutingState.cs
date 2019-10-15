@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.TorqueCurrentSampling:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -164,9 +164,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         var positioningDownMessageData = new PositioningMessageData(this.machineData.MessageData);
                         positioningDownMessageData.TargetPosition = positioningDownMessageData.LowerBound;
 
-                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(positioningUpMessageData);
+                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(positioningUpMessageData, this.machineData.RequestingBay);
 
-                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(positioningDownMessageData);
+                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(positioningDownMessageData, this.machineData.RequestingBay);
 
                         // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
                         commandMessage = new FieldCommandMessage(
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.FindZero:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -540,7 +540,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     0,
                     0,
                     switchPosition,
-                    HorizontalMovementDirection.Backwards);
+                    HorizontalMovementDirection.Backwards,
+                    ShutterPosition.None);
                 this.machineData.MessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
             }

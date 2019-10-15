@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             double[] acceleration,
             double[] deceleration,
             int numberCycles,
+            ShutterPosition shutterPosition,
+            BayNumber requestingBay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -27,10 +29,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
             this.NumberCycles = numberCycles;
+            this.ShutterPosition = shutterPosition;
+            this.RequestingBay = requestingBay;
         }
 
         public PositioningFieldMessageData(
             IPositioningMessageData messageData,
+            BayNumber requestingBay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -47,11 +52,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetDeceleration = messageData.TargetDeceleration;
             this.Direction = messageData.Direction;
             this.SwitchPosition = messageData.SwitchPosition;
+            this.ShutterPosition = messageData.ShutterPosition;
 
             this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
+            this.RequestingBay = requestingBay;
         }
 
         #endregion
@@ -71,6 +78,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
+
+        public BayNumber RequestingBay { get; set; }
+
+        public ShutterPosition ShutterPosition { get; set; }
 
         public double[] SwitchPosition { get; set; }
 

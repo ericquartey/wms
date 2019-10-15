@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int NumberCycles { get; }
 
+        BayNumber RequestingBay { get; set; }
+
+        ShutterPosition ShutterPosition { get; set; }
+
         double[] SwitchPosition { get; set; }
 
         double[] TargetAcceleration { get; set; }

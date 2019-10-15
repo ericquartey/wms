@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 this.CurrentState.Start();
             }
 
-            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)

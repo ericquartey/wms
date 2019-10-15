@@ -139,6 +139,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return false;
         }
 
+        /// <summary>
+        /// Moves elevator to targetHeight.
+        /// At the same time if sourceType is a bay it closes the shutter (only for external bays)
+        /// </summary>
+        /// <param name="targetHeight"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="sender"></param>
+        /// <param name="requestingBay"></param>
+        /// <returns>The list of movements created. Used by PositionElevatorToPositionStatus to check when movements are completed</returns>
         public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination sourceType, MessageActor sender, BayNumber requestingBay)
         {
             var movements = new List<MovementMode>();

@@ -35,6 +35,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int NumberCycles { get; }
 
+        ShutterPosition ShutterPosition { get; set; }
+
         double[] SwitchPosition { get; set; }
 
         double[] TargetAcceleration { get; }

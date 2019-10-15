@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             }
             else
             {
-                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType()} fol Change Running State Command");
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Change Running State Command");
                 this.NotifyCommandError(command);
             }
         }
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
             }
             else
             {
-                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType()} fol Move Loading Unit Command");
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Move Loading Unit Command");
                 this.NotifyCommandError(command);
             }
         }

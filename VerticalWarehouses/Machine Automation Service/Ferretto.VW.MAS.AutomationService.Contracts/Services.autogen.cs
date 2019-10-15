@@ -2952,14 +2952,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
+        public System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight, ShutterPosition shutterPosition)
         {
-            return MoveHorizontalAutoAsync(direction, isStartedOnBoard, loadingUnitId, loadingUnitGrossWeight, System.Threading.CancellationToken.None);
+            return MoveHorizontalAutoAsync(direction, isStartedOnBoard, loadingUnitId, loadingUnitGrossWeight, shutterPosition, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight, ShutterPosition shutterPosition, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
@@ -2967,12 +2967,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (isStartedOnBoard == null)
                 throw new System.ArgumentNullException("isStartedOnBoard");
     
+            if (shutterPosition == null)
+                throw new System.ArgumentNullException("shutterPosition");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/move-auto?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("isStartedOnBoard") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isStartedOnBoard, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("LoadingUnitId") + "=").Append(System.Uri.EscapeDataString(loadingUnitId != null ? ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitGrossWeight") + "=").Append(System.Uri.EscapeDataString(loadingUnitGrossWeight != null ? ConvertToString(loadingUnitGrossWeight, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("shutterPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(shutterPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
