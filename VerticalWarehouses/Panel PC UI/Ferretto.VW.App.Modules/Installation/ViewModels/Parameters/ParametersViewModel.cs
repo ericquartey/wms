@@ -40,14 +40,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public bool IsBusy
         {
             get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    this.IsBackNavigationAllowed = !this.isBusy;
+                }
+            }
         }
 
         public ICommand SaveCommand =>
                             this.saveCommand
            ??
            (this.saveCommand = new DelegateCommand(
-               async () => await this.SaveAsync()));
+               async () => await this.SaveAsync(), this.CanSave));
 
         #endregion
 
@@ -63,11 +70,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.Configuration));
         }
 
+        private bool CanSave()
+        {
+            return !this.IsBusy;
+        }
+
         private async Task SaveAsync()
         {
             try
             {
                 this.IsBusy = true;
+
+                this.ClearNotifications();
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
