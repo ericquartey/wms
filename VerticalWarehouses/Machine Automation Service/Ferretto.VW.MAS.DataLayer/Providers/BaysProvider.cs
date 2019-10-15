@@ -112,7 +112,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Bay> GetAll()
         {
-            return this.dataContext.Bays.Include(b => b.Positions).ToArray();
+            return this.dataContext.Bays
+                .Include(b => b.Shutter)
+                .Include(b => b.Positions)
+                .ToArray();
         }
 
         public BayNumber GetByAxis(IHomingMessageData data)
