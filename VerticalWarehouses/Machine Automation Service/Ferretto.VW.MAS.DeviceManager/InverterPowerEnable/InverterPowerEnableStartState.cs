@@ -45,9 +45,11 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogDebug($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+            this.Logger.LogDebug($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status: {message.Status}, inverter {message.DeviceIndex}");
 
-            if (message.Type != FieldMessageType.InverterPowerOn && message.Type != FieldMessageType.InverterPowerOff)
+            if (message.Type != FieldMessageType.InverterPowerOn &&
+                message.Type != FieldMessageType.InverterPowerOff &&
+                message.Type != FieldMessageType.InverterStop)
             {
                 return;
             }

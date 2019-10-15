@@ -6,11 +6,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    internal class PowerOffSwitchOffState : InverterStateBase
+    internal class PowerOffQuickStopState : InverterStateBase
     {
         #region Constructors
 
-        public PowerOffSwitchOffState(
+        public PowerOffQuickStopState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
@@ -24,7 +24,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.SwitchOn = false;
+            this.InverterStatus.CommonControlWord.QuickStop = false;
+            this.InverterStatus.CommonControlWord.EnableVoltage = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
@@ -54,15 +55,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
             if (message.IsError)
             {
-                this.Logger.LogError($"1:PowerOffSwitchOffState message={message}");
+                this.Logger.LogError($"1:PowerOffQuickStopState message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
                 {
-                    this.ParentStateMachine.ChangeState(new PowerOffDisableVoltageState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }
