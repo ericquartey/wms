@@ -280,6 +280,11 @@ namespace Ferretto.VW.App.Controls
 
             var property = GetProperty(dataContextType, path);
 
+            if (property is null)
+            {
+                return;
+            }
+
             var type = property.PropertyType;
             if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
             {

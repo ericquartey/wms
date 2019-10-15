@@ -12,35 +12,22 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class DepositAndPickUpTestViewModel : BaseMainViewModel
+    public partial class LoadingUnitFromBayToCellViewModel : BaseMainViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly int? inputLoadingUnitCode;
-
-        private readonly IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService;
-
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
-
         private readonly Sensors sensors = new Sensors();
 
-        private int? completedCycles;
-
-        private double? grossWeight;
-
-        private int inputDelay;
-
-        private int? inputRequiredCycles;
+        private int? cellId;
 
         private bool isExecutingProcedure;
 
@@ -50,11 +37,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isZeroChain;
 
+        private int? loadingUnitId;
+
         private IEnumerable<LoadingUnit> loadingUnits;
-
-        private double? netWeight;
-
-        private RepeatedTestProcedure procedureParameters;
 
         private SubscriptionToken sensorsToken;
 
@@ -64,22 +49,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-        private double? tare;
-
-        private int? totalCompletedCycles;
-
         #endregion
 
         #region Constructors
 
-        public DepositAndPickUpTestViewModel(
-            IMachineSetupStatusWebService machineSetupStatusWebService,
-            IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
-            IMachineElevatorWebService machineElevatorWebService,
-            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineSensorsWebService machineSensorsWebService,
-            IBayManager bayManagerService)
-            : base(PresentationMode.Installer)
+        public LoadingUnitFromBayToCellViewModel(
+                IMachineSetupStatusWebService machineSetupStatusWebService,
+                IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
+                IMachineElevatorWebService machineElevatorWebService,
+                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                IMachineSensorsWebService machineSensorsWebService,
+                IBayManager bayManagerService)
+                : base(PresentationMode.Installer)
         {
             if (machineDepositPickupProcedure == null)
             {
@@ -110,71 +91,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineElevatorWebService = machineElevatorWebService;
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
             this.bayManagerService = bayManagerService;
-            this.machineSetupStatusWebService = machineSetupStatusWebService;
-            this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
-            this.inputDelay = 0;
+            this.cellId = 0;
             this.SelectBayPosition1();
-        }
-
-        #endregion
-
-        #region Enums
-
-        public enum DepositAndPickUpState
-        {
-            None,
-
-            GotoBay,
-
-            PickUp,
-
-            GotoBayAdjusted,
-
-            Deposit,
-
-            EndLoaded,
         }
 
         #endregion
 
         #region Properties
 
-        public int? CompletedCycles
+        public int? CellId
         {
-            get => this.completedCycles;
+            get => this.cellId;
             set
             {
-                if (this.SetProperty(ref this.completedCycles, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public double? GrossWeight
-        {
-            get => this.grossWeight;
-            set => this.SetProperty(ref this.grossWeight, value);
-        }
-
-        public int InputDelay
-        {
-            get => this.inputDelay;
-            set
-            {
-                if (this.SetProperty(ref this.inputDelay, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public int? InputRequiredCycles
-        {
-            get => this.inputRequiredCycles;
-            set
-            {
-                if (this.SetProperty(ref this.inputRequiredCycles, value))
+                if (this.SetProperty(ref this.cellId, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -246,12 +176,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public double? NetWeight
+        public int? LoadingUnitId
         {
-            get => this.netWeight;
+            get => this.loadingUnitId;
             set
             {
-                if (this.SetProperty(ref this.netWeight, value))
+                if (this.SetProperty(ref this.loadingUnitId, value))
                 {
                     this.UpdateLoadingUnit();
                     this.RaiseCanExecuteChanged();
@@ -274,25 +204,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 this.StartStop,
                 this.CanExecuteStopCommand));
-
-        public double? Tare
-        {
-            get => this.tare;
-            set
-            {
-                if (this.SetProperty(ref this.tare, value))
-                {
-                    this.UpdateLoadingUnit();
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public int? TotalCompletedCycles
-        {
-            get => this.totalCompletedCycles;
-            private set => this.SetProperty(ref this.totalCompletedCycles, value);
-        }
 
         #endregion
 
@@ -321,26 +232,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public async Task GetCycleQtuantityAsync()
-        {
-            try
-            {
-                this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
-
-                this.InputRequiredCycles = this.procedureParameters.RequiredCycles;
-                this.TotalCompletedCycles = this.procedureParameters.PerformedCycles;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            this.CompletedCycles = 0;
 
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
@@ -357,20 +251,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                     message =>
-                        {
-                            this.sensors.Update(message?.Data?.SensorsStates);
-                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
-                            this.RaiseCanExecuteChanged();
-                        },
+                    {
+                        this.sensors.Update(message?.Data?.SensorsStates);
+                        this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+                        this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+                        this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
+                        this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+                        this.RaiseCanExecuteChanged();
+                    },
                     ThreadOption.UIThread,
                     false);
 
             await this.InitializeSensors();
-
-            await this.GetCycleQtuantityAsync();
 
             await this.RetrieveElevatorPositionAsync();
 
@@ -432,44 +324,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private async Task ExecuteNextStateAsync()
-        {
-            if (this.IsStopping)
-            {
-                this.IsStopping = false;
-                this.IsExecutingProcedure = false;
-                this.Stopped();
-            }
-
-            if (!this.IsExecutingProcedure)
-            {
-                return;
-            }
-
-            switch (this.currentState)
-            {
-                case DepositAndPickUpState.None:
-                    await this.MoveToBayHeightAsync();
-                    break;
-
-                case DepositAndPickUpState.GotoBay:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.PickUp:
-                    await this.Restart();
-                    break;
-
-                case DepositAndPickUpState.GotoBayAdjusted:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.Deposit:
-                    await this.MoveToBayHeightAsync();
-                    break;
-            }
-        }
-
         private async Task InitializeSensors()
         {
             try
@@ -524,14 +378,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorEmbarking = false;
                         this.IsElevatorMovingToBay = false;
 
-                        if (this.currentState == DepositAndPickUpState.PickUp)
-                        {
-                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
-                            this.CompletedCycles++;
-                        }
-
-                        await this.ExecuteNextStateAsync();
-
                         break;
                     }
 
@@ -561,41 +407,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (!this.Tare.HasValue)
-                {
-                    this.ShowNotification("Tara non inserita", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (this.Tare.Value <= 0)
-                {
-                    this.ShowNotification("Tara deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (!this.NetWeight.HasValue)
+                if (!this.LoadingUnitId.HasValue)
                 {
                     this.ShowNotification("Peso non inserito", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                if (this.NetWeight.Value <= 0)
+                if (this.LoadingUnitId.Value <= 0)
                 {
                     this.ShowNotification("Peso deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
-                {
-                    this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
+                //await this.machineElevatorWebService.StartMovingSourceDestinationAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
 
-                this.currentState = DepositAndPickUpState.None;
-
-                this.isExecutingProcedure = true;
-
-                await this.ExecuteNextStateAsync();
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -622,19 +448,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void UpdateLoadingUnit()
         {
-            if (this.tare.HasValue
+            if (this.loadingUnitId.HasValue
                 &&
-                this.tare > 0)
+                this.loadingUnitId > 0)
             {
                 this.LoadingUnitInBay = new LoadingUnit();
-                this.LoadingUnitInBay.Id = 1;
-                this.LoadingUnitInBay.Tare = this.Tare.Value;
-                this.GrossWeight = this.Tare + this.NetWeight;
+                this.LoadingUnitInBay.Id = this.loadingUnitId.Value;
             }
             else
             {
                 this.LoadingUnitInBay = null;
-                this.GrossWeight = 0;
             }
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));

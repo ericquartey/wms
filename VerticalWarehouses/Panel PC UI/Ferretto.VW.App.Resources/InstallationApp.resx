@@ -1155,4 +1155,7 @@
   <data name="SaveSuccessful" xml:space="preserve">
     <value>Save succssful</value>
   </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Destination cell id</value>
+  </data>
 </root>
