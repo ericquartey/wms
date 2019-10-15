@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogTrace($"Deallocating {messageCurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
+                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is SwitchOnStateMachine || messageCurrentStateMachine is StopStateMachine)
                         {
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogTrace($"InverterSwitchOff Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
 
                         if (messageCurrentStateMachine is SwitchOffStateMachine)
                         {
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogTrace($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogTrace($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
