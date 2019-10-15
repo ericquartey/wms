@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         #region Fields
 
         private readonly InverterIndex inverterIndex;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override void Start()
         {
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.FaultReset = true;
 
             var inverterMessage = new InverterMessage(
@@ -99,8 +103,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                 {
                     this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
                 }
-                else if (!this.InverterStatus.CommonStatusWord.IsFault)
+                else if (!this.InverterStatus.CommonStatusWord.IsFault ||
+                    DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000
+                    )
                 {
+                    if (this.InverterStatus.CommonStatusWord.IsFault)
+                    {
+                        this.Logger.LogError($"2:ResetFaultStartState timeout, inverter {this.inverterIndex}");
+                    }
                     // reset command FaultReset bit before exiting the state machine
 
                     this.InverterStatus.CommonControlWord.FaultReset = false;
