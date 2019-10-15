@@ -193,30 +193,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AllLoadingUnits = table.Column<bool>(nullable: false),
-                    Bay1Check = table.Column<bool>(nullable: false),
                     Bay1FirstLoadingUnit = table.Column<bool>(nullable: false),
+                    Bay1HeightCheck = table.Column<bool>(nullable: false),
                     Bay1Laser = table.Column<bool>(nullable: false),
                     Bay1Shape = table.Column<bool>(nullable: false),
                     Bay1Shutter = table.Column<bool>(nullable: false),
-                    Bay2Check = table.Column<bool>(nullable: false),
                     Bay2FirstLoadingUnit = table.Column<bool>(nullable: false),
+                    Bay2HeightCheck = table.Column<bool>(nullable: false),
                     Bay2Laser = table.Column<bool>(nullable: false),
                     Bay2Shape = table.Column<bool>(nullable: false),
                     Bay2Shutter = table.Column<bool>(nullable: false),
-                    Bay3Check = table.Column<bool>(nullable: false),
                     Bay3FirstLoadingUnit = table.Column<bool>(nullable: false),
+                    Bay3HeightCheck = table.Column<bool>(nullable: false),
                     Bay3Laser = table.Column<bool>(nullable: false),
                     Bay3Shape = table.Column<bool>(nullable: false),
                     Bay3Shutter = table.Column<bool>(nullable: false),
-                    BeltBurnishingCompleted = table.Column<bool>(nullable: false),
-                    BeltBurnishingCompletedCycles = table.Column<int>(nullable: false),
-                    BeltBurnishingRequiredCycles = table.Column<int>(nullable: false),
-                    CellsHeightCheck = table.Column<bool>(nullable: false),
                     CompletedDate = table.Column<DateTime>(nullable: true),
                     HorizontalHoming = table.Column<bool>(nullable: false),
-                    PanelsCheck = table.Column<bool>(nullable: false),
-                    VerticalOffsetCalibration = table.Column<bool>(nullable: false),
-                    VerticalResolution = table.Column<bool>(nullable: false),
                     WeightMeasurement = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -329,11 +322,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     DepositAndPickUpTestId = table.Column<int>(nullable: true),
                     HorizontalManualMovementsId = table.Column<int>(nullable: true),
                     LoadFirstDrawerTestId = table.Column<int>(nullable: true),
-                    OffsetCalibrationId = table.Column<int>(nullable: true),
                     ShutterHeightCheckId = table.Column<int>(nullable: true),
                     ShutterManualMovementsId = table.Column<int>(nullable: true),
                     ShutterTestId = table.Column<int>(nullable: true),
                     VerticalManualMovementsId = table.Column<int>(nullable: true),
+                    VerticalOffsetCalibrationId = table.Column<int>(nullable: true),
                     VerticalResolutionCalibrationId = table.Column<int>(nullable: true),
                     WeightCheckId = table.Column<int>(nullable: true)
                 },
@@ -389,12 +382,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_OffsetCalibrationId",
-                        column: x => x.OffsetCalibrationId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_ShutterHeightCheckId",
                         column: x => x.ShutterHeightCheckId,
                         principalTable: "SetupProcedures",
@@ -415,6 +402,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_VerticalManualMovementsId",
                         column: x => x.VerticalManualMovementsId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_VerticalOffsetCalibrationId",
+                        column: x => x.VerticalOffsetCalibrationId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -742,12 +735,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 11, 18, 5, 52, 637, DateTimeKind.Local).AddTicks(8051), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 14, 13, 58, 4, 317, DateTimeKind.Local).AddTicks(222), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
-                columns: new[] { "Id", "AllLoadingUnits", "Bay1Check", "Bay1FirstLoadingUnit", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2Check", "Bay2FirstLoadingUnit", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3Check", "Bay3FirstLoadingUnit", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "BeltBurnishingCompleted", "BeltBurnishingCompletedCycles", "BeltBurnishingRequiredCycles", "CellsHeightCheck", "CompletedDate", "HorizontalHoming", "PanelsCheck", "VerticalOffsetCalibration", "VerticalResolution", "WeightMeasurement" },
-                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 0, 0, false, null, false, false, false, false, false });
+                columns: new[] { "Id", "AllLoadingUnits", "Bay1FirstLoadingUnit", "Bay1HeightCheck", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2FirstLoadingUnit", "Bay2HeightCheck", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3FirstLoadingUnit", "Bay3HeightCheck", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "CompletedDate", "HorizontalHoming", "WeightMeasurement" },
+                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -952,11 +945,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "LoadFirstDrawerTestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_OffsetCalibrationId",
-                table: "SetupProceduresSets",
-                column: "OffsetCalibrationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_ShutterHeightCheckId",
                 table: "SetupProceduresSets",
                 column: "ShutterHeightCheckId");
@@ -975,6 +963,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_SetupProceduresSets_VerticalManualMovementsId",
                 table: "SetupProceduresSets",
                 column: "VerticalManualMovementsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_VerticalOffsetCalibrationId",
+                table: "SetupProceduresSets",
+                column: "VerticalOffsetCalibrationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_VerticalResolutionCalibrationId",

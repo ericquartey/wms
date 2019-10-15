@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -164,10 +165,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         this.machineData.MessageData.CurrentPosition = elevatorProvider.HorizontalPosition;
                     }
+
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBeltBurnishingTest()
+                        .PerformedCycles;
                 }
             }
-
-            this.machineData.MessageData.ExecutedCycles = 0;
 
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,

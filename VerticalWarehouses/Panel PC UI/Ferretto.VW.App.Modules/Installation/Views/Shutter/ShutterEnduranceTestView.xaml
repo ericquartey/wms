@@ -65,7 +65,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CompletedCycles}"
-                                 LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                 LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"

@@ -7,13 +7,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         [Obsolete]
-        void CompleteVerticalOffset();
-
-        [Obsolete]
         void CompleteVerticalOrigin();
-
-        [Obsolete]
-        void CompleteVerticalResolution();
 
         SetupStatusCapabilities Get();
 

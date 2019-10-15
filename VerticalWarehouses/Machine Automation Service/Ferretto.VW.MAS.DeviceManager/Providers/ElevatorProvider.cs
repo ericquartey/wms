@@ -76,8 +76,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.Dispose(true);
         }
 
+        public AxisBounds GetVerticalBounds()
+        {
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+
+            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
+        }
+
         public void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
+                    HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
@@ -384,22 +391,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (totalTestCycleCount <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive,
-                    nameof(totalTestCycleCount));
+                    nameof(totalTestCycleCount),
+                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
             if (upperBoundPosition <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive,
-                    nameof(upperBoundPosition));
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
             }
 
             if (upperBoundPosition <= lowerBoundPosition)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition,
-                    nameof(lowerBoundPosition));
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
             }
 
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
@@ -407,15 +414,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (upperBoundPosition > verticalAxis.UpperBound)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange,
-                    nameof(upperBoundPosition));
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
             }
 
             if (lowerBoundPosition < verticalAxis.LowerBound)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange,
-                    nameof(lowerBoundPosition));
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
             }
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);

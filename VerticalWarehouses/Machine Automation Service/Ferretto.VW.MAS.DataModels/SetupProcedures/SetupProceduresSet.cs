@@ -20,8 +20,6 @@
 
         public SetupProcedure LoadFirstDrawerTest { get; set; }
 
-        public OffsetCalibrationProcedure OffsetCalibration { get; set; }
-
         public SetupProcedure ShutterHeightCheck { get; set; }
 
         public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
@@ -29,6 +27,8 @@
         public RepeatedTestProcedure ShutterTest { get; set; }
 
         public VerticalManualMovementsProcedure VerticalManualMovements { get; set; }
+
+        public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
 
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
 

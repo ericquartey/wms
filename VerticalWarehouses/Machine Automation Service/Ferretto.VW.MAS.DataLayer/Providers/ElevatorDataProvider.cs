@@ -17,19 +17,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
-
         #endregion
 
         #region Constructors
 
         public ElevatorDataProvider(
             DataLayerContext dataContext,
-            ISetupStatusProvider setupStatusProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -115,9 +111,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.ElevatorAxes.Update(verticalAxis);
             this.dataContext.SaveChanges();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetOffsetCalibration();
+            var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
             this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
-            this.setupStatusProvider.CompleteVerticalOffset();
         }
 
         public void UpdateVerticalResolution(decimal newResolution)
@@ -131,48 +126,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
             this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
-            this.setupStatusProvider.CompleteVerticalResolution();
-        }
-
-        /// <summary>
-        /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
-        /// </summary>
-        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
-        /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
-        /// <returns>The vertical position displacement, in millimeters.</returns>
-        private double ComputeBeltElongation(double grossWeight, double targetPosition)
-        {
-            var machineHeight = this.dataContext.Machines.Single().Height;
-
-            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000;
-
-            var properties = this.dataContext.ElevatorStructuralProperties.Single();
-
-            var beltSpacingMeters = properties.BeltSpacing / 1000;
-
-            var targetPositionMeters = targetPosition / 1000;
-
-            return
-                5000 * grossWeight
-                /
-                ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
-        }
-
-        /// <summary>
-        /// Computes the vertical position displacement due to the shaft torsion.
-        /// </summary>
-        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
-        /// <returns>The vertical position displacement, in millimeters.</returns>
-        private double ComputeShaftTorsion(double grossWeight)
-        {
-            var properties = this.dataContext.ElevatorStructuralProperties.Single();
-
-            const double m = 10.0 / 3;
-
-            return
-                64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
-                /
-                (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
 
         #endregion

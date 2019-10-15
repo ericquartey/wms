@@ -574,7 +574,7 @@
         "DepositAndPickUpTest",
         "HorizontalManualMovements",
         "LoadFirstDrawerTest",
-        "OffsetCalibration",
+        "VerticalOffsetCalibration",
         "ShutterHeightCheck",
         "ShutterManualMovements",
         "ShutterTest",
@@ -746,10 +746,10 @@
             }
           }
         },
-        "OffsetCalibration": {
-          "$id": "#/properties/SetupProcedures/properties/OffsetCalibration",
+        "VerticalOffsetCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
           "type": "object",
-          "title": "The Offsetcalibration Schema",
+          "title": "The VerticalOffsetCalibration Schema",
           "required": [
             "ReferenceCellId",
             "Step",
@@ -757,19 +757,19 @@
           ],
           "properties": {
             "ReferenceCellId": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/ReferenceCellId",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
               "type": "integer",
               "title": "The Referencecellid Schema",
               "default": 0
             },
             "Step": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/Step",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
               "type": "number",
               "title": "The Step Schema",
               "default": 0.0
             },
             "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/FeedRate",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0
