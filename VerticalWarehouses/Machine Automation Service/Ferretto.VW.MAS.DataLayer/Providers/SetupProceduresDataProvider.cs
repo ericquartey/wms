@@ -36,7 +36,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(s => s.DepositAndPickUpTest)
                 .Include(s => s.HorizontalManualMovements)
                 .Include(s => s.LoadFirstDrawerTest)
-                .Include(s => s.VerticalOffsetCalibration)
                 .Include(s => s.ShutterHeightCheck)
                 .Include(s => s.ShutterManualMovements)
                 .Include(s => s.ShutterTest)

@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BeltBurnishingViewModel(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
@@ -426,6 +426,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
 
                 this.totalPerformedCyclesBeforeStart = this.TotalCompletedCycles ?? 0;
+                this.CompletedCyclesThisSession = 0;
+                this.RaisePropertyChanged(nameof(this.CompletedCyclesThisSession));
 
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
