@@ -74,6 +74,7 @@ namespace Ferretto.VW.App.Controls
             var element = (FrameworkElement)sender;
             var rowData = (RowData)element.DataContext;
             rowData.IsExpanded = !rowData.IsExpanded;
+            e.Handled = true;
         }
 
         #endregion
