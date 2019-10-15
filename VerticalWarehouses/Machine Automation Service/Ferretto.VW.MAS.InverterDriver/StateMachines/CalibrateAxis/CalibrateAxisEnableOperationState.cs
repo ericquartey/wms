@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             var inverterMessage = new InverterMessage(
                 this.InverterStatus.SystemIndex,
-                (short)InverterParameterId.ControlWordParam,
+                (short)InverterParameterId.ControlWord,
                 this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");

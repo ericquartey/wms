@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.SequenceMode = true;
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.TableTravelControlWord.Value);
 
                 this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -69,14 +69,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            if (message.ParameterId == InverterParameterId.ControlWordParam)
+            if (message.ParameterId == InverterParameterId.ControlWord)
             {
                 if (this.InverterStatus is IPositioningInverterStatus currentStatus
                     && !currentStatus.TableTravelControlWord.StartMotionBlock
                     )
                 {
                     currentStatus.TableTravelControlWord.StartMotionBlock = true;
-                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.TableTravelControlWord.Value);
+                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.TableTravelControlWord.Value);
 
                     this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

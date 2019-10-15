@@ -8,6 +8,11 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public static bool IsErrored(this IBaseNotificationMessageUI message)
         {
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
             return
                 message.Status == MessageStatus.OperationError ||
                 message.Status == MessageStatus.OperationFaultStop;
@@ -15,6 +20,11 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public static bool IsNotRunning(this IBaseNotificationMessageUI message)
         {
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
             return
                 message.Status == MessageStatus.OperationEnd ||
                 message.Status == MessageStatus.OperationError ||

@@ -66,8 +66,6 @@ namespace Ferretto.VW.App.Services
                                   Type = PresentationTypes.Error,
                                   IsVisible = newErrorPresent
                               }));
-
-                    this.NavigateToErrorPageAsync();
                 }
             }
         }
@@ -91,7 +89,13 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
+                var prevError = this.ActiveError;
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
+
+                if (this.ActiveError != prevError)
+                {
+                    await this.NavigateToErrorPageAsync();
+                }
             }
             catch (Exception)
             {
@@ -101,21 +105,36 @@ namespace Ferretto.VW.App.Services
 
         private async Task NavigateToErrorPageAsync()
         {
-            if (this.ActiveError is null || !this.AutoNavigateOnError)
+            if (!this.AutoNavigateOnError)
             {
                 return;
             }
 
-            await Application.Current.Dispatcher.BeginInvoke(
-                System.Windows.Threading.DispatcherPriority.ApplicationIdle,
-                new Action(() =>
-                {
-                    this.navigationService.Appear(
-                        nameof(Utils.Modules.Errors),
-                        Utils.Modules.Errors.ERRORDETAILSVIEW,
-                        data: null,
-                        trackCurrentView: true);
-                }));
+            if (this.ActiveError is null)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
+                    {
+                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW))
+                        {
+                            this.navigationService.GoBack();
+                        }
+                    }));
+            }
+            else
+            {
+                await Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
+                    {
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Errors),
+                            Utils.Modules.Errors.ERRORDETAILSVIEW,
+                            data: null,
+                            trackCurrentView: true);
+                    }));
+            }
         }
 
         private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)

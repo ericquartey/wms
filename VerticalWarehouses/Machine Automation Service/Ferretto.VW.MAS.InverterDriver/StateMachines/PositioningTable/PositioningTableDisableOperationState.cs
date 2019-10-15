@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 currentStatus.TableTravelControlWord.StartMotionBlock = false;
             }
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

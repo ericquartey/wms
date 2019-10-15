@@ -368,7 +368,7 @@ namespace Ferretto.VW.Simulator.Services
             var result = 0;
             switch (message.ParameterId)
             {
-                case InverterParameterId.ControlWordParam:
+                case InverterParameterId.ControlWord:
                     inverter.ControlWord = message.UShortPayload;
                     inverter.RefreshControlWordArray();
                     this.UpdateInverter(inverter);
@@ -382,7 +382,7 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(ioStatusMessage);
                     break;
 
-                case InverterParameterId.SetOperatingModeParam:
+                case InverterParameterId.SetOperatingMode:
                     inverter.OperationMode = (InverterOperationMode)message.UShortPayload;
                     result = client.Client.Send(message.ToBytes());
                     break;
@@ -392,20 +392,20 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
+                case InverterParameterId.HomingCreepSpeed:
+                case InverterParameterId.HomingFastSpeed:
                 case InverterParameterId.HomingAcceleration:
                 case InverterParameterId.HomingSensor:
                 case InverterParameterId.HomingOffset:
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.PositionAccelerationParam:
+                case InverterParameterId.PositionAcceleration:
                     inverter.TargetAcceleration[inverter.CurrentAxis] = (int)message.UIntPayload;
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.PositionDecelerationParam:
+                case InverterParameterId.PositionDeceleration:
                     inverter.TargetDeceleration[inverter.CurrentAxis] = (int)message.UIntPayload;
                     result = client.Client.Send(message.ToBytes());
                     break;
@@ -415,23 +415,23 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(torqueMessage);
                     break;
 
-                case InverterParameterId.PositionTargetPositionParam:
+                case InverterParameterId.PositionTargetPosition:
                     inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
                     inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.PositionTargetSpeedParam:
+                case InverterParameterId.PositionTargetSpeed:
                     inverter.TargetSpeed[inverter.CurrentAxis] = (int)message.UIntPayload;
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.ShutterTargetVelocityParam:
+                case InverterParameterId.ShutterTargetVelocity:
                     inverter.SpeedRate = (int)message.UIntPayload;
                     result = client.Client.Send(message.ToBytes());
                     break;
 
-                case InverterParameterId.StatusWordParam:
+                case InverterParameterId.StatusWord:
                     this.UpdateInverter(inverter);
                     switch (inverter.OperationMode)
                     {

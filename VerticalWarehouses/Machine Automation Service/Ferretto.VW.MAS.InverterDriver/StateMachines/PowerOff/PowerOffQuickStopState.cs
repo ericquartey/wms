@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             this.InverterStatus.CommonControlWord.QuickStop = false;
             this.InverterStatus.CommonControlWord.EnableVoltage = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

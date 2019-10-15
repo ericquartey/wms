@@ -267,16 +267,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ElevatorWeightCheckChanged(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                ||
-                message.Status == MessageStatus.OperationStop)
+            if (message is null)
             {
-                this.NoteText = "Operation Completed.";
+                throw new ArgumentNullException(nameof(message));
             }
 
-            if (!(message.Data is null))
+            if (message.IsErrored())
             {
-                this.MeasuredWeight = message?.Data?.Weight;
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
+            }
+            else if (message.IsNotRunning())
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureCompleted);
+            }
+
+            if (message.Data != null)
+            {
+                this.MeasuredWeight = message.Data.Weight;
             }
         }
 

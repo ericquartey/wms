@@ -148,9 +148,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
         }
 
-        protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnAutomationMessageReceived(message);
+            base.OnElevatorPositionChanged(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {

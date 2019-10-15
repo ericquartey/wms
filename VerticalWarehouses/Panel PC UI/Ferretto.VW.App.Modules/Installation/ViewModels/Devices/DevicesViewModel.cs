@@ -121,13 +121,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.updateMachneStateActive = this.EventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
                 .Subscribe(
-                    message => this.UpdateMachneStateActive(message.Data.MessageActor, message.Data.MessageType),
+                    message => this.OnMachineStatusChanged(message.Data.MessageActor, message.Data.MessageType),
                     ThreadOption.UIThread,
                     false);
 
             this.updateStateActive = this.EventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
                 .Subscribe(
-                    message => this.UpdateStateActive(message.Data.MessageActor, message.Data.CurrentState),
+                    message => this.OnMachineStateChanged(message.Data.MessageActor, message.Data.CurrentState),
                     ThreadOption.UIThread,
                     false);
 
@@ -139,28 +139,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.isBusy;
         }
 
-        private void UpdateMachneStateActive(MessageActor messageActor, string messageType)
-        {
-            switch (messageActor)
-            {
-                case MessageActor.FiniteStateMachines:
-                    this.CurrentMachineStatusFSM = messageType.ToString();
-                    break;
-
-                case MessageActor.InverterDriver:
-                    this.CurrentMachineStatusInverter = messageType.ToString();
-                    break;
-
-                case MessageActor.IoDriver:
-                    this.CurrentMachineStatusIODriver = messageType.ToString();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void UpdateStateActive(MessageActor messageActor, string currentState)
+        private void OnMachineStateChanged(MessageActor messageActor, string currentState)
         {
             switch (messageActor)
             {
@@ -174,6 +153,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 case MessageActor.IoDriver:
                     this.CurrentStateIODriver = currentState;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void OnMachineStatusChanged(MessageActor messageActor, string messageType)
+        {
+            switch (messageActor)
+            {
+                case MessageActor.FiniteStateMachines:
+                    this.CurrentMachineStatusFSM = messageType.ToString();
+                    break;
+
+                case MessageActor.InverterDriver:
+                    this.CurrentMachineStatusInverter = messageType.ToString();
+                    break;
+
+                case MessageActor.IoDriver:
+                    this.CurrentMachineStatusIODriver = messageType.ToString();
                     break;
 
                 default:

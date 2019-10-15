@@ -119,6 +119,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (string.IsNullOrEmpty(message.ViewModelName))
             {
                 this.IsEnabled = true;
@@ -139,7 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.notificationUIsubscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
               .Subscribe(
-                  this.UpdatePositions,
+                  this.OnElevatorPositionChanged,
                   ThreadOption.UIThread,
                   false);
 
@@ -159,26 +164,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected abstract Task StopMovementAsync();
 
-        private async Task RetrieveCurrentPositionAsync()
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            try
+            if (message is null)
             {
-                this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
-                this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
+                throw new ArgumentNullException(nameof(message));
             }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
 
-        private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (message is null
-                ||
-                message.Data is null)
+            if (message.Data is null)
             {
-                return;
+                throw new ArgumentException();
             }
 
             switch (message.Data.AxisMovement)
@@ -207,6 +202,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 default:
                     break;
+            }
+        }
+
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            try
+            {
+                this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

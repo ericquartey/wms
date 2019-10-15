@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.CalculateDatasetAndDuration();
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingMode, this.InverterStatus.OperatingMode);
 
             this.Logger.LogTrace($"4:inverterMessage={inverterMessage}");
 
@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 case InverterParameterId.ShutterTargetPosition:
                 {
-                    var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate, this.dataset);
+                    var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocity, this.shutterPositionData.SpeedRate, this.dataset);
                     var byteData = data.ToBytes();
 
                     this.ParentStateMachine.EnqueueCommandMessage(data);
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 }
                 break;
 
-                case InverterParameterId.ShutterTargetVelocityParam:
+                case InverterParameterId.ShutterTargetVelocity:
                 {
                     // TODO: remove this change state after inverter firmware update
                     //if (this.shutterPositionData.MovementType == MovementType.Relative)

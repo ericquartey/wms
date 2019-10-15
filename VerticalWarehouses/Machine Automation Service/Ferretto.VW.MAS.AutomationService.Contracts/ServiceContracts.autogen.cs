@@ -2236,7 +2236,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     /// <summary>100032 = CradleNotCompletelyLoaded
     /// 100033 = ConditionsNotMetForPositioning
-    /// 100034 = ConditionsNotMetForRunning</summary>
+    /// 100034 = ConditionsNotMetForRunning
+    /// 100035 = SecurityWasTriggered
+    /// 100036 = InverterFaultStateDetected
+    /// 200000 = InverterErrorBaseCode
+    /// 200001 = InverterErrorInvalidParameter
+    /// 200002 = InverterErrorInvalidDataset
+    /// 200003 = InverterErrorParameterIsWriteOnly
+    /// 200004 = InverterErrorParameterIsReadOnly
+    /// 200005 = InverterErrorEepromReadError
+    /// 200006 = InverterErrorEepromWriteError
+    /// 200007 = InverterErrorEepromChecksumError
+    /// 200008 = InverterErrorCannotWriteParameterWhileRunning
+    /// 200009 = InverterErrorDatasetValuesAreDifferent
+    /// 200011 = InverterErrorUnknownParameter
+    /// 200013 = InverterErrorSyntaxError
+    /// 200014 = InverterErrorWrongPayloadLength
+    /// 200015 = InverterErrorUnknown
+    /// 200020 = InverterErrorNodeNotAvailable
+    /// 200030 = InverterErrorSyntaxError2</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrors
     {
@@ -2245,6 +2263,42 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         ConditionsNotMetForPositioning = 100033,
     
         ConditionsNotMetForRunning = 100034,
+    
+        SecurityWasTriggered = 100035,
+    
+        InverterFaultStateDetected = 100036,
+    
+        InverterErrorBaseCode = 200000,
+    
+        InverterErrorInvalidParameter = 200001,
+    
+        InverterErrorInvalidDataset = 200002,
+    
+        InverterErrorParameterIsWriteOnly = 200003,
+    
+        InverterErrorParameterIsReadOnly = 200004,
+    
+        InverterErrorEepromReadError = 200005,
+    
+        InverterErrorEepromWriteError = 200006,
+    
+        InverterErrorEepromChecksumError = 200007,
+    
+        InverterErrorCannotWriteParameterWhileRunning = 200008,
+    
+        InverterErrorDatasetValuesAreDifferent = 200009,
+    
+        InverterErrorUnknownParameter = 200011,
+    
+        InverterErrorSyntaxError = 200013,
+    
+        InverterErrorWrongPayloadLength = 200014,
+    
+        InverterErrorUnknown = 200015,
+    
+        InverterErrorNodeNotAvailable = 200020,
+    
+        InverterErrorSyntaxError2 = 200030,
     
     }
     

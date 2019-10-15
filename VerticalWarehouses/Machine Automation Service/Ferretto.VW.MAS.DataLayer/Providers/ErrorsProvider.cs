@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return summary;
         }
 
-        public Error RecordNew(MachineErrors code, BayNumber bayNumber)
+        public Error RecordNew(MachineErrors code, BayNumber bayNumber = BayNumber.None)
         {
             var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null);
             if (existingUnresolvedError != null)
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var newError = new Error
             {
                 Code = (int)code,
-                OccurrenceDate = DateTime.UtcNow,
+                OccurrenceDate = DateTime.Now,
             };
 
             this.dataContext.Errors.Add(newError);
@@ -138,15 +138,39 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException(id);
             }
 
-            error.ResolutionDate = DateTime.UtcNow;
+            error.ResolutionDate = DateTime.Now;
 
             this.dataContext.Errors.Update(error);
 
             this.dataContext.SaveChanges();
 
-            this.NotifyErrorResolution(error, BayNumber.None);
+            this.NotifyErrorResolution(error);
 
             return error;
+        }
+
+        public void ResolveAll()
+        {
+            var errors = this.dataContext.Errors.Where(e => e.ResolutionDate == null).ToArray();
+            if (!errors.Any())
+            {
+                return;
+            }
+
+            var resolutionDate = DateTime.Now;
+            foreach (var error in errors)
+            {
+                error.ResolutionDate = resolutionDate;
+            }
+
+            this.dataContext.Errors.UpdateRange(errors);
+
+            this.dataContext.SaveChanges();
+
+            foreach (var error in errors)
+            {
+                this.NotifyErrorResolution(error);
+            }
         }
 
         private void NotifyErrorCreation(Error error, BayNumber bayNumber)
@@ -162,7 +186,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error, BayNumber bayNumber)
+        private void NotifyErrorResolution(Error error)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -170,7 +194,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.AutomationService,
                 MessageActor.Any,
                 MessageType.ErrorStatusChanged,
-                bayNumber);
+                BayNumber.None);
 
             this.notificationEvent.Publish(message);
         }

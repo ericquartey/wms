@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
+                            var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWord);
 
                             this.Logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
 
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
 
-            if (message.ParameterId == InverterParameterId.StatusWordParam)
+            if (message.ParameterId == InverterParameterId.StatusWord)
             {
                 var inverter = invertersProvider.GetByIndex(message.SystemIndex);
 
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!currentStateMachine?.ValidateCommandResponse(message) ?? false)
                 {
-                    var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWord);
 
                     this.Logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
 
@@ -336,7 +336,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace($"1:currentMessage={message}");
 
-            if (message.ParameterId == InverterParameterId.ControlWordParam
+            if (message.ParameterId == InverterParameterId.ControlWord
                 &&
                 message.SystemIndex == InverterIndex.MainInverter)
             {
@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (currentStateMachine?.ValidateCommandMessage(message) ?? false)
             {
                 this.Logger.LogTrace("6:Request Status word");
-                var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWordParam);
+                var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWord);
                 this.inverterCommandQueue.Enqueue(readStatusWordMessage);
             }
         }
@@ -473,7 +473,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     var newMessage = new InverterMessage(
                         (byte)InverterIndex.MainInverter,
-                        (short)InverterParameterId.ControlWordParam,
+                        (short)InverterParameterId.ControlWord,
                         mainInverter.CommonControlWord.Value);
 
                     this.Logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
@@ -1071,9 +1071,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncStatusTimer)
             {
                 var inverterIndex = (InverterIndex)state;
-                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == inverterIndex) < 2)
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWord && x.SystemIndex == inverterIndex) < 2)
                 {
-                    var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWord);
 
                     this.Logger.LogTrace($"1:readStatusWordTimer={readStatusWordMessage}");
 
@@ -1127,7 +1127,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var message = new InverterMessage(
                     (byte)InverterIndex.MainInverter,
-                    (short)InverterParameterId.ControlWordParam,
+                    (short)InverterParameterId.ControlWord,
                     mainInverter.CommonControlWord.Value);
 
                 this.heartbeatQueue.Enqueue(message);

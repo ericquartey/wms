@@ -184,9 +184,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsElevatorMoving =>
-                this.IsElevatorMovingToBay
-                || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+            this.IsElevatorMovingToBay
+            ||
+            this.IsElevatorDisembarking
+            ||
+            this.IsElevatorEmbarking;
 
         public bool IsExecutingProcedure
         {
@@ -358,15 +360,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sensorsToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                    message =>
-                        {
-                            this.sensors.Update(message?.Data?.SensorsStates);
-                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
-                            this.RaiseCanExecuteChanged();
-                        },
+                    this.OnSensorsChanged,
                     ThreadOption.UIThread,
                     false);
 
@@ -551,6 +545,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
             }
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            this.sensors.Update(message?.Data?.SensorsStates);
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+            this.RaiseCanExecuteChanged();
         }
 
         private void RaiseCanExecuteChanged()

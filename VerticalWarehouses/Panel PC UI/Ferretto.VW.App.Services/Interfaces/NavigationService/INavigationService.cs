@@ -18,6 +18,8 @@
 
         void GoBackTo(string modelName, string viewModelName);
 
+        bool IsActiveView(string moduleName, string viewModelName);
+
         void LoadModule(string moduleName);
 
         object SubscribeToNavigationCompleted(System.Action<NavigationCompletedPubSubEventArgs> action);

@@ -87,10 +87,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
-                async (e) => await this.OnHealthStatusChanged(e),
-                ThreadOption.UIThread,
-                false);
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChanged(e),
+                    ThreadOption.UIThread,
+                    false);
         }
 
         private async Task CheckFirewallStatusAsync()

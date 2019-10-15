@@ -170,7 +170,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
               .Subscribe(
-                  message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
+                  this.OnShutterPositionChanged,
                   ThreadOption.UIThread,
                   false);
             try
@@ -202,6 +202,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStopping = false;
                 this.EnableAll();
             }
+        }
+
+        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
+            this.CurrentPosition = (ShutterPosition?)message.Data?.ShutterPosition;
         }
 
         private void RefreshCanExecuteCommands()
