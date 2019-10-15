@@ -140,7 +140,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
 
-            this.CanInputCellId = this.Cells != null
+            this.CanInputCellId =
+                this.Cells != null
                 &&
                 !this.IsElevatorMoving
                 &&
@@ -149,7 +150,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return this.SelectedCell != null
+            return
+                this.SelectedCell != null
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -158,7 +160,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStop()
         {
-            return !this.IsWaitingForResponse && this.IsElevatorMoving;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsElevatorMoving;
         }
 
         private async Task MoveToCellHeightAsync()

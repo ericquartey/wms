@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
             var inverterMessage = new InverterMessage(
                 this.InverterStatus.SystemIndex,
-                (short)InverterParameterId.ControlWordParam,
+                (short)InverterParameterId.ControlWord,
                 this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
                     this.InverterStatus.CommonControlWord.FaultReset = false;
 
-                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
                     this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 

@@ -331,23 +331,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RetrieveCellsAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.Cells = await this.machineCellsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         #endregion
     }
 }

@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
-                    message => this.OnAutomationMessageReceived(message),
+                    this.OnElevatorPositionChanged,
                     ThreadOption.UIThread,
                     false);
 
@@ -176,28 +176,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowAbortStep(false, false);
         }
 
-        protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected virtual void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (message.IsErrored())
+            {
+                this.ShowNotification(
+                 VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                 Services.Models.NotificationSeverity.Warning);
+            }
+
+            if (message.Data is null)
+            {
+                throw new ArgumentException();
+            }
+
+            if (message.Data.AxisMovement != Axis.Vertical)
             {
                 return;
             }
 
-            if (message.Data.AxisMovement == Axis.Vertical)
+            if (message.IsNotRunning())
             {
-                this.CurrentPosition = message?.Data?.CurrentPosition ?? this.CurrentPosition;
-
-                this.IsExecutingProcedure =
-                    message.Status != MessageStatus.OperationEnd
-                    &&
-                    message.Status != MessageStatus.OperationStop;
-
-                if (message.Status == MessageStatus.OperationStop)
-                {
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                        Services.Models.NotificationSeverity.Warning);
-                }
+                this.IsExecutingProcedure = false;
+            }
+            else
+            {
+                this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
             }
         }
 

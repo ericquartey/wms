@@ -124,24 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RetrieveCarouselPositionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task TuningBay()
         {
             try

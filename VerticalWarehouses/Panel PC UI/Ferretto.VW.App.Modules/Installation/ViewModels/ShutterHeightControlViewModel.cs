@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Prism.Events;
 using Prism.Mvvm;
@@ -6,7 +7,8 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class Shutter1HeightControlViewModel : BaseMainViewModel
+    [Obsolete]
+    public class ShutterHeightControlViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -30,7 +32,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public Shutter1HeightControlViewModel(IEventAggregator eventAggregator)
+        public ShutterHeightControlViewModel(IEventAggregator eventAggregator)
             : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator;

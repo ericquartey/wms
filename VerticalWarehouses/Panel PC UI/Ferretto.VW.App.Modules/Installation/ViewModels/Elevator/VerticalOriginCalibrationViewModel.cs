@@ -42,8 +42,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receivedSwitchAxisUpdateToken;
 
-        private SubscriptionToken receiveExceptionToken;
-
         private SubscriptionToken receiveHomingUpdateToken;
 
         private decimal resolution;
@@ -313,56 +311,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnElevatorPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
             }
 
-            if (this.isExecutingVerticalOperation)
+            this.isExecutingVerticalOperation = message.Data.AxisToCalibrate == Axis.Vertical;
+
+            switch (message.Status)
             {
-                this.CurrentVerticalPosition = message?.Data?.CurrentPosition ?? this.CurrentVerticalPosition;
-            }
-            else
-            {
-                this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
-            }
-        }
+                case MessageStatus.OperationStart:
+                    this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
 
-        private void OnHomingProcedureStatusChanged(MessageNotifiedEventArgs message)
-        {
-            if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
-            {
-                this.isExecutingVerticalOperation = h.Data.AxisToCalibrate == Axis.Vertical;
+                    this.IsWaitingForResponse = false;
+                    this.IsExecutingProcedure = true;
+                    break;
 
-                switch (h.Status)
-                {
-                    case MessageStatus.OperationStart:
-                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+                case MessageStatus.OperationEnd:
+                    this.ShowNotification(
+                        VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
+                        Services.Models.NotificationSeverity.Success);
 
-                        this.IsWaitingForResponse = false;
-                        this.IsExecutingProcedure = true;
-                        break;
+                    this.IsWaitingForResponse = false;
+                    this.IsExecutingProcedure = false;
+                    break;
 
-                    case MessageStatus.OperationEnd:
-                        this.ShowNotification(
-                            VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
-                            Services.Models.NotificationSeverity.Success);
+                case MessageStatus.OperationError:
+                    this.ShowNotification(
+                        VW.App.Resources.InstallationApp.HorizontalHomingError,
+                        Services.Models.NotificationSeverity.Error);
 
-                        this.IsWaitingForResponse = false;
-                        this.IsExecutingProcedure = false;
-                        break;
-
-                    case MessageStatus.OperationError:
-                        this.ShowNotification(
-                            VW.App.Resources.InstallationApp.HorizontalHomingError,
-                            Services.Models.NotificationSeverity.Error);
-
-                        this.IsWaitingForResponse = false;
-                        this.IsExecutingProcedure = false;
-                        break;
-                }
+                    this.IsWaitingForResponse = false;
+                    this.IsExecutingProcedure = false;
+                    break;
             }
         }
 
@@ -423,37 +406,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.receivedSwitchAxisUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
                 .Subscribe(
-                    message => this.OnAxisSwitched(message),
+                    this.OnAxisSwitched,
                     ThreadOption.UIThread,
                     false);
 
             this.receivedCalibrateAxisUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
                 .Subscribe(
-                    message => this.OnCalibrationStepCompleted(message),
+                    this.OnCalibrationStepCompleted,
                     ThreadOption.UIThread,
                     false);
 
             this.receiveHomingUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<HomingMessageData>>()
                 .Subscribe(
-                message => this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message)),
-                ThreadOption.UIThread,
-                false);
-
-            this.receiveExceptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
-                .Subscribe(
-                message => this.OnHomingProcedureStatusChanged(new MessageNotifiedEventArgs(message)),
-                ThreadOption.UIThread,
-                false);
+                    this.OnHomingProcedureStatusChanged,
+                    ThreadOption.UIThread,
+                    false);
 
             this.updateCurrentPositionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
-                            this.UpdatePositions,
-                            ThreadOption.UIThread,
-                            false);
+                    this.UpdatePositions,
+                    ThreadOption.UIThread,
+                    false);
         }
 
         private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)

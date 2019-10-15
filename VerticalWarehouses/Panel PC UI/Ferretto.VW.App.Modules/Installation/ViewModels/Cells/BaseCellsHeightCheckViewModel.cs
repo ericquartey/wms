@@ -158,7 +158,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentPosition = message?.Data?.CurrentPosition ?? this.CurrentPosition;
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            this.CurrentPosition = message.Data?.CurrentPosition ?? this.CurrentPosition;
         }
 
         protected abstract void RaiseCanExecuteChanged();

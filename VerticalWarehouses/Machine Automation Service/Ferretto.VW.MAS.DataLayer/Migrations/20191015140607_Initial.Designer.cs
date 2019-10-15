@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191014115805_Initial")]
+    [Migration("20191015140607_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,8 +286,152 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 100034,
                             Code = 100034,
                             Description = "Condizioni per la messa in marcia non soddisfatte.",
-                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi",
+                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100035,
+                            Code = 100035,
+                            Description = "È scattata la funzione di sicurezza.",
+                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100036,
+                            Code = 100036,
+                            Description = "È stato rilevato un errore in uno degli inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 200000,
+                            Code = 200000,
+                            Description = "Errore inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200001,
+                            Code = 200001,
+                            Description = "Paramentro inverter non valido.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200002,
+                            Code = 200002,
+                            Description = "Dataset inverter non valido.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200003,
+                            Code = 200003,
+                            Description = "Parametro inverter è in sola scrittura.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200004,
+                            Code = 200004,
+                            Description = "Parametro inverter è in sola lettura.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200005,
+                            Code = 200005,
+                            Description = "Errore lettura EEPROM dell'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200006,
+                            Code = 200006,
+                            Description = "Errore scrittura EEPROM dell'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200007,
+                            Code = 200007,
+                            Description = "Errore checksum EEPROM dell'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200008,
+                            Code = 200008,
+                            Description = "Impossibile scrivere il parametro dell'inverter durante l'esecuzione.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200009,
+                            Code = 200009,
+                            Description = "I dati del dataset dell'inverter non corrispondono.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200011,
+                            Code = 200011,
+                            Description = "Parametro sconosciuto passato all'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200013,
+                            Code = 200013,
+                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200014,
+                            Code = 200014,
+                            Description = "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200015,
+                            Code = 200015,
+                            Description = "Errore sconosciuto dell'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200020,
+                            Code = 200020,
+                            Description = "Il nodo specificato non è disponibile.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200030,
+                            Code = 200030,
+                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
                         });
                 });
 
@@ -315,6 +459,96 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100034,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100035,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100036,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200000,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200001,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200002,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200003,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200004,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200005,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200006,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200007,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200008,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200009,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200011,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200013,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200014,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200015,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200020,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200030,
                             TotalErrors = 0
                         });
                 });
@@ -573,7 +807,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 14, 13, 58, 4, 317, DateTimeKind.Local).AddTicks(222),
+                            InstallationDate = new DateTime(2016, 12, 15, 16, 6, 5, 993, DateTimeKind.Local).AddTicks(9224),
                             ServiceStatus = 86
                         });
                 });

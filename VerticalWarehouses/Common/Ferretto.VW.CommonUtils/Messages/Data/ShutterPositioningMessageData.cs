@@ -65,7 +65,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.HighSpeedDurationClose = shutterPositioningMessageData.HighSpeedDurationClose;
             this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
-            this.ExecutedCycles = shutterPositioningMessageData.ExecutedCycles;
+            this.PerformedCycles = shutterPositioningMessageData.PerformedCycles;
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int Delay { get; set; }
 
-        public int ExecutedCycles { get; set; }
+        public int PerformedCycles { get; set; }
 
         public double HigherDistance { get; }
 

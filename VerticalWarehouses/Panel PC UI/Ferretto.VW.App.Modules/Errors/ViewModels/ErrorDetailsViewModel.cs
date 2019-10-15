@@ -108,15 +108,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
 
-                var nextError = await this.machineErrorsWebService.GetCurrentAsync();
-                if (nextError is null)
-                {
-                    this.NavigationService.GoBack();
-                }
-                else
-                {
-                    this.Error = nextError;
-                }
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
             catch (Exception ex)
             {

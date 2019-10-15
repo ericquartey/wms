@@ -279,7 +279,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.EventAggregator
              .GetEvent<NotificationEventUI<PositioningMessageData>>()
              .Subscribe(
-                 message => this.OnCurrentHeightChanged(message),
+                 message => this.OnCurrentPositionChanged(message),
                  ThreadOption.UIThread,
                  false);
 
@@ -496,11 +496,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnCurrentHeightChanged(NotificationMessageUI<PositioningMessageData> message)
+        private void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (message.Data is null)
+            {
+                throw new ArgumentException();
             }
 
             this.CurrentHeight = message.Data.CurrentPosition ?? this.CurrentHeight;

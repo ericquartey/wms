@@ -11,9 +11,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ErrorStatisticsSummary GetStatistics();
 
-        Error RecordNew(MachineErrors code, BayNumber bayNumber);
+        Error RecordNew(MachineErrors code, BayNumber bayNumber = BayNumber.None);
 
         Error Resolve(int id);
+
+        void ResolveAll();
 
         #endregion
     }

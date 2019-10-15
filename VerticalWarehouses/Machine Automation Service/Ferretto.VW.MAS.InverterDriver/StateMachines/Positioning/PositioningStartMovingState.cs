@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.ControlWordParam,
+                    (short)InverterParameterId.ControlWord,
                     this.Inverter.PositionControlWord.Value));
 
             this.axisPositionUpdateTimer.Change(250, 250);
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            if (message.ParameterId == InverterParameterId.ControlWordParam)
+            if (message.ParameterId == InverterParameterId.ControlWord)
             {
                 return false;
             }

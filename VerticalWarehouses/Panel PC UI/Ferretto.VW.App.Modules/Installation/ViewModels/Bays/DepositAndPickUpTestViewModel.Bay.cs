@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition => this.bayManagerService.Bay.Positions.Count() > 1;
+        public bool BayIsMultiPosition => this.bayManagerService.Bay.IsDouble;
 
         public double? BayPositionHeight
         {

@@ -210,40 +210,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.homingToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<HomingMessageData>>()
-              .Subscribe(
-                  message => this.OnHomingChanged(message),
-                  ThreadOption.UIThread,
-                  false);
-
-            this.shutterPositionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-              .Subscribe(
-                  message => this.OnShutterPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
-
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  message => this.OnElevatorPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
-
-            this.sensorsToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
-                    message =>
-                        {
-                            this.sensors.Update(message?.Data?.SensorsStates);
-                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                            this.shutterSensors.Update(message?.Data?.SensorsStates);
-                            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
-                            this.RaiseCanExecuteChanged();
-                        },
-                    ThreadOption.UIThread,
-                    false);
+            this.SubscribeToEvents();
 
             try
             {
@@ -261,24 +228,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaiseCanExecuteChanged();
 
-            await this.RetrieveElevatorPositionAsync();
-
-            await this.RetrieveCarouselPositionAsync();
-
-            await this.RetrieveProcedureParametersAsync();
-
-            await this.RetrieveCellsAsync();
-
-            await this.RetrieveLoadingUnitsAsync();
-
-            await base.OnAppearedAsync();
-        }
-
-        public async Task RetrieveLoadingUnitsAsync()
-        {
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+
+                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
+
+                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
+
+                this.Cells = await this.machineCellsWebService.GetAllAsync();
+
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
@@ -289,6 +251,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+
+            await base.OnAppearedAsync();
         }
 
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
@@ -313,9 +277,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (message.Data is null)
+            {
+                throw new ArgumentException();
             }
 
             switch (message.Status)
@@ -387,9 +356,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (message.Data is null)
+            {
+                throw new ArgumentException();
             }
 
             switch (message.Status)
@@ -416,11 +390,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            this.sensors.Update(message.Data?.SensorsStates);
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+            this.shutterSensors.Update(message.Data?.SensorsStates);
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
+        }
+
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
+            if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (message.Data is null)
+            {
+                throw new ArgumentException();
             }
 
             switch (message.Status)
@@ -512,16 +505,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
-        private async Task RetrieveProcedureParametersAsync()
+        private void SubscribeToEvents()
         {
-            try
-            {
-                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.homingToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Subscribe(
+                    message => this.OnHomingChanged(message),
+                    ThreadOption.UIThread,
+                    false);
+
+            this.shutterPositionToken = this.EventAggregator
+              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+              .Subscribe(
+                    message => this.OnShutterPositionChanged(message),
+                    ThreadOption.UIThread,
+                    false);
+
+            this.subscriptionToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                    message => this.OnElevatorPositionChanged(message),
+                    ThreadOption.UIThread,
+                    false);
+
+            this.sensorsToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    this.OnSensorsChanged,
+                    ThreadOption.UIThread,
+                    false);
         }
 
         #endregion

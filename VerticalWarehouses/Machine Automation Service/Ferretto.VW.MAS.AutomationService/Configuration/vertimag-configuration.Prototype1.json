@@ -2778,14 +2778,14 @@
     },
     "ShutterManualMovements": {
       "FeedRate": 0.2,
-      "MaxSpeed": 40000,
-      "MinSpeed": 5000,
+      "MaxSpeed": 31500,
+      "MinSpeed": 2500,
       "Acceleration": 500,
       "Deceleration": 500,
       "HigherDistance": 467,
       "LowerDistance": 472,
-      "HighSpeedDurationOpen": 14,
-      "HighSpeedDurationClose": 13
+      "HighSpeedDurationOpen": 16,
+      "HighSpeedDurationClose": 17
     },
     "ShutterTest": {
       "FeedRate": 1.0,
