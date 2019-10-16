@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType()}: received command {command.Type}, {command.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type.Name}, {command.Description}");
 
             return this.ActiveState;
         }
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
         {
-            this.Logger.LogDebug($"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received notification {notification.Type.Name}, {notification.Description}");
 
             return this.ActiveState;
         }
