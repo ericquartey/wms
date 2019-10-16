@@ -6,7 +6,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Installation.ViewModels
+namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
     public partial class LoadingUnitFromBayToCellViewModel
     {

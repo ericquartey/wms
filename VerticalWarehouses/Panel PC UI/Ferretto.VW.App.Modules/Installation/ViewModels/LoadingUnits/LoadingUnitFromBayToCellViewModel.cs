@@ -13,13 +13,13 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Installation.ViewModels
+namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
     public partial class LoadingUnitFromBayToCellViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IMachineCellsWebService machineCellsWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly Sensors sensors = new Sensors();
 
         private int? cellId;
+
+        private IEnumerable<Cell> cells;
 
         private bool isExecutingProcedure;
 
@@ -54,7 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                IMachineSetupStatusWebService machineSetupStatusWebService,
                 IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
                 IMachineElevatorWebService machineElevatorWebService,
                 IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
@@ -111,8 +112,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsCellIdValid
+        {
+            get
+            {
+                if (!this.cellId.HasValue)
+                {
+                    return false;
+                }
+
+                return this.cells.Any(l => l.Id == this.cellId.Value);
+            }
+        }
+
         public bool IsElevatorMoving =>
-                this.IsElevatorMovingToBay
+                        this.IsElevatorMovingToBay
                 || this.IsElevatorDisembarking
                 || this.IsElevatorEmbarking;
 
@@ -125,6 +139,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                 }
+            }
+        }
+
+        public bool IsLoadingUnitIdValid
+        {
+            get
+            {
+                if (!this.loadingUnitId.HasValue)
+                {
+                    return false;
+                }
+
+                return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
             }
         }
 
@@ -183,7 +210,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.loadingUnitId, value))
                 {
-                    this.UpdateLoadingUnit();
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -204,6 +230,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 this.StartStop,
                 this.CanExecuteStopCommand));
+
+        protected IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -268,6 +306,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveLoadingUnitsAsync();
 
+            await this.RetrieveCellsAsync();
+
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
 
             this.RaiseCanExecuteChanged();
@@ -297,10 +337,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             // reset all status if stop machine
             if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
             {
-                this.IsElevatorMovingToBay = false;
-                this.IsElevatorDisembarking = false;
-                this.IsElevatorEmbarking = false;
-                this.IsExecutingProcedure = false;
+                this.RestoreStates();
             }
         }
 
@@ -322,6 +359,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private void Ended()
+        {
+            this.ShowNotification(
+                VW.App.Resources.InstallationApp.ProcedureCompleted,
+                Services.Models.NotificationSeverity.Success);
+        }
+
+        private MAS.AutomationService.Contracts.LoadingUnitDestination GetLoadingUnitSource()
+        {
+            if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Down;
+                }
+            }
+
+            if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Down;
+                }
+            }
+
+            if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Down;
+                }
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination;
         }
 
         private async Task InitializeSensors()
@@ -374,9 +459,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             break;
                         }
 
-                        this.IsElevatorDisembarking = false;
-                        this.IsElevatorEmbarking = false;
-                        this.IsElevatorMovingToBay = false;
+                        this.Ended();
 
                         break;
                     }
@@ -403,23 +486,53 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand.RaiseCanExecuteChanged();
         }
 
+        private void RestoreStates()
+        {
+            this.IsElevatorDisembarking = false;
+            this.IsElevatorEmbarking = false;
+            this.IsElevatorMovingToBay = false;
+            this.IsExecutingProcedure = false;
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private async Task RetrieveCellsAsync()
+        {
+            try
+            {
+                this.Cells = await this.machineCellsWebService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private async Task StartAsync()
         {
             try
             {
-                if (!this.LoadingUnitId.HasValue)
+                if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification("Peso non inserito", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                if (this.LoadingUnitId.Value <= 0)
+                if (this.IsCellIdValid)
                 {
-                    this.ShowNotification("Peso deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification("Id cella inserita non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                //await this.machineElevatorWebService.StartMovingSourceDestinationAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
+                var source = this.GetLoadingUnitSource();
+
+                if (source == MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination)
+                {
+                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                //await this.machineElevatorWebService.StartMovingSourceDestinationAsync(source, MAS.AutomationService.Contracts.LoadingUnitDestination.Cell, null, this.CellId.Value);
 
                 this.IsExecutingProcedure = true;
             }
@@ -431,36 +544,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void StartStop()
         {
+            this.RestoreStates();
             this.IsStopping = true;
         }
 
         private void Stopped()
         {
-            this.IsElevatorDisembarking = false;
-            this.IsElevatorEmbarking = false;
-            this.IsElevatorMovingToBay = false;
-            this.IsExecutingProcedure = false;
-
+            this.RestoreStates();
             this.ShowNotification(
                 VW.App.Resources.InstallationApp.ProcedureWasStopped,
                 Services.Models.NotificationSeverity.Warning);
-        }
-
-        private void UpdateLoadingUnit()
-        {
-            if (this.loadingUnitId.HasValue
-                &&
-                this.loadingUnitId > 0)
-            {
-                this.LoadingUnitInBay = new LoadingUnit();
-                this.LoadingUnitInBay.Id = this.loadingUnitId.Value;
-            }
-            else
-            {
-                this.LoadingUnitInBay = null;
-            }
-
-            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
         }
 
         #endregion

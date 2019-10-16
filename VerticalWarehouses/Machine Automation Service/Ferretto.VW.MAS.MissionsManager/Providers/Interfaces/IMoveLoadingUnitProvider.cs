@@ -8,11 +8,11 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers.Interfaces
 
         void MoveFromBayToBay(LoadingUnitDestination sourceBay, LoadingUnitDestination destinationBay, BayNumber requestingBay);
 
-        void MoveFromBayToCell(LoadingUnitDestination sourceBay, int destinationCellId, BayNumber requestingBay);
+        void MoveFromBayToCell(LoadingUnitDestination sourceBay, int? destinationCellId, BayNumber requestingBay);
 
-        void MoveFromCellToBay(int sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay);
+        void MoveFromCellToBay(int? sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay);
 
-        void MoveFromCellToCell(int sourceCellId, int destinationCellId, BayNumber requestingBay);
+        void MoveFromCellToCell(int? sourceCellId, int? destinationCellId, BayNumber requestingBay);
 
         void MoveLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination, BayNumber requestingBay);
 

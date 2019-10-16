@@ -1158,4 +1158,7 @@
   <data name="InsertDestinationCellId" xml:space="preserve">
     <value>Destination cell id</value>
   </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Insert loading unit fromq bay to cell</value>
+  </data>
 </root>

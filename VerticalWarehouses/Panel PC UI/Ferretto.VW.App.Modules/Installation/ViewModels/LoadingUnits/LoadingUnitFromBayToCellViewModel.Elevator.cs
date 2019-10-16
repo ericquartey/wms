@@ -2,13 +2,11 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Installation.ViewModels
+namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
     public partial class LoadingUnitFromBayToCellViewModel
     {
         #region Fields
-
-        private readonly LoadingUnit embarkedLoadingUnit;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
