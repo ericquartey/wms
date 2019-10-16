@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         this.ioStatus.DebounceInput);
 
                     this.logger.LogDebug(
-                        $"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
+                        $"1:ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
 
                     this.ioCommandQueue.Enqueue(message);
                     this.forceIoStatusPublish = true;
