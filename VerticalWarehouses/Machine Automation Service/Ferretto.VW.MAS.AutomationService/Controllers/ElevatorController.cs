@@ -125,9 +125,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight, ShutterPosition shutterPosition)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, shutterPosition, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

@@ -30,7 +30,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int delay,
             double[] switchPosition,
             HorizontalMovementDirection direction,
-            ShutterPosition shutterPosition,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -47,7 +46,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SwitchPosition = switchPosition;
             this.Delay = delay;
             this.Direction = direction;
-            this.ShutterPosition = shutterPosition;
         }
 
         public PositioningMessageData(IPositioningMessageData other)
@@ -65,7 +63,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SwitchPosition = other.SwitchPosition;
             this.Delay = other.Delay;
             this.Direction = other.Direction;
-            this.ShutterPosition = other.ShutterPosition;
         }
 
         #endregion
@@ -99,8 +96,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; set; }
-
-        public ShutterPosition ShutterPosition { get; set; }
 
         public double[] SwitchPosition { get; set; }
 

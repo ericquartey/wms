@@ -21,7 +21,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
-            ShutterPosition shutterPosition,
             BayNumber requestingBay,
             MessageActor sender);
 

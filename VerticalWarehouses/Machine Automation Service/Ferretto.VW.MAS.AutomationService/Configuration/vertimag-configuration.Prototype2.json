@@ -2777,7 +2777,7 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 0,
+      "BrakeReleaseTime": 150,
       "BrakeActivatePercent": 10
     },
     "VerticalResolutionCalibration": {

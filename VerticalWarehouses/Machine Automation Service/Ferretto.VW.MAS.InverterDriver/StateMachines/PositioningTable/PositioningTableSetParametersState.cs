@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.ParentStateMachine.ChangeState(
-                    new PositioningTableCheckShutterState(
+                    new PositioningTableEnableOperationState(
                         this.ParentStateMachine,
                         this.data,
                         this.InverterStatus as IPositioningInverterStatus,

@@ -7,6 +7,8 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
+// TODO remove this unused class
+
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
@@ -102,19 +104,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private void ShutterCheck(object state)
         {
             bool ok = true;
-            if (this.data.ShutterPosition != ShutterPosition.None && this.inverterShutter != null)
-            {
-                ok = (this.inverterShutter.CurrentShutterPosition == this.data.ShutterPosition);
-            }
-            if (ok)
-            {
-                this.shutterCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
-            }
-            else
-            {
-                this.Logger.LogTrace("1:Shutter not ready for positioning");
-            }
+            //if (this.data.ShutterPosition != ShutterPosition.None && this.inverterShutter != null)
+            //{
+            //    ok = (this.inverterShutter.CurrentShutterPosition == this.data.ShutterPosition);
+            //}
+            //if (ok)
+            //{
+            //    this.shutterCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            //    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
+            //}
+            //else
+            //{
+            //    this.Logger.LogTrace("1:Shutter not ready for positioning");
+            //}
         }
 
         #endregion

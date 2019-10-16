@@ -93,8 +93,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction,
-                ShutterPosition.None);
+                direction);
 
             this.PublishCommand(
                 messageData,
@@ -138,8 +137,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction,
-                ShutterPosition.None);
+                direction);
 
             this.PublishCommand(
                 messageData,
