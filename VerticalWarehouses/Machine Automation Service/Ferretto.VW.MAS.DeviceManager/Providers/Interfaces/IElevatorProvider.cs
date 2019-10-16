@@ -16,8 +16,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
+
         void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
+                    HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,

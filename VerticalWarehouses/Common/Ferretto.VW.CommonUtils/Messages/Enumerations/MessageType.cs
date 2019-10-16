@@ -84,6 +84,8 @@
 
         InverterPowerEnable,
 
-        MoveLoadingUnit
+        MoveLoadingUnit,
+
+        ContinueMovement,
     }
 }

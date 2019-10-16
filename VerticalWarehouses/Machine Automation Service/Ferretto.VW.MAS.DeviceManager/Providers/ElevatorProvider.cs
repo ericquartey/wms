@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -67,6 +68,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Continue Positioning Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.ContinueMovement,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         /// <summary>
         ///   This code added to correctly implement the disposable pattern.
         /// </summary>
@@ -84,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="isStartedOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
         /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
         /// <param name="loadingUnitNetWeight">This weight is stored in LoadingUnits table before the movement.</param>
-        /// </param>
+        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
         /// <param name="requestingBay"></param>
         /// <param name="sender"></param>
         public void MoveHorizontalAuto(
