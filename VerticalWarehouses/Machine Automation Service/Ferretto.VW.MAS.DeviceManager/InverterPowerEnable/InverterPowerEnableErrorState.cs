@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         public override void Start()
         {
-            this.Logger.LogDebug($"1:Starting {this.GetType()} with {this.stateData.StopRequestReason}");
+            this.Logger.LogDebug($"1:Starting {this.GetType().Name} with {this.stateData.StopRequestReason}");
 
             var notificationMessage = new NotificationMessage(
                 null,
