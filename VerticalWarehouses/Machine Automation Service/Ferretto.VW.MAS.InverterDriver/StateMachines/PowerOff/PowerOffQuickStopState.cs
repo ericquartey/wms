@@ -6,11 +6,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
-    internal class PowerOffDisableVoltageState : InverterStateBase
+    internal class PowerOffQuickStopState : InverterStateBase
     {
         #region Constructors
 
-        public PowerOffDisableVoltageState(
+        public PowerOffQuickStopState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
+            this.InverterStatus.CommonControlWord.QuickStop = false;
             this.InverterStatus.CommonControlWord.EnableVoltage = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
@@ -36,13 +37,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogDebug("1:Power Off Stop requested");
-
-            this.ParentStateMachine.ChangeState(
-                new PowerOffEndState(
-                    this.ParentStateMachine,
-                    this.InverterStatus,
-                    this.Logger));
+            this.Logger.LogTrace("1:Method Start");
+            this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
         }
 
         /// <inheritdoc />
@@ -55,17 +51,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
+            var returnValue = false;
+
             if (message.IsError)
             {
-                this.Logger.LogError($"1: PowerOffDisableVoltageState message={message}");
+                this.Logger.LogError($"1:PowerOffQuickStopState message={message}");
                 this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                {
+                    this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    returnValue = true;
+                }
             }
-            return true;
+            return returnValue;
         }
 
         #endregion
