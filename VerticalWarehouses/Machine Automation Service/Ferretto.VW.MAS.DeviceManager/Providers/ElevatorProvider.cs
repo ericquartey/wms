@@ -76,6 +76,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.Dispose(true);
         }
 
+        /// <summary>
+        /// Moves the horizontal chain of the elevator to load or unload a LoadUnit.
+        /// It uses a Table target movement, mapped by 4 Profiles sets of parameters selected by direction and loading status
+        /// </summary>
+        /// <param name="direction">Forwards: from elevator to Bay 1 side</param>
+        /// <param name="isStartedOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
+        /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
+        /// <param name="loadingUnitNetWeight">This weight is stored in LoadingUnits table before the movement.</param>
+        /// <param name="shutterPosition">If shutterPosition is not None the positioning sends parameters to inverter and waits for the shutter to reach shutterPosition before moving chain.
+        /// The shutter must be moved by another command
+        /// </param>
+        /// <param name="requestingBay"></param>
+        /// <param name="sender"></param>
         public void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
             bool isStartedOnBoard,

@@ -571,7 +571,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 11, 18, 5, 52, 637, DateTimeKind.Local).AddTicks(8051),
+                            InstallationDate = new DateTime(2016, 12, 16, 8, 31, 15, 19, DateTimeKind.Local).AddTicks(9544),
                             ServiceStatus = 86
                         });
                 });
@@ -903,17 +903,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("Acceleration");
-
-                    b.Property<double>("Deceleration");
-
                     b.Property<double>("HighSpeedDurationClose");
 
                     b.Property<double>("HighSpeedDurationOpen");
-
-                    b.Property<double>("HigherDistance");
-
-                    b.Property<double>("LowerDistance");
 
                     b.Property<double>("MaxSpeed");
 
