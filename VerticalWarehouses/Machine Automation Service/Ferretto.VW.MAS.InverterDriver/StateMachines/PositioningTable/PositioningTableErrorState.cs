@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Positioning Table error state");
+            this.Logger.LogError($"Positioning Table error state");
             var notificationMessage = new FieldNotificationMessage(
                 null,
                 "Positioning Error",
