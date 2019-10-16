@@ -20,6 +20,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
+        private Bay bay;
+
+        private int bayNumber;
+
         private double? currentBayChainPosition;
 
         private double? currentHorizontalPosition;
@@ -49,7 +53,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public int BayNumber => (int)this.bayManagerService.Bay.Number;
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            protected set => this.SetProperty(ref this.bayNumber, value);
+        }
 
         public double? CurrentBayChainPosition
         {
@@ -154,6 +162,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  this.EnabledChanged,
                  ThreadOption.UIThread,
                  false);
+
+            this.bay = await this.bayManagerService.GetBay();
+            this.BayNumber = (int)this.bay.Number;
 
             await this.RetrieveCurrentPositionAsync();
 
