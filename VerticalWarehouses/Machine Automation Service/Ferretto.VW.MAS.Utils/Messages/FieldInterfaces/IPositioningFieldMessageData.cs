@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         DataSample TorqueCurrentSample { get; set; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }

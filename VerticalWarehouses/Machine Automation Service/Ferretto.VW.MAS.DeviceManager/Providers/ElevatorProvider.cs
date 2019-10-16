@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
+            bool waitContinue,
             BayNumber requestingBay,
             MessageActor sender)
         {
@@ -156,7 +157,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 0,
                 switchPosition,
-                direction);
+                direction,
+                waitContinue);
 
             this.PublishCommand(
                 messageData,

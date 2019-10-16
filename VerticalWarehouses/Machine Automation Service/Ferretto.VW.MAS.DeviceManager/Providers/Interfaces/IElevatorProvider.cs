@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
+            bool waitContinue,
             BayNumber requestingBay,
             MessageActor sender);
 

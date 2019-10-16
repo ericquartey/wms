@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int[] TargetSpeed { get; set; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }

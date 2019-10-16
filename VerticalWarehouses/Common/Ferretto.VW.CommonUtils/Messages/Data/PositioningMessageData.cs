@@ -30,6 +30,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int delay,
             double[] switchPosition,
             HorizontalMovementDirection direction,
+            bool waitContinue = false,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -46,6 +47,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SwitchPosition = switchPosition;
             this.Delay = delay;
             this.Direction = direction;
+            this.WaitContinue = waitContinue;
         }
 
         public PositioningMessageData(IPositioningMessageData other)
@@ -63,6 +65,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SwitchPosition = other.SwitchPosition;
             this.Delay = other.Delay;
             this.Direction = other.Direction;
+            this.WaitContinue = other.WaitContinue;
         }
 
         #endregion
@@ -112,6 +115,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public double UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 

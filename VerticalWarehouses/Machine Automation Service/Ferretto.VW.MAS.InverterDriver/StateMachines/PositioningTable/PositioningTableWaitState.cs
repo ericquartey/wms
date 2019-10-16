@@ -12,21 +12,17 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningTableCheckShutterState : InverterStateBase
+    internal class PositioningTableWaitState : InverterStateBase
     {
         #region Fields
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private readonly AglInverterStatus inverterShutter;
-
-        private readonly Timer shutterCheckTimer;
-
         #endregion
 
         #region Constructors
 
-        public PositioningTableCheckShutterState(
+        public PositioningTableWaitState(
             IInverterStateMachine parentStateMachine,
             IInverterPositioningFieldMessageData data,
             IPositioningInverterStatus inverterStatus,
@@ -34,16 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
-
-            this.Inverter = inverterStatus;
-            this.shutterCheckTimer = new Timer(this.ShutterCheck, null, -1, Timeout.Infinite);
-
-            var invertersProvider = this.ParentStateMachine.GetRequiredService<IInvertersProvider>();
-            var inverter = invertersProvider.GetShutterInverter(data.RequestingBay);
-            if (inverter is AglInverterStatus)
-            {
-                this.inverterShutter = (AglInverterStatus)inverter;
-            }
         }
 
         #endregion
@@ -59,8 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Check Shutter");
-            this.shutterCheckTimer.Change(250, 250);
+            this.Logger.LogDebug("Inverter Positioning Table Wait State");
         }
 
         /// <inheritdoc />
@@ -68,7 +53,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug("1:Positioning Stop requested");
 
-            this.shutterCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
             this.ParentStateMachine.ChangeState(
                 new PositioningTableStopState(
                     this.ParentStateMachine,
@@ -97,26 +81,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.data.WaitContinue)
+                {
+                    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
+                }
+                else
+                {
+                    this.Logger.LogTrace("Waiting for Continue Command");
+                }
             }
             return returnValue;
-        }
-
-        private void ShutterCheck(object state)
-        {
-            bool ok = true;
-            //if (this.data.ShutterPosition != ShutterPosition.None && this.inverterShutter != null)
-            //{
-            //    ok = (this.inverterShutter.CurrentShutterPosition == this.data.ShutterPosition);
-            //}
-            //if (ok)
-            //{
-            //    this.shutterCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            //    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
-            //}
-            //else
-            //{
-            //    this.Logger.LogTrace("1:Shutter not ready for positioning");
-            //}
         }
 
         #endregion
