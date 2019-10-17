@@ -20,11 +20,17 @@ namespace Ferretto.VW.MAS.DataModels.Extensions
                 throw new ArgumentNullException(nameof(attribute));
             }
 
-            var conditionEvaluator = serviceProvider.GetService(attribute.ConditionEvaluatorType) as IConditionEvaluator;
+            var resolvedService = serviceProvider.GetService(attribute.ConditionEvaluatorType);
 
             System.Diagnostics.Debug.Assert(
-                conditionEvaluator != null,
-                "The resolved type should always be of type ICondition");
+               resolvedService != null,
+               $"The type {attribute.ConditionEvaluatorType} was not registered in the container.");
+
+            var conditionEvaluator = resolvedService as IConditionEvaluator;
+
+            System.Diagnostics.Debug.Assert(
+                resolvedService is IConditionEvaluator,
+                $"The resolved type should always be of type {nameof(IConditionEvaluator)}");
 
             return conditionEvaluator;
         }

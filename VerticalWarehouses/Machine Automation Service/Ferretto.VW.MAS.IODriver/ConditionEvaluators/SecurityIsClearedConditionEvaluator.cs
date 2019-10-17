@@ -31,7 +31,15 @@ namespace Ferretto.VW.MAS.IODriver
                 return false;
             }
 
-            return !mainDevice.ResetSecurity;
+            return !mainDevice.ResetSecurity
+                &&
+                !mainDevice.MushroomEmergency
+                &&
+                mainDevice.MicroCarterLeftSideBay
+                &&
+                !mainDevice.AntiIntrusionShutterBay
+                &&
+                mainDevice.MicroCarterRightSideBay;
         }
 
         #endregion

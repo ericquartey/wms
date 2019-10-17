@@ -29,9 +29,11 @@ namespace Ferretto.VW.MAS.DataModels
         CradleNotCorrectlyUnloadedDuringDeposit = 100038,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ZeroSensorErrorAfterPickup = 100039,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ZeroSensorErrorAfterDeposit = 100040,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]

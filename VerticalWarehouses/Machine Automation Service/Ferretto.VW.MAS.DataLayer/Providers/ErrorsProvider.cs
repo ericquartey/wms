@@ -201,12 +201,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 .GetCustomAttributes(typeof(ErrorConditionAttribute), false)
                 .Cast<ErrorConditionAttribute>();
 
-            var isErrorStillActive = true;
+            var isErrorStillActive = attributes.Any();
+
             foreach (var attribute in attributes)
             {
                 var condition = this.scope.ServiceProvider.GetConditionEvaluator(attribute);
 
-                isErrorStillActive &= condition.IsSatisfied();
+                isErrorStillActive &= !condition.IsSatisfied();
             }
 
             return isErrorStillActive;
