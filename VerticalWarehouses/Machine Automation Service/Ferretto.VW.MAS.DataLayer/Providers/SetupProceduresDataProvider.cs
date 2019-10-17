@@ -27,176 +27,233 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public SetupProceduresSet GetAll()
         {
-            return this.dataContext.SetupProceduresSets
-                .Include(s => s.BayHeightCheck)
-                .Include(s => s.BeltBurnishingTest)
-                .Include(s => s.CarouselManualMovements)
-                .Include(s => s.CellPanelsCheck)
-                .Include(s => s.CellsHeightCheck)
-                .Include(s => s.DepositAndPickUpTest)
-                .Include(s => s.HorizontalManualMovements)
-                .Include(s => s.LoadFirstDrawerTest)
-                .Include(s => s.ShutterHeightCheck)
-                .Include(s => s.ShutterManualMovements)
-                .Include(s => s.ShutterTest)
-                .Include(s => s.VerticalManualMovements)
-                .Include(s => s.VerticalResolutionCalibration)
-                .Include(s => s.VerticalOffsetCalibration)
-                .Include(s => s.WeightCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Include(s => s.BayHeightCheck)
+                    .Include(s => s.BeltBurnishingTest)
+                    .Include(s => s.CarouselManualMovements)
+                    .Include(s => s.CellPanelsCheck)
+                    .Include(s => s.CellsHeightCheck)
+                    .Include(s => s.DepositAndPickUpTest)
+                    .Include(s => s.HorizontalManualMovements)
+                    .Include(s => s.LoadFirstDrawerTest)
+                    .Include(s => s.ShutterHeightCheck)
+                    .Include(s => s.ShutterManualMovements)
+                    .Include(s => s.ShutterTest)
+                    .Include(s => s.VerticalManualMovements)
+                    .Include(s => s.VerticalResolutionCalibration)
+                    .Include(s => s.VerticalOffsetCalibration)
+                    .Include(s => s.WeightCheck)
+                    .Single();
+            }
         }
 
         public PositioningProcedure GetBayHeightCheck()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.BayHeightCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.BayHeightCheck)
+                    .Single();
+            }
         }
 
         public RepeatedTestProcedure GetBeltBurnishingTest()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.BeltBurnishingTest)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.BeltBurnishingTest)
+                    .Single();
+            }
         }
 
         public SetupProcedure GetCarouselManualMovements()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.CarouselManualMovements)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.CarouselManualMovements)
+                    .Single();
+            }
         }
 
         public PositioningProcedure GetCellPanelsCheck()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.CellPanelsCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.CellPanelsCheck)
+                    .Single();
+            }
         }
 
         public PositioningProcedure GetCellsHeightCheck()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.CellsHeightCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.CellsHeightCheck)
+                    .Single();
+            }
         }
 
         public RepeatedTestProcedure GetDepositAndPickUpTest()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.DepositAndPickUpTest)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.DepositAndPickUpTest)
+                    .Single();
+            }
         }
 
         public HorizontalManualMovementsProcedure GetHorizontalManualMovements()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.HorizontalManualMovements)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.HorizontalManualMovements)
+                    .Single();
+            }
         }
 
         public SetupProcedure GetLoadFirstDrawerTest()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.LoadFirstDrawerTest)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.LoadFirstDrawerTest)
+                    .Single();
+            }
         }
 
         public SetupProcedure GetShutterHeightCheck()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.ShutterHeightCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.ShutterHeightCheck)
+                    .Single();
+            }
         }
 
         public ShutterManualMovementsProcedure GetShutterManualMovements()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.ShutterManualMovements)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.ShutterManualMovements)
+                    .Single();
+            }
         }
 
         public RepeatedTestProcedure GetShutterTest()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.ShutterTest)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.ShutterTest)
+                    .Single();
+            }
         }
 
         public VerticalManualMovementsProcedure GetVerticalManualMovements()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.VerticalManualMovements)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.VerticalManualMovements)
+                    .Single();
+            }
         }
 
         public OffsetCalibrationProcedure GetVerticalOffsetCalibration()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.VerticalOffsetCalibration)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.VerticalOffsetCalibration)
+                    .Single();
+            }
         }
 
         public VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.VerticalResolutionCalibration)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.VerticalResolutionCalibration)
+                    .Single();
+            }
         }
 
         public SetupProcedure GetWeightCheck()
         {
-            return this.dataContext.SetupProceduresSets
-                .Select(s => s.WeightCheck)
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.WeightCheck)
+                    .Single();
+            }
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
         {
-            var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
-
-            if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
+            lock (this.dataContext)
             {
-                repeatedTestProcedure.PerformedCycles++;
-                repeatedTestProcedure.IsCompleted = repeatedTestProcedure.PerformedCycles >= repeatedTestProcedure.RequiredCycles;
+                var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
 
-                this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
-                this.dataContext.SaveChanges();
+                if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
+                {
+                    repeatedTestProcedure.PerformedCycles++;
+                    repeatedTestProcedure.IsCompleted = repeatedTestProcedure.PerformedCycles >= repeatedTestProcedure.RequiredCycles;
 
-                return repeatedTestProcedure;
-            }
-            else
-            {
-                throw new EntityNotFoundException(procedure.Id);
+                    this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
+                    this.dataContext.SaveChanges();
+
+                    return repeatedTestProcedure;
+                }
+                else
+                {
+                    throw new EntityNotFoundException(procedure.Id);
+                }
             }
         }
 
         public SetupProcedure MarkAsCompleted(SetupProcedure procedure)
         {
-            var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
-
-            if (existingProcedure is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(procedure.Id);
+                var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
+
+                if (existingProcedure is null)
+                {
+                    throw new EntityNotFoundException(procedure.Id);
+                }
+
+                existingProcedure.IsCompleted = true;
+
+                this.dataContext.SetupProcedures.Update(existingProcedure);
+                this.dataContext.SaveChanges();
+
+                return existingProcedure;
             }
-
-            existingProcedure.IsCompleted = true;
-
-            this.dataContext.SetupProcedures.Update(existingProcedure);
-            this.dataContext.SaveChanges();
-
-            return existingProcedure;
         }
 
         public void Update(SetupProceduresSet setupProceduresSet)
         {
-            if (setupProceduresSet == null)
+            if (setupProceduresSet is null)
             {
                 throw new ArgumentNullException(nameof(setupProceduresSet));
             }
 
-            this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
-            this.dataContext.SaveChanges();
+            lock (this.dataContext)
+            {
+                this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
+                this.dataContext.SaveChanges();
+            }
         }
 
         #endregion

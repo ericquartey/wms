@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.Logger.LogInformation($"First run: loading configuration from JSON file ...");
 
-            string fileContents = null;
+            string fileContents;
             using (var streamReader = new StreamReader(configurationFilePath))
             {
                 fileContents = streamReader.ReadToEnd();
@@ -42,6 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
 
             dataContext.Machines.Add(vertimagConfiguration.Machine);
+            dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);
             dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
 
             dataContext.SaveChanges();

@@ -1,5 +1,22 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "01"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "02"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "03"
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -2748,7 +2765,7 @@
       "Step": 0.5
     },
     "BeltBurnishingTest": {
-      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+      //"RequiredCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
       "RequiredCycles": 5
     },
     "CarouselManualMovements": {

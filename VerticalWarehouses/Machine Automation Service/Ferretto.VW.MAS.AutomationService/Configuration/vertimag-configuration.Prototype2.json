@@ -1,5 +1,22 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "01"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "02"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "03"
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -13,7 +30,7 @@
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
         },
-        "IsExternal": true,
+        "IsExternal": false,
         "ChainOffset": -800,
         "Number": 1,
         "Positions": [ { "Height": 741 } ],
