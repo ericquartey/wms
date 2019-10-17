@@ -3,10 +3,49 @@
   "type": "object",
   "title": "JSON Schema for Vertimag Configuration",
   "required": [
+    "LoadingUnits",
     "Machine",
     "SetupProcedures"
   ],
   "properties": {
+    "LoadingUnits": {
+      "$id": "#/properties/LoadingUnits",
+      "type": "array",
+      "title": "The Loadingunits Schema",
+      "items": {
+        "$id": "#/properties/LoadingUnits/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "Tare",
+          "MaxNetWeight",
+          "Code"
+        ],
+        "properties": {
+          "Tare": {
+            "$id": "#/properties/LoadingUnits/items/properties/Tare",
+            "type": "integer",
+            "title": "The Tare Schema",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "MaxNetWeight": {
+            "$id": "#/properties/LoadingUnits/items/properties/MaxNetWeight",
+            "type": "integer",
+            "title": "The Maxnetweight Schema",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "Code": {
+            "$id": "#/properties/LoadingUnits/items/properties/Code",
+            "type": "string",
+            "title": "The Code Schema",
+            "default": "",
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    },
     "Machine": {
       "$id": "#/properties/Machine",
       "type": "object",
@@ -249,7 +288,7 @@
                   "Offset",
                   "ChainOffset",
                   "EmptyLoadMovement",
-                  "MaximumLoadMovement",
+                  "MaximumLoadMovement"
                 ],
                 "properties": {
                   "Inverter": {

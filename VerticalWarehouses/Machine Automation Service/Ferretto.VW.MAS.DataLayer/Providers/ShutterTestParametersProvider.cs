@@ -14,12 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ShutterTestParametersProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new System.ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
         }
 
         #endregion

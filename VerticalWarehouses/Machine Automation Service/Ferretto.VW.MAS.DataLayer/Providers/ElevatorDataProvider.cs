@@ -35,97 +35,118 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorAxis GetAxis(Orientation orientation)
         {
-            if (!this.cachedAxes.ContainsKey(orientation))
+            lock (this.dataContext)
             {
-                var axis = this.dataContext.ElevatorAxes
-                    .Include(a => a.Profiles)
-                    .ThenInclude(p => p.Steps)
-                    .Include(a => a.MaximumLoadMovement)
-                    .Include(a => a.EmptyLoadMovement)
-                    .SingleOrDefault(a => a.Orientation == orientation);
-
-                if (axis is null)
+                if (!this.cachedAxes.ContainsKey(orientation))
                 {
-                    throw new EntityNotFoundException(orientation.ToString());
+                    var axis = this.dataContext.ElevatorAxes
+                        .Include(a => a.Profiles)
+                        .ThenInclude(p => p.Steps)
+                        .Include(a => a.MaximumLoadMovement)
+                        .Include(a => a.EmptyLoadMovement)
+                        .SingleOrDefault(a => a.Orientation == orientation);
+
+                    if (axis is null)
+                    {
+                        throw new EntityNotFoundException(orientation.ToString());
+                    }
+
+                    this.cachedAxes.Add(orientation, axis);
                 }
 
-                this.cachedAxes.Add(orientation, axis);
+                return this.cachedAxes[orientation];
             }
-
-            return this.cachedAxes[orientation];
         }
 
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.LoadingUnit)
+                    .ThenInclude(l => l.Cell)
+                    .Single();
 
-            return elevator.LoadingUnit;
+                return elevator.LoadingUnit;
+            }
         }
 
         public ElevatorStructuralProperties GetStructuralProperties()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.StructuralProperties)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
 
-            return elevator.StructuralProperties;
+                return elevator.StructuralProperties;
+            }
         }
 
         public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
         public void IncreaseCycleQuantity(Orientation orientation)
         {
-            var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-            if (axis is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(orientation.ToString());
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(orientation.ToString());
+                }
+
+                axis.TotalCycles++;
+
+                this.dataContext.SaveChanges();
             }
-
-            axis.TotalCycles++;
-
-            this.dataContext.SaveChanges();
         }
 
         public void SetLoadingUnitOnBoard(int? id)
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.LoadingUnit)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.LoadingUnit)
+                    .Single();
 
-            elevator.LoadingUnitId = id;
+                elevator.LoadingUnitId = id;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void UpdateVerticalOffset(double newOffset)
         {
-            var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-            this.cachedAxes[Orientation.Vertical] = verticalAxis;
+            lock (this.dataContext)
+            {
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
+                this.cachedAxes[Orientation.Vertical] = verticalAxis;
 
-            verticalAxis.Offset = newOffset;
-            this.dataContext.ElevatorAxes.Update(verticalAxis);
-            this.dataContext.SaveChanges();
+                verticalAxis.Offset = newOffset;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
-            this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
         public void UpdateVerticalResolution(decimal newResolution)
         {
-            var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-            this.cachedAxes[Orientation.Vertical] = verticalAxis;
+            lock (this.dataContext)
+            {
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
+                this.cachedAxes[Orientation.Vertical] = verticalAxis;
 
-            verticalAxis.Resolution = newResolution;
-            this.dataContext.ElevatorAxes.Update(verticalAxis);
-            this.dataContext.SaveChanges();
+                verticalAxis.Resolution = newResolution;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
 
-            var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
-            this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
         #endregion

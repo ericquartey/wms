@@ -17,12 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorWeightCheckProcedureProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new System.ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -53,7 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             // TO DO execute operations.
-            Task.Delay(5000);
+            throw new NotImplementedException();
         }
 
         public void Stop()

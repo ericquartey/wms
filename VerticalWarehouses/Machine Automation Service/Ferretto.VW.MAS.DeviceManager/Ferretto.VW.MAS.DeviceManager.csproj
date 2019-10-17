@@ -11,7 +11,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" >
+      <PrivateAssets>True</PrivateAssets>
+    </ProjectReference>
     <ProjectReference Include="..\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.IODriver\Ferretto.VW.MAS.IODriver.csproj" />
   </ItemGroup>

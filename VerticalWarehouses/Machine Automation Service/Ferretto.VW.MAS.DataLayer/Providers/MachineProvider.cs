@@ -19,12 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MachineProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new System.ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -33,7 +28,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Machine Get()
         {
-            return this.dataContext.Machines
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines
                .Include(m => m.Elevator)
                    .ThenInclude(e => e.Axes)
                        .ThenInclude(a => a.Profiles)
@@ -53,37 +50,50 @@ namespace Ferretto.VW.MAS.DataLayer
                .Include(m => m.Panels)
                    .ThenInclude(p => p.Cells)
                .Single();
+            }
         }
 
         public double GetHeight()
         {
-            return this.dataContext.Machines.Select(m => m.Height).Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.Select(m => m.Height).Single();
+            }
         }
 
         public MachineStatistics GetStatistics()
         {
-            return this.dataContext.MachineStatistics.FirstOrDefault();
+            lock (this.dataContext)
+            {
+                return this.dataContext.MachineStatistics.FirstOrDefault();
+            }
         }
 
         public bool IsOneTonMachine()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.StructuralProperties)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
 
-            var maximumLoadOnBoard = elevator.StructuralProperties.MaximumLoadOnBoard;
-            return maximumLoadOnBoard == MaxDrawerGrossWeight;
+                var maximumLoadOnBoard = elevator.StructuralProperties.MaximumLoadOnBoard;
+                return maximumLoadOnBoard == MaxDrawerGrossWeight;
+            }
         }
 
         public void Update(Machine machine)
         {
-            if (machine == null)
+            if (machine is null)
             {
                 throw new System.ArgumentNullException(nameof(machine));
             }
 
-            this.dataContext.Machines.Update(machine);
-            this.dataContext.SaveChanges();
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.Update(machine);
+                this.dataContext.SaveChanges();
+            }
         }
 
         #endregion

@@ -69,15 +69,11 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-                var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-
                 try
                 {
                     this.LoadConfiguration(
                         configuration.GetDataLayerConfigurationFile(),
                         scope.ServiceProvider.GetRequiredService<DataLayerContext>());
-
-                    await loadingUnitsProvider.LoadFromAsync(configuration.GetLoadingUnitsConfigurationFile());
 
                     this.IsReady = true;
 
