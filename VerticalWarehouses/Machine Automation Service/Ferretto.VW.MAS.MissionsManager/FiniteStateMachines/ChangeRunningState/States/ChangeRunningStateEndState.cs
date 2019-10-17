@@ -4,6 +4,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         private readonly IMachineControlProvider machineControlProvider;
 
-        private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
+        private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
 
         #endregion
 
@@ -43,12 +44,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
-
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
-
-            this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
 
         #endregion
@@ -82,6 +79,10 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             if (this.StopRequestReason == StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
+                if (this.EndMessage.Data is IChangeRunningStateMessageData runningState && runningState.Enable)
+                {
+                    this.errorsProvider.ResolveAll();
+                }
             }
             else
             {

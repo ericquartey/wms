@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand carouselUpCommand;
 
+        private bool hasCarousel;
+
         private bool isCarouselMoving;
 
         #endregion
@@ -47,7 +49,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CarouselUpAsync(),
                 this.CanExecuteCarouselUpCommand));
 
-        public bool HasCarousel => this.bayManagerService.Bay.Carousel != null;
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
 
         public bool IsCarouselMoving
         {
@@ -115,24 +121,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task RetrieveCarouselPositionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
-            }
-            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.
+        ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string ConditionsNotMetForRunning {
             get {
@@ -84,6 +84,159 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string CradleNotCompletelyLoaded {
             get {
                 return ResourceManager.GetString("CradleNotCompletelyLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorBaseCode {
+            get {
+                return ResourceManager.GetString("InverterErrorBaseCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorCannotWriteParameterWhileRunning {
+            get {
+                return ResourceManager.GetString("InverterErrorCannotWriteParameterWhileRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorDatasetValuesAreDifferent {
+            get {
+                return ResourceManager.GetString("InverterErrorDatasetValuesAreDifferent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorEepromChecksumError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromChecksumError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorEepromReadError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromReadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorEepromWriteError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromWriteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorInvalidDataset {
+            get {
+                return ResourceManager.GetString("InverterErrorInvalidDataset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorInvalidParameter {
+            get {
+                return ResourceManager.GetString("InverterErrorInvalidParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorNodeNotAvailable {
+            get {
+                return ResourceManager.GetString("InverterErrorNodeNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorParameterIsReadOnly {
+            get {
+                return ResourceManager.GetString("InverterErrorParameterIsReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorParameterIsWriteOnly {
+            get {
+                return ResourceManager.GetString("InverterErrorParameterIsWriteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorSyntaxError {
+            get {
+                return ResourceManager.GetString("InverterErrorSyntaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorUnknown {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorUnknownParameter {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknownParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterErrorWrongPayloadLength {
+            get {
+                return ResourceManager.GetString("InverterErrorWrongPayloadLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string InverterFaultStateDetected {
+            get {
+                return ResourceManager.GetString("InverterFaultStateDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
+        /// </summary>
+        public static string SecurityWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
             }
         }
     }

@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private Bay bay;
+
         private int? completedCycles;
 
         private double? grossWeight;
@@ -113,7 +115,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineSetupStatusWebService = machineSetupStatusWebService;
             this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
             this.inputDelay = 0;
-            this.SelectBayPosition1();
         }
 
         #endregion
@@ -182,9 +183,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsElevatorMoving =>
-                this.IsElevatorMovingToBay
-                || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking;
+            this.IsElevatorMovingToBay
+            ||
+            this.IsElevatorDisembarking
+            ||
+            this.IsElevatorEmbarking;
 
         public bool IsExecutingProcedure
         {
@@ -202,15 +205,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+                if (this.bay == null)
+                {
+                    return false;
+                }
+
+                if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
                     return this.Sensors.LUPresentInBay1;
                 }
-                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
                     return this.Sensors.LUPresentInBay2;
                 }
-                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
                     return this.Sensors.LUPresentInBay3;
                 }
@@ -342,6 +350,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CompletedCycles = 0;
 
+            this.bay = await this.bayManagerService.GetBay();
+
+            this.BayIsMultiPosition = this.bay.IsDouble;
+
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
             this.IsBackNavigationAllowed = true;
@@ -356,15 +368,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sensorsToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                    message =>
-                        {
-                            this.sensors.Update(message?.Data?.SensorsStates);
-                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
-                            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
-                            this.RaiseCanExecuteChanged();
-                        },
+                    this.OnSensorsChanged,
                     ThreadOption.UIThread,
                     false);
 
@@ -377,8 +381,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveLoadingUnitsAsync();
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
 
             this.RaiseCanExecuteChanged();
+
+            this.SelectBayPosition1();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -549,6 +556,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
             }
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            this.sensors.Update(message?.Data?.SensorsStates);
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+            this.RaiseCanExecuteChanged();
         }
 
         private void RaiseCanExecuteChanged()

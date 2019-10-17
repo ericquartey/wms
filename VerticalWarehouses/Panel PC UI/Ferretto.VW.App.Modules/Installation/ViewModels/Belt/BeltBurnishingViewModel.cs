@@ -366,7 +366,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(message));
             }
 
             if (message.IsNotRunning())

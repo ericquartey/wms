@@ -13,7 +13,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         private const byte ActualDataSetIndex = 0x05; // VALUE fixed data set id used for the inverter operation
 
+        private const int DatasetByteIndex = 3;
+
         private const byte ReadHeader = 0x00;
+
+        private const int SystemIndexByteIndex = 2;
 
         private const byte WriteHeader = 0x80;
 
@@ -186,7 +190,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             message.payloadLength = messageBytes[1] - 4;
 
-            var systemIndex = messageBytes[2];
+            var systemIndex = messageBytes[SystemIndexByteIndex];
 
             if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
             {
@@ -197,7 +201,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             message.SystemIndex = inverterIndex;
 
-            message.DataSetIndex = messageBytes[3];
+            message.DataSetIndex = messageBytes[DatasetByteIndex];
 
             // VALUE parameterId is always stored starting at byte index 4 in the byte array
             message.parameterId = BitConverter.ToInt16(messageBytes, 4);
@@ -221,7 +225,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public byte[] GetHeartbeatMessage(bool setBit)
         {
-            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
+            if (this.parameterId != (short)InverterParameterId.ControlWord)
             {
                 throw new InverterDriverException("Invalid parameter id");
             }
@@ -252,10 +256,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             readMessage[0] = ReadHeader;
             readMessage[1] = 0x04; // VALUE Fixed packed data length to 4 bytes
-            readMessage[2] = (byte)this.SystemIndex;
-            readMessage[3] = this.DataSetIndex;
+            readMessage[SystemIndexByteIndex] = (byte)this.SystemIndex;
+            readMessage[DatasetByteIndex] = this.DataSetIndex;
 
-            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || this.IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.ControlWord) || this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestReadOnWriteOnlyParameter);
             }
@@ -282,8 +286,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             writeMessage[0] = WriteHeader;
             writeMessage[1] =
                 Convert.ToByte(messageLength - 2); // VALUE Data length does not include header and length bytes
-            writeMessage[2] = (byte)this.SystemIndex;
-            writeMessage[3] = this.DataSetIndex;
+            writeMessage[SystemIndexByteIndex] = (byte)this.SystemIndex;
+            writeMessage[DatasetByteIndex] = this.DataSetIndex;
 
             var parameterIdBytes = BitConverter.GetBytes(this.parameterId);
 
@@ -377,9 +381,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             switch ((InverterParameterId)this.parameterId)
             {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.SetOperatingModeParam:
+                case InverterParameterId.ControlWord:
+                case InverterParameterId.StatusWord:
+                case InverterParameterId.SetOperatingMode:
                 case InverterParameterId.StatusDigitalSignals:
                     if (this.payloadLength == 2)
                     {
@@ -388,13 +392,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
                     break;
 
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
+                case InverterParameterId.HomingCreepSpeed:
+                case InverterParameterId.HomingFastSpeed:
                 case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
+                case InverterParameterId.PositionAcceleration:
+                case InverterParameterId.PositionDeceleration:
+                case InverterParameterId.PositionTargetPosition:
+                case InverterParameterId.PositionTargetSpeed:
                 case InverterParameterId.ActualPositionShaft:
                     if (this.payloadLength == 4)
                     {
@@ -417,13 +421,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             switch ((InverterParameterId)this.parameterId)
             {
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
+                case InverterParameterId.HomingCreepSpeed:
+                case InverterParameterId.HomingFastSpeed:
                 case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
+                case InverterParameterId.PositionAcceleration:
+                case InverterParameterId.PositionDeceleration:
+                case InverterParameterId.PositionTargetPosition:
+                case InverterParameterId.PositionTargetSpeed:
                 case InverterParameterId.ActualPositionShaft:
                     if (this.payloadLength == 4)
                     {
@@ -466,9 +470,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             switch ((InverterParameterId)this.parameterId)
             {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.SetOperatingModeParam:
+                case InverterParameterId.ControlWord:
+                case InverterParameterId.StatusWord:
+                case InverterParameterId.SetOperatingMode:
                 case InverterParameterId.StatusDigitalSignals:
                 case InverterParameterId.TorqueCurrent:
                 case InverterParameterId.TableTravelTableIndex:

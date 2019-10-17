@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
@@ -72,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            this.Bay = bayManager.Bay;
+            this.bayManager = bayManager;
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -306,6 +308,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            this.Bay = await this.bayManager.GetBay();
+
             await this.InitializeDataAsync();
 
             this.ChangeDataFromBayPosition();
@@ -533,6 +537,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (message.IsNotRunning())
             {
                 this.IsElevatorMovingUp = false;

@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
         }
 
-        protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (this.IsExecutingProcedure)
             {
@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            base.OnAutomationMessageReceived(message);
+            base.OnElevatorPositionChanged(message);
         }
 
         protected override void RaiseCanExecuteChanged()

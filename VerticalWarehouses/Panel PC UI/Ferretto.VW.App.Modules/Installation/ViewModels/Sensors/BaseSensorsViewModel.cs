@@ -12,7 +12,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BaseSensorsViewModel : BaseMainViewModel, IBaseSensorsViewModel
+    public class BaseSensorsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                    message => this.sensors.Update(message?.Data?.SensorsStates),
+                    this.OnSensorsChanged,
                     ThreadOption.UIThread,
                     false);
 
@@ -162,6 +162,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Others,
                     trackCurrentView: false));
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
+            this.sensors.Update(message.Data?.SensorsStates);
         }
 
         #endregion

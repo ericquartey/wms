@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
-    public enum InverterDataset : short
+    public enum InverterDataset
     {
         ActualDataset = 5,
 

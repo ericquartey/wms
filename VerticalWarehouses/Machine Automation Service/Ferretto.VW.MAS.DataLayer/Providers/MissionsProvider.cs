@@ -68,10 +68,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(MissionType missionType, out Guid missionId)
+        public bool TryCreateMachineMission(MissionType missionType, out Guid missionId, bool forceClose = false)
         {
             missionId = Guid.Empty;
 
+            if (forceClose)
+            {
+                missionId = this.machineMissions.FirstOrDefault(mm => mm.MissionMachine is IChangeRunningStateStateMachine _)?.Id ?? missionId;
+                if (missionId != Guid.Empty)
+                {
+                    this.StopMachineMission(missionId, StopRequestReason.NoReason);
+                }
+            }
             if (this.CanCreateStateMachine(missionType))
             {
                 MachineMission newMission = null;
@@ -88,10 +96,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     this.machineMissions.Add(newMission);
 
                     missionId = newMission.Id;
+                    return true;
                 }
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception {ex.Message} while trying to dequeue object from blocking queue {this.GetType()}");
+                throw new Exception($"Exception {ex.Message} while trying to dequeue object from blocking queue {this.GetType().Name}");
             }
 
             result = default(T);
@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception {ex.Message} while trying to peek object from blocking queue {this.GetType()}");
+                throw new Exception($"Exception {ex.Message} while trying to peek object from blocking queue {this.GetType().Name}");
             }
 
             result = default(T);

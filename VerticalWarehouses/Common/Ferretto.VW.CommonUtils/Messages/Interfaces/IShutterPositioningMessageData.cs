@@ -8,7 +8,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int Delay { get; set; }
 
-        int ExecutedCycles { get; set; }
+        int PerformedCycles { get; set; }
 
         double HigherDistance { get; }
 

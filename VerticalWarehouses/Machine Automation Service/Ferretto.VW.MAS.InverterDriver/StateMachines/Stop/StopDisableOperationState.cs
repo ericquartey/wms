@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         {
             this.InverterStatus.CommonControlWord.EnableOperation = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                 if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
                     //this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    this.ParentStateMachine.ChangeState(new StopSwitchOffState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new StopQuickStopState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }

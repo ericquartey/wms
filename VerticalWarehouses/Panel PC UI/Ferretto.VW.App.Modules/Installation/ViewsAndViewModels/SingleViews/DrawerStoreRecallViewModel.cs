@@ -8,6 +8,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Obsolete]
     public class DrawerStoreRecallViewModel : BindableBase
     {
         #region Fields
