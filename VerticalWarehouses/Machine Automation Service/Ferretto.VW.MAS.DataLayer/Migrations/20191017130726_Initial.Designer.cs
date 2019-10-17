@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191015140607_Initial")]
+    [Migration("20191017130726_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -307,6 +307,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100037,
+                            Code = 100037,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100038,
+                            Code = 100038,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100039,
+                            Code = 100039,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100040,
+                            Code = 100040,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -469,6 +501,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100036,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100037,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100038,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100039,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100040,
                             TotalErrors = 0
                         },
                         new
@@ -807,7 +859,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 15, 16, 6, 5, 993, DateTimeKind.Local).AddTicks(9224),
+                            InstallationDate = new DateTime(2016, 12, 17, 15, 7, 25, 644, DateTimeKind.Local).AddTicks(4196),
                             ServiceStatus = 86
                         });
                 });
@@ -1118,17 +1170,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("Acceleration");
-
-                    b.Property<double>("Deceleration");
-
                     b.Property<double>("HighSpeedDurationClose");
 
                     b.Property<double>("HighSpeedDurationOpen");
-
-                    b.Property<double>("HigherDistance");
-
-                    b.Property<double>("LowerDistance");
 
                     b.Property<double>("MaxSpeed");
 
