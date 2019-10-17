@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -455,17 +455,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BayPosition",
+                name: "BayPositions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Height = table.Column<double>(nullable: false),
+                    LoadingUnitId = table.Column<int>(nullable: true),
+                    Location = table.Column<string>(type: "text", nullable: false),
                     BayId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BayPosition", x => x.Id);
+                    table.PrimaryKey("PK_BayPositions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -482,7 +484,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     IoDeviceId = table.Column<int>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     IsExternal = table.Column<bool>(nullable: false),
-                    LoadingUnitId = table.Column<int>(nullable: true),
                     Number = table.Column<int>(nullable: false),
                     Operation = table.Column<int>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
@@ -742,7 +743,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 11, 18, 5, 52, 637, DateTimeKind.Local).AddTicks(8051), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 15, 17, 21, 14, 162, DateTimeKind.Local).AddTicks(9592), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -775,9 +776,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 values: new object[] { 100034, 0 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BayPosition_BayId",
-                table: "BayPosition",
+                name: "IX_BayPositions_BayId",
+                table: "BayPositions",
                 column: "BayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BayPositions_LoadingUnitId",
+                table: "BayPositions",
+                column: "LoadingUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bays_CarouselId",
@@ -793,11 +799,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_Bays_IoDeviceId",
                 table: "Bays",
                 column: "IoDeviceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bays_LoadingUnitId",
-                table: "Bays",
-                column: "LoadingUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bays_MachineId",
@@ -1003,16 +1004,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BayPosition_Bays_BayId",
-                table: "BayPosition",
+                name: "FK_BayPositions_Bays_BayId",
+                table: "BayPositions",
                 column: "BayId",
                 principalTable: "Bays",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Bays_LoadingUnits_LoadingUnitId",
-                table: "Bays",
+                name: "FK_BayPositions_LoadingUnits_LoadingUnitId",
+                table: "BayPositions",
                 column: "LoadingUnitId",
                 principalTable: "LoadingUnits",
                 principalColumn: "Id",
@@ -1046,12 +1047,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_Inverters_InverterId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Elevators_LoadingUnits_LoadingUnitId",
                 table: "Elevators");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ElevatorAxes_Inverters_InverterId",
+                table: "ElevatorAxes");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ElevatorAxes_Elevators_ElevatorId",
@@ -1066,7 +1067,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ElevatorAxes");
 
             migrationBuilder.DropTable(
-                name: "BayPosition");
+                name: "BayPositions");
 
             migrationBuilder.DropTable(
                 name: "Errors");
@@ -1117,9 +1118,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Shutter");
 
             migrationBuilder.DropTable(
-                name: "Inverters");
-
-            migrationBuilder.DropTable(
                 name: "LoadingUnits");
 
             migrationBuilder.DropTable(
@@ -1130,6 +1128,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Machines");
+
+            migrationBuilder.DropTable(
+                name: "Inverters");
 
             migrationBuilder.DropTable(
                 name: "Elevators");

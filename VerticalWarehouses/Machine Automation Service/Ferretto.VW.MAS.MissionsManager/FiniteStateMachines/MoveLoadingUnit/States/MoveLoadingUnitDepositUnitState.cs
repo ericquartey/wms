@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -44,9 +43,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -66,7 +64,27 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                 this.destination = messageData.Destination;
                 this.destinationCellId = messageData.DestinationCellId;
 
-                this.loadingUnitMovementProvider.MoveLoadingUnitToDestination(moveData.LoadingUnitId, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                var direction = HorizontalMovementDirection.Backwards;
+                switch (this.destination)
+                {
+                    case LoadingUnitLocation.Cell:
+                        if (this.destinationCellId != null)
+                        {
+                            var cell = this.cellsProvider.GetCellById(this.destinationCellId.Value);
+
+                            direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        }
+
+                        break;
+
+                    default:
+                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.destination);
+                        direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+
+                        break;
+                }
+
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -80,13 +98,13 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitToDestinationStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
 
-                    using (var scope = new TransactionScope())
+                    using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                     {
                         this.elevatorDataProvider.UnloadLoadingUnit();
 
@@ -96,7 +114,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                             if (moveDataLoadingUnitCellSourceId != null)
                             {
-                                this.cellsProvider.LoadLoadingUnit(moveDataLoadingUnitCellSourceId.Value, this.loadingUnitId);
+                                this.cellsProvider.LoadLoadingUnit(this.loadingUnitId, moveDataLoadingUnitCellSourceId.Value);
                             }
                         }
                         else
@@ -104,7 +122,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                             this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
                         }
 
-                        scope.Complete();
+                        transaction.Commit();
                     }
 
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
@@ -112,7 +130,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     break;
 
                 case MessageStatus.OperationError:
-                    returnValue = this.GetState<IChangeRunningStateEndState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;

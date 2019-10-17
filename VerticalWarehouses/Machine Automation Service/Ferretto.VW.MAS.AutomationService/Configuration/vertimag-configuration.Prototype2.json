@@ -16,7 +16,12 @@
         "IsExternal": true,
         "ChainOffset": -800,
         "Number": 1,
-        "Positions": [ { "Height": 741 } ],
+        "Positions": [
+          {
+            "Height": 741,
+            "Location": "InternalBay1Down"
+          }
+        ],
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -265,13 +270,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 351,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 355,
             "priority": 3,
             "status": "Free"
           },
@@ -1494,7 +1499,7 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 360,
             "priority": 2,
             "status": "Free"
           },

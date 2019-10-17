@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <returns>The vertical position displacement, in millimeters.</returns>
         public double ComputeDisplacement(double targetPosition)
         {
-            var loadingUnit = this.elevatorDataProvider.LoadLoadingUnit();
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
             if (loadingUnit is null)
             {
                 return 0;

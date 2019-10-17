@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191011160553_Initial")]
-    partial class Initial
+    [Migration("20191015152114_InitialCreation")]
+    partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
-                    b.Property<int?>("LoadingUnitId");
-
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -61,8 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("IoDeviceId");
 
-                    b.HasIndex("LoadingUnitId");
-
                     b.HasIndex("MachineId");
 
                     b.HasIndex("Number")
@@ -82,11 +78,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
 
-                    b.ToTable("BayPosition");
+                    b.HasIndex("LoadingUnitId");
+
+                    b.ToTable("BayPositions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
@@ -573,7 +577,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 11, 18, 5, 52, 637, DateTimeKind.Local).AddTicks(8051),
+                            InstallationDate = new DateTime(2016, 12, 15, 17, 21, 14, 162, DateTimeKind.Local).AddTicks(9592),
                             ServiceStatus = 86
                         });
                 });
@@ -975,10 +979,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("IoDeviceId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany()
-                        .HasForeignKey("LoadingUnitId");
-
                     b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
                         .WithMany("Bays")
                         .HasForeignKey("MachineId");
@@ -993,6 +993,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
                         .WithMany("Positions")
                         .HasForeignKey("BayId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany()
+                        .HasForeignKey("LoadingUnitId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>

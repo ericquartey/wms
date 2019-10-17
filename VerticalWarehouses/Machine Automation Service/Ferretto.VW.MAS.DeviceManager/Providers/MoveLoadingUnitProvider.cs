@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Constructors
 
-        protected LoadingUnitMovementProvider(
+        public LoadingUnitMovementProvider(
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
@@ -51,7 +51,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
-                (notification.Type == MessageType.Positioning);
+                (notification.Type == MessageType.Positioning ||
+                 notification.Type == MessageType.Stop ||
+                 notification.Status == MessageStatus.OperationFaultStop ||
+                 notification.Status == MessageStatus.OperationRunningStop);
         }
 
         public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
@@ -76,7 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (messageData.DestinationCellId != null)
                     {
                         var cell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
-                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
                         }
@@ -126,22 +129,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void MoveLoadingUnitToDestination(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay)
         {
-            throw new NotImplementedException();
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, requestingBay, sender);
         }
 
-        public MessageStatus MoveLoadingUnitToDestinationStatus(NotificationMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MoveLoadingUnitToElevator(int? loadingUnitId, HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
-        {
-            this.elevatorProvider.MoveHorizontalAuto(direction, false, null, null, requestingBay, sender);
-        }
-
-        public MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message)
+        public MessageStatus MoveLoadingUnitStatus(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning)
             {

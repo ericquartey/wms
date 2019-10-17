@@ -561,7 +561,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
-            var loadingUnit = this.elevatorDataProvider.LoadLoadingUnit();
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
             var axis = orientation == Orientation.Horizontal
                 ? this.elevatorDataProvider.GetHorizontalAxis()

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Missions
@@ -15,8 +16,8 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #region Constructors
 
-        public WmsMission(TMachine finiteStateMachine, EventHandler<FiniteStateMachinesEventArgs> endHandler)
-            : base(finiteStateMachine.InstanceId, finiteStateMachine)
+        public WmsMission(IServiceScopeFactory serviceScopeFactory, EventHandler<FiniteStateMachinesEventArgs> endHandler)
+            : base(serviceScopeFactory)
         {
             this.CurrentStateMachine.Completed += endHandler;
         }

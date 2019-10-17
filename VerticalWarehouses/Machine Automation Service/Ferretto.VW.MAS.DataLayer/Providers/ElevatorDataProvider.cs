@@ -4,6 +4,7 @@ using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -57,6 +58,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return this.cachedAxes[orientation];
+        }
+
+        public IDbContextTransaction GetContextTransaction()
+        {
+            return this.dataContext.Database.BeginTransaction();
         }
 
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);

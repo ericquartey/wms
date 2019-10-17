@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
                     LoadingUnitLocation.Cell,
                     sourceCellId,
                     destinationCellId,
-                    -1),
+                    null),
                 $"Bay {requestingBay} requested to move Loading unit in Cell {sourceCellId} to Cell {destinationCellId}",
                 sender,
                 MessageType.MoveLoadingUnit,

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -40,9 +38,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -80,7 +77,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnitToElevator(this.moveData.LoadingUnitId, direction, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -94,12 +91,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitToElevatorStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    using (var scope = new TransactionScope())
+                    using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                     {
                         this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
 
@@ -117,7 +114,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                             this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
                         }
 
-                        scope.Complete();
+                        transaction.Commit();
                     }
 
                     returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
@@ -125,7 +122,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     break;
 
                 case MessageStatus.OperationError:
-                    returnValue = this.GetState<IChangeRunningStateEndState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.MissionsManager.BackgroundServices;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit;
@@ -22,11 +23,11 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<BackgroundServices.MissionsManagerService>();
+            services.AddHostedService<MissionsManagerService>();
 
             services
-                .AddSingleton<IRunningStateProvider, RunningStateProvider>()
-                .AddSingleton<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>();
+                .AddTransient<IRunningStateProvider, RunningStateProvider>()
+                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>();
 
             services
                 .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()

@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             return this.dataContext.Cells
                 .Include(c => c.Panel)
+                .Include(c => c.LoadingUnit)
                 .SingleOrDefault(c => c.Id == cellId);
         }
 
@@ -100,6 +101,8 @@ namespace Ferretto.VW.MAS.DataLayer
             var cell = this.GetCellById(cellId);
             cell.LoadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
 
+            cell.Status = CellStatus.Occupied;
+
             this.dataContext.Cells.Update(cell);
             this.dataContext.SaveChanges();
         }
@@ -108,6 +111,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var cell = this.GetCellById(cellId);
             cell.LoadingUnit = null;
+            cell.Status = CellStatus.Free;
 
             this.dataContext.Cells.Update(cell);
             this.dataContext.SaveChanges();
