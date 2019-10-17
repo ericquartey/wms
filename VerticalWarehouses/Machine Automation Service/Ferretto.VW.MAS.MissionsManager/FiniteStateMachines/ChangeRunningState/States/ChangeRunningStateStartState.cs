@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             }
             else
             {
-                var description = $"Power Enable Start State received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Power Enable Start State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }

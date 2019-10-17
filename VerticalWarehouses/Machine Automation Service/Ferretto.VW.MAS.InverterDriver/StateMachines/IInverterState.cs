@@ -14,6 +14,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         #region Methods
 
         /// <summary>
+        /// wake up a sleeping state machine
+        /// </summary>
+        void Continue();
+
+        /// <summary>
         /// Starts executing the current state.
         /// </summary>
         void Start();

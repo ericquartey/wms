@@ -10,13 +10,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
-        double HigherDistance { get; }
-
         double HighSpeedDurationClose { get; }
 
         double HighSpeedDurationOpen { get; }
-
-        double LowerDistance { get; }
 
         double LowerSpeed { get; }
 

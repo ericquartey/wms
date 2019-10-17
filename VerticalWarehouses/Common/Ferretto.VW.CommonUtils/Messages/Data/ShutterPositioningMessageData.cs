@@ -17,8 +17,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
             double speedRate,
-            double higherDistance,
-            double lowerDistance,
             MovementMode movementMode,
             MovementType movementType,
             int requestedCycles,
@@ -32,8 +30,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShutterMovementDirection = shutterMovementDirection;
             this.ShutterType = shutterType;
             this.SpeedRate = speedRate;
-            this.HigherDistance = higherDistance;
-            this.LowerDistance = lowerDistance;
             this.MovementMode = movementMode;
             this.MovementType = movementType;
             this.RequestedCycles = requestedCycles;
@@ -55,8 +51,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
             this.ShutterType = shutterPositioningMessageData.ShutterType;
             this.SpeedRate = shutterPositioningMessageData.SpeedRate;
-            this.HigherDistance = shutterPositioningMessageData.HigherDistance;
-            this.LowerDistance = shutterPositioningMessageData.LowerDistance;
             this.MovementMode = shutterPositioningMessageData.MovementMode;
             this.MovementType = shutterPositioningMessageData.MovementType;
             this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
@@ -76,13 +70,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int ExecutedCycles { get; set; }
 
-        public double HigherDistance { get; }
-
         public double HighSpeedDurationClose { get; }
 
         public double HighSpeedDurationOpen { get; }
-
-        public double LowerDistance { get; }
 
         public double LowerSpeed { get; }
 

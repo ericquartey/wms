@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver
     internal class InvertersProvider : IInvertersProvider
     {
         #region Fields
+
+        private readonly IBaysProvider baysProvider;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
@@ -31,6 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
+            IBaysProvider baysProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider)
         {
             if (eventAggregator is null)
@@ -40,6 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
 
             eventAggregator
@@ -135,6 +140,19 @@ namespace Ferretto.VW.MAS.InverterDriver
             System.Diagnostics.Debug.Assert(this.inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
 
             return this.inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
+        }
+
+        public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
+        {
+            var index = this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
+            var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
+
+            if (inverter is null)
+            {
+                throw new EntityNotFoundException(index.ToString());
+            }
+
+            return inverter;
         }
 
         /// <summary>

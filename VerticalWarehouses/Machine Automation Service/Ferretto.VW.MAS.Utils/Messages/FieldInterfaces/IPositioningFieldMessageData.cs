@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int NumberCycles { get; }
 
+        BayNumber RequestingBay { get; set; }
+
         double[] SwitchPosition { get; set; }
 
         double[] TargetAcceleration { get; set; }
@@ -32,6 +34,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         double[] TargetSpeed { get; set; }
 
         DataSample TorqueCurrentSample { get; set; }
+
+        bool WaitContinue { get; set; }
 
         #endregion
     }

@@ -13,25 +13,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitStartState : StateBase, IMoveLoadingUnitStartState
+    internal class MoveLoadingUnitOpenShutterState : StateBase, IMoveLoadingUnitOpenShutterState
     {
         #region Fields
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private readonly List<MovementMode> movements;
-
-        private bool needOpenShutter;
-
         #endregion
 
         #region Constructors
 
-        public MoveLoadingUnitStartState(
+        public MoveLoadingUnitOpenShutterState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger,
@@ -39,8 +33,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
-            this.movements = new List<MovementMode>();
-            this.needOpenShutter = false;
         }
 
         #endregion
@@ -51,23 +43,16 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
             {
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData, out var loadingUnitId);
-
-                if (sourceHeight == 0)
+                if (!this.loadingUnitMovementProvider.OpenShutter(messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay))
                 {
-                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitDestination.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
+                    var description = $"OpenShutter error: shutter position not found ({messageData.Source})";
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
                 }
-
-                moveData.LoadingUnitId = loadingUnitId;
-
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, LoadingUnitDestination.NoDestination, MessageActor.MissionsManager, commandMessage.RequestingBay);
-                this.needOpenShutter = this.loadingUnitMovementProvider.NeedOpenShutter(messageData.Source);
             }
             else
             {
-                var description = $"Move Loading Unit Start State received wrong initialization data ({commandMessage.Data.GetType().Name})";
+                var description = $"Move Loading Unit Open Shutter State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
@@ -77,19 +62,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
+            var notificationStatus = this.loadingUnitMovementProvider.ShutterStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.needOpenShutter)
-                    {
-                        returnValue = this.GetState<IMoveLoadingUnitOpenShutterState>();
-                    }
-                    else
-                    {
-                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
-                    }
+                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
                     break;
 
                 case MessageStatus.OperationError:

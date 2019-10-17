@@ -6,13 +6,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
-        double HigherDistance { get; }
-
         double HighSpeedDurationClose { get; }
 
         double HighSpeedDurationOpen { get; }
-
-        double LowerDistance { get; }
 
         double LowerSpeed { get; }
 

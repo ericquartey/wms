@@ -2791,10 +2791,6 @@
       "FeedRate": 0.20,
       "MaxSpeed": 40000,
       "MinSpeed": 5000,
-      "Acceleration": 500,
-      "Deceleration": 500,
-      "HigherDistance": 467,
-      "LowerDistance": 472,
       "HighSpeedDurationOpen": 14,
       "HighSpeedDurationClose": 13
     },
@@ -2807,7 +2803,7 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 0,
+      "BrakeReleaseTime": 150,
       "BrakeActivatePercent": 10
     },
     "VerticalResolutionCalibration": {

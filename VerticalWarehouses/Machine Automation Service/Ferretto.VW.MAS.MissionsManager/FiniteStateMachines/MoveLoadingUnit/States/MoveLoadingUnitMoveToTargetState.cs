@@ -50,11 +50,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
                 moveData.LoadingUnitId = loadingUnitId;
 
-                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Destination, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
-                var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType()})";
+                var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
