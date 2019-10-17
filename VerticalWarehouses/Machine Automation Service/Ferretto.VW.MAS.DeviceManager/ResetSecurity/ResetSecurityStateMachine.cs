@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
                 this.CurrentState?.Start();
             }
 
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)

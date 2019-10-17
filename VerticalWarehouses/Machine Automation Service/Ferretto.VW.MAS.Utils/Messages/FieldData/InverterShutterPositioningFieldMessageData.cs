@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.ShutterType = shutterPositioningFieldMessageData.ShutterType;
             this.ShutterMovementDirection = shutterPositioningFieldMessageData.ShutterMovementDirection;
             this.SpeedRate = (int)shutterPositioningFieldMessageData.SpeedRate;
-            this.HigherDistance = (int)shutterPositioningFieldMessageData.HigherDistance;
-            this.LowerDistance = (int)shutterPositioningFieldMessageData.LowerDistance;
             this.MovementType = shutterPositioningFieldMessageData.MovementType;
             this.HighSpeedDurationOpen = (int)shutterPositioningFieldMessageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = (int)shutterPositioningFieldMessageData.HighSpeedDurationClose;
@@ -28,13 +26,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
-        public int HigherDistance { get; set; }
-
         public int HighSpeedDurationClose { get; set; }
 
         public int HighSpeedDurationOpen { get; set; }
-
-        public int LowerDistance { get; set; }
 
         public int LowerSpeed { get; set; }
 

@@ -177,4 +177,17 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>È scattata la funzione di sicurezza.</value>
   </data>
+    <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>ZeroSensorErrorAfterDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>ZeroSensorErrorAfterPickup</value>
+  </data>
+
 </root>
