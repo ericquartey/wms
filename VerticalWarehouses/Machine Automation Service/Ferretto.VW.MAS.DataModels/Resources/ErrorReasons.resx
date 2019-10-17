@@ -137,7 +137,7 @@
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>ZeroSensorErrorAfterPickup</value>
-   </data>
+  </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
@@ -174,7 +174,7 @@
   <data name="InverterErrorSyntaxError" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
-  <data name="InverterErrorUnknown" xml:space="preserve">
+  <data name="InverterErrorUnknown15" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
@@ -188,5 +188,17 @@
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+  </data>
+  <data name="InverterErrorUnknown16" xml:space="preserve">
+    <value>InverterErrorUnknown16</value>
+  </data>
+  <data name="InverterErrorUnknown17" xml:space="preserve">
+    <value>InverterErrorUnknown17</value>
+  </data>
+  <data name="InverterErrorUnknown18" xml:space="preserve">
+    <value>InverterErrorUnknown18</value>
+  </data>
+  <data name="InverterErrorUnknown19" xml:space="preserve">
+    <value>InverterErrorUnknown19</value>
   </data>
 </root>

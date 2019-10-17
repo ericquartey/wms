@@ -7,8 +7,6 @@ namespace Ferretto.VW.App.Modules.Installation.Models
     {
         #region Fields
 
-        private readonly int bayNumber;
-
         private bool closed;
 
         private bool midWay;
@@ -19,9 +17,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         #region Constructors
 
-        public ShutterSensors(int bayNumber)
+        public ShutterSensors()
         {
-            this.bayNumber = bayNumber;
         }
 
         #endregion
@@ -38,14 +35,14 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         #region Methods
 
-        public void Update(bool[] sensorStates)
+        public void Update(bool[] sensorStates, int bayNumber)
         {
             if (sensorStates is null)
             {
                 return;
             }
 
-            switch (this.bayNumber)
+            switch (bayNumber)
             {
                 case 1:
                     {

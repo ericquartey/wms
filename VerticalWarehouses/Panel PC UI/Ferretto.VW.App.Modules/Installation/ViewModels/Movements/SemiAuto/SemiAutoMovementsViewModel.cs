@@ -103,7 +103,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManagerService = bayManagerService;
             this.shuttersWebService = shuttersWebService;
             this.machineCarouselWebService = machineCarouselWebService;
-            this.shutterSensors = new ShutterSensors(this.BayNumber);
+            this.shutterSensors = new ShutterSensors();
         }
 
         #endregion
@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.sensors.Update(sensorsStates.ToArray());
                 this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                this.shutterSensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray(), this.BayNumber);
 
                 this.SelectBayPosition1();
             }
@@ -413,7 +413,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.sensors.Update(message.Data?.SensorsStates);
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-            this.shutterSensors.Update(message.Data?.SensorsStates);
+            this.shutterSensors.Update(message.Data?.SensorsStates, this.BayNumber);
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaiseCanExecuteChanged();
         }

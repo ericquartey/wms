@@ -162,8 +162,8 @@
   <data name="InverterErrorSyntaxError" xml:space="preserve">
     <value>Errore di sintassi del messaggio inviato all'inverter.</value>
   </data>
-  <data name="InverterErrorUnknown" xml:space="preserve">
-    <value>Errore sconosciuto dell'inverter.</value>
+  <data name="InverterErrorUnknown15" xml:space="preserve">
+    <value>Errore sconosciuto 15 dell'inverter.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
     <value>Parametro sconosciuto passato all'inverter.</value>
@@ -177,7 +177,7 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>È scattata la funzione di sicurezza.</value>
   </data>
-    <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
     <value>CradleNotCorrectlyLoadedDuringPickup</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
@@ -189,5 +189,16 @@
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>ZeroSensorErrorAfterPickup</value>
   </data>
-
+  <data name="InverterErrorUnknown16" xml:space="preserve">
+    <value>InverterErrorUnknown16</value>
+  </data>
+  <data name="InverterErrorUnknown17" xml:space="preserve">
+    <value>InverterErrorUnknown17</value>
+  </data>
+  <data name="InverterErrorUnknown18" xml:space="preserve">
+    <value>InverterErrorUnknown18</value>
+  </data>
+  <data name="InverterErrorUnknown19" xml:space="preserve">
+    <value>InverterErrorUnknown19</value>
+  </data>
 </root>

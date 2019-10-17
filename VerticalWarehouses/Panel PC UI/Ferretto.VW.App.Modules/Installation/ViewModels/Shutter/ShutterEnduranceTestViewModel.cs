@@ -80,7 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.bayManager = bayManager;
 
-            this.sensors = new ShutterSensors(this.BayNumber);
+            this.sensors = new ShutterSensors();
         }
 
         #endregion
@@ -288,7 +288,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
 
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
-                this.sensors.Update(sensorsStates.ToArray());
+                this.sensors.Update(sensorsStates.ToArray(), this.BayNumber);
             }
             catch (System.Exception ex)
             {
@@ -325,7 +325,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new System.ArgumentNullException(nameof(message));
             }
 
-            this.sensors.Update(message.Data?.SensorsStates);
+            this.sensors.Update(message.Data?.SensorsStates, this.BayNumber);
         }
 
         private void OnShutterTestStatusChanged(NotificationMessageUI<ShutterPositioningMessageData> message)

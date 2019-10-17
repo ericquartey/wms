@@ -86,6 +86,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("CradleNotCompletelyLoaded", resourceCulture);
             }
         }
+        
         /// <summary>
         ///   Looks up a localized string similar to CradleNotCorrectlyLoadedDuringPickup.
         /// </summary>
@@ -103,27 +104,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("CradleNotCorrectlyUnloadedDuringDeposit", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
-        /// </summary>
-        public static string ZeroSensorErrorAfterDeposit {
-            get {
-                return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
-        /// </summary>
-        public static string ZeroSensorErrorAfterPickup
-        {
-            get
-            {
-                return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
-            }
-        }
-        
         
         /// <summary>
         ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
@@ -236,9 +216,45 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
         /// </summary>
-        public static string InverterErrorUnknown {
+        public static string InverterErrorUnknown15 {
             get {
-                return ResourceManager.GetString("InverterErrorUnknown", resourceCulture);
+                return ResourceManager.GetString("InverterErrorUnknown15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InverterErrorUnknown16.
+        /// </summary>
+        public static string InverterErrorUnknown16 {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknown16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InverterErrorUnknown17.
+        /// </summary>
+        public static string InverterErrorUnknown17 {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknown17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InverterErrorUnknown18.
+        /// </summary>
+        public static string InverterErrorUnknown18 {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknown18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InverterErrorUnknown19.
+        /// </summary>
+        public static string InverterErrorUnknown19 {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknown19", resourceCulture);
             }
         }
         
@@ -275,6 +291,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string SecurityWasTriggered {
             get {
                 return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
+        /// </summary>
+        public static string ZeroSensorErrorAfterDeposit {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
+        /// </summary>
+        public static string ZeroSensorErrorAfterPickup {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
             }
         }
     }

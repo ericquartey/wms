@@ -772,6 +772,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
+        public double Resolution { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Shutter Shutter { get; set; }
     
@@ -2244,7 +2247,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 200011 = InverterErrorUnknownParameter
     /// 200013 = InverterErrorSyntaxError
     /// 200014 = InverterErrorWrongPayloadLength
-    /// 200015 = InverterErrorUnknown
+    /// 200015 = InverterErrorUnknown15
+    /// 200016 = InverterErrorUnknown16
+    /// 200017 = InverterErrorUnknown17
+    /// 200018 = InverterErrorUnknown18
+    /// 200019 = InverterErrorUnknown19
     /// 200020 = InverterErrorNodeNotAvailable
     /// 200030 = InverterErrorSyntaxError2</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -2294,7 +2301,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         InverterErrorWrongPayloadLength = 200014,
     
-        InverterErrorUnknown = 200015,
+        InverterErrorUnknown15 = 200015,
+    
+        InverterErrorUnknown16 = 200016,
+    
+        InverterErrorUnknown17 = 200017,
+    
+        InverterErrorUnknown18 = 200018,
+    
+        InverterErrorUnknown19 = 200019,
     
         InverterErrorNodeNotAvailable = 200020,
     

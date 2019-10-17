@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Operation");
 
+                    b.Property<double>("Resolution");
+
                     b.Property<int?>("ShutterId");
 
                     b.Property<string>("Side")
@@ -305,6 +307,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100037,
+                            Code = 100037,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100038,
+                            Code = 100038,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100039,
+                            Code = 100039,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100040,
+                            Code = 100040,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -411,8 +445,40 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200015,
                             Code = 200015,
-                            Description = "Errore sconosciuto dell'inverter.",
+                            Description = "Errore sconosciuto 15 dell'inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200016,
+                            Code = 200016,
+                            Description = "InverterErrorUnknown16",
+                            Reason = "InverterErrorUnknown16",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200017,
+                            Code = 200017,
+                            Description = "InverterErrorUnknown17",
+                            Reason = "InverterErrorUnknown17",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200018,
+                            Code = 200018,
+                            Description = "InverterErrorUnknown18",
+                            Reason = "InverterErrorUnknown18",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 200019,
+                            Code = 200019,
+                            Description = "InverterErrorUnknown19",
+                            Reason = "InverterErrorUnknown19",
                             Severity = 1
                         },
                         new
@@ -467,6 +533,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100036,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100037,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100038,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100039,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100040,
                             TotalErrors = 0
                         },
                         new
@@ -537,6 +623,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200015,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200016,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200017,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200018,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 200019,
                             TotalErrors = 0
                         },
                         new
@@ -805,7 +911,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 15, 16, 6, 5, 993, DateTimeKind.Local).AddTicks(9224),
+                            InstallationDate = new DateTime(2016, 12, 17, 15, 3, 50, 262, DateTimeKind.Local).AddTicks(3096),
                             ServiceStatus = 86
                         });
                 });
@@ -1116,17 +1222,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("Acceleration");
-
-                    b.Property<double>("Deceleration");
-
                     b.Property<double>("HighSpeedDurationClose");
 
                     b.Property<double>("HighSpeedDurationOpen");
-
-                    b.Property<double>("HigherDistance");
-
-                    b.Property<double>("LowerDistance");
 
                     b.Property<double>("MaxSpeed");
 
