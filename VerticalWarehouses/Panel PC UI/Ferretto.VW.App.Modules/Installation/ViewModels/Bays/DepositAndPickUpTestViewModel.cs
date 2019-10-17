@@ -354,6 +354,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.bay = await this.bayManagerService.GetBay();
 
+            this.BayIsMultiPosition = this.bay.IsDouble;
+
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
             this.IsBackNavigationAllowed = true;
@@ -382,7 +384,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
-            this.RaisePropertyChanged(nameof(this.BayIsMultiPosition));
 
             this.RaiseCanExecuteChanged();
 
