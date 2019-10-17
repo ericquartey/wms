@@ -8,16 +8,33 @@ namespace Ferretto.VW.MAS.DataModels
         CradleNotCompletelyLoaded = 100032,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForPositioning))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ConditionsNotMetForPositioning = 100033,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning))]
+        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning = 100034,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered))]
+        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered = 100035,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]
         InverterFaultStateDetected = 100036,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
+        CradleNotCorrectlyLoadedDuringPickup = 100037,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
+        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
+        ZeroSensorErrorAfterPickup = 100039,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
+        ZeroSensorErrorAfterDeposit = 100040,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,

@@ -6,6 +6,6 @@
 
         Configuration = 1,
 
-        SetIP = 2
+        SetIP = 2,
     }
 }

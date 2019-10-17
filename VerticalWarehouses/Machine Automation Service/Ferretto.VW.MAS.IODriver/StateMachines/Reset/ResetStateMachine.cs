@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
     {
         #region Fields
 
-        private const int PULSE_INTERVAL = 350;
+        private const int PulseInterval = 350;
 
         private readonly IoIndex index;
 
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
             }
 
             base.ProcessMessage(message);
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             if (this.CurrentState is ResetStartState && checkMessage && !this.pulseOneTime)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 

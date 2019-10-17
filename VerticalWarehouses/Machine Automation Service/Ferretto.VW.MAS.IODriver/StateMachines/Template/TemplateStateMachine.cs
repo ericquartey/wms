@@ -23,7 +23,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #region Constructors
 
-        public TemplateStateMachine(ITemplateData templateData,
+        public TemplateStateMachine(
+            ITemplateData templateData,
             IoStatus status,
             IoIndex index,
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,

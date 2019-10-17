@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
             double speedRate,
-            double higherDistance,
-            double lowerDistance,
             double highSpeedDurationOpen,
             double highSpeedDurationClose,
             double lowerSpeed,
@@ -26,8 +24,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.ShutterMovementDirection = shutterMovementDirection;
             this.ShutterType = shutterType;
             this.SpeedRate = speedRate;
-            this.HigherDistance = higherDistance;
-            this.LowerDistance = lowerDistance;
             this.HighSpeedDurationOpen = highSpeedDurationOpen;
             this.HighSpeedDurationClose = highSpeedDurationClose;
             this.LowerSpeed = lowerSpeed;
@@ -48,8 +44,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.ShutterMovementDirection = messageData.ShutterMovementDirection;
             this.ShutterType = messageData.ShutterType;
             this.SpeedRate = messageData.SpeedRate;
-            this.HigherDistance = messageData.HigherDistance;
-            this.LowerDistance = messageData.LowerDistance;
             this.HighSpeedDurationOpen = messageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = messageData.HighSpeedDurationClose;
             this.LowerSpeed = messageData.LowerSpeed;
@@ -60,13 +54,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         #region Properties
 
-        public double HigherDistance { get; }
-
         public double HighSpeedDurationClose { get; }
 
         public double HighSpeedDurationOpen { get; }
-
-        public double LowerDistance { get; }
 
         public double LowerSpeed { get; }
 

@@ -6,12 +6,14 @@ using Ferretto.VW.MAS.IODriver.Interface;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    //TEMP The TransportMock handle only data for fictitious device with firmware release 0x10
+    /// <summary>
+    /// Handles socket data for fictitious device with firmware release 0x10.
+    /// </summary>
     public class IoTransportMock : IIoTransport
     {
         #region Fields
 
-        private const byte FW_RELEASE = 0x10;
+        private const byte FirmwareRelease = 0x10;
 
         private const int NBYTES_RECEIVE = 15;
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.MAS.IODriver
         public IoTransportMock()
         {
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
-            this.responseMessage = this.buildRawMessageBytes();
+            this.responseMessage = this.BuildRawMessageBytes();
         }
 
         #endregion
@@ -105,12 +107,14 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     value |= (byte)(1 << index);
                 }
+
                 index++;
             }
+
             return value;
         }
 
-        private byte[] buildRawMessageBytes()
+        private byte[] BuildRawMessageBytes()
         {
             var rawMessage = new byte[NBYTES_RECEIVE];
 
@@ -132,6 +136,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 outputs[i] = false;
             }
+
             rawMessage[4] = this.BoolArrayToByte(outputs);
 
             // Payload input
@@ -142,6 +147,7 @@ namespace Ferretto.VW.MAS.IODriver
                 lowByteInputs[i] = false;
                 highByteInputs[i] = false;
             }
+
             rawMessage[5] = this.BoolArrayToByte(lowByteInputs);
             rawMessage[6] = this.BoolArrayToByte(highByteInputs);
 
@@ -151,6 +157,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 configurationData[i] = 0x00;
             }
+
             Array.Copy(rawMessage, 7, configurationData, 0, configurationData.Length);
 
             return rawMessage;
@@ -158,7 +165,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private void BuildResponseMessage(byte[] inputTelegram)
         {
-            var relProtocol = inputTelegram[1];
             var codeOperation = inputTelegram[2];
 
             switch (codeOperation)
@@ -166,9 +172,10 @@ namespace Ferretto.VW.MAS.IODriver
                 case 0x00: // Data
                     this.responseMessage = new byte[NBYTES_RECEIVE];
                     this.responseMessage[0] = NBYTES_RECEIVE;  // nBytes
-                    this.responseMessage[1] = FW_RELEASE;      // fwRelease
+                    this.responseMessage[1] = FirmwareRelease; // fwRelease
                     this.responseMessage[2] = 0x00;            // Code op   0x00: data, 0x06: configuration
                     this.responseMessage[3] = 0x00;            // error code
+
                     // Payload output (echo output values)
                     Array.Copy(inputTelegram, 3, this.responseMessage, 4, 1);
 
@@ -180,6 +187,7 @@ namespace Ferretto.VW.MAS.IODriver
                         lowByteInputs[i] = false;
                         highByteInputs[i] = false;
                     }
+
                     this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
                     this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
 
@@ -194,7 +202,7 @@ namespace Ferretto.VW.MAS.IODriver
                 case 0x01: // Config
                     this.responseMessage = new byte[NBYTES_RECEIVE_CFG];
                     this.responseMessage[0] = NBYTES_RECEIVE_CFG;  // nBytes
-                    this.responseMessage[1] = FW_RELEASE;          // fwRelease
+                    this.responseMessage[1] = FirmwareRelease;          // fwRelease
                     this.responseMessage[2] = 0x06;                // Ack  0x00: data, 0x06: configuration
                     break;
 

@@ -288,7 +288,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public int? TotalCompletedCycles
+        public int? CumulativePerformedCycles
         {
             get => this.totalCompletedCycles;
             private set => this.SetProperty(ref this.totalCompletedCycles, value);
@@ -328,7 +328,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
 
                 this.InputRequiredCycles = this.procedureParameters.RequiredCycles;
-                this.TotalCompletedCycles = this.procedureParameters.PerformedCycles;
+                this.CumulativePerformedCycles = this.procedureParameters.PerformedCycles;
             }
             catch (Exception ex)
             {
@@ -525,7 +525,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.currentState == DepositAndPickUpState.PickUp)
                         {
-                            this.TotalCompletedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
+                            this.CumulativePerformedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
                             this.CompletedCycles++;
                         }
 
@@ -599,7 +599,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return;
                 }
 
-                if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
+                if ((this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value) <= 0)
                 {
                     this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
                     return;

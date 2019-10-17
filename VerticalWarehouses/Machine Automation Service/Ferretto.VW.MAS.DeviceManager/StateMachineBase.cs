@@ -78,10 +78,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.CurrentState.Start();
             }
 
-            this.Logger.LogTrace($"1:{newState.GetType()}");
+            this.Logger.LogTrace($"1:{newState.GetType().Name}");
             if (message != null)
             {
-                this.Logger.LogTrace($"2:{newState.GetType()}{message.Type}:{message.Destination}");
+                this.Logger.LogTrace($"2:{newState.GetType().Name}{message.Type}:{message.Destination}");
                 this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
             }
         }
