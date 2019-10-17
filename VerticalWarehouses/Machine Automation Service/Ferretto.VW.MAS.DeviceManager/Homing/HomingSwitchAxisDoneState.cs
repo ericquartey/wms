@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"{this.GetType()} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+            this.Logger.LogTrace($"{this.GetType().Name} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
 
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType()}");
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
 
             var inverterIndex = this.machineData.CurrentInverterIndex;
 
@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug($"{this.GetType()} Stop: {reason}");
+            this.Logger.LogDebug($"{this.GetType().Name} Stop: {reason}");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));

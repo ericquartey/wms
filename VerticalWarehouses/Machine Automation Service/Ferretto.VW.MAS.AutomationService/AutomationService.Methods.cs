@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
             catch (Exception ex)
             {
-                this.Logger.LogTrace($"28:Exception {ex.Message} while sending SignalR Machine Error Message");
+                this.Logger.LogError($"28:Exception {ex.Message} while sending SignalR Machine Error Message");
 
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
             }
