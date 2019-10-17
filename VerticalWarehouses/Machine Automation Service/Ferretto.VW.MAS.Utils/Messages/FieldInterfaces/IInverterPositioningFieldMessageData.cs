@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool RefreshAll { get; }
 
+        BayNumber RequestingBay { get; set; }
+
         int[] SwitchPosition { get; set; }
 
         int[] TargetAcceleration { get; set; }
@@ -31,6 +33,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         int TargetPosition { get; set; }
 
         int[] TargetSpeed { get; set; }
+
+        bool WaitContinue { get; set; }
 
         #endregion
     }

@@ -1856,23 +1856,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ShutterManualMovementsProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("acceleration", Required = Newtonsoft.Json.Required.Always)]
-        public double Acceleration { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("deceleration", Required = Newtonsoft.Json.Required.Always)]
-        public double Deceleration { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("higherDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double HigherDistance { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("highSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationClose { get; set; }
     
         [Newtonsoft.Json.JsonProperty("highSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationOpen { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("lowerDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double LowerDistance { get; set; }
     
         [Newtonsoft.Json.JsonProperty("maxSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSpeed { get; set; }
@@ -2215,7 +2203,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     /// <summary>100032 = CradleNotCompletelyLoaded
     /// 100033 = ConditionsNotMetForPositioning
-    /// 100034 = ConditionsNotMetForRunning</summary>
+    /// 100034 = ConditionsNotMetForRunning
+    /// 100035 = CradleNotCorrectlyLoadedDuringPickup
+    /// 100036 = CradleNotCorrectlyUnloadedDuringDeposit
+    /// 100037 = ZeroSensorErrorAfterPickup
+    /// 100038 = ZeroSensorErrorAfterDeposit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrors
     {
@@ -2224,6 +2216,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         ConditionsNotMetForPositioning = 100033,
     
         ConditionsNotMetForRunning = 100034,
+    
+        CradleNotCorrectlyLoadedDuringPickup = 100035,
+    
+        CradleNotCorrectlyUnloadedDuringDeposit = 100036,
+    
+        ZeroSensorErrorAfterPickup = 100037,
+    
+        ZeroSensorErrorAfterDeposit = 100038,
     
     }
     

@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IElevatorProvider elevatorProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly double fullPosition;
 
         private readonly IPositioningMachineData machineData;
@@ -66,6 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
 
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -128,7 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -142,7 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.TorqueCurrentSampling:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -164,9 +167,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         var positioningDownMessageData = new PositioningMessageData(this.machineData.MessageData);
                         positioningDownMessageData.TargetPosition = positioningDownMessageData.LowerBound;
 
-                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(positioningUpMessageData);
+                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(positioningUpMessageData, this.machineData.RequestingBay);
 
-                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(positioningDownMessageData);
+                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(positioningDownMessageData, this.machineData.RequestingBay);
 
                         // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
                         commandMessage = new FieldCommandMessage(
@@ -181,7 +184,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.FindZero:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -297,7 +300,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
-            return false;
             if (!this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -336,7 +338,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
-            return false;
             if (this.machineData.MessageData.IsStartedOnBoard)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
@@ -375,7 +376,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsZeroSensorError()
         {
-            return false;
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
                 && this.machineData.MessageData.MovementType == MovementType.TableTarget
                 && this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle == this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
@@ -411,12 +411,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.IsLoadingErrorDuringPickup())
                 {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+
                     this.Logger.LogError("Cradle not correctly loaded during pickup");
                     this.stateData.FieldMessage = message;
                     this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                 }
                 else if (this.IsUnloadingErrorDuringDeposit())
                 {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                     this.Logger.LogError("Cradle not correctly unloaded during deposit");
                     this.stateData.FieldMessage = message;
                     this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
@@ -454,7 +457,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.machineData.ExecutedSteps = this.numberExecutedSteps;
                     if (this.IsZeroSensorError())
                     {
-                        this.Logger.LogError($"Zero sensor error after {(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle ? "pickup" : "deposit")}");
+                        if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
+                            this.Logger.LogError($"Zero sensor error after pickup");
+                        }
+                        else
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
+                            this.Logger.LogError($"Zero sensor error after deposit");
+                        }
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                     }
                     else

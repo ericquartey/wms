@@ -82,11 +82,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
             this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-            this.Logger.LogTrace($"1:new State: {newState.GetType()}");
+            this.Logger.LogTrace($"1:new State: {newState.GetType().Name}");
 
             this.CurrentState = newState;
             this.CurrentState.Start();
         }
+
+        public abstract void Continue();
 
         public void Dispose()
         {

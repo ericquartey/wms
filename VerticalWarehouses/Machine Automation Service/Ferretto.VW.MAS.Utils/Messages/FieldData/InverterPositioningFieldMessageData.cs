@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
             this.Direction = direction;
+            this.WaitContinue = positioningFieldMessageData.WaitContinue;
+            this.RequestingBay = positioningFieldMessageData.RequestingBay;
 
             this.IsTorqueCurrentSamplingEnabled = positioningFieldMessageData.IsTorqueCurrentSamplingEnabled;
             this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
@@ -55,6 +57,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public bool RefreshAll { get; }
 
+        public BayNumber RequestingBay { get; set; }
+
         public int[] SwitchPosition { get; set; }
 
         public int[] TargetAcceleration { get; set; }
@@ -64,6 +68,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int TargetPosition { get; set; }
 
         public int[] TargetSpeed { get; set; }
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 

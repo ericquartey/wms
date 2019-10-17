@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             double[] acceleration,
             double[] deceleration,
             int numberCycles,
+            bool waitContinue,
+            BayNumber requestingBay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -27,10 +29,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
             this.NumberCycles = numberCycles;
+            this.RequestingBay = requestingBay;
+            this.WaitContinue = waitContinue;
         }
 
         public PositioningFieldMessageData(
             IPositioningMessageData messageData,
+            BayNumber requestingBay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -52,6 +57,9 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
+
+            this.WaitContinue = messageData.WaitContinue;
+            this.RequestingBay = requestingBay;
         }
 
         #endregion
@@ -72,6 +80,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int NumberCycles { get; }
 
+        public BayNumber RequestingBay { get; set; }
+
         public double[] SwitchPosition { get; set; }
 
         public double[] TargetAcceleration { get; set; }
@@ -83,6 +93,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public double[] TargetSpeed { get; set; }
 
         public DataSample TorqueCurrentSample { get; set; }
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 

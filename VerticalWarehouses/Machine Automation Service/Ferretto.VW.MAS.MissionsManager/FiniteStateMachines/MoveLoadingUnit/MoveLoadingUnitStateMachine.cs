@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
             }
             else
             {
-                var description = $"Attempting to start {this.GetType()} Finite state machine while preconditions are not met";
+                var description = $"Attempting to start {this.GetType().Name} Finite state machine with wrong ({machineData.GetType().Name}) machine data";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }

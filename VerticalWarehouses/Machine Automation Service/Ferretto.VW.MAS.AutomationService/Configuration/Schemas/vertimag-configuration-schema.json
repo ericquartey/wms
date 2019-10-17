@@ -827,10 +827,6 @@
             "FeedRate",
             "MaxSpeed",
             "MinSpeed",
-            "Acceleration",
-            "Deceleration",
-            "HigherDistance",
-            "LowerDistance",
             "HighSpeedDurationOpen",
             "HighSpeedDurationClose"
           ],
@@ -851,30 +847,6 @@
               "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MinSpeed",
               "type": "integer",
               "title": "The Minspeed Schema",
-              "default": 0
-            },
-            "Acceleration": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/Acceleration",
-              "type": "integer",
-              "title": "The Acceleration Schema",
-              "default": 0
-            },
-            "Deceleration": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/Deceleration",
-              "type": "integer",
-              "title": "The Deceleration Schema",
-              "default": 0
-            },
-            "HigherDistance": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/HigherDistance",
-              "type": "number",
-              "title": "The Higherdistance Schema",
-              "default": 0
-            },
-            "LowerDistance": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/LowerDistance",
-              "type": "number",
-              "title": "The Lowerdistance Schema",
               "default": 0
             },
             "HighSpeedDurationOpen": {

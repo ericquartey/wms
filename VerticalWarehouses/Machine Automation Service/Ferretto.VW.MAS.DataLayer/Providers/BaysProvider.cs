@@ -399,13 +399,102 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
         }
 
-        public ShutterPosition GetShutterPosition(LoadingUnitLocation destination, out BayNumber bay)
+        public ShutterPosition GetShutterClosePosition(LoadingUnitDestination destination, bool parallel, out BayNumber bay)
         {
             switch (destination)
             {
-                case LoadingUnitLocation.InternalBay1Up:
-                case LoadingUnitLocation.ExternalBay1Up:
-                case LoadingUnitLocation.CarouselBay1Up:
+                case LoadingUnitDestination.InternalBay1Up:
+                case LoadingUnitDestination.CarouselBay1Up:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayOne;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay1Up:
+                    bay = BayNumber.BayOne;
+                    return ShutterPosition.Closed;
+
+                case LoadingUnitDestination.InternalBay1Down:
+                case LoadingUnitDestination.CarouselBay1Down:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayOne;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay1Down:
+                    bay = BayNumber.BayOne;
+                    return ShutterPosition.Closed;
+
+                case LoadingUnitDestination.InternalBay2Up:
+                case LoadingUnitDestination.CarouselBay2Up:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayTwo;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay2Up:
+                    bay = BayNumber.BayTwo;
+                    return ShutterPosition.Closed;
+
+                case LoadingUnitDestination.InternalBay2Down:
+                case LoadingUnitDestination.CarouselBay2Down:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayTwo;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay2Down:
+                    bay = BayNumber.BayTwo;
+                    return ShutterPosition.Closed;
+
+                case LoadingUnitDestination.InternalBay3Up:
+                case LoadingUnitDestination.CarouselBay3Up:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayThree;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay3Up:
+                    bay = BayNumber.BayThree;
+                    return ShutterPosition.Closed;
+
+                case LoadingUnitDestination.InternalBay3Down:
+                case LoadingUnitDestination.CarouselBay3Down:
+                    if (!parallel)
+                    {
+                        bay = BayNumber.BayThree;
+                        return ShutterPosition.Closed;
+                    }
+                    break;
+
+                case LoadingUnitDestination.ExternalBay3Down:
+                    bay = BayNumber.BayThree;
+                    return ShutterPosition.Closed;
+
+                default:
+                    break;
+            }
+            bay = BayNumber.None;
+            return ShutterPosition.None;
+        }
+
+        public ShutterPosition GetShutterOpenPosition(LoadingUnitDestination destination, out BayNumber bay)
+        {
+            switch (destination)
+            {
+                case LoadingUnitDestination.InternalBay1Up:
+                case LoadingUnitDestination.ExternalBay1Up:
+                case LoadingUnitDestination.CarouselBay1Up:
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Opened;
 
