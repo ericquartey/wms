@@ -23,9 +23,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachinesDataService machinesDataService;
 
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
             this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
-            }
+        }
 
         #endregion
 
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingSourceDestination(LoadingUnitDestination source, LoadingUnitDestination destination, int sourceCellId, int destinationCellId)
+        public IActionResult StartMovingSourceDestination(LoadingUnitDestination source, LoadingUnitDestination destination, int? sourceCellId, int? destinationCellId)
         {
             if (source == LoadingUnitDestination.Cell && destination == LoadingUnitDestination.Cell)
             {
@@ -168,9 +168,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop()
+        public IActionResult Stop(BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.StopMoving();
+            //this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

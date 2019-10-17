@@ -103,7 +103,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManagerService = bayManagerService;
             this.shuttersWebService = shuttersWebService;
             this.machineCarouselWebService = machineCarouselWebService;
-            this.shutterSensors = new ShutterSensors(this.BayNumber);
         }
 
         #endregion
@@ -220,17 +219,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                this.bay = await this.bayManagerService.GetBay();
+                this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = (int)this.bay.Number;
                 this.HasCarousel = this.bay.Carousel != null;
                 this.IsShutterTwoSensors = this.bay.Shutter.Type == ShutterType.TwoSensors;
                 this.BayIsMultiPosition = this.bay.Positions.Count() > 1;
 
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
-
-                this.sensors.Update(sensorsStates.ToArray());
-                this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                this.shutterSensors.Update(sensorsStates.ToArray());
+                await this.InitializeSensorsAsync();
 
                 this.SelectBayPosition1();
             }
@@ -287,6 +282,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsTuningBay = false;
                 this.IsShutterMoving = false;
             }
+        }
+
+        private async Task InitializeSensorsAsync()
+        {
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+
+            this.sensors.Update(sensorsStates.ToArray());
+            this.shutterSensors.Update(sensorsStates.ToArray());
+
+            this.RaisePropertyChanged(nameof(this.ShutterSensors));
+
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
         }
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)

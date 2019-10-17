@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Services
 
         Task CompleteCurrentMissionOperationAsync(double quantity);
 
-        Task<Bay> GetBay();
+        Task<Bay> GetBayAsync();
 
         Task InitializeAsync();
 

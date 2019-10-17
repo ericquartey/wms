@@ -10,8 +10,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly ShutterSensors shutterSensors;
-
         private DelegateCommand closedShutterCommand;
 
         private DelegateCommand intermediateShutterCommand;
@@ -19,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMoving;
 
         private DelegateCommand openShutterCommand;
+
+        private ShutterSensors shutterSensors;
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Open || this.ShutterSensors.MidWay);
+                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.MidWay));
         }
 
         private bool CanExecuteIntermediateCommand()
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Open || this.ShutterSensors.Closed);
+                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.Closed));
         }
 
         private bool CanExecuteOpenCommand()
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Closed || this.ShutterSensors.MidWay);
+                (this.ShutterSensors != null && (this.ShutterSensors.Closed || this.ShutterSensors.MidWay));
         }
 
         private async Task ClosedShutterAsync()

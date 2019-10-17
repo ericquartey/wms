@@ -24,17 +24,17 @@ namespace Ferretto.VW.MAS.MissionsManager.Providers
             throw new NotImplementedException();
         }
 
-        public void MoveFromBayToCell(LoadingUnitDestination sourceBay, int destinationCellId, BayNumber requestingBay)
+        public void MoveFromBayToCell(LoadingUnitDestination sourceBay, int? destinationCellId, BayNumber requestingBay)
         {
             throw new NotImplementedException();
         }
 
-        public void MoveFromCellToBay(int sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay)
+        public void MoveFromCellToBay(int? sourceCellId, LoadingUnitDestination destinationBay, BayNumber requestingBay)
         {
             throw new NotImplementedException();
         }
 
-        public void MoveFromCellToCell(int sourceCellId, int destinationCellId, BayNumber requestingBay)
+        public void MoveFromCellToCell(int? sourceCellId, int? destinationCellId, BayNumber requestingBay)
         {
             throw new NotImplementedException();
         }

@@ -1077,4 +1077,10 @@
   <data name="SaveSuccessful" xml:space="preserve">
     <value>Salvataggio completato con successo</value>
   </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Id della cella di destinazione</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Inserimento cassetto da baia in cella</value>
+  </data>
 </root>

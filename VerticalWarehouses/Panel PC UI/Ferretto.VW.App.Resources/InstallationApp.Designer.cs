@@ -1348,6 +1348,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination cell id.
+        /// </summary>
+        public static string InsertDestinationCellId {
+            get {
+                return ResourceManager.GetString("InsertDestinationCellId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inserted weight [kg].
         /// </summary>
         public static string InsertedWeight {
@@ -1362,6 +1371,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InsertiInitialPosition {
             get {
                 return ResourceManager.GetString("InsertiInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert loading unit fromq bay to cell.
+        /// </summary>
+        public static string InsertLoadingUnitFromBayToCell {
+            get {
+                return ResourceManager.GetString("InsertLoadingUnitFromBayToCell", resourceCulture);
             }
         }
         
