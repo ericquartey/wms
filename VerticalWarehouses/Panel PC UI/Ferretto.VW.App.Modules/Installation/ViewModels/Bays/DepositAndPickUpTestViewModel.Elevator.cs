@@ -8,8 +8,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly LoadingUnit embarkedLoadingUnit;
-
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DepositAndPickUpState currentState;
@@ -85,13 +83,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.currentState == DepositAndPickUpState.Deposit)
             {
-                return this.bayManagerService.Bay.Side == WarehouseSide.Front
+                return this.bay.Side == WarehouseSide.Front
                     ? HorizontalMovementDirection.Backwards
                     : HorizontalMovementDirection.Forwards;
             }
             else
             {
-                return this.bayManagerService.Bay.Side == WarehouseSide.Front
+                return this.bay.Side == WarehouseSide.Front
                     ? HorizontalMovementDirection.Forwards
                     : HorizontalMovementDirection.Backwards;
             }

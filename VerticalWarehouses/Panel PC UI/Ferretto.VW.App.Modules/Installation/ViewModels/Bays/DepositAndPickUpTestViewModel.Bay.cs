@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
+        private bool bayIsMultiPosition;
+
         private double? bayPositionHeight;
 
         private bool isElevatorMovingToBay;
@@ -32,7 +34,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition => this.bayManagerService.Bay.IsDouble;
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
 
         public double? BayPositionHeight
         {
@@ -153,13 +159,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPosition1()
         {
             this.IsPosition1Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.First().Height;
+            this.BayPositionHeight = this.bay.Positions.First().Height;
         }
 
         private void SelectBayPosition2()
         {
             this.IsPosition2Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.Last().Height;
+            this.BayPositionHeight = this.bay.Positions.Last().Height;
         }
 
         #endregion
