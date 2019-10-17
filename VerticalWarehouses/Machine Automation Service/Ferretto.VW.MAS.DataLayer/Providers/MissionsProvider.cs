@@ -80,6 +80,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     this.StopMachineMission(missionId, StopRequestReason.NoReason);
                 }
             }
+
             if (this.CanCreateStateMachine(missionType))
             {
                 MachineMission newMission = null;
@@ -104,13 +105,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         /// <summary>
-        /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses
+        /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
-        /// <param name="requestedMission">TYpe of mission to be created</param>
-        /// <returns>True if the mission type can be created, false otherwise</returns>
+        /// <param name="requestedMission">TYpe of mission to be created.</param>
+        /// <returns>True if the mission type can be created, false otherwise.</returns>
         private bool CanCreateStateMachine(MissionType requestedMission)
         {
-            bool returnValue = true;
+            var returnValue = true;
             switch (requestedMission)
             {
                 case MissionType.ChangeRunningType:

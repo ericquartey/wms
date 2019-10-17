@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 {
                     newRequest.Properties.Remove(property.Key);
                 }
+
                 newRequest.Properties.Add(property.Key, property.Value);
             }
 

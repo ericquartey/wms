@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.BadRequestTitle,
-                        Detail = "The Bay-Number request header was not found."
+                        Detail = "The Bay-Number request header was not found.",
                     });
                 }
                 else
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                         context.Result = new BadRequestObjectResult(new ProblemDetails
                         {
                             Title = Resources.General.BadRequestTitle,
-                            Detail = "Cannot parse bay number."
+                            Detail = "Cannot parse bay number.",
                         });
                     }
                 }

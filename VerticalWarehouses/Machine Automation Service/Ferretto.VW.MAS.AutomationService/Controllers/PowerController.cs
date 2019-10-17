@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]

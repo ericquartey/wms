@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Provider;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DeviceManager.Extensions;
 using Ferretto.VW.MAS.InverterDriver.Extensions;
@@ -130,7 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     new Swashbuckle.AspNetCore.Swagger.Info
                     {
                         Title = "Machine Automation Web API",
-                        Version = "v1"
+                        Version = "v1",
                     });
                 config.OperationFilter<BayNumberOperationFilter>();
             });

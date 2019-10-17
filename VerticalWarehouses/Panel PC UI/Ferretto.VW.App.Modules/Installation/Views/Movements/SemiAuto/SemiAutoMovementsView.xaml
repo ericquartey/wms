@@ -212,7 +212,7 @@
                            FontSize="14"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="Serranda" />
+                           Text="{x:Static res:InstallationApp.Shutter}" />
                 <Border Grid.Row="18"
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,5"

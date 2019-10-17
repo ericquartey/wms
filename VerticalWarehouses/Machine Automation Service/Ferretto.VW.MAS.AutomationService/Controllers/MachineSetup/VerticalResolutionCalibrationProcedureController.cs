@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
-
         #endregion
 
         #region Constructors
@@ -27,8 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public VerticalResolutionCalibrationProcedureController(
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            ISetupStatusProvider setupStatusProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
             : base(eventAggregator)
         {
             if (elevatorDataProvider is null)
@@ -41,12 +38,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             }
 
-            if (setupStatusProvider is null)
-            {
-                throw new ArgumentNullException(nameof(setupStatusProvider));
-            }
-
-            this.setupStatusProvider = setupStatusProvider;
             this.elevatorDataProvider = elevatorDataProvider;
             this.setupProceduresDataProvider = setupProceduresDataProvider;
         }
@@ -67,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     new ProblemDetails
                     {
                         Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.ResolutionCalibrationProcedure.MeasuredDistanceMustBeStrictlyPositive
+                        Detail = Resources.ResolutionCalibrationProcedure.MeasuredDistanceMustBeStrictlyPositive,
                     });
             }
 
@@ -77,7 +68,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     new ProblemDetails
                     {
                         Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.ResolutionCalibrationProcedure.ExpectedDistanceMustBeStrictlyPositive
+                        Detail = Resources.ResolutionCalibrationProcedure.ExpectedDistanceMustBeStrictlyPositive,
                     });
             }
 

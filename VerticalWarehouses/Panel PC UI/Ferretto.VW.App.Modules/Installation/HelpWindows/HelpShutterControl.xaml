@@ -59,7 +59,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="125"
-                                 LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
+                                 LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"

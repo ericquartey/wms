@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.LOADINGDRAWERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento cassetti")]
         AllLoadingUnits,
 

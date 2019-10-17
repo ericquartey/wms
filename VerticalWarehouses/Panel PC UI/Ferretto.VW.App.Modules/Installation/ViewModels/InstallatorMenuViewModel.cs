@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = false;
 
-            var bay = await this.bayManager.GetBay();
+            var bay = await this.bayManager.GetBayAsync();
             this.bayNumber = (int)bay.Number;
 
             await this.UpdateMenuItemsStatus();

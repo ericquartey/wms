@@ -308,7 +308,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.Bay = await this.bayManager.GetBay();
+            this.Bay = await this.bayManager.GetBayAsync();
 
             await this.InitializeDataAsync();
 

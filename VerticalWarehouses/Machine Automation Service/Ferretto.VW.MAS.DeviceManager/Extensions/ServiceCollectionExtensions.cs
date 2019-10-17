@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Extensions
             }
 
             services.AddHostedService<DeviceManager>();
+
+            services
+                .AddTransient<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>();
 
             services
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()

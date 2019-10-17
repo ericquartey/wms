@@ -445,40 +445,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200015,
                             Code = 200015,
-                            Description = "Errore sconosciuto 15 dell'inverter.",
+                            Description = "Errore sconosciuto dell'inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200016,
-                            Code = 200016,
-                            Description = "InverterErrorUnknown16",
-                            Reason = "InverterErrorUnknown16",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200017,
-                            Code = 200017,
-                            Description = "InverterErrorUnknown17",
-                            Reason = "InverterErrorUnknown17",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200018,
-                            Code = 200018,
-                            Description = "InverterErrorUnknown18",
-                            Reason = "InverterErrorUnknown18",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200019,
-                            Code = 200019,
-                            Description = "InverterErrorUnknown19",
-                            Reason = "InverterErrorUnknown19",
                             Severity = 1
                         },
                         new
@@ -911,7 +879,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 17, 15, 3, 50, 262, DateTimeKind.Local).AddTicks(3096),
+                            InstallationDate = new DateTime(2016, 12, 17, 16, 48, 46, 117, DateTimeKind.Local).AddTicks(8416),
                             ServiceStatus = 86
                         });
                 });

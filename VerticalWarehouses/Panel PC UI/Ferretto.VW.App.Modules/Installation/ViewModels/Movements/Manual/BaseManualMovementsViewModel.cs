@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  ThreadOption.UIThread,
                  false);
 
-            this.bay = await this.bayManagerService.GetBay();
+            this.bay = await this.bayManagerService.GetBayAsync();
             this.BayNumber = (int)this.bay.Number;
 
             await this.RetrieveCurrentPositionAsync();

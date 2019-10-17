@@ -105,8 +105,10 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         private void BackspaceCommandExecute()
         {
-            string v = this.ScreenText;
-            this.ScreenText = v.Substring(0, v.Length - 1);
+            if (!string.IsNullOrEmpty(this.ScreenText))
+            {
+                this.ScreenText = this.ScreenText.Substring(0, this.ScreenText.Length - 1);
+            }
         }
 
         private void KeysCommandExecute(string key)

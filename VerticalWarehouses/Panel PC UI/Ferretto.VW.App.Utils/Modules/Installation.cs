@@ -14,8 +14,6 @@
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
-        public const string LOADINGDRAWERS = "LoadingDrawersViewModel";
-
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
@@ -77,6 +75,15 @@
 
                 #endregion
             }
+
+            #endregion
+        }
+
+        public static class LoadingUnits
+        {
+            #region Fields
+
+            public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
 
             #endregion
         }
