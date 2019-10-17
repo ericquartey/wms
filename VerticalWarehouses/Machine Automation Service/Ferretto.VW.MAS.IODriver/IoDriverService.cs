@@ -4,9 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
 using Ferretto.VW.MAS.IODriver.IoDevices;
 using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -24,7 +22,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class HostedIoDriver : BackgroundService
+    public class IoDriverService : BackgroundService
     {
         #region Fields
 
@@ -56,12 +54,12 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Constructors
 
-        public HostedIoDriver(
+        public IoDriverService(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysProvider baysProvider,
             IIoDevicesProvider iIoDeviceService,
-            ILogger<HostedIoDriver> logger,
+            ILogger<IoDriverService> logger,
             IConfiguration configuration)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));

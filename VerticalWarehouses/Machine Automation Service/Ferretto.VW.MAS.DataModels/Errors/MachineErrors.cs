@@ -8,12 +8,15 @@ namespace Ferretto.VW.MAS.DataModels
         CradleNotCompletelyLoaded = 100032,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForPositioning))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ConditionsNotMetForPositioning = 100033,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning))]
+        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning = 100034,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered))]
+        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered = 100035,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]

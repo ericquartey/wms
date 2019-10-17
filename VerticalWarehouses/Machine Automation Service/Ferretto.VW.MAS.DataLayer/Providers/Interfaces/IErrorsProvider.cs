@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -15,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Error Resolve(int id);
 
-        void ResolveAll();
+        IEnumerable<Error> ResolveAll();
 
         #endregion
     }

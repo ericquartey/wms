@@ -2769,7 +2769,7 @@
     },
     "ShutterTest": {
       "FeedRate": 1.0,
-      "RequiredCycles": 10
+      "RequiredCycles": 10000
     },
     "VerticalManualMovements": {
       "FeedRate": 0.1,

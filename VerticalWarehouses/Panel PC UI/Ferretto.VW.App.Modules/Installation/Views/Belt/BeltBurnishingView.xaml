@@ -73,16 +73,16 @@
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding CompletedCyclesThisSession}"
-                                     LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
+                                     ContentText="{Binding PerformedCyclesThisSession}"
+                                     LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="2"
                                      Margin="80,0,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding TotalCompletedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.TotalCompletedCycles}" />
+                                     ContentText="{Binding CumulativePerformedCycles}"
+                                     LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="4"
