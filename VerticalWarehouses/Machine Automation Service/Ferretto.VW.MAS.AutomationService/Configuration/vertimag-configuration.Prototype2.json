@@ -30,7 +30,7 @@
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
         },
-        "IsExternal": true,
+        "IsExternal": false,
         "ChainOffset": -800,
         "Number": 1,
         "Positions": [ { "Height": 741 } ],

@@ -841,7 +841,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 17, 15, 7, 25, 644, DateTimeKind.Local).AddTicks(4196), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 17, 16, 48, 46, 117, DateTimeKind.Local).AddTicks(8416), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
