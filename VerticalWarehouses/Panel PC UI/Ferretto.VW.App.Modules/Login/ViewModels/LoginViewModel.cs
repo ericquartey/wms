@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IHealthProbeService healthProbeService;
 
+        private readonly IBayManager bayManager;
+
         private SubscriptionToken subscriptionToken;
 
         private MachineIdentity machineIdentity;
@@ -29,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private HealthStatus serviceHealthStatus;
 
         private bool isWaitingForResponse;
+
+        private int bayNumber;
 
         #endregion
 
@@ -49,8 +53,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
-
-            this.BayNumber = (int)bayManager.Bay.Number;
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged
@@ -85,7 +88,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public UserLogin UserLogin { get; }
 
-        public int BayNumber { get; }
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            set
+            {
+                this.SetProperty(ref this.bayNumber, value);
+            }
+        }
 
         public MachineIdentity MachineIdentity
         {
@@ -160,6 +170,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            var bay = await this.bayManager.GetBay();
+            if (!(bay is null))
+            {
+                this.BayNumber = (int)bay.Number;
+            }
 
             this.machineErrorsService.AutoNavigateOnError = false;
 

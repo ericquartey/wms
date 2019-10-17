@@ -624,7 +624,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     else
                     {
-                        this.Logger.LogDebug("4: Switch Off the inverter state machine");
+                        this.Logger.LogDebug("4:Switch Off the inverter state machine");
 
                         inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 

@@ -22,6 +22,18 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]
         InverterFaultStateDetected = 100036,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
+        CradleNotCorrectlyLoadedDuringPickup = 100037,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
+        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
+        ZeroSensorErrorAfterPickup = 100039,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
+        ZeroSensorErrorAfterDeposit = 100040,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
 

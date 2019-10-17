@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 var errorNotification = new NotificationMessage(
                     receivedMessage.Data,
-                    $"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}",
+                    $"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     receivedMessage.Type,
@@ -292,7 +292,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
-                this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType()}");
+                this.logger.LogWarning($"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}");
                 this.logger.LogError($"Message [{receivedMessage.Type}] will be discarded!");
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(errorNotification);
@@ -586,7 +586,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.InverterFaultReset:
                     case MessageType.ResetSecurity:
                     case MessageType.InverterPowerEnable:
-                        this.logger.LogDebug($"16:Deallocation FSM {messageCurrentStateMachine?.GetType()} ended with {receivedMessage.Status}");
+                        this.logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {receivedMessage.Status}");
                         this.currentStateMachines.Remove(receivedMessage.TargetBay);
                         this.SendCleanDebug();
                         break;

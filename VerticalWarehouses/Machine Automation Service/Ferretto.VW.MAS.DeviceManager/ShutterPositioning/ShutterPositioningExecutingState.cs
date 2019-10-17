@@ -244,8 +244,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 direction,
                 this.machineData.PositioningMessageData.ShutterType,
                 this.machineData.PositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1),
-                this.machineData.PositioningMessageData.HigherDistance,
-                this.machineData.PositioningMessageData.LowerDistance,
                 this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                 this.machineData.PositioningMessageData.HighSpeedDurationClose,
                 this.machineData.PositioningMessageData.LowerSpeed * ((direction == ShutterMovementDirection.Up) ? -1 : 1),

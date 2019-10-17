@@ -1838,23 +1838,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ShutterManualMovementsProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("acceleration", Required = Newtonsoft.Json.Required.Always)]
-        public double Acceleration { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("deceleration", Required = Newtonsoft.Json.Required.Always)]
-        public double Deceleration { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("higherDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double HigherDistance { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("highSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationClose { get; set; }
     
         [Newtonsoft.Json.JsonProperty("highSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationOpen { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("lowerDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double LowerDistance { get; set; }
     
         [Newtonsoft.Json.JsonProperty("maxSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSpeed { get; set; }
@@ -2239,6 +2227,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 100034 = ConditionsNotMetForRunning
     /// 100035 = SecurityWasTriggered
     /// 100036 = InverterFaultStateDetected
+    /// 100037 = CradleNotCorrectlyLoadedDuringPickup
+    /// 100038 = CradleNotCorrectlyUnloadedDuringDeposit
+    /// 100039 = ZeroSensorErrorAfterPickup
+    /// 100040 = ZeroSensorErrorAfterDeposit
     /// 200000 = InverterErrorBaseCode
     /// 200001 = InverterErrorInvalidParameter
     /// 200002 = InverterErrorInvalidDataset
@@ -2267,6 +2259,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         SecurityWasTriggered = 100035,
     
         InverterFaultStateDetected = 100036,
+    
+        CradleNotCorrectlyLoadedDuringPickup = 100037,
+    
+        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
+    
+        ZeroSensorErrorAfterPickup = 100039,
+    
+        ZeroSensorErrorAfterDeposit = 100040,
     
         InverterErrorBaseCode = 200000,
     

@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId, true))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged
                             ? DataModels.MachineErrors.InverterFaultStateDetected
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     }
                     else
                     {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.Logger.LogError("Failed to create Change Running State machine mission");
                         this.NotifyCommandError(command);
                     }
                 }

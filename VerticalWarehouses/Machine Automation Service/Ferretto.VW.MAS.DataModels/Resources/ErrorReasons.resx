@@ -126,6 +126,18 @@
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Il cassetto potrebbe essersi incastrato.</value>
   </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>ZeroSensorErrorAfterDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>ZeroSensorErrorAfterPickup</value>
+   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>

@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
-        private Bay bay;
-
         private WMS.Data.WebAPI.Contracts.MissionOperation currentMissionOperation;
 
         #endregion
@@ -91,8 +89,6 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public Bay Bay => this.bay;
-
         public WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; private set; }
 
         public WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation
@@ -134,19 +130,21 @@ namespace Ferretto.VW.App.Services
             this.CurrentMissionOperation = null;
         }
 
+        public async Task<Bay> GetBay()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            return await this.machineBaysWebService.GetByNumberAsync((BayNumber)bayNumber);
+        }
+
         public async Task InitializeAsync()
         {
             this.Identity = await this.IdentityService.GetAsync();
-
-            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-
-            this.bay = await this.machineBaysWebService.GetByNumberAsync((
-                MAS.AutomationService.Contracts.BayNumber)bayNumber);
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay != null && this.Bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
+            var bay = await this.GetBay();
+            if (bay != null && bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -172,7 +170,7 @@ namespace Ferretto.VW.App.Services
                     break;
             }
 
-            if (this.Bay.Number == bayNumber)
+            if ((BayNumber)ConfigurationManager.AppSettings.GetBayNumber() == bayNumber)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     }
                     else
                     {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.Logger.LogError("Failed to create Change Running State machine mission");
                         this.NotifyCommandError(command);
                     }
 

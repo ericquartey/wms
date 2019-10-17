@@ -59,10 +59,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             switch (message.Type)
             {
+                case FieldMessageType.InverterStop:
                 case FieldMessageType.ShutterPositioning:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
+                        case MessageStatus.OperationEnd:
                             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
                             var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
                             var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);

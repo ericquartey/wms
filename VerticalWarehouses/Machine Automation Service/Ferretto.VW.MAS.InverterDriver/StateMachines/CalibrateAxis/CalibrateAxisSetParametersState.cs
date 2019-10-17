@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             {
                 calibrationMode = InverterCalibrationMode.ResetEncoder;
             }
-            this.Logger.LogDebug($"1:Calibrate Set Parameters, Axis ={this.axisToCalibrate}, calibration ={calibrationMode}");
+            this.Logger.LogDebug($"1:Calibrate Set Parameters, Axis={this.axisToCalibrate}, calibration={calibrationMode}");
 
             var inverterMessage = new InverterMessage(
                 this.InverterStatus.SystemIndex,
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 (short)InverterParameterId.HomingSensor,
                                 sensor);
 
-                            this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 (short)InverterParameterId.HomingFastSpeed,
                                 HIGH_SPEED);
 
-                            this.Logger.LogDebug($"Set Homing Fast Speed={HIGH_SPEED}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Fast Speed={HIGH_SPEED}, Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                             break;
@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 (short)InverterParameterId.HomingOffset,
                                 offset);
 
-                            this.Logger.LogDebug($"Set Homing offset={offset}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing offset={offset}, Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                             break;
@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 (short)InverterParameterId.HomingCreepSpeed,
                                 LOW_SPEED);
 
-                            this.Logger.LogDebug($"Set Homing Low Speed={LOW_SPEED}, Axis ={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Low Speed={LOW_SPEED}, Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                             break;

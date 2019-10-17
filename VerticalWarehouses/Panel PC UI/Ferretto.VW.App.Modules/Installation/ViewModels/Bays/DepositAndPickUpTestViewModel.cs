@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private Bay bay;
+
         private int? completedCycles;
 
         private double? grossWeight;
@@ -115,7 +117,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineSetupStatusWebService = machineSetupStatusWebService;
             this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
             this.inputDelay = 0;
-            this.SelectBayPosition1();
         }
 
         #endregion
@@ -206,15 +207,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+                if (this.bay == null)
+                {
+                    return false;
+                }
+
+                if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
                     return this.Sensors.LUPresentInBay1;
                 }
-                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
                     return this.Sensors.LUPresentInBay2;
                 }
-                else if (this.bayManagerService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
                     return this.Sensors.LUPresentInBay3;
                 }
@@ -346,6 +352,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CompletedCycles = 0;
 
+            this.bay = await this.bayManagerService.GetBay();
+
+            this.BayIsMultiPosition = this.bay.IsDouble;
+
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
             this.IsBackNavigationAllowed = true;
@@ -373,8 +383,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveLoadingUnitsAsync();
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
 
             this.RaiseCanExecuteChanged();
+
+            this.SelectBayPosition1();
         }
 
         public async Task RetrieveLoadingUnitsAsync()

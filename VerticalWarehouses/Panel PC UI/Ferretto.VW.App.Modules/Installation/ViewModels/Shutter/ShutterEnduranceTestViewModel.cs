@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly ShutterSensors sensors;
@@ -69,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.shuttersWebService = shuttersWebService ?? throw new System.ArgumentNullException(nameof(shuttersWebService));
 
-            this.BayNumber = (int)bayManager.Bay.Number;
+            this.bayManager = bayManager;
 
             this.sensors = new ShutterSensors(this.BayNumber);
         }
@@ -274,6 +276,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                var bay = await this.bayManager.GetBay();
+                this.BayNumber = (int)bay.Number;
 
                 var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;

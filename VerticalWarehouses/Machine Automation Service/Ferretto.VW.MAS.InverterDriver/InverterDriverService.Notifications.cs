@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             receivedMessage.Status == MessageStatus.OperationError ||
                             receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            this.Logger.LogDebug($"4:Deallocation SM {messageCurrentStateMachine?.GetType()} count {this.currentStateMachines.Count}");
+                            this.Logger.LogDebug($"4:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] count {this.currentStateMachines.Count}");
 
                             if (messageCurrentStateMachine is PositioningStateMachine)
                             {
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                             else
                             {
-                                this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                                this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
                             }
 
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         receivedMessage.Status == MessageStatus.OperationError ||
                         receivedMessage.Status == MessageStatus.OperationStop)
                     {
-                        this.Logger.LogTrace($"CalibrateAxis Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         else
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
                         }
                     }
 
@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case FieldMessageType.ShutterPositioning:
 
-                    this.Logger.LogTrace($"ShutterPositioning Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                    this.Logger.LogTrace($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError ||
                         receivedMessage.Status == MessageStatus.OperationStop)
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         else
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
                         }
                     }
 
@@ -113,11 +113,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case FieldMessageType.InverterSwitchOn:
                 case FieldMessageType.InverterStop:
 
-                    this.Logger.LogTrace($"Deallocating {messageCurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
+                    this.Logger.LogTrace($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
+                        this.Logger.LogDebug($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is SwitchOnStateMachine || messageCurrentStateMachine is StopStateMachine)
                         {
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // If inverter is already switched on / stopped current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
                     }
 
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is SwitchOffStateMachine)
                         {
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // If inverter is already switched off current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
 
                         var nextMessage = ((InverterSwitchOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is PowerOnStateMachine)
                         {
@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // If inverter is already powered on current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
 
                         var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogDebug($"Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogDebug($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is PowerOffStateMachine)
                         {
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // If inverter is already powered off current state machine is null but end notification is still sent so no error to report here
                         else if (messageCurrentStateMachine != null)
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
 
                         var nextMessage = ((InverterPowerOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
-                        this.Logger.LogTrace($"InverterFaultReset Deallocating {messageCurrentStateMachine?.GetType()} state machine");
+                        this.Logger.LogTrace($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type})");
 
                         if (messageCurrentStateMachine is ResetFaultStateMachine)
                         {
@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         else
                         {
-                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
                         }
                     }
 

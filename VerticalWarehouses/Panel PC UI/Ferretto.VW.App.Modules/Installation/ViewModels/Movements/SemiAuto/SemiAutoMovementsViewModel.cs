@@ -25,9 +25,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private Bay bay;
+
         private SubscriptionToken homingToken;
 
         private int? inputLoadingUnitCode;
+
+        private bool isShutterTwoSensors;
 
         private bool isWaitingForResponse;
 
@@ -100,8 +104,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService;
             this.machineCarouselWebService = machineCarouselWebService;
             this.shutterSensors = new ShutterSensors(this.BayNumber);
-
-            this.SelectBayPosition1();
         }
 
         #endregion
@@ -138,7 +140,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsShutterTwoSensors => this.bayManagerService.Bay.Shutter.Type == ShutterType.TwoSensors;
+        public bool IsShutterTwoSensors
+        {
+            get => this.isShutterTwoSensors;
+            set => this.SetProperty(ref this.isShutterTwoSensors, value);
+        }
 
         public bool IsWaitingForResponse
         {
@@ -214,11 +220,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
+                this.bay = await this.bayManagerService.GetBay();
+                this.BayNumber = (int)this.bay.Number;
+                this.HasCarousel = this.bay.Carousel != null;
+                this.IsShutterTwoSensors = this.bay.Shutter.Type == ShutterType.TwoSensors;
+                this.BayIsMultiPosition = this.bay.Positions.Count() > 1;
+
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
                 this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
                 this.shutterSensors.Update(sensorsStates.ToArray());
+
+                this.SelectBayPosition1();
             }
             catch (System.Exception ex)
             {
