@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             else
             {
                 // TODO Define a cleanup pattern for State Machine after this error
-                this.NotifyCommandError(commandMessage, $"Power Enable Reset Fault State received wrong initialization data ({commandMessage.Data.GetType()})");
+                this.NotifyCommandError(commandMessage, $"Power Enable Reset Fault State received wrong initialization data ({commandMessage.Data.GetType().Name})");
             }
         }
 

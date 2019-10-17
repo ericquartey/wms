@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             //INFO End check the pre conditions to start the positioning
 
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
+            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)
