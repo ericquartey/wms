@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Services
             this.CurrentMissionOperation = null;
         }
 
-        public async Task<Bay> GetBay()
+        public async Task<Bay> GetBayAsync()
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
             return await this.machineBaysWebService.GetByNumberAsync((BayNumber)bayNumber);
@@ -143,7 +143,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            var bay = await this.GetBay();
+            var bay = await this.GetBayAsync();
             if (bay != null && bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;

@@ -4818,17 +4818,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StopAsync()
+        public System.Threading.Tasks.Task StopAsync(BayNumber targetBay)
         {
-            return StopAsync(System.Threading.CancellationToken.None);
+            return StopAsync(targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StopAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
+            if (targetBay == null)
+                throw new System.ArgumentNullException("targetBay");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/stop-moving");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/stop-moving?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("targetBay") + "=").Append(System.Uri.EscapeDataString(ConvertToString(targetBay, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try

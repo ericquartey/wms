@@ -168,9 +168,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop()
+        public IActionResult Stop(BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.StopMoving();
+            //this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

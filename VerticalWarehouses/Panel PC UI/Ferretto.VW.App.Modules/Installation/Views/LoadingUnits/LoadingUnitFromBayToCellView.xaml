@@ -55,6 +55,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -93,7 +98,6 @@
                            Foreground="White"
                            Text="{Binding IsLoadingUnitInBay, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
 
-
                 <TextBlock Grid.Row="7"
                            Grid.ColumnSpan="2"
                            Margin="0,30,0,0"
@@ -101,7 +105,7 @@
                            FontWeight="Bold"
                            Foreground="White"
                            Text="Elevatore" />
-                <Border Grid.Row="8"
+                <Border Grid.Row="8" 
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,5"
                         BorderBrush="Black"
@@ -144,7 +148,60 @@
                 <controls:PpcSensorControl Grid.Row="11"
                                            Grid.Column="1"
                                            Margin="0,20"
-                                           SensorState="{Binding IsZeroChain}" />
+                                           SensorState="{Binding IsZeroChain}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
+
+                <!-- Shuttter -->
+                <TextBlock Grid.Row="12"
+                           Grid.ColumnSpan="2"
+                           Margin="0,20,0,0"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.Shutter}" />
+                <Border Grid.Row="13"
+                        Grid.ColumnSpan="2"
+                        Margin="0,10,0,5"
+                        BorderBrush="Black"
+                        BorderThickness="0,2,0,0" />
+
+                <TextBlock Grid.Row="14"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.ShutterOpen}" />
+                <controls:PpcSensorControl Grid.Row="14"
+                                           Grid.Column="1"
+                                           Margin="0"
+                                           VerticalAlignment="Center"
+                                           SensorState="{Binding ShutterSensors.Open}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
+
+                <TextBlock Grid.Row="15"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.ShutterMidWay}"
+                           Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}" />
+                <controls:PpcSensorControl Grid.Row="15"
+                                           Grid.Column="1"
+                                           Margin="0"
+                                           VerticalAlignment="Center"
+                                           SensorState="{Binding ShutterSensors.MidWay}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                           Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}" />
+
+                <TextBlock Grid.Row="16"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                <controls:PpcSensorControl Grid.Row="16"
+                                           Grid.Column="1"
+                                           Margin="0"
+                                           VerticalAlignment="Center"
+                                           SensorState="{Binding ShutterSensors.Closed}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
 
 
             </Grid>
@@ -173,7 +230,6 @@
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
         </StackPanel>
 
-        <!--  Source Loading Unit id  -->
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
                            HorizontalAlignment="Center"
@@ -181,17 +237,15 @@
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
-
-        <!--  Destination cell id  -->
+        
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            EditValue="{Binding CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="inset destination"
-                           />
-        <!--LabelText="{x:Static res:InstallationApp.InsertDestinationCellId}"-->
+                           LabelText="{x:Static res:InstallationApp.InsertDestinationCellId}" />
+        
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="2"
                             HorizontalAlignment="Center"
@@ -205,7 +259,7 @@
                             VerticalAlignment="Center"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}"
-                            IsBusy="{Binding IsStop}" />
+                            IsBusy="{Binding IsStopping}" />
 
     </Grid>
 </ctrls:View>

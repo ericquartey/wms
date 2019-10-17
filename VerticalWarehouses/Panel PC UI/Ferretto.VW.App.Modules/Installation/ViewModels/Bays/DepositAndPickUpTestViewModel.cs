@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -20,17 +19,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly int? inputLoadingUnitCode;
-
         private readonly IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
-
-        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private readonly Sensors sensors = new Sensors();
 
@@ -112,7 +105,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineElevatorWebService = machineElevatorWebService;
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
             this.bayManagerService = bayManagerService;
-            this.machineSetupStatusWebService = machineSetupStatusWebService;
             this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
             this.inputDelay = 0;
         }
@@ -350,7 +342,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CompletedCycles = 0;
 
-            this.bay = await this.bayManagerService.GetBay();
+            this.bay = await this.bayManagerService.GetBayAsync();
 
             this.BayIsMultiPosition = this.bay.IsDouble;
 

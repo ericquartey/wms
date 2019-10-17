@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -14,9 +13,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private double? bayPositionHeight;
+        private Bay bay;
 
-        private bool isElevatorMovingToBay;
+        private bool bayIsMultiPosition;
+
+        private double? bayPositionHeight;
 
         private bool isPosition1Selected;
 
@@ -32,25 +33,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition => this.bayManagerService.Bay.Positions.Count() > 1;
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
 
         public double? BayPositionHeight
         {
             get => this.bayPositionHeight;
             set => this.SetProperty(ref this.bayPositionHeight, value);
-        }
-
-        public bool IsElevatorMovingToBay
-        {
-            get => this.isElevatorMovingToBay;
-            set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToBay, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public bool IsPosition1Selected
@@ -97,25 +89,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
-        private bool CanMoveToBayHeight()
-        {
-            return this.BayPositionHeight.HasValue
-              &&
-              !this.IsWaitingForResponse
-              &&
-              !this.IsElevatorMoving;
-        }
-
         private void SelectBayPosition1()
         {
             this.IsPosition1Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.First().Height;
+            this.BayPositionHeight = this.bay.Positions.First().Height;
         }
 
         private void SelectBayPosition2()
         {
             this.IsPosition2Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.Last().Height;
+            this.BayPositionHeight = this.bay.Positions.Last().Height;
         }
 
         #endregion

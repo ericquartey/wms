@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly ShutterSensors sensors;
-
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private int bayNumber;
@@ -40,6 +38,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isWaitingForResponse;
 
         private SubscriptionToken receivedActionUpdateErrorToken;
+
+        private ShutterSensors sensors;
 
         private SubscriptionToken sensorsChangedToken;
 
@@ -79,8 +79,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService;
 
             this.bayManager = bayManager;
-
-            this.sensors = new ShutterSensors(this.BayNumber);
         }
 
         #endregion
@@ -280,15 +278,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var bay = await this.bayManager.GetBay();
-                this.BayNumber = (int)bay.Number;
+                var bay = await this.bayManager.GetBayAsync();
+                var bayNumber = (int)bay.Number;
 
                 var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
                 this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
 
+                this.sensors = new ShutterSensors(bayNumber);
+
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
                 this.sensors.Update(sensorsStates.ToArray());
+
+                this.RaisePropertyChanged(nameof(this.Sensors));
             }
             catch (System.Exception ex)
             {

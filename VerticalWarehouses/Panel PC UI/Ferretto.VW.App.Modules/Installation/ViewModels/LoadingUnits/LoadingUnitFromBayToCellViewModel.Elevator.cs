@@ -14,10 +14,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private double? elevatorVerticalPosition;
 
-        private bool isElevatorDisembarking;
-
-        private bool isElevatorEmbarking;
-
         #endregion
 
         #region Properties
@@ -32,32 +28,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             get => this.elevatorVerticalPosition;
             set => this.SetProperty(ref this.elevatorVerticalPosition, value);
-        }
-
-        public bool IsElevatorDisembarking
-        {
-            get => this.isElevatorDisembarking;
-            set
-            {
-                if (this.SetProperty(ref this.isElevatorDisembarking, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsElevatorEmbarking
-        {
-            get => this.isElevatorEmbarking;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorEmbarking, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public bool IsZeroChain
