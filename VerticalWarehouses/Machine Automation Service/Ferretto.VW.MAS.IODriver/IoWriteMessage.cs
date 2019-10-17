@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const byte RELEASE_PROTOCOL_01 = 0x01;
 
-        private const int TOTAL_OUTPUTS = 8;
+        private const int TotalOutputs = 8;
 
         private readonly ShdCodeOperation codeOperation;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = ShdCodeOperation.Data;
 
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.outputs = new bool[TotalOutputs];
         }
 
         public IoWriteMessage(bool[] outputs)
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = ShdCodeOperation.Configuration;
 
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.outputs = new bool[TotalOutputs];
 
             // TODO Check arguments
             this.comTout = comTout;
@@ -304,6 +304,7 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     value |= (byte)(1 << index);
                 }
+
                 index++;
             }
 

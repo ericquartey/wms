@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                     Name = BayNumberActionFilter.HeaderName,
                     In = "header",
                     Type = "string",
-                    Required = true
+                    Required = true,
                 });
         }
 

@@ -1,17 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Extensions;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class ErrorsProvider : IErrorsProvider
+    internal sealed class ErrorsProvider : IErrorsProvider, IDisposable
     {
         #region Fields
 
@@ -19,32 +22,45 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly NotificationEvent notificationEvent;
 
+        private readonly IServiceScope scope;
+
+        private bool isDisposed;
+
         #endregion
 
         #region Constructors
 
         public ErrorsProvider(
             DataLayerContext dataContext,
+            IServiceScopeFactory serviceScopeFactory,
             IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+
+            this.scope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+        }
 
         public Error GetCurrent()
         {
@@ -138,39 +154,65 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException(id);
             }
 
-            error.ResolutionDate = DateTime.Now;
+            if (!this.IsErrorStillActive(error.Code))
+            {
+                error.ResolutionDate = DateTime.Now;
 
-            this.dataContext.Errors.Update(error);
+                this.dataContext.Errors.Update(error);
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
 
-            this.NotifyErrorResolution(error);
+                this.NotifyErrorResolution(error);
+            }
 
             return error;
         }
 
-        public void ResolveAll()
+        public IEnumerable<Error> ResolveAll()
         {
-            var errors = this.dataContext.Errors.Where(e => e.ResolutionDate == null).ToArray();
-            if (!errors.Any())
+            var errorIdsToResolve = this.dataContext.Errors
+                .Where(e => e.ResolutionDate == null)
+                .Select(e => e.Id)
+                .ToArray();
+
+            return errorIdsToResolve.Select(id => this.Resolve(id));
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
             {
                 return;
             }
 
-            var resolutionDate = DateTime.Now;
-            foreach (var error in errors)
+            if (disposing)
             {
-                error.ResolutionDate = resolutionDate;
+                this.scope?.Dispose();
             }
 
-            this.dataContext.Errors.UpdateRange(errors);
+            this.isDisposed = true;
+        }
 
-            this.dataContext.SaveChanges();
+        private bool IsErrorStillActive(int code)
+        {
+            var machineError = (MachineErrors)code;
 
-            foreach (var error in errors)
+            var enumField = typeof(MachineErrors).GetField(machineError.ToString());
+
+            var attributes = enumField
+                .GetCustomAttributes(typeof(ErrorConditionAttribute), false)
+                .Cast<ErrorConditionAttribute>();
+
+            var isErrorStillActive = attributes.Any();
+
+            foreach (var attribute in attributes)
             {
-                this.NotifyErrorResolution(error);
+                var condition = this.scope.ServiceProvider.GetConditionEvaluator(attribute);
+
+                isErrorStillActive &= !condition.IsSatisfied();
             }
+
+            return isErrorStillActive;
         }
 
         private void NotifyErrorCreation(Error error, BayNumber bayNumber)

@@ -42,13 +42,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public override void ProcessMessage(IoMessage message)
         {
-            //INFO This method should never be used in an error state
+            // INFO This method should never be used in an error state
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            //INFO This method should never be used in an error state
+            // INFO This method should never be used in an error state
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
 

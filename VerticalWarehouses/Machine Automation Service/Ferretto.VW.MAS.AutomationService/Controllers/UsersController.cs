@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(new UserClaims
             {
                 Name = userName,
-                AccessLevel = (UserAccessLevel)accessLevel.Value
+                AccessLevel = (UserAccessLevel)accessLevel.Value,
             });
         }
 

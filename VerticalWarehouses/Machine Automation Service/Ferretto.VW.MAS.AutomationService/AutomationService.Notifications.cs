@@ -7,7 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
-    partial class AutomationService
+    public partial class AutomationService
     {
         #region Methods
 
