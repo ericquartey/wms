@@ -1,12 +1,13 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -17,9 +18,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ISensorsProvider sensorsProvider;
 
-        private readonly IShutterProvider shutterProvider;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly IShutterTestParametersProvider shutterTestParametersProvider;
+        private readonly IShutterProvider shutterProvider;
 
         #endregion
 
@@ -27,13 +28,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ShuttersController(
             IEventAggregator eventAggregator,
-            IShutterTestParametersProvider shutterTestParametersProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
             ISensorsProvider sensorsProvider)
             : base(eventAggregator)
         {
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.shutterTestParametersProvider = shutterTestParametersProvider ?? throw new ArgumentNullException(nameof(shutterTestParametersProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
         }
 
@@ -41,18 +42,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("shutters/position")]
+        [HttpGet("position")]
         public ActionResult<ShutterPosition> GetShutterPosition()
         {
             return this.Ok(this.sensorsProvider.GetShutterPosition(this.BayNumber));
         }
 
-        [HttpGet]
-        public ActionResult<ShutterTestParameters> GetTestParameters()
+        [HttpGet("test-parameters")]
+        public ActionResult<RepeatedTestProcedure> GetTestParameters()
         {
-            var parameters = this.shutterTestParametersProvider.Get();
-
-            return this.Ok(parameters);
+            return this.Ok(this.setupProceduresDataProvider.GetShutterTest());
         }
 
         [HttpPost("move")]
@@ -61,6 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Move(ShutterMovementDirection direction)
         {
             this.shutterProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
@@ -80,6 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RunTest(int delayInSeconds, int testCycleCount)
         {
             this.shutterProvider.RunTest(delayInSeconds, testCycleCount, this.BayNumber, MessageActor.AutomationService);
+
             return this.Accepted();
         }
 

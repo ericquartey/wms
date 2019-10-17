@@ -52,7 +52,7 @@
 
         HookTrolley = 14,
 
-        FinePickingRobot = 15
+        FinePickingRobot = 15,
 
         #endregion
     }

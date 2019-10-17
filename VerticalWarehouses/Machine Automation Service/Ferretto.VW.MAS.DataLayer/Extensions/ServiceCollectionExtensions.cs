@@ -16,8 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
     {
         #region Methods
 
-        public static IServiceCollection AddDataLayer(
-                    this IServiceCollection services)
+        public static IServiceCollection AddDataLayer(this IServiceCollection services)
         {
             if (services is null)
             {
@@ -47,7 +46,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 .AddTransient<IServicingProvider, ServicingProvider>()
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
-                .AddTransient<IShutterTestParametersProvider, ShutterTestParametersProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>();
 
@@ -60,6 +58,11 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
         public static IApplicationBuilder UseDataLayer(this IApplicationBuilder app)
         {
+            if (app is null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
             var dataContext = app.ApplicationServices.GetRequiredService<DataLayerContext>();
 
             var listener = dataContext.GetService<DiagnosticSource>() as DiagnosticListener;

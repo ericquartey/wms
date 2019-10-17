@@ -7,8 +7,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         this.DestroyStateMachine();
                     }
                 }
+
                 if (this.CurrentStateMachine == null)
                 {
                     this.CurrentStateMachine = new PowerEnableStateMachine(

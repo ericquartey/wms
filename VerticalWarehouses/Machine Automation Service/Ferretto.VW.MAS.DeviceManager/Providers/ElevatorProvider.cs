@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void MoveHorizontalAuto(
-                    HorizontalMovementDirection direction,
+            HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,

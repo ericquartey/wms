@@ -6,6 +6,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
+        #region Fields
+
+        private double speedRate;
+
+        #endregion
+
         #region Constructors
 
         public ShutterPositioningMessageData()
@@ -19,7 +25,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             double speedRate,
             MovementMode movementMode,
             MovementType movementType,
-            int requestedCycles,
             int delay,
             double highSpeedDurationOpen,
             double highSpeedDurationClose,
@@ -32,7 +37,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SpeedRate = speedRate;
             this.MovementMode = movementMode;
             this.MovementType = movementType;
-            this.RequestedCycles = requestedCycles;
             this.Delay = delay;
             this.HighSpeedDurationOpen = highSpeedDurationOpen;
             this.HighSpeedDurationClose = highSpeedDurationClose;
@@ -53,7 +57,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SpeedRate = shutterPositioningMessageData.SpeedRate;
             this.MovementMode = shutterPositioningMessageData.MovementMode;
             this.MovementType = shutterPositioningMessageData.MovementType;
-            this.RequestedCycles = shutterPositioningMessageData.RequestedCycles;
             this.Delay = shutterPositioningMessageData.Delay;
             this.HighSpeedDurationOpen = shutterPositioningMessageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = shutterPositioningMessageData.HighSpeedDurationClose;
@@ -68,9 +71,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int Delay { get; set; }
 
-        public int PerformedCycles { get; set; }
-
-
         public double HighSpeedDurationClose { get; }
 
         public double HighSpeedDurationOpen { get; }
@@ -81,7 +81,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public MovementType MovementType { get; }
 
-        public int RequestedCycles { get; set; }
+        public int PerformedCycles { get; set; }
 
         public ShutterMovementDirection ShutterMovementDirection { get; set; }
 
@@ -89,7 +89,19 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public ShutterType ShutterType { get; set; }
 
-        public double SpeedRate { get; set; }
+        public double SpeedRate
+        {
+            get => this.speedRate;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.speedRate = value;
+            }
+        }
 
         public MessageVerbosity Verbosity { get; set; }
 

@@ -2,6 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class ErrorDescriptionAttribute : Attribute
     {
         #region Constructors

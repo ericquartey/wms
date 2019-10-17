@@ -7,7 +7,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         protected BaseWmsProxyController()
-        { }
+        {
+        }
 
         #endregion
 

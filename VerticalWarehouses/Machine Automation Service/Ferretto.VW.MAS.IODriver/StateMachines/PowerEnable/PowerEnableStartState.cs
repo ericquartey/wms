@@ -85,6 +85,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             {
                 this.status.UpdateOutputStates(powerEnableIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(powerEnableIoMessage);
         }
 

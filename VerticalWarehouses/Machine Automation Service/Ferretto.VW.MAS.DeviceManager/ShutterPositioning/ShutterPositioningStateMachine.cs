@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Models;
@@ -19,8 +20,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private readonly IShutterPositioningMachineData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -34,21 +33,19 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             IEventAggregator eventAggregator,
             ILogger<DeviceManager> logger,
             IServiceScopeFactory serviceScopeFactory)
-
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(this.Logger);
 
-            this.machineData = new ShutterPositioningMachineData(positioningMessageData, requestingBay, targetBay, inverterIndex, machineResourcesProvider, eventAggregator, logger, serviceScopeFactory);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningStateMachine()
-        {
-            this.Dispose(false);
+            this.machineData = new ShutterPositioningMachineData(
+                positioningMessageData,
+                requestingBay,
+                targetBay,
+                inverterIndex,
+                machineResourcesProvider,
+                eventAggregator,
+                logger,
+                serviceScopeFactory);
         }
 
         #endregion
@@ -100,18 +97,22 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             lock (this.CurrentState)
             {
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest().PerformedCycles;
+                }
+
                 var stateData = new ShutterPositioningStateData(this, this.machineData);
-                if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState ||
-                    this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+
+                if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState
+                    ||
+                    this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1
+                    ||
                     !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                     )
                 {
                     this.Logger.LogError($"Invalid conditions before moving shutter");
-                    this.CurrentState = new ShutterPositioningErrorState(stateData);
-                }
-                else if (this.machineData.PositioningMessageData.SpeedRate == 0)
-                {
-                    this.Logger.LogError($"SpeedRate cannot be zero");
                     this.CurrentState = new ShutterPositioningErrorState(stateData);
                 }
                 else
@@ -119,10 +120,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     this.CurrentState = new ShutterPositioningStartState(stateData);
                 }
 
-                this.CurrentState?.Start();
+                this.CurrentState.Start();
             }
 
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
+            this.Logger.LogTrace($"1:CurrentState{this.CurrentState?.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)
@@ -133,17 +134,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 this.CurrentState.Stop(reason);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

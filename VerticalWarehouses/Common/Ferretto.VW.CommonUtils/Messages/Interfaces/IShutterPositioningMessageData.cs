@@ -8,9 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int Delay { get; set; }
 
-        int PerformedCycles { get; set; }
-
-
         double HighSpeedDurationClose { get; }
 
         double HighSpeedDurationOpen { get; }
@@ -21,7 +18,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementType MovementType { get; }
 
-        int RequestedCycles { get; set; }
+        int PerformedCycles { get; set; }
 
         ShutterMovementDirection ShutterMovementDirection { get; }
 

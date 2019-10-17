@@ -5,9 +5,8 @@ using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
 
-namespace Ferretto.VW.MAS.AutomationService.Provider
+namespace Ferretto.VW.MAS.AutomationService
 {
     public class IoDeviceProvider : IIoDeviceProvider
     {
@@ -37,10 +36,10 @@ namespace Ferretto.VW.MAS.AutomationService.Provider
         private IEnumerable<IoDeviceInfo> GetIoDevices(IEnumerable<IoStatus> ioStatuses)
         {
             var ioDevices = new List<IoDeviceInfo>();
-            var properties = typeof(IoStatus).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+            var properties = typeof(IoStatus).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             foreach (var status in ioStatuses)
             {
-                var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), IoStatus.TOTAL_INPUTS).ToArray();
+                var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), IoStatus.TotalInputs).ToArray();
                 foreach (var prop in properties)
                 {
                     var value = prop?.GetValue(status);

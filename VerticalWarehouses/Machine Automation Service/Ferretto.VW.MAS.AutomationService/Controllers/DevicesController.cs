@@ -22,9 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public DevicesController(IEventAggregator eventAggregator,
-                                 IInverterProvider inverterProvider,
-                                 IIoDeviceProvider ioDeviceProvider)
+        public DevicesController(
+            IEventAggregator eventAggregator,
+            IInverterProvider inverterProvider,
+            IIoDeviceProvider ioDeviceProvider)
         {
             this.inverterProvider = inverterProvider;
             this.ioDeviceProvider = ioDeviceProvider;
@@ -40,21 +41,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<(IEnumerable<InverterDeviceInfo>, IEnumerable<IoDeviceInfo>)> GetAll()
         {
-            try
-            {
-                var invertersStatuses = this.inverterProvider.GetStatuses;
-                var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
-                var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
-                return this.Ok(result);
-            }
-            catch (Exception exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
-                {
-                    Title = Resources.General.InternalServerErrorTitle,
-                    Detail = exception.Message
-                });
-            }
+            var invertersStatuses = this.inverterProvider.GetStatuses;
+            var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
+            var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
+            return this.Ok(result);
         }
 
         #endregion

@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
-        private const int PAUSE_INTERVAL = 250;
+        private const int PauseInterval = 250;
 
         private readonly Axis axisToSwitchOn;
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, Timeout.Infinite);
             }
 
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             if (checkMessage && !this.pulseOneTime)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 

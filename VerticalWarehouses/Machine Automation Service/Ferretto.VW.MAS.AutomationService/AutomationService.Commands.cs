@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.AutomationService
 {
-    partial class AutomationService
+    public partial class AutomationService
     {
         #region Methods
 

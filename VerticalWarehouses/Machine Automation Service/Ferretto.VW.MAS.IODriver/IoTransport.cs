@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                //throw new IoDriverException(
+                // throw new IoDriverException(
                 //    "Socket Transport is already open",
                 //    IoDriverExceptionCode.SocketOpen);
                 this.transportClient?.Dispose();
@@ -144,8 +144,6 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.transportStream?.Close();
             this.transportClient?.Close();
-
-            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -234,12 +232,14 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
             }
+
             try
             {
                 if (delay > 0)
                 {
                     await Task.Delay(delay, stoppingToken);
                 }
+
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
                 return message.Length;
             }

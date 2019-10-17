@@ -31,7 +31,8 @@ namespace Ferretto.VW.MAS.AutomationService.Models
             }
         }
 
-        public BitInfo(string name, bool? value, string description = "") : this(value)
+        public BitInfo(string name, bool? value, string description = "")
+            : this(value)
         {
             if (string.IsNullOrEmpty(name))
             {

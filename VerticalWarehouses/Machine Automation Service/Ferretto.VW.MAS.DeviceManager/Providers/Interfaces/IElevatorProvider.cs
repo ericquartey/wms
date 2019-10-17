@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -19,7 +18,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         AxisBounds GetVerticalBounds();
 
         void MoveHorizontalAuto(
-                    HorizontalMovementDirection direction,
+            HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,

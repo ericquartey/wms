@@ -29,12 +29,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding BayNumber, StringFormat={x:Static res:InstallationApp.ShutterEnduranceTestTitle}}" />
 
-        <controls:PpcTextBox Grid.Row="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputRequiredCycles}"
+                                 LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
@@ -61,11 +60,17 @@
         </StackPanel>
 
         <controls:PpcLabeledText Grid.Row="3"
-                                 Margin="0,20,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding CompletedCycles}"
-                                 LabelText="{x:Static res:InstallationApp.CompletedCyclesThisSession}" />
+                                 ContentText="{Binding PerformedCyclesThisSession}"
+                                 LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CumulativePerformedCycles}"
+                                 LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
