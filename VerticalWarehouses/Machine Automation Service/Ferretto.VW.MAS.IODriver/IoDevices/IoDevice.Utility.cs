@@ -6,17 +6,14 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
     public partial class IoDevice
     {
         #region Methods
 
-        /// <summary>
-        /// Parsing the incoming telegram from the SHDRemoteIO device.
-        /// </summary>
         public void ParsingDataBytes(byte[] telegram, out int nBytesReceived, out ShdFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
         {
             const int N_BYTES8 = 8;
@@ -154,13 +151,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             {
                 var errorNotification = new FieldNotificationMessage(
                     null,
-                        $"Exception {ex.Message} while parsing received IO raw message bytes",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterException,
-                        MessageStatus.OperationError,
-                        (byte)this.deviceIndex,
-                        ErrorLevel.Critical);
+                    $"Exception {ex.Message} while parsing received IO raw message bytes",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterException,
+                    MessageStatus.OperationError,
+                    (byte)this.deviceIndex,
+                    ErrorLevel.Critical);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                 throw new IoDriverException($"Exception: {ex.Message} ParsingDataBytes error", IoDriverExceptionCode.CreationFailure, ex);
@@ -178,13 +175,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private bool IsHeaderValid(byte header)
         {
-            return (header == 3 || header == 15 || header == 26);
+            return header == 3 || header == 15 || header == 26;
         }
 
         private bool IsMessageLengthValid(byte firmwareVersion, byte length)
         {
-            return (firmwareVersion == 0x10 && !(length == 15 || length == 3))    // length is not valid for old release
-                || (firmwareVersion == 0x11 && !(length == 26 || length == 3));
+            return
+                (firmwareVersion == 0x10 && !(length == 15 || length == 3)) // length is not valid for old release
+                ||
+                (firmwareVersion == 0x11 && !(length == 26 || length == 3));
         }
 
         #endregion

@@ -71,8 +71,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int Delay { get; set; }
 
-        public int PerformedCycles { get; set; }
-
         public double HigherDistance { get; }
 
         public double HighSpeedDurationClose { get; }

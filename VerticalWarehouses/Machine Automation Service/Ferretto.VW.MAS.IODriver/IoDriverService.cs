@@ -118,6 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     return;
                 }
+
                 this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
 
                 var currentDevice = Enum.Parse<DataModels.IoIndex>(receivedMessage.DeviceIndex.ToString());
@@ -131,6 +132,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.ioDevices[DataModels.IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
                                 break;
                         }
+
                         break;
 
                     case FieldMessageType.IoReset:
@@ -163,7 +165,7 @@ namespace Ferretto.VW.MAS.IODriver
             foreach (var ioDevice in ioDevices)
             {
                 var transport = useMockedTransport ? (IIoTransport)new IoTransportMock() : new IoTransport(readTimeoutMilliseconds);
-                bool isCarousel = (this.baysProvider.GetByIoIndex(ioDevice.Index).Carousel != null);
+                bool isCarousel = this.baysProvider.GetByIoIndex(ioDevice.Index).Carousel != null;
 
                 this.ioDevices.Add(
                     ioDevice.Index,
@@ -217,6 +219,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     return;
                 }
+
                 this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
 
                 var currentDevice = Enum.Parse<DataModels.IoIndex>(receivedMessage.DeviceIndex.ToString());
@@ -244,6 +247,7 @@ namespace Ferretto.VW.MAS.IODriver
                         {
                             this.ioDevices[currentDevice].DestroyStateMachine();
                         }
+
                         break;
                 }
             }

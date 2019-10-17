@@ -61,11 +61,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speedRate,
                 MovementMode.ShutterPosition,
                 MovementType.Relative,
-                0,
-                0,
-                0,
-                0,
-                0);
+                delay: 0,
+                highSpeedDurationOpen: 0,
+                highSpeedDurationClose: 0,
+                lowerSpeed: 0);
 
             this.PublishCommand(
                 messageData,

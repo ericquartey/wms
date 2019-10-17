@@ -8,15 +8,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public static class UnityExtensions
     {
+        private static readonly System.Func<IUnityContainer, RetryHttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
+
         public static IContainerRegistry RegisterMachineAutomationHubs(
             this IContainerRegistry container,
-            System.Uri WebServiceUrl,
+            System.Uri webServiceUrl,
             string operatorHubPath,
             string installationHubPath)
         {
-            var urlString = WebServiceUrl.ToString();
+            var urlString = webServiceUrl.ToString();
 
-            var operatorHubUrl = new System.Uri(WebServiceUrl, operatorHubPath);
+            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
 
             container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
             container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(urlString, installationHubPath));
@@ -24,16 +26,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return container;
         }
 
-        private static readonly System.Func<IUnityContainer, RetryHttpClient> defaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
-
         public static IContainerRegistry RegisterMachineAutomationWebServices(
             this IContainerRegistry container,
-            System.Uri WebServiceUrl,
+            System.Uri webServiceUrl,
             System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
         {
-            var urlString = WebServiceUrl.ToString();
+            var urlString = webServiceUrl.ToString();
 
-            var resolveFunction = resolveHttpClientFunction ?? defaultResolveHttpClientFunction;
+            var resolveFunction = resolveHttpClientFunction ?? DefaultResolveHttpClientFunction;
 
             container.Register<RetryHttpClient, RetryHttpClient>();
 
@@ -126,6 +126,5 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             return containerProvider;
         }
-
     }
 }

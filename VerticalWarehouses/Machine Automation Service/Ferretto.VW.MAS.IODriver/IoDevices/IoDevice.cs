@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 50;
+        private const int IoPollingInterval = 50;
 
         private readonly IoIndex deviceIndex;
 
@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private readonly IPAddress ipAddress;
 
+        private readonly bool isCarousel;
+
         private readonly ILogger logger;
 
         private readonly int port;
@@ -60,8 +62,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         private bool disposed;
 
         private bool forceIoStatusPublish;
-
-        private bool isCarousel;
 
         private Timer pollIoTimer;
 
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, objectName, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
-                    (!string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null"),
+                    !string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null",
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
@@ -238,9 +238,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
+
                 this.receiveBuffer = this.receiveBuffer.AppendArrays(telegram, telegram.Length);
 
-                //INFO: Byte 0 of read data contains packet length
+                // INFO: Byte 0 of read data contains packet length
                 if (!this.IsHeaderValid(this.receiveBuffer[0]))
                 {
                     // message error
@@ -274,7 +275,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 byte[] configurationData;
                 foreach (var extractedMessage in extractedMessages)
                 {
-                    if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))    // length is not valid  for new release
+                    if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))
                     {
                         // message error
                         this.logger.LogError($"5:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
@@ -316,12 +317,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     {
                         case ShdFormatDataOperation.Data:
 
-                            //INFO The mushroom signal must be inverted
+                            // INFO The mushroom signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
-                            //INFO The sensor presence in bay must be inverted
+
+                            // INFO The sensor presence in bay must be inverted
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
-                            //INFO The sensor presence in lower bay must be inverted (NOT for carousel)
-                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
+
+                            // INFO The sensor presence in lower bay must be inverted (NOT for carousel)
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = this.isCarousel ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
@@ -414,6 +417,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                                         this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
                                     }
+
                                     break;
 
                                 case ShdCodeOperation.Configuration:
@@ -423,6 +427,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                                         this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
                                     }
+
                                     break;
 
                                 case ShdCodeOperation.SetIP:
@@ -433,6 +438,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                     {
                                         Debugger.Break();
                                     }
+
                                     break;
                             }
                         }
@@ -553,9 +559,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             try
             {
-                this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
+                this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
 
-                //this.publishIoTimer = new Timer(this.SendIoPublish, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_PUBLISH_INTERVAL));
+                // why is this line commented?
+                // this.publishIoTimer = new Timer(this.SendIoPublish, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_PUBLISH_INTERVAL));
             }
             catch (Exception ex)
             {

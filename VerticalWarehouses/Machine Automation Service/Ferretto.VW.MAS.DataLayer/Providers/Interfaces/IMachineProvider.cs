@@ -13,6 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
         MachineStatistics GetStatistics();
 
         bool IsOneTonMachine();
+
         void Update(Machine machine);
 
         #endregion
