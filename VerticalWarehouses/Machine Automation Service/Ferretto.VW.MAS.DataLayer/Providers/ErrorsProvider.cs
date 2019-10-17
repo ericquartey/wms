@@ -24,9 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IServiceScope scope;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         #endregion
 
@@ -37,13 +35,17 @@ namespace Ferretto.VW.MAS.DataLayer
             IServiceScopeFactory serviceScopeFactory,
             IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
 
