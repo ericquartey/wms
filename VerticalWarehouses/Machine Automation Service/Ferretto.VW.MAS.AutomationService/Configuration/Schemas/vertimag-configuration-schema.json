@@ -178,6 +178,12 @@
                 "maximum": 3,
                 "default": 1
               },
+              "Resolution": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Resolution",
+                "type": "number",
+                "title": "The Resolution Schema",
+                "default": 0.0
+              },
               "Positions": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Positions",
                 "type": "array",

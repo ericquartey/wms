@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? -1 : 1;
+            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
-                Axis.Horizontal,
+                Axis.BayChain,
                 MovementType.Relative,
                 MovementMode.BayChain,
                 targetPosition,
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? -1 : 1);
+            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
-                Axis.Horizontal,
+                Axis.BayChain,
                 MovementType.Relative,
                 MovementMode.BayChainManual,
                 targetPosition,

@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else
                 {
-                    ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                    //ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
                     if (!ok)
                     {
                         errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";

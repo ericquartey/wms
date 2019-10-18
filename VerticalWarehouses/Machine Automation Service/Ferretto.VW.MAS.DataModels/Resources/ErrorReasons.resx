@@ -137,7 +137,7 @@
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>ZeroSensorErrorAfterPickup</value>
-   </data>
+  </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
@@ -172,9 +172,6 @@
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
-  </data>
-  <data name="InverterErrorUnknown" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">

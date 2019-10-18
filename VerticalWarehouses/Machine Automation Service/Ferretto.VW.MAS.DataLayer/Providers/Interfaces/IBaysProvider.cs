@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        double GetResolution(InverterIndex inverterIndex);
+
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);

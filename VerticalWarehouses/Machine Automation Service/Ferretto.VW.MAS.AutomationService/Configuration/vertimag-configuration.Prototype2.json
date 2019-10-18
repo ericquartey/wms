@@ -31,9 +31,10 @@
           "TcpPort": 19550
         },
         "IsExternal": false,
-        "ChainOffset": -800,
+        "ChainOffset": -5,
         "Number": 1,
         "Positions": [ { "Height": 741 } ],
+        "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -42,7 +43,7 @@
           "Type": "TwoSensors"
         },
         "Carousel": {
-          "ElevatorDistance": 300
+          "ElevatorDistance": 460
         }
       }
     ],

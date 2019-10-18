@@ -413,6 +413,19 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public double GetResolution(InverterIndex inverterIndex)
+        {
+            var bay = this.dataContext.Bays
+                .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+
+            if (bay is null)
+            {
+                throw new EntityNotFoundException(inverterIndex.ToString());
+            }
+
+            return bay.Resolution;
+        }
+
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
         {
             lock (this.dataContext)

@@ -725,7 +725,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
 
-                        var targetPosition = invertersProvider.ConvertMillimetersToPulses(position, axisOrientation);
+                        int targetPosition;
+                        if (positioningData.AxisMovement == Axis.BayChain)
+                        {
+                            targetPosition = (int)(serviceProvider.GetRequiredService<IBaysProvider>().GetResolution(inverter.SystemIndex) * position);
+                        }
+                        else
+                        {
+                            targetPosition = invertersProvider.ConvertMillimetersToPulses(position, axisOrientation);
+                        }
 
                         var targetAcceleration = positioningData.TargetAcceleration
                             .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))

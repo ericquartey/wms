@@ -94,7 +94,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             get => this.speedRate;
             set
             {
-                if (value <= 0)
+                if (value == 0)
                 {
                     throw new System.ArgumentOutOfRangeException(nameof(value));
                 }

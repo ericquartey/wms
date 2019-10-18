@@ -86,6 +86,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("CradleNotCompletelyLoaded", resourceCulture);
             }
         }
+        
         /// <summary>
         ///   Looks up a localized string similar to CradleNotCorrectlyLoadedDuringPickup.
         /// </summary>
@@ -103,27 +104,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("CradleNotCorrectlyUnloadedDuringDeposit", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
-        /// </summary>
-        public static string ZeroSensorErrorAfterDeposit {
-            get {
-                return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
-        /// </summary>
-        public static string ZeroSensorErrorAfterPickup
-        {
-            get
-            {
-                return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
-            }
-        }
-        
         
         /// <summary>
         ///   Looks up a localized string similar to Errore inverter..
@@ -234,15 +214,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore sconosciuto dell&apos;inverter..
-        /// </summary>
-        public static string InverterErrorUnknown {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parametro sconosciuto passato all&apos;inverter..
         /// </summary>
         public static string InverterErrorUnknownParameter {
@@ -275,6 +246,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string SecurityWasTriggered {
             get {
                 return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
+        /// </summary>
+        public static string ZeroSensorErrorAfterDeposit {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
+        /// </summary>
+        public static string ZeroSensorErrorAfterPickup {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
             }
         }
     }
