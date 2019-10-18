@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private readonly List<MovementMode> movements;
+        private List<MovementMode> movements;
 
         private bool needOpenShutter;
 

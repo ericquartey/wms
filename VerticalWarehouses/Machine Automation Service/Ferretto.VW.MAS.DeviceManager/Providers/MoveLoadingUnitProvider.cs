@@ -57,9 +57,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationRunningStop ||
                  notification.Type == MessageType.ShutterPositioning);
         }
+
         public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
         {
-
             double targetPosition = 0;
             switch (messageData.Destination)
             {
@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, false, requestingBay, sender);
         }
 
         public MessageStatus MoveLoadingUnitStatus(NotificationMessage message)
@@ -145,19 +145,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NoStatus;
         }
 
-        public bool NeedOpenShutter(LoadingUnitDestination positionType)
+        public bool NeedOpenShutter(LoadingUnitLocation positionType)
         {
-            if (positionType != LoadingUnitDestination.NoDestination)
+            if (positionType != LoadingUnitLocation.NoLocation)
             {
                 var shutter = this.baysProvider.GetShutterOpenPosition(positionType, out var bay);
                 return (shutter != ShutterPosition.None);
             }
             return false;
         }
-        
-        public bool OpenShutter(LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay)
+
+        public bool OpenShutter(LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay)
         {
-            if (positionType != LoadingUnitDestination.NoDestination)
+            if (positionType != LoadingUnitLocation.NoLocation)
             {
                 var shutter = this.baysProvider.GetShutterOpenPosition(positionType, out var bay);
                 if (shutter != ShutterPosition.None)
@@ -177,10 +177,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
         /// <returns>The list of movements created. Used by PositionElevatorToPositionStatus to check when movements are completed</returns>
-        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination sourceType, MessageActor sender, BayNumber requestingBay)
+        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation sourceType, MessageActor sender, BayNumber requestingBay)
         {
             var movements = new List<MovementMode>();
-            if (sourceType != LoadingUnitDestination.NoDestination)
+            if (sourceType != LoadingUnitLocation.NoLocation)
             {
                 var shutter = this.baysProvider.GetShutterClosePosition(sourceType, true, out var bay);
                 if (shutter != ShutterPosition.None)

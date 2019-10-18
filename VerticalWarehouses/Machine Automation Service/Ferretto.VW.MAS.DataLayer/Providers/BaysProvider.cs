@@ -399,12 +399,12 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
         }
 
-        public ShutterPosition GetShutterClosePosition(LoadingUnitDestination destination, bool parallel, out BayNumber bay)
+        public ShutterPosition GetShutterClosePosition(LoadingUnitLocation destination, bool parallel, out BayNumber bay)
         {
             switch (destination)
             {
-                case LoadingUnitDestination.InternalBay1Up:
-                case LoadingUnitDestination.CarouselBay1Up:
+                case LoadingUnitLocation.InternalBay1Up:
+                case LoadingUnitLocation.CarouselBay1Up:
                     if (!parallel)
                     {
                         bay = BayNumber.BayOne;
@@ -412,12 +412,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay1Up:
+                case LoadingUnitLocation.ExternalBay1Up:
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Closed;
 
-                case LoadingUnitDestination.InternalBay1Down:
-                case LoadingUnitDestination.CarouselBay1Down:
+                case LoadingUnitLocation.InternalBay1Down:
+                case LoadingUnitLocation.CarouselBay1Down:
                     if (!parallel)
                     {
                         bay = BayNumber.BayOne;
@@ -425,12 +425,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay1Down:
+                case LoadingUnitLocation.ExternalBay1Down:
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Closed;
 
-                case LoadingUnitDestination.InternalBay2Up:
-                case LoadingUnitDestination.CarouselBay2Up:
+                case LoadingUnitLocation.InternalBay2Up:
+                case LoadingUnitLocation.CarouselBay2Up:
                     if (!parallel)
                     {
                         bay = BayNumber.BayTwo;
@@ -438,12 +438,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay2Up:
+                case LoadingUnitLocation.ExternalBay2Up:
                     bay = BayNumber.BayTwo;
                     return ShutterPosition.Closed;
 
-                case LoadingUnitDestination.InternalBay2Down:
-                case LoadingUnitDestination.CarouselBay2Down:
+                case LoadingUnitLocation.InternalBay2Down:
+                case LoadingUnitLocation.CarouselBay2Down:
                     if (!parallel)
                     {
                         bay = BayNumber.BayTwo;
@@ -451,12 +451,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay2Down:
+                case LoadingUnitLocation.ExternalBay2Down:
                     bay = BayNumber.BayTwo;
                     return ShutterPosition.Closed;
 
-                case LoadingUnitDestination.InternalBay3Up:
-                case LoadingUnitDestination.CarouselBay3Up:
+                case LoadingUnitLocation.InternalBay3Up:
+                case LoadingUnitLocation.CarouselBay3Up:
                     if (!parallel)
                     {
                         bay = BayNumber.BayThree;
@@ -464,12 +464,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay3Up:
+                case LoadingUnitLocation.ExternalBay3Up:
                     bay = BayNumber.BayThree;
                     return ShutterPosition.Closed;
 
-                case LoadingUnitDestination.InternalBay3Down:
-                case LoadingUnitDestination.CarouselBay3Down:
+                case LoadingUnitLocation.InternalBay3Down:
+                case LoadingUnitLocation.CarouselBay3Down:
                     if (!parallel)
                     {
                         bay = BayNumber.BayThree;
@@ -477,7 +477,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     break;
 
-                case LoadingUnitDestination.ExternalBay3Down:
+                case LoadingUnitLocation.ExternalBay3Down:
                     bay = BayNumber.BayThree;
                     return ShutterPosition.Closed;
 
@@ -488,13 +488,13 @@ namespace Ferretto.VW.MAS.DataLayer
             return ShutterPosition.None;
         }
 
-        public ShutterPosition GetShutterOpenPosition(LoadingUnitDestination destination, out BayNumber bay)
+        public ShutterPosition GetShutterOpenPosition(LoadingUnitLocation destination, out BayNumber bay)
         {
             switch (destination)
             {
-                case LoadingUnitDestination.InternalBay1Up:
-                case LoadingUnitDestination.ExternalBay1Up:
-                case LoadingUnitDestination.CarouselBay1Up:
+                case LoadingUnitLocation.InternalBay1Up:
+                case LoadingUnitLocation.ExternalBay1Up:
+                case LoadingUnitLocation.CarouselBay1Up:
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Opened;
 

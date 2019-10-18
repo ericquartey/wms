@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -9,7 +8,6 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -28,9 +26,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         public MoveLoadingUnitOpenShutterState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
         }
@@ -41,7 +38,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
                 if (!this.loadingUnitMovementProvider.OpenShutter(messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay))
                 {
@@ -67,7 +64,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadUnitState>();
+                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
                     break;
 
                 case MessageStatus.OperationError:

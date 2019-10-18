@@ -165,12 +165,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ReferenceCellId = table.Column<int>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
-                    Acceleration = table.Column<double>(nullable: true),
-                    Deceleration = table.Column<double>(nullable: true),
-                    HigherDistance = table.Column<double>(nullable: true),
                     HighSpeedDurationClose = table.Column<double>(nullable: true),
                     HighSpeedDurationOpen = table.Column<double>(nullable: true),
-                    LowerDistance = table.Column<double>(nullable: true),
                     MaxSpeed = table.Column<double>(nullable: true),
                     MinSpeed = table.Column<double>(nullable: true),
                     BrakeActivatePercent = table.Column<double>(nullable: true),
@@ -736,6 +732,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 values: new object[] { 100034, 100034, "Condizioni per la messa in marcia non soddisfatte.", "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi", 0 });
 
             migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100035, 100035, "CradleNotCorrectlyLoadedDuringPickup", "CradleNotCorrectlyLoadedDuringPickup", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100036, 100036, "CradleNotCorrectlyUnloadedDuringDeposit", "CradleNotCorrectlyUnloadedDuringDeposit", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100037, 100037, "ZeroSensorErrorAfterPickup", "ZeroSensorErrorAfterPickup", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 100038, 100038, "ZeroSensorErrorAfterDeposit", "ZeroSensorErrorAfterDeposit", 0 });
+
+            migrationBuilder.InsertData(
                 table: "MachineStatistics",
                 columns: new[] { "Id", "TotalAutomaticTime", "TotalBeltCycles", "TotalMissionTime", "TotalMovedTrays", "TotalMovedTraysInBay1", "TotalMovedTraysInBay2", "TotalMovedTraysInBay3", "TotalPowerOnTime", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers", "WeightCapacityPercentage" },
                 values: new object[] { -1, new TimeSpan(0, 0, 0, 0, 0), 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0, 0, 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0.0, 0.0 });
@@ -743,7 +759,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 15, 17, 21, 14, 162, DateTimeKind.Local).AddTicks(9592), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 17, 14, 0, 12, 151, DateTimeKind.Local).AddTicks(3035), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -774,6 +790,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 100034, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100035, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100036, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100037, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100038, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BayPositions_BayId",

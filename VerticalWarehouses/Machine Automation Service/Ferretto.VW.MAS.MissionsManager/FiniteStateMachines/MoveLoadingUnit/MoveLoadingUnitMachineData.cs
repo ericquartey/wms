@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
     {
         #region Properties
 
-        public int? LoadingUnitId { get; set; }
+        public int? LoadingUnitCellSourceId { get; set; }
 
         public int LoadingUnitId { get; set; }
 
