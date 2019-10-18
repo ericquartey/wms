@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -11,7 +12,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
+        private const int CheckDelayTime = 100;
+
         private readonly IInverterPositioningFieldMessageData data;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -43,6 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug("Inverter Enable Operation");
+            this.startTime = DateTime.MinValue;
 
             this.Inverter.TableTravelControlWord.EnableOperation = true;
             this.Inverter.TableTravelControlWord.Resume = false;
@@ -88,10 +94,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                // we must wait at least 100ms between EnableOperation and start moving
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningTableStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+                    if (this.startTime == DateTime.MinValue)
+                    {
+                        this.startTime = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        var delayElapsed = DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime;
+                        if (delayElapsed)
+                        {
+                            this.ParentStateMachine.ChangeState(new PositioningTableStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                            returnValue = true;
+                        }
+                    }
                 }
             }
             return returnValue;
