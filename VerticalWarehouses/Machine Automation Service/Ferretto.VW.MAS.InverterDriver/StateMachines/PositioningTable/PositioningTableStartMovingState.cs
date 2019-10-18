@@ -58,10 +58,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
             this.ParentStateMachine.ChangeState(
-                new PositioningTableStopState(
+                new PositioningTableDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />

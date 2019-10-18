@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
+        double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
+
         Bay Deactivate(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();

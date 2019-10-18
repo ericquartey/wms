@@ -66,12 +66,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogDebug("1:Calibrate Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new CalibrateAxisStopState(
+                new CalibrateAxisDisableOperationState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
                     this.calibration,
                     this.InverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />

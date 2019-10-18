@@ -26,8 +26,6 @@ namespace Ferretto.VW.Simulator.Services
 
         private const int DELAY_IO_CLIENT = 5;
 
-        private const double IMPULSES_ENCODER_PER_ROUND = 77.67;
-
         private readonly static Random random = new Random();
 
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
@@ -55,10 +53,10 @@ namespace Ferretto.VW.Simulator.Services
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
 
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1 });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0, IMPULSES_ENCODER_PER_ROUND = 77.61 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, IMPULSES_ENCODER_PER_ROUND = 77.67 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3, IMPULSES_ENCODER_PER_ROUND = 369.85 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
@@ -220,11 +218,6 @@ namespace Ferretto.VW.Simulator.Services
             return byteMessage;
         }
 
-        private int Impulses2millimeters(int value)
-        {
-            return (int)(value / IMPULSES_ENCODER_PER_ROUND);
-        }
-
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
         {
             using (client)
@@ -262,11 +255,6 @@ namespace Ferretto.VW.Simulator.Services
                 {
                 }
             }
-        }
-
-        private int Millimeters2Impulses(int value)
-        {
-            return (int)(value * IMPULSES_ENCODER_PER_ROUND);
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)
@@ -424,7 +412,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.PositionTargetPosition:
-                    inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                    inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)message.UIntPayload);
                     inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
                     result = client.Client.Send(message.ToBytes());
                     break;
@@ -472,7 +460,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.ActualPositionShaft:
-                    var impulses = this.Millimeters2Impulses(inverter.AxisPosition);
+                    var impulses = inverter.Millimeters2Impulses(inverter.AxisPosition);
                     var actualPositionMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(impulses));
                     result = client.Client.Send(actualPositionMessage);
                     break;
@@ -489,7 +477,7 @@ namespace Ferretto.VW.Simulator.Services
                 case InverterParameterId.TableTravelTargetPosition:
                     if (inverter.TableIndex < (int)InverterTableIndex.TableTravelP1)
                     {
-                        inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)message.UIntPayload);
+                        inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)message.UIntPayload);
                         inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
                         inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
                             && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
@@ -497,7 +485,7 @@ namespace Ferretto.VW.Simulator.Services
                     else
                     {
                         var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelP1;
-                        inverter.SwitchPositions[inverter.CurrentAxis][switchId] = this.Impulses2millimeters((int)message.UIntPayload);
+                        inverter.SwitchPositions[inverter.CurrentAxis][switchId] = inverter.Impulses2millimeters((int)message.UIntPayload);
                     }
                     result = client.Client.Send(message.ToBytes());
                     break;
@@ -587,7 +575,7 @@ namespace Ferretto.VW.Simulator.Services
                 inverter.StatusWord &= 0xEFFF;  // Reset Set-Point Acknowledge
             }
 
-            inverter.CurrentAxis = (!inverter.IsHorizontalAxis && inverter.Id == 0) ? Axis.Vertical : Axis.Horizontal;
+            inverter.CurrentAxis = (!inverter.IsHorizontalAxis) ? Axis.Vertical : Axis.Horizontal;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)

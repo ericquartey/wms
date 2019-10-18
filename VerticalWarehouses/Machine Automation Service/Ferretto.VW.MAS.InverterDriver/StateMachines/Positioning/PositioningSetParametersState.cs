@@ -52,10 +52,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningStopState(
+                new PositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -76,10 +77,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 {
                     case InverterParameterId.PositionTargetPosition:
                         if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical
-                            && false    // TODO remove this condition to send brake release/activate parameters
                             )
                         {
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (int)this.verticalParams.BrakeReleaseTime));
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (short)this.verticalParams.BrakeReleaseTime));
                             this.Logger.LogDebug($"Set Brake Release Time: {(int)this.verticalParams.BrakeReleaseTime}");
                         }
                         else
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         break;
 
                     case InverterParameterId.BrakeReleaseTime:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeActivatePercent, (int)this.verticalParams.BrakeActivatePercent));
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeActivatePercent, (short)this.verticalParams.BrakeActivatePercent));
                         this.Logger.LogDebug($"Set Brake Activate Percent: {(int)this.verticalParams.BrakeActivatePercent}");
                         break;
 

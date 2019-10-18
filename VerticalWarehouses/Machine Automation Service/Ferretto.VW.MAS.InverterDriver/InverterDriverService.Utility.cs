@@ -298,7 +298,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                         double currentAxisPosition = 0;
                         if (message.IntPayload != 0)
                         {
-                            currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(message.IntPayload, axisOrientation);
+                            if (axis == Axis.BayChain)
+                            {
+                                currentAxisPosition = serviceProvider.GetRequiredService<IBaysProvider>().ConvertPulsesToMillimeters(message.IntPayload, message.SystemIndex);
+                            }
+                            else
+                            {
+                                currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(message.IntPayload, axisOrientation);
+                            }
                         }
 
                         var offset = (axis == Axis.Vertical)
