@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     break;
 
                 case MessageStatus.OperationError:
-                    returnValue = this.GetState<IChangeRunningStateEndState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;
