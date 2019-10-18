@@ -103,8 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     }
                     else
                     {
-                        var delayElapsed = DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime;
-                        if (delayElapsed)
+                        if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime)
                         {
                             this.ParentStateMachine.ChangeState(new PositioningTableStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                             returnValue = true;

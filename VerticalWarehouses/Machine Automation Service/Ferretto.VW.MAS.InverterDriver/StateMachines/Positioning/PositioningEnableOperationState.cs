@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug("Inverter Enable Operation");
-            this.startTime = DateTime.UtcNow;
+            this.startTime = DateTime.MinValue;
 
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
             this.Inverter.PositionControlWord.EnableOperation = true;
@@ -101,33 +101,35 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
                     // we must wait 100ms between EnableOperation and start moving
-                    var delayElapsed = DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime;
-                    if (delayElapsed)
+                    if (this.startTime == DateTime.MinValue)
                     {
-                        if (this.data.IsTorqueCurrentSamplingEnabled)
-                        {
-                            this.ParentStateMachine.ChangeState(
-                                new PositioningStartSamplingWhileMovingState(
-                                    this.data,
-                                    this.ParentStateMachine,
-                                    this.Inverter,
-                                    this.Logger));
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(
-                                new PositioningStartMovingState(
-                                    this.ParentStateMachine,
-                                    this.Inverter,
-                                    this.Logger));
-                        }
-
-                        returnValue = true;
+                        this.startTime = DateTime.UtcNow;
                     }
-                }
-                else
-                {
-                    this.startTime = DateTime.UtcNow;
+                    else
+                    {
+                        if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime)
+                        {
+                            if (this.data.IsTorqueCurrentSamplingEnabled)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningStartSamplingWhileMovingState(
+                                        this.data,
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+
+                            returnValue = true;
+                        }
+                    }
                 }
             }
             return returnValue;
