@@ -290,6 +290,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Condizioni per la messa in marcia non soddisfatte.",
                             Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100035,
+                            Code = 100035,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100036,
+                            Code = 100036,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100037,
+                            Code = 100037,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100038,
+                            Code = 100038,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
                         });
                 });
 
@@ -317,6 +349,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100034,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100035,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100036,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100037,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100038,
                             TotalErrors = 0
                         });
                 });
@@ -575,7 +627,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 16, 8, 31, 15, 19, DateTimeKind.Local).AddTicks(9544),
+                            InstallationDate = new DateTime(2016, 12, 17, 14, 0, 12, 151, DateTimeKind.Local).AddTicks(3035),
                             ServiceStatus = 86
                         });
                 });
