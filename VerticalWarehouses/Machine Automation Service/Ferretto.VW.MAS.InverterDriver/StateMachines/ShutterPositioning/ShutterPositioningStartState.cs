@@ -69,13 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.currentShutterPosition = aglStatus.CurrentShutterPosition;
             }
             this.CalculateDatasetAndDuration();
-            this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingMode, this.InverterStatus.OperatingMode);
-
-            this.Logger.LogTrace($"4:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessage = new FieldNotificationMessage(
                 this.shutterPositionData,
