@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly List<IMission> machineMissions;
 
-        private readonly IServiceScope serviceScope;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator;
-            this.serviceScope = serviceScopeFactory.CreateScope();
+            this.serviceScopeFactory = serviceScopeFactory;
             this.machineMissions = new List<IMission>();
         }
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public bool StartMachineMission(Guid missionId, CommandMessage command, IFiniteStateMachineData machineData)
+        public bool StartMachineMission(Guid missionId, CommandMessage command)
         {
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
             if (mission is null)
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return false;
             }
 
-            mission.StartMachine(command, machineData);
+            mission.StartMachine(command);
             return true;
         }
 
@@ -77,13 +77,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 switch (missionType)
                 {
                     case MissionType.ChangeRunningType:
-                        var changeRunningStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>();
-                        newMission = new MachineMission<IChangeRunningStateStateMachine>(changeRunningStateMachine, this.OnActiveStateMachineCompleted);
+                        newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
 
                     case MissionType.MoveLoadingUnit:
-                        var moveLoadingUnitMachine = this.serviceScope.ServiceProvider.GetRequiredService<IMoveLoadingUnitStateMachine>();
-                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(moveLoadingUnitMachine, this.OnActiveStateMachineCompleted);
+                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
                 }
 

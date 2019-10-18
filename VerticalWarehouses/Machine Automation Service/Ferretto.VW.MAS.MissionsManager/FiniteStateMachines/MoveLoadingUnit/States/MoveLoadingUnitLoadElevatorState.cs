@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -28,11 +26,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private int? loadingUnitId;
-
-        private LoadingUnitDestination source;
-
-        private int? sourceCellId;
+        private IMoveLoadingUnitMachineData moveData;
 
         #endregion
 
@@ -44,9 +38,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -60,13 +53,31 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (machineData is IMoveLoadingUnitMachineData machineMoveData)
             {
-                this.loadingUnitId = moveData.LoadingUnitId;
-                this.source = messageData.Source;
-                this.sourceCellId = messageData.SourceCellId;
+                this.moveData = machineMoveData;
 
-                this.loadingUnitMovementProvider.MoveLoadingUnitToElevator(moveData.LoadingUnitId, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                var direction = HorizontalMovementDirection.Backwards;
+                switch (this.moveData.LoadingUnitSource)
+                {
+                    case LoadingUnitLocation.Cell:
+                        if (this.moveData.LoadingUnitCellSourceId != null)
+                        {
+                            var cell = this.cellsProvider.GetCellById(this.moveData.LoadingUnitCellSourceId.Value);
+
+                            direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                        }
+
+                        break;
+
+                    default:
+                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
+                        direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+
+                        break;
+                }
+
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -80,32 +91,38 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitToElevatorStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    using (var scope = new TransactionScope())
+                    using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                     {
-                        this.elevatorDataProvider.LoadLoadingUnit(this.loadingUnitId.Value);
+                        this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
 
-                        if (this.source == LoadingUnitDestination.Cell)
+                        if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
                         {
-                            this.cellsProvider.UnloadLoadingUnit(this.sourceCellId);
+                            var moveDataLoadingUnitCellSourceId = this.moveData.LoadingUnitCellSourceId;
+
+                            if (moveDataLoadingUnitCellSourceId != null)
+                            {
+                                this.cellsProvider.UnloadLoadingUnit(moveDataLoadingUnitCellSourceId.Value);
+                            }
                         }
                         else
                         {
-                            this.baysProvider.UnloadLoadingUnit(this.source);
+                            this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
                         }
 
-                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
-
-                        scope.Complete();
+                        transaction.Commit();
                     }
+
+                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+
                     break;
 
                 case MessageStatus.OperationError:
-                    returnValue = this.GetState<IChangeRunningStateEndState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;

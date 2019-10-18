@@ -23,9 +23,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachinesDataService machinesDataService;
 
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
             this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
-            }
+        }
 
         #endregion
 
@@ -126,9 +126,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination)
+        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            if (destination == LoadingUnitDestination.Cell)
+            if (destination == LoadingUnitLocation.Cell)
             {
                 return this.BadRequest();
             }
@@ -152,17 +152,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingSourceDestination(LoadingUnitDestination source, LoadingUnitDestination destination, int sourceCellId, int destinationCellId)
+        public IActionResult StartMovingSourceDestination(LoadingUnitLocation source, LoadingUnitLocation destination, int sourceCellId, int destinationCellId)
         {
-            if (source == LoadingUnitDestination.Cell && destination == LoadingUnitDestination.Cell)
+            if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
                 this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
-            else if (source != LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
                 this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber, MessageActor.AutomationService);
             }
-            else if (source == LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
                 this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
             }

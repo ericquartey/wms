@@ -141,6 +141,21 @@ namespace Ferretto.VW.MAS.DataLayer
                             Tare = loadingUnitClass.Tare,
                         });
                 }
+#if DEBUG
+                // TODO Remove after initial develop/debug
+                this.dataContext.SaveChanges();
+
+                for (int i = 1; i < 4; i++)
+                {
+                    var loadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == i);
+                    loadingUnit.CellId = i;
+                    this.dataContext.LoadingUnits.Update(loadingUnit);
+
+                    var cell = this.dataContext.Cells.Single(c => c.Id == i);
+                    cell.Status = CellStatus.Occupied;
+                    this.dataContext.Cells.Update(cell);
+                }
+#endif
 
                 this.dataContext.SaveChanges();
             }

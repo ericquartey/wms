@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler);
 
-        void StartMachine(CommandMessage command, IFiniteStateMachineData machineData);
+        void StartMachine(CommandMessage command);
 
         void StopMachine(StopRequestReason reason);
 

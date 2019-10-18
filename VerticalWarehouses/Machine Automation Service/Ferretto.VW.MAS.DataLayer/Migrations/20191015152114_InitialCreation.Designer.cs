@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20191015152114_InitialCreation")]
+    partial class InitialCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -575,7 +577,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 16, 8, 31, 15, 19, DateTimeKind.Local).AddTicks(9544),
+                            InstallationDate = new DateTime(2016, 12, 15, 17, 21, 14, 162, DateTimeKind.Local).AddTicks(9592),
                             ServiceStatus = 86
                         });
                 });
@@ -907,9 +909,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
+                    b.Property<double>("Acceleration");
+
+                    b.Property<double>("Deceleration");
+
                     b.Property<double>("HighSpeedDurationClose");
 
                     b.Property<double>("HighSpeedDurationOpen");
+
+                    b.Property<double>("HigherDistance");
+
+                    b.Property<double>("LowerDistance");
 
                     b.Property<double>("MaxSpeed");
 

@@ -180,10 +180,10 @@ namespace Ferretto.VW.MAS.DataLayer
             var bay = this.dataContext.Bays
                 .Include(b => b.Inverter)
                 .Include(b => b.Positions)
+                .ThenInclude(p => p.LoadingUnit)
                 .Include(b => b.Shutter)
                 .ThenInclude(s => s.Inverter)
                 .Include(b => b.Carousel)
-                .Include(b => b.LoadingUnit)
                 .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
 
             if (bay is null)
@@ -192,6 +192,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return bay;
+        }
+
+        public Bay GetByLoadingUnitLocation(LoadingUnitLocation location)
+        {
+            return this.dataContext.Bays.FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)
@@ -234,10 +239,10 @@ namespace Ferretto.VW.MAS.DataLayer
             var bay = this.dataContext.Bays
                 .Include(b => b.Inverter)
                 .Include(b => b.Positions)
+                .ThenInclude(p => p.LoadingUnit)
                 .Include(b => b.Shutter)
                 .ThenInclude(s => s.Inverter)
                 .Include(b => b.Carousel)
-                .Include(b => b.LoadingUnit)
                 .SingleOrDefault(b => b.Number == bayNumber);
 
             if (bay is null)
@@ -379,57 +384,19 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        public double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination, out int? loadingUnitId)
+        public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
-            loadingUnitId = null;
-            Bay bay = null;
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.LoadingUnit;
+        }
 
-            switch (destination)
-            {
-                case LoadingUnitDestination.InternalBay1Up:
-                case LoadingUnitDestination.ExternalBay1Up:
-                case LoadingUnitDestination.CarouselBay1Up:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayOne);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Max(p => p.Height);
+        public double GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
+        {
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.Height ?? 0;
+        }
 
-                case LoadingUnitDestination.InternalBay1Down:
-                case LoadingUnitDestination.ExternalBay1Down:
-                case LoadingUnitDestination.CarouselBay1Down:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayOne);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Min(p => p.Height);
-
-                case LoadingUnitDestination.InternalBay2Up:
-                case LoadingUnitDestination.ExternalBay2Up:
-                case LoadingUnitDestination.CarouselBay2Up:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayTwo);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Max(p => p.Height);
-
-                case LoadingUnitDestination.InternalBay2Down:
-                case LoadingUnitDestination.ExternalBay2Down:
-                case LoadingUnitDestination.CarouselBay2Down:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayTwo);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Min(p => p.Height);
-
-                case LoadingUnitDestination.InternalBay3Up:
-                case LoadingUnitDestination.ExternalBay3Up:
-                case LoadingUnitDestination.CarouselBay3Up:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayThree);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Max(p => p.Height);
-
-                case LoadingUnitDestination.InternalBay3Down:
-                case LoadingUnitDestination.ExternalBay3Down:
-                case LoadingUnitDestination.CarouselBay3Down:
-                    bay = this.dataContext.Bays.Single(b => b.Number == BayNumber.BayThree);
-                    loadingUnitId = bay.LoadingUnit.Id;
-                    return bay.Positions.Min(p => p.Height);
-            }
-
-            return 0;
+        public LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId)
+        {
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
         }
 
         public ShutterPosition GetShutterClosePosition(LoadingUnitDestination destination, bool parallel, out BayNumber bay)
@@ -531,33 +498,33 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Opened;
 
-                case LoadingUnitDestination.InternalBay1Down:
-                case LoadingUnitDestination.ExternalBay1Down:
-                case LoadingUnitDestination.CarouselBay1Down:
+                case LoadingUnitLocation.InternalBay1Down:
+                case LoadingUnitLocation.ExternalBay1Down:
+                case LoadingUnitLocation.CarouselBay1Down:
                     bay = BayNumber.BayOne;
                     return ShutterPosition.Half;
 
-                case LoadingUnitDestination.InternalBay2Up:
-                case LoadingUnitDestination.ExternalBay2Up:
-                case LoadingUnitDestination.CarouselBay2Up:
+                case LoadingUnitLocation.InternalBay2Up:
+                case LoadingUnitLocation.ExternalBay2Up:
+                case LoadingUnitLocation.CarouselBay2Up:
                     bay = BayNumber.BayTwo;
                     return ShutterPosition.Opened;
 
-                case LoadingUnitDestination.InternalBay2Down:
-                case LoadingUnitDestination.ExternalBay2Down:
-                case LoadingUnitDestination.CarouselBay2Down:
+                case LoadingUnitLocation.InternalBay2Down:
+                case LoadingUnitLocation.ExternalBay2Down:
+                case LoadingUnitLocation.CarouselBay2Down:
                     bay = BayNumber.BayTwo;
                     return ShutterPosition.Half;
 
-                case LoadingUnitDestination.InternalBay3Up:
-                case LoadingUnitDestination.ExternalBay3Up:
-                case LoadingUnitDestination.CarouselBay3Up:
+                case LoadingUnitLocation.InternalBay3Up:
+                case LoadingUnitLocation.ExternalBay3Up:
+                case LoadingUnitLocation.CarouselBay3Up:
                     bay = BayNumber.BayThree;
                     return ShutterPosition.Opened;
 
-                case LoadingUnitDestination.InternalBay3Down:
-                case LoadingUnitDestination.ExternalBay3Down:
-                case LoadingUnitDestination.CarouselBay3Down:
+                case LoadingUnitLocation.InternalBay3Down:
+                case LoadingUnitLocation.ExternalBay3Down:
+                case LoadingUnitLocation.CarouselBay3Down:
                     bay = BayNumber.BayThree;
                     return ShutterPosition.Half;
 
@@ -567,7 +534,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination)
+        public void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation destination)
         {
             throw new NotImplementedException();
         }
@@ -587,9 +554,13 @@ namespace Ferretto.VW.MAS.DataLayer
             return bay;
         }
 
-        public void UnloadLoadingUnit(LoadingUnitDestination destination)
+        public void UnloadLoadingUnit(LoadingUnitLocation destination)
         {
-            throw new NotImplementedException();
+            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
+            position.LoadingUnit = null;
+
+            this.dataContext.BayPositions.Update(position);
+            this.dataContext.SaveChanges();
         }
 
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)

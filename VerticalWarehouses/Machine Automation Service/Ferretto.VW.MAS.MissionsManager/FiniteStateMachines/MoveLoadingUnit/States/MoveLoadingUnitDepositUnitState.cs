@@ -3,8 +3,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -27,11 +27,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private LoadingUnitDestination destination;
+        private LoadingUnitLocation destination;
 
         private int? destinationCellId;
 
-        private int? loadingUnitId;
+        private int loadingUnitId;
 
         #endregion
 
@@ -43,9 +43,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -59,13 +58,33 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is MoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
             {
                 this.loadingUnitId = moveData.LoadingUnitId;
                 this.destination = messageData.Destination;
                 this.destinationCellId = messageData.DestinationCellId;
 
-                this.loadingUnitMovementProvider.MoveLoadingUnitToDestination(moveData.LoadingUnitId, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                var direction = HorizontalMovementDirection.Backwards;
+                switch (this.destination)
+                {
+                    case LoadingUnitLocation.Cell:
+                        if (this.destinationCellId != null)
+                        {
+                            var cell = this.cellsProvider.GetCellById(this.destinationCellId.Value);
+
+                            direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        }
+
+                        break;
+
+                    default:
+                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.destination);
+                        direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+
+                        break;
+                }
+
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -79,28 +98,39 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitToDestinationStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
 
-                    // TODO wrap these providers call in a single transaction
-                    this.elevatorDataProvider.UnloadLoadingUnit();
-                    if (this.destination == LoadingUnitDestination.Cell)
+                    using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                     {
-                        this.cellsProvider.LoadLoadingUnit(this.loadingUnitId, this.destinationCellId);
-                    }
-                    else
-                    {
-                        this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        this.elevatorDataProvider.UnloadLoadingUnit();
+
+                        if (this.destination == LoadingUnitLocation.Cell)
+                        {
+                            var moveDataLoadingUnitCellSourceId = this.destinationCellId;
+
+                            if (moveDataLoadingUnitCellSourceId != null)
+                            {
+                                this.cellsProvider.LoadLoadingUnit(this.loadingUnitId, moveDataLoadingUnitCellSourceId.Value);
+                            }
+                        }
+                        else
+                        {
+                            this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        }
+
+                        transaction.Commit();
                     }
 
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
+
                     break;
 
                 case MessageStatus.OperationError:
-                    returnValue = this.GetState<IChangeRunningStateEndState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;

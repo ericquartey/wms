@@ -70,8 +70,6 @@
 
         ElevatorWeightCheck,
 
-        PositioningTable,
-
         InverterFaultReset,
 
         ResetSecurity,

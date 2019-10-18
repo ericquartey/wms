@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         bool AllowMultipleInstances(CommandMessage command);
 
-        void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken);
+        void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 
         void Stop(StopRequestReason reason);
 

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Missions
@@ -17,17 +18,21 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         private readonly CancellationTokenSource cancellationTokenSource;
 
+        private readonly IServiceScope serviceScope;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        protected Mission(Guid id, TMachine currentStateMachine)
+        protected Mission(IServiceScopeFactory serviceScopeFactory)
         {
+            this.serviceScope = serviceScopeFactory.CreateScope();
+
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.Id = id;
-            this.CurrentStateMachine = currentStateMachine;
+            this.CurrentStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<TMachine>();
+            this.Id = this.CurrentStateMachine.InstanceId;
         }
 
         #endregion
@@ -62,9 +67,9 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.CurrentStateMachine.Completed -= endHandler;
         }
 
-        public void StartMachine(CommandMessage command, IFiniteStateMachineData machineData)
+        public void StartMachine(CommandMessage command)
         {
-            this.CurrentStateMachine.Start(command, machineData, this.cancellationTokenSource.Token);
+            this.CurrentStateMachine.Start(command, this.serviceScope.ServiceProvider, this.cancellationTokenSource.Token);
         }
 
         public virtual void StopMachine(StopRequestReason reason)
@@ -82,6 +87,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
             if (disposing)
             {
                 this.cancellationTokenSource?.Dispose();
+                this.serviceScope.Dispose();
             }
 
             this.disposed = true;

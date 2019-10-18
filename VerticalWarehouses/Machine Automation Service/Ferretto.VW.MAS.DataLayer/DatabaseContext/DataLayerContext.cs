@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Properties
 
+        public DbSet<BayPosition> BayPositions { get; set; }
+
         public DbSet<Bay> Bays { get; set; }
 
         public DbSet<Carousel> Carousels { get; set; }
@@ -128,6 +130,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             modelBuilder
                 .ApplyConfiguration(new BaysConfiguration())
+                .ApplyConfiguration(new BayPositionsConfiguration())
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())

@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Constructors
 
-        protected LoadingUnitMovementProvider(
+        public LoadingUnitMovementProvider(
             IBaysProvider baysProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
@@ -51,21 +51,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
-                (notification.Type == MessageType.Positioning || notification.Type == MessageType.ShutterPositioning);
+                (notification.Type == MessageType.Positioning ||
+                 notification.Type == MessageType.Stop ||
+                 notification.Status == MessageStatus.OperationFaultStop ||
+                 notification.Status == MessageStatus.OperationRunningStop ||
+                 notification.Type == MessageType.ShutterPositioning);
         }
-
-        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
+        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
         {
-            throw new NotImplementedException();
-        }
 
-        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId)
-        {
-            loadingUnitId = null;
             double targetPosition = 0;
-            switch (messageData.Source)
+            switch (messageData.Destination)
             {
-                case LoadingUnitDestination.LoadingUnit:
+                case LoadingUnitLocation.LoadingUnit:
                     // Retrieve loading unit position
                     if (messageData.LoadingUnitId != null)
                     {
@@ -73,12 +71,47 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
-                            loadingUnitId = messageData.LoadingUnitId;
                         }
                     }
                     break;
 
-                case LoadingUnitDestination.Cell:
+                case LoadingUnitLocation.Cell:
+                    // Retrieve Cell height
+                    if (messageData.DestinationCellId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
+                        if (cell != null && cell.Status == CellStatus.Free)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
+                    break;
+
+                default:
+                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Destination);
+                    break;
+            }
+            return targetPosition;
+        }
+
+        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData)
+        {
+            double targetPosition = 0;
+            switch (messageData.Source)
+            {
+                case LoadingUnitLocation.LoadingUnit:
+                    // Retrieve loading unit position
+                    if (messageData.LoadingUnitId != null)
+                    {
+                        var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
+                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        {
+                            targetPosition = cell.Position;
+                        }
+                    }
+                    break;
+
+                case LoadingUnitLocation.Cell:
                     // Retrieve Cell height
                     if (messageData.SourceCellId != null)
                     {
@@ -86,36 +119,30 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
-                            loadingUnitId = cell.LoadingUnit.Id;
                         }
                     }
                     break;
 
                 default:
-                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source, out loadingUnitId);
+                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
                     break;
             }
             return targetPosition;
         }
 
-        public void MoveLoadingUnitToDestination(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay)
         {
-            throw new NotImplementedException();
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, requestingBay, sender);
         }
 
-        public MessageStatus MoveLoadingUnitToDestinationStatus(NotificationMessage message)
+        public MessageStatus MoveLoadingUnitStatus(NotificationMessage message)
         {
-            throw new NotImplementedException();
-        }
+            if (message.Type == MessageType.Positioning)
+            {
+                return message.Status;
+            }
 
-        public void MoveLoadingUnitToElevator(int? loadingUnitId, MessageActor sender, BayNumber requestingBay)
-        {
-            throw new NotImplementedException();
-        }
-
-        public MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message)
-        {
-            throw new NotImplementedException();
+            return MessageStatus.NoStatus;
         }
 
         public bool NeedOpenShutter(LoadingUnitDestination positionType)
@@ -127,7 +154,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             return false;
         }
-
+        
         public bool OpenShutter(LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay)
         {
             if (positionType != LoadingUnitDestination.NoDestination)

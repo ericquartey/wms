@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        bool StartMachineMission(Guid missionId, CommandMessage command, IFiniteStateMachineData machineData);
+        bool StartMachineMission(Guid missionId, CommandMessage command);
 
         bool StopMachineMission(Guid missionId, StopRequestReason reason);
 

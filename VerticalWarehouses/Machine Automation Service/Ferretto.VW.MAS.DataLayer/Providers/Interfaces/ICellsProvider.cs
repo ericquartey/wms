@@ -15,9 +15,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CellStatisticsSummary GetStatistics();
 
-        void LoadLoadingUnit(int? loadingUnitId, int? cellId);
+        void LoadLoadingUnit(int loadingUnitId, int cellId);
 
-        void UnloadLoadingUnit(int? cellId);
+        void UnloadLoadingUnit(int cellId);
 
         Cell UpdateHeight(int cellId, double height);
 

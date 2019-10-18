@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay GetByIoIndex(IoIndex ioIndex);
 
+        Bay GetByLoadingUnitLocation(LoadingUnitLocation location);
+
         BayNumber GetByMovementType(IPositioningMessageData data);
 
         Bay GetByNumber(BayNumber bayNumber);
@@ -41,17 +43,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
-        double GetLoadingUnitDestinationHeight(LoadingUnitDestination destination, out int? loadingUnitId);
+        LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
+        double GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
         ShutterPosition GetShutterClosePosition(LoadingUnitDestination destination, bool parallel, out BayNumber bay);
 
+        LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
         ShutterPosition GetShutterOpenPosition(LoadingUnitDestination destination, out BayNumber bay);
 
-        void LoadLoadingUnit(int? loadingUnitId, LoadingUnitDestination destination);
+        ShutterPosition GetShutterPosition(LoadingUnitLocation location, out BayNumber bay);
+
+        void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
-        void UnloadLoadingUnit(LoadingUnitDestination destination);
+        void UnloadLoadingUnit(LoadingUnitLocation location);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 

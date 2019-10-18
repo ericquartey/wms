@@ -8,8 +8,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Constructors
 
         public MoveLoadingUnitMessageData(
-            LoadingUnitDestination source,
-            LoadingUnitDestination destination,
+            LoadingUnitLocation source,
+            LoadingUnitLocation destination,
             int? sourceCellId,
             int? destinationCellId,
             int? loadingUnitId,
@@ -33,13 +33,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public CommandAction CommandAction { get; }
 
-        public LoadingUnitDestination Destination { get; }
+        public LoadingUnitLocation Destination { get; }
 
         public int? DestinationCellId { get; }
 
         public int? LoadingUnitId { get; }
 
-        public LoadingUnitDestination Source { get; }
+        public LoadingUnitLocation Source { get; }
 
         public int? SourceCellId { get; }
 

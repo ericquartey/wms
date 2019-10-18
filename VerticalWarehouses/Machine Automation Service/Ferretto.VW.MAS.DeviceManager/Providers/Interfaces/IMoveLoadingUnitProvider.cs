@@ -11,23 +11,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
-        double GetDestinationHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId);
+        double GetDestinationHeight(IMoveLoadingUnitMessageData messageData);
 
-        double GetSourceHeight(IMoveLoadingUnitMessageData messageData, out int? loadingUnitId);
+        double GetSourceHeight(IMoveLoadingUnitMessageData messageData);
 
-        void MoveLoadingUnitToDestination(int? loadingUnitId, MessageActor sender, BayNumber requestingBay);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay);
 
-        MessageStatus MoveLoadingUnitToDestinationStatus(NotificationMessage message);
+        MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
-        void MoveLoadingUnitToElevator(int? loadingUnitId, MessageActor sender, BayNumber requestingBay);
+        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus MoveLoadingUnitToElevatorStatus(NotificationMessage message);
 
-        bool NeedOpenShutter(LoadingUnitDestination positionType);
+        bool NeedOpenShutter(LoadingUnitLocation positionType);
 
-        bool OpenShutter(LoadingUnitDestination positionType, MessageActor sender, BayNumber requestingBay);
+        bool OpenShutter(LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay);
 
-        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitDestination sourceType, MessageActor sender, BayNumber requestingBay);
+        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation sourceType, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements);
 

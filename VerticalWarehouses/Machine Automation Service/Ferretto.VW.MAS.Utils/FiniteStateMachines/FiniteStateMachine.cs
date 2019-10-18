@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
@@ -28,8 +29,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue =
             new BlockingConcurrentQueue<NotificationMessage>();
-
-        private readonly IServiceScope serviceScope;
 
         private IState activeState;
 
@@ -50,23 +49,19 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private BayNumber requestingBay;
 
+        private IServiceProvider serviceProvider;
+
         #endregion
 
         #region Constructors
 
         protected FiniteStateMachine(
         IEventAggregator eventAggregator,
-        ILogger<StateBase> logger,
-        IServiceScopeFactory serviceScopeFactory)
+        ILogger<StateBase> logger)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -75,7 +70,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
-            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -106,7 +100,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     try
                     {
-                        this.activeState?.Enter(this.StartData, this.MachineData);
+                        this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
                     }
                     catch (StateMachineException ex)
                     {
@@ -128,7 +122,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        public IFiniteStateMachineData MachineData { get; private set; }
+        public IFiniteStateMachineData MachineData { get; protected set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -156,15 +150,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 this.notificationEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken = null;
 
-                this.serviceScope.Dispose();
-
                 this.OnDisposing();
 
                 this.isDisposed = true;
             }
         }
 
-        public virtual void Start(CommandMessage commandMessage, IFiniteStateMachineData machineData, CancellationToken cancellationToken)
+        public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -173,7 +165,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.isStarted = true;
 
-            this.MachineData = machineData;
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
             this.StartData = commandMessage;
 
@@ -209,7 +201,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         protected IState GetState<TState>()
             where TState : IState
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
+            return this.serviceProvider.GetRequiredService<TState>();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)

@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -7,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         ElevatorAxis GetAxis(Orientation orientation);
+
+        IDbContextTransaction GetContextTransaction();
 
         ElevatorAxis GetHorizontalAxis();
 
