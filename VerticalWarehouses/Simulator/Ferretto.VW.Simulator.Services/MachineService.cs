@@ -384,6 +384,7 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.SetOperatingMode:
                     inverter.OperationMode = (InverterOperationMode)message.UShortPayload;
+                    message.IsError = true;
                     result = client.Client.Send(message.ToBytes());
                     break;
 

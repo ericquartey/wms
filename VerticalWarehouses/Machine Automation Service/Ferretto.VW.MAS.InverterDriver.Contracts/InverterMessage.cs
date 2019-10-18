@@ -23,24 +23,24 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         private readonly Dictionary<int, string> telegramErrorText = new Dictionary<int, string>()
         {
-            { 0, "no error" },
-            { 1, "Non-permissible parameter value" },
-            { 2, "Non-permissible dataset" },
-            { 3, "Parameter not readable (write-only)" },
-            { 4, "Parameter not writable (read-only)" },
-            { 5, "EEPROM read error" },
-            { 6, "EEPROM write error" },
-            { 7, "EEPROM checksum error" },
-            { 8, "Parameter cannot be written while drive is running" },
-            { 9, "Values of data sets are different" },
-            { 10, "Not available" },
-            { 11, "Unknown parameter" },
-            { 12, "Not available" },
-            { 13, "Syntax error in received telegram" },
-            { 14, "Data type of parameter does not correspond to the number of bytes in the telegram" },
-            { 15, "Unknown error" },
-            { 20, "Selected System Bus node not available" },
-            { 30, "Syntax error in received telegram" },
+            { 0, " no error" },
+            { 1, " Non-permissible parameter value" },
+            { 2, " Non-permissible dataset" },
+            { 3, " Parameter not readable (write-only)" },
+            { 4, " Parameter not writable (read-only)" },
+            { 5, " EEPROM read error" },
+            { 6, " EEPROM write error" },
+            { 7, " EEPROM checksum error" },
+            { 8, " Parameter cannot be written while drive is running" },
+            { 9, " Values of data sets are different" },
+            { 10, " Not available" },
+            { 11, " Unknown parameter" },
+            { 12, " Not available" },
+            { 13, " Syntax error in received telegram" },
+            { 14, " Data type of parameter does not correspond to the number of bytes in the telegram" },
+            { 15, " Unknown error" },
+            { 20, " Selected System Bus node not available" },
+            { 30, " Syntax error in received telegram" },
         };
 
         private bool heartbeatMessage;
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public int IntPayload => this.ConvertPayloadToInt();
 
-        public bool IsError { get; private set; }
+        public bool IsError { get; set; }
 
         public bool IsHeartbeatMessage => this.heartbeatMessage;
 
@@ -153,8 +153,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         public InverterIndex SystemIndex { get; private set; }
 
         public string TelegramErrorText => this.telegramErrorText.ContainsKey(this.UShortPayload)
-            ? this.telegramErrorText[this.UShortPayload]
-            : string.Empty;
+            ? this.UShortPayload.ToString() + this.telegramErrorText[this.UShortPayload]
+            : this.UShortPayload.ToString();
 
         public uint UIntPayload => this.ConvertPayloadToUInt();
 
