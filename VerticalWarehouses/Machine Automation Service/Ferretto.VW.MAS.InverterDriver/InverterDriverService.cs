@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (message.IsError)
                 {
-                    this.Logger.LogError($"Received error code: {message.UShortPayload}");
+                    this.Logger.LogError($"Received error Message: {message}");
                     var errorCode = (int)DataModels.MachineErrors.InverterErrorBaseCode + message.UShortPayload;
                     if (!Enum.IsDefined(typeof(DataModels.MachineErrors), errorCode))
                     {
