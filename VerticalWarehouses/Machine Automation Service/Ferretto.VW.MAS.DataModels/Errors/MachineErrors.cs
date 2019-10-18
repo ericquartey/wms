@@ -75,21 +75,6 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorWrongPayloadLength), 1)]
         InverterErrorWrongPayloadLength = InverterErrorBaseCode + 14,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorUnknown15), 1)]
-        InverterErrorUnknown15 = InverterErrorBaseCode + 15,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorUnknown16), 1)]
-        InverterErrorUnknown16 = InverterErrorBaseCode + 16,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorUnknown17), 1)]
-        InverterErrorUnknown17 = InverterErrorBaseCode + 17,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorUnknown18), 1)]
-        InverterErrorUnknown18 = InverterErrorBaseCode + 18,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorUnknown19), 1)]
-        InverterErrorUnknown19 = InverterErrorBaseCode + 19,
-
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorNodeNotAvailable), 1)]
         InverterErrorNodeNotAvailable = InverterErrorBaseCode + 20,
 

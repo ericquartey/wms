@@ -384,8 +384,15 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.SetOperatingMode:
                     inverter.OperationMode = (InverterOperationMode)message.UShortPayload;
-                    message.IsError = true;
-                    result = client.Client.Send(message.ToBytes());
+                    if (inverter.OperationMode == InverterOperationMode.ProfileVelocity)
+                    {
+                        var errorResponse = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)17), true);
+                        result = client.Client.Send(errorResponse);
+                    }
+                    else
+                    {
+                        result = client.Client.Send(message.ToBytes());
+                    }
                     break;
 
                 case InverterParameterId.HomingCalibration:
@@ -505,7 +512,7 @@ namespace Ferretto.VW.Simulator.Services
                         var replyMessage = message.ToBytes();
                         if (message.UIntPayload == 0)
                         {
-                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(1), true);
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
                         }
 
                         result = client.Client.Send(replyMessage);

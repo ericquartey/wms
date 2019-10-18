@@ -2250,11 +2250,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 200011 = InverterErrorUnknownParameter
     /// 200013 = InverterErrorSyntaxError
     /// 200014 = InverterErrorWrongPayloadLength
-    /// 200015 = InverterErrorUnknown15
-    /// 200016 = InverterErrorUnknown16
-    /// 200017 = InverterErrorUnknown17
-    /// 200018 = InverterErrorUnknown18
-    /// 200019 = InverterErrorUnknown19
     /// 200020 = InverterErrorNodeNotAvailable
     /// 200030 = InverterErrorSyntaxError2</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -2303,16 +2298,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorSyntaxError = 200013,
     
         InverterErrorWrongPayloadLength = 200014,
-    
-        InverterErrorUnknown15 = 200015,
-    
-        InverterErrorUnknown16 = 200016,
-    
-        InverterErrorUnknown17 = 200017,
-    
-        InverterErrorUnknown18 = 200018,
-    
-        InverterErrorUnknown19 = 200019,
     
         InverterErrorNodeNotAvailable = 200020,
     

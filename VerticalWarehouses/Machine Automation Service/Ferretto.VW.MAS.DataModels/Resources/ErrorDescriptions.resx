@@ -162,9 +162,6 @@
   <data name="InverterErrorSyntaxError" xml:space="preserve">
     <value>Errore di sintassi del messaggio inviato all'inverter.</value>
   </data>
-  <data name="InverterErrorUnknown15" xml:space="preserve">
-    <value>Errore sconosciuto 15 dell'inverter.</value>
-  </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
     <value>Parametro sconosciuto passato all'inverter.</value>
   </data>
@@ -188,17 +185,5 @@
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>ZeroSensorErrorAfterPickup</value>
-  </data>
-  <data name="InverterErrorUnknown16" xml:space="preserve">
-    <value>InverterErrorUnknown16</value>
-  </data>
-  <data name="InverterErrorUnknown17" xml:space="preserve">
-    <value>InverterErrorUnknown17</value>
-  </data>
-  <data name="InverterErrorUnknown18" xml:space="preserve">
-    <value>InverterErrorUnknown18</value>
-  </data>
-  <data name="InverterErrorUnknown19" xml:space="preserve">
-    <value>InverterErrorUnknown19</value>
   </data>
 </root>

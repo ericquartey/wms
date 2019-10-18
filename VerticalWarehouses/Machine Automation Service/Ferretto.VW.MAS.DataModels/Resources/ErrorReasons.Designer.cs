@@ -216,51 +216,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
         /// </summary>
-        public static string InverterErrorUnknown15 {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown15", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to InverterErrorUnknown16.
-        /// </summary>
-        public static string InverterErrorUnknown16 {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown16", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to InverterErrorUnknown17.
-        /// </summary>
-        public static string InverterErrorUnknown17 {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown17", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to InverterErrorUnknown18.
-        /// </summary>
-        public static string InverterErrorUnknown18 {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown18", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to InverterErrorUnknown19.
-        /// </summary>
-        public static string InverterErrorUnknown19 {
-            get {
-                return ResourceManager.GetString("InverterErrorUnknown19", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
-        /// </summary>
         public static string InverterErrorUnknownParameter {
             get {
                 return ResourceManager.GetString("InverterErrorUnknownParameter", resourceCulture);
