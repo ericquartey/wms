@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new ShutterPositioningStopState(
+                new ShutterPositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus,
                     this.shutterPositionData,
@@ -119,63 +119,63 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             switch (message.ParameterId)
             {
                 case InverterParameterId.ShutterTargetPosition:
-                {
-                    var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocity, this.shutterPositionData.SpeedRate, this.dataset);
-                    var byteData = data.ToBytes();
+                    {
+                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocity, this.shutterPositionData.SpeedRate, this.dataset);
+                        var byteData = data.ToBytes();
 
-                    this.ParentStateMachine.EnqueueCommandMessage(data);
-                    this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {(int)this.dataset}");
-                }
-                break;
+                        this.ParentStateMachine.EnqueueCommandMessage(data);
+                        this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {(int)this.dataset}");
+                    }
+                    break;
 
                 case InverterParameterId.ShutterTargetVelocity:
-                {
-                    // TODO: remove this change state after inverter firmware update
-                    //if (this.shutterPositionData.MovementType == MovementType.Relative)
-                    //{
-                    //    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                    //}
-                    //else
                     {
-                        var byteDataReceived = message.ToBytes();
-                        var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
-                        var byteData = data.ToBytes();
+                        // TODO: remove this change state after inverter firmware update
+                        //if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        //{
+                        //    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        //}
+                        //else
+                        {
+                            var byteDataReceived = message.ToBytes();
+                            var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
+                            var byteData = data.ToBytes();
 
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
 
-                        returnValue = true;
+                            returnValue = true;
+                        }
                     }
-                }
-                break;
+                    break;
 
                 case InverterParameterId.ShutterLowVelocity:
-                {
-                    var byteDataReceived = message.ToBytes();
-                    if (this.duration > 0)
                     {
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration);
-                        var byteData = data.ToBytes();
+                        var byteDataReceived = message.ToBytes();
+                        if (this.duration > 0)
+                        {
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration);
+                            var byteData = data.ToBytes();
 
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set duration: {this.duration}");
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set duration: {this.duration}");
 
-                        returnValue = true;
+                            returnValue = true;
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        }
                     }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                    }
-                }
-                break;
+                    break;
 
                 case InverterParameterId.ShutterHighVelocityDuration:
-                {
-                    var byteDataReceived = message.ToBytes();
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                }
-                break;
+                    {
+                        var byteDataReceived = message.ToBytes();
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                    }
+                    break;
 
                 default:
                     break;

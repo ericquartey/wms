@@ -62,10 +62,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningTableStopState(
+                new PositioningTableDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />

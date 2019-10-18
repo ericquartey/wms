@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new ShutterPositioningStopState(
+                new ShutterPositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus,
                     this.shutterPositionData,
