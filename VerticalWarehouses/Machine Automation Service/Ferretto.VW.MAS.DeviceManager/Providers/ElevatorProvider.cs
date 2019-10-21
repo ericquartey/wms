@@ -577,7 +577,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
-            return axis.ScaleMovementsByWeight(loadingUnit, structuralProperties.MaximumLoadOnBoard);
+            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         #endregion

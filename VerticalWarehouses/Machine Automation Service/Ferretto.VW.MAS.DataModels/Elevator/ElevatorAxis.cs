@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "UpperBound cannot be negative or zero.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "UpperBound cannot be negative or zero.");
                 }
 
                 this.upperBound = value;
@@ -93,17 +93,17 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Methods
 
-        public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit, double maximumLoadOnBoard)
+        public MovementParameters ScaleMovementsByWeight(double grossWeight, double maximumLoadOnBoard)
         {
-            if (loadingUnit is null)
+            if (grossWeight > maximumLoadOnBoard)
             {
-                return this.EmptyLoadMovement;
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
             }
 
             var maximumLoadMovement = this.MaximumLoadMovement;
             var emptyLoadMovement = this.EmptyLoadMovement;
 
-            var scalingFactor = Math.Min(loadingUnit.GrossWeight / maximumLoadOnBoard, 1.0);
+            var scalingFactor = Math.Min(grossWeight / maximumLoadOnBoard, 1.0);
 
             return new MovementParameters
             {
