@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
-        private Error error;
+        private MachineError error;
 
         private string errorTime;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override EnableMask EnableMask => EnableMask.None;
 
-        public Error Error
+        public MachineError Error
         {
             get => this.error;
             set => this.SetProperty(ref this.error, value, () => this.OnErrorChanged(null));
