@@ -108,17 +108,17 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         /// <summary>
-        /// Gets or sets the kM value in the formula weight = kM * current + kS
+        /// Gets or sets the kM value in the formula weight = kM * current + kS.
         /// </summary>
         public double WeightMeasureMultiply { get; set; }
 
         /// <summary>
-        /// Gets or setsthe speed for the upward movement during weight measurement, in millimeters/meter.
+        /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/meter.
         /// </summary>
         public double WeightMeasureSpeed { get; set; }
 
         /// <summary>
-        /// Gets or sets the kS value in the formula weight = kM * current + kS
+        /// Gets or sets the kS value in the formula weight = kM * current + kS.
         /// </summary>
         public double WeightMeasureSum { get; set; }
 
