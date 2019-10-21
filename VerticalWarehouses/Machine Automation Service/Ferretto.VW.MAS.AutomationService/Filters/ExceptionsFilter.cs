@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                         Detail = context.Exception.Message,
                     });
                 }
-                else if (context.Exception is ArgumentOutOfRangeException)
+                else if (context.Exception is ArgumentException)
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {

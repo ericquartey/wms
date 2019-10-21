@@ -69,7 +69,7 @@
             "Deceleration": 1000,
             "Speed": 600
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 420
@@ -88,7 +88,7 @@
           "Resolution": 77.6722,
           "Offset": 0,
           "ChainOffset": -10.3,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,
             "Speed": 550

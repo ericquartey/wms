@@ -103,8 +103,8 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId, true))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged
-                            ? DataModels.MachineErrors.InverterFaultStateDetected
-                            : DataModels.MachineErrors.SecurityWasTriggered;
+                            ? DataModels.MachineErrorCode.InverterFaultStateDetected
+                            : DataModels.MachineErrorCode.SecurityWasTriggered;
 
                         this.serviceScope.ServiceProvider
                             .GetRequiredService<IErrorsProvider>()

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
-        private Error activeError;
+        private MachineError activeError;
 
         private bool autoNavigateOnError;
 
@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public Error ActiveError
+        public MachineError ActiveError
         {
             get => this.activeError;
             set

@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CellPanelsProvider(DataLayerContext dataContext)
         {
-            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext)); ;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         #endregion

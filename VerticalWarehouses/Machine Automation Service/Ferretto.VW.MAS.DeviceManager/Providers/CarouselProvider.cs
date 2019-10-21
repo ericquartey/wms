@@ -119,9 +119,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-            var speed = new[] { axis.MaximumLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.MaximumLoadMovement.Acceleration };
-            var deceleration = new[] { axis.MaximumLoadMovement.Deceleration };
+            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
