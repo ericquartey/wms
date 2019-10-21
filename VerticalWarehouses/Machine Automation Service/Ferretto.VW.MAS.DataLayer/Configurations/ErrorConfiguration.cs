@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    internal class ErrorConfiguration : IEntityTypeConfiguration<Error>
+    internal class ErrorConfiguration : IEntityTypeConfiguration<MachineError>
     {
         #region Methods
 
-        public void Configure(EntityTypeBuilder<Error> builder)
+        public void Configure(EntityTypeBuilder<MachineError> builder)
         {
             if (builder == null)
             {

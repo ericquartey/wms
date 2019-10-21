@@ -591,7 +591,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.InverterFaultReset:
                     case MessageType.ResetSecurity:
                     case MessageType.InverterPowerEnable:
-                        this.logger.LogTrace($"16:Deallocation FSM {messageCurrentStateMachine?.GetType().Name} ended with {receivedMessage.Status}");
+                        this.logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {receivedMessage.Status}");
                         this.currentStateMachines.Remove(receivedMessage.TargetBay);
                         this.SendCleanDebug();
                         break;

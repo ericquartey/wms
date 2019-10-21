@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrors.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
                     }
 
                     this.Logger.LogError(errorText);

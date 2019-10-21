@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             {
                 this.status.UpdateOutputStates(resetIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(resetIoMessage);
         }
 

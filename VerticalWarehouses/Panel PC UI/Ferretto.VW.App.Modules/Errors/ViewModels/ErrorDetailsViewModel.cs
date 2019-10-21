@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
-        private Error error;
+        private MachineError error;
 
         private string errorTime;
 
@@ -38,7 +38,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Properties
 
-        public Error Error
+        public override EnableMask EnableMask => EnableMask.None;
+
+        public MachineError Error
         {
             get => this.error;
             set => this.SetProperty(ref this.error, value, () => this.OnErrorChanged(null));
@@ -106,15 +108,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
 
-                var nextError = await this.machineErrorsWebService.GetCurrentAsync();
-                if (nextError is null)
-                {
-                    this.NavigationService.GoBack();
-                }
-                else
-                {
-                    this.Error = nextError;
-                }
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
             catch (Exception ex)
             {

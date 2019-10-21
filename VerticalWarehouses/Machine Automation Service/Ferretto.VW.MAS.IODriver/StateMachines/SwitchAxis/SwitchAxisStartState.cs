@@ -93,12 +93,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
+
             switchOffAxisIoMessage.SwitchPowerEnable(true);
 
             lock (this.status)
             {
                 this.status.UpdateOutputStates(switchOffAxisIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
         }
 

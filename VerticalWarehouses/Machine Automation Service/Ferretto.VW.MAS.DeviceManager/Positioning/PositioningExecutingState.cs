@@ -35,13 +35,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IServiceScope scope;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         private readonly IPositioningStateData stateData;
+
+        private bool beltBurnishingMovingToInitialPosition;
+
+        private bool beltBurnishingMovingUpwards;
 
         private Timer delayTimer;
 
         private bool isDisposed;
 
-        private int numberExecutedSteps;
+        private int performedCycles;
 
         private IPositioningFieldMessageData positioningDownFieldMessageData;
 
@@ -68,6 +74,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
 
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+            this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
@@ -159,21 +166,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.BeltBurnishing:
                     {
-                        // Build message for UP
-                        var positioningUpMessageData = new PositioningMessageData(this.machineData.MessageData);
-                        positioningUpMessageData.TargetPosition = positioningUpMessageData.UpperBound;
+                        // upwards movement message
+                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(
+                            new PositioningMessageData(this.machineData.MessageData)
+                            {
+                                TargetPosition = this.machineData.MessageData.UpperBound
+                            }, this.machineData.RequestingBay);
 
-                        // Build message for DOWN
-                        var positioningDownMessageData = new PositioningMessageData(this.machineData.MessageData);
-                        positioningDownMessageData.TargetPosition = positioningDownMessageData.LowerBound;
+                        // downwards movement message
+                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(
+                            new PositioningMessageData(this.machineData.MessageData)
+                            {
+                                TargetPosition = this.machineData.MessageData.LowerBound
+                            }, this.machineData.RequestingBay);
 
-                        this.positioningUpFieldMessageData = new PositioningFieldMessageData(positioningUpMessageData, this.machineData.RequestingBay);
+                        var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
+                        this.performedCycles = procedure.PerformedCycles;
 
-                        this.positioningDownFieldMessageData = new PositioningFieldMessageData(positioningDownMessageData, this.machineData.RequestingBay);
-
-                        // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
+                        // start by moving to lower position
+                        this.beltBurnishingMovingToInitialPosition = true;
                         commandMessage = new FieldCommandMessage(
-                            this.positioningUpFieldMessageData,
+                            this.positioningDownFieldMessageData,
                             "Belt Burninshing Started",
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
@@ -225,7 +238,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
-            this.machineData.ExecutedSteps = this.numberExecutedSteps;
+            this.machineData.ExecutedSteps = this.performedCycles;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
@@ -251,23 +264,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             // INFO Even to go Up and Odd for Down
             var commandMessage = new FieldCommandMessage(
-                this.numberExecutedSteps % 2 == 0
-                    ? this.positioningUpFieldMessageData
-                    : this.positioningDownFieldMessageData,
-                $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
+                this.beltBurnishingMovingUpwards
+                    ? this.positioningDownFieldMessageData
+                    : this.positioningUpFieldMessageData,
+                $"Belt Burninshing moving cycle N° {this.performedCycles}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.Positioning,
                 (byte)InverterIndex.MainInverter);
+
+            this.beltBurnishingMovingToInitialPosition = false;
+            this.beltBurnishingMovingUpwards = !this.beltBurnishingMovingUpwards;
 
             this.Logger.LogTrace(
                 $"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0
-                ? BeltBurnishingPosition.LowerBound
-                : BeltBurnishingPosition.UpperBound;
+            var beltBurnishingPosition = this.beltBurnishingMovingUpwards
+                ? BeltBurnishingPosition.UpperBound
+                : BeltBurnishingPosition.LowerBound;
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
 
@@ -283,13 +299,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (this.numberExecutedSteps > 0 &&
-                this.numberExecutedSteps % 2 == 0)
+            if (!this.beltBurnishingMovingUpwards && !this.beltBurnishingMovingToInitialPosition)
             {
-                var setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-
-                var procedure = setupProceduresDataProvider.GetBeltBurnishingTest();
-                setupProceduresDataProvider.IncreasePerformedCycles(procedure);
+                var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
+                this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
             }
         }
 
@@ -411,7 +424,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.IsLoadingErrorDuringPickup())
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
                     this.Logger.LogError("Cradle not correctly loaded during pickup");
                     this.stateData.FieldMessage = message;
@@ -419,7 +432,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.IsUnloadingErrorDuringDeposit())
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                     this.Logger.LogError("Cradle not correctly unloaded during deposit");
                     this.stateData.FieldMessage = message;
                     this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
@@ -454,17 +467,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.Position:
                     this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
-                    this.machineData.ExecutedSteps = this.numberExecutedSteps;
+                    this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
                     {
                         if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after pickup");
                         }
                         else
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after deposit");
                         }
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
@@ -476,13 +489,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.BeltBurnishing:
-                    this.numberExecutedSteps++;
-                    this.machineData.MessageData.ExecutedCycles = this.numberExecutedSteps / 2;
+                    this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
-                    if (this.numberExecutedSteps >= this.machineData.MessageData.NumberCycles * 2)
+                    if (this.performedCycles >= this.machineData.MessageData.NumberCycles)
                     {
                         this.Logger.LogDebug("FSM Finished Executing State");
-                        this.machineData.ExecutedSteps = this.numberExecutedSteps;
+                        this.machineData.ExecutedSteps = this.performedCycles;
                         this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                     }
                     else
@@ -499,7 +511,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.FindZero:
-                    this.machineData.ExecutedSteps = this.numberExecutedSteps;
+                    this.machineData.ExecutedSteps = this.performedCycles;
                     this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                     break;
 
@@ -529,7 +541,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.machineData.MessageData.MovementMode == MovementMode.BayChainManual
                 )
             {
-                this.machineData.ExecutedSteps = this.numberExecutedSteps;
+                this.machineData.ExecutedSteps = this.performedCycles;
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
             }
             else if (

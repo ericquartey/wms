@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.VerticalResolutionCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione risoluzione asse verticale")]
-        VerticalResolution,
+        VerticalResolutionCalibration,
 
         [View(Utils.Modules.Installation.VerticalOffsetCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione offset asse verticale")]
@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.CELLPANELSCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Pannelli Mensola")]
-        PanelsCheck,
+        CellPanelsCheck,
 
         [View(Utils.Modules.Installation.SHUTTTER1HEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.LOADINGDRAWERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Inserimento cassetti")]
         AllLoadingUnits,
 

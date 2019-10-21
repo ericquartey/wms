@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public const int MasterIndex = 0;
 
+        private int tcpPort;
+
         #endregion
 
         #region Properties
@@ -16,7 +18,19 @@ namespace Ferretto.VW.MAS.DataModels
 
         public System.Net.IPAddress IpAddress { get; set; }
 
-        public int TcpPort { get; set; }
+        public int TcpPort
+        {
+            get => this.tcpPort;
+            set
+            {
+                if (value < System.Net.IPEndPoint.MinPort || value > System.Net.IPEndPoint.MaxPort)
+                {
+                    throw new System.ArgumentException("The TCP port is not in the allowed range of values.", nameof(value));
+                }
+
+                this.tcpPort = value;
+            }
+        }
 
         public InverterType Type { get; set; }
 
@@ -26,7 +40,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public override string ToString()
         {
-            return $"Index: {this.Index}, Type: {this.Type}";
+            return $"Inverter (index: {this.Index}, type: {this.Type})";
         }
 
         #endregion

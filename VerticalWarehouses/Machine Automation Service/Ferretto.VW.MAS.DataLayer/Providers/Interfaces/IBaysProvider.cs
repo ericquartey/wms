@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
+        double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
+
         Bay Deactivate(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
@@ -50,6 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
         void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
+
+        double GetResolution(InverterIndex inverterIndex);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 

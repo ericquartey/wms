@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
 
             if (message.Data is IStateChangedMessageData messageData)
             {
-                StopRequestReason reason = StopRequestReason.NoReason;
+                var reason = StopRequestReason.NoReason;
 
                 if (message.Type == MessageType.FaultStateChanged && messageData.CurrentState)
                 {
@@ -100,13 +100,22 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
+                    // TODO Handle state change while starting / stopping machine
                     if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
+                        var errorCode = reason == StopRequestReason.FaultStateChanged
+                            ? DataModels.MachineErrorCode.InverterFaultStateDetected
+                            : DataModels.MachineErrorCode.SecurityWasTriggered;
+
+                        this.serviceScope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+
                         this.missionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                        this.Logger.LogError("Failed to create Change Running State machine mission");
                         this.NotifyCommandError(command);
                     }
                 }

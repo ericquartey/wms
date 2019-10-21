@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
 
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
-                notificationMessage => this.PresentationChanged(notificationMessage),
+                this.OnPresentationChanged,
                 ThreadOption.UIThread,
                 false);
 
@@ -74,8 +74,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             // do nothing
         }
 
-        public void PresentationChanged(PresentationChangedMessage presentation)
+        public void OnPresentationChanged(PresentationChangedMessage presentation)
         {
+            if (presentation is null)
+            {
+                throw new System.ArgumentNullException(nameof(presentation));
+            }
+
             this.UpdatePresentation(presentation.Mode);
 
             this.UpdateChanges(presentation);

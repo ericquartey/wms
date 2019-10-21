@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private readonly FieldCommandMessage nextCommandMessage;
+        private FieldCommandMessage nextCommandMessage;
 
         #endregion
 
@@ -66,6 +66,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         /// <inheritdoc />
         public override void Stop()
         {
+            this.nextCommandMessage = null;
             this.CurrentState?.Stop();
         }
 

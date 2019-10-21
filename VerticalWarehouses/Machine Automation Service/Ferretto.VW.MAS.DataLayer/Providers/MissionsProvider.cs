@@ -90,14 +90,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     this.machineMissions.Add(newMission);
 
                     missionId = newMission.Id;
+                    return true;
                 }
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses
+        /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
         /// <param name="requestedMission">TYpe of mission to be created</param>
         /// <param name="command">Command received to create mission. Provides information useful to decide id mission two or more missions of the same type are allowed or not</param>

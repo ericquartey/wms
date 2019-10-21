@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private readonly bool stopRequested;
+        private bool stopRequested;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug($"Shutter positioning Disable Operation. StopRequested = {this.stopRequested}");
             this.InverterStatus.CommonControlWord.EnableOperation = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -50,21 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            if (this.stopRequested)
-            {
-                this.Logger.LogTrace("1:Stop process already active");
-            }
-            else
-            {
-                this.Logger.LogDebug("1:Positioning Stop requested");
-
-                this.ParentStateMachine.ChangeState(
-                    new ShutterPositioningStopState(
-                        this.ParentStateMachine,
-                        this.InverterStatus,
-                        this.shutterPositionData,
-                        this.Logger));
-            }
+            this.Logger.LogDebug("1:Positioning Stop requested");
+            this.stopRequested = true;
         }
 
         /// <inheritdoc/>
@@ -93,7 +80,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     {
                         if (this.stopRequested)
                         {
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningQuickStopState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningSwitchOffState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                         }
                         else
                         {

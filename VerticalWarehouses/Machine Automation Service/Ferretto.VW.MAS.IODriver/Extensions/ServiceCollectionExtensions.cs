@@ -1,6 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
-using Ferretto.VW.MAS.IODriver.Services;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.IODriver
@@ -16,9 +15,10 @@ namespace Ferretto.VW.MAS.IODriver
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<HostedIoDriver>();
+            services.AddHostedService<IoDriverService>();
 
             services.AddSingleton<IIoDevicesProvider, IoDevicesProvider>();
+            services.AddTransient<ISecurityIsClearedConditionEvaluator, SecurityIsClearedConditionEvaluator>();
 
             return services;
         }

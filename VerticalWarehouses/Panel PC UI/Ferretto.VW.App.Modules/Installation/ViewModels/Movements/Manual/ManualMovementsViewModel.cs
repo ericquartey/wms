@@ -29,6 +29,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ShutterEngineManualMovementsViewModel shutterEngineManualMovementsViewModel;
 
+        private Bay bay;
+
+        private bool hasCarousel;
+
+        private bool isBayExternal;
+
         #endregion
 
         #region Constructors
@@ -88,9 +94,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 
-        public bool HasCarousel => this.bayManager.Bay.Carousel != null;
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
 
-        public bool IsBayExternal => this.bayManager.Bay.IsExternal;
+        public bool IsBayExternal
+        {
+            get => this.isBayExternal;
+            set => this.SetProperty(ref this.isBayExternal, value);
+        }
 
         public ShutterEngineManualMovementsViewModel ShutterEngineManualMovementsViewModel => this.shutterEngineManualMovementsViewModel;
 
@@ -101,6 +115,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.bay = await this.bayManager.GetBayAsync();
+
+            this.HasCarousel = this.bay.Carousel != null;
+            this.IsBayExternal = this.bay.IsExternal;
+
+            this.RaisePropertyChanged(nameof(this.IsBayExternal));
         }
 
         public override void UpdateNotifications()

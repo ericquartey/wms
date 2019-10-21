@@ -22,18 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CellsProvider(DataLayerContext dataContext, ILogger<CellsProvider> logger)
         {
-            if (dataContext is null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            this.dataContext = dataContext;
-            this.logger = logger;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -42,9 +32,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Cell> GetAll()
         {
-            return this.dataContext.Cells
-                .Include(c => c.Panel)
-                .ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.Cells
+                    .Include(c => c.Panel)
+                    .ToArray();
+            }
         }
 
         public Cell GetCellById(int cellId)
@@ -65,35 +58,38 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CellStatisticsSummary GetStatistics()
         {
-            var totalCells = this.dataContext.Cells.Count();
-
-            var cellsWithSide = this.dataContext.Cells.Include(c => c.Panel);
-
-            var cellStatusStatistics = cellsWithSide
-                .GroupBy(c => c.Status)
-                .Select(g =>
-                    new CellStatusStatistics
-                    {
-                        Status = g.Key,
-                        TotalFrontCells = g.Count(c => c.Side == WarehouseSide.Front),
-                        TotalBackCells = g.Count(c => c.Side == WarehouseSide.Back),
-                        RatioFrontCells = g.Count(c => c.Side == WarehouseSide.Front) / (double)totalCells,
-                        RatioBackCells = g.Count(c => c.Side == WarehouseSide.Back) / (double)totalCells,
-                    });
-
-            var occupiedOrUnusableCellsCount = this.dataContext.Cells
-                .Count(c => c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable);
-
-            var cellStatistics = new CellStatisticsSummary()
+            lock (this.dataContext)
             {
-                CellStatusStatistics = cellStatusStatistics,
-                TotalCells = totalCells,
-                TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
-                TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
-                CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
-            };
+                var totalCells = this.dataContext.Cells.Count();
 
-            return cellStatistics;
+                var cellsWithSide = this.dataContext.Cells.Include(c => c.Panel);
+
+                var cellStatusStatistics = cellsWithSide
+                    .GroupBy(c => c.Status)
+                    .Select(g =>
+                        new CellStatusStatistics
+                        {
+                            Status = g.Key,
+                            TotalFrontCells = g.Count(c => c.Side == WarehouseSide.Front),
+                            TotalBackCells = g.Count(c => c.Side == WarehouseSide.Back),
+                            RatioFrontCells = g.Count(c => c.Side == WarehouseSide.Front) / (double)totalCells,
+                            RatioBackCells = g.Count(c => c.Side == WarehouseSide.Back) / (double)totalCells,
+                        });
+
+                var occupiedOrUnusableCellsCount = this.dataContext.Cells
+                    .Count(c => c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable);
+
+                var cellStatistics = new CellStatisticsSummary()
+                {
+                    CellStatusStatistics = cellStatusStatistics,
+                    TotalCells = totalCells,
+                    TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
+                    TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
+                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
+                };
+
+                return cellStatistics;
+            }
         }
 
         public void LoadLoadingUnit(int loadingUnitId, int cellId)
@@ -119,44 +115,47 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Cell UpdateHeight(int cellId, double height)
         {
-            var cell = this.dataContext.Cells
-                .Include(c => c.Panel)
-                .SingleOrDefault(c => c.Id == cellId);
-
-            if (cell is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(cellId);
+                var cell = this.dataContext.Cells
+                    .Include(c => c.Panel)
+                    .SingleOrDefault(c => c.Id == cellId);
+
+                if (cell is null)
+                {
+                    throw new EntityNotFoundException(cellId);
+                }
+
+                var cellsOnSameSide = this.dataContext.Cells
+                    .Where(c => c.Side == cell.Side)
+                    .OrderBy(c => c.Position);
+
+                var higherCell = cellsOnSameSide.FirstOrDefault(c => c.Position > cell.Position);
+                var lowerCell = cellsOnSameSide.FirstOrDefault(c => c.Position < cell.Position);
+
+                if ((higherCell == null
+                    ||
+                    higherCell.Position > height)
+                    &&
+                    (lowerCell == null
+                    ||
+                    lowerCell.Position < height))
+                {
+                    cell.Position = height;
+
+                    this.dataContext.Cells.Update(cell);
+                    this.dataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(
+                        Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
+                }
+
+                return this.dataContext.Cells
+                    .Include(c => c.Panel)
+                    .SingleOrDefault(c => c.Id == cellId);
             }
-
-            var cellsOnSameSide = this.dataContext.Cells
-                .Where(c => c.Side == cell.Side)
-                .OrderBy(c => c.Position);
-
-            var higherCell = cellsOnSameSide.FirstOrDefault(c => c.Position > cell.Position);
-            var lowerCell = cellsOnSameSide.FirstOrDefault(c => c.Position < cell.Position);
-
-            if ((higherCell == null
-                ||
-                higherCell.Position > height)
-                &&
-                (lowerCell == null
-                ||
-                lowerCell.Position < height))
-            {
-                cell.Position = height;
-
-                this.dataContext.Cells.Update(cell);
-                this.dataContext.SaveChanges();
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(
-                    Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
-            }
-
-            return this.dataContext.Cells
-                .Include(c => c.Panel)
-                .SingleOrDefault(c => c.Id == cellId);
         }
 
         #endregion

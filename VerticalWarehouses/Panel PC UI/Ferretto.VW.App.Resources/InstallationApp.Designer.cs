@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -529,15 +529,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed cycles.
-        /// </summary>
-        public static string CompletedCycles {
-            get {
-                return ResourceManager.GetString("CompletedCycles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirmation operation?.
         /// </summary>
         public static string ConfirmationOperation {
@@ -588,6 +579,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CradleEngineSelected {
             get {
                 return ResourceManager.GetString("CradleEngineSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performed cycled (cumulative).
+        /// </summary>
+        public static string CumulativePerformedCycles {
+            get {
+                return ResourceManager.GetString("CumulativePerformedCycles", resourceCulture);
             }
         }
         
@@ -1348,6 +1348,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination cell id.
+        /// </summary>
+        public static string InsertDestinationCellId {
+            get {
+                return ResourceManager.GetString("InsertDestinationCellId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inserted weight [kg].
         /// </summary>
         public static string InsertedWeight {
@@ -1362,6 +1371,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InsertiInitialPosition {
             get {
                 return ResourceManager.GetString("InsertiInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert loading unit fromq bay to cell.
+        /// </summary>
+        public static string InsertLoadingUnitFromBayToCell {
+            get {
+                return ResourceManager.GetString("InsertLoadingUnitFromBayToCell", resourceCulture);
             }
         }
         
@@ -2104,6 +2122,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Performed cycles (session).
+        /// </summary>
+        public static string PerformedCyclesThisSession {
+            get {
+                return ResourceManager.GetString("PerformedCyclesThisSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
@@ -2662,15 +2689,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total completed cycles.
-        /// </summary>
-        public static string TotalCompletedCycles {
-            get {
-                return ResourceManager.GetString("TotalCompletedCycles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total panels.
         /// </summary>
         public static string TotalPanels {
@@ -2928,6 +2946,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WeightControl {
             get {
                 return ResourceManager.GetString("WeightControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero chain.
+        /// </summary>
+        public static string ZeroChain {
+            get {
+                return ResourceManager.GetString("ZeroChain", resourceCulture);
             }
         }
         

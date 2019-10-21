@@ -1,5 +1,22 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "01"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "02"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "03"
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -83,7 +100,7 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
@@ -95,7 +112,7 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55
@@ -2759,7 +2776,7 @@
       "Step": 0.5
     },
     "BeltBurnishingTest": {
-      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
+      //"RequiredCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
       "RequiredCycles": 5
     },
     "CarouselManualMovements": {
@@ -2784,24 +2801,19 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-    "OffsetCalibration": {
-      "ReferenceCellId": 50, //TEMP Temporary value for software test
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
     "ShutterManualMovements": {
       "FeedRate": 0.2,
-      "MaxSpeed": 40000,
-      "MinSpeed": 5000,
-      "HighSpeedDurationOpen": 14,
-      "HighSpeedDurationClose": 13
+      "MaxSpeed": 31500,
+      "MinSpeed": 2500,
+      "HighSpeedDurationOpen": 16,
+      "HighSpeedDurationClose": 17
     },
     "ShutterTest": {
       "FeedRate": 1.0,
-      "RequiredCycles": 10
+      "RequiredCycles": 10000
     },
     "VerticalManualMovements": {
       "FeedRate": 0.1,
@@ -2810,6 +2822,11 @@
       "FeedRateAfterZero": 0.15,
       "BrakeReleaseTime": 150,
       "BrakeActivatePercent": 10
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
     },
     "VerticalResolutionCalibration": {
       "InitialPosition": 1000, //TEMP Temporary value for software test

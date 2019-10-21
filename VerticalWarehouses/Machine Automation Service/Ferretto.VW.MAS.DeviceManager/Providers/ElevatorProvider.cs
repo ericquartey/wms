@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private bool disposedValue = false;
+        private bool isDisposed = false;
 
         #endregion
 
@@ -87,6 +87,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
+        }
+
+        public AxisBounds GetVerticalBounds()
+        {
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+
+            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
         /// <summary>
@@ -418,22 +425,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (totalTestCycleCount <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive,
-                    nameof(totalTestCycleCount));
+                    nameof(totalTestCycleCount),
+                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
             if (upperBoundPosition <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive,
-                    nameof(upperBoundPosition));
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
             }
 
             if (upperBoundPosition <= lowerBoundPosition)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition,
-                    nameof(lowerBoundPosition));
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
             }
 
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
@@ -441,15 +448,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (upperBoundPosition > verticalAxis.UpperBound)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange,
-                    nameof(upperBoundPosition));
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
             }
 
             if (lowerBoundPosition < verticalAxis.LowerBound)
             {
                 throw new ArgumentOutOfRangeException(
-                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange,
-                    nameof(lowerBoundPosition));
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
             }
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
@@ -583,43 +590,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
                     this.scope.Dispose();
                 }
 
-                this.disposedValue = true;
+                this.isDisposed = true;
             }
         }
 
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
-            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-
             var axis = orientation == Orientation.Horizontal
                 ? this.elevatorDataProvider.GetHorizontalAxis()
                 : this.elevatorDataProvider.GetVerticalAxis();
 
-            if (loadingUnit is null)
-            {
-                return axis.EmptyLoadMovement;
-            }
+            var structuralProperties = this.elevatorDataProvider.GetStructuralProperties();
 
-            var maximumLoadMovement = axis.MaximumLoadMovement;
-            var emptyLoadMovement = axis.EmptyLoadMovement;
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
-            var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
-
-            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetStructuralProperties().MaximumLoadOnBoard;
-
-            return new MovementParameters
-            {
-                Speed = emptyLoadMovement.Speed + ((maximumLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor),
-                Acceleration = emptyLoadMovement.Acceleration + ((maximumLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = emptyLoadMovement.Deceleration + ((maximumLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor),
-            };
+            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         #endregion

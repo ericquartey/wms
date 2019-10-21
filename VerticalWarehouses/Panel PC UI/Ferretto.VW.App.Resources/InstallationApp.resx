@@ -385,8 +385,8 @@
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
   </data>
-  <data name="CompletedCycles" xml:space="preserve">
-    <value>Completed cycles</value>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Performed cycles (session)</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
     <value>Current position [mm]</value>
@@ -1033,8 +1033,8 @@
     <value>Reset</value>
     <comment>Button text</comment>
   </data>
-  <data name="TotalCompletedCycles" xml:space="preserve">
-    <value>Total completed cycles</value>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Performed cycled (cumulative)</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
@@ -1154,5 +1154,14 @@
   </data>
   <data name="SaveSuccessful" xml:space="preserve">
     <value>Save succssful</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Destination cell id</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Insert loading unit fromq bay to cell</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Zero chain</value>
   </data>
 </root>

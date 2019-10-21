@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Shutter Positioning Error state");
+            this.Logger.LogError($"Shutter Positioning Error state");
 
             if (this.InverterStatus is AglInverterStatus currentStatus)
             {

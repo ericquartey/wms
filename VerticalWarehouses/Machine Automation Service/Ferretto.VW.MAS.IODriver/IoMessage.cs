@@ -17,13 +17,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const byte RELEASE_PROTOCOL_01 = 0x01;
 
-        private const int TOTAL_INPUTS = 16;
+        private const int TotalInputs = 16;
 
-        private const int TOTAL_OUTPUTS = 8;
+        private const int TotalOutputs = 8;
 
         private readonly ShdCodeOperation codeOperation;
 
-        private readonly short comTout = 20000; // 20 s     // Time out
+        private readonly short comTimeout = 20000;
 
         private readonly byte[] configurationData;
 
@@ -48,8 +48,8 @@ namespace Ferretto.VW.MAS.IODriver
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = ShdCodeOperation.Data;
 
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.inputs = new bool[TotalInputs];
+            this.outputs = new bool[TotalOutputs];
         }
 
         public IoMessage(bool read)
@@ -59,11 +59,11 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (read)
             {
-                this.inputs = new bool[TOTAL_INPUTS];
+                this.inputs = new bool[TotalInputs];
             }
             else
             {
-                this.outputs = new bool[TOTAL_OUTPUTS];
+                this.outputs = new bool[TotalOutputs];
             }
         }
 
@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS.IODriver
             this.codeOperation = codeOperation;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.inputs = new bool[TotalInputs];
+            this.outputs = new bool[TotalOutputs];
         }
 
         public IoMessage(bool[] data, bool input)
@@ -155,8 +155,8 @@ namespace Ferretto.VW.MAS.IODriver
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = ShdCodeOperation.Configuration;
 
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.inputs = new bool[TotalInputs];
+            this.outputs = new bool[TotalOutputs];
 
             try
             {
@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.IODriver
                 throw new IOException($"Exception {ex.Message} while initializing Inputs status");
             }
 
-            this.comTout = (short)(this.configurationData[0] + (this.configurationData[1] << 8));
+            this.comTimeout = (short)(this.configurationData[0] + (this.configurationData[1] << 8));
             this.useSetupOutputLines = this.configurationData[2] == 0;
             this.setupOutputLines = this.configurationData[3];
             this.debounceInput = this.configurationData[4];
@@ -178,16 +178,16 @@ namespace Ferretto.VW.MAS.IODriver
             this.configurationData = new byte[N_CONFIG_BYTES];
             this.codeOperation = ShdCodeOperation.Configuration;
 
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.inputs = new bool[TotalInputs];
+            this.outputs = new bool[TotalOutputs];
 
             // TODO Check arguments
-            this.comTout = comTout;
+            this.comTimeout = comTout;
             this.useSetupOutputLines = useSetupOutputLines;
             this.setupOutputLines = setupOutputLines;
             this.debounceInput = debounceInput;
 
-            var bytes = BitConverter.GetBytes(this.comTout);
+            var bytes = BitConverter.GetBytes(this.comTimeout);
             if (!BitConverter.IsLittleEndian)
             {
                 Array.Reverse(bytes);
@@ -205,8 +205,8 @@ namespace Ferretto.VW.MAS.IODriver
             this.codeOperation = ShdCodeOperation.SetIP;
             this.ipAddress = ipAddress;
 
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
+            this.inputs = new bool[TotalInputs];
+            this.outputs = new bool[TotalOutputs];
 
             if (ipAddress != string.Empty)
             {
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public ShdCodeOperation CodeOperation => this.codeOperation;
 
-        public short ComunicationTimeOut => this.comTout;
+        public short ComunicationTimeOut => this.comTimeout;
 
         public byte[] ConfigurationData => this.configurationData;
 

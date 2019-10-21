@@ -3,10 +3,49 @@
   "type": "object",
   "title": "JSON Schema for Vertimag Configuration",
   "required": [
+    "LoadingUnits",
     "Machine",
     "SetupProcedures"
   ],
   "properties": {
+    "LoadingUnits": {
+      "$id": "#/properties/LoadingUnits",
+      "type": "array",
+      "title": "The Loadingunits Schema",
+      "items": {
+        "$id": "#/properties/LoadingUnits/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "Tare",
+          "MaxNetWeight",
+          "Code"
+        ],
+        "properties": {
+          "Tare": {
+            "$id": "#/properties/LoadingUnits/items/properties/Tare",
+            "type": "integer",
+            "title": "The Tare Schema",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "MaxNetWeight": {
+            "$id": "#/properties/LoadingUnits/items/properties/MaxNetWeight",
+            "type": "integer",
+            "title": "The Maxnetweight Schema",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "Code": {
+            "$id": "#/properties/LoadingUnits/items/properties/Code",
+            "type": "string",
+            "title": "The Code Schema",
+            "default": "",
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    },
     "Machine": {
       "$id": "#/properties/Machine",
       "type": "object",
@@ -138,6 +177,12 @@
                 "minimum": 1,
                 "maximum": 3,
                 "default": 1
+              },
+              "Resolution": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/Resolution",
+                "type": "number",
+                "title": "The Resolution Schema",
+                "default": 0.0
               },
               "Positions": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Positions",
@@ -276,7 +321,7 @@
                   "Offset",
                   "ChainOffset",
                   "EmptyLoadMovement",
-                  "MaximumLoadMovement"
+                  "FullLoadMovement"
                 ],
                 "properties": {
                   "Inverter": {
@@ -357,8 +402,8 @@
                     "title": "The Lowerbound Schema",
                     "default": 0
                   },
-                  "MaximumLoadMovement": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement",
+                  "FullLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
                     "type": "object",
                     "title": "The Maximumloadmovement Schema",
                     "required": [
@@ -368,19 +413,19 @@
                     ],
                     "properties": {
                       "Acceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Acceleration",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Acceleration",
                         "type": "integer",
                         "title": "The Acceleration Schema",
                         "default": 0
                       },
                       "Deceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Deceleration",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Deceleration",
                         "type": "integer",
                         "title": "The Deceleration Schema",
                         "default": 0
                       },
                       "Speed": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Speed",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Speed",
                         "type": "integer",
                         "title": "The Speed Schema",
                         "default": 0
@@ -601,7 +646,7 @@
         "DepositAndPickUpTest",
         "HorizontalManualMovements",
         "LoadFirstDrawerTest",
-        "OffsetCalibration",
+        "VerticalOffsetCalibration",
         "ShutterHeightCheck",
         "ShutterManualMovements",
         "ShutterTest",
@@ -773,10 +818,10 @@
             }
           }
         },
-        "OffsetCalibration": {
-          "$id": "#/properties/SetupProcedures/properties/OffsetCalibration",
+        "VerticalOffsetCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
           "type": "object",
-          "title": "The Offsetcalibration Schema",
+          "title": "The VerticalOffsetCalibration Schema",
           "required": [
             "ReferenceCellId",
             "Step",
@@ -784,19 +829,19 @@
           ],
           "properties": {
             "ReferenceCellId": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/ReferenceCellId",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
               "type": "integer",
               "title": "The Referencecellid Schema",
               "default": 0
             },
             "Step": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/Step",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
               "type": "number",
               "title": "The Step Schema",
               "default": 0.0
             },
             "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/OffsetCalibration/properties/FeedRate",
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0

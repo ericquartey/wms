@@ -24,13 +24,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public LoadingUnitsProvider(DataLayerContext dataContext, ILogger<LoadingUnitsProvider> logger)
         {
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
-            this.logger = logger;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -39,91 +34,36 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<LoadingUnit> GetAll()
         {
-            return this.dataContext.LoadingUnits.ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits.ToArray();
+            }
         }
 
         public LoadingUnit GetById(int id)
         {
-            var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
-            if (loadingUnit is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(id);
-            }
+                var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
 
-            return loadingUnit;
+                return loadingUnit;
+            }
         }
 
         public IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics()
         {
-            var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
-                 new LoadingUnitSpaceStatistics
-                 {
-                     MissionsCount = l.MissionsCount,
-                     Code = l.Code,
-                 }).ToArray();
-
-            return loadingUnits;
-        }
-
-        public IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics()
-        {
-            var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
-                 new LoadingUnitWeightStatistics
-                 {
-                     Height = l.Height,
-                     GrossWeight = l.GrossWeight,
-                     Tare = l.Tare,
-                     Code = l.Code,
-                     MaxNetWeight = l.MaxNetWeight,
-                     MaxWeightPercentage = (l.GrossWeight - l.Tare) * 100 / l.MaxNetWeight,
-                 }).ToArray();
-
-            return loadingUnits;
-        }
-
-        public async Task LoadFromAsync(string fileNamePath)
-        {
-            if (this.dataContext.LoadingUnits.Any())
+            lock (this.dataContext)
             {
-                return;
-            }
-
-            this.logger.LogInformation("Importing loading units catalog from configuration file ...");
-
-            using (var jsonFile = new JSchemaValidatingReader(new JsonTextReader(new System.IO.StreamReader(fileNamePath))))
-            {
-                int? width;
-                int? depth;
-                IEnumerable<(string Id, double MaxLoadCapacity, double Tare)> loadingUnitClasses = null;
-                IEnumerable<(int Code, string Class)> loadingUnits = null;
-
-                jsonFile.Schema = JSchema.Load(new JsonTextReader(new System.IO.StreamReader("configuration/schemas/loading-units-schema.json")));
-                while (await jsonFile.ReadAsync())
-                {
-                    if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)
+                var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
+                    new LoadingUnitSpaceStatistics
                     {
-                        if (propertyName == "loading-unit-classes")
-                        {
-                            loadingUnitClasses = await this.ReadAllLoadingUnitClassesAsync(jsonFile);
-                        }
-                        else if (propertyName == "loading-units")
-                        {
-                            loadingUnits = await this.ReadAllLoadingUnitsAsync(jsonFile);
-                        }
-                        else if (propertyName == "width")
-                        {
-                            while (!(width = await jsonFile.ReadAsInt32Async()).HasValue)
-                            {
-                            }
-                        }
-                        else if (propertyName == "depth")
-                        {
-                            while (!(depth = await jsonFile.ReadAsInt32Async()).HasValue)
-                            {
-                            }
-                        }
-                    }
-                }
+                        MissionsCount = l.MissionsCount,
+                        Code = l.Code,
+                    }).ToArray();
 
                 foreach (var loadingUnit in loadingUnits)
                 {
@@ -161,103 +101,39 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics()
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnits = this.dataContext.LoadingUnits
+                .Select(l =>
+                     new LoadingUnitWeightStatistics
+                     {
+                         Height = l.Height,
+                         GrossWeight = l.GrossWeight,
+                         Tare = l.Tare,
+                         Code = l.Code,
+                         MaxNetWeight = l.MaxNetWeight,
+                         MaxWeightPercentage = (l.GrossWeight - l.Tare) * 100 / l.MaxNetWeight,
+                     })
+                .ToArray();
+
+                return loadingUnits;
+            }
+        }
+
         public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
         {
-            var loadingUnit = this.dataContext.LoadingUnits
-                .SingleOrDefault(l => l.Id == loadingUnitId);
-
-            loadingUnit.GrossWeight = loadingUnitGrossWeight;
-
-            this.dataContext.SaveChanges();
-        }
-
-        private async Task<IEnumerable<(string Id, double MaxLoadCapacity, double Tare)>> ReadAllLoadingUnitClassesAsync(JSchemaValidatingReader jsonFile)
-        {
-            var classes = new List<(string id, double maxLoadCapaciy, double tare)>();
-            while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndArray)
+            lock (this.dataContext)
             {
-                if (jsonFile.TokenType == JsonToken.StartObject)
-                {
-                    (string Id, double MaxLoadCapacity, double Tare) loadingUnitClass = (string.Empty, 0, 0);
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                    while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndObject)
-                    {
-                        if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)
-                        {
-                            if (propertyName == "id")
-                            {
-                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String)
-                                {
-                                }
+                loadingUnit.GrossWeight = loadingUnitGrossWeight;
 
-                                loadingUnitClass.Id = jsonFile.Value as string;
-                            }
-                            else if (propertyName == "max-load-capacity")
-                            {
-                                double? maxLoadCapacity;
-                                while (!(maxLoadCapacity = await jsonFile.ReadAsDoubleAsync()).HasValue)
-                                {
-                                }
-
-                                loadingUnitClass.MaxLoadCapacity = maxLoadCapacity.Value;
-                            }
-                            else if (propertyName == "tare")
-                            {
-                                double? tare;
-                                while (!(tare = await jsonFile.ReadAsDoubleAsync()).HasValue)
-                                {
-                                }
-
-                                loadingUnitClass.Tare = tare.Value;
-                            }
-                        }
-                    }
-
-                    classes.Add(loadingUnitClass);
-                }
+                this.dataContext.SaveChanges();
             }
-
-            return classes;
-        }
-
-        private async Task<IEnumerable<(int Code, string Class)>> ReadAllLoadingUnitsAsync(JSchemaValidatingReader jsonFile)
-        {
-            var loadingUnits = new List<(int Code, string Class)>();
-            while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndArray)
-            {
-                if (jsonFile.TokenType == JsonToken.StartObject)
-                {
-                    (int Code, string Class) loadingUnit = (0, string.Empty);
-
-                    while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.EndObject)
-                    {
-                        if (jsonFile.TokenType == JsonToken.PropertyName && jsonFile.Value is string propertyName)
-                        {
-                            if (propertyName == "class")
-                            {
-                                while (await jsonFile.ReadAsync() && jsonFile.TokenType != JsonToken.String)
-                                {
-                                }
-
-                                loadingUnit.Class = jsonFile.Value as string;
-                            }
-                            else if (propertyName == "code")
-                            {
-                                int? code;
-                                while (!(code = await jsonFile.ReadAsInt32Async()).HasValue)
-                                {
-                                }
-
-                                loadingUnit.Code = code.Value;
-                            }
-                        }
-                    }
-
-                    loadingUnits.Add(loadingUnit);
-                }
-            }
-
-            return loadingUnits;
         }
 
         #endregion

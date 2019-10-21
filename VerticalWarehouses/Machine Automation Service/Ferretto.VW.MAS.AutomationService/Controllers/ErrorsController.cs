@@ -4,8 +4,8 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("current")]
-        public ActionResult<Error> GetCurrent()
+        public ActionResult<MachineError> GetCurrent()
         {
             var currentError = this.errorsProvider.GetCurrent();
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 #if DEBUG
 
         [HttpPost]
-        public ActionResult<Error> Create(MachineErrors code)
+        public ActionResult<MachineError> Create(MachineErrorCode code)
         {
             var newError = this.errorsProvider.RecordNew(code, BayNumber.None);
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Error> Resolve(int id)
+        public ActionResult<MachineError> Resolve(int id)
         {
             var resolvedError = this.errorsProvider.Resolve(id);
 

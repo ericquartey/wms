@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.VW.MAS.IODriver.Interface.Services
+namespace Ferretto.VW.MAS.IODriver
 {
     public interface IIoDevicesProvider
     {

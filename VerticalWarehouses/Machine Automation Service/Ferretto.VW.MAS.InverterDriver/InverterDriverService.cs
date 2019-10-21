@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -186,6 +187,20 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogTrace($"Received Inverter Message: {message}");
 
                 this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
+
+                if (message.IsError)
+                {
+                    this.Logger.LogError($"Received error Message: {message}");
+                    var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
+                    if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
+                    {
+                        errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
+                    }
+
+                    serviceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew((DataModels.MachineErrorCode)errorCode);
+                }
 
                 if (message.IsWriteMessage)
                 {

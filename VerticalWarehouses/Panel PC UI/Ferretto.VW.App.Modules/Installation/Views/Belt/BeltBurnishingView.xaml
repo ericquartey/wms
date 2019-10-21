@@ -31,18 +31,18 @@
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
         <ctrls:PpcSpinEdit Grid.Row="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.UpperBound}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.LowerBound}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
@@ -51,20 +51,20 @@
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
         <ctrls:PpcSpinEdit Grid.Row="1"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
         <StackPanel Grid.Row="3"
                     Grid.Column="1"
@@ -73,16 +73,16 @@
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding CompletedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                     ContentText="{Binding PerformedCyclesThisSession}"
+                                     LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="2"
                                      Margin="80,0,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding TotalCompletedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.TotalCompletedCycles}" />
+                                     ContentText="{Binding CumulativePerformedCycles}"
+                                     LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="4"

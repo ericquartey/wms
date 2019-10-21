@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? averageCurrent;
 
+        private Bay bay;
+
         private bool canInputNetWeight;
 
         private double? currentPosition;
@@ -310,6 +312,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  ThreadOption.UIThread,
                  false);
 
+            this.bay = await this.bayManager.GetBayAsync();
+
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
@@ -412,7 +416,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                var bayHeight = this.bayManager.Bay.Positions.First().Height;
+                var bayHeight = this.bay.Positions.First().Height;
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     bayHeight,

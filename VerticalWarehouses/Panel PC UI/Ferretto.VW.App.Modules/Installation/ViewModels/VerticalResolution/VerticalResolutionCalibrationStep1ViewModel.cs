@@ -116,9 +116,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.GetParametersAsync();
         }
 
-        protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnAutomationMessageReceived(message);
+            base.OnElevatorPositionChanged(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {

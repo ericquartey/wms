@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -18,9 +19,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
-        private readonly Timer delayCheckTimer;
-
-        private bool delayElapsed;
+        private DateTime startTime;
 
         #endregion
 
@@ -37,7 +36,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
             this.Inverter = inverterStatus;
-            this.delayCheckTimer = new Timer(this.DelayCheck, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -53,15 +51,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.Logger.LogDebug($"Calibrate start homing axis {this.axisToCalibrate}");
-            this.delayCheckTimer.Change(CheckDelayTime, CheckDelayTime);
-            this.delayElapsed = false;
+            this.startTime = DateTime.UtcNow;
 
             this.Inverter.HomingControlWord.HomingOperation = true;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.ControlWordParam,
+                    (short)InverterParameterId.ControlWord,
                     this.Inverter.HomingControlWord.Value));
         }
 
@@ -71,12 +68,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogDebug("1:Calibrate Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new CalibrateAxisStopState(
+                new CalibrateAxisDisableOperationState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
                     this.calibration,
                     this.InverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -100,9 +98,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+                var delayElapsed = DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime;
                 if (this.InverterStatus is AngInverterStatus currentStatus)
                 {
-                    if (this.delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
+                    if (delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
@@ -111,7 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                 if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
                 {
-                    if (this.delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
+                    if (delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
@@ -120,20 +119,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
 
             return returnValue;
-        }
-
-        protected override void OnDisposing()
-        {
-            this.delayCheckTimer?.Dispose();
-        }
-
-        private void DelayCheck(object state)
-        {
-            // stop timer
-            this.delayCheckTimer.Change(Timeout.Infinite, Timeout.Infinite);
-
-            // delay expired
-            this.delayElapsed = true;
         }
 
         #endregion

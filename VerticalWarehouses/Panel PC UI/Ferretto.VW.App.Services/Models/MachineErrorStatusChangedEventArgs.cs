@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -7,7 +6,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Constructors
 
-        public MachineErrorStatusChangedEventArgs(Error error)
+        public MachineErrorStatusChangedEventArgs(MachineError error)
         {
             this.Error = error;
         }
@@ -16,7 +15,7 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public Error Error { get; }
+        public MachineError Error { get; }
 
         #endregion
     }

@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors

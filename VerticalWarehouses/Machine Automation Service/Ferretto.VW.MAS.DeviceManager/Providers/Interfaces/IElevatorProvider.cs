@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -17,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         #region Methods
 
         void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
+
+        AxisBounds GetVerticalBounds();
 
         void MoveHorizontalAuto(
                     HorizontalMovementDirection direction,

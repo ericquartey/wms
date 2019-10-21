@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly IElevatorDataProvider elevatorDataProvider;
-
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -28,14 +26,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterProvider(
             IBaysProvider baysProvider,
             ISensorsProvider sensorsProvider,
-            IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -65,11 +61,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speedRate,
                 MovementMode.ShutterPosition,
                 MovementType.Relative,
-                0,
-                0,
-                0,
-                0,
-                0);
+                delay: 0,
+                highSpeedDurationOpen: 0,
+                highSpeedDurationClose: 0,
+                lowerSpeed: 0);
 
             this.PublishCommand(
                 messageData,
@@ -140,7 +135,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MovementMode.ShutterPosition,
                 MovementType.Absolute,
                 0,
-                0,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
                 lowSpeed);
@@ -186,7 +180,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speedRate,
                 MovementMode.ShutterTest,
                 MovementType.Absolute,
-                testCycleCount,
                 delayInMilliseconds,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,

@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
 
-            this.lastWriteMessage = new InverterMessage((short)0x00, InverterParameterId.ControlWordParam);
+            this.lastWriteMessage = new InverterMessage((short)0x00, InverterParameterId.ControlWord);
 
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
 
@@ -368,7 +368,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     returnValue = this.BuildDigitalInputsMessage(currentMessage);
                     break;
 
-                case InverterParameterId.StatusWordParam:
+                case InverterParameterId.StatusWord:
                     returnValue = this.BuildRawStatusPowerOnMessage();
                     break;
 
@@ -465,7 +465,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             switch (inverterMessage.ParameterId)
             {
-                case InverterParameterId.StatusWordParam:
+                case InverterParameterId.StatusWord:
                     return await this.ProcessStatusWordPayload(inverterMessage, stoppingToken);
 
                 case InverterParameterId.DigitalInputsOutputs:
@@ -505,16 +505,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             switch (message.ParameterId)
             {
-                case InverterParameterId.ControlWordParam:
+                case InverterParameterId.ControlWord:
                     return await this.ProcessControlWordPayload(message, stoppingToken);
 
-                case InverterParameterId.SetOperatingModeParam:
+                case InverterParameterId.SetOperatingMode:
                     return await this.ProcessSetOperatingModePayload(message, stoppingToken);
 
                 case InverterParameterId.ShutterTargetPosition:
                     return await this.ProcessTargetPositionPayload(message, stoppingToken);
 
-                case InverterParameterId.ShutterTargetVelocityParam:
+                case InverterParameterId.ShutterTargetVelocity:
                     return await this.ProcessTargetPositionPayload(message, stoppingToken);
 
                 default:

@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetLoadFirstDrawerTest();
 
-        OffsetCalibrationProcedure GetOffsetCalibration();
+        OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
         SetupProcedure GetShutterHeightCheck();
 

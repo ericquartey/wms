@@ -159,7 +159,8 @@
                 <controls:PpcSensorControl Grid.Row="11"
                                            Grid.Column="1"
                                            Margin="0,20"
-                                           SensorState="{Binding IsZeroChain}" />
+                                           SensorState="{Binding IsZeroChain}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
 
 
             </Grid>
@@ -227,14 +228,14 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  ContentText="{Binding CompletedCycles, FallbackValue='0'}"
-                                 LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                 LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
 
         <controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="2"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
-                                 ContentText="{Binding TotalCompletedCycles, FallbackValue='10'}"
-                                 LabelText="{x:Static res:InstallationApp.TotalCompletedCycles}" />
+                                 ContentText="{Binding CumulativePerformedCycles, FallbackValue='10'}"
+                                 LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
 
         <controls:PpcButton Grid.Row="5"
                             Grid.Column="2"

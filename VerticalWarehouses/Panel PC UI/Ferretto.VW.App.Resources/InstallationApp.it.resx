@@ -361,8 +361,8 @@
   <data name="Closed" xml:space="preserve">
     <value>Chiuso</value>
   </data>
-  <data name="CompletedCycles" xml:space="preserve">
-    <value>Cicli completati</value>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Cicli completati (sessione)</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
     <value>Posizione attuale [mm]</value>
@@ -969,8 +969,8 @@
   <data name="Reset" xml:space="preserve">
     <value>Reimposta</value>
   </data>
-  <data name="TotalCompletedCycles" xml:space="preserve">
-    <value>Totale cicli completati</value>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Cicli completati (cumulativo)</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Succ</value>
@@ -1076,5 +1076,14 @@
   </data>
   <data name="SaveSuccessful" xml:space="preserve">
     <value>Salvataggio completato con successo</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Id della cella di destinazione</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Inserimento cassetto da baia in cella</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Catena a zero</value>
   </data>
 </root>

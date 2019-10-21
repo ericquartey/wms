@@ -94,6 +94,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOnAxisIoMessage.SwitchElevatorMotor(true);
                     break;
             }
+
             switchOnAxisIoMessage.SwitchResetSecurity(false);
             switchOnAxisIoMessage.SwitchPowerEnable(true);
 

@@ -18,12 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ServicingProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -32,7 +27,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ServicingInfo GetInfo()
         {
-            return this.dataContext.ServicingInfo.FirstOrDefault();
+            lock (this.dataContext)
+            {
+                return this.dataContext.ServicingInfo.FirstOrDefault();
+            }
         }
 
         #endregion

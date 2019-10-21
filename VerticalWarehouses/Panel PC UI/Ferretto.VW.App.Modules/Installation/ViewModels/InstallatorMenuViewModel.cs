@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly int bayNumber;
+        private readonly IBayManager bayManager;
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineSetupStatusWebService setupStatusWebService;
 
         private bool areItemsEnabled;
+
+        private int bayNumber;
 
         #endregion
 
@@ -52,10 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-
-            // TODO Review Implementation avoid using numbers to identify bays
-            this.bayNumber = (int)bayManager.Bay.Number;
-
+            this.bayManager = bayManager;
             this.InitializeData();
         }
 
@@ -86,6 +85,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = false;
+
+            var bay = await this.bayManager.GetBayAsync();
+            this.bayNumber = (int)bay.Number;
 
             await this.UpdateMenuItemsStatus();
         }

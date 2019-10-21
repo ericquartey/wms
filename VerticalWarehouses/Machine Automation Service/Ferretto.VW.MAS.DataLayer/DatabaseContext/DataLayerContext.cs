@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
-        public DbSet<Error> Errors { get; set; }
+        public DbSet<MachineError> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
 

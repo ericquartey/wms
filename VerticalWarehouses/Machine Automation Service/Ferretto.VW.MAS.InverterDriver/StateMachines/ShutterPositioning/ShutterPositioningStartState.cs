@@ -69,13 +69,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 this.currentShutterPosition = aglStatus.CurrentShutterPosition;
             }
             this.CalculateDatasetAndDuration();
-            this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
-
-            this.Logger.LogTrace($"4:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
             var notificationMessage = new FieldNotificationMessage(
                 this.shutterPositionData,
@@ -101,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug("1:Shutter Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new ShutterPositioningStopState(
+                new ShutterPositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus,
                     this.shutterPositionData,
@@ -120,7 +113,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 case InverterParameterId.ShutterTargetPosition:
                     {
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate, this.dataset);
+                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocity, this.shutterPositionData.SpeedRate, this.dataset);
                         var byteData = data.ToBytes();
 
                         this.ParentStateMachine.EnqueueCommandMessage(data);
@@ -128,17 +121,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     }
                     break;
 
-                case InverterParameterId.ShutterTargetVelocityParam:
+                case InverterParameterId.ShutterTargetVelocity:
                     {
-                        var byteDataReceived = message.ToBytes();
-                        var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
-                        var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
-                        var byteData = data.ToBytes();
+                        // TODO: remove this change state after inverter firmware update
+                        //if (this.shutterPositionData.MovementType == MovementType.Relative)
+                        //{
+                        //    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        //}
+                        //else
+                        {
+                            var byteDataReceived = message.ToBytes();
+                            var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
+                            var byteData = data.ToBytes();
 
-                        this.ParentStateMachine.EnqueueCommandMessage(data);
-                        this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
+                            this.ParentStateMachine.EnqueueCommandMessage(data);
+                            this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
 
-                        returnValue = true;
+                            returnValue = true;
+                        }
                     }
                     break;
 

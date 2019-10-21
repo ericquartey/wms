@@ -1,5 +1,22 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "01"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "02"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "03"
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -14,16 +31,17 @@
           "IpAddress": "127.0.0.1",
           "TcpPort": 19550
         },
-        "IsExternal": true,
-        "ChainOffset": 0,
+        "IsExternal": false,
+        "ChainOffset": -5,
         "Number": 1,
+        "Shutter": {
         "Positions": [
           {
             "Height": 645,
             "Location": "InternalBay1Down"
           }
         ],
-        "Shutter": {
+        "Resolution": 369.8453,
           "Inverter": {
             "Type": "Agl",
             "Index": 2
@@ -31,7 +49,7 @@
           "Type": "TwoSensors"
         },
         "Carousel": {
-          "ElevatorDistance": 300
+          "ElevatorDistance": 460
         }
       },
       {
@@ -86,7 +104,7 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
@@ -98,7 +116,7 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55
@@ -2789,12 +2807,6 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-
-    "OffsetCalibration": {
-      "ReferenceCellId": 50,
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
@@ -2807,7 +2819,7 @@
     },
     "ShutterTest": {
       "FeedRate": 1.0,
-      "RequiredCycles": 10
+      "RequiredCycles": 10000
     },
     "VerticalManualMovements": {
       "FeedRate": 0.1,
@@ -2816,6 +2828,11 @@
       "FeedRateAfterZero": 0.15,
       "BrakeReleaseTime": 150,
       "BrakeActivatePercent": 10
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50,
+      "Step": 0.5,
+      "FeedRate": 0.2
     },
     "VerticalResolutionCalibration": {
       "InitialPosition": 1000,

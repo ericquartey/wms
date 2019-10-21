@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Position;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingMode, this.InverterStatus.OperatingMode);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -68,10 +68,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningStopState(
+                new PositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -86,7 +87,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-                if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                if (message.ParameterId == InverterParameterId.SetOperatingMode)
                 {
                     this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
                 }

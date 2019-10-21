@@ -8,8 +8,8 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
-        private readonly IMachineProvider machineProvider;
-
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -36,7 +34,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IMachineProvider machineProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
             : base(eventAggregator)
@@ -55,10 +52,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             }
-            if (machineProvider is null)
-            {
-                throw new ArgumentNullException(nameof(machineProvider));
-            }
 
             if (setupProceduresDataProvider is null)
             {
@@ -68,7 +61,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider = elevatorProvider;
             this.elevatorDataProvider = elevatorDataProvider;
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
-            this.machineProvider = machineProvider;
             this.setupProceduresDataProvider = setupProceduresDataProvider;
         }
 
@@ -98,6 +90,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorProvider.HorizontalPosition);
         }
 
+        [HttpGet("vertical/bounds")]
+        public ActionResult<AxisBounds> GetVerticalBounds()
+        {
+            return this.Ok(this.elevatorProvider.GetVerticalBounds());
+        }
+
         [HttpGet("vertical/manual-movements-parameters")]
         public ActionResult<VerticalManualMovementsProcedure> GetVerticalManualMovementsParameters()
         {
@@ -125,7 +123,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/move-auto")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? LoadingUnitId, double? loadingUnitGrossWeight)
+        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
         {
             this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, false, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
             //INFO Set Control Word Value or define parameter to be sent to Inverter and build the InverterMessage to be placed in inverter command queue
             this.InverterStatus.CommonControlWord.QuickStop = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

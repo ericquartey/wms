@@ -26,6 +26,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public LoadingUnitStatus Status { get; set; }
 
+        /// <summary>
+        /// Gets or sets the weight, in kilograms, of the empty loading unit.
+        /// </summary>
         public double Tare { get; set; }
 
         #endregion
