@@ -294,7 +294,7 @@
                   "Offset",
                   "ChainOffset",
                   "EmptyLoadMovement",
-                  "MaximumLoadMovement"
+                  "FullLoadMovement"
                 ],
                 "properties": {
                   "Inverter": {
@@ -375,8 +375,8 @@
                     "title": "The Lowerbound Schema",
                     "default": 0
                   },
-                  "MaximumLoadMovement": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement",
+                  "FullLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
                     "type": "object",
                     "title": "The Maximumloadmovement Schema",
                     "required": [
@@ -386,19 +386,19 @@
                     ],
                     "properties": {
                       "Acceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Acceleration",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Acceleration",
                         "type": "integer",
                         "title": "The Acceleration Schema",
                         "default": 0
                       },
                       "Deceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Deceleration",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Deceleration",
                         "type": "integer",
                         "title": "The Deceleration Schema",
                         "default": 0
                       },
                       "Speed": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement/properties/Speed",
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Speed",
                         "type": "integer",
                         "title": "The Speed Schema",
                         "default": 0

@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(s => s.Code);
 
-            foreach (var enumValue in System.Enum.GetValues(typeof(MachineErrors)))
+            foreach (var enumValue in System.Enum.GetValues(typeof(MachineErrorCode)))
             {
                 builder.HasData(new ErrorStatistic { Code = (int)enumValue });
             }

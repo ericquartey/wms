@@ -105,6 +105,33 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
+        {
+            if (pulses == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+            }
+
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(inverterIndex.ToString());
+                }
+
+                if (bay.Resolution == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Configured inverter {inverterIndex} resolution is zero, therefore it is not possible to convert pulses to millimeters.");
+                }
+
+                return pulses / bay.Resolution;
+            }
+        }
+
         public Bay Deactivate(BayNumber bayNumber)
         {
             lock (this.dataContext)
@@ -130,6 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .Include(b => b.Shutter)
                     .Include(b => b.Positions)
+                    .Include(b => b.Carousel)
                     .ToArray();
             }
         }

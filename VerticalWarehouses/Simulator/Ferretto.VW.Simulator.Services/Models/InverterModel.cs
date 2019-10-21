@@ -251,6 +251,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] controlWordArray;
 
+        public double IMPULSES_ENCODER_PER_ROUND;
+
         public BitModel[] ioDevice;
 
         private const int LOWER_SPEED_Y_AXIS = 17928;
@@ -445,7 +447,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public bool IsHorizontalAxis => (this.ControlWord & 0x8000) > 0;
+        public bool IsHorizontalAxis => (this.ControlWord & 0x8000) > 0 || this.Id > 0;
 
         public bool IsOperationEnabled
         {
@@ -753,6 +755,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 this.StatusWord &= 0xEFFF;          // Reset TargetReached
             }
+        }
+
+        public int Impulses2millimeters(int value)
+        {
+            return (int)(value / this.IMPULSES_ENCODER_PER_ROUND);
+        }
+
+        public int Millimeters2Impulses(int value)
+        {
+            return (int)(value * this.IMPULSES_ENCODER_PER_ROUND);
         }
 
         public BitModel[] RefreshControlWordArray()

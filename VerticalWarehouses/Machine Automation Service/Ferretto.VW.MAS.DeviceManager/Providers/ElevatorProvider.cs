@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private bool disposedValue = false;
+        private bool isDisposed = false;
 
         #endregion
 
@@ -526,43 +526,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
                     this.scope.Dispose();
                 }
 
-                this.disposedValue = true;
+                this.isDisposed = true;
             }
         }
 
         private MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
-            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-
             var axis = orientation == Orientation.Horizontal
                 ? this.elevatorDataProvider.GetHorizontalAxis()
                 : this.elevatorDataProvider.GetVerticalAxis();
 
-            if (loadingUnit is null)
-            {
-                return axis.EmptyLoadMovement;
-            }
+            var structuralProperties = this.elevatorDataProvider.GetStructuralProperties();
 
-            var maximumLoadMovement = axis.MaximumLoadMovement;
-            var emptyLoadMovement = axis.EmptyLoadMovement;
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
-            var loadingUnitWeight = loadingUnit?.GrossWeight ?? 0;
-
-            var scalingFactor = loadingUnitWeight / this.elevatorDataProvider.GetStructuralProperties().MaximumLoadOnBoard;
-
-            return new MovementParameters
-            {
-                Speed = emptyLoadMovement.Speed + ((maximumLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor),
-                Acceleration = emptyLoadMovement.Acceleration + ((maximumLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = emptyLoadMovement.Deceleration + ((maximumLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor),
-            };
+            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         #endregion

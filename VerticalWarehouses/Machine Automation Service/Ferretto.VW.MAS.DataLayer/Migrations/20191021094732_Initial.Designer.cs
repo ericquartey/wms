@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191017144846_Initial")]
+    [Migration("20191021094732_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Number");
 
                     b.Property<int>("Operation");
+
+                    b.Property<double>("Resolution");
 
                     b.Property<int?>("ShutterId");
 
@@ -170,11 +172,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("EmptyLoadMovementId");
 
+                    b.Property<int?>("FullLoadMovementId");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<double>("LowerBound");
-
-                    b.Property<int?>("MaximumLoadMovementId");
 
                     b.Property<double>("Offset");
 
@@ -192,9 +194,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("EmptyLoadMovementId");
 
-                    b.HasIndex("InverterId");
+                    b.HasIndex("FullLoadMovementId");
 
-                    b.HasIndex("MaximumLoadMovementId");
+                    b.HasIndex("InverterId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -221,26 +223,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ElevatorStructuralProperties");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BayNumber");
-
-                    b.Property<int>("Code");
-
-                    b.Property<DateTime>("OccurrenceDate");
-
-                    b.Property<DateTime?>("ResolutionDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code");
-
-                    b.ToTable("Errors");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
@@ -443,14 +425,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 200015,
-                            Code = 200015,
-                            Description = "Errore sconosciuto dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
                             Id = 200020,
                             Code = 200020,
                             Description = "Il nodo specificato non è disponibile.",
@@ -586,11 +560,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200014,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200015,
                             TotalErrors = 0
                         },
                         new
@@ -743,6 +712,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("Machines");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BayNumber");
+
+                    b.Property<int>("Code");
+
+                    b.Property<DateTime>("OccurrenceDate");
+
+                    b.Property<DateTime?>("ResolutionDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code");
+
+                    b.ToTable("Errors");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineStatistics", b =>
                 {
                     b.Property<int>("Id")
@@ -859,7 +848,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 17, 16, 48, 46, 117, DateTimeKind.Local).AddTicks(8416),
+                            InstallationDate = new DateTime(2016, 12, 21, 11, 47, 32, 126, DateTimeKind.Local).AddTicks(2140),
                             ServiceStatus = 86
                         });
                 });
@@ -1288,20 +1277,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("EmptyLoadMovementId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("FullLoadMovementId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "MaximumLoadMovement")
-                        .WithMany()
-                        .HasForeignKey("MaximumLoadMovementId");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
-                        .WithMany("Occurrences")
-                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
@@ -1323,6 +1305,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Elevator", "Elevator")
                         .WithMany()
                         .HasForeignKey("ElevatorId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
+                        .WithMany("Occurrences")
+                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>

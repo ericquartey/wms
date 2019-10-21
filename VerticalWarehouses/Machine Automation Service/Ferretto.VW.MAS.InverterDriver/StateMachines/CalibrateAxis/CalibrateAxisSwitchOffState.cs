@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisStopState : InverterStateBase
+    internal class CalibrateAxisSwitchOffState : InverterStateBase
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStopState(
+        public CalibrateAxisSwitchOffState(
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
             Calibration calibration,
@@ -80,13 +80,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(
-                        new CalibrateAxisDisableOperationState(
+                        new CalibrateAxisQuickStopState(
                             this.ParentStateMachine,
                             this.axisToCalibrate,
                             this.calibration,
                             this.InverterStatus,
-                            this.Logger,
-                            true));
+                            this.Logger));
 
                     returnValue = true;
                 }

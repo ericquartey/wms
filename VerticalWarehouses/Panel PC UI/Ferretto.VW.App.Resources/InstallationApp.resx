@@ -1161,4 +1161,7 @@
   <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
     <value>Insert loading unit fromq bay to cell</value>
   </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Zero chain</value>
+  </data>
 </root>

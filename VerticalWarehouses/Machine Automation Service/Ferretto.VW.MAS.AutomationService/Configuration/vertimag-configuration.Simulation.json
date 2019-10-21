@@ -31,10 +31,11 @@
           "IpAddress": "127.0.0.1",
           "TcpPort": 19550
         },
-        "IsExternal": true,
-        "ChainOffset": 0,
+        "IsExternal": false,
+        "ChainOffset": -5,
         "Number": 1,
-        "Positions": [ { "Height": 645 } ],
+        "Positions": [ { "Height": 741 } ],
+        "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -43,7 +44,7 @@
           "Type": "TwoSensors"
         },
         "Carousel": {
-          "ElevatorDistance": 300
+          "ElevatorDistance": 460
         }
       },
       {
@@ -92,7 +93,7 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
@@ -104,7 +105,7 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55

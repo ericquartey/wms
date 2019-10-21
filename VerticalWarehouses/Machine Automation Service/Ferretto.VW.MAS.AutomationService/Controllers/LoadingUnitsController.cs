@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop(BayNumber targetBay)
         {
-            //this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
+            // this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 
