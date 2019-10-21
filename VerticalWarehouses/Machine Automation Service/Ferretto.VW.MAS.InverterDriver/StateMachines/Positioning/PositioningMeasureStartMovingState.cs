@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public override void Start()
         {
+            this.Inverter.PositionControlWord.ImmediateChangeSet = true;
             base.Start();
 
             this.Logger.LogInformation("Starting measure of weight.");

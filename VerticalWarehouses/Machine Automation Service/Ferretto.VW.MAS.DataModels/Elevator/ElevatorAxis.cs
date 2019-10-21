@@ -107,12 +107,24 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// it is the kM value in the formula weight = kM * current + kS
+        /// </summary>
         public double WeightMeasureMultiply { get; set; }
 
+        /// <summary>
+        /// the speed for the upward movement during weight measurement, in millimeters/meter.
+        /// </summary>
         public double WeightMeasureSpeed { get; set; }
 
+        /// <summary>
+        /// it is the kS value in the formula weight = kM * current + kS
+        /// </summary>
         public double WeightMeasureSum { get; set; }
 
+        /// <summary>
+        /// the time between the start of slow upward movement and the torque current request message, in tenth of seconds.
+        /// </summary>
         public int WeightMeasureTime { get; set; }
 
         #endregion
