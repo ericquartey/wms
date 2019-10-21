@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191021083817_Initial")]
+    [Migration("20191021094732_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,11 +172,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("EmptyLoadMovementId");
 
+                    b.Property<int?>("FullLoadMovementId");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<double>("LowerBound");
-
-                    b.Property<int?>("MaximumLoadMovementId");
 
                     b.Property<double>("Offset");
 
@@ -194,9 +194,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("EmptyLoadMovementId");
 
-                    b.HasIndex("InverterId");
+                    b.HasIndex("FullLoadMovementId");
 
-                    b.HasIndex("MaximumLoadMovementId");
+                    b.HasIndex("InverterId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -788,7 +788,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Acceleration");
 
-                    b.Property<double?>("Deceleration");
+                    b.Property<double>("Deceleration");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
@@ -848,7 +848,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 21, 10, 38, 16, 867, DateTimeKind.Local).AddTicks(2195),
+                            InstallationDate = new DateTime(2016, 12, 21, 11, 47, 32, 126, DateTimeKind.Local).AddTicks(2140),
                             ServiceStatus = 86
                         });
                 });
@@ -1277,13 +1277,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("EmptyLoadMovementId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("FullLoadMovementId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "MaximumLoadMovement")
-                        .WithMany()
-                        .HasForeignKey("MaximumLoadMovementId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>

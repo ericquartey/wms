@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MovementParameters EmptyLoadMovement { get; set; }
 
+        public MovementParameters FullLoadMovement { get; set; }
+
         public Inverter Inverter { get; set; }
 
         public double LowerBound
@@ -40,8 +42,6 @@ namespace Ferretto.VW.MAS.DataModels
                 this.lowerBound = value;
             }
         }
-
-        public MovementParameters MaximumLoadMovement { get; set; }
 
         public double Offset
         {
@@ -124,16 +124,13 @@ namespace Ferretto.VW.MAS.DataModels
                 throw new ArgumentOutOfRangeException(nameof(grossWeight));
             }
 
-            var maximumLoadMovement = this.MaximumLoadMovement;
-            var emptyLoadMovement = this.EmptyLoadMovement;
-
             var scalingFactor = grossWeight / maximumLoadOnBoard;
 
             return new MovementParameters
             {
-                Speed = emptyLoadMovement.Speed + ((emptyLoadMovement.Speed - maximumLoadMovement.Speed) * scalingFactor),
-                Acceleration = emptyLoadMovement.Acceleration + ((emptyLoadMovement.Acceleration - maximumLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = emptyLoadMovement.Deceleration + ((emptyLoadMovement.Deceleration - maximumLoadMovement.Deceleration) * scalingFactor),
+                Speed = this.EmptyLoadMovement.Speed + ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
+                Acceleration = this.EmptyLoadMovement.Acceleration + ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = this.EmptyLoadMovement.Deceleration + ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
             };
         }
 

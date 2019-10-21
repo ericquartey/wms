@@ -1558,14 +1558,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("emptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("fullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MovementParameters FullLoadMovement { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("maximumLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MovementParameters MaximumLoadMovement { get; set; }
     
         [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
         public double Offset { get; set; }
