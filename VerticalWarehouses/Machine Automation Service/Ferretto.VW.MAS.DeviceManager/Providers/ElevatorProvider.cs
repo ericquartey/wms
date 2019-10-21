@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber bayNumber, MessageActor sender)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -243,7 +243,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,
@@ -261,11 +261,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
@@ -325,11 +325,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, MessageActor sender, double feedRate = 1)
+        public void MoveVerticalOfDistance(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1)
         {
             if (distance == 0)
             {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void Stop(BayNumber bayNumber, MessageActor sender)
+        public void Stop(BayNumber requestingBay, MessageActor sender)
         {
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
@@ -524,7 +524,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Stop,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 

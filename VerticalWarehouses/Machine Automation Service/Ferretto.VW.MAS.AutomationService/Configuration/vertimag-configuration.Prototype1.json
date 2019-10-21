@@ -93,7 +93,10 @@
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
-          }
+          },
+          "WeightMeasureMultiply": 121.46,
+          "WeightMeasureSum": -746.12,
+          "WeightMeasureSpeed": 50
         },
         {
           "Orientation": "Horizontal",

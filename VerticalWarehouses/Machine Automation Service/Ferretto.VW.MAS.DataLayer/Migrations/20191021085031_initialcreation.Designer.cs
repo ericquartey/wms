@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191017172445_initialcreation")]
+    [Migration("20191021085031_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("TotalCycles");
 
                     b.Property<double>("UpperBound");
+
+                    b.Property<double>("WeightMeasureMultiply");
+
+                    b.Property<double>("WeightMeasureSpeed");
+
+                    b.Property<double>("WeightMeasureSum");
 
                     b.HasKey("Id");
 
@@ -445,46 +451,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 200015,
-                            Code = 200015,
-                            Description = "Errore sconosciuto 15 dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200016,
-                            Code = 200016,
-                            Description = "InverterErrorUnknown16",
-                            Reason = "InverterErrorUnknown16",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200017,
-                            Code = 200017,
-                            Description = "InverterErrorUnknown17",
-                            Reason = "InverterErrorUnknown17",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200018,
-                            Code = 200018,
-                            Description = "InverterErrorUnknown18",
-                            Reason = "InverterErrorUnknown18",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200019,
-                            Code = 200019,
-                            Description = "InverterErrorUnknown19",
-                            Reason = "InverterErrorUnknown19",
-                            Severity = 1
-                        },
-                        new
-                        {
                             Id = 200020,
                             Code = 200020,
                             Description = "Il nodo specificato non è disponibile.",
@@ -620,31 +586,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200014,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200015,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200016,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200017,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200018,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200019,
                             TotalErrors = 0
                         },
                         new
@@ -913,7 +854,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 17, 19, 24, 45, 21, DateTimeKind.Local).AddTicks(4314),
+                            InstallationDate = new DateTime(2016, 12, 21, 10, 50, 30, 492, DateTimeKind.Local).AddTicks(6894),
                             ServiceStatus = 86
                         });
                 });

@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double UpperBound { get; set; }
 
+        public double WeightMeasureMultiply { get; set; }
+
+        public double WeightMeasureSpeed { get; set; }
+
+        public double WeightMeasureSum { get; set; }
+
         #endregion
 
         #region Methods

@@ -135,6 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
@@ -466,6 +467,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                     this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
