@@ -157,6 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .Include(b => b.Shutter)
                     .Include(b => b.Positions)
+                    .Include(b => b.Carousel)
                     .ToArray();
             }
         }
