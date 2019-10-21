@@ -14,6 +14,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        public double BrakeActivatePercent { get; set; }
+
+        public double BrakeReleaseTime { get; set; }
+
         public double ChainOffset { get; set; }
 
         public MovementParameters EmptyLoadMovement { get; set; }
@@ -65,6 +69,8 @@ namespace Ferretto.VW.MAS.DataModels
         public double WeightMeasureSpeed { get; set; }
 
         public double WeightMeasureSum { get; set; }
+
+        public int WeightMeasureTime { get; set; }
 
         #endregion
 

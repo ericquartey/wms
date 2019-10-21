@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191017144846_Initial")]
-    partial class Initial
+    [Migration("20191021114112_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Number");
 
                     b.Property<int>("Operation");
+
+                    b.Property<double>("Resolution");
 
                     b.Property<int?>("ShutterId");
 
@@ -164,6 +166,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
@@ -185,6 +191,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("TotalCycles");
 
                     b.Property<double>("UpperBound");
+
+                    b.Property<double>("WeightMeasureMultiply");
+
+                    b.Property<double>("WeightMeasureSpeed");
+
+                    b.Property<double>("WeightMeasureSum");
+
+                    b.Property<int>("WeightMeasureTime");
 
                     b.HasKey("Id");
 
@@ -443,14 +457,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 200015,
-                            Code = 200015,
-                            Description = "Errore sconosciuto dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
                             Id = 200020,
                             Code = 200020,
                             Description = "Il nodo specificato non è disponibile.",
@@ -586,11 +592,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200014,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200015,
                             TotalErrors = 0
                         },
                         new
@@ -859,7 +860,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 17, 16, 48, 46, 117, DateTimeKind.Local).AddTicks(8416),
+                            InstallationDate = new DateTime(2016, 12, 21, 13, 41, 12, 315, DateTimeKind.Local).AddTicks(134),
                             ServiceStatus = 86
                         });
                 });
@@ -1184,10 +1185,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.VerticalManualMovementsProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
-
-                    b.Property<double>("BrakeActivatePercent");
-
-                    b.Property<double>("BrakeReleaseTime");
 
                     b.Property<double>("FeedRateAfterZero");
 

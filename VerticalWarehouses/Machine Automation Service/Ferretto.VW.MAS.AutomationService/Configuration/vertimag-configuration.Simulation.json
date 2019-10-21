@@ -82,6 +82,8 @@
             "IpAddress": "127.0.0.1",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
@@ -100,7 +102,8 @@
           },
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
-          "WeightMeasureSpeed": 50
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Orientation": "Horizontal",
@@ -2818,8 +2821,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,

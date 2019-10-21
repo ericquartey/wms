@@ -164,6 +164,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
@@ -191,6 +195,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("WeightMeasureSpeed");
 
                     b.Property<double>("WeightMeasureSum");
+
+                    b.Property<int>("WeightMeasureTime");
 
                     b.HasKey("Id");
 
@@ -852,7 +858,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 21, 10, 50, 30, 492, DateTimeKind.Local).AddTicks(6894),
+                            InstallationDate = new DateTime(2016, 12, 21, 13, 41, 12, 315, DateTimeKind.Local).AddTicks(134),
                             ServiceStatus = 86
                         });
                 });
@@ -1177,10 +1183,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.VerticalManualMovementsProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
-
-                    b.Property<double>("BrakeActivatePercent");
-
-                    b.Property<double>("BrakeReleaseTime");
 
                     b.Property<double>("FeedRateAfterZero");
 

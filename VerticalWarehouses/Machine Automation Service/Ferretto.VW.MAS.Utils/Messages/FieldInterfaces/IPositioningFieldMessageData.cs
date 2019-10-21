@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool IsTorqueCurrentSamplingEnabled { get; }
 
+        bool IsWeightMeasure { get; }
+
         double? LoadedNetWeight { get; set; }
 
         int? LoadingUnitId { get; }
