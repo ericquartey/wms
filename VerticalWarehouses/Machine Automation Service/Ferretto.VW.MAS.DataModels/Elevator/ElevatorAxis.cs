@@ -95,6 +95,16 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MovementParameters ScaleMovementsByWeight(double grossWeight, double maximumLoadOnBoard)
         {
+            if (grossWeight < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+            }
+
+            if (maximumLoadOnBoard <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+            }
+
             if (grossWeight > maximumLoadOnBoard)
             {
                 throw new ArgumentOutOfRangeException(nameof(grossWeight));
@@ -107,9 +117,9 @@ namespace Ferretto.VW.MAS.DataModels
 
             return new MovementParameters
             {
-                Speed = emptyLoadMovement.Speed + ((maximumLoadMovement.Speed - emptyLoadMovement.Speed) * scalingFactor),
-                Acceleration = emptyLoadMovement.Acceleration + ((maximumLoadMovement.Acceleration - emptyLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = emptyLoadMovement.Deceleration + ((maximumLoadMovement.Deceleration - emptyLoadMovement.Deceleration) * scalingFactor),
+                Speed = emptyLoadMovement.Speed + ((emptyLoadMovement.Speed - maximumLoadMovement.Speed) * scalingFactor),
+                Acceleration = emptyLoadMovement.Acceleration + ((emptyLoadMovement.Acceleration - maximumLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = emptyLoadMovement.Deceleration + ((emptyLoadMovement.Deceleration - maximumLoadMovement.Deceleration) * scalingFactor),
             };
         }
 
