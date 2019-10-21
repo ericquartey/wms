@@ -12,10 +12,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S107:Methods should not have too many parameters",
-            Justification = "Check if we really need this constructor.")]
         public PositioningMessageData(
             Axis axisMovement,
             MovementType movementType,
@@ -24,7 +20,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             double[] speed,
             double[] acceleration,
             double[] deceleration,
-            int numberCycles,
+            int requiredCycles,
             double lowerBound,
             double upperBound,
             int delay,
@@ -40,12 +36,41 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
             this.Verbosity = verbosity;
-            this.NumberCycles = numberCycles;
+            this.RequiredCycles = requiredCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
             this.SwitchPosition = switchPosition;
             this.Delay = delay;
             this.Direction = direction;
+        }
+
+        public PositioningMessageData(
+            Axis axisMovement,
+            MovementType movementType,
+            MovementMode movementMode,
+            double target,
+            double[] speed,
+            double[] acceleration,
+            double[] deceleration,
+            double[] switchPosition,
+            HorizontalMovementDirection direction,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : this(
+                  axisMovement,
+                  movementType,
+                  movementMode,
+                  target,
+                  speed,
+                  acceleration,
+                  deceleration,
+                  requiredCycles: 0,
+                  lowerBound: 0,
+                  upperBound: 0,
+                  delay: 0,
+                  switchPosition,
+                  direction,
+                  verbosity)
+        {
         }
 
         public PositioningMessageData(IPositioningMessageData other)
@@ -57,7 +82,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.TargetSpeed = other.TargetSpeed;
             this.TargetAcceleration = other.TargetAcceleration;
             this.TargetDeceleration = other.TargetDeceleration;
-            this.NumberCycles = other.NumberCycles;
+            this.RequiredCycles = other.RequiredCycles;
             this.LowerBound = other.LowerBound;
             this.UpperBound = other.UpperBound;
             this.SwitchPosition = other.SwitchPosition;
@@ -95,7 +120,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public MovementType MovementType { get; set; }
 
-        public int NumberCycles { get; set; }
+        public int RequiredCycles { get; set; }
 
         public double[] SwitchPosition { get; set; }
 
@@ -119,7 +144,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.NumberCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound} Delay:{this.Delay}";
+            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.RequiredCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound} Delay:{this.Delay}";
         }
 
         #endregion

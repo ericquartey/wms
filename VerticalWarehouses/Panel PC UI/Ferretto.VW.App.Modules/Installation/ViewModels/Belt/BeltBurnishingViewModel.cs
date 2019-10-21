@@ -75,10 +75,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public int? PerformedCyclesThisSession
+        public int? CumulativePerformedCycles
         {
-            get => this.completedCyclesThisSession;
-            private set => this.SetProperty(ref this.completedCyclesThisSession, value);
+            get => this.totalCompletedCycles;
+            private set
+            {
+                if (this.SetProperty(ref this.totalCompletedCycles, value))
+                {
+                    this.PerformedCyclesThisSession = value.Value - this.totalPerformedCyclesBeforeStart;
+                }
+            }
         }
 
         public double? CurrentPosition
@@ -171,6 +177,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public int? PerformedCyclesThisSession
+        {
+            get => this.completedCyclesThisSession;
+            private set => this.SetProperty(ref this.completedCyclesThisSession, value);
+        }
+
         public ICommand StartCommand =>
             this.startCommand
             ??
@@ -184,18 +196,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopTestAsync(),
                 this.CanStopTest));
-
-        public int? CumulativePerformedCycles
-        {
-            get => this.totalCompletedCycles;
-            private set
-            {
-                if (this.SetProperty(ref this.totalCompletedCycles, value))
-                {
-                    this.PerformedCyclesThisSession = value.Value - this.totalPerformedCyclesBeforeStart;
-                }
-            }
-        }
 
         #endregion
 
@@ -294,8 +294,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.positioningMessageReceivedToken != null)
             {
                 this.eventAggregator
-                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                  .Unsubscribe(this.positioningMessageReceivedToken);
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.positioningMessageReceivedToken);
 
                 this.positioningMessageReceivedToken = null;
             }
@@ -303,45 +303,52 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task GetParameterValuesAsync()
         {
-            try
-            {
-                var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
+            var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
 
-                var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
+            var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
 
-                this.InputUpperBound = bounds.Upper;
-                this.machineUpperBound = bounds.Upper;
-                this.InputLowerBound = bounds.Lower;
-                this.machineLowerBound = bounds.Lower;
+            this.InputUpperBound = bounds.Upper;
+            this.machineUpperBound = bounds.Upper;
+            this.InputLowerBound = bounds.Lower;
+            this.machineLowerBound = bounds.Lower;
 
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
-                this.totalPerformedCyclesBeforeStart = procedureParameters.PerformedCycles;
-                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.PerformedCyclesThisSession = 0;
+            this.InputRequiredCycles = procedureParameters.RequiredCycles;
+            this.totalPerformedCyclesBeforeStart = procedureParameters.PerformedCycles;
+            this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.PerformedCyclesThisSession = 0;
-
             this.IsBackNavigationAllowed = true;
 
-            await this.GetParameterValuesAsync();
+            try
+            {
+                this.IsWaitingForResponse = true;
 
-            await this.RetrieveCurrentPositionAsync();
+                await this.GetParameterValuesAsync();
+
+                await this.RetrieveCurrentPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
 
             this.positioningMessageReceivedToken = this.eventAggregator
                 .GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                     this.OnPositioningMessageReceived,
                     ThreadOption.UIThread,
-                    false);
+                    false,
+                    message => message?.Data != null
+                    );
         }
 
         private bool CanStartTest()
@@ -364,26 +371,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
+            System.Diagnostics.Debug.WriteLine($"{message.Status} {message.Type} {message.ErrorLevel}");
 
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
-                if (message.IsErrored())
-                {
-                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
-                }
             }
-            else
+
+            if (message.IsErrored())
             {
-                if (message.Data != null && message.Data.MovementMode == MovementMode.BeltBurnishing)
-                {
-                    this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
-                    this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                }
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+            }
+
+            if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
+            {
+                this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
+                this.CumulativePerformedCycles = message.Data.ExecutedCycles;
             }
         }
 
@@ -395,20 +398,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task RetrieveCurrentPositionAsync()
         {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
         }
 
         private async Task StartTestAsync()
@@ -432,7 +422,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
-                    totalCyclesToPerform,
                     this.InputDelay);
             }
             catch (Exception ex)

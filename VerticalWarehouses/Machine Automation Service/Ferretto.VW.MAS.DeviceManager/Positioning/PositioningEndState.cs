@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
-                                this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                                this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                                 MessageActor.FiniteStateMachines,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Positioning,
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
-                    this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
-                    this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                     MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,

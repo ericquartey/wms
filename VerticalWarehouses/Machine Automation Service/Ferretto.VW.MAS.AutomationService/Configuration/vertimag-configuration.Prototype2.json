@@ -2746,8 +2746,7 @@
       "FeedRate": 0.2
     },
     "BeltBurnishingTest": {
-      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-      "RequiredCycles": 5
+      "RequiredCycles": 200
     },
     "CarouselManualMovements": {
       "FeedRate": 0.04
