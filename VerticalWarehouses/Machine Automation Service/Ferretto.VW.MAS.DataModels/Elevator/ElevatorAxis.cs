@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DataModels
             var maximumLoadMovement = this.MaximumLoadMovement;
             var emptyLoadMovement = this.EmptyLoadMovement;
 
-            var scalingFactor = Math.Min(grossWeight / maximumLoadOnBoard, 1.0);
+            var scalingFactor = grossWeight / maximumLoadOnBoard;
 
             return new MovementParameters
             {
