@@ -349,11 +349,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineErrorsWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> GetCurrentAsync();
+        System.Threading.Tasks.Task<MachineError> GetCurrentAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> GetCurrentAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineError> GetCurrentAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync();
@@ -363,18 +363,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> CreateAsync(MachineErrors code);
+        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> CreateAsync(MachineErrors code, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> ResolveAsync(int id);
+        System.Threading.Tasks.Task<MachineError> ResolveAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Error> ResolveAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineError> ResolveAsync(int id, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1558,14 +1558,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("emptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("fullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MovementParameters FullLoadMovement { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("maximumLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MovementParameters MaximumLoadMovement { get; set; }
     
         [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
         public double Offset { get; set; }
@@ -2084,7 +2084,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Error : DataModel
+    public partial class MachineError : DataModel
     {
         [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber BayNumber { get; set; }
@@ -2107,9 +2107,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
-        public static Error FromJson(string data)
+        public static MachineError FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Error>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineError>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2124,7 +2124,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public string Description { get; set; }
     
         [Newtonsoft.Json.JsonProperty("occurrences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<Error> Occurrences { get; set; }
+        public System.Collections.Generic.IEnumerable<MachineError> Occurrences { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Reason { get; set; }
@@ -2253,7 +2253,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 200020 = InverterErrorNodeNotAvailable
     /// 200030 = InverterErrorSyntaxError2</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MachineErrors
+    public enum MachineErrorCode
     {
         CradleNotCompletelyLoaded = 100032,
     

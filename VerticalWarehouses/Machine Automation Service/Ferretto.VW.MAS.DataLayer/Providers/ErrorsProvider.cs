@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.Dispose(true);
         }
 
-        public Error GetCurrent()
+        public MachineError GetCurrent()
         {
             lock (this.dataContext)
             {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Where(e => !e.ResolutionDate.HasValue)
                 .OrderBy(e => e.Definition.Severity)
                 .ThenBy(e => e.OccurrenceDate)
-                .Select(e => new Error
+                .Select(e => new MachineError
                 {
                     Id = e.Id,
                     Code = e.Code,
@@ -122,9 +122,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Error RecordNew(MachineErrors code, BayNumber bayNumber = BayNumber.None)
+        public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
         {
-            var newError = new Error
+            var newError = new MachineError
             {
                 Code = (int)code,
                 OccurrenceDate = DateTime.Now,
@@ -155,9 +155,9 @@ namespace Ferretto.VW.MAS.DataLayer
             return newError;
         }
 
-        public Error Resolve(int id)
+        public MachineError Resolve(int id)
         {
-            Error error;
+            MachineError error;
 
             lock (this.dataContext)
             {
@@ -167,14 +167,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(id);
                 }
 
-            if (!this.IsErrorStillActive(error.Code))
-            {
-                error.ResolutionDate = DateTime.Now;
+                if (!this.IsErrorStillActive(error.Code))
+                {
+                    error.ResolutionDate = DateTime.Now;
 
-                this.dataContext.Errors.Update(error);
+                    this.dataContext.Errors.Update(error);
 
-                this.dataContext.SaveChanges();
-            }
+                    this.dataContext.SaveChanges();
+                }
 
                 this.NotifyErrorResolution(error);
             }
@@ -182,57 +182,58 @@ namespace Ferretto.VW.MAS.DataLayer
             return error;
         }
 
-        public IEnumerable<Error> ResolveAll()
+        public IEnumerable<MachineError> ResolveAll()
         {
             IEnumerable<int> errors;
             lock (this.dataContext)
             {
-             errors = this.dataContext.Errors
-                .Where(e => e.ResolutionDate == null)
-                .Select(e => e.Id)
-                .ToArray();
+                errors = this.dataContext.Errors
+                   .Where(e => e.ResolutionDate == null)
+                   .Select(e => e.Id)
+                   .ToArray();
             }
+
             return errors.Select(id => this.Resolve(id));
         }
 
-            private void Dispose(bool disposing)
+        private void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
             {
-                if (!this.isDisposed)
-                {
-                    return;
-                }
-
-                if (disposing)
-                {
-                    this.scope?.Dispose();
-                }
-
-                this.isDisposed = true;
+                return;
             }
 
-            private bool IsErrorStillActive(int code)
+            if (disposing)
             {
-                var machineError = (MachineErrors)code;
-
-                var enumField = typeof(MachineErrors).GetField(machineError.ToString());
-
-                var attributes = enumField
-                    .GetCustomAttributes(typeof(ErrorConditionAttribute), false)
-                    .Cast<ErrorConditionAttribute>();
-
-                var isErrorStillActive = attributes.Any();
-
-                foreach (var attribute in attributes)
-                {
-                    var condition = this.scope.ServiceProvider.GetConditionEvaluator(attribute);
-
-                    isErrorStillActive &= !condition.IsSatisfied();
-                }
-
-                return isErrorStillActive;
+                this.scope?.Dispose();
             }
 
-        private void NotifyErrorCreation(Error error, BayNumber bayNumber)
+            this.isDisposed = true;
+        }
+
+        private bool IsErrorStillActive(int code)
+        {
+            var machineError = (MachineErrorCode)code;
+
+            var enumField = typeof(MachineErrorCode).GetField(machineError.ToString());
+
+            var attributes = enumField
+                .GetCustomAttributes(typeof(ErrorConditionAttribute), false)
+                .Cast<ErrorConditionAttribute>();
+
+            var isErrorStillActive = attributes.Any();
+
+            foreach (var attribute in attributes)
+            {
+                var condition = this.scope.ServiceProvider.GetConditionEvaluator(attribute);
+
+                isErrorStillActive &= !condition.IsSatisfied();
+            }
+
+            return isErrorStillActive;
+        }
+
+        private void NotifyErrorCreation(MachineError error, BayNumber bayNumber)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
@@ -245,7 +246,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.notificationEvent.Publish(message);
         }
 
-        private void NotifyErrorResolution(Error error)
+        private void NotifyErrorResolution(MachineError error)
         {
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),

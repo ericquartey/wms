@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public enum MachineErrors
+    public enum MachineErrorCode
     {
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCompletelyLoaded))]
         CradleNotCompletelyLoaded = 100032,
