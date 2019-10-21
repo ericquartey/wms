@@ -9,23 +9,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        void CloseShutter(MessageActor sender, BayNumber requestingBay);
+
+        void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
+
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
-        double GetDestinationHeight(IMoveLoadingUnitMessageData messageData);
+        double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData);
 
-        double GetSourceHeight(IMoveLoadingUnitMessageData messageData);
+        double? GetSourceHeight(IMoveLoadingUnitMessageData messageData);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
-        bool NeedOpenShutter(LoadingUnitLocation positionType);
+        void PositionElevatorToPosition(double targetHeight, bool closeShutter, MessageActor sender, BayNumber requestingBay);
 
-        bool OpenShutter(LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay);
-
-        List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay);
-
-        MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements);
+        MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
         MessageStatus ShutterStatus(NotificationMessage message);
 

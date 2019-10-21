@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -20,7 +19,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private List<MovementMode> movements;
+        private readonly Dictionary<MessageType, MessageStatus> stateMachineResponses;
+
+        private bool closeShutter;
 
         #endregion
 
@@ -33,7 +34,10 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
-            this.movements = new List<MovementMode>();
+
+            this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
+
+            this.closeShutter = false;
         }
 
         #endregion
@@ -42,11 +46,25 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            if (machineData is IMoveLoadingUnitMachineData machineMoveData)
+            {
+                if (machineMoveData.LoadingUnitSource != LoadingUnitLocation.Cell)
+                {
+                    this.closeShutter = true;
+                }
+            }
+
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
                 var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData);
+                if (destinationHeight is null)
+                {
+                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
 
-                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                    throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
+                }
+
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -60,12 +78,13 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
+            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                    this.UpdateResponseList(notificationStatus, notification.Type);
+
                     break;
 
                 case MessageStatus.OperationError:
@@ -74,6 +93,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;
                     break;
+            }
+
+            if ((this.closeShutter && this.stateMachineResponses.Count == 2) || (!this.closeShutter && this.stateMachineResponses.Count == 1))
+            {
+                returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
             }
 
             return returnValue;
@@ -86,6 +110,19 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             ((IEndState)returnValue).StopRequestReason = reason;
 
             return returnValue;
+        }
+
+        private void UpdateResponseList(MessageStatus status, MessageType messageType)
+        {
+            if (this.stateMachineResponses.TryGetValue(messageType, out var stateMachineResponse))
+            {
+                stateMachineResponse = status;
+                this.stateMachineResponses[messageType] = stateMachineResponse;
+            }
+            else
+            {
+                this.stateMachineResponses.Add(messageType, status);
+            }
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -8,7 +7,6 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -22,10 +20,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private List<MovementMode> movements;
-
-        private bool needOpenShutter;
-
         #endregion
 
         #region Constructors
@@ -37,8 +31,6 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             : base(eventAggregator, logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
-            this.movements = new List<MovementMode>();
-            this.needOpenShutter = false;
         }
 
         #endregion
@@ -51,15 +43,14 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             {
                 var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData);
 
-                if (sourceHeight == 0)
+                if (sourceHeight is null)
                 {
                     var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
                 }
 
-                this.movements = this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight, messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay);
-                this.needOpenShutter = this.loadingUnitMovementProvider.NeedOpenShutter(messageData.Source);
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -73,19 +64,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification, this.movements);
+            var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.needOpenShutter)
-                    {
-                        returnValue = this.GetState<IMoveLoadingUnitOpenShutterState>();
-                    }
-                    else
-                    {
-                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
-                    }
+                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
                     break;
 
                 case MessageStatus.OperationError:

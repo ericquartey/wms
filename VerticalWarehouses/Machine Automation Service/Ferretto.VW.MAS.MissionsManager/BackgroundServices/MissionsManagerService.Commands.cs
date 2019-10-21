@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -52,7 +53,15 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     case CommandAction.Start:
                         if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                         {
-                            this.missionsProvider.StartMachineMission(missionId, command);
+                            try
+                            {
+                                this.missionsProvider.StartMachineMission(missionId, command);
+                            }
+                            catch
+                            {
+                                this.Logger.LogDebug("Failed to start Change Running State machine mission");
+                                this.NotifyCommandError(command);
+                            }
                         }
                         else
                         {
@@ -84,7 +93,15 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                     case CommandAction.Start:
                         if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
                         {
-                            this.missionsProvider.StartMachineMission(missionId, command);
+                            try
+                            {
+                                this.missionsProvider.StartMachineMission(missionId, command);
+                            }
+                            catch
+                            {
+                                this.Logger.LogDebug("Failed to start Move Loading UNit State machine mission");
+                                this.NotifyCommandError(command);
+                            }
                         }
                         else
                         {

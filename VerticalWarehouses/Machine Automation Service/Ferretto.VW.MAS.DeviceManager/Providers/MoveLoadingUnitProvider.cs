@@ -48,6 +48,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public void CloseShutter(MessageActor sender, BayNumber requestingBay)
+        {
+            this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+        }
+
+        public void ContinuePositioning(MessageActor sender, BayNumber requestingBay)
+        {
+            this.elevatorProvider.ContinuePositioning(requestingBay, sender);
+        }
+
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
@@ -58,9 +68,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Type == MessageType.ShutterPositioning);
         }
 
-        public double GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
+        public double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
         {
-            double targetPosition = 0;
+            double? targetPosition = null;
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.LoadingUnit:
@@ -68,7 +78,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (messageData.LoadingUnitId != null)
                     {
                         var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
-                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
                         }
@@ -94,9 +104,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public double GetSourceHeight(IMoveLoadingUnitMessageData messageData)
+        public double? GetSourceHeight(IMoveLoadingUnitMessageData messageData)
         {
-            double targetPosition = 0;
+            double? targetPosition = null;
             switch (messageData.Source)
             {
                 case LoadingUnitLocation.LoadingUnit:
@@ -130,14 +140,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, openShutter, requestingBay, sender);
+
+            if (openShutter)
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Opened, requestingBay, sender);
+            }
         }
 
         public MessageStatus MoveLoadingUnitStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
+            if (message.Type == MessageType.Positioning || message.Type == MessageType.ShutterPositioning)
             {
                 return message.Status;
             }
@@ -145,84 +160,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NoStatus;
         }
 
-        public bool NeedOpenShutter(LoadingUnitLocation positionType)
-        {
-            if (positionType != LoadingUnitLocation.NoLocation)
-            {
-                var shutter = this.baysProvider.GetShutterOpenPosition(positionType, out var bay);
-                return (shutter != ShutterPosition.None);
-            }
-            return false;
-        }
-
-        public bool OpenShutter(LoadingUnitLocation positionType, MessageActor sender, BayNumber requestingBay)
-        {
-            if (positionType != LoadingUnitLocation.NoLocation)
-            {
-                var shutter = this.baysProvider.GetShutterOpenPosition(positionType, out var bay);
-                if (shutter != ShutterPosition.None)
-                {
-                    return this.shutterProvider.MoveTo(shutter, bay, sender);
-                }
-            }
-            return false;
-        }
-
         /// <summary>
         /// Moves elevator to targetHeight.
         /// At the same time if sourceType is a bay it closes the shutter (only for external bays)
         /// </summary>
         /// <param name="targetHeight"></param>
-        /// <param name="sourceType"></param>
+        /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        /// <returns>The list of movements created. Used by PositionElevatorToPositionStatus to check when movements are completed</returns>
-        public List<MovementMode> PositionElevatorToPosition(double targetHeight, LoadingUnitLocation sourceType, MessageActor sender, BayNumber requestingBay)
+        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, MessageActor sender, BayNumber requestingBay)
         {
-            var movements = new List<MovementMode>();
-            if (sourceType != LoadingUnitLocation.NoLocation)
-            {
-                var shutter = this.baysProvider.GetShutterClosePosition(sourceType, true, out var bay);
-                if (shutter != ShutterPosition.None)
-                {
-                    this.shutterProvider.MoveTo(shutter, bay, sender);
-                    movements.Add(MovementMode.ShutterPosition);
-                }
-            }
             var parameters = this.setupProceduresDataProvider.GetVerticalManualMovements();
+
+            if (closeShutter)
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+            }
             this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, requestingBay, MessageActor.MissionsManager);
-            movements.Add(MovementMode.Position);
-            return movements;
         }
 
-        public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message, List<MovementMode> movements)
+        public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
+            if (message.Type == MessageType.Positioning || message.Type == MessageType.ShutterPositioning)
             {
-                if (message.Status == MessageStatus.OperationError)
-                {
-                    return message.Status;
-                }
-                if (message.Status == MessageStatus.OperationEnd && movements.Contains(MovementMode.Position))
-                {
-                    movements.Remove(MovementMode.Position);
-                }
+                return message.Status;
             }
-            else if (message.Type == MessageType.ShutterPositioning)
-            {
-                if (message.Status == MessageStatus.OperationError)
-                {
-                    return message.Status;
-                }
-                if (message.Status == MessageStatus.OperationEnd && movements.Contains(MovementMode.ShutterPosition))
-                {
-                    movements.Remove(MovementMode.ShutterPosition);
-                }
-            }
-            if (movements.Count == 0)
-            {
-                return MessageStatus.OperationEnd;
-            }
+
             return MessageStatus.NoStatus;
         }
 

@@ -1,11 +1,8 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -13,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitOpenShutterState : StateBase, IMoveLoadingUnitOpenShutterState
+    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState
     {
         #region Fields
 
@@ -23,7 +20,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         #region Constructors
 
-        public MoveLoadingUnitOpenShutterState(
+        public MoveLoadingUnitCloseShutterState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
@@ -38,21 +35,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
-            {
-                if (!this.loadingUnitMovementProvider.OpenShutter(messageData.Source, MessageActor.MissionsManager, commandMessage.RequestingBay))
-                {
-                    var description = $"OpenShutter error: shutter position not found ({messageData.Source})";
-
-                    throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
-                }
-            }
-            else
-            {
-                var description = $"Move Loading Unit Open Shutter State received wrong initialization data ({commandMessage.Data.GetType().Name})";
-
-                throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
-            }
+            this.loadingUnitMovementProvider.CloseShutter(MessageActor.MissionsManager, commandMessage.RequestingBay);
         }
 
         protected override IState OnNotificationReceived(NotificationMessage notification)
@@ -64,7 +47,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     break;
 
                 case MessageStatus.OperationError:
