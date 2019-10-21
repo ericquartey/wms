@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class Error : DataModel
+    public sealed class MachineError : DataModel
     {
         #region Properties
 
