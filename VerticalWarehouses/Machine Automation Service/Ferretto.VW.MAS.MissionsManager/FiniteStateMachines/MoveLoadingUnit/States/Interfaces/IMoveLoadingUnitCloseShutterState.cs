@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces
 {
-    internal interface IMoveLoadingUnitOpenShutterState : IState
+    internal interface IMoveLoadingUnitCloseShutterState : IState
     {
     }
 }

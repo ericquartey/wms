@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -8,7 +9,6 @@ using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -26,7 +26,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly Dictionary<MessageType, MessageStatus> stateMachineResponses;
+
         private IMoveLoadingUnitMachineData moveData;
+
+        private bool openShutter;
 
         #endregion
 
@@ -45,6 +49,9 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+
+            this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
+            this.openShutter = false;
         }
 
         #endregion
@@ -73,11 +80,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     default:
                         var bay = this.baysProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                        this.openShutter = true;
 
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, MessageActor.MissionsManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, MessageActor.MissionsManager, commandMessage.RequestingBay);
             }
             else
             {
@@ -96,28 +104,12 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    using (var transaction = this.elevatorDataProvider.GetContextTransaction())
+                    this.UpdateResponseList(notificationStatus, notification.Type);
+
+                    if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
-
-                        if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
-                        {
-                            var moveDataLoadingUnitCellSourceId = this.moveData.LoadingUnitCellSourceId;
-
-                            if (moveDataLoadingUnitCellSourceId != null)
-                            {
-                                this.cellsProvider.UnloadLoadingUnit(moveDataLoadingUnitCellSourceId.Value);
-                            }
-                        }
-                        else
-                        {
-                            this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
-                        }
-
-                        transaction.Commit();
+                        this.loadingUnitMovementProvider.ContinuePositioning(MessageActor.MissionsManager, notification.RequestingBay);
                     }
-
-                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
 
                     break;
 
@@ -127,6 +119,32 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                     ((IEndState)returnValue).ErrorMessage = notification;
                     break;
+            }
+
+            if ((this.openShutter && this.stateMachineResponses.Count == 2) || (!this.openShutter && this.stateMachineResponses.Count == 1))
+            {
+                using (var transaction = this.elevatorDataProvider.GetContextTransaction())
+                {
+                    this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
+
+                    if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
+                    {
+                        var moveDataLoadingUnitCellSourceId = this.moveData.LoadingUnitCellSourceId;
+
+                        if (moveDataLoadingUnitCellSourceId != null)
+                        {
+                            this.cellsProvider.UnloadLoadingUnit(moveDataLoadingUnitCellSourceId.Value);
+                        }
+                    }
+                    else
+                    {
+                        this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
+                    }
+
+                    transaction.Commit();
+                }
+
+                returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
             }
 
             return returnValue;
@@ -139,6 +157,19 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             ((IEndState)returnValue).StopRequestReason = reason;
 
             return returnValue;
+        }
+
+        private void UpdateResponseList(MessageStatus status, MessageType messageType)
+        {
+            if (this.stateMachineResponses.TryGetValue(messageType, out var stateMachineResponse))
+            {
+                stateMachineResponse = status;
+                this.stateMachineResponses[messageType] = stateMachineResponse;
+            }
+            else
+            {
+                this.stateMachineResponses.Add(messageType, status);
+            }
         }
 
         #endregion

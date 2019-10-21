@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-
         #endregion
 
         #region Constructors
@@ -35,13 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
@@ -49,6 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        // Interrupts operation finishing current movement leaving machine in a safe state
         [HttpGet("abort-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -87,7 +84,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -113,7 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -174,6 +171,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        // Instantaneously interrupts current operation leaving machine in a potentially unsafe condition
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

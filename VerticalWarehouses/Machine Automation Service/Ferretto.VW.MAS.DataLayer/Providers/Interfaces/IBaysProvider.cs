@@ -49,10 +49,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
-        ShutterPosition GetShutterClosePosition(LoadingUnitLocation destination, bool parallel, out BayNumber bay);
-
-        ShutterPosition GetShutterOpenPosition(LoadingUnitLocation destination, out BayNumber bay);
-
         void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);

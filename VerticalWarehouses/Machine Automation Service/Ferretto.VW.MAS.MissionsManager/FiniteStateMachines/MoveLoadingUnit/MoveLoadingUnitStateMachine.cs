@@ -235,6 +235,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit
 
                 default:
                     unitToMove = this.baysProvider.GetLoadingUnitByDestination(messageData.Source);
+                    machineData.LoadingUnitSource = messageData.Source;
                     break;
             }
 

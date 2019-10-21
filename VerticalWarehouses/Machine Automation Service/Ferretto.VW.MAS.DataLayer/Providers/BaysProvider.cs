@@ -386,7 +386,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
-            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.LoadingUnit;
+            return this.dataContext.BayPositions
+                       .Where(p => p.Location == location)
+                       .Select(p => p.LoadingUnit).SingleOrDefault();
         }
 
         public double GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
@@ -488,55 +490,15 @@ namespace Ferretto.VW.MAS.DataLayer
             return ShutterPosition.None;
         }
 
-        public ShutterPosition GetShutterOpenPosition(LoadingUnitLocation destination, out BayNumber bay)
-        {
-            switch (destination)
-            {
-                case LoadingUnitLocation.InternalBay1Up:
-                case LoadingUnitLocation.ExternalBay1Up:
-                case LoadingUnitLocation.CarouselBay1Up:
-                    bay = BayNumber.BayOne;
-                    return ShutterPosition.Opened;
-
-                case LoadingUnitLocation.InternalBay1Down:
-                case LoadingUnitLocation.ExternalBay1Down:
-                case LoadingUnitLocation.CarouselBay1Down:
-                    bay = BayNumber.BayOne;
-                    return ShutterPosition.Half;
-
-                case LoadingUnitLocation.InternalBay2Up:
-                case LoadingUnitLocation.ExternalBay2Up:
-                case LoadingUnitLocation.CarouselBay2Up:
-                    bay = BayNumber.BayTwo;
-                    return ShutterPosition.Opened;
-
-                case LoadingUnitLocation.InternalBay2Down:
-                case LoadingUnitLocation.ExternalBay2Down:
-                case LoadingUnitLocation.CarouselBay2Down:
-                    bay = BayNumber.BayTwo;
-                    return ShutterPosition.Half;
-
-                case LoadingUnitLocation.InternalBay3Up:
-                case LoadingUnitLocation.ExternalBay3Up:
-                case LoadingUnitLocation.CarouselBay3Up:
-                    bay = BayNumber.BayThree;
-                    return ShutterPosition.Opened;
-
-                case LoadingUnitLocation.InternalBay3Down:
-                case LoadingUnitLocation.ExternalBay3Down:
-                case LoadingUnitLocation.CarouselBay3Down:
-                    bay = BayNumber.BayThree;
-                    return ShutterPosition.Half;
-
-                default:
-                    bay = BayNumber.None;
-                    return ShutterPosition.None;
-            }
-        }
-
         public void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation destination)
         {
-            throw new NotImplementedException();
+            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
+            var loadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
+
+            position.LoadingUnit = loadingUnit;
+
+            this.dataContext.BayPositions.Update(position);
+            this.dataContext.SaveChanges();
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
