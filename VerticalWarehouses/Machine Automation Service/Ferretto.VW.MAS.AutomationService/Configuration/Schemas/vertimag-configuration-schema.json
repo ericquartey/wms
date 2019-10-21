@@ -405,16 +405,16 @@
                     "title": "The WeightMeasureSpeed Schema",
                     "default": 0
                   },
-                  "FullLoadMovement": {
+                  "WeightMeasureTime": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureTime",
                     "type": "integer",
                     "title": "The WeightMeasureTime Schema",
                     "default": 0
                   },
-                  "MaximumLoadMovement": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/MaximumLoadMovement",
+                  "FullLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
                     "type": "object",
-                    "title": "The Maximumloadmovement Schema",
+                    "title": "The FullLoadMovement Schema",
                     "required": [
                       "Acceleration",
                       "Deceleration",

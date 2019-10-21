@@ -670,9 +670,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     BrakeReleaseTime = table.Column<double>(nullable: false),
                     ChainOffset = table.Column<double>(nullable: false),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
+                    FullLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
                     LowerBound = table.Column<double>(nullable: false),
-                    MaximumLoadMovementId = table.Column<int>(nullable: true),
                     Offset = table.Column<double>(nullable: false),
                     Orientation = table.Column<int>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
@@ -700,15 +700,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ElevatorAxes_Inverters_InverterId",
-                        column: x => x.InverterId,
-                        principalTable: "Inverters",
+                        name: "FK_ElevatorAxes_MovementParameters_FullLoadMovementId",
+                        column: x => x.FullLoadMovementId,
+                        principalTable: "MovementParameters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ElevatorAxes_MovementParameters_MaximumLoadMovementId",
-                        column: x => x.MaximumLoadMovementId,
-                        principalTable: "MovementParameters",
+                        name: "FK_ElevatorAxes_Inverters_InverterId",
+                        column: x => x.InverterId,
+                        principalTable: "Inverters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -841,7 +841,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 21, 13, 41, 12, 315, DateTimeKind.Local).AddTicks(134), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 21, 15, 45, 42, 852, DateTimeKind.Local).AddTicks(3128), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1040,14 +1040,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "EmptyLoadMovementId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_FullLoadMovementId",
+                table: "ElevatorAxes",
+                column: "FullLoadMovementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ElevatorAxes_InverterId",
                 table: "ElevatorAxes",
                 column: "InverterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ElevatorAxes_MaximumLoadMovementId",
-                table: "ElevatorAxes",
-                column: "MaximumLoadMovementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_LoadingUnitId",
@@ -1266,7 +1266,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ElevatorAxes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_MovementParameters_MaximumLoadMovementId",
+                name: "FK_ElevatorAxes_MovementParameters_FullLoadMovementId",
                 table: "ElevatorAxes");
 
             migrationBuilder.DropTable(
