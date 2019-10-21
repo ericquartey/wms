@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bayIsMultiPosition;
 
-        private int bayNumber;
+        private BayNumber bayNumber;
 
         private double? bayPositionHeight;
 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public int BayNumber
+        public BayNumber BayNumber
         {
             get => this.bayNumber;
             set => this.SetProperty(ref this.bayNumber, value);
