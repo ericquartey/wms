@@ -7,13 +7,15 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
+        private double lowerBound;
+
         private double offset;
 
         private decimal resolution;
 
         private int totalCycles = 1;
 
-        private double upperBound;
+        private double upperBound = 1;
 
         #endregion
 
@@ -25,7 +27,19 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
-        public double LowerBound { get; set; }
+        public double LowerBound
+        {
+            get => this.lowerBound;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Lower bound cannot be negative.");
+                }
+
+                this.lowerBound = value;
+            }
+        }
 
         public MovementParameters MaximumLoadMovement { get; set; }
 
@@ -36,7 +50,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value < 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "Offset cannot be negative.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Offset cannot be negative.");
                 }
 
                 this.offset = value;
@@ -54,7 +68,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "Resolution cannot be negative or zero.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Resolution cannot be negative or zero.");
                 }
 
                 this.resolution = value;
@@ -68,7 +82,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
                 }
 
                 this.totalCycles = value;
@@ -82,7 +96,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "UpperBound cannot be negative or zero.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Upper bound cannot be negative or zero.");
                 }
 
                 this.upperBound = value;
