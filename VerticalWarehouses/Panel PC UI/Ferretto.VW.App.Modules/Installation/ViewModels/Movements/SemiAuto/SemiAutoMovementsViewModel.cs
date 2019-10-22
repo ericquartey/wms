@@ -472,24 +472,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.homingToken = this.homingToken
                 ??
-                this.EventAggregator.SubscribeToEvent<HomingMessageData>(
-                    this.OnHomingChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                        this.OnHomingChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.shutterPositionToken = this.shutterPositionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<ShutterPositioningMessageData>(
-                    this.OnShutterPositionChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnElevatorPositionChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.sensorsToken = this.sensorsToken
                 ??
-                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(
-                    this.OnSensorsChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion

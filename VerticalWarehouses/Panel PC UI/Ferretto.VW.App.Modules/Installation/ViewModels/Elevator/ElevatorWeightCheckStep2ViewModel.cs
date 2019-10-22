@@ -228,8 +228,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<ElevatorWeightCheckMessageData>(
-                    this.ElevatorWeightCheckChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
+                    .Subscribe(
+                        this.ElevatorWeightCheckChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.RaiseCanExecuteChanged();
         }

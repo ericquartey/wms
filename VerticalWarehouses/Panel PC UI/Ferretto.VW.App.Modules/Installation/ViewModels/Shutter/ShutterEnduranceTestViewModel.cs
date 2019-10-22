@@ -255,15 +255,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.shutterTestStatusChangedToken = this.shutterTestStatusChangedToken
                 ??
-                this.EventAggregator.SubscribeToEvent<ShutterPositioningMessageData>(
-                    this.OnShutterTestStatusChanged,
-                    m => m.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterTestStatusChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
 
             this.sensorsChangedToken = this.sensorsChangedToken
                 ??
-                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(// ok
-                    this.OnSensorsChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             try
             {
@@ -330,11 +338,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
             }
-            else if(message.Data != null)
+            else if (message.Data != null)
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
             }
-
         }
 
         private void RaiseCanExecuteChanged()

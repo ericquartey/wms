@@ -265,7 +265,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -294,7 +295,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
