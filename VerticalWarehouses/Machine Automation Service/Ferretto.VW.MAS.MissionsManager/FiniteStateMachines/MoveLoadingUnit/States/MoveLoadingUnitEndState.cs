@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.St
             }
             else
             {
-                this.errorsProvider.RecordNew(MachineErrors.ConditionsNotMetForRunning, commandMessage.RequestingBay);
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
 
                 var newMessageData = new StopMessageData(this.StopRequestReason);
                 this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MissionsManager, commandMessage.RequestingBay);

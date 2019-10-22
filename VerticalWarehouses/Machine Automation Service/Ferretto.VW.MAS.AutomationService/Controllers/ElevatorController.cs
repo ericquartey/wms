@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, LoadingUnitId, loadingUnitGrossWeight, false, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalAuto(direction, isStartedOnBoard, loadingUnitId, loadingUnitGrossWeight, false, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

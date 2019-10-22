@@ -238,7 +238,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.LoadingUnit)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
 
                 if (bay is null)
@@ -300,7 +299,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.LoadingUnit)
                     .SingleOrDefault(b => b.Number == bayNumber);
 
                 if (bay is null)
@@ -463,6 +461,22 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
         }
 
+        public double GetResolution(InverterIndex inverterIndex)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                              .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(inverterIndex.ToString());
+                }
+
+                return bay.Resolution;
+            }
+        }
+
         public ShutterPosition GetShutterClosePosition(LoadingUnitLocation destination, bool parallel, out BayNumber bay)
         {
             switch (destination)
@@ -561,19 +575,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
-        }
-
-        public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
-        {
-            var bay = this.dataContext.Bays
-                .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
-
-            if (bay is null)
-            {
-                throw new EntityNotFoundException(inverterIndex.ToString());
-            }
-
-            return bay.Resolution;
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)

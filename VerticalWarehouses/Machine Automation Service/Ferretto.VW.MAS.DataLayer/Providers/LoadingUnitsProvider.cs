@@ -59,45 +59,13 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
-                    new LoadingUnitSpaceStatistics
-                    {
-                        MissionsCount = l.MissionsCount,
-                        Code = l.Code,
-                    }).ToArray();
+                                                                            new LoadingUnitSpaceStatistics
+                                                                            {
+                                                                                MissionsCount = l.MissionsCount,
+                                                                                Code = l.Code,
+                                                                            }).ToArray();
 
-                foreach (var loadingUnit in loadingUnits)
-                {
-                    var loadingUnitClass = loadingUnitClasses.SingleOrDefault(c => c.Id == loadingUnit.Class);
-                    if (loadingUnitClass.Id == null)
-                    {
-                        throw new Exception($"Loading unit class '{loadingUnit.Class}' is not defined");
-                    }
-
-                    this.dataContext.LoadingUnits.Add(
-                        new LoadingUnit
-                        {
-                            Code = loadingUnit.Code.ToString(),
-                            MaxNetWeight = loadingUnitClass.MaxLoadCapacity,
-                            Tare = loadingUnitClass.Tare,
-                        });
-                }
-#if DEBUG
-                // TODO Remove after initial develop/debug
-                this.dataContext.SaveChanges();
-
-                for (int i = 1; i < 4; i++)
-                {
-                    var loadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == i);
-                    loadingUnit.CellId = i;
-                    this.dataContext.LoadingUnits.Update(loadingUnit);
-
-                    var cell = this.dataContext.Cells.Single(c => c.Id == i);
-                    cell.Status = CellStatus.Occupied;
-                    this.dataContext.Cells.Update(cell);
-                }
-#endif
-
-                this.dataContext.SaveChanges();
+                return loadingUnits;
             }
         }
 
