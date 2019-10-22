@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -169,8 +169,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     HighSpeedDurationOpen = table.Column<double>(nullable: true),
                     MaxSpeed = table.Column<double>(nullable: true),
                     MinSpeed = table.Column<double>(nullable: true),
-                    BrakeActivatePercent = table.Column<double>(nullable: true),
-                    BrakeReleaseTime = table.Column<double>(nullable: true),
                     FeedRateAfterZero = table.Column<double>(nullable: true),
                     NegativeTargetDirection = table.Column<double>(nullable: true),
                     PositiveTargetDirection = table.Column<double>(nullable: true),
@@ -668,6 +666,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BrakeActivatePercent = table.Column<double>(nullable: false),
+                    BrakeReleaseTime = table.Column<double>(nullable: false),
                     ChainOffset = table.Column<double>(nullable: false),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     FullLoadMovementId = table.Column<int>(nullable: true),
@@ -678,6 +678,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Resolution = table.Column<decimal>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
+                    WeightMeasureMultiply = table.Column<double>(nullable: false),
+                    WeightMeasureSpeed = table.Column<double>(nullable: false),
+                    WeightMeasureSum = table.Column<double>(nullable: false),
+                    WeightMeasureTime = table.Column<int>(nullable: false),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -837,7 +841,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 21, 11, 47, 32, 126, DateTimeKind.Local).AddTicks(2140), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 21, 15, 45, 42, 852, DateTimeKind.Local).AddTicks(3128), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

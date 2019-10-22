@@ -295,11 +295,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction);
@@ -1552,6 +1552,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorAxis : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeActivatePercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeReleaseTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
@@ -1584,6 +1590,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureMultiply", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureMultiply { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureSum", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureSum { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureTime", Required = Newtonsoft.Json.Required.Always)]
+        public int WeightMeasureTime { get; set; }
     
         public string ToJson() 
         {
@@ -1871,12 +1889,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class VerticalManualMovementsProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
-        public double BrakeActivatePercent { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
-        public double BrakeReleaseTime { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("feedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRateAfterZero { get; set; }
     
