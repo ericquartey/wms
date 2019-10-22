@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
-            if ((!isStartedOnBoard && !sensors[(int)zeroSensor]) || (isStartedOnBoard && sensors[(int)zeroSensor]))
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
             {
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
@@ -233,12 +233,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                    Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
+            var sensors = this.sensorsProvider.GetAll();
+            var isLoadingUnitOnBoard =
+                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                &&
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+            if (measure && !isLoadingUnitOnBoard)
+            {
+                this.logger.LogDebug($"Do not measure weight on empty elevator!");
+                measure = false;
+            }
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
+                ? IOMachineSensors.ZeroPawlSensorOneK
+                : IOMachineSensors.ZeroPawlSensor;
+
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
+            {
+                throw new InvalidOperationException("Invalid Zero Chain position");
+            }
+
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
+            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]} ");
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
