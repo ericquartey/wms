@@ -112,13 +112,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                 this.Inverter,
                                 this.Logger));
                     }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningStartMovingState(
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
+                            else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningMeasureStartMovingState(
+                                        this.data,
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
                     }
 
                     returnValue = true;

@@ -90,6 +90,8 @@
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
@@ -105,7 +107,11 @@
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
-          }
+          },
+          "WeightMeasureMultiply": 121.46,
+          "WeightMeasureSum": -746.12,
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Orientation": "Horizontal",
@@ -2821,8 +2827,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test

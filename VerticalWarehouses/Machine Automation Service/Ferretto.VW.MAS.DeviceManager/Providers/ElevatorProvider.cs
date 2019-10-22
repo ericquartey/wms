@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
-            if ((!isStartedOnBoard && !sensors[(int)zeroSensor]) || (isStartedOnBoard && sensors[(int)zeroSensor]))
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
             {
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
@@ -233,15 +233,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        /// <summary>
-        /// Moves the vertical axis of the elevator to the targetPosition height.
-        /// The targetPosition is adjusted by the weight of the LoadUnit.
-        /// </summary>
-        /// <param name="targetPosition">Height to reach in millimeters</param>
-        /// <param name="feedRate">It is higher after the homing procedure is done</param>
-        /// <param name="requestingBay"></param>
-        /// <param name="sender"></param>
-        public void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber requestingBay, MessageActor sender)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -267,17 +259,41 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                    Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
+            var sensors = this.sensorsProvider.GetAll();
+            var isLoadingUnitOnBoard =
+                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                &&
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+            if (measure && !isLoadingUnitOnBoard)
+            {
+                this.logger.LogDebug($"Do not measure weight on empty elevator!");
+                measure = false;
+            }
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
+                ? IOMachineSensors.ZeroPawlSensorOneK
+                : IOMachineSensors.ZeroPawlSensor;
+
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
+            {
+                throw new InvalidOperationException("Invalid Zero Chain position");
+            }
+
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
+            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]} ");
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,

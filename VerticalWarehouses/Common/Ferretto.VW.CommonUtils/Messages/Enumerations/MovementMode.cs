@@ -6,7 +6,7 @@
 
         Position = 1,
 
-        Profile = 2,
+        PositionAndMeasure = 2,
 
         BeltBurnishing = 3,
 

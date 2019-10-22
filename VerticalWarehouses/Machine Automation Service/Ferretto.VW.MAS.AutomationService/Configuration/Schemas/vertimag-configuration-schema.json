@@ -363,6 +363,18 @@
                       }
                     }
                   },
+                  "BrakeReleaseTime": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/BrakeReleaseTime",
+                    "type": "number",
+                    "title": "The BrakeReleaseTime Schema",
+                    "default": 0
+                  },
+                  "BrakeActivatePercent": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/BrakeActivatePercent",
+                    "type": "number",
+                    "title": "The BrakeActivatePercent Schema",
+                    "default": 10
+                  },
                   "Orientation": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Orientation",
                     "type": "string",
@@ -402,10 +414,34 @@
                     "title": "The Lowerbound Schema",
                     "default": 0
                   },
+                  "WeightMeasureMultiply": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureMultiply",
+                    "type": "number",
+                    "title": "The WeightMeasureMultiply Schema",
+                    "default": 0
+                  },
+                  "WeightMeasureSum": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureSum",
+                    "type": "number",
+                    "title": "The WeightMeasureSum Schema",
+                    "default": 0
+                  },
+                  "WeightMeasureSpeed": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureSpeed",
+                    "type": "integer",
+                    "title": "The WeightMeasureSpeed Schema",
+                    "default": 0
+                  },
+                  "WeightMeasureTime": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureTime",
+                    "type": "integer",
+                    "title": "The WeightMeasureTime Schema",
+                    "default": 0
+                  },
                   "FullLoadMovement": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
                     "type": "object",
-                    "title": "The Maximumloadmovement Schema",
+                    "title": "The FullLoadMovement Schema",
                     "required": [
                       "Acceleration",
                       "Deceleration",
@@ -946,18 +982,6 @@
               "type": "number",
               "title": "The Positivetargetdirection Schema",
               "default": 0
-            },
-            "BrakeReleaseTime": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/BrakeReleaseTime",
-              "type": "number",
-              "title": "The BrakeReleaseTime Schema",
-              "default": 0
-            },
-            "BrakeActivatePercent": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/BrakeActivatePercent",
-              "type": "number",
-              "title": "The BrakeActivatePercent Schema",
-              "default": 10
             },
             "NegativeTargetDirection": {
               "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/NegativeTargetDirection",

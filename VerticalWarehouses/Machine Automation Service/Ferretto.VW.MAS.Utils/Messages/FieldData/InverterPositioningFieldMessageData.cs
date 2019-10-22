@@ -33,8 +33,12 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.RequestingBay = positioningFieldMessageData.RequestingBay;
 
             this.IsTorqueCurrentSamplingEnabled = positioningFieldMessageData.IsTorqueCurrentSamplingEnabled;
+            this.IsWeightMeasure = positioningFieldMessageData.IsWeightMeasure;
             this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
             this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
+
+            this.IsWeightMeasureDone = false;
+            this.MeasuredWeight = 0.0;
         }
 
         #endregion
@@ -47,9 +51,15 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public bool IsTorqueCurrentSamplingEnabled { get; set; }
 
+        public bool IsWeightMeasure { get; set; }
+
+        public bool IsWeightMeasureDone { get; set; }
+
         public double? LoadedNetWeight { get; }
 
         public int? LoadingUnitId { get; set; }
+
+        public double MeasuredWeight { get; set; }
 
         public MovementType MovementType { get; set; }
 

@@ -266,6 +266,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                     switch (data.AxisMovement)
                     {
                         case Axis.Horizontal:
@@ -359,6 +360,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     switch (data.MovementMode)
                     {
                         case MovementMode.Position:
+                        case MovementMode.PositionAndMeasure:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
@@ -381,7 +383,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case MovementMode.FindZero:
-                        case MovementMode.Profile:
                             returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
