@@ -6,7 +6,9 @@
 
         AutomationService,
 
-        MissionsManager,
+        MissionManager,
+
+        MachineManager,
 
         FiniteStateMachines,
 

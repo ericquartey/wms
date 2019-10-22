@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 commandMessage.Data,
                 description,
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.MissionManagerException,
                 commandMessage.RequestingBay,
                 commandMessage.TargetBay,

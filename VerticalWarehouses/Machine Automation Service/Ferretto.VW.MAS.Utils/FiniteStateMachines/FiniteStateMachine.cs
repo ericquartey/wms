@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 new FsmExceptionMessageData(ex, string.Empty, 0),
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
                 this.requestingBay,
                 BayNumber.None,

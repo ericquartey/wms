@@ -1,0 +1,18 @@
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+
+namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
+{
+    internal class MoveLoadingUnitMachineData : IMoveLoadingUnitMachineData
+    {
+        #region Properties
+
+        public int? LoadingUnitCellSourceId { get; set; }
+
+        public int LoadingUnitId { get; set; }
+
+        public LoadingUnitLocation LoadingUnitSource { get; set; }
+
+        #endregion
+    }
+}
