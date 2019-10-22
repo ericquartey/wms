@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Ferretto.VW.App.Controls;
-using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -11,25 +9,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         #endregion
 
         #region Constructors
 
-        public BaseElevatorWeightCheckViewModel(
-            IEventAggregator eventAggregator)
+        public BaseElevatorWeightCheckViewModel()
             : base(Services.PresentationMode.Installer)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
             this.InitializeNavigationMenu();
-            this.eventAggregator = eventAggregator;
         }
 
         #endregion

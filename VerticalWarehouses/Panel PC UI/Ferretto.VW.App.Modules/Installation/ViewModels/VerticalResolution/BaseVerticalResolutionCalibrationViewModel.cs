@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -46,24 +47,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (machineElevatorWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorWebService));
-            }
-
-            if (resolutionCalibrationWebService is null)
-            {
-                throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.MachineElevatorWebService = machineElevatorWebService;
-            this.resolutionCalibrationWebService = resolutionCalibrationWebService;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
 
             this.InitializeNavigationMenu();
         }
@@ -141,26 +127,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    this.OnElevatorPositionChanged,
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.eventAggregator.SubscribeToEvent<PositioningMessageData>(
+                    this.OnElevatorPositionChanged);
 
             await this.RetrieveCurrentPositionAsync();
 
@@ -178,24 +161,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
             if (message.IsErrored())
             {
                 this.ShowNotification(
-                 VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                 Services.Models.NotificationSeverity.Warning);
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
             }
 
-            if (message.Data is null)
-            {
-                throw new ArgumentException();
-            }
-
-            if (message.Data.AxisMovement != Axis.Vertical)
+            if (message.Data?.AxisMovement != Axis.Vertical)
             {
                 return;
             }

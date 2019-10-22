@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -291,14 +292,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.positioningMessageReceivedToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.positioningMessageReceivedToken);
-
-                this.positioningMessageReceivedToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.positioningMessageReceivedToken?.Dispose();
+            this.positioningMessageReceivedToken = null;
+            */
         }
 
         public async Task GetParameterValuesAsync()
@@ -341,14 +341,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = false;
             }
 
-            this.positioningMessageReceivedToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    this.OnPositioningMessageReceived,
-                    ThreadOption.UIThread,
-                    false,
-                    message => message?.Data != null
-                    );
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+                ??
+                this.eventAggregator.SubscribeToEvent<PositioningMessageData>(
+                    this.OnPositioningMessageReceived);
         }
 
         private bool CanStartTest()
@@ -371,8 +367,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            System.Diagnostics.Debug.WriteLine($"{message.Status} {message.Type} {message.ErrorLevel}");
-
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;

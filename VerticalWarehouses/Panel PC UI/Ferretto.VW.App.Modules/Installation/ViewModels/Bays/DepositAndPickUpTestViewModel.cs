@@ -144,6 +144,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public int? CumulativePerformedCycles
+        {
+            get => this.totalCompletedCycles;
+            private set => this.SetProperty(ref this.totalCompletedCycles, value);
+        }
+
         public double? GrossWeight
         {
             get => this.grossWeight;
@@ -288,12 +294,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public int? CumulativePerformedCycles
-        {
-            get => this.totalCompletedCycles;
-            private set => this.SetProperty(ref this.totalCompletedCycles, value);
-        }
-
         #endregion
 
         #region Methods
@@ -350,19 +350,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  async message => await this.OnElevatorPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
+                    async message => await this.OnElevatorPositionChangedAsync(message));
 
-            this.sensorsToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(
                     this.OnSensorsChanged,
-                    ThreadOption.UIThread,
-                    false);
+                    m => m.Data != null);
 
             await this.InitializeSensors();
 
@@ -483,81 +480,71 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        private async Task OnElevatorPositionChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
-                    break;
+                                 break;
 
-                case MessageStatus.OperationExecuting:
-                    {
-                        if (message.Data.AxisMovement == Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data.AxisMovement == Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
+                             case MessageStatus.OperationExecuting:
+                                 {
+                                     if (message.Data?.AxisMovement == Axis.Vertical)
+                                     {
+                                         this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                                     }
+                                     else if (message.Data?.AxisMovement == Axis.Horizontal)
+                                     {
+                                         this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                                     }
 
-                        break;
-                    }
+                                     break;
+                                 }
 
-                case MessageStatus.OperationEnd:
-                    {
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
+                             case MessageStatus.OperationEnd:
+                                 {
+                                     if (!this.IsExecutingProcedure)
+                                     {
+                                         break;
+                                     }
 
-                        this.IsElevatorDisembarking = false;
-                        this.IsElevatorEmbarking = false;
-                        this.IsElevatorMovingToBay = false;
+                                     this.IsElevatorDisembarking = false;
+                                     this.IsElevatorEmbarking = false;
+                                     this.IsElevatorMovingToBay = false;
 
-                        if (this.currentState == DepositAndPickUpState.PickUp)
-                        {
-                            this.CumulativePerformedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
-                            this.CompletedCycles++;
-                        }
+                                     if (this.currentState == DepositAndPickUpState.PickUp)
+                                     {
+                                         this.CumulativePerformedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
+                                         this.CompletedCycles++;
+                                     }
 
-                        await this.ExecuteNextStateAsync();
+                                     await this.ExecuteNextStateAsync();
 
-                        break;
-                    }
+                                     break;
+                                 }
 
-                case MessageStatus.OperationStop:
-                case MessageStatus.OperationFaultStop:
-                case MessageStatus.OperationRunningStop:
-                    {
-                        this.Stopped();
+                             case MessageStatus.OperationStop:
+                             case MessageStatus.OperationFaultStop:
+                             case MessageStatus.OperationRunningStop:
+                                 {
+                                     this.Stopped();
 
-                        break;
-                    }
+                                     break;
+                                 }
 
-                case MessageStatus.OperationError:
-                    this.IsExecutingProcedure = false;
+                             case MessageStatus.OperationError:
+                                 this.IsExecutingProcedure = false;
 
-                    break;
-            }
+                                 break;
+                         }
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            this.sensors.Update(message?.Data?.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStates);
             this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));

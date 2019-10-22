@@ -28,9 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ElevatorWeightCheckStep1ViewModel(
-            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
+            : base()
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
         }
@@ -154,11 +153,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.Elevator.WeightCheck.STEP1))
+            {
+                this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Elevator.WeightCheck.STEP2,
                 this.inputLoadingUnitId.Value,
                 trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()
